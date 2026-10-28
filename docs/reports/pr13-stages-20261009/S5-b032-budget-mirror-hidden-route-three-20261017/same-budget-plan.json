@@ -1,0 +1,64 @@
+{
+  "case_targets": [
+    "PR13-B03.2-T01 EXPERIMENT",
+    "PR13-B03.2-T02 EXPERIMENT"
+  ],
+  "profile_id": "b032-current-default-C01-C17-60-mirror-v2",
+  "pre_execution_plan": true,
+  "production_defaults_activated": false,
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "decks": [
+    "default",
+    "same_cost_single_swap"
+  ],
+  "strategies": [
+    "baseline_all_hand",
+    "basic",
+    "build"
+  ],
+  "groups": [
+    "O1",
+    "O6",
+    "E1",
+    "BOSS"
+  ],
+  "seeds": [
+    202610170,
+    202610171,
+    202610172
+  ],
+  "cutoff_seconds": 60,
+  "PVE_full_encounters": 216,
+  "PVP_mirror_rooms": 36,
+  "PVP_player_participations": 72,
+  "conservative_task_encounter_count": 288,
+  "task_limit": 300,
+  "weapon_level": 0,
+  "all_card_levels": 0,
+  "budget": "Actual current CombatExperience.CreateDecks and PairedDeckBudget.Validate; preserve exact20 unique enabled codex cards,one owned copy,rarity/cost/levels and original resources.",
+  "PVP_scope": "Real StartDuel and EndDuelSurvived both side orders, identical starting build per pair, verify same resources/pool and exact restoration; no victory/TTK claim.",
+  "retained_outcomes": [
+    "Victory",
+    "Death",
+    "Censored",
+    "Error"
+  ],
+  "no_new_sampling_of_completed_data": true,
+  "unclosed": [
+    "T03 hidden path actual native experiment",
+    "Full five thematic build-axis design is not claimed by default/single-swap matrix"
+  ],
+  "scope": "Current actual Domain/Numerics; bounded controlled scenarios,not full routes,network,PG,LIVE,capacity,render or human.",
+  "replacement": {
+    "remove": "C01",
+    "add": "C17",
+    "guard": "Existing production PairedDeckBudget.Validate validates all three classes before scenes."
+  },
+  "original_diagnostic_failure": "R1 harness incorrectly assumed CreateDecks always produced theme_single_swap for every class. Program rejected before first encounter. No product defect or skipped experimental pass.",
+  "source_of_default": "Unmodified current CombatExperience.CreateDecks default; explicit external one-card comparator,not a production theme default.",
+  "progress_ledger": "Every real encounter start and result persisted incrementally; do not blindly rerun after partial failure."
+}

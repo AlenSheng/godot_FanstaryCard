@@ -1,0 +1,698 @@
+{
+  "kind": "MAINIndependentActualLiveGeneratorResourcesThreeCaseReview",
+  "three_live_cases_verified": true,
+  "cases": [
+    {
+      "case_id": "LOAD-07.2-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-generator-resources-r1\\LOW_MEMORY\\run\\20261017-044345-49638a\\report.json",
+        "report_sha256": "50cbfbba3309618fd20b3fac6fb45c166448c50420a9bd77311d3be9a140c8cf",
+        "actual_clients": 1,
+        "coordinator_return": 3,
+        "stop_reason": "invalid_evidence:generator_memory_low_before_launch",
+        "original_capacity_outcome": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "actual_launch_monotonic_ms": 1965928828.0,
+        "coordinator_observation_seconds": 15.235,
+        "observed_launches_per_second": 0.06563833278634723,
+        "configured_launch_interval_seconds": 0,
+        "actual_final_frame_clock": {
+          "clock": "local Time.get_ticks_msec",
+          "engine_max_fps": 0,
+          "mean_process_fps": 144.985796215898,
+          "observed_ms": 18657,
+          "process_frames": 2705,
+          "scope": "SceneTree process frames, including headless; not rendered FPS or network packet rate"
+        },
+        "workload_profile_id": "workload:94dcdd57e424b6c345ccbd0a5a708b4bbddc63d6bd8e327d3043a184fda07feb",
+        "family_label": "active-hold",
+        "per_PID_resources": [
+          {
+            "processes": [
+              {
+                "pid": 83688,
+                "role": "coordinator",
+                "available": true,
+                "rss_bytes": 44068864,
+                "threads": 7,
+                "cpu_percent_of_one_core": null,
+                "cpu_missing_reason": "first_or_new_process_counter",
+                "handles": 159,
+                "handles_missing_reason": null,
+                "write_bytes_cumulative": 857075,
+                "write_bytes_cumulative_missing_reason": null,
+                "packet_send_rate": null,
+                "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+              },
+              {
+                "pid": 70564,
+                "role": "native",
+                "client_id": "g001c01d738fe",
+                "run_id": "ec44ac5f3b2f45cc9932f531acc6b024",
+                "process_epoch": "4a4368909f74467aa5462a6bc0f00a22",
+                "available": true,
+                "rss_bytes": 206987264,
+                "threads": 27,
+                "cpu_percent_of_one_core": null,
+                "cpu_missing_reason": "first_or_new_process_counter",
+                "handles": 312,
+                "handles_missing_reason": null,
+                "write_bytes_cumulative": 75660,
+                "write_bytes_cumulative_missing_reason": null,
+                "packet_send_rate": null,
+                "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+              }
+            ],
+            "excluded_exited_native_processes": [],
+            "native_alive_processes": 1,
+            "cpu_percent_of_one_core": null,
+            "cpu_missing_reason": "First/new/unavailable process counters; partial totals are not a full generator CPU measurement",
+            "rss_bytes": 251056128,
+            "host_memory_available_bytes": 8652046336,
+            "handles": 471,
+            "packet_send_rate": null,
+            "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+            "native_frame_observations": [
+              {
+                "client_id": "g001c01d738fe",
+                "pid": 70564,
+                "process_fps": 145.0620502659297,
+                "process_frames": 1391,
+                "observed_ms": 9589,
+                "engine_max_fps": 0,
+                "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+                "missing_reason": null
+              }
+            ]
+          }
+        ],
+        "cloud_resources_separate": [
+          {
+            "cpu": 6.299999999917228,
+            "memory_available": 66.19779642727921,
+            "memory_available_bytes": 2540457984.0,
+            "disk_available": 14.264136402620093,
+            "actor_wait": null,
+            "server_humans_in_room": 0.0
+          }
+        ],
+        "normal_cycles": 0,
+        "cleanup_passed": true,
+        "injected_generator_memory_readings": [
+          {
+            "kind": "declared_memory_reading_fault",
+            "at_monotonic_ns": 1965944031000000,
+            "at_unix_ns": 1792183440783616000,
+            "physical_available_bytes": 8648368128,
+            "observed_available_bytes": 2147483647,
+            "physical_pressure_created": false,
+            "guard_floor_bytes": 2147483648
+          }
+        ]
+      },
+      "scope": "Actual native/cloud control path with explicit local observed-memory seam below2GiB,physicalRAM separatelyrecorded abovefloor. Stop before secondnative,not real system exhaustion or servicecapacity claim."
+    },
+    {
+      "case_id": "LOAD-07.2-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-generator-resources-r1\\CLIENT_EXIT\\run\\20261017-044407-81769c\\report.json",
+        "report_sha256": "9b326691506202f7b7b1fae88b1c4d8e7cbfc302c8e816e05731e7780031de43",
+        "actual_clients": 1,
+        "coordinator_return": 1,
+        "stop_reason": "duration_limit",
+        "original_capacity_outcome": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        },
+        "actual_launch_monotonic_ms": 1965951000.0,
+        "coordinator_observation_seconds": 24.125,
+        "observed_launches_per_second": 0.04145077720207254,
+        "configured_launch_interval_seconds": 0,
+        "actual_final_frame_clock": {
+          "clock": "local Time.get_ticks_msec",
+          "engine_max_fps": 0,
+          "mean_process_fps": 145.119537079336,
+          "observed_ms": 6567,
+          "process_frames": 953,
+          "scope": "SceneTree process frames, including headless; not rendered FPS or network packet rate"
+        },
+        "workload_profile_id": "workload:179e637ac5a6fe3586c1bc73d804d7177b5f984987fd6e10678613159b7eb6bd",
+        "family_label": "active-hold",
+        "per_PID_resources": [
+          {
+            "processes": [
+              {
+                "pid": 72952,
+                "role": "coordinator",
+                "available": true,
+                "rss_bytes": 43921408,
+                "threads": 7,
+                "cpu_percent_of_one_core": null,
+                "cpu_missing_reason": "first_or_new_process_counter",
+                "handles": 161,
+                "handles_missing_reason": null,
+                "write_bytes_cumulative": 858211,
+                "write_bytes_cumulative_missing_reason": null,
+                "packet_send_rate": null,
+                "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+              }
+            ],
+            "excluded_exited_native_processes": [
+              {
+                "pid": 114236,
+                "client_id": "g001c015be383",
+                "exit_code": 0
+              }
+            ],
+            "native_alive_processes": 0,
+            "cpu_percent_of_one_core": null,
+            "cpu_missing_reason": "First/new/unavailable process counters; partial totals are not a full generator CPU measurement",
+            "rss_bytes": 43921408,
+            "host_memory_available_bytes": 8841932800,
+            "handles": 161,
+            "packet_send_rate": null,
+            "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+            "native_frame_observations": []
+          },
+          {
+            "processes": [
+              {
+                "pid": 72952,
+                "role": "coordinator",
+                "available": true,
+                "rss_bytes": 44015616,
+                "threads": 7,
+                "cpu_percent_of_one_core": 0.48,
+                "cpu_missing_reason": null,
+                "handles": 164,
+                "handles_missing_reason": null,
+                "write_bytes_cumulative": 881826,
+                "write_bytes_cumulative_missing_reason": null,
+                "packet_send_rate": null,
+                "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+              }
+            ],
+            "excluded_exited_native_processes": [
+              {
+                "pid": 114236,
+                "client_id": "g001c015be383",
+                "exit_code": 0
+              }
+            ],
+            "native_alive_processes": 0,
+            "cpu_percent_of_one_core": 0.48,
+            "cpu_missing_reason": null,
+            "rss_bytes": 44015616,
+            "host_memory_available_bytes": 8867328000,
+            "handles": 164,
+            "packet_send_rate": null,
+            "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+            "native_frame_observations": []
+          }
+        ],
+        "cloud_resources_separate": [
+          {
+            "cpu": 6.588888889075162,
+            "memory_available": 66.14624524912668,
+            "memory_available_bytes": 2538479616.0,
+            "disk_available": 14.264071684688021,
+            "actor_wait": null,
+            "server_humans_in_room": 0.0
+          },
+          {
+            "cpu": 6.0666666666252755,
+            "memory_available": 65.95423578847154,
+            "memory_available_bytes": 2531110912.0,
+            "disk_available": 14.263955192410295,
+            "actor_wait": null,
+            "server_humans_in_room": 0.0
+          }
+        ],
+        "normal_cycles": 0,
+        "cleanup_passed": true,
+        "actual_production_workload_snapshot_before_after": {
+          "before": {
+            "alive_processes": 1,
+            "fresh_status_clients": 1,
+            "online": 1,
+            "in_room": 0,
+            "room_state_clients": 0,
+            "active_in_room": 0,
+            "server_confirmed_in_room": null,
+            "invalid_schema_count": 0,
+            "failed_processes": [],
+            "stale_clients": [],
+            "stalled_clients": [],
+            "missing_clients": [],
+            "invalid_clients": [],
+            "workload_failure": false
+          },
+          "after": {
+            "alive_processes": 0,
+            "fresh_status_clients": 0,
+            "online": 0,
+            "in_room": 0,
+            "room_state_clients": 0,
+            "active_in_room": 0,
+            "server_confirmed_in_room": null,
+            "invalid_schema_count": 0,
+            "failed_processes": [],
+            "stale_clients": [],
+            "stalled_clients": [],
+            "missing_clients": [],
+            "invalid_clients": [],
+            "workload_failure": false
+          },
+          "only_owned_child_STOP": true,
+          "forcekill": false
+        }
+      },
+      "scope": "Actual PID/run/epoch-owned client online/queued then only itsindividualSTOP triggers normalcleanup/exit0,actual workload_snapshot and coordinator samples decrease load1→0. No simulatedprocess,unrelatedPID or forcedkill."
+    },
+    {
+      "case_id": "LOAD-07.2-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "baseline": {
+          "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-generator-resources-r1\\BASELINE\\run\\20261017-044434-650724\\report.json",
+          "report_sha256": "b4f502568a12d70a235c0150c069da83a780015c060898e18da5e349e64ab631",
+          "actual_clients": 1,
+          "coordinator_return": 1,
+          "stop_reason": "duration_limit",
+          "original_capacity_outcome": {
+            "classification": "incomplete_or_failed",
+            "passed": false,
+            "exit_code": 1
+          },
+          "actual_launch_monotonic_ms": 1965978046.0,
+          "coordinator_observation_seconds": 24.172,
+          "observed_launches_per_second": 0.04137018037398643,
+          "configured_launch_interval_seconds": 0,
+          "actual_final_frame_clock": {
+            "clock": "local Time.get_ticks_msec",
+            "engine_max_fps": 0,
+            "mean_process_fps": 144.97786597466,
+            "observed_ms": 26204,
+            "process_frames": 3799,
+            "scope": "SceneTree process frames, including headless; not rendered FPS or network packet rate"
+          },
+          "workload_profile_id": "workload:179e637ac5a6fe3586c1bc73d804d7177b5f984987fd6e10678613159b7eb6bd",
+          "family_label": "active-hold",
+          "per_PID_resources": [
+            {
+              "processes": [
+                {
+                  "pid": 125052,
+                  "role": "coordinator",
+                  "available": true,
+                  "rss_bytes": 44023808,
+                  "threads": 7,
+                  "cpu_percent_of_one_core": null,
+                  "cpu_missing_reason": "first_or_new_process_counter",
+                  "handles": 159,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 857066,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                },
+                {
+                  "pid": 96948,
+                  "role": "native",
+                  "client_id": "g001c014558e9",
+                  "run_id": "7db32abb73894775b64e55b9e89e724f",
+                  "process_epoch": "4049e7f23ba444eca44832bfd09ed98f",
+                  "available": true,
+                  "rss_bytes": 207683584,
+                  "threads": 27,
+                  "cpu_percent_of_one_core": null,
+                  "cpu_missing_reason": "first_or_new_process_counter",
+                  "handles": 311,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 78986,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                }
+              ],
+              "excluded_exited_native_processes": [],
+              "native_alive_processes": 1,
+              "cpu_percent_of_one_core": null,
+              "cpu_missing_reason": "First/new/unavailable process counters; partial totals are not a full generator CPU measurement",
+              "rss_bytes": 251707392,
+              "host_memory_available_bytes": 8697958400,
+              "handles": 470,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+              "native_frame_observations": [
+                {
+                  "client_id": "g001c014558e9",
+                  "pid": 96948,
+                  "process_fps": 145.25261324041813,
+                  "process_frames": 667,
+                  "observed_ms": 4592,
+                  "engine_max_fps": 0,
+                  "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+                  "missing_reason": null
+                }
+              ]
+            },
+            {
+              "processes": [
+                {
+                  "pid": 125052,
+                  "role": "coordinator",
+                  "available": true,
+                  "rss_bytes": 44204032,
+                  "threads": 7,
+                  "cpu_percent_of_one_core": 0.15,
+                  "cpu_missing_reason": null,
+                  "handles": 162,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 878563,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                },
+                {
+                  "pid": 96948,
+                  "role": "native",
+                  "client_id": "g001c014558e9",
+                  "run_id": "7db32abb73894775b64e55b9e89e724f",
+                  "process_epoch": "4049e7f23ba444eca44832bfd09ed98f",
+                  "available": true,
+                  "rss_bytes": 207745024,
+                  "threads": 27,
+                  "cpu_percent_of_one_core": 13.54,
+                  "cpu_missing_reason": null,
+                  "handles": 311,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 185505,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                }
+              ],
+              "excluded_exited_native_processes": [],
+              "native_alive_processes": 1,
+              "cpu_percent_of_one_core": 13.69,
+              "cpu_missing_reason": null,
+              "rss_bytes": 251949056,
+              "host_memory_available_bytes": 8681934848,
+              "handles": 473,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+              "native_frame_observations": [
+                {
+                  "client_id": "g001c014558e9",
+                  "pid": 96948,
+                  "process_fps": 145.0,
+                  "process_frames": 2842,
+                  "observed_ms": 19600,
+                  "engine_max_fps": 0,
+                  "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+                  "missing_reason": null
+                }
+              ]
+            }
+          ],
+          "cloud_resources_separate": [
+            {
+              "cpu": 5.188888888806109,
+              "memory_available": 65.92851356500411,
+              "memory_available_bytes": 2530123776.0,
+              "disk_available": 14.263877530891811,
+              "actor_wait": null,
+              "server_humans_in_room": 0.0
+            },
+            {
+              "cpu": 5.222222221911799,
+              "memory_available": 65.83330931880936,
+              "memory_available_bytes": 2526470144.0,
+              "disk_available": 14.263735151441255,
+              "actor_wait": null,
+              "server_humans_in_room": 0.0
+            }
+          ],
+          "normal_cycles": 0,
+          "cleanup_passed": true
+        },
+        "FPS60_candidate": {
+          "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-generator-resources-r1\\FPS60\\run\\20261017-044504-cf5460\\report.json",
+          "report_sha256": "44052018b5151f7125ba9055ee70249304585d1e5aff8f3d647d40ac3ff9d016",
+          "actual_clients": 1,
+          "coordinator_return": 1,
+          "stop_reason": "duration_limit",
+          "original_capacity_outcome": {
+            "classification": "incomplete_or_failed",
+            "passed": false,
+            "exit_code": 1
+          },
+          "actual_launch_monotonic_ms": 1966008218.0,
+          "coordinator_observation_seconds": 24.109,
+          "observed_launches_per_second": 0.041478286117217635,
+          "configured_launch_interval_seconds": 0,
+          "actual_final_frame_clock": {
+            "clock": "local Time.get_ticks_msec",
+            "engine_max_fps": 60,
+            "mean_process_fps": 60.0670879163741,
+            "observed_ms": 25638,
+            "process_frames": 1540,
+            "scope": "SceneTree process frames, including headless; not rendered FPS or network packet rate"
+          },
+          "workload_profile_id": "workload:159aedc81f7f8fa34f80624175c7b7068441e634c8af8f63bba0bdd21cf59f41",
+          "family_label": "active-hold",
+          "per_PID_resources": [
+            {
+              "processes": [
+                {
+                  "pid": 130004,
+                  "role": "coordinator",
+                  "available": true,
+                  "rss_bytes": 43798528,
+                  "threads": 7,
+                  "cpu_percent_of_one_core": null,
+                  "cpu_missing_reason": "first_or_new_process_counter",
+                  "handles": 159,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 857117,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                },
+                {
+                  "pid": 51160,
+                  "role": "native",
+                  "client_id": "g001c0161b9fa",
+                  "run_id": "807ba12c6506406abba47d5029f2e46f",
+                  "process_epoch": "6cfa5001d74747f79dc64b3e770e6f46",
+                  "available": true,
+                  "rss_bytes": 207826944,
+                  "threads": 27,
+                  "cpu_percent_of_one_core": null,
+                  "cpu_missing_reason": "first_or_new_process_counter",
+                  "handles": 311,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 86039,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                }
+              ],
+              "excluded_exited_native_processes": [],
+              "native_alive_processes": 1,
+              "cpu_percent_of_one_core": null,
+              "cpu_missing_reason": "First/new/unavailable process counters; partial totals are not a full generator CPU measurement",
+              "rss_bytes": 251625472,
+              "host_memory_available_bytes": 8692289536,
+              "handles": 470,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+              "native_frame_observations": [
+                {
+                  "client_id": "g001c0161b9fa",
+                  "pid": 51160,
+                  "process_fps": 60.185668092208196,
+                  "process_frames": 577,
+                  "observed_ms": 9587,
+                  "engine_max_fps": 60,
+                  "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+                  "missing_reason": null
+                }
+              ]
+            },
+            {
+              "processes": [
+                {
+                  "pid": 130004,
+                  "role": "coordinator",
+                  "available": true,
+                  "rss_bytes": 43966464,
+                  "threads": 7,
+                  "cpu_percent_of_one_core": 0.64,
+                  "cpu_missing_reason": null,
+                  "handles": 162,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 883018,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                },
+                {
+                  "pid": 51160,
+                  "role": "native",
+                  "client_id": "g001c0161b9fa",
+                  "run_id": "807ba12c6506406abba47d5029f2e46f",
+                  "process_epoch": "6cfa5001d74747f79dc64b3e770e6f46",
+                  "available": true,
+                  "rss_bytes": 207941632,
+                  "threads": 27,
+                  "cpu_percent_of_one_core": 4.33,
+                  "cpu_missing_reason": null,
+                  "handles": 311,
+                  "handles_missing_reason": null,
+                  "write_bytes_cumulative": 201683,
+                  "write_bytes_cumulative_missing_reason": null,
+                  "packet_send_rate": null,
+                  "packet_send_rate_missing_reason": "No per-process socket packet counter hook; command completion rates are reported separately"
+                }
+              ],
+              "excluded_exited_native_processes": [],
+              "native_alive_processes": 1,
+              "cpu_percent_of_one_core": 4.97,
+              "cpu_missing_reason": null,
+              "rss_bytes": 251908096,
+              "host_memory_available_bytes": 8684326912,
+              "handles": 473,
+              "packet_send_rate": null,
+              "packet_send_rate_missing_reason": "No attributable per-process socket packet counter; I/O writes are not network packets",
+              "native_frame_observations": [
+                {
+                  "client_id": "g001c0161b9fa",
+                  "pid": 51160,
+                  "process_fps": 60.09394465434494,
+                  "process_frames": 1177,
+                  "observed_ms": 19586,
+                  "engine_max_fps": 60,
+                  "scope": "Owned SceneTree process frames/local elapsed clock; not rendered FPS or network packets",
+                  "missing_reason": null
+                }
+              ]
+            }
+          ],
+          "cloud_resources_separate": [
+            {
+              "cpu": 5.100000000351845,
+              "memory_available": 66.02734667260093,
+              "memory_available_bytes": 2533916672.0,
+              "disk_available": 14.263644546336357,
+              "actor_wait": null,
+              "server_humans_in_room": 0.0
+            },
+            {
+              "cpu": 5.4222222220980605,
+              "memory_available": 65.90610000928561,
+              "memory_available_bytes": 2529263616.0,
+              "disk_available": 14.263540997645045,
+              "actor_wait": null,
+              "server_humans_in_room": 0.0
+            }
+          ],
+          "normal_cycles": 0,
+          "cleanup_passed": true
+        },
+        "complete_definition_differences": {
+          "client_max_fps": [
+            null,
+            60
+          ],
+          "fps_scope": [
+            "unchanged engine/project default",
+            "explicit candidate override"
+          ]
+        },
+        "capacity_comparison": {
+          "state": "DiagnosticOnly",
+          "mismatched_inputs": [
+            "request_mix_hash",
+            "gameplay_profile",
+            "effective_limit_hash"
+          ],
+          "performance_acceptance": false
+        }
+      },
+      "scope": "Actual unchangedcapbaseline and explicit60cap client with real localprocessframecounts/elapsedclock,actual CLIargument/perPIDresources and different qualified completeworkloadIDs. Headlessprocessframes are notrenderFPS/packetcounts and changedworkload is not capacitybenefit."
+    }
+  ],
+  "actual_new_native_clients": 4,
+  "normal_cycles": 0,
+  "implementation_gaps_fixed": [
+    "Previous8clientrecords hadaggregateCPU/RSSonly and noactualframeclock; preserved asunavailableperPID/FPS,not backfilled.",
+    "Current collector emits actualPID CPU/RSS/threads/handles/I/O withreasons,exitedPID exclusions,first/newCPUunknownratherthanpartialfalsewholeCPU.",
+    "Current native testdriver emits Engineprocessframes/localelapsedclock and maxcap; renderer/networkpacket interpretation explicitlyexcluded.",
+    "Current CLI emits qualifiedcompletecontract/sourcehashworkloadID; samefamilyFPSchange generatesdifferentID,full definitionfrozenbeforemetadataisadded."
+  ],
+  "all_original_capacity_runs_passed": false,
+  "original15percent_disk_passed": false,
+  "goal5percent_running_floor_passed": true,
+  "cloud_and_generator_resources_separate": true,
+  "physical_memory_exhaustion": false,
+  "physical_packet_measurement": "Unavailable with explicitreason,not I/Owrites or command completions",
+  "original_default_project_framerate_unchanged": true,
+  "actual_SQL_cleanup": {
+    "owned_users": 4,
+    "owned_active_humans": 0,
+    "pending_holds": 0,
+    "locked_equipment": 0,
+    "member_rows": 0,
+    "settlement_rows": 0,
+    "preparation_rows": 4,
+    "ticket_rows": 4
+  },
+  "server_container_image_environment_start_unchanged": true,
+  "regression_tests": 128,
+  "new_regression_first_loader_error_retained": "Missing testmodule sys.path before8newtests loaded; corrected testimport only,productiondidnotfail.",
+  "source_upload_bytes": 0,
+  "all_owned_processes_terminal": true,
+  "no_source_upload_or_server_rate_configuration_change": true,
+  "scope_limits": [
+    "Four short smallclients do not prove100players/600s,naturalcycles,renderer/human or performancebenefit. Old15diskcauses and nonpassingcapacityoutcomes preserved.",
+    "Lowmemory is controlledobserved-reading faultafter realmeasurement,not claimphysicalRAMreallybelow2GiB. PerPID packets notavailable,explicitnullreason.",
+    "FPS observedfrom SceneTree processframes/local monotonic elapsed,notrenderedframes; actualparameter60alone wasnotmeasurement."
+  ],
+  "pointer_sha256": "b6a86b2f2cb9fadab82ed473d6b0be6c2b3f67ade8308bb3bda8ab7b3b86b358",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-load071-bounded-probes-main-reviewed-20261017/register.json",
+    "sha256": "1990fd2fafa92c162ddb13dcd035e5683e5254029959d376908275e970b65961"
+  },
+  "source_hashes": {
+    "tools/gameplay_load_test.py": "02869e93f7d42c8028a250ed0f8b5999c65a5289a93b1893480c9fd5024675e8",
+    "tools/gameplay_load_validation.py": "a0b71bfd420a8bb4c1c34a4f313741e5aa5374b4644d75493987d8ac4d59bf23",
+    "client/tests/gameplay_load_client.gd": "6aeafa23c3750f02316db61f5774867b9768c4c2700c9db180ddb15ca3887fb0",
+    "tools/tests/test_generator_observation.py": "7bc2595b2d31f3e5fae1692da83e137af2881ca58bce46fe1bc2f70c4ffda4d0"
+  },
+  "raw_hashes": {
+    "SQL": "496103c20f271abbe29e9296ffda5edbcd93cd8ad5c8c763ca69196ea3c6780e",
+    "before": "ac0c8412bc27e486d62dae3857382962f4f7d35923ecd749db73fcae7729ae4e",
+    "after": "1fe37d6bf8a0fd3127c70d79f9d9f3b6eb2c4500341a4f70a4848e638e2fa93f",
+    "regression": "629656a6e175ab8ea3cf1d635700bd8a2a9723331dea93197c519b58baeb60b3"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "kind": "client_contract_handoff_not_acceptance",
+  "generated_at": "2026-09-30T15:40:55.255713+00:00",
+  "base_sha": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "current_head": "9275ec295b76f10fdefb57dc83a6c59c3dbcb878",
+  "working_tree": "dirty: owned changes awaiting MAIN commit; unrelated server build outputs excluded",
+  "task_ids": [
+    "PR13-B10.1",
+    "PR13-B10.3",
+    "PR13-B10.4"
+  ],
+  "execution_state": "Partial",
+  "accepted_by": null,
+  "changed_files": [
+    "client/state/game_store.gd",
+    "client/tests/test_confirmation_snapshot.gd",
+    "client/tests/test_target_confirmation_contract.gd"
+  ],
+  "source_files": {
+    "client/state/game_store.gd": {
+      "sha256": "bebe66e80af57acf76b63663d85f868a285326f614fb234403218e6064568461",
+      "bytes": 84238
+    },
+    "client/tests/test_confirmation_snapshot.gd": {
+      "sha256": "6d75f5d017a91e9515eebdb25167f85f9b1272c0a537194074d69be245389313",
+      "bytes": 3946
+    },
+    "client/tests/test_target_confirmation_contract.gd": {
+      "sha256": "1115ed15372ab27cbc8f4efda89933a4b5a924dcefffc21e3bb0950dd07a0a16",
+      "bytes": 8238
+    }
+  },
+  "rule_and_config_changes": "None. Numerical calculator region is byte-identical to base. Candidate defaults and formal thresholds were not changed.",
+  "calculator_unchanged": true,
+  "calculator_sha256": "068bd893e1a7425f2ad300b74b99097f614c149773ae4722834ac0866404ba64",
+  "automatic_target_correction": {
+    "conclusion": "GDD_BASE_v0.69.md:565 explicitly authorizes left-to-right living-target fallback after death. Initial no-rule hypothesis was withdrawn; automatic target behavior and historical test_battle_targets were preserved.",
+    "evidence": [
+      "before-target-contract-final-fixture.log",
+      "extended-client.log"
+    ],
+    "acceptance": "NoChange candidate for MAIN review, not NoChangeWithEvidence adjudication"
+  },
+  "repro_before": {
+    "normal_local_feedback_passed": true,
+    "passed": 7,
+    "failed": 25,
+    "total": 32,
+    "baseline_source_sha256": "5601dd629769eed78b7dfbc20615e8d62cb60c63fe181a5ecf12ec19559efc21",
+    "method": "git show exact 73d4 source into standalone baseline loader; identical final fixture with only source-load path changed",
+    "superseded": "before-target-contract.log is early 21-case development output; final fixture fixes pending-play isolation and is the baseline used for counts."
+  },
+  "results": {
+    "precise_preview_contract": {
+      "passed": 32,
+      "total": 32,
+      "skipped": 0
+    },
+    "standard_client_suite": {
+      "groups": 17,
+      "passed": 17,
+      "includes_new_contract_via": "test_confirmation_snapshot.gd -> test_target_confirmation_contract.gd",
+      "checks_in_confirmation_group": 41
+    },
+    "other_final_entries": {
+      "gameplay_load_parse": "Passed",
+      "lobby_race": "Passed",
+      "numerical_integration": "Passed",
+      "localization": "Passed"
+    },
+    "extended_client": {
+      "passed": 9,
+      "failed": 1,
+      "total": 10,
+      "legacy_battle_target_checks": 31,
+      "failed_suite": "test_tips_overlay",
+      "failure": "Single-line panel measured 49px, allowed 48px; source unchanged by this task; reported to MAIN for separate UI work."
+    },
+    "numerical_preview_pairs": {
+      "total": 1800,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "Actual Domain PreviewCards versus PlayCards, exported projection compared with Godot local estimator; synthetic PVE boundaries, three classes, default and candidate policies. Does not prove live-network play experience."
+    },
+    "render_fixtures": {
+      "errors": [],
+      "kind": "real_renderer_synthetic_ui_fixtures",
+      "ok": true,
+      "screenshots": 28
+    }
+  },
+  "risks": [
+    "Readonly preview adds bounded read traffic after selection/snapshots; original-load request mix and capacity require current integrated-SHA revalidation.",
+    "Strict room revision matching can keep the UI on its honest local estimate when server ticks make a readonly preview stale; rejection/timeout do not retry in a per-frame loop.",
+    "Current authority protocol has effective damage/heal/shield but no heal_overflow/shield_overflow fields; full B10.2 overflow disclosure remains outside this change."
+  ],
+  "remaining_blockers": [
+    {
+      "task_id": "PR13-B10.4",
+      "stage": "S4/S5",
+      "reason": "No live gateway/server readonly-preview roundtrip, actual 30/60/144fps + latency segmented measurements, three continuous rendered cycles or independent human usability cohort.",
+      "missing_input_or_environment": "Frozen integrated SHA/live route and bounded human/runtime plan",
+      "affected_gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "unblock_condition": "MAIN freezes and runs appropriate live/render profiles with raw evidence",
+      "owner": "MAIN",
+      "next_action": "Keep Partial and use exact offline cases as regression evidence."
+    },
+    {
+      "task_id": "PR13-B11.4",
+      "stage": "S4/S5",
+      "reason": "Preparation-to-Boss route, recovery during actual cycle, real player/bot pairing and three-round loop not exercised by synthetic UI fixtures.",
+      "missing_input_or_environment": "Authorized integrated runtime and route fixture",
+      "affected_gates": [
+        "G2",
+        "G3"
+      ],
+      "unblock_condition": "Run frozen real-route and multi-cycle fixtures",
+      "owner": "MAIN",
+      "next_action": "Do not mark Accepted from 28 screenshots."
+    }
+  ],
+  "rollback": "Revert the three owned client files in the eventual MAIN commit; no server assets, room rules, configuration or deployment changed.",
+  "artifacts": [
+    "client-changes.patch",
+    "cases.jsonl",
+    "commands.json",
+    "final-run-play-retry.log",
+    "before-target-contract-final-fixture.log",
+    "after-target-contract.log",
+    "extended-client.log",
+    "tips-diagnostic.log",
+    "preview-vectors/manifest.json",
+    "preview-vectors/results.json",
+    "render-command.json",
+    "render-fixtures/report.json"
+  ]
+}

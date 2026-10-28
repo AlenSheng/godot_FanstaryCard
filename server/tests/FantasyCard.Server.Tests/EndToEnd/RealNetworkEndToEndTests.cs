@@ -67,23 +67,29 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.Equal(3, bootstrap.Decks.Count);
         Assert.NotEmpty(bootstrap.Cards);
 
-        await using (var gold = database.DataSource.CreateCommand(
-            "UPDATE player_wallets SET gold=1000 WHERE player_id=$1"))
-        {
-            gold.Parameters.AddWithValue(signIn.Player.UserId);
-            Assert.Equal(1, await gold.ExecuteNonQueryAsync(timeout.Token));
-        }
         using var shopRequest = new HttpRequestMessage(HttpMethod.Get, "/api/v1/shop/");
         shopRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", signIn.AccessToken);
         using var shopResponse = await client.SendAsync(shopRequest, timeout.Token);
         shopResponse.EnsureSuccessStatusCode();
         var shop = Assert.IsType<ShopResponse>(
             await shopResponse.Content.ReadFromJsonAsync<ShopResponse>(WebJson, timeout.Token));
-        var dailyCard = Assert.Single(shop.Products, product => product.ProductId == "daily_card_1");
+        var dailyCards = shop.Products.Where(product => product.ProductId.StartsWith("daily_card_", StringComparison.Ordinal)).ToArray();
+        Assert.NotEmpty(dailyCards);
+        var dailyCard = dailyCards.FirstOrDefault(product => !product.AlreadyOwned) ?? dailyCards[0];
+        // The daily rotation can select a card priced above 1000. Freeze this
+        // disposable fixture's starting budget from the actual offer, preserving prices.
+        var initialGold = checked(dailyCard.PriceGold + 1000);
+        await using (var gold = database.DataSource.CreateCommand(
+            "UPDATE player_wallets SET gold=$1 WHERE player_id=$2"))
+        {
+            gold.Parameters.AddWithValue(initialGold);
+            gold.Parameters.AddWithValue(signIn.Player.UserId);
+            Assert.Equal(1, await gold.ExecuteNonQueryAsync(timeout.Token));
+        }
         using var dailyPayload = JsonDocument.Parse(dailyCard.Payload);
         var dailyCardId = dailyPayload.RootElement.GetProperty("cardId").GetString()!;
         var copiesBefore = await database.ScalarAsync<int>(
-            "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2",
+            "SELECT COALESCE((SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2),0)",
             signIn.Player.UserId,
             dailyCardId);
 
@@ -92,15 +98,25 @@ public sealed partial class RealNetworkEndToEndTests
         purchaseRequest.Headers.Add("Idempotency-Key", "network-daily-card");
         purchaseRequest.Content = JsonContent.Create(new PurchaseShopRequest(dailyCard.ProductId), options: WebJson);
         using var purchaseResponse = await client.SendAsync(purchaseRequest, timeout.Token);
-        purchaseResponse.EnsureSuccessStatusCode();
-        var purchase = Assert.IsType<ShopPurchaseResponse>(
-            await purchaseResponse.Content.ReadFromJsonAsync<ShopPurchaseResponse>(WebJson, timeout.Token));
-        Assert.Equal(dailyCard.ProductId, purchase.ProductId);
-        Assert.Equal(1000 - dailyCard.PriceGold, purchase.GoldAfter);
-        Assert.Equal(copiesBefore + 1, await database.ScalarAsync<int>(
-            "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2",
-            signIn.Player.UserId,
-            dailyCardId));
+        if (dailyCard.AlreadyOwned)
+        {
+            Assert.Equal(HttpStatusCode.Conflict, purchaseResponse.StatusCode);
+            Assert.Equal(initialGold, await database.ScalarAsync<long>(
+                "SELECT gold FROM player_wallets WHERE player_id=$1", signIn.Player.UserId));
+            Assert.Equal(copiesBefore, await database.ScalarAsync<int>(
+                "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", signIn.Player.UserId, dailyCardId));
+        }
+        else
+        {
+            Assert.True(purchaseResponse.IsSuccessStatusCode,
+                $"Purchase returned {(int)purchaseResponse.StatusCode}: {await purchaseResponse.Content.ReadAsStringAsync(timeout.Token)}");
+            var purchase = Assert.IsType<ShopPurchaseResponse>(
+                await purchaseResponse.Content.ReadFromJsonAsync<ShopPurchaseResponse>(WebJson, timeout.Token));
+            Assert.Equal(dailyCard.ProductId, purchase.ProductId);
+            Assert.Equal(initialGold - dailyCard.PriceGold, purchase.GoldAfter);
+            Assert.Equal(1, await database.ScalarAsync<int>(
+                "SELECT copy_count FROM player_cards WHERE player_id=$1 AND card_id=$2", signIn.Player.UserId, dailyCardId));
+        }
 
         using var socket = new ClientWebSocket();
         var socketUri = new Uri(
@@ -119,7 +135,23 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.IsType<PongEventPayload>(pong.Payload);
         Assert.True(pong.Sequence > connected.Sequence);
 
-        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "test complete", timeout.Token);
+        // The old peer deliberately never reads/acknowledges its close frame.
+        // A replacement must still receive its welcome and answer commands.
+        using var replacement = new ClientWebSocket();
+        await replacement.ConnectAsync(socketUri, timeout.Token);
+        var replacementWelcome = RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(replacement, timeout.Token));
+        Assert.Equal("session.connected", replacementWelcome.Type);
+        socket.Abort();
+        replacement.Abort();
+        for (var attempt = 0; attempt < 3; attempt++)
+        {
+            using var reconnect = new ClientWebSocket();
+            await reconnect.ConnectAsync(socketUri, timeout.Token);
+            Assert.Equal("session.connected", RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(reconnect, timeout.Token)).Type);
+            await reconnect.SendAsync(ping, WebSocketMessageType.Binary, true, timeout.Token);
+            Assert.Equal("pong", RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(reconnect, timeout.Token)).Type);
+            reconnect.Abort();
+        }
     }
 
     private static int ReserveLoopbackPort()
@@ -153,6 +185,9 @@ public sealed partial class RealNetworkEndToEndTests
         startInfo.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";
         startInfo.Environment["ConnectionStrings__Postgres"] = connectionString;
         startInfo.Environment["Identity__EnableLocalAuth"] = "true";
+        // This suite exercises the explicitly supported legacy client rollout path.
+        startInfo.Environment["ProtobufHttp__AllowLegacyJson"] = "true";
+        startInfo.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "true";
         startInfo.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         return NetworkServerProcess.Start(startInfo);
     }
@@ -162,8 +197,11 @@ public sealed partial class RealNetworkEndToEndTests
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
         while (directory is not null)
         {
-            var candidate = Path.Combine(directory.FullName, "src", "FantasyCard.Server");
-            if (File.Exists(Path.Combine(candidate, "FantasyCard.Server.csproj"))) return candidate;
+            foreach (var relative in new[] { "src", Path.Combine("server", "src") })
+            {
+                var candidate = Path.Combine(directory.FullName, relative, "FantasyCard.Server");
+                if (File.Exists(Path.Combine(candidate, "FantasyCard.Server.csproj"))) return candidate;
+            }
             directory = directory.Parent;
         }
 
@@ -191,10 +229,14 @@ public sealed partial class RealNetworkEndToEndTests
         private readonly Process _process;
         private readonly StringBuilder _output = new();
         private readonly object _outputLock = new();
+        private readonly string _logPath;
 
         private NetworkServerProcess(Process process)
         {
             _process = process;
+            var directory = Path.GetFullPath(Path.Combine(FindServerProjectDirectory(), "..", "..", ".artifacts", "protocol-remediation", "process-logs"));
+            Directory.CreateDirectory(directory);
+            _logPath = Path.Combine(directory, $"{DateTime.UtcNow:yyyyMMdd-HHmmss-fffffff}-{process.Id}-{Guid.NewGuid():N}.log");
             _process.OutputDataReceived += CaptureOutput;
             _process.ErrorDataReceived += CaptureOutput;
             _process.BeginOutputReadLine();
@@ -250,7 +292,16 @@ public sealed partial class RealNetworkEndToEndTests
         private void CaptureOutput(object sender, DataReceivedEventArgs eventArgs)
         {
             if (eventArgs.Data is null) return;
-            lock (_outputLock) _output.AppendLine(eventArgs.Data);
+            lock (_outputLock)
+            {
+                _output.AppendLine(eventArgs.Data);
+                // Preserve failed-request evidence without persisting URL credentials or bearer headers.
+                var line = System.Text.RegularExpressions.Regex.Replace(eventArgs.Data,
+                    @"(?i)((?:access_token|ticket)=)[^&\s""\\]+", "$1[REDACTED]");
+                line = System.Text.RegularExpressions.Regex.Replace(line,
+                    @"(?i)(Bearer\s+)[^\s""\\]+", "$1[REDACTED]");
+                File.AppendAllText(_logPath, line + Environment.NewLine);
+            }
         }
 
         private string GetOutput()

@@ -1,0 +1,48 @@
+[
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 -m unittest discover -s tools/tests -p test_pr13_simulation_contracts.py -v",
+    "exit_code": 0,
+    "log": "tests-review.log",
+    "tests": 25,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 -m unittest discover -s tools/tests -v",
+    "exit_code": 0,
+    "log": "unittest-review.log",
+    "tests": 113,
+    "failed": 0,
+    "skipped": 0
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 /workspace/pr13-takeover/simulation-contracts/review_counterexamples.py",
+    "exit_code": 0,
+    "log": "review-counterexamples.json"
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 /workspace/pr13-takeover/simulation-contracts/review_historical_metadata.py",
+    "exit_code": 0,
+    "log": "history-metadata-review.json"
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 /workspace/pr13-takeover/simulation-contracts/generate_fixture_evidence.py",
+    "exit_code": 0,
+    "log": "fixture-generation-review.log"
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 tools/pr13_simulation_report.py --help",
+    "exit_code": 0,
+    "log": "report-help-review.log"
+  },
+  {
+    "command": "source /workspace/relicround-env/activate.sh; python3 tools/pr13_factor_matrix.py --help",
+    "exit_code": 0,
+    "log": "factor-help-review.log"
+  },
+  {
+    "command": "git diff --check -- tools/pr13_factor_matrix.py tools/pr13_simulation_report.py tools/tests/test_pr13_simulation_contracts.py",
+    "exit_code": 0,
+    "log": "diff-check-review.log"
+  }
+]

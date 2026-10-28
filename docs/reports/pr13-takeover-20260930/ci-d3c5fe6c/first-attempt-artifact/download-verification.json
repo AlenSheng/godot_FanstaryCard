@@ -1,0 +1,60 @@
+{
+  "artifact_id": 11120750141,
+  "bytes": 577654,
+  "sha256": "3528c1baa15879be6ad3c4685e30636a3d3efb888dd28d6f7ff68fd44c717b8c",
+  "run_id": 36763354585,
+  "head_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+  "merge_sha": "a191d9ee330010c1a78b9b82a1d17cdd4bbbffec",
+  "archive_crc_ok": true,
+  "selected_files": [
+    {
+      "archive_path": "domain.trx",
+      "local_name": "domain.trx",
+      "bytes": 491398,
+      "sha256": "369ee4599fdd026c22e5e18fdb66c49f6a74e4f4076362627eeddc29af85f412"
+    },
+    {
+      "archive_path": "server.log",
+      "local_name": "server.log",
+      "bytes": 2769,
+      "sha256": "6122b56ded7f78278bfa088ddce1444924f0ab70fb93240d0ede1eb2fd1178ac"
+    },
+    {
+      "archive_path": "server.trx",
+      "local_name": "server.trx",
+      "bytes": 467868,
+      "sha256": "7bf6124f8dc7ad7138a27e1d6bb7dffc5151aa962f6d9492a676d8901b8841b8"
+    }
+  ],
+  "entry_count": 77,
+  "failed_cases": [
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "outcome": "Failed",
+      "message": "Assert.Equal() Failure: Values differ\nExpected: Dead\nActual:   ActionBar",
+      "stack": "   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1174\n   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1175\n   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime() in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1175\n--- End of stack trace from previous location ---"
+    }
+  ],
+  "new_host_cases": [
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "outcome": "Passed"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "outcome": "Passed"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "outcome": "Passed"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "outcome": "Passed"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+      "outcome": "Passed"
+    }
+  ]
+}

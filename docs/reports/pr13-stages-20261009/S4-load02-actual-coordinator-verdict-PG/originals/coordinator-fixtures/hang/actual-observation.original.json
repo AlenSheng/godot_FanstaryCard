@@ -1,0 +1,21 @@
+{
+  "mode": "hang",
+  "actual_child_exit_code": 3,
+  "actual_report": {
+    "owned_pid": 217,
+    "foreign_pid": 218,
+    "foreign_before": null,
+    "forced_termination_pids": [
+      217
+    ],
+    "owned_exit": -9,
+    "foreign_after_stop_all": null,
+    "foreign_untouched_by_stop_all": true,
+    "acceptance_passed": false,
+    "scope": "Actual bounded stop_all and two real processes; code 3 is this fault harness classification",
+    "foreign_reaped_only_by_separate_fixture_finalizer": true
+  },
+  "return_code_source": "Fault harness classification after actual stop_all forced cleanup",
+  "injection_scope": "Current coordinator and existing frozen fake observation/clock/child fixtures, with real owned child cleanup for hang and real CLI preparation. Integrated while real PostgreSQL room is held; no live load or capacity claim",
+  "all_raw_fixture_files_preserved": true
+}

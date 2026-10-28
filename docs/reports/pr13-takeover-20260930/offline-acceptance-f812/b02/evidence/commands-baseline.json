@@ -1,0 +1,230 @@
+[
+  {
+    "name": "tool-dotnet",
+    "argv": [
+      "dotnet",
+      "--info"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:45.663054+00:00",
+    "elapsed_seconds": 0.21638363400052185,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/tool-dotnet.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "tool-postgres",
+    "argv": [
+      "postgres",
+      "--version"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:45.880315+00:00",
+    "elapsed_seconds": 0.003979131997766672,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/tool-postgres.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "tool-godot",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--version"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:45.885021+00:00",
+    "elapsed_seconds": 0.03420883300350397,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/tool-godot.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "pg-init",
+    "argv": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/b02-acceptance-f812/owned-pg",
+      "-A",
+      "trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:45.920198+00:00",
+    "elapsed_seconds": 1.016973034998955,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/pg-init.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "pg-start",
+    "argv": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/b02-acceptance-f812/owned-pg",
+      "-l",
+      "/workspace/pr13-takeover/b02-acceptance-f812/evidence/postgres.log",
+      "-o",
+      "-k /workspace/pr13-takeover/b02-acceptance-f812/pgsocket -p 55482 -c listen_addresses='' -c max_connections=160",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:46.938752+00:00",
+    "elapsed_seconds": 0.1150507269994705,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/pg-start.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "pg-createdb",
+    "argv": [
+      "createdb",
+      "-h",
+      "/workspace/pr13-takeover/b02-acceptance-f812/pgsocket",
+      "-p",
+      "55482",
+      "b02_acceptance"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:09:47.055016+00:00",
+    "elapsed_seconds": 0.16483254699778627,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/pg-createdb.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "C-BUILD",
+    "argv": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source/server",
+    "started_utc": "2026-09-30T22:09:47.221432+00:00",
+    "elapsed_seconds": 23.89965573199879,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-BUILD.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "C-DOMAIN",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+      "-c",
+      "Release",
+      "--logger",
+      "trx;LogFileName=domain.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/b02-acceptance-f812/evidence/trx"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source/server",
+    "started_utc": "2026-09-30T22:10:11.146645+00:00",
+    "elapsed_seconds": 5.4755773520009825,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-DOMAIN.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "C-SERVER",
+    "argv": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--logger",
+      "trx;LogFileName=server.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/b02-acceptance-f812/evidence/trx"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source/server",
+    "started_utc": "2026-09-30T22:10:16.641912+00:00",
+    "elapsed_seconds": 578.0730572579996,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-SERVER.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "C-PROTO",
+    "argv": [
+      "python3",
+      "tools/generate_network_protocol.py",
+      "--check"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:19:54.723719+00:00",
+    "elapsed_seconds": 0.06755664899901603,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-PROTO.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "godot-import",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/b02-acceptance-f812/source/client",
+      "--editor",
+      "--import"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:19:54.792877+00:00",
+    "elapsed_seconds": 52.04221514699748,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/godot-import.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "C-GODOT-NUM",
+    "argv": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/b02-acceptance-f812/source/client",
+      "res://tests/numerical_integration.tscn"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:20:46.854626+00:00",
+    "elapsed_seconds": 0.6714834099984728,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/C-GODOT-NUM.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  },
+  {
+    "name": "pg-stop",
+    "argv": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/b02-acceptance-f812/owned-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812/source",
+    "started_utc": "2026-09-30T22:20:47.527111+00:00",
+    "elapsed_seconds": 0.5179876479996892,
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "raw": "evidence/pg-stop.log",
+    "input_manifest_sha256": "603eda9e0963aab1065ac9513d835bf5c942e557f5e8d722e204ab04694a9364"
+  }
+]

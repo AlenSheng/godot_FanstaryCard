@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "case_id": "PR13-A09.1-T01",
+  "actual": {
+    "actual_refs": {
+      "checkout_sha": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+      "runtime_reference_sha": "3de572176352fd32b3fe4013311c4754ad14a3e3",
+      "different_sources": true,
+      "runtime_execution_verified": false,
+      "qualification": "Git references identify code only. A checkout/marker advance does not prove a rebuilt or running image/assembly."
+    },
+    "private_actual_A": "3de572176352fd32b3fe4013311c4754ad14a3e3",
+    "private_actual_B": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+    "original_running_receipt_SHA": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+    "root_HEAD_not_changed": true,
+    "new_head_not_built_or_attributed_to_running_runtime": true
+  },
+  "actual_host_liveness": {
+    "PID": 132,
+    "start_ticks": "5367786",
+    "expected_argument": "/runtime/FantasyCard.Server.dll"
+  },
+  "actual_Godot_liveness": {
+    "PID": 245,
+    "start_ticks": "5369012",
+    "expected_argument": "res://tests/A091_live_source_attribution.gd"
+  },
+  "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+  "actual_SQL_before": "SQL-T01-before.original.json",
+  "actual_SQL_after": "SQL-T01-after.original.json",
+  "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+  "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+  "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+  "source_boundary_not_runtime_acceptance": true
+}

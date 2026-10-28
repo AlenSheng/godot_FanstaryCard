@@ -1,0 +1,63 @@
+{
+  "source_release": "6f00f322952a104bb8d165687395a609def0781c",
+  "current_client_inputs": 2143,
+  "Server_DLL_sha256": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+  "runtime_complete_files": 21,
+  "new_full_program_worlds": 3,
+  "samples": [
+    {
+      "hero": "Mage",
+      "match_id": "01a15397-8be2-7182-8ba6-462266577a5a",
+      "ready_deadline": 1792403818101,
+      "shown_remaining_seconds": 14,
+      "after_PNG_clock_remaining_seconds_lower_bound": 14,
+      "authority_receive_remaining_seconds_upper_bound": 14,
+      "PNG_timestamp_is_after_save_not_UI_label_sample_time": true,
+      "actual_pending_play_id": "02d3099b037ebd5217d9cefbe2c37b51",
+      "original_frames_released": 2,
+      "local_full_snapshot_revision": 1,
+      "wire_expected_revision": 11,
+      "latest_confirmed_authority_revision": 11,
+      "same_class_sample_one_cycle_not_three": true
+    },
+    {
+      "hero": "Priest",
+      "match_id": "01a15398-37cd-7a8c-b9a8-39f3797fe658",
+      "ready_deadline": 1792403862112,
+      "shown_remaining_seconds": 14,
+      "after_PNG_clock_remaining_seconds_lower_bound": 13,
+      "authority_receive_remaining_seconds_upper_bound": 14,
+      "PNG_timestamp_is_after_save_not_UI_label_sample_time": true,
+      "actual_pending_play_id": "f140fd011bd80729743336abf3f1fae1",
+      "original_frames_released": 2,
+      "local_full_snapshot_revision": 1,
+      "wire_expected_revision": 10,
+      "latest_confirmed_authority_revision": 10,
+      "same_class_sample_one_cycle_not_three": true
+    },
+    {
+      "hero": "Guardian",
+      "match_id": "01a15398-f726-7290-a739-a38dfc61a774",
+      "ready_deadline": 1792403911099,
+      "shown_remaining_seconds": 14,
+      "after_PNG_clock_remaining_seconds_lower_bound": 12,
+      "authority_receive_remaining_seconds_upper_bound": 14,
+      "PNG_timestamp_is_after_save_not_UI_label_sample_time": true,
+      "actual_pending_play_id": "e4c1d103b8ba7c7474bf816b597d51c2",
+      "original_frames_released": 4,
+      "local_full_snapshot_revision": 1,
+      "wire_expected_revision": 9,
+      "latest_confirmed_authority_revision": 9,
+      "same_class_sample_one_cycle_not_three": true
+    }
+  ],
+  "R1_fixture_missing_actual_UI_child": "Compile-only parse missed absent UI child;R1 failed0world1account. R2 locally instantiated real production UI child and rejected exact missingUInegative before cloud copy.",
+  "revision_oracle_correction": "ClientEnvelope expected_revision is most recent authoritative Gateway room revision, not Store last complete player snapshot. Observed1 versus11/10/9 is documented and original map.player_count headers prove these values. Initial overstrict comparison failed and is retained.",
+  "clock_oracle_correction": "captured_unix_ms is after PNG save; label was collected before save. READY label checked within actual authority-receive to post-PNG bounds and against production deadline expression,not forced equal to post-save instant. Initial failed check retained.",
+  "HTTP_success_error_contract": "Gateway success depends on transport2xx+decode.ok;default error string may be nonempty on success. Error emission occurs only whennotok;never classify defaultmessage aloneasoutage.",
+  "protocol_source": "protocol/realtime/v1/realtime.proto; END_TO_END_FLOW_AND_PROTOCOL section3.3",
+  "no_business_or_timeout_rule_relaxed": true,
+  "GDD_legal80over70_preserved": true,
+  "human_experience_excluded": true,
+  "X11_software_render_not_Windows_or_hardwareFPS": true
+}

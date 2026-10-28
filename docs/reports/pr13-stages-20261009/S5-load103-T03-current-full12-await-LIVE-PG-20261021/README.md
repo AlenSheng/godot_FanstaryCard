@@ -1,0 +1,21 @@
+# LOAD-10.3-T03：当前12类等待点功能层闭合，容量仍未通过
+
+本次关闭T03的LIVE和POSTGRES两项缺口，LOAD-10.3整项仍Partial，仅剩T01/T02/T03三个CAPACITY profile。88 Accepted／36 Partial／8 Ready、44未整体验收不变，case/profile缺口164→162，其他131任务及所有全局gate保持。用户限定仅当前云主机，资源不足项保留未通过；不寻找新主机、不扩容，不用功能测试替代容量SLO。
+
+完整矩阵逐项列出登录、职业保存、准备、入队、票据查询、原排队等待、任何READY前Matched进入、原400ms活动Pve等待、Pending长收尾与恢复ID、ACK提交前、ACK提交后尚未交付、原局间等待。原主程序的STOP仍为130/operator_stopped/passed=false，Native按取消分支OS0；验证对象是分类、资源和完整尾事件，不把取消运行重写成普通成功周期。
+
+新增两项使用当前driver9b/Python9a/完整Program8eb/config49ce、两个未包裹原主程序、两真实账号和两个数据库对局。Matched实际GET200的158字节响应被暂停，外部STOP在客户端12ms内被读到；Native与真实wire都0 READY、无room，verifiedReady M为空。activeM已从真实预入局事件取得是合法状态，不误判成必须空。原同一响应1秒后原样交付，完整HTTP审计保留发起phase=matchmaking、观测drain。原收尾读14次权威Bootstrap，等待真实READY时限移除；PG同一成员Removed、准备Cancelled、无receipt/ACK/锁。历史票据Matched仍保留，不能误报为取消失败，也不能DELETE历史Matched记录。
+
+Pve原400ms等待开始后20ms发出STOP、按单调时钟29ms被原_process读到，实际player.phase=Pve、同一M、无结算。原收尾自行battle.abandon并真实drain ACK一次，PG同一成员Settled、恰一个receipt/唯一ACK、无锁；原完成周期0，normal/scenario/fallback等完成计数均0。Native读STOP早于协调器自身落戳54ms是不同观测点，原件保持差异。两项音频释放163/164ms、原Native OS0、errors0、cleanupPassed、无强杀/引擎泄漏；完整审计88/93条，分片字节、身份、连续序号和高水位核对。147项独立检查包括106包文件检查，不是147场对局。
+
+之前四个入房前阶段使用644源码，其与当前9b的差异明确限定：仅既有_graceful_cleanup变化及新增_drain_cleanup_room，其他运行/等待/取消函数与ACK、关socket、Bootstrap核验尾段相同；新helper在这些无READY/无room的实测路径立即返回。2147客户端其他运行文件一致，仅driver与离线上下文测试变化；40份runtime/protocol/Python/GDD包文件比较，仅Python外部STOP文件创建逻辑变化，其他函数AST及35秒等待/强杀尾段保持。当前class/queue与root0644 Pending分别实际验证新逻辑。未把旧整文件SHA称作当前相同。完整2148输入从已封存G父完整源2102份和本轮delta46份实际读取重SHA，精确重建，无需重跑旧四项。
+
+早先结果按原件分别保留：职业保存真实服务端200后客户端取消并在交付前关闭，不能声称Native消费迟到成功；排队原250ms等待3ms发STOP/17ms读到，同一票据/准备取消且无第二准备。Pending原main130/Native0保持Unknown、同M/0周期/0ACK，只有原主程序全部OS终止后才用新进程公开API验证legacy详情200、ready-onlynull、ACK409，再释放自有行锁、同receipt就绪并ACK200；手动恢复不回填原取消结果。局间等待保留真实已完成cycle1，原2秒等待46ms发STOP/58ms读取，无第二准备。
+
+READY-R1真实晚入局收尾缺陷、Pending-R1错误JSON解析Protobuf夹具导致条件未建立、Pending-R2覆盖root0644标记触发PermissionError并42ms强杀，整批Failed及原raw均保留。分别经当前9b真实READY积压/晚入局、正确二进制夹具、9a幂等标记逻辑复验解决；默认35秒及等待/强杀尾段未放宽，不借同局普通三位对照成功掩盖故障失败。当前READY/MOVE/ACK原在途补充也保留，包括合法超时后同request迟到完成及来源分类。
+
+本轮新增2物理对局/2账号，之前新当前10世界及所有更早历史保留，新当前小计12世界；原冻结计划在上传前已声明本轮上限2，预算收据是事后引用该冻结原件，不伪称本报告在执行前写成。源文件、归档成员和审计条数不算场次。两个目标0完成周期、Pve1drain ACK不算自然胜利。Mage70/Priest80与既有基础护盾均按完整GDD v0.70主文档及v0.69基础文档解释，不据合法数值改规则。
+
+73成员raw/PGdump、106包文件与生产器封存到G完整50成员包，2148输入链逐项重建；确认unit PID0/inactive、自有容器消失、owner、全部输入摘要及生产指纹/health200后，只清理精确临时云输入。云raw/G/局部源/共享缓存保留，无生产变更。本地没有新启动Godot窗口、对局、PG或负载。
+
+先前用户指定的正式资源推送已由release提交86ddee23单独完成，仅两处已Accepted UI及清单；其余草稿和本轮验收报告仍在本地。本轮没有新增提交、推送或部署。全项目尚未验收完成，接下来继续其他可执行功能项；本矩阵不重复跑，容量不足保持未通过。

@@ -1,0 +1,121 @@
+{
+  "toolchain": {
+    "dotnet": "10.0.400",
+    "postgres": "18.6"
+  },
+  "runtime_scope": "私有Unix socket PostgreSQL；未连接外部/测试服数据库",
+  "fresh_build": "先清理server所有bin/obj，再标准源码内部dotnet build/test；测试后恢复全部2377个tracked生成文件，生成物差异0。",
+  "final_commands": [
+    "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresLifecycleRecoveryTests --logger 'trx;LogFileName=matrix-final-verified.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+    "source /workspace/relicround-env/activate.sh; FANTASYCARD_TEST_POSTGRES='Host=/workspace/pr13-takeover/lifecycle/pg/socket;Port=55439;Database=pr13_lifecycle;Username=agent;Pooling=true;SSL Mode=Disable' dotnet test server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --no-build --logger 'trx;LogFileName=server-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+    "source /workspace/relicround-env/activate.sh; dotnet test server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --logger 'trx;LogFileName=domain-final.trx' --results-directory /workspace/pr13-takeover/lifecycle/logs",
+    "pg_ctl -D /workspace/pr13-takeover/lifecycle/pg/data -m fast stop",
+    "git diff --check -- server/src/FantasyCard.Server/Matchmaking server/src/FantasyCard.Server/Rooms"
+  ],
+  "runs": [
+    {
+      "evidence": "logs/baseline-final.trx",
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "total": 4,
+      "captured_dotnet_exit_code": null,
+      "note": "有效原head反例，4项服务端行为失败；早期shell尾随tail未保存dotnet退出码"
+    },
+    {
+      "evidence": "logs/baseline.trx",
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "total": 4,
+      "captured_dotnet_exit_code": null,
+      "note": "fixture调试，不用于服务端缺陷判定"
+    },
+    {
+      "evidence": "logs/before.trx",
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "total": 4,
+      "captured_dotnet_exit_code": null,
+      "note": "fixture调试，不用于服务端缺陷判定"
+    },
+    {
+      "evidence": "logs/domain-final.trx",
+      "passed": 317,
+      "failed": 0,
+      "skipped": 0,
+      "total": 317,
+      "captured_dotnet_exit_code": 0,
+      "note": "最终完整回归"
+    },
+    {
+      "evidence": "logs/fixed.trx",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "total": 4,
+      "captured_dotnet_exit_code": null,
+      "note": "阶段验证"
+    },
+    {
+      "evidence": "logs/matrix-final-verified.trx",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "total": 8,
+      "captured_dotnet_exit_code": 0,
+      "note": "阶段验证"
+    },
+    {
+      "evidence": "logs/matrix-final.trx",
+      "passed": 7,
+      "failed": 1,
+      "skipped": 0,
+      "total": 8,
+      "captured_dotnet_exit_code": 1,
+      "note": "fixture调试，不用于服务端缺陷判定"
+    },
+    {
+      "evidence": "logs/matrix.trx",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "total": 7,
+      "captured_dotnet_exit_code": null,
+      "note": "阶段验证"
+    },
+    {
+      "evidence": "logs/server-final.trx",
+      "passed": 262,
+      "failed": 0,
+      "skipped": 0,
+      "total": 262,
+      "captured_dotnet_exit_code": 0,
+      "note": "最终完整回归"
+    },
+    {
+      "evidence": "logs/server-full.trx",
+      "passed": 261,
+      "failed": 0,
+      "skipped": 0,
+      "total": 261,
+      "captured_dotnet_exit_code": 0,
+      "note": "阶段验证"
+    }
+  ],
+  "fixture_errors": [
+    {
+      "run": "before",
+      "detail": "结算fixture缺有效player，outbox FK令snapshot反例不能判定。"
+    },
+    {
+      "run": "baseline",
+      "detail": "player display name超过20字符；不用于结算/快照缺陷判定。"
+    },
+    {
+      "run": "matrix-final",
+      "detail": "代理原先Contains(COMMIT)误匹配BEGIN READ COMMITTED；改为SQL片段前缀匹配，并核对ReadyForQuery idle后重新8例通过。"
+    }
+  ]
+}

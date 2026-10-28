@@ -1,0 +1,63 @@
+{
+  "kind": "PR13-A09.4-T02ActualNoDatabaseNativeSkipCannotExportPassed",
+  "case_id": "PR13-A09.4-T02",
+  "profile_to_review": "POSTGRES",
+  "fixture": "Same current compiled PostgresNumericalContractTests nine methods, FANTASYCARD_TEST_POSTGRES empty and Docker networknone; no PG container and no production connection. Actual native VSTest artifact, not hand-authored skipped XML.",
+  "expected": {
+    "native_exit": 0,
+    "native_total_rows": 9,
+    "native_executed_rows": 0,
+    "native_passed_rows": 0,
+    "native_skipped_rows": 9,
+    "PG_artifact_gate": "Blocked",
+    "PG_gate_exit": 3,
+    "canonical_export_require_unskipped": "ValueError;no passed canonical case export",
+    "negative_control_outcome": "Passed only for expected rejection; no claim positive PG methods executed"
+  },
+  "bounds": {
+    "native_testhost_launches": 1,
+    "native_methods_allowed_to_execute": 0,
+    "actual_worlds_accounts_assets": 0,
+    "deadline_seconds": 90,
+    "APP_memory_MiB": 1024,
+    "APP_CPU": 1.0,
+    "only_existing_cloud_host": true
+  },
+  "identity": {
+    "HEAD_reference": "86ddee230a785d793757da6d0d24056a64a25955",
+    "managed_test_DLL_SHA": "201b00dea646e981d1b7692dbfbb58a2339d7ab7a79a9f53a3136029938c1dab",
+    "runtime_manifest_SHA": "d87268696281ad7286bf1bd805303e31de6a295de19173b40a5fbe2ad5d944f3",
+    "current_input_files": [
+      {
+        "path": "tools/pr13_ci_pg_artifact_gate.py",
+        "sha256": "916ff9f36d17c9b6e0bbaf7de8c0d0df12b594baedb3f15fe4185e0566c997d5"
+      },
+      {
+        "path": "tools/pr13_suite_coverage.py",
+        "sha256": "61555a200ce9cc79d76dd2d2c210f86e1eaf6d133ae841e4d32c88782776772b"
+      },
+      {
+        "path": "tools/pr13_postgres_cases.py",
+        "sha256": "28048ea022a32232ba0866f3b09e834f69f50b7dcd1445bfe9d2517443fe614e"
+      },
+      {
+        "path": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json",
+        "sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703"
+      },
+      {
+        "path": "GDD.md",
+        "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+      },
+      {
+        "path": "GDD_BASE_v0.69.md",
+        "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+      }
+    ]
+  },
+  "old_positive_R4_remains_original_not_new_reexecution": true,
+  "LIVE_RENDER_or_whole_task_acceptance": false,
+  "criteria_relaxed": false,
+  "human_experience_in_scope": false,
+  "local_no_Godot_GUI_PG_input_focus": true,
+  "state": "FrozenBeforeNativeExecution"
+}

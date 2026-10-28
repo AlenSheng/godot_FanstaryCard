@@ -1,0 +1,864 @@
+{
+  "kind": "LOAD064ThreeCasesAllRequiredProfilesIndependentlyReviewed",
+  "authority": "MAIN",
+  "at_local": "2026-10-16T20:41:30.610646+08:00",
+  "task_id": "LOAD-06.4",
+  "cases": [
+    {
+      "case_id": "LOAD-06.4-T01",
+      "profiles_verified": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "passed": true,
+      "OFFLINE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-current-after-pg-matrix-guards\\case-sources\\family-2\\cases.jsonl",
+        "actual": {
+          "exit_code": 3,
+          "group_interval_ms": 120000.0,
+          "command_rates": [
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            2.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0,
+            4.0
+          ],
+          "coordinator": {
+            "outcome": {
+              "classification": "invalid_workload_or_evidence",
+              "passed": false,
+              "exit_code": 3
+            },
+            "all_triggers": [
+              "duration_limit",
+              "load_coverage_evidence_invalid",
+              "request_cutoff_evidence_invalid",
+              "sampling_integrity_failed"
+            ],
+            "final_audit_lost_count": 0,
+            "request_distributions": {
+              "algorithm_version": "owned-request-cutoffs-v1",
+              "running": null,
+              "drain": null,
+              "final": null,
+              "evidence_errors": [
+                "invalid_request_cutoff_clock"
+              ],
+              "cutoffs_unix_ms": {
+                "start": 100000000.0,
+                "stop": 98830000,
+                "final": 98830000
+              },
+              "missing_reason": "UTC cutoffs reversed; raw retained, local monotonic scheduling unchanged"
+            },
+            "sampling_integrity": {
+              "passed": false,
+              "reasons": [
+                "wall_clock_discontinuity"
+              ],
+              "tail_gap_seconds": 10.0,
+              "maximum_observed_gap_seconds": 10.0
+            },
+            "load_window_verified": false,
+            "acceptance_passed": false,
+            "process_cleanup_complete": true,
+            "cleanup_complete": true
+          },
+          "sample_count": 62,
+          "native_clock": [
+            {
+              "clock": "Time.get_ticks_usec local monotonic",
+              "configured_max_fps": 0,
+              "intervals_usec": [
+                277,
+                18,
+                6918,
+                6883,
+                6903,
+                6915,
+                6882,
+                6925,
+                6876,
+                6901,
+                6917
+              ],
+              "pid": 101032
+            },
+            {
+              "clock": "Time.get_ticks_usec local monotonic",
+              "configured_max_fps": 30,
+              "intervals_usec": [
+                271,
+                17,
+                33365,
+                33325,
+                33330,
+                33686,
+                32976,
+                33348,
+                33321,
+                33332,
+                33332
+              ],
+              "pid": 45832
+            }
+          ]
+        }
+      },
+      "POSTGRES": {
+        "actual": {
+          "case_id": "LOAD-06.4-T01",
+          "executed": true,
+          "status": "Passed",
+          "profiles_executed": [
+            "POSTGRES"
+          ],
+          "setup": "本地单调钟测耗时",
+          "expected": "正确非负",
+          "actual": {
+            "reused_native_transport": "reusable",
+            "local_monotonic_attempt_durations_ms": [
+              66,
+              50
+            ],
+            "local_monotonic_logical_duration_ms": 5149,
+            "server_minimum_retry_after_ms": 5000,
+            "real_full_Program_and_disposable_Postgres": true,
+            "successful_backend_response": 200,
+            "same_exact_timing_implementation": true,
+            "no_new_native_execution": true
+          },
+          "scope": "Read-only contract mapping of an immutable original real Godot/full Program/disposable PG run. The current timing and reusable source path is identical. Does not claim the changed native one-off204 path was tested in that old run."
+        },
+        "scope": "Actual original disposable PG execution; source-equivalent timing path,or actual owned session/ticket privacy control."
+      },
+      "LIVE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-load064-current-LIVE-three-20261016\\review.json",
+        "actual": {
+          "case_id": "LOAD-06.4-T01",
+          "executed": true,
+          "status": "Passed",
+          "profiles_executed": [
+            "LIVE"
+          ],
+          "setup": "本地单调钟测耗时",
+          "expected": "正确非负",
+          "actual": {
+            "actual_HTTP_rows": 98,
+            "min_duration_ms": 317,
+            "max_duration_ms": 1802,
+            "ordered_monotonic_event_prefixes": true,
+            "source_uses_GetTicks_not_cross_host_UTC": true,
+            "logical_duration_covers_own_actual_attempts": true,
+            "external_curl_or_cloud_health_not_merged": true
+          },
+          "scope": "Actual Windows native public HTTPS login/ticket telemetry from running owned study; no completed natural-cycle or capacity claim.",
+          "evidence": [
+            "actual-public-telemetry-summary.json"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "LOAD-06.4-T02",
+      "profiles_verified": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "passed": true,
+      "OFFLINE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-current-after-pg-matrix-guards\\case-sources\\family-2\\cases.jsonl",
+        "actual": {
+          "http": {
+            "count": 0
+          },
+          "steady_http": {
+            "count": 0
+          },
+          "cancelled_http": {
+            "count": 0
+          },
+          "realtime": {
+            "count": 0
+          },
+          "rtt": {
+            "count": 0
+          },
+          "phase_http": {},
+          "route_http": {},
+          "observed_window_seconds": null,
+          "logical_requests_per_second": null,
+          "completed_requests_per_second": null,
+          "throughput_missing_reason": "No measured observation interval supplied",
+          "logical_result_counts": {},
+          "error_count": 0,
+          "sample_count": 0,
+          "logical_request_count": 0,
+          "cancelled_count": 0,
+          "all_attempt_count": 1,
+          "attempt_coverage": "measured",
+          "attempt_result_counts": {
+            "unknown": 1
+          },
+          "valid_attempt_latency_count": 1,
+          "transport_phase_timings": {
+            "dns_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tcp_connect_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            },
+            "tls_handshake_ms": {
+              "count": 0,
+              "p95_ms": null,
+              "quality": "unavailable",
+              "missing_reason": "No attributable local request phase hook in supplied audit"
+            }
+          },
+          "valid_latency_count": 0,
+          "latency_sample_quality": {
+            "http": "unavailable",
+            "realtime": "unavailable"
+          },
+          "error_rate": 0.0,
+          "steady_error_count": 0,
+          "steady_sample_count": 0,
+          "steady_error_rate": 0.0,
+          "invalid_metric_count": 0,
+          "invalid_duration_count": 0,
+          "invalid_schema_count": 0,
+          "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+        }
+      },
+      "POSTGRES": {
+        "actual": {
+          "case_id": "LOAD-06.4-T02",
+          "executed": true,
+          "status": "Passed",
+          "profiles_executed": [
+            "POSTGRES"
+          ],
+          "setup": "无TLS阶段hook",
+          "expected": "null+unavailable",
+          "actual": {
+            "attributable_phase_hooks_in_actual_input": false,
+            "transport_phase_timings": {
+              "dns_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              },
+              "tcp_connect_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              },
+              "tls_handshake_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              }
+            },
+            "total_request_duration_not_used_as_phase_latency": true,
+            "isolated_loopback_backend_is_HTTP_not_a_TLS_measurement": true,
+            "same_actual_native_execution_as_T01": true,
+            "no_new_native_execution": true
+          },
+          "scope": "Current aggregation of the same real PG-backed native request records, with absent phase hooks explicitly unavailable. No TLS handshake duration or duplicate PG execution claimed."
+        },
+        "scope": "Actual original disposable PG execution; source-equivalent timing path,or actual owned session/ticket privacy control."
+      },
+      "LIVE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-load064-current-LIVE-three-20261016\\review.json",
+        "actual": {
+          "case_id": "LOAD-06.4-T02",
+          "executed": true,
+          "status": "Passed",
+          "profiles_executed": [
+            "LIVE"
+          ],
+          "setup": "无TLS阶段hook",
+          "expected": "null+unavailable",
+          "actual": {
+            "actual_transport_phase_summary": {
+              "dns_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              },
+              "tcp_connect_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              },
+              "tls_handshake_ms": {
+                "count": 0,
+                "p95_ms": null,
+                "quality": "unavailable",
+                "missing_reason": "No attributable local request phase hook in supplied audit"
+              }
+            },
+            "total_request_duration_not_substituted_for_TLS_DNS_TCP": true
+          },
+          "scope": "Current production aggregation of exact actual native public HTTPS request attempts with no phase hooks; unknown transport stages explicitly unavailable.",
+          "evidence": [
+            "actual-public-telemetry-summary.json"
+          ]
+        }
+      }
+    },
+    {
+      "case_id": "LOAD-06.4-T03",
+      "profiles_verified": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "passed": true,
+      "OFFLINE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-current-after-pg-matrix-guards\\case-sources\\family-2\\cases.jsonl",
+        "actual": {
+          "rejected_count": 3,
+          "reasons": [
+            "Sensitive field in public evidence: accesstoken",
+            "Sensitive field in public evidence: ticketbody",
+            "Credential-like value in public evidence"
+          ],
+          "values_echoed": false
+        }
+      },
+      "POSTGRES": {
+        "actual": {
+          "caseId": "LOAD-06.4-T03",
+          "status": "Passed",
+          "actual": {
+            "roomId": "6e961b62-5b70-4527-a739-acc4d06d621d",
+            "actualConfigVersion": "gdd-0.70-numerical-1",
+            "cards": [
+              "C01",
+              "C02",
+              "C03",
+              "C04",
+              "C05",
+              "C06",
+              "C07",
+              "C08",
+              "C09",
+              "C10",
+              "C11",
+              "C12",
+              "C13",
+              "GUA-01",
+              "GUA-02",
+              "GUA-03",
+              "GUA-04",
+              "GUA-05",
+              "GUA-06",
+              "GUA-07"
+            ],
+            "actualOwnedPlayerId": "01a13982-0edb-73cf-a517-d03a9600b6ca",
+            "actualDatabaseSessionLookupBeforeAndAfter": true,
+            "actualIssuedTicketConsumedOnce": true,
+            "generatedEphemeralTestCredentialsOnly": true,
+            "tokenSha256": "0404d517737f763b87d5a4bce3462f9752b0bb6c53fb589ea9b69fe0181faccc",
+            "ticketSha256": "673d3771f84a2e0e812350ed4e592aa27180541ac81c1679417478bab4395e5a",
+            "privateCandidateSessionFileSha256": "6167e35cad95d155584b53f8dfd782889020354493401e4f00b678433c3c4960",
+            "privateCandidateTicketFileSha256": "22dda796ce2702169c5d04efbd74994a9e5b7a96d2ac49f76a3f42203cae2042",
+            "actualPublicReview": {
+              "ok": true,
+              "actual_sensitive_candidates_rejected": [
+                {
+                  "path": "actual-session-token.json",
+                  "bytes": 55,
+                  "sha256": "6167e35cad95d155584b53f8dfd782889020354493401e4f00b678433c3c4960",
+                  "actual_rejection_messages": [
+                    "Sensitive field in public evidence: token",
+                    "Sensitive field in public evidence: token"
+                  ],
+                  "original_sensitive_candidate_preserved": true
+                },
+                {
+                  "path": "actual-realtime-ticket.json",
+                  "bytes": 60,
+                  "sha256": "22dda796ce2702169c5d04efbd74994a9e5b7a96d2ac49f76a3f42203cae2042",
+                  "actual_rejection_messages": [
+                    "Sensitive field in public evidence: ticketbody",
+                    "Sensitive field in public evidence: ticketbody"
+                  ],
+                  "original_sensitive_candidate_preserved": true
+                }
+              ],
+              "sanitized_metadata_public_review_passed": true,
+              "raw_values_written_to_public_report": false,
+              "raw_private_candidates_unchanged": true
+            },
+            "sensitiveValuesNeverWrittenToPublicReceipt": true,
+            "snapshotBeforeHash": "0b865627b5ac84a038f019cfd42147e86e25d903d4d2fac3e163fe7db9290d21",
+            "snapshotAfterHash": "0b865627b5ac84a038f019cfd42147e86e25d903d4d2fac3e163fe7db9290d21",
+            "databaseBeforeHash": "fe5b29eada553ba53b9640e8ac82e5c5b8a270eeae79176cef11a10a1553284a",
+            "databaseAfterHash": "fe5b29eada553ba53b9640e8ac82e5c5b8a270eeae79176cef11a10a1553284a",
+            "productionSourceModified": false,
+            "productionCredentialsUsed": false
+          }
+        },
+        "scope": "Actual original disposable PG execution; source-equivalent timing path,or actual owned session/ticket privacy control."
+      },
+      "LIVE": {
+        "source": "docs\\reports\\pr13-stages-20261009\\S6-load064-current-LIVE-three-20261016\\review.json",
+        "actual": {
+          "case_id": "LOAD-06.4-T03",
+          "executed": true,
+          "status": "Passed",
+          "profiles_executed": [
+            "LIVE"
+          ],
+          "setup": "token/票据正文",
+          "expected": "脱敏审查拒绝入报告",
+          "actual": {
+            "actual_login_and_ticket_telemetry_passed_public_guard": true,
+            "raw_auth_or_ticket_response_bodies_logged": false,
+            "sensitive_candidate_rejections": [
+              {
+                "controlled_candidate": 1,
+                "rejected": true,
+                "error_excludes_value": true,
+                "actual_credential_read_or_network_injection": false
+              },
+              {
+                "controlled_candidate": 2,
+                "rejected": true,
+                "error_excludes_value": true,
+                "actual_credential_read_or_network_injection": false
+              },
+              {
+                "controlled_candidate": 3,
+                "rejected": true,
+                "error_excludes_value": true,
+                "actual_credential_read_or_network_injection": false
+              }
+            ]
+          },
+          "scope": "Actual LIVE login/ticket report-output integration plus declared synthetic sensitive-field rejection at the existing report guard; no real credential read and no network-body injection claim.",
+          "evidence": [
+            "actual-public-telemetry-summary.json"
+          ]
+        }
+      }
+    }
+  ],
+  "all_required_case_profiles_covered": true,
+  "all_dependencies_accepted": true,
+  "PG_clock_originals_not_rerun": true,
+  "sensitive_PG_original_native_rows": 10,
+  "sensitive_PG_skips": 0,
+  "sensitive_PG_stage_files_verified": [
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\complete-private-G-member-hashes.original.json",
+      "sha256": "970fc1ef97cd225dec00c579f9d310343f3bac06eca4c32390e58a45135fa62c",
+      "bytes": 146132
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\complete-private-G-receipt.original.json",
+      "sha256": "9ae9abae9bfc473ae4250a162abeb7c7c463ee194117bc298af2036d85913a93",
+      "bytes": 880
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\addition.original.cs",
+      "sha256": "23be0f78552720be6595e8cd16bf1b7059823b390baa33c2ae8bf0da57fdd427",
+      "bytes": 5353
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\inner.original.py",
+      "sha256": "ef349564cb86ccb84dd94886f2e78c8a0d007ad035692c67657a2029857dbe6e",
+      "bytes": 2719
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\plan.original.json",
+      "sha256": "95c46cf30a60b83248ef164911c4850b6359552502493fe0920d36b0ea4c4e21",
+      "bytes": 433247
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\pr13_public_evidence.py",
+      "sha256": "0ef3e13f1720fd2ebb760a5fc24ea4fe0928c44c979d3c7fc10ea55389a27b5f",
+      "bytes": 3445
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\sensitive-evidence-guard.original.py",
+      "sha256": "55102a02f05732cb6a39bc318b9e5ef4f778207a560bd0645557c1041a685e8a",
+      "bytes": 1751
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\control\\test-override.original.cs",
+      "sha256": "d1a5bd4b821fae2d585cbd63d877f043c3d6b5c4757acf752eb6663d7994d5c6",
+      "bytes": 32260
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\independent-G-check.original.json",
+      "sha256": "ee644469651b280cca0d2f5169500697594896e146dde65d5ca7824a0510e8aa",
+      "bytes": 3553
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\independent-G-verifier.executed.original.py",
+      "sha256": "2d91640dbd6dbb48121c0b1af1f3563d07d9bb3a03d5d785d546945ab9f42993",
+      "bytes": 7146
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\container.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\container.stdout.original.log",
+      "sha256": "906dda45a9882de7b2f9b289c56b7d74271512fcb192eba014fc29d43b2cdbca",
+      "bytes": 79
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\controller.original.py",
+      "sha256": "a84997eb260acd8eb82670b2154ee45bca063084c57931712adfa70b875b6e09",
+      "bytes": 13161
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\dispatch-intent.original.json",
+      "sha256": "5f02e19963489f24428c9af1e35ec9111e04757c1fde1f697dc6d89bdb92b4fa",
+      "bytes": 344
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\dispatch.original.json",
+      "sha256": "5d8777c61d22ff602952a1bd58b8dc8322cac0069de38a48863da042fd5b8def",
+      "bytes": 68
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\build.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\build.stdout.original.log",
+      "sha256": "e9239638f2c1463581b1f75dc0dbc984ee3b010f03ccb02f9ecd685dd9b5bfae",
+      "bytes": 572
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\inner-result.original.json",
+      "sha256": "5914747ad8eabbcfcb94137c5d6263b00d72c8f92ef39adbc4b494889804b2e9",
+      "bytes": 486
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\LOAD-06.4-T03.json",
+      "sha256": "a55c93633ca0ee5bb9297e1484c7e4e0e270f5cc55f71c051d10a451a9a5436a",
+      "bytes": 2121
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.1-T01.json",
+      "sha256": "55833dc303f1d77b92c9588aff2f19c57befdb1050e58f3068cc552ea1dbd924",
+      "bytes": 2650
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.1-T02.json",
+      "sha256": "580829cd0472db541c4c8a29856a612b27acf68d8c8201d551e92545050815ca",
+      "bytes": 400
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.1-T03.json",
+      "sha256": "1e4f593c623ab88342d6b1375609270d340cb5537950f0ee108a0214c5b973e2",
+      "bytes": 951
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.2-T01.json",
+      "sha256": "9a18d7b2d3db63e5eac26fa6f1d8b9bbdef06245ef566ffdf2340b70a41ee77f",
+      "bytes": 17899
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.2-T02.json",
+      "sha256": "04f7bff9ec0d24d62346612a014f7a7f868b802ef1fb0d9d2c4e29478cfc11df",
+      "bytes": 10820
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.2-T03.json",
+      "sha256": "2c4486b759d257a76bc62f2bc10753ba4e8c82cabe6978d6f2335e9f3615dd63",
+      "bytes": 7728
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.4-T01.json",
+      "sha256": "44fcd42146fb714ff503eca0f36a415c143281d245c1c9d37fc4ed00dd0ae262",
+      "bytes": 894
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.4-T02.json",
+      "sha256": "a24298472d68882e7a9c0acac0cfb31fece9fc3549ea3724e511c34d5b5c4a5f",
+      "bytes": 464
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native-receipts\\PR13-B02.4-T03.json",
+      "sha256": "340f6d3c6ed455e6d216f1efe2e1eddc38f9b4b33b5c36a90a1c43fa4ba9038a",
+      "bytes": 1411
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native.stderr.original.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\native.stdout.original.log",
+      "sha256": "bbb96a464458bf5e22d852a60686402426646878b7fb688f2fe62202e16d6c53",
+      "bytes": 355
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\public-review-sanitized.original.json",
+      "sha256": "6fc93a9b31b8bc12b640f71f0d0872e9c4f263282ee5c1432d20bc77ca6a8635",
+      "bytes": 896
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\restore.stderr.original.log",
+      "sha256": "53f56b124f0a5a2cbb626d4a9571d733b4d9c9919fb2481ae410535641a04b9b",
+      "bytes": 98
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\restore.stdout.original.log",
+      "sha256": "dd5e503ed8842007fa3cd51680db55269d36ee8e73ccd8daf640b9f559765802",
+      "bytes": 499
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\persistent-output\\results\\native-ten.original.trx",
+      "sha256": "519c0167e1e33cfb37310d047cceda266eeb86d27374c0327b7e0c7f45fc60b2",
+      "bytes": 16230
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\postgres.stderr.original.log",
+      "sha256": "dde3349c662e9e4de9f0bd45ba2ea408e18aa2234a228ad3a128ea89973366c1",
+      "bytes": 1675
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\postgres.stdout.original.log",
+      "sha256": "013dfda1fb458d1de89a538ba0b1d919881626ccdcc50ca6b776ee5539d1289f",
+      "bytes": 2366
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\prepared.original.json",
+      "sha256": "2c499806f1e89ca9a8cf3aada2560d02e7031b7db1b475d7ca6afbf602492834",
+      "bytes": 458
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\resources.original.jsonl",
+      "sha256": "dfb8d092f1c07b41deb9e9307911bbec609293a21dcf50cda938459f03ce389f",
+      "bytes": 1767
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\result.original.json",
+      "sha256": "53431970dc4d8ea88b1f6a77b781fc3145d528e1223b468e9855d132c222e1ba",
+      "bytes": 1215
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\scheduler-dispatch-intent.original.json",
+      "sha256": "6be50b5c1f90d023e0735b0491a4cde476529844fe9d69cfd0b31c2f38cf5f0c",
+      "bytes": 203
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\scheduler-dispatch-receipt.original.json",
+      "sha256": "584ed6b8a9a9b8af993f2365d3937c6bc3c0a46fc9672c87c5bc9611d4e1744c",
+      "bytes": 75
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\scheduler-dispatched.original.json",
+      "sha256": "dff89a4f4c7f21b1d3b53ac3dac9e4e69be02ea601268fbbed254f3fb74afe64",
+      "bytes": 83
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\scheduler.original.py",
+      "sha256": "1970c1b30979330337a69bdc49e0d84013ca6ef5197d03043d6648cc67af4fa4",
+      "bytes": 1016
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\started.original.json",
+      "sha256": "9159756f420c266a82409541cea83d18e22a7e0cf2805556dec62a72c229e501",
+      "bytes": 445
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\terminal-state.original.json",
+      "sha256": "87d4470b048ae06781df34b8b186d8017ccddf03e538d56f52fc0ea0774431df",
+      "bytes": 97
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\originals\\evidence\\unit.journal.terminal.original.log",
+      "sha256": "b905c7a9454d74d8efa9c6f7729226e1015ff649f2a7436b41f220d7892beb72",
+      "bytes": 603
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\passed-owned-cloud-cleanup.original.json",
+      "sha256": "1d2e897d81f23c8dc751b5edd0f0d6dc2bf3cf9005292fc0aaf8c58552026487",
+      "bytes": 813
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\public-file-review.original.json",
+      "sha256": "fe3648158efad36e892487ae2d46fa38a7ce6776eb1dc1316070f57cbdbf995e",
+      "bytes": 160
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\README.md",
+      "sha256": "4141e08c84ce6bb10d92154018dd1d6b9cbebc90eb952b16eab243e1d63c603d",
+      "bytes": 1430
+    },
+    {
+      "path": "docs\\reports\\pr13-stages-20261009\\S4-load064-actual-sensitive-credential-PG\\summary.json",
+      "sha256": "e620552902a6f786ca39bdc9560941f972e704028d7f6bb113219c661e152550",
+      "bytes": 704
+    }
+  ],
+  "production_server_Git_tree_unchanged_since_sensitive_PG": true,
+  "public_guard_AST_identical_to_executed_PG_guard": true,
+  "private_raw_credentials_never_read_or_published_by_this_review": true,
+  "PG_clock_source_scope": {
+    "checks": [
+      {
+        "function": "_request_page",
+        "normalized_text_equal": true,
+        "executed_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287",
+        "current_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+      },
+      {
+        "function": "_emit_http_attempt",
+        "normalized_text_equal": true,
+        "executed_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d",
+        "current_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d"
+      },
+      {
+        "function": "normalize_request",
+        "normalized_text_equal": true,
+        "executed_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa",
+        "current_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa"
+      },
+      {
+        "function": "normalize_response",
+        "normalized_text_equal": true,
+        "executed_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493",
+        "current_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493"
+      },
+      {
+        "function": "_decode_http_response",
+        "normalized_text_equal": true,
+        "executed_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15",
+        "current_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+      },
+      {
+        "file": "network/reusable_http_client.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "file": "network/http_protocol.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "file": "network/protobuf.gd",
+        "normalized_text_equal": true
+      },
+      {
+        "function": "_request_http_transport",
+        "original_reusable_first_branch_preserved": true,
+        "new_native_one_off_204_transport_excluded_from_reusable_path": true
+      },
+      {
+        "data": "http_schema.json",
+        "normalized_text_equal": true,
+        "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+      },
+      {
+        "data": "realtime_schema.json",
+        "normalized_text_equal": true,
+        "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+      },
+      {
+        "route": "/api/v1/bootstrap",
+        "normalized_text_equal": true,
+        "comparison": "Selected executed route only; registry outside selected paths may differ"
+      },
+      {
+        "route": "/api/v1/auth/local",
+        "normalized_text_equal": true,
+        "comparison": "Selected executed route only; registry outside selected paths may differ"
+      },
+      {
+        "data": "HTTP protocol envelope",
+        "normalized_text_equal": true
+      }
+    ],
+    "all_required_equal": true,
+    "scope": "Only executed reusable PG arm and unchanged timing/decode implementation; no blanket full-source equality claim"
+  },
+  "PG_source_endpoint_copy_limit": "One archived endpoint-table pathname is absent. Exact versioned source blob and recorded SHA are verified; selected bootstrap/auth route contracts are equal and both schema JSON structures equal. No native raw output reconstructed.",
+  "live_prefix_evidence_not_full_gameplay": true,
+  "does_not_accept_capacity_SLO_or_human": true,
+  "pointer_sha256": "9c65d1eb9e543fb671e89364c27ae8adb5f50df80ba67fceb5054a7f2e866d81",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-a092-auto-abandon-LIVE-one-20261016/register.json",
+    "sha256": "14ff4529321c20fdf80a5f96fc7914f06d0779d006cfc487addf7f4df71be7da"
+  },
+  "eligible_task_decision": "Accepted for time/missing/redaction contract only"
+}

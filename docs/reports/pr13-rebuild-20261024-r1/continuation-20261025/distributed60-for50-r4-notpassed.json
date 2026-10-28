@@ -1,0 +1,247 @@
+{
+  "kind": "Actual stronger60 full-native producers retaining minimum50active; original full execution remains failed",
+  "source_head": "4e6ff10cba4597e9ea21a6e5a6ae3479c25082c5",
+  "status": "NotPassed_original_execution_business_notice_gate",
+  "larger_workload_profile_declared_before_execution": "full-native60-for50active",
+  "baseline_exact50_R3_failure_preserved": true,
+  "actual_native_clients": 60,
+  "partitions": {
+    "Windows": {
+      "online": 32,
+      "minimum_active": 27
+    },
+    "cloud": {
+      "online": 28,
+      "minimum_active": 23
+    }
+  },
+  "world_budget": 300,
+  "joint_minimum_active": 50,
+  "native_full_uncapped_official_Godot4_7_2": true,
+  "same_frozen17_control_and2148_client_Git_inputs": true,
+  "collector_repairs": {
+    "cloud_spool_on_owned_physical_disk_instead128MiB_tmpfs": true,
+    "Windows_probe_spacing40ms_not_rewritten_timestamps": true,
+    "original_evidence_and_performance_dimensions_now_passed": true
+  },
+  "hosts": [
+    {
+      "host_id": "windows",
+      "native_clients": 32,
+      "original_outcome": {
+        "classification": "incomplete_acceptance",
+        "passed": false,
+        "exit_code": 1
+      },
+      "original_dimensions": {
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Passed",
+          "gameplay": "NotApplicable",
+          "performance": "Passed",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "own_hold_coverage": 0.9868986113203897,
+      "own_hold_continuous_seconds": 710.5670001506805,
+      "native_clients_with_notice_errors": 2,
+      "native_exit_codes_all0": true,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "minimum_available_memory_bytes": 9714544640,
+      "supervisor_terminal": {
+        "ok": false,
+        "PID": 69556,
+        "exit": 1,
+        "guard_stop": "peer_or_parent_stop",
+        "native_process_inspection": true,
+        "no_foreground_windows": true
+      }
+    },
+    {
+      "host_id": "cloud",
+      "native_clients": 28,
+      "original_outcome": {
+        "classification": "incomplete_acceptance",
+        "passed": false,
+        "exit_code": 1
+      },
+      "original_dimensions": {
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Passed",
+          "gameplay": "NotApplicable",
+          "performance": "Passed",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "own_hold_coverage": 0.9876916666825613,
+      "own_hold_continuous_seconds": 711.1380000114441,
+      "native_clients_with_notice_errors": 1,
+      "native_exit_codes_all0": true,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "minimum_available_memory_bytes": 589201408,
+      "supervisor_terminal": {
+        "ok": false,
+        "container": "7bf38772143ec3432747113ae6992f64215b5d5f965f6c0aeb19f74714a8e420",
+        "exit": 1,
+        "OOMKilled": false,
+        "guard_stop": null,
+        "native_process_inspection": true,
+        "capacity_verdict_not_inferred_from_exit": true,
+        "mode": "cloud28"
+      }
+    }
+  ],
+  "clock_bounded_joint_overlap": {
+    "joint_overlap_passed": true,
+    "capacity_acceptance": false,
+    "scope": "Clock-bounded shared-window overlap only",
+    "evidence_errors": [],
+    "remaining_required_checks": [
+      "Original cohort evidence and latency gates",
+      "Actual official full native executable and identical game inputs",
+      "Distinct process-client-user identities on both hosts",
+      "One unchanged isolated backend and real global human gauge",
+      "Original process and business cleanup for every participant"
+    ],
+    "target_clients": 50,
+    "target_online_clients": 60,
+    "window_seconds": 600.0,
+    "compliant_seconds": 600.0,
+    "coverage": 1.0,
+    "longest_continuous_seconds": 600.0,
+    "common_intervals_reference_seconds": [
+      [
+        1792876961.4911861,
+        1792877561.4911861
+      ]
+    ],
+    "hosts": [
+      {
+        "host_id": "windows",
+        "clients": 32,
+        "target_active": 27,
+        "clock": {
+          "lower_ms": -500.0,
+          "upper_ms": 500.0,
+          "maximum_round_trip_ms": 0.0,
+          "measured_remote_drift_ms": 27.0,
+          "measured_reference_drift_ms": 13.22900390625,
+          "before_probes": 5,
+          "after_probes": 5
+        },
+        "certified_runs_reference_seconds": [
+          [
+            1792876961.4911861,
+            1792877561.4911861
+          ]
+        ]
+      },
+      {
+        "host_id": "cloud",
+        "clients": 28,
+        "target_active": 23,
+        "clock": {
+          "lower_ms": -1138.596923828125,
+          "upper_ms": 443.250732421875,
+          "maximum_round_trip_ms": 578.0,
+          "measured_remote_drift_ms": 3.1484375,
+          "measured_reference_drift_ms": 28.99658203125,
+          "before_probes": 5,
+          "after_probes": 5
+        },
+        "certified_runs_reference_seconds": [
+          [
+            1792876961.4911861,
+            1792877561.4911861
+          ]
+        ]
+      }
+    ]
+  },
+  "pooled_raw_running_latency": {
+    "http": {
+      "count": 1381,
+      "min_ms": 8,
+      "mean_ms": 357.57,
+      "max_ms": 1257,
+      "p50_ms": 360,
+      "p95_ms": 1129,
+      "p99_ms": 1172
+    },
+    "realtime": {
+      "count": 54958,
+      "min_ms": 0,
+      "mean_ms": 266.0,
+      "max_ms": 766,
+      "p50_ms": 324,
+      "p95_ms": 587,
+      "p99_ms": 628
+    }
+  },
+  "latency_scope": "Individual captured running requests, never average of P95s; shared overlap is a component, not full acceptance",
+  "failed_business_notice_requests": {
+    "distinct_play_requests": 4,
+    "inactive_duel": 3,
+    "stunned_player": 1,
+    "affected_native_clients": 3,
+    "raw_notice_rows_include_duplicates_not_extra_requests": true,
+    "actual_dispatch_own_snapshot_stun_remaining_ms_all0": true,
+    "inactive_duel_cases_local_phase_was_Pve": true,
+    "request_origin_and_battle_all_match_own_current_snapshot": true,
+    "exact_server_execution_state": "NotObserved; state transition race not proven as the root cause",
+    "GDD_base_section3_2_stun_PVP_cannot_play_is_legal": true,
+    "server_rule_or_HP_anomaly_claimed": false,
+    "warning_whitelist_or_original_failure_override_applied": false
+  },
+  "whole_capacity_accepted": false,
+  "whole_project_accepted": false,
+  "backup": {
+    "full_cloud_bytes": 7196620,
+    "sha256": "0d5b4350033acd19fbe9b27792a16d3412a9d46e27db22097f23ce908e5e851f",
+    "original_files_verified": 394,
+    "logical_bytes_verified": 271080461,
+    "all_source_nonGit_inputs_backed": 78,
+    "actual_DB_restore_audit": "matches|32\nsettlements|100\npending_holds|0\n",
+    "scratch_verification_DB_dropped": true
+  },
+  "cleanup": {
+    "owned_containers_removed": 6,
+    "owned_network_worktree_and_temporary_root_removed": true,
+    "additional_freed_bytes": 2864947200,
+    "cloud_available_bytes": 8021413888,
+    "formal_service_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "Windows_silent_policy": {
+    "actual_native_processes_with_no_visible_window": 32,
+    "BelowNormal_last4_CPUs": true,
+    "memory_reserve_bytes": 6442450944,
+    "owned_native_and_tunnel_terminal": true
+  },
+  "capacity100": "NotExecuted_not_promoted_from60; original50 full acceptance still failed",
+  "at_unix_ms": 1792878147513.8826
+}

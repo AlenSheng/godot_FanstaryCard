@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="52f257dd-2689-478b-ac23-65842722bd07" name="@398c07af3ba3 2026-10-12 02:57:03" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T02:57:03.2839276+00:00" queuing="2026-10-12T02:57:03.2839277+00:00" start="2026-10-12T02:56:59.9280524+00:00" finish="2026-10-12T02:57:03.3028629+00:00" />
+  <TestSettings name="default" id="bd6abaf3-a231-4c6f-82e0-bb60bf26150c">
+    <Deployment runDeploymentRoot="_398c07af3ba3_2026-10-12_02_57_03" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c3cca066-69cb-42de-a93e-000db7d93d5e" testId="b3010db8-89c2-6137-47ae-e9b9d6ac66a7" testName="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response" computerName="398c07af3ba3" duration="00:00:00.0010000" startTime="2026-10-12T02:57:03.0230351+00:00" endTime="2026-10-12T02:57:03.0290991+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3cca066-69cb-42de-a93e-000db7d93d5e">
+      <Output>
+        <ErrorInfo>
+          <Message>Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c761a8a5-fea0-4bbe-a5da-203d25eeca69" testId="c545f4c7-ef70-1cd4-1ae3-9c33304f177d" testName="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic" computerName="398c07af3ba3" duration="00:00:00.0010000" startTime="2026-10-12T02:57:03.0389546+00:00" endTime="2026-10-12T02:57:03.0391837+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c761a8a5-fea0-4bbe-a5da-203d25eeca69">
+      <Output>
+        <ErrorInfo>
+          <Message>Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic" storage="/artifacts/bin/fantasycard.server.tests/release/fantasycard.server.tests.dll" id="c545f4c7-ef70-1cd4-1ae3-9c33304f177d">
+      <Execution id="c761a8a5-fea0-4bbe-a5da-203d25eeca69" />
+      <TestMethod codeBase="/artifacts/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests" name="Preparation_create_replay_conflict_and_cancel_release_are_atomic" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response" storage="/artifacts/bin/fantasycard.server.tests/release/fantasycard.server.tests.dll" id="b3010db8-89c2-6137-47ae-e9b9d6ac66a7">
+      <Execution id="c3cca066-69cb-42de-a93e-000db7d93d5e" />
+      <TestMethod codeBase="/artifacts/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests" name="Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b3010db8-89c2-6137-47ae-e9b9d6ac66a7" executionId="c3cca066-69cb-42de-a93e-000db7d93d5e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c545f4c7-ef70-1cd4-1ae3-9c33304f177d" executionId="c761a8a5-fea0-4bbe-a5da-203d25eeca69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="0" passed="0" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.77]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.18]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.44]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:02.64]       Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.
+[xUnit.net 00:00:02.67]       Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.
+[xUnit.net 00:00:02.67]   Finished:    FantasyCard.Server.Tests
+Test 'FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response' was skipped in the test run.
+Test 'FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic' was skipped in the test run.
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="398c07af3ba3" outcome="Warning" timestamp="2026-10-12T02:57:03.2236840+00:00">
+        <Text>[xUnit.net 00:00:02.64]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="398c07af3ba3" outcome="Warning" timestamp="2026-10-12T02:57:03.2241356+00:00">
+        <Text>[xUnit.net 00:00:02.67]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

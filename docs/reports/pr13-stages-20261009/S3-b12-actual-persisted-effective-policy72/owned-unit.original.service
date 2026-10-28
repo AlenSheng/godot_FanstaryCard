@@ -1,0 +1,10 @@
+[Unit]
+Description=Owned PR13 B12 effective policy persisted matrix
+After=docker.service
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B12-effective-policy-postgres-r2-20261013/outer.original.py
+MemoryMax=160M
+TasksMax=96
+RuntimeMaxSec=4500
+KillMode=control-group

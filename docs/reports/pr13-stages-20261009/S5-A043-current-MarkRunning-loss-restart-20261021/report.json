@@ -1,0 +1,71 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A04.3-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "实际Program8eb经隔离PG协议代理；首个MarkRunning真实UPDATE1和ReadyForQueryI未交付，独立直连PG确认同M Running、snapshot1、pendingM及暂存actor无ticker后才关闭该连接。原程序移除旧actor，重试真实UPDATE0+SELECT Running，恢复同M唯一actor/ticker和一次started。再次核实PID/命令/startticks后真实Program重启，同一Godot自动重连取得原M/room/UID权威状态；资源表未再扣除，公开退出后只一份收据/ACK、一件装备恰3条流水至RelicPile。",
+      "physical_worlds": 1,
+      "real_UIDs": 1,
+      "declared_initial_items": 1,
+      "actual_ACKs": 1,
+      "criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A043-current-MarkRunning-loss-restart-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A043-current-MarkRunning-loss-restart-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A043-current-MarkRunning-loss-restart-20261021/commands.json"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "task_id": "PR13-A04.3",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false,
+      "basis": "All3canonicalcases requiredprofiles current/sourcequalified anddependenciesAccepted"
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false,
+      "basis": "All3canonicalcases/profilealreadycomplete/sourceapplicable; nowA043dependencyAccepted"
+    }
+  ],
+  "summary": {
+    "counts": {
+      "Accepted": 96,
+      "Partial": 28,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "newly_accepted": [
+      "PR13-A04.3",
+      "PR13-A04.4"
+    ],
+    "remaining_unaccepted": 36,
+    "missing_case_profile_pairs_before": 131,
+    "missing_case_profile_pairs_after": 130,
+    "new_case_profile_closures": 1,
+    "new_physical_worlds": 1,
+    "new_real_UIDs": 1,
+    "declared_initial_items": 1,
+    "actual_ACKs": 1,
+    "A044_new_worlds": 0,
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A043-A044-accepted-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-A043-save-LIVE-partial-20261021/register.json",
+      "sha256": "15eebde76350999d68862b34da374ddd03febd142e559a1abf0c36181c337c69"
+    }
+  }
+}

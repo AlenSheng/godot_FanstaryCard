@@ -1,0 +1,119 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "server/FantasyCard.Server.slnx",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 6.218246562000786,
+    "log": "fresh-build-attempt3.log",
+    "sha256": "4f455e0ec5a1da65602200478cc55629e4402554f4a29b11c9f171b76062746d"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=domain.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/full-trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 4.171457627000564,
+    "log": "domain.log",
+    "sha256": "6a2c8872e7abeb0066011bee59e783ec8dcdf10c80006b8dc821778299daa55d"
+  },
+  {
+    "command": [
+      "initdb",
+      "-D",
+      "/tmp/pr13-pb-pg-bwsor5sn/data",
+      "-A",
+      "trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.4157640729990817,
+    "log": "pg-init.log",
+    "sha256": "81bedda204fa9675567e349dddccf533392f3023a05acccf579343e2b92b4386"
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/tmp/pr13-pb-pg-bwsor5sn/data",
+      "-l",
+      "/workspace/pr13-takeover/pb-equipment-20260930/pg-server.log",
+      "-o",
+      "-k /tmp/pr13-pb-pg-bwsor5sn/socket -p 55442 -c listen_addresses=''",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.11529550600062066,
+    "log": "pg-start.log",
+    "sha256": "66afd0411ccc09366e99fdd99b85f21899c8d2d064f5835126859618802153ad"
+  },
+  {
+    "command": [
+      "createdb",
+      "-h",
+      "/tmp/pr13-pb-pg-bwsor5sn/socket",
+      "-p",
+      "55442",
+      "pr13_pb"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.0647056670004531,
+    "log": "pg-create.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--logger",
+      "trx;LogFileName=server.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/pb-equipment-20260930/full-trx"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 199.9039526329998,
+    "log": "server-pg.log",
+    "sha256": "7ae97819a6ccba4f3ad4b4e68606105de9f3c1aee12c979d32d0aefde550878b"
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/tmp/pr13-pb-pg-bwsor5sn/data",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.11486481700012519,
+    "log": "pg-stop.log",
+    "sha256": "ca19178a35ab4153b75b494963b66ce8243e1b94c173107c87b44d09db23652d"
+  }
+]

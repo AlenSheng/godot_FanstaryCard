@@ -1,0 +1,1605 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "check": "actual recovered healthy M",
+      "passed": true
+    },
+    {
+      "check": "owned control extract",
+      "passed": true
+    },
+    {
+      "check": "actual A extraction in M",
+      "passed": true
+    },
+    {
+      "check": "actual Bootstrap ready M bypasses delayed GET",
+      "passed": true
+    },
+    {
+      "check": "A actual M ACK",
+      "passed": true
+    },
+    {
+      "check": "owned control enqueue-N",
+      "passed": true
+    },
+    {
+      "check": "A actual N preparation",
+      "passed": true
+    },
+    {
+      "check": "A actual N enqueue",
+      "passed": true
+    },
+    {
+      "check": "A actual READY starts new N",
+      "passed": true
+    },
+    {
+      "check": "new N retires M recovery ownership",
+      "passed": true
+    },
+    {
+      "check": "owned control callbacks-released",
+      "passed": true
+    },
+    {
+      "check": "old M response cannot clear actual N route",
+      "passed": true
+    },
+    {
+      "check": "old M callback cannot resurrect terminal context",
+      "passed": true
+    },
+    {
+      "check": "delayed actual M HTTP callback completed 200 after N",
+      "passed": true
+    },
+    {
+      "check": "owned control restart-N",
+      "passed": true
+    },
+    {
+      "check": "actual OS recovery restores N without resurrecting terminal M",
+      "passed": true
+    },
+    {
+      "check": "owned control old-B-completed",
+      "passed": true
+    },
+    {
+      "check": "healthy B completion/old room removal preserves N",
+      "passed": true
+    },
+    {
+      "check": "owned control finish",
+      "passed": true
+    }
+  ],
+  "actual_old_match_HTTP_callback_200": [
+    {
+      "attempt_no": 1,
+      "body_bytes": 73,
+      "decode_ms": 0.073,
+      "duration_ms": 82,
+      "logical_request_id": "godot-940043180401135319dbf68a03166d46",
+      "match_id": "df5457ea-eee4-4b46-b15f-666e9c9ce705",
+      "method": 2,
+      "ok": true,
+      "origin": "http://127.0.0.1:43683",
+      "path": "/api/v1/settlements/01a12c67-e72f-7bdc-87a4-db85b514bac6/acknowledge",
+      "result": "success",
+      "retry_backoff_ms": 0.0,
+      "room_context_epoch": 2,
+      "room_id": "",
+      "route": "/api/v1/settlements/{settlementId:guid}/acknowledge",
+      "session_generation": 1,
+      "status": 200,
+      "trace_id": "godot-940043180401135319dbf68a03166d46",
+      "type": "http"
+    },
+    {
+      "attempt_no": 1,
+      "body_bytes": 412,
+      "decode_ms": 0.291,
+      "duration_ms": 900,
+      "logical_request_id": "godot-d93517de214faf828bf523601b423086",
+      "match_id": "df5457ea-eee4-4b46-b15f-666e9c9ce705",
+      "method": 0,
+      "ok": true,
+      "origin": "http://127.0.0.1:43683",
+      "path": "/api/v1/settlements/01a12c67-e72f-7bdc-87a4-db85b514bac6",
+      "result": "success",
+      "retry_backoff_ms": 0.0,
+      "room_context_epoch": 2,
+      "room_id": "ab758228-e800-4bab-9a34-dbadf61dcd21",
+      "route": "/api/v1/settlements/{settlementId:guid}",
+      "session_generation": 1,
+      "status": 200,
+      "trace_id": "godot-d93517de214faf828bf523601b423086",
+      "type": "http"
+    }
+  ],
+  "actual_N_states": {
+    "running-N": {
+      "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+      "gateway_room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+      "room": {
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "config_version": "gdd-0.70-numerical-1",
+        "current_cell": {
+          "has_evacuation": false,
+          "monster_group_id": "O5",
+          "relic_pile_ids": [],
+          "relic_piles": [],
+          "spring_consumed": false
+        },
+        "legal_moves": [],
+        "map": [
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 0,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": true,
+            "row": 2
+          },
+          {
+            "column": 4,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 5,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 1,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          }
+        ],
+        "map_player_count": 4,
+        "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+        "player": {
+          "base_draw_interval_seconds": "4",
+          "battle_status": {
+            "bonuses": [
+              {
+                "key": "weapon_bonus",
+                "value": "0.06"
+              },
+              {
+                "key": "damage_Fire",
+                "value": "0.04"
+              },
+              {
+                "key": "resistance_Fire",
+                "value": "0.02"
+              }
+            ],
+            "charge_level": 0,
+            "combo": 0,
+            "core_element": "",
+            "draw_interval_seconds": "4",
+            "passive_kind": "FenXian",
+            "sets": []
+          },
+          "combat": {
+            "effective_maximum_hp": 70,
+            "hp": 70,
+            "maximum_hp": 70,
+            "shield": 0
+          },
+          "discard_count": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "draw_charge": "0",
+          "draw_speed_remaining_ms": 0,
+          "equipped_items": [
+            {
+              "equipment": {
+                "effect_affix": "",
+                "element": "Fire",
+                "is_bound": false,
+                "level": 0,
+                "quality": "White",
+                "secondary_trait": "DrawInterval",
+                "slot": "Feet"
+              },
+              "is_safe": false,
+              "item_id": "01a12c67-b1c5-719e-98ad-bde56e66c6f0",
+              "kind": "Equipment",
+              "quantity": 1
+            }
+          ],
+          "hand": [
+            {
+              "card_id": "C07",
+              "instance_id": "01a12c67-edac-7aec-8182-d4179df516fa",
+              "level": 0
+            },
+            {
+              "card_id": "C13",
+              "instance_id": "01a12c67-edac-7cb9-be16-4cd844870ce1",
+              "level": 0
+            },
+            {
+              "card_id": "C09",
+              "instance_id": "01a12c67-edac-7b6a-8a58-8a7c76b0c207",
+              "level": 0
+            }
+          ],
+          "hero_class": "Mage",
+          "inventory": [],
+          "inventory_capacity": 20,
+          "library_count": 17,
+          "numerical_state": {
+            "fenxian_policy": "CurrentRhythm",
+            "guardian_policy": "CurrentSteps",
+            "guardian_remainder_tenths": 0
+          },
+          "phase": "Pve",
+          "player_id": "01a12c67-b08c-782f-9766-5798e9e76a8d",
+          "safe_slot_indexes": [],
+          "stun_remaining_ms": 0,
+          "weapon_level": 0
+        },
+        "pve": {
+          "battle_id": "01a12c67-edbd-754e-a999-b8a705312cfe",
+          "current_target_id": "rust-rat",
+          "monsters": [
+            {
+              "boss_phase": 1,
+              "hp": 80,
+              "intent_element": "Metal",
+              "intent_kind": "Attack",
+              "intent_value": 3,
+              "interval_progress_ms": 0,
+              "maximum_hp": 80,
+              "monster_id": "rust-rat",
+              "shield": 0,
+              "stun_remaining_ms": 0,
+              "windup_remaining_ms": 0
+            }
+          ],
+          "phase": "Active"
+        },
+        "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+        "room_revision": 1,
+        "self": {
+          "column": 5,
+          "row": 4
+        }
+      },
+      "settlement": {},
+      "recovery_match_id": "",
+      "context_epoch": 3,
+      "load_epoch": 4,
+      "busy": false
+    },
+    "callbacks-observed": {
+      "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+      "gateway_room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+      "room": {
+        "_command_action": "room.snapshot.read",
+        "_command_result": "completed",
+        "_event_revision": 6,
+        "_origin_context": {
+          "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+          "origin": "http://127.0.0.1:43683",
+          "room_context_epoch": 3,
+          "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+          "session_generation": 1
+        },
+        "_replayed": false,
+        "_request_id": "c93290b5ebb808aa4f8c5977d2433a4d",
+        "_sequence": 16,
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "config_version": "gdd-0.70-numerical-1",
+        "current_cell": {
+          "has_evacuation": false,
+          "monster_group_id": "O5",
+          "relic_pile_ids": [],
+          "relic_piles": [],
+          "spring_consumed": false
+        },
+        "legal_moves": [],
+        "map": [
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 0,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": true,
+            "row": 2
+          },
+          {
+            "column": 4,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 5,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 1,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          }
+        ],
+        "map_player_count": 4,
+        "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+        "player": {
+          "base_draw_interval_seconds": "4",
+          "battle_status": {
+            "bonuses": [
+              {
+                "key": "weapon_bonus",
+                "value": "0.06"
+              },
+              {
+                "key": "damage_Fire",
+                "value": "0.04"
+              },
+              {
+                "key": "resistance_Fire",
+                "value": "0.02"
+              }
+            ],
+            "charge_level": 0,
+            "combo": 0,
+            "core_element": "",
+            "draw_interval_seconds": "4",
+            "passive_kind": "FenXian",
+            "sets": []
+          },
+          "combat": {
+            "effective_maximum_hp": 70,
+            "hp": 70,
+            "maximum_hp": 70,
+            "shield": 0
+          },
+          "discard_count": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "draw_charge": "0.125",
+          "draw_speed_remaining_ms": 0,
+          "equipped_items": [
+            {
+              "equipment": {
+                "effect_affix": "",
+                "element": "Fire",
+                "is_bound": false,
+                "level": 0,
+                "quality": "White",
+                "secondary_trait": "DrawInterval",
+                "slot": "Feet"
+              },
+              "is_safe": false,
+              "item_id": "01a12c67-b1c5-719e-98ad-bde56e66c6f0",
+              "kind": "Equipment",
+              "quantity": 1
+            }
+          ],
+          "hand": [
+            {
+              "card_id": "C07",
+              "instance_id": "01a12c67-edac-7aec-8182-d4179df516fa",
+              "level": 0
+            },
+            {
+              "card_id": "C13",
+              "instance_id": "01a12c67-edac-7cb9-be16-4cd844870ce1",
+              "level": 0
+            },
+            {
+              "card_id": "C09",
+              "instance_id": "01a12c67-edac-7b6a-8a58-8a7c76b0c207",
+              "level": 0
+            }
+          ],
+          "hero_class": "Mage",
+          "inventory": [],
+          "inventory_capacity": 20,
+          "library_count": 17,
+          "numerical_state": {
+            "fenxian_policy": "CurrentRhythm",
+            "guardian_policy": "CurrentSteps",
+            "guardian_remainder_tenths": 0
+          },
+          "phase": "Pve",
+          "player_id": "01a12c67-b08c-782f-9766-5798e9e76a8d",
+          "safe_slot_indexes": [],
+          "stun_remaining_ms": 0,
+          "weapon_level": 0
+        },
+        "pve": {
+          "battle_id": "01a12c67-edbd-754e-a999-b8a705312cfe",
+          "current_target_id": "rust-rat",
+          "monsters": [
+            {
+              "boss_phase": 1,
+              "hp": 80,
+              "intent_element": "Metal",
+              "intent_kind": "Attack",
+              "intent_value": 3,
+              "interval_progress_ms": 500,
+              "maximum_hp": 80,
+              "monster_id": "rust-rat",
+              "shield": 0,
+              "stun_remaining_ms": 0,
+              "windup_remaining_ms": 0
+            }
+          ],
+          "phase": "Active"
+        },
+        "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+        "room_revision": 6,
+        "self": {
+          "column": 5,
+          "row": 4
+        }
+      },
+      "settlement": {},
+      "recovery_match_id": "",
+      "context_epoch": 3,
+      "load_epoch": 4,
+      "busy": false
+    },
+    "recovered-N": {
+      "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+      "gateway_room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+      "room": {
+        "_command_action": "room.snapshot.read",
+        "_command_result": "completed",
+        "_event_revision": 44,
+        "_origin_context": {
+          "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+          "origin": "http://127.0.0.1:43683",
+          "room_context_epoch": 3,
+          "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+          "session_generation": 1
+        },
+        "_replayed": false,
+        "_request_id": "d07dc87164954cf89176f8d32ba20a6c",
+        "_sequence": 7,
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "config_version": "gdd-0.70-numerical-1",
+        "current_cell": {
+          "has_evacuation": false,
+          "monster_group_id": "O5",
+          "relic_pile_ids": [],
+          "relic_piles": [],
+          "spring_consumed": false
+        },
+        "legal_moves": [],
+        "map": [
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 0,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": true,
+            "row": 2
+          },
+          {
+            "column": 4,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 5,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 1,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          }
+        ],
+        "map_player_count": 4,
+        "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+        "player": {
+          "base_draw_interval_seconds": "4",
+          "battle_status": {
+            "bonuses": [
+              {
+                "key": "weapon_bonus",
+                "value": "0.06"
+              },
+              {
+                "key": "damage_Fire",
+                "value": "0.04"
+              },
+              {
+                "key": "resistance_Fire",
+                "value": "0.02"
+              }
+            ],
+            "charge_level": 0,
+            "combo": 0,
+            "core_element": "",
+            "draw_interval_seconds": "4",
+            "passive_kind": "FenXian",
+            "sets": []
+          },
+          "combat": {
+            "effective_maximum_hp": 70,
+            "hp": 67,
+            "maximum_hp": 70,
+            "shield": 0
+          },
+          "discard_count": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "draw_charge": "0.0737801750000004",
+          "draw_speed_remaining_ms": 0,
+          "equipped_items": [
+            {
+              "equipment": {
+                "effect_affix": "",
+                "element": "Fire",
+                "is_bound": false,
+                "level": 0,
+                "quality": "White",
+                "secondary_trait": "DrawInterval",
+                "slot": "Feet"
+              },
+              "is_safe": false,
+              "item_id": "01a12c67-b1c5-719e-98ad-bde56e66c6f0",
+              "kind": "Equipment",
+              "quantity": 1
+            }
+          ],
+          "hand": [
+            {
+              "card_id": "C07",
+              "instance_id": "01a12c67-edac-7aec-8182-d4179df516fa",
+              "level": 0
+            },
+            {
+              "card_id": "C13",
+              "instance_id": "01a12c67-edac-7cb9-be16-4cd844870ce1",
+              "level": 0
+            },
+            {
+              "card_id": "C09",
+              "instance_id": "01a12c67-edac-7b6a-8a58-8a7c76b0c207",
+              "level": 0
+            },
+            {
+              "card_id": "C10",
+              "instance_id": "01a12c67-edac-70c3-ad0f-d441bae8bc4d",
+              "level": 0
+            }
+          ],
+          "hero_class": "Mage",
+          "inventory": [],
+          "inventory_capacity": 20,
+          "library_count": 16,
+          "numerical_state": {
+            "fenxian_policy": "CurrentRhythm",
+            "guardian_policy": "CurrentSteps",
+            "guardian_remainder_tenths": 0
+          },
+          "phase": "Pve",
+          "player_id": "01a12c67-b08c-782f-9766-5798e9e76a8d",
+          "safe_slot_indexes": [],
+          "stun_remaining_ms": 0,
+          "weapon_level": 0
+        },
+        "pve": {
+          "battle_id": "01a12c67-edbd-754e-a999-b8a705312cfe",
+          "current_target_id": "rust-rat",
+          "monsters": [
+            {
+              "boss_phase": 1,
+              "hp": 80,
+              "intent_element": "Metal",
+              "intent_kind": "Attack",
+              "intent_value": 3,
+              "interval_progress_ms": 95,
+              "maximum_hp": 80,
+              "monster_id": "rust-rat",
+              "shield": 0,
+              "stun_remaining_ms": 0,
+              "windup_remaining_ms": 0
+            }
+          ],
+          "phase": "Active"
+        },
+        "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+        "room_revision": 44,
+        "self": {
+          "column": 5,
+          "row": 4
+        }
+      },
+      "settlement": {},
+      "recovery_match_id": "",
+      "context_epoch": 3,
+      "load_epoch": 4,
+      "busy": false
+    },
+    "old-B-observed": {
+      "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+      "gateway_room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+      "room": {
+        "_command_action": "room.snapshot.read",
+        "_command_result": "completed",
+        "_event_revision": 86,
+        "_origin_context": {
+          "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+          "origin": "http://127.0.0.1:43683",
+          "room_context_epoch": 3,
+          "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+          "session_generation": 1
+        },
+        "_replayed": false,
+        "_request_id": "faea043793fb03170ac06874285e1e8a",
+        "_sequence": 11,
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "config_version": "gdd-0.70-numerical-1",
+        "current_cell": {
+          "has_evacuation": false,
+          "monster_group_id": "O5",
+          "relic_pile_ids": [],
+          "relic_piles": [],
+          "spring_consumed": false
+        },
+        "legal_moves": [],
+        "map": [
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 1
+          },
+          {
+            "column": 0,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": true,
+            "row": 2
+          },
+          {
+            "column": 4,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 2
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 3
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 1,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 5,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 4
+          },
+          {
+            "column": 0,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 1,
+            "has_spring": true,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 2,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 3,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 4,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          },
+          {
+            "column": 5,
+            "has_spring": false,
+            "is_boss": false,
+            "row": 5
+          }
+        ],
+        "map_player_count": 4,
+        "match_id": "01a12c67-ed53-7dba-b18b-909bec294377",
+        "player": {
+          "base_draw_interval_seconds": "4",
+          "battle_status": {
+            "bonuses": [
+              {
+                "key": "weapon_bonus",
+                "value": "0.06"
+              },
+              {
+                "key": "damage_Fire",
+                "value": "0.04"
+              },
+              {
+                "key": "resistance_Fire",
+                "value": "0.02"
+              }
+            ],
+            "charge_level": 0,
+            "combo": 0,
+            "core_element": "",
+            "draw_interval_seconds": "4",
+            "passive_kind": "FenXian",
+            "sets": []
+          },
+          "combat": {
+            "effective_maximum_hp": 70,
+            "hp": 64,
+            "maximum_hp": 70,
+            "shield": 0
+          },
+          "discard_count": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "draw_charge": "0.12378017500000107",
+          "draw_speed_remaining_ms": 0,
+          "equipped_items": [
+            {
+              "equipment": {
+                "effect_affix": "",
+                "element": "Fire",
+                "is_bound": false,
+                "level": 0,
+                "quality": "White",
+                "secondary_trait": "DrawInterval",
+                "slot": "Feet"
+              },
+              "is_safe": false,
+              "item_id": "01a12c67-b1c5-719e-98ad-bde56e66c6f0",
+              "kind": "Equipment",
+              "quantity": 1
+            }
+          ],
+          "hand": [
+            {
+              "card_id": "C07",
+              "instance_id": "01a12c67-edac-7aec-8182-d4179df516fa",
+              "level": 0
+            },
+            {
+              "card_id": "C13",
+              "instance_id": "01a12c67-edac-7cb9-be16-4cd844870ce1",
+              "level": 0
+            },
+            {
+              "card_id": "C09",
+              "instance_id": "01a12c67-edac-7b6a-8a58-8a7c76b0c207",
+              "level": 0
+            },
+            {
+              "card_id": "C10",
+              "instance_id": "01a12c67-edac-70c3-ad0f-d441bae8bc4d",
+              "level": 0
+            },
+            {
+              "card_id": "MAG-03",
+              "instance_id": "01a12c67-edac-70f1-982e-245e3c505428",
+              "level": 0
+            }
+          ],
+          "hero_class": "Mage",
+          "inventory": [],
+          "inventory_capacity": 20,
+          "library_count": 15,
+          "numerical_state": {
+            "fenxian_policy": "CurrentRhythm",
+            "guardian_policy": "CurrentSteps",
+            "guardian_remainder_tenths": 0
+          },
+          "phase": "Pve",
+          "player_id": "01a12c67-b08c-782f-9766-5798e9e76a8d",
+          "safe_slot_indexes": [],
+          "stun_remaining_ms": 0,
+          "weapon_level": 0
+        },
+        "pve": {
+          "battle_id": "01a12c67-edbd-754e-a999-b8a705312cfe",
+          "current_target_id": "rust-rat",
+          "monsters": [
+            {
+              "boss_phase": 1,
+              "hp": 80,
+              "intent_element": "Metal",
+              "intent_kind": "Attack",
+              "intent_value": 3,
+              "interval_progress_ms": 95,
+              "maximum_hp": 80,
+              "monster_id": "rust-rat",
+              "shield": 0,
+              "stun_remaining_ms": 0,
+              "windup_remaining_ms": 0
+            }
+          ],
+          "phase": "Active"
+        },
+        "room_id": "01a12c67-ed53-7363-8a1f-044145e0da3e",
+        "room_revision": 86,
+        "self": {
+          "column": 5,
+          "row": 4
+        }
+      },
+      "settlement": {},
+      "recovery_match_id": "",
+      "context_epoch": 3,
+      "load_epoch": 4,
+      "busy": false
+    }
+  },
+  "complete_original_result_G_path": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-a05-healthy-64018d82c7d04d4480b0be231a723ea7\\control\\result.json",
+  "complete_original_result_sha256": "72ed60232a28376f596614c5a784ddbeb76cd58c3a9792d4cca01802f0e1a82e",
+  "complete_original_control_files_sha256": {
+    "running-N": "eabd5dad74868fa87c7f95f8b6baf94be1770ea3b89c450c060387df47e5544f",
+    "callbacks-observed": "36b41da9c24aaf451d123389ff3a5177868e590c4065ed9de50991f25a1b241f",
+    "recovered-N": "a275c651c4ceba8cc2f3d3871d7b07b73f9adcb85eb28fc11abe9426996bb0a6",
+    "old-B-observed": "c87bac2c9f4be5c680a37afd3eb40a343b43b09d4d920d53549cc52126006137"
+  }
+}

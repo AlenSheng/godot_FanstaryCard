@@ -1,0 +1,153 @@
+[
+  {
+    "case_id": "LOAD-04.2-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "accepted先到/required后到",
+    "expected": "保持accepted不重发",
+    "source_sha": "67bf90385e03952aa11cd9d5f98214c0993cc5c9",
+    "actual": {
+      "actual_load_ready_attempts": 1,
+      "actual_load_ready_successful_sends": 1,
+      "ready_send_count": 1,
+      "ready_send_after_stop": 0,
+      "observed_match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+      "observed_room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+      "active_match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "observations": [
+        {
+          "at_ms": 32147,
+          "bytes": 167,
+          "event": "original_required_held",
+          "sequence": 6
+        },
+        {
+          "at_ms": 32397,
+          "event": "actual_acceptance_applied_before_delayed_required",
+          "gateway_last_sequence": 5,
+          "gateway_ready_sends": 1,
+          "load_ready_accepted": false,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "",
+          "ready_prompt": {
+            "_event_revision": -1,
+            "_replayed": false,
+            "_request_id": "",
+            "_sequence": 5,
+            "deadline_unix_ms": 1791974733282,
+            "match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+            "room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+          },
+          "room_id": ""
+        },
+        {
+          "at_ms": 33596,
+          "event": "ordered_required_before",
+          "gateway_last_sequence": 10,
+          "gateway_ready_sends": 1,
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+          "ready_prompt": {},
+          "room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+        },
+        {
+          "at_ms": 33597,
+          "event": "ordered_required_immediate_after",
+          "gateway_last_sequence": 10,
+          "gateway_ready_sends": 1,
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+          "ready_prompt": {},
+          "room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+        },
+        {
+          "at_ms": 34813,
+          "event": "ordered_required_stable_after",
+          "gateway_last_sequence": 10,
+          "gateway_ready_sends": 1,
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+          "ready_prompt": {},
+          "room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+        }
+      ],
+      "original_held_and_delivered_binary_sha256": "f9e387ab819db305ce0c5b95e7cb075e44d16dbf6e00b323aebfbdd89c38ff2c",
+      "postgres_postconditions": {
+        "preparations": [
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 1,
+        "rooms": 1,
+        "matches": 1,
+        "match_rows": [
+          {
+            "match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+            "room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+            "status": "Completed",
+            "created_at_unix_ms": 1791974718282.796,
+            "ready_deadline_unix_ms": 1791974733282.796,
+            "observed_at_unix_ms": 1791974750063.914
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "legacy_first_frame_observer_is_not_applied_acceptance_proof": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-accepted-then-original-required-PG/independent-G-check.original.json",
+        "scope": "Exact original frame identity, actual acceptance at delivery time, same real room/SQL and stable production counters"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-accepted-then-original-required-PG/target-client.original.json",
+        "scope": "Original decoder and production load observations"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-load042-accepted-original-required-PG-alias-and-cache-custody/current-independent-G-check.original.json",
+        "scope": "Current Git source equivalence and rehashed original archive/member/CRC plus unchanged actual acceptance/send/room predicates"
+      }
+    ],
+    "scope": "Tencent actual Godot load/Gateway original decoder and full Program/Postgres. Real held required frame delivered twice after acceptance true; no reencoding or state assignments. LIVE retained.",
+    "original_canonical_case": "PR13-A04.2-T02",
+    "native_reexecution_count": 0,
+    "same_actual_native_case_reused_without_extra_sample": true
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "LOAD-11.1": {
+    "scope": "Minimal source/provenance input only; whole upstream task is still Partial and C-CI unavailable.",
+    "sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "proof": "SOURCE_PROOF.json",
+    "plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703"
+  },
+  "LOAD-06.4": {
+    "scope": "Minimal local field/time/missing/redaction contract; no claim upstream LIVE acceptance.",
+    "run_client_epoch_pid": "owned_statuses verifies exact tuple before aggregate; read_audit_events verifies archived event context.",
+    "wall_ms": "now_unix_ms/at_unix_ms in milliseconds",
+    "monotonic_ms": "started_at_monotonic_ms and local status receipt time; actual child and counterfactual clock seam documented in LOAD-01.4-T03.",
+    "unavailable_authority": "server_confirmed_in_room=null; no server authority source in OFFLINE profile. Client population stays separately named; reason recorded in exact receipt.",
+    "secrets": "Fixture argv contains only owned process identity, deterministic synthetic event fields and local evidence paths; no tokens/cookies/private keys read."
+  },
+  "dependency_semantics": "requires_before_integration约束S4/S5所需产物；测试设计和S0/S1可提前。依赖为最小子项合同，不把整个父包Accepted作为前置造成循环。"
+}

@@ -1,0 +1,174 @@
+{
+  "source_sha": "3896f6ea381551d5cad81713ae75d5b7d264432b",
+  "runtime_revision": "bf516e07a01ad4dc03320155396a152fae46e1ea",
+  "runtime_image": "sha256:246bab3c3368e431db09f5e2565d8d35b03c7bf9cf04b0b64001821aed6b8bd6",
+  "classification": "InterruptedByForwardingConnectionReset",
+  "focused_accepted": false,
+  "natural_cycles": 28,
+  "natural_cycle_target": 30,
+  "clients": [
+    {
+      "class": "Mage",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Priest",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Guardian",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Mage",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Priest",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Guardian",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Mage",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Priest",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    },
+    {
+      "class": "Guardian",
+      "cycles_completed": 1,
+      "business_error_count": 0,
+      "client_cleanup_state": "Unknown",
+      "acknowledgement_events": 1
+    },
+    {
+      "class": "Mage",
+      "cycles_completed": 3,
+      "business_error_count": 0,
+      "client_cleanup_state": "Passed",
+      "acknowledgement_events": 3
+    }
+  ],
+  "natural_acknowledgements": 28,
+  "command_rejections": 15,
+  "invalid_status_files": 0,
+  "original_result_dimensions": {
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Unknown"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "original_business_cleanup_verified": false,
+  "process_cleanup_complete": true,
+  "cloud_followup": {
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 29,
+        "ledger_rows": 28
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "cleanup": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "known_currency_reconciliation_passed": true,
+    "client_cleanup_unknown_not_relabelled": true,
+    "settlement_count_not_natural_cycles": true
+  },
+  "stopping_evidence": {
+    "ssh_log": "client_loop: send disconnect: Connection reset",
+    "health_duration_ms": 10011.1,
+    "guard_stop": [
+      "monitoring_unavailable",
+      "monitoring_unavailable"
+    ],
+    "all_triggers": [
+      "health_failed_or_over_10000ms",
+      "operator_stop_file"
+    ],
+    "no_cloud_container_restart_or_oom": true
+  },
+  "frozen_policy": {
+    "memory_floor_bytes": 500000000,
+    "per_launch_reserve_bytes": 67108864,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 10,
+    "missing_monitoring_stops_test": true
+  },
+  "owned_test_bypass": true,
+  "database_pool_and_max_connections": 256,
+  "cloud_archive": {
+    "bytes": 397366,
+    "sha256": "3fe86e5a8fb17487b2f64122d15de4e7b52e2d76cac1e8b815b5992697b6155d",
+    "files_verified": 20
+  },
+  "local_archive": {
+    "bytes": 2188404,
+    "sha256": "18d5264a012b43df27c84dc4a3e59f1cb613caf947d5e42b40358f1b12489504",
+    "files_verified": 55
+  },
+  "performance_applicable": false,
+  "capacity_accepted": false,
+  "whole_scope_accepted": false,
+  "remaining": "Fresh ten-client natural-cycle rerun, actual 50/100 capacity and other missing scoped acceptance profiles",
+  "raw_rejection_scope": {
+    "count": 15,
+    "action": "room.snapshot.read",
+    "phase": "matchmaking",
+    "final_client_error_lists_empty": true,
+    "not_relabelled_as_zero": true
+  }
+}

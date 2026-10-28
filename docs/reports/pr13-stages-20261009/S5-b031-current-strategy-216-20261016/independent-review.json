@@ -1,0 +1,158 @@
+{
+  "kind": "MAINIndependentActualDomainStrategyTwoCaseReview",
+  "passed": true,
+  "case_profiles_closed": [
+    "PR13-B03.1-T01 EXPERIMENT",
+    "PR13-B03.1-T02 EXPERIMENT"
+  ],
+  "not_closed": [
+    "PR13-B03.1-T03 EXPERIMENT"
+  ],
+  "full_task_accepted": false,
+  "actual_encounters": 216,
+  "full_encounters": 108,
+  "metamorphic_legal_play_arms": 108,
+  "actual_full_strategy_casts": 976,
+  "actual_full_preview_parity_checks": 324,
+  "same_state_contexts": 54,
+  "hidden_library_and_rng_contexts": 54,
+  "exact_repeated_full_traces": 54,
+  "outcomes": {
+    "Victory": 40,
+    "Censored": 68
+  },
+  "NoCardsSeconds_all108": 2687.200000000012,
+  "StrategyHoldSeconds_all108": 4016.400000000035,
+  "two_target_encounters_observed": 108,
+  "legal_play_attempts_passed": 1084,
+  "legal_play_attempts_total": 1084,
+  "errors": 0,
+  "skips": 0,
+  "source_files_rehashed_unchanged": 45,
+  "source_scope": "Unmodified current CombatExperience.Select/ShouldHold/Simulate, real BattleRoom/CombatResolver/CombatDeck. Local external probe is the entry point.",
+  "native_client_coverage_limit": "Godot strategy has separate implementation; no new native Godot experiment is claimed. Existing OFFLINE native cases remain their own layer.",
+  "limitations": [
+    "No full route, capacity, database, live, renderer or human claim.",
+    "68 censored full encounters retained. They are not wins, errors or evidence of a stuck game.",
+    "Only hidden library order/RNG mutated. Route and future loot are outside this Select API; no sampled future-loot injection claim.",
+    "Different generated instance GUIDs are excluded from comparisons across fresh full encounters. Ordered card ID, level, override, time, target and results compare exactly; snapshot clones retain exact GUID identity.",
+    "Wait reason/fault injection T03 remains open. No strategy-strength or statistical benefit inference from three seeds per stratum."
+  ],
+  "pointer_sha256": "d66980a8ab30476b54881745f04c0323fe3cdff93f472087697b5f68b9dafab9",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S7-load064-route-description-corrected-20261016/register.json",
+    "sha256": "e4d8a4bf76835dfbc01b2294e9c48a678218a2d12bb63894b7d8b65d15631b60"
+  },
+  "raw_and_binary_artifacts": [
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\bin\\FantasyCard.Domain\\release\\FantasyCard.Domain.dll",
+      "bytes": 522752,
+      "sha256": "172882774569022f5bf44bffe45a22970ce273e10f030d22385ee49cdc507f2d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\bin\\StrategyProbe\\release\\FantasyCard.Domain.dll",
+      "bytes": 522752,
+      "sha256": "172882774569022f5bf44bffe45a22970ce273e10f030d22385ee49cdc507f2d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\bin\\StrategyProbe\\release\\StrategyProbe.dll",
+      "bytes": 262656,
+      "sha256": "ed0c5f6476d7a9afb4513874acd3208d036dd6919a8c3eb07a263cf1f34fbde5"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\FantasyCard.Domain\\release\\FantasyCard.Domain.dll",
+      "bytes": 522752,
+      "sha256": "172882774569022f5bf44bffe45a22970ce273e10f030d22385ee49cdc507f2d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\FantasyCard.Domain\\release\\ref\\FantasyCard.Domain.dll",
+      "bytes": 132096,
+      "sha256": "59a0212c0ada175c2970f8914e4aa649ebfb5b45c9266729dbb7dabcfa37369f"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\FantasyCard.Domain\\release\\refint\\FantasyCard.Domain.dll",
+      "bytes": 132096,
+      "sha256": "59a0212c0ada175c2970f8914e4aa649ebfb5b45c9266729dbb7dabcfa37369f"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\StrategyProbe\\release\\ref\\StrategyProbe.dll",
+      "bytes": 33280,
+      "sha256": "f812e84c521f13632b8ae0b45b2480fd83a39bcde84e778d17aa9f610be82910"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\StrategyProbe\\release\\refint\\StrategyProbe.dll",
+      "bytes": 33280,
+      "sha256": "f812e84c521f13632b8ae0b45b2480fd83a39bcde84e778d17aa9f610be82910"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\artifacts\\obj\\StrategyProbe\\release\\StrategyProbe.dll",
+      "bytes": 262656,
+      "sha256": "ed0c5f6476d7a9afb4513874acd3208d036dd6919a8c3eb07a263cf1f34fbde5"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\build.original.log",
+      "bytes": 483,
+      "sha256": "95c6cb1602ce18c2265859ad93f5379ba1dd4a72f26a5779c17f4f754ae976ae"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\encounters.original.json",
+      "bytes": 755085,
+      "sha256": "7b6d9b2638a5bd506c3ad7b7b0eeea96130b13c2e06bce34e40fc585e32d2075"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\execution-intent.json",
+      "bytes": 37,
+      "sha256": "d8e8076dc5bd06ee5a8a8b0ae041e2e9ddfa3e0196532e52bd49975facf866c4"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\experiment.original.log",
+      "bytes": 516,
+      "sha256": "a234d4d78da4f77b74fdcf20d94136c3127388154e244a3a13305b30b0deada8"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\failures.original.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\metamorphic.original.json",
+      "bytes": 39955,
+      "sha256": "f6237a416ea3fcdd17bfb363f1da58b24254eb980e4449a7ba805e5a27d5bf27"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\plan.json",
+      "bytes": 1111,
+      "sha256": "c57180c38d76db8df858cecccb8123f8e2899f8b9a87a0e40fbee3dd4fbf4208"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\Probe.cs",
+      "bytes": 10604,
+      "sha256": "097c5d391618ce2fc68c816bd2455eaa654775d27919764e85fb1e201ce42a43"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\process-result.json",
+      "bytes": 259,
+      "sha256": "ae485cc8156cceac97307d55dae4692e8fcd83847823b260d7dc4fd4a62e4b24"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\restore.original.log",
+      "bytes": 445,
+      "sha256": "8b28fbe5c27f34424ad50213b264d482130d7ceaa8fdd9706286b7fcc6c544d4"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\source-manifest.json",
+      "bytes": 7345,
+      "sha256": "825c99d5c922e7d7ecc14398cd0ef936973a151ab8fcd8c496e21c76bb303790"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\StrategyProbe.csproj",
+      "bytes": 697,
+      "sha256": "88090eccb31e850ea6d2dd6a66762d6e499726870776513f2fbd504062874879"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\summary.json",
+      "bytes": 514,
+      "sha256": "fa0133eaa7aa17f7de1205c0aa4a524a7335b73223157771cfe2d8c7b6e1d1f3"
+    }
+  ]
+}

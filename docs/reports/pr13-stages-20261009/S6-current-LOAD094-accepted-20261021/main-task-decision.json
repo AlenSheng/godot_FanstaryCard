@@ -1,0 +1,118 @@
+{
+  "review_scope": "MAIN_whole_task",
+  "task_id": "LOAD-09.4",
+  "state": "Accepted",
+  "accepted_by": "MAIN",
+  "all9_required_case_profile_supports": true,
+  "new_missing_caseprofiles_closed": {
+    "LOAD-09.4-T01": [
+      "EXPERIMENT"
+    ],
+    "LOAD-09.4-T02": [
+      "EXPERIMENT",
+      "POSTGRES"
+    ],
+    "LOAD-09.4-T03": [
+      "EXPERIMENT",
+      "POSTGRES"
+    ]
+  },
+  "new5_existing4_profile_supports": true,
+  "canonical_dependencies": [
+    "LOAD-06.3",
+    "LOAD-07.4"
+  ],
+  "actual6PGmatches12actorstates150commands_R2": true,
+  "cumulative7matches13states174commands_including_failedR1": true,
+  "actualpaired_rounds": [
+    {
+      "round": 0,
+      "seed": 763001,
+      "baseline_allterminal_ms": 209.229,
+      "candidate_allterminal_ms": 205.9383,
+      "candidate_minus_baseline_ms": -3.2907000000000153,
+      "baseline_acquire_ms": 204.1549,
+      "candidate_acquire_ms": 200.6862,
+      "actual_SQL_responseBytes": 24746,
+      "actual_serialization_bytes": 39504
+    },
+    {
+      "round": 1,
+      "seed": 763101,
+      "baseline_allterminal_ms": 206.3488,
+      "candidate_allterminal_ms": 204.5916,
+      "candidate_minus_baseline_ms": -1.7572000000000116,
+      "baseline_acquire_ms": 200.6102,
+      "candidate_acquire_ms": 200.6036,
+      "actual_SQL_responseBytes": 24754,
+      "actual_serialization_bytes": 39512
+    },
+    {
+      "round": 2,
+      "seed": 763201,
+      "baseline_allterminal_ms": 205.1285,
+      "candidate_allterminal_ms": 205.0812,
+      "candidate_minus_baseline_ms": -0.047300000000007,
+      "baseline_acquire_ms": 200.6811,
+      "candidate_acquire_ms": 200.565,
+      "actual_SQL_responseBytes": 24757,
+      "actual_serialization_bytes": 39515
+    }
+  ],
+  "actualdefault_rollback_no_rows_deleted": true,
+  "NoChangeWithEvidence": {
+    "state": "NoChangeWithEvidence",
+    "reason": "no_supported_change_to_default",
+    "underlying_review": {
+      "state": "Inconclusive",
+      "reason": "Threecontrolledpairs_no_identified10ms_benefit_not_equivalence",
+      "actual_pairs": [
+        {
+          "round": 0,
+          "seed": 763001,
+          "baseline_allterminal_ms": 209.229,
+          "candidate_allterminal_ms": 205.9383,
+          "candidate_minus_baseline_ms": -3.2907000000000153,
+          "baseline_acquire_ms": 204.1549,
+          "candidate_acquire_ms": 200.6862,
+          "actual_SQL_responseBytes": 24746,
+          "actual_serialization_bytes": 39504
+        },
+        {
+          "round": 1,
+          "seed": 763101,
+          "baseline_allterminal_ms": 206.3488,
+          "candidate_allterminal_ms": 204.5916,
+          "candidate_minus_baseline_ms": -1.7572000000000116,
+          "baseline_acquire_ms": 200.6102,
+          "candidate_acquire_ms": 200.6036,
+          "actual_SQL_responseBytes": 24754,
+          "actual_serialization_bytes": 39512
+        },
+        {
+          "round": 2,
+          "seed": 763201,
+          "baseline_allterminal_ms": 205.1285,
+          "candidate_allterminal_ms": 205.0812,
+          "candidate_minus_baseline_ms": -0.047300000000007,
+          "baseline_acquire_ms": 200.6811,
+          "candidate_acquire_ms": 200.565,
+          "actual_SQL_responseBytes": 24757,
+          "actual_serialization_bytes": 39515
+        }
+      ]
+    },
+    "uncertainty_retained": true,
+    "equivalence_claim": false,
+    "production_defaults_retained": true,
+    "production_activation": false
+  },
+  "allSQLplans_caps_matched_responsebytes_same_withinpairs": true,
+  "production_diagnosis_benefit_capacity_equivalence_claims": false,
+  "source_G_members": 901,
+  "failedR1_G873_preserved": true,
+  "exactownedR1R2sourcecleaned_afterfullG": true,
+  "production_identityhealth200_unchanged": true,
+  "business_criteria_relaxed": false,
+  "whole_project_accepted": false
+}

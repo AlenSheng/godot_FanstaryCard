@@ -16,7 +16,8 @@ public sealed class RoomTransitionEventPublisherTests
         var room = CreateRoom(firstId, lateId);
         var duel = room.StartDuel(firstId, lateId, DateTimeOffset.UnixEpoch);
         var store = new RealtimeEventStore(TimeProvider.System);
-        var publisher = new RoomTransitionEventPublisher(room.Capture(), store);
+        var matchId = Guid.NewGuid();
+        var publisher = new RoomTransitionEventPublisher(room.Capture(), store, matchId: matchId);
 
         room.EndDuelWithDeath(duel.DuelId, lateId);
         var terminal = room.Capture();
@@ -34,6 +35,7 @@ public sealed class RoomTransitionEventPublisherTests
             {
                 var died = Assert.IsType<PlayerDiedEventPayload>(message.Payload);
                 Assert.Equal((lateId, "PvpDeath", duel.DuelId), (died.PlayerId, died.Cause, died.DuelId));
+                Assert.Equal((room.RoomId, matchId), (died.RoomId, died.MatchId));
             });
         Assert.All(winnerEvents.Concat(loserEvents), message => Assert.Equal(terminal.Revision, message.RoomRevision));
     }

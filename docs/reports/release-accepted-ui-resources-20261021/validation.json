@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "actual_exit": 0,
+  "candidate": "Exact base release2143 trackedclient files plus2AcceptedUI, with actual staged Git LF bytes independently rerun",
+  "tests": [
+    {
+      "result": {
+        "message": "232 card textures, 12 species, paired aliases, boss phases, five elements and texture borders",
+        "ok": true
+      },
+      "suite": "test_art.gd"
+    },
+    {
+      "result": {
+        "checks": {
+          "All ten digits have equal advance": true,
+          "Body and heading roles stay separate": true,
+          "Chinese and gameplay symbols have bundled glyphs": true,
+          "Numbers use the number role": true,
+          "Original bundled files load": true,
+          "System fallback is disabled": true
+        },
+        "message": "Bundled Chinese coverage, font roles and equal-width counters",
+        "missing_glyphs": "",
+        "ok": true
+      },
+      "suite": "test_bundled_fonts.gd"
+    },
+    {
+      "result": {
+        "message": "Card behavior and visible bundled-font labels, counters, badges, footers and fixed HUD text",
+        "ok": true
+      },
+      "suite": "test_card_view.gd"
+    },
+    {
+      "result": {
+        "message": "All shipped UI, network, state and integration scripts compile",
+        "ok": true
+      },
+      "suite": "test_native_scripts.gd"
+    }
+  ],
+  "engine_logs_clean": true,
+  "headless_Dummy_audio_maxFPS60_CREATE_NO_WINDOW_BELOW_NORMAL": true,
+  "no_login_game_world_or_PG": true,
+  "earlier_private_runner_failures_retained": "R1 assertion syntax prevented suite execution and required verified owned-process stop; R2 standalone parse lacked autoload identifier context. Private runner corrected; product resources unchanged. R3 parse/4tests/OS0/engine-clean passed. No criterion relaxed.",
+  "live_capacity_or_new_render_claim": false,
+  "actual_staged_UI_bytes_validated": true,
+  "line_ending_qualification": [
+    {
+      "path": "client/ui/deck_builder_view.gd",
+      "accepted_working_bytes_sha256": "4998ce406aa2fb251691dfefc5d69c985297748d3af997addf40170e99ffd554",
+      "release_index_sha256": "41cec5944f5af1cbb1af55c810c45bd3b00cbd3b5353382305f2c7382bf97fdc",
+      "only_Git_CRLF_to_LF": true,
+      "CRLF_lines": 362
+    },
+    {
+      "path": "client/ui/monster_pool_view.gd",
+      "accepted_working_bytes_sha256": "df1f3dd7381e45a0c49d5ddf108ec7592b8c2fd8c9ffffe3e42e481e328de365",
+      "release_index_sha256": "2f03aacde9f875f02d77eb36c8ad6a3f96bf8c451995b1ac46ebced0fb9bda0e",
+      "only_Git_CRLF_to_LF": true,
+      "CRLF_lines": 224
+    }
+  ],
+  "working_source_tests_and_staged_LF_tests_both4passed": true
+}

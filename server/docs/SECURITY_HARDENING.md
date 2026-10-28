@@ -15,7 +15,8 @@ is missing or too short. Production explicitly disables local authentication.
 
 The player API is served only through `https://relicbound.cn` and
 `https://www.relicbound.cn`. Requests sent to the origin IP receive 404.
-Port 20000 exposes the separate HTTPS management console. Restrict inbound TCP
+`https://www.relicbound.cn:20000/admin` serves the separate HTTPS management
+console with the publicly trusted domain certificate. Restrict inbound TCP
 20000 to administrator IPs in the cloud security group; the endpoint also
 requires the administrator API key.
 

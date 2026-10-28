@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified HP candidate evidence-reader guard;not new gameplay experiment",
+  "base_release": "7683751122ac5ec8f8fadf81e8eb03d43dc637db",
+  "formal_files": [
+    "tools/pr13_simulation_report.py",
+    "tools/tests/test_pr13_simulation_contracts.py"
+  ],
+  "problem": "load_run accepted8controlledinvalidHP artifacts despitevalidrawhash anddeclaredsinglefactor. RecordednonHP/shield/windup drift andnonwhitelistedcontrol differences were notcompared.",
+  "fix": "Check HP candidate onefactor/exactwhitelist metadata,pairedrecordednonHPfingerprint/shield/firstwindup,positiveopeningvalues andaggregateHPscaleupperbound;nonwhitelistedpairedrows mustequalexceptProfile. KeepErrorrows inthe reportdenominator.",
+  "cases": [
+    {
+      "id": "unchanged18",
+      "expected_accept": true,
+      "reader_accepted": true,
+      "passed": true,
+      "exception": null
+    },
+    {
+      "id": "non_HP_fingerprint_drift",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate changed a recorded non-HP input: ('Mage', 0, 'default', 'E4', 'basic', 100001)"
+    },
+    {
+      "id": "opening_shield_drift",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate changed a recorded non-HP input: ('Mage', 0, 'default', 'E4', 'basic', 100001)"
+    },
+    {
+      "id": "extra_windup_factor",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate also changed first windup: ('Mage', 0, 'default', 'E4', 'basic', 100001)"
+    },
+    {
+      "id": "nonwhitelisted_control_drift",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "Non-whitelisted HP control changed: ('Mage', 0, 'default', 'O1', 'basic', 100001)"
+    },
+    {
+      "id": "SingleFactorOnly_false",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate must declare one factor and its exact whitelist"
+    },
+    {
+      "id": "wrong_whitelist",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate must declare one factor and its exact whitelist"
+    },
+    {
+      "id": "missing_non_HP_fingerprint",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "Missing HP candidate opening-state evidence: ('Mage', 0, 'default', 'E4', 'basic', 100001)"
+    },
+    {
+      "id": "HP_not_reduced",
+      "expected_accept": false,
+      "reader_accepted": false,
+      "passed": true,
+      "exception": "HP candidate exceeds declared scaled opening HP: ('Mage', 0, 'default', 'E4', 'basic', 100001)"
+    }
+  ],
+  "baseline_invalid_artifacts_accepted": 8,
+  "candidate_invalid_artifacts_rejected": 8,
+  "unchanged18_historical_rows_accepted": true,
+  "artifact_mutations_are_controlled_copies_not_new_actual_multifactor_battles": true,
+  "unit_validation": {
+    "combined_qualified_methods": 37,
+    "simulation_methods": 33,
+    "new_methods_added": 4,
+    "initial_methods_successful_reused": 22,
+    "initial_run_testsRun": 33,
+    "initial_failure_records": 1,
+    "initial_error_records": 11,
+    "error_records_correspond_to_methods": 10,
+    "initial_failure_causes": [
+      "PrivatecopiedsourcewithoutGitmetadata causedprovenance failures",
+      "Existingtestexpectedlater unaffected_control_changed classification;newreaderrejectsearlier as invalid_run_contract"
+    ],
+    "only11_unqualified_methods_retried": 11,
+    "retry11_passed": true,
+    "additional_raw_storage_methods": 4,
+    "raw_storage4_passed": true,
+    "full_initial_stderr_not_archived": true,
+    "initial_status_review_and_SHA_exact_reconstructed_source_retained": true,
+    "final_evidence_is_combined_notonefresh37run": true
+  },
+  "historical_compatibility": {
+    "existing_completed_rows_read_only": 432000,
+    "runs": 6,
+    "original_source_SHA": "1b35004db44251a35270eb61f2eb10cfdee8d34c",
+    "all6_raw_SHA256_equal": true,
+    "HP_pairs_verified": 54000,
+    "nonwhitelisted_pairs_verified": 162000,
+    "guard_passed": true,
+    "original_archive_SHA256": "4e1919bb4ebe929eef1de7264b68ba60f33cf95807f94893d51c8d307d77592e",
+    "new_battles": 0,
+    "relabelled_as_current_runtime": false,
+    "peak_owned_RSS_bytes": 509059072,
+    "minimum_available_memory_bytes": 6282878976
+  },
+  "validation_budget": {
+    "baseline_artifact_loads": 9,
+    "candidate_artifact_loads": 9,
+    "new_Native_starts_or_game_worlds": 0,
+    "actual_battle_tests_above1000": 0,
+    "existing432000rows_only_read_never_rerun": true,
+    "local_memory_disk_5percent_preserved": true,
+    "restriction_relaxations": []
+  },
+  "source_SHA256": {
+    "tools/pr13_simulation_report.py": "704ec5c5579c00e96547a2ce36c68785122032e0867ce2fbe5c3f8919e569c4b",
+    "tools/tests/test_pr13_simulation_contracts.py": "e83bcd882a3e9a3618b1464a6df3b6bf4a1501682f92c2174ecf1a5c1e2c5ee2"
+  },
+  "evidence_SHA256": {
+    "preregistered.before-baseline.original.json": "6871ec2b6090345f84af1de34085dc4d23df307fd915b00e2279903f0d47943e",
+    "current-reader-baseline.original.json": "7cd6c0dcc42bfc1dc5ed14989c57fa132289e84a17d35de9880cd5f2dc40c227",
+    "candidate9-artifact-result.original.json": "e3574dc37a2e6884d9a4156a953868350203771a120ce7eed63594d03b766078",
+    "initial33-unit-run.failure-preserved.original.json": "9662e360575d7f29fe230d82c6661f4fd374fc67dd0fa358561dca0d953d763c",
+    "retry11-unit-result.original.json": "5a791f6e1b160156edc51df539a07e718041e7379a77dd33a4d73494d4c6a547",
+    "raw-storage4-unit-result.original.json": "53e3038950b75c274e1ec855473a56ce97105ec2276a0436b0cfcece09d97d30",
+    "historical432000-readonly-result.original.json": "8350d09508a26839071b34366d4056048868183701f2e99098313be6a7e20753",
+    "all37-methods-qualified.review.original.json": "43c18da00014aa7bb5648857a5221b8f9466342f51eda87d86ee9a30d502ab3e"
+  },
+  "existing_CI_coverage": ".github/workflows/gameplay-load.yml alreadyincludes tools/pr13_simulation_report.py andtools/tests/** andruns unittest discovery;noCI rerun/deploy requested",
+  "scope_limits": [
+    "Recorded fingerprints include monsterID/shield/attackinterval/elementalamplification/intents;unrecordedfields cannotbe provenunchanged",
+    "OnlyaggregateopeningHP available;guardchecks scaledupperbound,notexactpermonsterrounding ormissingmonsterleveldata",
+    "Explicitstatistical_fixture inputsremain synthetic;theirlabelsdo notproveactualruntime",
+    "Erroroutcomesretainfailuredenominators;theydo notestablishvalidfactorcomparisons",
+    "Derivedartifactnegativecontrols arenotnewDomainmultifactororPVP/economy/fullrouteEXPERIMENTproof",
+    "Prior432000oldsourceencountersnotrerunandrelabelled;theirbenefit/recommendationnotchanged"
+  ],
+  "new_cloud_calls_uploads_deletions_accounts_worlds_deployments": 0,
+  "production_combat_defaults_configuration_art_UI_changed": false,
+  "GDD_v070_priority_and_80over70_valid_effectiveHP_rules_unchanged": true,
+  "human_experience_in_scope": false,
+  "original716_status_bytes_preserved": true,
+  "all_local_test_code_retained": true,
+  "canonical": {
+    "tasks": 132,
+    "cases": 396,
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "unaccepted": 77,
+    "register_gate_MAIN_changed": false,
+    "canonical_promotions": 0
+  },
+  "full_B052_EXPERIMENT_profile_closed": false,
+  "whole_goal_complete": false
+}

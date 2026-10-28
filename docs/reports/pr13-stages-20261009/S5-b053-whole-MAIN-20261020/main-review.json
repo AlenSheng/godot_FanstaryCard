@@ -1,0 +1,263 @@
+{
+  "ok": true,
+  "independent_checks": 14,
+  "checks": [
+    {
+      "name": "Actual72ledger/boundary1673checks",
+      "passed": true
+    },
+    {
+      "name": "Potion27used76transferred41remain144conservation",
+      "passed": true
+    },
+    {
+      "name": "6actualsame_reward_shorter_fight_examples",
+      "passed": true
+    },
+    {
+      "name": "Actualresource/combatminute drift>5 blocked TargetedE4Hp095",
+      "passed": true
+    },
+    {
+      "name": "Actualresource/combatminute drift>5 blocked TargetedE4Hp090",
+      "passed": true
+    },
+    {
+      "name": "PVP3actualincorrectvalue Failed andBoss3hiddenBlocked",
+      "passed": true
+    },
+    {
+      "name": "Actual4context coverage singledualeliteBoss",
+      "passed": true
+    },
+    {
+      "name": "SourceobserverItemId repaired notnewgameplay",
+      "passed": true
+    },
+    {
+      "name": "102statecap200 preserved",
+      "passed": true
+    },
+    {
+      "name": "B052dependencyAccepted andexact3EXPERIMENTgaps",
+      "passed": true
+    },
+    {
+      "name": "RequiredOFFLINEandEXPERIMENTonly",
+      "passed": true
+    },
+    {
+      "name": "No globalacceptance andhumanexcluded",
+      "passed": true
+    },
+    {
+      "name": "FullGDDunchanged GDD.md",
+      "passed": true
+    },
+    {
+      "name": "FullGDDunchanged GDD_BASE_v0.69.md",
+      "passed": true
+    }
+  ],
+  "task_id": "PR13-B05.3",
+  "MAIN_candidate": "Accepted",
+  "all6_required_case_profile_supports": true,
+  "current72_actualreward_death_potion_inventory_ledgers": true,
+  "outcomes34Victory38Death_allretained": true,
+  "actual27potions_consumed76relic41bag_noGoldstuffedatentry": true,
+  "actual6same_clear_reward_shorterfight_rateincrease_pairs": true,
+  "GuardianHP095andHP090_observed_resource_combatminute_drift_gates": [
+    {
+      "profile": "TargetedE4Hp095",
+      "baseline_actual_group": {
+        "hero": "Guardian",
+        "group": "E4",
+        "profile": "Baseline",
+        "n": 3,
+        "outcomes": {
+          "Victory": 3
+        },
+        "sum_all_started_observed_combat_seconds": 1056.3000000000002,
+        "actual_gross_currency_totals": {
+          "Gold": 54,
+          "WarriorSoul": 15,
+          "ClassSoul": 6,
+          "EquipmentFragments": 21
+        },
+        "gross_currency_per_started_encounter": {
+          "Gold": 18.0,
+          "WarriorSoul": 5.0,
+          "ClassSoul": 2.0,
+          "EquipmentFragments": 7.0
+        },
+        "currency_per_observed_combat_minute_all_outcomes": {
+          "Gold": 3.067310423175234,
+          "WarriorSoul": 0.8520306731042316,
+          "ClassSoul": 0.34081226924169267,
+          "EquipmentFragments": 1.1928429423459241
+        },
+        "actual_potion_consumed": 2,
+        "actual_potion_transferred_to_relic": 0,
+        "not_travel_or_choice_or_wallet_efficiency": true
+      },
+      "candidate_actual_group": {
+        "hero": "Guardian",
+        "group": "E4",
+        "profile": "TargetedE4Hp095",
+        "n": 3,
+        "outcomes": {
+          "Victory": 3
+        },
+        "sum_all_started_observed_combat_seconds": 1004.3000000000001,
+        "actual_gross_currency_totals": {
+          "Gold": 54,
+          "WarriorSoul": 15,
+          "ClassSoul": 6,
+          "EquipmentFragments": 21
+        },
+        "gross_currency_per_started_encounter": {
+          "Gold": 18.0,
+          "WarriorSoul": 5.0,
+          "ClassSoul": 2.0,
+          "EquipmentFragments": 7.0
+        },
+        "currency_per_observed_combat_minute_all_outcomes": {
+          "Gold": 3.226127651100269,
+          "WarriorSoul": 0.8961465697500747,
+          "ClassSoul": 0.35845862790002986,
+          "EquipmentFragments": 1.2546051976501045
+        },
+        "actual_potion_consumed": 2,
+        "actual_potion_transferred_to_relic": 0,
+        "not_travel_or_choice_or_wallet_efficiency": true
+      },
+      "observed_gold_per_combatminute_relative_drift": 0.05177735736333777,
+      "current_policy_decision": {
+        "state": "Blocked",
+        "reason": "strength_or_economy_drift_requires_review",
+        "point_improvement": 0,
+        "improvement_interval95": [
+          0,
+          0
+        ],
+        "holm_adjusted_p": {
+          "declared_noninferential_control": 1.0
+        },
+        "drifts": {
+          "resources_per_minute": 0.05177735736333777
+        },
+        "risk_drift": {
+          "resources_per_minute": 0.05177735736333777
+        },
+        "production_defaults_retained": true,
+        "production_activation": false,
+        "capacity_acceptance": false,
+        "human_experience_acceptance": false
+      },
+      "noninferential_guard_parameters_not_pvalue_CI": true,
+      "no_drop_or_price_compensation": true
+    },
+    {
+      "profile": "TargetedE4Hp090",
+      "baseline_actual_group": {
+        "hero": "Guardian",
+        "group": "E4",
+        "profile": "Baseline",
+        "n": 3,
+        "outcomes": {
+          "Victory": 3
+        },
+        "sum_all_started_observed_combat_seconds": 1056.3000000000002,
+        "actual_gross_currency_totals": {
+          "Gold": 54,
+          "WarriorSoul": 15,
+          "ClassSoul": 6,
+          "EquipmentFragments": 21
+        },
+        "gross_currency_per_started_encounter": {
+          "Gold": 18.0,
+          "WarriorSoul": 5.0,
+          "ClassSoul": 2.0,
+          "EquipmentFragments": 7.0
+        },
+        "currency_per_observed_combat_minute_all_outcomes": {
+          "Gold": 3.067310423175234,
+          "WarriorSoul": 0.8520306731042316,
+          "ClassSoul": 0.34081226924169267,
+          "EquipmentFragments": 1.1928429423459241
+        },
+        "actual_potion_consumed": 2,
+        "actual_potion_transferred_to_relic": 0,
+        "not_travel_or_choice_or_wallet_efficiency": true
+      },
+      "candidate_actual_group": {
+        "hero": "Guardian",
+        "group": "E4",
+        "profile": "TargetedE4Hp090",
+        "n": 3,
+        "outcomes": {
+          "Victory": 3
+        },
+        "sum_all_started_observed_combat_seconds": 964.3000000000001,
+        "actual_gross_currency_totals": {
+          "Gold": 54,
+          "WarriorSoul": 15,
+          "ClassSoul": 6,
+          "EquipmentFragments": 21
+        },
+        "gross_currency_per_started_encounter": {
+          "Gold": 18.0,
+          "WarriorSoul": 5.0,
+          "ClassSoul": 2.0,
+          "EquipmentFragments": 7.0
+        },
+        "currency_per_observed_combat_minute_all_outcomes": {
+          "Gold": 3.3599502229596596,
+          "WarriorSoul": 0.9333195063776832,
+          "ClassSoul": 0.3733278025510733,
+          "EquipmentFragments": 1.3066473089287565
+        },
+        "actual_potion_consumed": 2,
+        "actual_potion_transferred_to_relic": 0,
+        "not_travel_or_choice_or_wallet_efficiency": true
+      },
+      "observed_gold_per_combatminute_relative_drift": 0.09540599398527427,
+      "current_policy_decision": {
+        "state": "Blocked",
+        "reason": "strength_or_economy_drift_requires_review",
+        "point_improvement": 0,
+        "improvement_interval95": [
+          0,
+          0
+        ],
+        "holm_adjusted_p": {
+          "declared_noninferential_control": 1.0
+        },
+        "drifts": {
+          "resources_per_minute": 0.09540599398527427
+        },
+        "risk_drift": {
+          "resources_per_minute": 0.09540599398527427
+        },
+        "production_defaults_retained": true,
+        "production_activation": false,
+        "capacity_acceptance": false,
+        "human_experience_acceptance": false
+      },
+      "noninferential_guard_parameters_not_pvalue_CI": true,
+      "no_drop_or_price_compensation": true
+    }
+  ],
+  "actualPVP3HPminus1faults_expectedFailed_not_productbug_orHPcapclaim": true,
+  "actualBoss3phase1to2_noopmirror_and3hiddenprojection_faultsBlocked": true,
+  "machine_information_visibility_not_human_readability": true,
+  "domain_run_inventory_not_PG_warehouse_paidbag_market_or_fullcycleprofit": true,
+  "no_new_bootstrap_or_primaryefficacyrecommendation": true,
+  "current_policy_SHA": "d1a326636d63d9d6d6c48f4fbe2eebbb92c33df5ad72624a0ba2dbf847714f22",
+  "current_source_config_prices_drops_unchanged": true,
+  "audit_first_wrongfield_source_kept_fixed_actualtypedcontract_no_native_rerun": true,
+  "new102of200states_otherbudgets_unchanged": true,
+  "newUI_Godot_cloud_DB0": true,
+  "business_criteria_relaxed": false,
+  "whole_project_accepted": false
+}

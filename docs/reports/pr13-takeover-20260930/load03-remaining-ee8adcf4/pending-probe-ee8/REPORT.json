@@ -1,0 +1,252 @@
+{
+  "runtime_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "harness_source_external": true,
+  "aggregate_helper_source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "aggregate_helper_sha256": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+  "command": [
+    "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/pr13-takeover/load03-remaining-ee8adcf4/pending-probe-ee8/fixture",
+    "--script",
+    "res://probe.gd"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.3660030364990234,
+  "source_proof": [
+    {
+      "path": "client/network/gateway.gd",
+      "sha256": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+      "matches_f812": true
+    },
+    {
+      "path": "client/network/http_protocol.gd",
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205",
+      "matches_f812": true
+    },
+    {
+      "path": "client/network/protobuf.gd",
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3",
+      "matches_f812": true
+    },
+    {
+      "path": "client/network/reusable_http_client.gd",
+      "sha256": "c2ff3d069e9f4815059297dc570983857ffb4ee415548bbcf5409f03c9873424",
+      "matches_f812": true
+    },
+    {
+      "path": "client/data/http_endpoints.json",
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482",
+      "matches_f812": true
+    },
+    {
+      "path": "client/data/http_schema.json",
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff",
+      "matches_f812": true
+    },
+    {
+      "path": "client/data/realtime_schema.json",
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b",
+      "matches_f812": true
+    }
+  ],
+  "actual_server_requests": [
+    {
+      "path": "/api/v1/client-info",
+      "started_monotonic": 28818.335566773,
+      "pending": false
+    },
+    {
+      "path": "/api/v1/client-info?pending=1",
+      "started_monotonic": 28818.35557342,
+      "pending": true
+    }
+  ],
+  "paused_actual": {
+    "first_ok": true,
+    "harness_invocations_finished": 1,
+    "harness_invocations_started": 2,
+    "production_pending_http": 1,
+    "production_pending_origins": 1,
+    "samples": [
+      {
+        "attempt_no": 1,
+        "body_bytes": 25,
+        "connection_reused": false,
+        "cycle_id": "M-cycle",
+        "decode_ms": 0.0,
+        "duration_ms": 22,
+        "logical_request_id": "godot-a0460a92efc8e88394537fb5acc97bb2",
+        "match_id": "",
+        "method": 0,
+        "ok": true,
+        "origin": "http://127.0.0.1:44585",
+        "phase": "playing",
+        "result": "success",
+        "retry_backoff_ms": 0.0,
+        "room_id": "",
+        "route": "/api/v1/client-info",
+        "session_generation": 0,
+        "status": 200,
+        "trace_id": "godot-a0460a92efc8e88394537fb5acc97bb2",
+        "type": "http_attempt"
+      },
+      {
+        "attempt_no": 1,
+        "body_bytes": 25,
+        "cycle_id": "M-cycle",
+        "decode_ms": 0.0,
+        "duration_ms": 22,
+        "logical_request_id": "godot-a0460a92efc8e88394537fb5acc97bb2",
+        "match_id": "",
+        "method": 0,
+        "ok": true,
+        "origin": "http://127.0.0.1:44585",
+        "path": "/api/v1/client-info",
+        "phase": "playing",
+        "result": "success",
+        "retry_backoff_ms": 0.0,
+        "room_id": "",
+        "route": "/api/v1/client-info",
+        "session_generation": 0,
+        "status": 200,
+        "trace_id": "godot-a0460a92efc8e88394537fb5acc97bb2",
+        "type": "http"
+      }
+    ]
+  },
+  "paused_production_aggregate": {
+    "http": {
+      "count": 1,
+      "min_ms": 22,
+      "mean_ms": 22.0,
+      "max_ms": 22,
+      "p50_ms": 22,
+      "p95_ms": 22,
+      "p99_ms": 22
+    },
+    "steady_http": {
+      "count": 1,
+      "min_ms": 22,
+      "mean_ms": 22.0,
+      "max_ms": 22,
+      "p50_ms": 22,
+      "p95_ms": 22,
+      "p99_ms": 22
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {
+      "playing": {
+        "count": 1,
+        "min_ms": 22,
+        "mean_ms": 22.0,
+        "max_ms": 22,
+        "p50_ms": 22,
+        "p95_ms": 22,
+        "p99_ms": 22
+      }
+    },
+    "error_count": 0,
+    "sample_count": 1,
+    "logical_request_count": 1,
+    "cancelled_count": 0,
+    "all_attempt_count": 1,
+    "attempt_coverage": "measured",
+    "attempt_result_counts": {
+      "success": 1
+    },
+    "valid_attempt_latency_count": 1,
+    "valid_latency_count": 1,
+    "latency_sample_quality": {
+      "http": "insufficient",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 1,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "final_production_aggregate": {
+    "http": {
+      "count": 2,
+      "min_ms": 22,
+      "mean_ms": 304.0,
+      "max_ms": 586,
+      "p50_ms": 22,
+      "p95_ms": 586,
+      "p99_ms": 586
+    },
+    "steady_http": {
+      "count": 2,
+      "min_ms": 22,
+      "mean_ms": 304.0,
+      "max_ms": 586,
+      "p50_ms": 22,
+      "p95_ms": 586,
+      "p99_ms": 586
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {
+      "playing": {
+        "count": 2,
+        "min_ms": 22,
+        "mean_ms": 304.0,
+        "max_ms": 586,
+        "p50_ms": 22,
+        "p95_ms": 586,
+        "p99_ms": 586
+      }
+    },
+    "error_count": 0,
+    "sample_count": 2,
+    "logical_request_count": 2,
+    "cancelled_count": 0,
+    "all_attempt_count": 2,
+    "attempt_coverage": "measured",
+    "attempt_result_counts": {
+      "success": 2
+    },
+    "valid_attempt_latency_count": 2,
+    "valid_latency_count": 2,
+    "latency_sample_quality": {
+      "http": "insufficient",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 2,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "LOAD03_3_full_criterion": "started=each mutually exclusive terminal+pending; expose success/rejection/timeout/cancelled/decode_error/pending separately",
+  "contract_gap_verified": true,
+  "late_origin_preserved": true,
+  "pending_count_exposed_by_production_aggregate": false,
+  "classification": "Reproduced acceptance accounting gap; not an asset/business failure; production remains unchanged",
+  "Accepted": false
+}

@@ -1,0 +1,215 @@
+{
+  "kind": "MAINIndependentActualProfileBoundaryThreeCaseReview",
+  "three_case_profiles_passed": true,
+  "cases": [
+    {
+      "case_id": "PR13-B03.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "actual_new_encounters": 12,
+        "six_paired_positive_controls": [
+          {
+            "candidate": "outer-o6-hp085",
+            "seed": 202610170,
+            "baseline_observed_seconds": 44.1,
+            "candidate_observed_seconds": 37.300000000000004,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 70
+          },
+          {
+            "candidate": "outer-o6-hp085",
+            "seed": 202610171,
+            "baseline_observed_seconds": 44.5,
+            "candidate_observed_seconds": 36.5,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 70
+          },
+          {
+            "candidate": "outer-o6-hp085",
+            "seed": 202610172,
+            "baseline_observed_seconds": 38.9,
+            "candidate_observed_seconds": 32.1,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 70
+          },
+          {
+            "candidate": "outer-o6-hp090",
+            "seed": 202610170,
+            "baseline_observed_seconds": 44.1,
+            "candidate_observed_seconds": 37.300000000000004,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 74
+          },
+          {
+            "candidate": "outer-o6-hp090",
+            "seed": 202610171,
+            "baseline_observed_seconds": 44.5,
+            "candidate_observed_seconds": 36.5,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 74
+          },
+          {
+            "candidate": "outer-o6-hp090",
+            "seed": 202610172,
+            "baseline_observed_seconds": 38.9,
+            "candidate_observed_seconds": 35.300000000000004,
+            "baseline_enemy_hp": 84,
+            "candidate_enemy_hp": 74
+          }
+        ],
+        "capacity_guard_on_actual_inputs": [
+          {
+            "actual_cohort": "outer-o6-hp085",
+            "baseline_service_inputs": {
+              "source_config_hash": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+              "request_mix_hash": null,
+              "effective_limit_hash": null,
+              "window_seconds": 60,
+              "n": 3,
+              "request_rate": null,
+              "error_rate": null,
+              "p95_ms": null,
+              "load_passed": false,
+              "gameplay_profile": "Baseline"
+            },
+            "candidate_service_inputs": {
+              "source_config_hash": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+              "request_mix_hash": null,
+              "effective_limit_hash": null,
+              "window_seconds": 60,
+              "n": 3,
+              "request_rate": null,
+              "error_rate": null,
+              "p95_ms": null,
+              "load_passed": false,
+              "gameplay_profile": "outer-o6-hp085"
+            },
+            "review": {
+              "state": "DiagnosticOnly",
+              "mismatched_inputs": [
+                "request_mix_hash",
+                "gameplay_profile",
+                "effective_limit_hash"
+              ],
+              "performance_acceptance": false
+            },
+            "encounter_seconds_not_used_as_service_latency": true
+          },
+          {
+            "actual_cohort": "outer-o6-hp090",
+            "baseline_service_inputs": {
+              "source_config_hash": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+              "request_mix_hash": null,
+              "effective_limit_hash": null,
+              "window_seconds": 60,
+              "n": 3,
+              "request_rate": null,
+              "error_rate": null,
+              "p95_ms": null,
+              "load_passed": false,
+              "gameplay_profile": "Baseline"
+            },
+            "candidate_service_inputs": {
+              "source_config_hash": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+              "request_mix_hash": null,
+              "effective_limit_hash": null,
+              "window_seconds": 60,
+              "n": 3,
+              "request_rate": null,
+              "error_rate": null,
+              "p95_ms": null,
+              "load_passed": false,
+              "gameplay_profile": "outer-o6-hp090"
+            },
+            "review": {
+              "state": "DiagnosticOnly",
+              "mismatched_inputs": [
+                "request_mix_hash",
+                "gameplay_profile",
+                "effective_limit_hash"
+              ],
+              "performance_acceptance": false
+            },
+            "encounter_seconds_not_used_as_service_latency": true
+          }
+        ]
+      },
+      "scope": "Actual isolated currentDomain HP85/HP90 candidates are shorter for selected positive-control seeds. Only diagnostic gameplay observation; missing service metrics remain null and actual changed gameplay profile prevents capacity/performance acceptance. Not confirmatory strength evidence."
+    },
+    {
+      "case_id": "PR13-B03.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "immutable_original_full_encounters": 108,
+        "frozen_context_repeated_ordered_trace_pairs": 54,
+        "samples_and_full_ordered_actions_equal": true,
+        "current_source_files_rehashed": 45,
+        "old_data_rerun": false,
+        "prior_outcomes_kept": {
+          "Victory": 40,
+          "Censored": 68
+        }
+      },
+      "scope": "Independent exact recomparison of immutable actual Domain full ordered trace pairs under same frozen context/seed/plan, current source equivalence. No new nativeGodot or all future profiles replay claim."
+    },
+    {
+      "case_id": "PR13-B03.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "actual_candidate_source_signature_only_difference": "Candidate",
+        "actual_HP90_rows_claimed_HP85_identity_rejected": true,
+        "rejection": "Undeclared stratum: ('Mage', 0, 'default', 'O6', 'baseline_all_hand', 'TargetedO6Hp090')",
+        "mixed_actual_HP85_HP90_report_rejected": true,
+        "originals_unchanged": true
+      },
+      "scope": "Production evidence guard rejects derived false old identity on actual changed-rule records and refuses pooling actual cohorts. This is report/profile consistency,not a server hot-change test or cryptographic protection against rewriting both data and metadata."
+    }
+  ],
+  "actual_new_encounters": 12,
+  "whole_task_accepted": false,
+  "remaining_scope": [
+    "B03.3 dependency remains Partial; current main full experiment design must be reviewed before whole-task acceptance."
+  ],
+  "cohort_signatures_only_candidate_differs": true,
+  "cohort_original_hashes_unchanged": {
+    "outer-o6-hp085": {
+      "encounters.jsonl": "14d6fcc4b9974bd2f26d6b780529e30c7600936a3618cc499f67e7a6705aed79",
+      "manifest.json": "03de8cfc6876e43f3ef70e255487f9b60f11f19c0b8a3ed507af97df049d7bed",
+      "summary.json": "feface0621e0cc6631d2eb7230cfebf1f5aa0f043cb2cb58a175a3f4cbd3bf76"
+    },
+    "outer-o6-hp090": {
+      "encounters.jsonl": "00ee067c1608bc0d8116c18348a45a96effcea723ce1b365659460bb6ddb3d10",
+      "manifest.json": "67924f417117518d4f8cb20e8cc4bfd5af7db9afdc211e65a954a7edc60069ce",
+      "summary.json": "442148603f4c32acca647a314058458173ac649b10e6607cc772908e3fa09126"
+    }
+  },
+  "T02_original_trace_raw_sha256": "7b6d9b2638a5bd506c3ad7b7b0eeea96130b13c2e06bce34e40fc585e32d2075",
+  "T02_original_plan_sha256": "c57180c38d76db8df858cecccb8123f8e2899f8b9a87a0e40fbee3dd4fbf4208",
+  "positive_control_seed_selection_disclosed": "Known winning baseline seeds selected after earlier study to demonstrate a counterexample,not confirmatory sampling or a new candidate recommendation.",
+  "service_metrics_unavailable_not_fabricated": true,
+  "production_defaults_activated": false,
+  "source_upload_bytes": 0,
+  "all_jobs_terminal": true,
+  "scope_limits": [
+    "Two separately frozen actual candidate cohorts, each3baseline+3candidate, no natural/PG/LIVE/capacity/render/human inference.",
+    "Actual monster totalHP84→70/74 is deliberate isolated candidate scaling,not a player maximumHP or legalPriest80/70 display anomaly.",
+    "The broad profile case does not upgrade natural lifecycle or capacity workload evidence; current metric/route scopes remain separate."
+  ],
+  "pointer_sha256": "4da0ada5f71baaf4987122f79c26dbf3af955621e70aeabd195666ed855f04c7",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-b033-two-profiles-dependency-partial-20261017/register.json",
+    "sha256": "32eb04409c558690e57d48fa91a3933c64136f7dbddb004187ef7d071a6b066f"
+  }
+}

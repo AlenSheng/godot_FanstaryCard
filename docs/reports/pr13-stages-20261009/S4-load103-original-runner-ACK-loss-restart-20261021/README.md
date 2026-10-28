@@ -1,0 +1,15 @@
+# 已落库ACK响应丢失结合真实强杀重启：补T02 LIVE，整项仍Partial
+
+依照CLIENT_INTEGRATION的同键重试、首次acknowledgedAt和确认不重复提交资产约定，本轮用当前2147客户端／64475511驱动、8eb真实Program／49ce配置与隔离PG，经未包裹的gameplay_load_test.py原入口实际启动4个Native，完成1个functional-cycles周期。前三个ACK正常转发；第4个不同逻辑ACK取得真实后端200并保存原始73字节响应后，代理暂不向客户端交付。宿主实查4份receipt均已确认、4条幂等ACK已落库，才通过精确Popen句柄SIGKILL当前容器内PID6，实际退出-9；同DLL／环境／PG启动新PID130并实查health200与configVersion一致。宿主确认receipt／ACK／资产行前后相同后，代理关闭目标响应连接，向客户端交付0字节。
+
+目标Native第一次实际传输失败status0、耗时4285毫秒，使用原幂等键第二次真实请求status200、耗时83毫秒。重启Program回放字节与首次实际响应完全一致，同一settlementId和首次确认时间；wire／持久幂等JSON的100ns时间完全一致，PG的6位小数时间仅按小于1微秒精度差核对。没有把协议7位时间误作异常，也没有重写原始数据。原始主程序退出0，4个Native均1周期、errors0、cleanup Passed、引擎无退出资源泄漏；全部原始审计分片字节、序号和归属完整。真实DB为1个世界／4玩家／成员／receipt／ACK，各份只1条对应幂等记录。65项独立核对通过。
+
+重启前、重启后且尚未放行客户端重试、以及最终三次数据库快照中，receipt4、ACK4、wallet4、materials4全部行精确一致；hold／ledger／equipment／movement均为0且保持0。这里证明实际ACK恢复和这些真实资产行没有重复变化，不声称覆盖非零资产转移。强杀明确发生在已验证ACK事务提交后，不推断任意尚未落盘战斗命令ACK后的零丢失，也没有重启数据库或整容器。
+
+独立核对脚本首次使用不存在的attempt_count字段，按现有gateway源码改为逻辑HTTP终态的attempt_no；旧脚本与错误说明保留。修正工具首次默认GBK读取UTF8源码失败，随后从字节一致的备份恢复修正。这些是观察工具错误，实际Native和原始主程序运行没有失败、没有重跑，没有改断言或放宽判定。本地另有明确HTTPecho假后端和手动放行的工具校验，不能算LIVE、PG或实际重启证据。
+
+新增1实际世界／4身份／4玩家周期、1次隔离Program重启；加此前T01为本轮次两项共2世界／8周期，所有历史LOAD103、LOAD101／102预算和失败继续保留。原限流auth10／write30／read120／RT30未提高，500MB／5percent只是功能资源底线，不能视为容量/SLO通过。主程序使用共享宿主诊断，不向它替换旧服务PID；真实旧／新进程和Program/controller指标原件分别保存。应用1024MiB／CPU1.25，PG384MiB／CPU0.25，数据临时512MiB／WAL64，无host端口或生产volume。本地无Godot／PG／玩法启动，不占焦点或输入。
+
+591成员原件、源码与观察器经G SHA／CRC封存，完整2147客户端引用已有G3042中的2145同源文件及2份当前覆盖。随后核对103包文件、2147客户端SHA、owner、unit PID0／inactive、自有容器消失及生产身份／环境hash和health200，精确清理临时云输入。云raw、完整PG dump、本地源、共享缓存和G保留。未改产品玩法、数值／合法70/80血量、协议、UI或原断言，无Git提交／合并／推送及生产部署。
+
+只补LOAD-10.3-T02 LIVE。仍缺T01/T02/T03容量与T03全阶段STOP的LIVE／POSTGRES。88 Accepted／36 Partial／8 Ready、44未整体验收保持，case/profile缺口165降为164，其他131任务与全局门不变。下一步先按原件核对已完成LOAD053停止矩阵可复用的当前阶段，缺失阶段再补跑。

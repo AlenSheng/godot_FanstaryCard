@@ -1,0 +1,22 @@
+{
+  "kind": "A094T01R3ExplicitKnownAudioExitDrainFromCurrentDriver",
+  "R1_R2_failed_kept": true,
+  "R2_native_all18_physical_checks_correct_but_pipeline_failed_audio_exit": true,
+  "actual_R2_verbose_leaks": [
+    "AudioStreamMP3 Crown_of_Blackened_Glass.mp3",
+    "AudioStreamWAV ambience_hall.wav",
+    "their two playback refs"
+  ],
+  "fix": "Reuse existing gameplay_load_client._prepare_audio_exit public Sound methods and150ms+2frame retirement before process exit; no audio service/product edits",
+  "Root2147_sources_unchanged": true,
+  "new_render_rows": 18,
+  "cumulative_render_rows": 54,
+  "source_audio_helper": {
+    "path": "client/tests/gameplay_load_client.gd",
+    "sha256": "9babe9bbcaaf5d9e8e59b7a037870b7338fbb82d0d0b4c618d9b4631b464496a"
+  },
+  "no_local_GUI_render_input": true,
+  "no_Gameplay_UID_PG": true,
+  "criteria_relaxed": false,
+  "both_native_stdout_and_engine_log_must_be_clean": true
+}

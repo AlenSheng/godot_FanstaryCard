@@ -1,0 +1,1932 @@
+{
+  "sha256": "9938368bcf5d8dd5a5f87612a0d276f811bcdd25174094c77ec789131af006d9",
+  "messages": {
+    "ClientEnvelope": {
+      "1": {
+        "name": "protocol_version",
+        "type": "uint32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "type",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "request_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "expected_revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "payload",
+        "type": "bytes",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ServerEnvelope": {
+      "1": {
+        "name": "protocol_version",
+        "type": "uint32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "type",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "trace_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "payload",
+        "type": "bytes",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "event_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "sequence",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "occurred_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "request_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "room_revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "SessionResumeCommand": {
+      "1": {
+        "name": "last_sequence",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "room_revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "SessionConnectedEvent": {
+      "1": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SessionReplacedEvent": {
+      "1": {
+        "name": "reason",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "PongEvent": {
+      "1": {
+        "name": "server_time_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SessionSnapshotEvent": {
+      "1": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "player_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "selected_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "reason",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "previous_last_sequence",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MatchFoundEvent": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "deadline_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomReadyCommand": {},
+    "RoomReadyRequiredEvent": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "deadline_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "ready_players",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "required_players",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomReadyAcceptedEvent": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "deadline_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "ready_players",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "required_players",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomReadyRemovedEvent": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "reason",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSnapshotCommand": {},
+    "RoomPosition": {
+      "1": {
+        "name": "row",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "column",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomMapCell": {
+      "1": {
+        "name": "row",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "column",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "is_boss",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "has_spring",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomCard": {
+      "1": {
+        "name": "instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "card_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "element_override",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RoomCombatant": {
+      "1": {
+        "name": "hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "maximum_hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "effective_maximum_hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "shield",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomStat": {
+      "1": {
+        "name": "key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "value",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSet": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "required",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "active",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomBattleStatus": {
+      "1": {
+        "name": "passive_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "combo",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "core_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "bonuses",
+        "type": "RoomStat",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "sets",
+        "type": "RoomSet",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "draw_interval_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "charge_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomEquipment": {
+      "1": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "is_bound",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomInventoryItem": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "is_safe",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "equipment",
+        "type": "RoomEquipment",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "slot_index",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RoomRelicPile": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "owner_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "items",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomMonster": {
+      "1": {
+        "name": "monster_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "maximum_hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "shield",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "intent_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "intent_value",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "intent_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "interval_progress_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "windup_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "boss_phase",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomPve": {
+      "1": {
+        "name": "battle_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "phase",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "current_target_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "monsters",
+        "type": "RoomMonster",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomDuel": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "opponent_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "opponent",
+        "type": "RoomCombatant",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "late_player_unlock_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "leave_window_ends_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "self_requested_leave",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "escape_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "opponent_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "opponent_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "escape_probability",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "opponent_status",
+        "type": "RoomBattleStatus",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "opponent_stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "opponent_draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "separate_loot",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "searchable_loot",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomCurrentCell": {
+      "1": {
+        "name": "has_evacuation",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "monster_group_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "spring_consumed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "relic_pile_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "relic_piles",
+        "type": "RoomRelicPile",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomPlayer": {
+      "1": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "phase",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "combat",
+        "type": "RoomCombatant",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "hand",
+        "type": "RoomCard",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "library_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "discard_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "draw_charge",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "inventory",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
+      },
+      "10": {
+        "name": "inventory_capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "safe_slot_indexes",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      },
+      "12": {
+        "name": "equipped_items",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
+      },
+      "13": {
+        "name": "weapon_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "battle_status",
+        "type": "RoomBattleStatus",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "draw_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "draw_block_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "base_draw_interval_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "20": {
+        "name": "monster_pool",
+        "type": "RoomMonsterPool",
+        "repeated": false,
+        "optional": false
+      },
+      "21": {
+        "name": "numerical_state",
+        "type": "RoomNumericalState",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSnapshotEvent": {
+      "1": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "room_revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "self",
+        "type": "RoomPosition",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "map",
+        "type": "RoomMapCell",
+        "repeated": true,
+        "optional": false
+      },
+      "7": {
+        "name": "legal_moves",
+        "type": "RoomPosition",
+        "repeated": true,
+        "optional": false
+      },
+      "8": {
+        "name": "current_cell",
+        "type": "RoomCurrentCell",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "player",
+        "type": "RoomPlayer",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "pve",
+        "type": "RoomPve",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "duel",
+        "type": "RoomDuel",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "reward_choice",
+        "type": "RewardChoiceEvent",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "extraction_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "spring_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "allowed_actions",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "16": {
+        "name": "map_player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomStartedEvent": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "snapshot",
+        "type": "RoomSnapshotEvent",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementReadyEvent": {
+      "1": {
+        "name": "settlement_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "result",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CommandRejectedEvent": {
+      "1": {
+        "name": "code",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "detail",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "BattlePlayCardsCommand": {
+      "1": {
+        "name": "battle_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "target_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "card_instance_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "BattleComboResolvedEvent": {
+      "1": {
+        "name": "battle_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "attacker_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "target_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "shield_damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "hp_damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "heal",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "shield_gain",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "target_defeated",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "battle_ended",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "damage_segments",
+        "type": "CombatDamageSegment",
+        "repeated": true,
+        "optional": false
+      },
+      "12": {
+        "name": "core_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "core_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "stun_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "draw_block_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "health_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "draw_charge",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "immediate_draw",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "card_instance_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "20": {
+        "name": "source_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "21": {
+        "name": "draw_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "22": {
+        "name": "draw_speed_modifier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "23": {
+        "name": "draw_block_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "24": {
+        "name": "resonance_multiplier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "25": {
+        "name": "conflict_pair_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "26": {
+        "name": "conflict_cancellation",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CombatDamageSegment": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "amount",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "BattleSelectTargetCommand": {
+      "1": {
+        "name": "battle_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "target_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "BattleAbandonCommand": {},
+    "BattleTargetSelectedEvent": {
+      "1": {
+        "name": "battle_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "target_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RewardChoiceRefreshCommand": {},
+    "RewardChoiceClaimCommand": {
+      "1": {
+        "name": "option_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "replace_item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equip",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RewardChoiceOption": {
+      "1": {
+        "name": "option_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "heal_percent",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "equipment",
+        "type": "RoomEquipment",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RewardChoiceEvent": {
+      "1": {
+        "name": "layer",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "options",
+        "type": "RewardChoiceOption",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "refresh_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "is_boss",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RewardChoiceClaimedEvent": {
+      "1": {
+        "name": "option_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "applied",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomMovedEvent": {
+      "1": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "row",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "column",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelLeaveEvent": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "completed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelEscapeEvent": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "probability",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActionExtractEvent": {
+      "1": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActionSpringEvent": {
+      "1": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActionPotionEvent": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "healed",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RelicTakeEvent": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "pile_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RelicReadCommand": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RelicReplaceCommand": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "pile_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "replace_item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RelicReplacedEvent": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "returned_item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "pile_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryMoveCommand": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "target_slot_index",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryEquipCommand": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryUnequipCommand": {
+      "1": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketEquipment": {
+      "1": {
+        "name": "instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "is_bound",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "location",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketListing": {
+      "1": {
+        "name": "listing_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "seller_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "price_gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "created_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "expires_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "equipment",
+        "type": "MarketEquipment",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryChangedEvent": {
+      "1": {
+        "name": "action",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "listing",
+        "type": "MarketListing",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "seller_gold_after",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RoomMoveCommand": {
+      "1": {
+        "name": "row",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "column",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelLeaveCommand": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelEscapeCommand": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActionExtractCommand": {},
+    "ActionSpringCommand": {},
+    "ActionPotionCommand": {},
+    "RelicTakeCommand": {
+      "1": {
+        "name": "pile_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "pile_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "replace_item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelStartedEvent": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "first_player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "late_player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "late_player_unlock_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "leave_window_ends_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DuelEndedEvent": {
+      "1": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "reason",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "winner_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "snapshot_required",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "PlayerDiedEvent": {
+      "1": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "cause",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "duel_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MapPlayerCountEvent": {
+      "1": {
+        "name": "player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MonsterCardChooseCommand": {
+      "1": {
+        "name": "candidate_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "accept",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "replace_instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomMonsterPool": {
+      "1": {
+        "name": "capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "pending",
+        "type": "RoomCard",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "active",
+        "type": "RoomCard",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomNumericalState": {
+      "1": {
+        "name": "fenxian_policy",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "guardian_policy",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "guardian_remainder_tenths",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    }
+  }
+}

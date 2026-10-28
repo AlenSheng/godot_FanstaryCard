@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "implementation_source_sha": "6d919055c3be56ea4c5690071bab80714d5ff121",
+  "previous_source_sha": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "actual_native_unskipped_rows": 1,
+  "original_TRX_SHA256": "5939e3342e37f0ba602cf4f7bbc7e1727d7f27e9bc1231930e928466c3ef3ffd",
+  "actual_code_rollback": {
+    "oldServerSha256": "87e323557fe609a58a7a4cb227c70d40dd45a9bb6f72f6d2af19d20baa4ce844",
+    "match": "eee90a77-411a-43d4-abdc-7347b6c8d9ca",
+    "receiptId": "01a12fe6-a7e4-77ee-88c7-f74744300c72",
+    "currentSnapshotRestoredByPreviousBinary": true,
+    "legalExtractionAfterRollback": true,
+    "originalAssetsOnce": true,
+    "scope": "only the declared current and retained 0cf43db binary/config pair; no production deployment or arbitrary older compatibility claim"
+  },
+  "actual_native_backup_restore": {
+    "containerId": "09ccdc1ef1106f222a7c7d65cfb2f9386f3137e8f4d188bd4993ec43b211782a",
+    "dumpSha256": "909aa4164d5afff27f9b0ca158180bcc452da189066f57e05250037e7e4dab58",
+    "dumpBytes": 124312,
+    "nativeTools": "pg_dump custom schema backup and pg_restore into a newly owned isolated database",
+    "originalBalance": 23,
+    "restoredBalance": 23,
+    "committedLedgerRows": 1,
+    "repeatedAckAndHoldCommitDoNotCopyAssets": true,
+    "assetCorrection": false,
+    "scope": "same restored database scope, never combine original/clone balances or repair deleted historical ledgers"
+  },
+  "owned_pg_dump_restore_command_boundaries_checked": true,
+  "bridge_operation_count": 5,
+  "restored_database_removed": true,
+  "original_deadline_seconds": 180,
+  "compatibility_scope": "Exact current source versus retained 0cf43db original binary/config only; not arbitrary prior versions or production deployment",
+  "formal_scope_acceptance": false,
+  "MAIN_accepted": false
+}

@@ -1,0 +1,1323 @@
+[
+  {
+    "case_id": "LOAD-03.2-T01",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "playing",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.146,
+          "duration_ms": 132,
+          "logical_request_id": "godot-a48e5ca541d2b579ab6db4f88c946c43",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:37385",
+          "phase": "playing",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-a48e5ca541d2b579ab6db4f88c946c43",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "playing",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.146,
+          "duration_ms": 132,
+          "logical_request_id": "godot-a48e5ca541d2b579ab6db4f88c946c43",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:37385",
+          "path": "/api/v1/bootstrap",
+          "phase": "playing",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-a48e5ca541d2b579ab6db4f88c946c43",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "playing",
+      "mode": "playing",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.146,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:35 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 132,
+        "mean_ms": 132.0,
+        "max_ms": 132,
+        "p50_ms": 132,
+        "p95_ms": 132,
+        "p99_ms": 132
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 1,
+          "min_ms": 132,
+          "mean_ms": 132.0,
+          "max_ms": 132,
+          "p50_ms": 132,
+          "p95_ms": 132,
+          "p99_ms": 132
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28814512857580
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28814623279513
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-T02",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 147,
+          "client_id": "settlement",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.11,
+          "duration_ms": 125,
+          "logical_request_id": "godot-3e86cd9f606d5297d2baf8aaeb4c12c4",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:33735",
+          "phase": "settlement",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/matches/{matchId:guid}/settlement",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-3e86cd9f606d5297d2baf8aaeb4c12c4",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 147,
+          "client_id": "settlement",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.11,
+          "duration_ms": 125,
+          "logical_request_id": "godot-3e86cd9f606d5297d2baf8aaeb4c12c4",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:33735",
+          "path": "/api/v1/matches/00000000-0000-0000-0000-000000000003/settlement",
+          "phase": "settlement",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/matches/{matchId:guid}/settlement",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-3e86cd9f606d5297d2baf8aaeb4c12c4",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "settlement",
+      "mode": "settlement",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 147,
+        "data": {
+          "createdAt": "2026-09-30T00:00:00Z",
+          "details": null,
+          "matchId": "00000000-0000-0000-0000-000000000003",
+          "playerId": "00000000-0000-0000-0000-000000000001",
+          "result": "Extracted",
+          "settlementId": "00000000-0000-0000-0000-000000000002"
+        },
+        "decode_ms": 0.11,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:36 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 147"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 125,
+        "mean_ms": 125.0,
+        "max_ms": 125,
+        "p50_ms": 125,
+        "p95_ms": 125,
+        "p99_ms": 125
+      },
+      "steady_http": {
+        "count": 1,
+        "min_ms": 125,
+        "mean_ms": 125.0,
+        "max_ms": 125,
+        "p50_ms": 125,
+        "p95_ms": 125,
+        "p99_ms": 125
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "settlement": {
+          "count": 1,
+          "min_ms": 125,
+          "mean_ms": 125.0,
+          "max_ms": 125,
+          "p50_ms": 125,
+          "p95_ms": 125,
+          "p99_ms": 125
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 1,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/matches/00000000-0000-0000-0000-000000000003/settlement",
+        "at_monotonic_ns": 28815521810712
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28815618575593
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-T03",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "legacy",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.138,
+          "duration_ms": 160,
+          "logical_request_id": "godot-5b92bd9adad6391ace135983ed3076b4",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:33403",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-5b92bd9adad6391ace135983ed3076b4",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "legacy",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.138,
+          "duration_ms": 160,
+          "logical_request_id": "godot-5b92bd9adad6391ace135983ed3076b4",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:33403",
+          "path": "/api/v1/bootstrap",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-5b92bd9adad6391ace135983ed3076b4",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "",
+      "mode": "legacy",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.138,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:36 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 160,
+        "mean_ms": 160.0,
+        "max_ms": 160,
+        "p50_ms": 160,
+        "p95_ms": 160,
+        "p99_ms": 160
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "unknown/legacy": {
+          "count": 1,
+          "min_ms": 160,
+          "mean_ms": 160.0,
+          "max_ms": 160,
+          "p50_ms": 160,
+          "p95_ms": 160,
+          "p99_ms": 160
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28816357391761
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28816494824800
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-ADDITIONAL-login",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "login",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.131,
+          "duration_ms": 166,
+          "logical_request_id": "godot-e6db9faaa21d6f8ec2e0d5fec64a75e7",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:36801",
+          "phase": "login",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-e6db9faaa21d6f8ec2e0d5fec64a75e7",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "login",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.131,
+          "duration_ms": 166,
+          "logical_request_id": "godot-e6db9faaa21d6f8ec2e0d5fec64a75e7",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:36801",
+          "path": "/api/v1/bootstrap",
+          "phase": "login",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-e6db9faaa21d6f8ec2e0d5fec64a75e7",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "login",
+      "mode": "login",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.131,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:37 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 166,
+        "mean_ms": 166.0,
+        "max_ms": 166,
+        "p50_ms": 166,
+        "p95_ms": 166,
+        "p99_ms": 166
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "login": {
+          "count": 1,
+          "min_ms": 166,
+          "mean_ms": 166.0,
+          "max_ms": 166,
+          "p50_ms": 166,
+          "p95_ms": 166,
+          "p99_ms": 166
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28817180765102
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28817322779833
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-ADDITIONAL-initial",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "initial",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.121,
+          "duration_ms": 147,
+          "logical_request_id": "godot-d83791a7fcec60c787c19a246ed6b888",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:43387",
+          "phase": "initial",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-d83791a7fcec60c787c19a246ed6b888",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "initial",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.121,
+          "duration_ms": 147,
+          "logical_request_id": "godot-d83791a7fcec60c787c19a246ed6b888",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:43387",
+          "path": "/api/v1/bootstrap",
+          "phase": "initial",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-d83791a7fcec60c787c19a246ed6b888",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "initial",
+      "mode": "initial",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.121,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:38 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 147,
+        "mean_ms": 147.0,
+        "max_ms": 147,
+        "p50_ms": 147,
+        "p95_ms": 147,
+        "p99_ms": 147
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "initial": {
+          "count": 1,
+          "min_ms": 147,
+          "mean_ms": 147.0,
+          "max_ms": 147,
+          "p50_ms": 147,
+          "p95_ms": 147,
+          "p99_ms": 147
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28818150844356
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28818275267173
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-ADDITIONAL-matchmaking",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "matchmaking",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.148,
+          "duration_ms": 132,
+          "logical_request_id": "godot-e1d0080f44ab042d1cc876066dc8c570",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:43419",
+          "phase": "matchmaking",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-e1d0080f44ab042d1cc876066dc8c570",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "matchmaking",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.148,
+          "duration_ms": 132,
+          "logical_request_id": "godot-e1d0080f44ab042d1cc876066dc8c570",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:43419",
+          "path": "/api/v1/bootstrap",
+          "phase": "matchmaking",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-e1d0080f44ab042d1cc876066dc8c570",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "matchmaking",
+      "mode": "matchmaking",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.148,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:39 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 132,
+        "mean_ms": 132.0,
+        "max_ms": 132,
+        "p50_ms": 132,
+        "p95_ms": 132,
+        "p99_ms": 132
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "matchmaking": {
+          "count": 1,
+          "min_ms": 132,
+          "mean_ms": 132.0,
+          "max_ms": 132,
+          "p50_ms": 132,
+          "p95_ms": 132,
+          "p99_ms": 132
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28819070830835
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28819181526664
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  },
+  {
+    "case_id": "LOAD-03.2-ADDITIONAL-cleanup",
+    "passed": true,
+    "actual_gateway": {
+      "current_cycle": "N-cycle",
+      "current_phase": "cleanup",
+      "events": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "cleanup",
+          "connection_reused": false,
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.138,
+          "duration_ms": 133,
+          "logical_request_id": "godot-6c212c0b30f32c34f0699f8a75801879",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:45189",
+          "phase": "cleanup",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-6c212c0b30f32c34f0699f8a75801879",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 90,
+          "client_id": "cleanup",
+          "cycle_id": "M-cycle",
+          "decode_ms": 0.138,
+          "duration_ms": 133,
+          "logical_request_id": "godot-6c212c0b30f32c34f0699f8a75801879",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:45189",
+          "path": "/api/v1/bootstrap",
+          "phase": "cleanup",
+          "process_epoch": "1",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "run_id": "owned-phase",
+          "session_generation": 0,
+          "status": 200,
+          "trace_id": "godot-6c212c0b30f32c34f0699f8a75801879",
+          "type": "http"
+        }
+      ],
+      "finished": true,
+      "initial_cycle": "M-cycle",
+      "initial_phase": "cleanup",
+      "mode": "cleanup",
+      "pending_before_release": 1,
+      "phase_vocabulary": [
+        "login",
+        "initial",
+        "matchmaking",
+        "playing",
+        "settlement",
+        "cleanup"
+      ],
+      "protocol_body": "production HTTP_SCHEMA encoded fixture; no account/business/PG claim",
+      "result": {
+        "body_bytes": 90,
+        "data": {
+          "activePreparation": null,
+          "cards": [],
+          "classWeapons": [],
+          "configVersion": "owned-loopback-fixture",
+          "decks": [],
+          "equippedLoadouts": [],
+          "inventory": null,
+          "inventorySummary": null,
+          "mail": null,
+          "market": [],
+          "materials": {
+            "equipmentFragments": 0,
+            "guardianSoul": 0,
+            "mageSoul": 0,
+            "priestSoul": 0,
+            "warriorSoul": 0
+          },
+          "player": {
+            "createdAt": "",
+            "displayName": "",
+            "selectedClass": null,
+            "updatedAt": "",
+            "userId": "00000000-0000-0000-0000-000000000001",
+            "version": 0
+          },
+          "serverTime": "2026-09-30T00:00:00Z",
+          "shop": null,
+          "unfinishedMatch": null,
+          "unfinishedSettlement": null,
+          "wallet": {
+            "diamond": 0,
+            "gold": 0
+          }
+        },
+        "decode_ms": 0.138,
+        "decode_worker": false,
+        "error": "\u670d\u52a1\u5668\u4e0d\u53ef\u7528\uff0c\u8bf7\u68c0\u67e5\u5730\u5740\u4e0e\u670d\u52a1\u5668\u72b6\u6001",
+        "headers": [
+          "Server: BaseHTTP/0.6 Python/3.12.14",
+          "Date: Wed, 30 Sep 2026 23:04:40 GMT",
+          "Content-Type: application/protobuf",
+          "Content-Length: 90"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "actual_aggregate": {
+      "http": {
+        "count": 1,
+        "min_ms": 133,
+        "mean_ms": 133.0,
+        "max_ms": 133,
+        "p50_ms": 133,
+        "p95_ms": 133,
+        "p99_ms": 133
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "cleanup": {
+          "count": 1,
+          "min_ms": 133,
+          "mean_ms": 133.0,
+          "max_ms": 133,
+          "p50_ms": 133,
+          "p95_ms": 133,
+          "p99_ms": 133
+        }
+      },
+      "error_count": 0,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": 1,
+      "attempt_coverage": "measured",
+      "attempt_result_counts": {
+        "success": 1
+      },
+      "valid_attempt_latency_count": 1,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "actual_http_arrivals": [
+      {
+        "path": "/api/v1/bootstrap",
+        "at_monotonic_ns": 28820079887500
+      },
+      {
+        "path": "/fixture/release",
+        "at_monotonic_ns": 28820188686056
+      }
+    ],
+    "legacy_auth_excluded_separate": true,
+    "no_PG_or_capacity_claim": true
+  }
+]

@@ -1,0 +1,91 @@
+{
+  "kind": "CurrentGuardian1200SecondCutoffRetainedAsFailure",
+  "case_profile": "current-three-heroes-natural3-concurrency2-budget1200-r1",
+  "native_PID": 120632,
+  "original_native_report_ok": false,
+  "normal_cycles": 0,
+  "observed_source_events": 4602,
+  "audit_lost_count": 0,
+  "raw_sequence_contiguous": true,
+  "cutoff_seconds": 1200,
+  "elapsed_total_ms": 1243773,
+  "last_actual_battle_observation": {
+    "at_unix_ms": 1792152222085,
+    "battle_id": "01a14498-07af-76a4-8378-5c4f88ecc092",
+    "battle_seed": null,
+    "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+    "client_id": "PR13NFG01",
+    "cycle_id": "PR13NFG01:1",
+    "discard_count": 10,
+    "elapsed_ms": 45415,
+    "event_seq": 4588,
+    "event_type": "battle.observed",
+    "last_effective_age_ms": 1366,
+    "library_count": 30,
+    "match_id": "01a14486-603f-7edd-ad09-b5a3b989044d",
+    "monotonic_ms": 1240385,
+    "monsters": [
+      {
+        "hp": 37,
+        "id": "thorn-mite",
+        "shield": 0,
+        "stun_remaining_ms": 0
+      }
+    ],
+    "phase": "playing",
+    "player_hp": 84,
+    "player_shield": 14,
+    "process_epoch": "PR13NFG01-20261016",
+    "room_id": "01a14486-603f-7c29-a1d1-73b69a7146ab",
+    "run_id": "PR13-natural-followup-01a14470-r1-20261016",
+    "type": "battle_observation",
+    "waiting": {
+      "hand_count": 0,
+      "legal_opportunity": false,
+      "reason": "drawing",
+      "remaining_ms": 0
+    }
+  },
+  "battle_summary_outcomes": {
+    "Victory": 16,
+    "Censored": 1
+  },
+  "room_moves": 16,
+  "monsters_and_player_still_alive": true,
+  "recent_effective_action_before_cutoff_ms": 1366,
+  "normal_cycle_events": 0,
+  "drain_ACK_events": 1,
+  "cleanup": {
+    "active_preparation": null,
+    "reason": "server_state_clear",
+    "state": "Passed",
+    "unfinished_match": null,
+    "unfinished_settlement": null
+  },
+  "account_locked_equipment": 0,
+  "account_pending_holds": 0,
+  "cleanup_settlements": 1,
+  "cleanup_ACK_idempotency": 1,
+  "legal_cleanup_ACK_not_counted_as_natural_completion": true,
+  "no_network_deadlock_proven": true,
+  "next_allowed_observation_limit": 2400,
+  "harness_configured_limit_max": 2400,
+  "next_round_not_launched_by_this_review": true,
+  "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFG01\\player.original.json",
+  "original_report_sha256": "b88d9ad48ef941be3b7a32e951f5f2e96ba2791fb9ac559213a5e82ec29c232c",
+  "current_peer_snapshot": {
+    "active_human_ids": [
+      "01a14498-d3fb-745e-826d-7d8ff0e0e204",
+      "01a1449f-738a-7e26-938c-15a367c70e81"
+    ],
+    "owned_user_ids": [
+      "01a14485-d767-7437-9778-46f9f09f8385",
+      "01a14485-d887-7e64-b5c9-26d46b5a94e3",
+      "01a14498-d3fb-745e-826d-7d8ff0e0e204",
+      "01a1449f-738a-7e26-938c-15a367c70e81"
+    ],
+    "CPU": 10.022222222242927,
+    "server_container": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+    "original_environment": true
+  }
+}

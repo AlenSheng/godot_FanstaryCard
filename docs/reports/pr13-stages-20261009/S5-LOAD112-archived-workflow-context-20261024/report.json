@@ -1,0 +1,96 @@
+{
+  "kind": "ExactArchivedWorkflowContext_PrivateFixtureClassificationOnly",
+  "generated_UTC": "2026-10-23T18:30:04.878681+00:00",
+  "state": "ScopedArchiveContentContextResolved",
+  "identity": {
+    "bytes": 15154,
+    "sha256": "0dcda4f8e3fee687116684972fedad4b3624a849d351758658f21a93b6e2e3e0"
+  },
+  "original_outer": {
+    "root": "workspace",
+    "path": "outputs/pr13-tencent-20261009/bypass-inputs.tar.gz",
+    "bytes": 22293,
+    "sha256": "272cf35ed3fb578d04a375b65d4d54ebc8afc627745784484e39dc72f3a9b287",
+    "frozen_snapshot_alias_paths": 1
+  },
+  "original_finding": {
+    "epoch": "r1",
+    "native_finding_ordinal": 1524,
+    "native_line_sha256": "d2dc02945b44cd0adcbbd99de1f5427f72518afe739980f160f53f4e843ff53c",
+    "outer_source": {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/bypass-inputs.tar.gz",
+      "bytes": 22293,
+      "sha256": "272cf35ed3fb578d04a375b65d4d54ebc8afc627745784484e39dc72f3a9b287",
+      "frozen_snapshot_alias_paths": 1
+    },
+    "reason": "Credential-like value in public evidence",
+    "original_finding_retained": true,
+    "parent_archive_sha256": "272cf35ed3fb578d04a375b65d4d54ebc8afc627745784484e39dc72f3a9b287",
+    "member_name": ".github/workflows/gameplay-load.yml",
+    "member_ordinal": 1,
+    "depth": 0
+  },
+  "source_observation": {
+    "path": "G:\\PR13Evidence\\LOAD112-archived-workflow-context-20261024-r224-originals\\source-context-observation.original.json",
+    "bytes": 2080,
+    "sha256": "f5fafcbd1c8015fedf622110b8fb475b9d4240f8efb053d341edc6a6893f7e14"
+  },
+  "exact_committed_source": {
+    "source_commit": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+    "comparison": "ExactRawBytes",
+    "committed_bytes": 15154,
+    "committed_sha256": "0dcda4f8e3fee687116684972fedad4b3624a849d351758658f21a93b6e2e3e0"
+  },
+  "semantic_review": {
+    "role": "Historical workflow config for offline accounting, headless client loopback fixtures, offline server regression, and ephemeral PostgreSQL integration.",
+    "ephemeral_database_localhost_only": true,
+    "fixture_auth_value_matches_service_auth": true,
+    "readonly_contents_permission": true,
+    "no_persisted_checkout_credentials": true,
+    "no_production_credentials_or_deployment_commands_in_this_exact_workflow": true,
+    "no_historical_runtime_success_inferred": true
+  },
+  "integrity": {
+    "outer_SHA256_and_body_SHA256_verified": true,
+    "exact_tar_member_ordinal_and_name_verified": true,
+    "gzip_footer_CRC_completed": true,
+    "member_is_regular_file": true,
+    "observed_tar_members": 11
+  },
+  "privacy": {
+    "unchanged_strict_guard_refuses_exact_body": true,
+    "reason": "Credential-like value in public evidence",
+    "raw_original_retained_privately": true,
+    "raw_body_export_allowed": false,
+    "prior_finding_not_relabelled_as_guard_pass": true,
+    "historical_git_presence_is_not_public_guard_exemption": true
+  },
+  "prior_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-two-negative-archive-controls-20261023-r167-originals\\remaining-archive-content-review.private.original.jsonl",
+    "bytes": 25312,
+    "sha256": "982e7b825e71171c3750d83b6e878fed4553f70134f175e3e7314b8d45e53a27",
+    "records": 28,
+    "remaining_objects": 28,
+    "finding_observations": 29,
+    "private_custody_dispositions_are_not_public_export_or_global_privacy_permission": true,
+    "whole_task_accepted": false
+  },
+  "new_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-archived-workflow-context-20261024-r224-originals\\remaining-archive-content-review.private.original.jsonl",
+    "bytes": 24484,
+    "sha256": "ecd51955ac5445367a01be4c4a63471cc4c3f41194d885da7673abbfbde85ae8",
+    "records": 27,
+    "remaining_objects": 27,
+    "finding_observations": 28
+  },
+  "other_frontiers": {
+    "original_content_objects1_unchanged": true,
+    "structural_path_observations226_unchanged": true,
+    "old_client2124_child_semantic_review_pending": true,
+    "no_global_privacy_permission": true
+  },
+  "case_profiles_closed": 0,
+  "whole_LOAD112_or_project_accepted": false,
+  "no_source_or_engine_execution_or_cloud_mutation": true
+}

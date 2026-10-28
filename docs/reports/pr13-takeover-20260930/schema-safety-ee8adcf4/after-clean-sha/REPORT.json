@@ -1,0 +1,498 @@
+{
+  "records": [
+    {
+      "fixture": "type-list",
+      "pid": 96403,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-safety-review/after-five-final-sha/type-list/client.json",
+        "type-list"
+      ],
+      "source": "/workspace/godot_FanstaryCard",
+      "stage": "completed",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "archive_errors": [],
+      "cycle_reconciliation": null,
+      "window": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 1,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 1,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "population": {
+        "alive_processes": 1,
+        "fresh_status_clients": 1,
+        "online": 1,
+        "in_room": 1,
+        "room_state_clients": 1,
+        "active_in_room": 1,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false
+      },
+      "invalid_evidence": true,
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "unhandled_exception": null,
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "type-dict",
+      "pid": 96404,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-safety-review/after-five-final-sha/type-dict/client.json",
+        "type-dict"
+      ],
+      "source": "/workspace/godot_FanstaryCard",
+      "stage": "completed",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "archive_errors": [],
+      "cycle_reconciliation": null,
+      "window": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 1,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 1,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "population": {
+        "alive_processes": 1,
+        "fresh_status_clients": 1,
+        "online": 1,
+        "in_room": 1,
+        "room_state_clients": 1,
+        "active_in_room": 1,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false
+      },
+      "invalid_evidence": true,
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "unhandled_exception": null,
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "huge-duration",
+      "pid": 96405,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-safety-review/after-five-final-sha/huge-duration/client.json",
+        "huge-duration"
+      ],
+      "source": "/workspace/godot_FanstaryCard",
+      "stage": "completed",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "archive_errors": [],
+      "cycle_reconciliation": null,
+      "window": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {
+          "playing": {
+            "count": 0
+          }
+        },
+        "error_count": 1,
+        "sample_count": 1,
+        "logical_request_count": 1,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "insufficient",
+          "realtime": "unavailable"
+        },
+        "error_rate": 1.0,
+        "steady_error_count": 1,
+        "steady_sample_count": 1,
+        "steady_error_rate": 1.0,
+        "invalid_metric_count": 1,
+        "invalid_duration_count": 1,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "population": {
+        "alive_processes": 1,
+        "fresh_status_clients": 1,
+        "online": 1,
+        "in_room": 1,
+        "room_state_clients": 1,
+        "active_in_room": 1,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false
+      },
+      "invalid_evidence": true,
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "unhandled_exception": null,
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "huge-timestamp",
+      "pid": 96406,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-safety-review/after-five-final-sha/huge-timestamp/client.json",
+        "huge-timestamp"
+      ],
+      "source": "/workspace/godot_FanstaryCard",
+      "stage": "completed",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "archive_errors": [],
+      "cycle_reconciliation": null,
+      "window": {
+        "http": {
+          "count": 1,
+          "min_ms": 2,
+          "mean_ms": 2.0,
+          "max_ms": 2,
+          "p50_ms": 2,
+          "p95_ms": 2,
+          "p99_ms": 2
+        },
+        "steady_http": {
+          "count": 1,
+          "min_ms": 2,
+          "mean_ms": 2.0,
+          "max_ms": 2,
+          "p50_ms": 2,
+          "p95_ms": 2,
+          "p99_ms": 2
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {
+          "playing": {
+            "count": 1,
+            "min_ms": 2,
+            "mean_ms": 2.0,
+            "max_ms": 2,
+            "p50_ms": 2,
+            "p95_ms": 2,
+            "p99_ms": 2
+          }
+        },
+        "error_count": 1,
+        "sample_count": 1,
+        "logical_request_count": 1,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 1,
+        "latency_sample_quality": {
+          "http": "insufficient",
+          "realtime": "unavailable"
+        },
+        "error_rate": 1.0,
+        "steady_error_count": 1,
+        "steady_sample_count": 1,
+        "steady_error_rate": 1.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "population": {
+        "alive_processes": 1,
+        "fresh_status_clients": 0,
+        "online": 0,
+        "in_room": 0,
+        "room_state_clients": 0,
+        "active_in_room": 0,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 1,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": true
+      },
+      "invalid_evidence": true,
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "unhandled_exception": null,
+      "child_exit_code": -15,
+      "child_reaped": true
+    },
+    {
+      "fixture": "huge-event-time",
+      "pid": 96407,
+      "argv": [
+        "/workspace/relicround-env/venv/bin/python",
+        "-c",
+        "import json,os,pathlib,sys,time\nbase=pathlib.Path(sys.argv[1]); fixture=sys.argv[2]\nrow=dict(client_id='schema-owned',pid=os.getpid(),run_id='schema-run',process_epoch='schema-epoch',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id=row['run_id'],client_id=row['client_id'],process_epoch=row['process_epoch'],event_seq=1,\n type='http',duration_ms=2,status=500,ok=False,path='/fixture',phase='playing')\nif fixture=='type-list': event['type']=[]\nif fixture=='type-dict': event['type']={}\nif fixture=='huge-duration': event['duration_ms']=10**400\nif fixture=='huge-timestamp': row['now_unix_ms']=10**400\nif fixture=='huge-event-time': event.update(type='lifecycle',event_type='cycle.started',cycle_id='schema:1',match_id='M',at_unix_ms=10**400)\nrow['telemetry']=[event]; row['operations']=[event] if event['type']=='http' else []\npathlib.Path(str(base)+'.status.json').write_text(json.dumps(row))\npathlib.Path(str(base)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\nprint(json.dumps(dict(pid=os.getpid(),written=True)),flush=True)\ntime.sleep(15)\n",
+        "/workspace/pr13-takeover/schema-safety-review/after-five-final-sha/huge-event-time/client.json",
+        "huge-event-time"
+      ],
+      "source": "/workspace/godot_FanstaryCard",
+      "stage": "completed",
+      "ownership_invalid": 0,
+      "owned_statuses": 1,
+      "event_loss": 0,
+      "archive_errors": [],
+      "cycle_reconciliation": {
+        "running": {
+          "acknowledgements": 0,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {},
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "drain": {
+          "acknowledgements": 0,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {},
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "final": {
+          "acknowledgements": 0,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {},
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "zero_cycle_clients": null,
+        "zero_cycle_reason": "requires_launch_manifest",
+        "evidence_errors": [
+          "missing_context"
+        ],
+        "stop_ms": 1790808866026,
+        "final_ms": 1790808866027
+      },
+      "window": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "population": {
+        "alive_processes": 1,
+        "fresh_status_clients": 1,
+        "online": 1,
+        "in_room": 1,
+        "room_state_clients": 1,
+        "active_in_room": 1,
+        "server_confirmed_in_room": null,
+        "invalid_schema_count": 0,
+        "failed_processes": [],
+        "stale_clients": [],
+        "stalled_clients": [],
+        "missing_clients": [],
+        "invalid_clients": [],
+        "workload_failure": false
+      },
+      "invalid_evidence": true,
+      "decision": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "unhandled_exception": null,
+      "child_exit_code": -15,
+      "child_reaped": true
+    }
+  ],
+  "source_files": [
+    {
+      "path": "tools/gameplay_load_validation.py",
+      "bytes": 17137,
+      "sha256": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1"
+    },
+    {
+      "path": "tools/gameplay_load_test.py",
+      "bytes": 37312,
+      "sha256": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d"
+    },
+    {
+      "path": "tools/cloud_load_test.py",
+      "bytes": 17316,
+      "sha256": "871e753ad1421d09a62bbfc87e244be130c523119803a2645e6fc18385d09ded"
+    },
+    {
+      "path": "tools/pr13_runtime_evidence.py",
+      "bytes": 9786,
+      "sha256": "2f220e7f3bbd4d6819cf89e5da379e257f1eeca9b21ef9e70bde5db32eb8c983"
+    }
+  ],
+  "all_reaped": true,
+  "unhandled_exceptions": 0,
+  "invalid_failures": 5,
+  "Accepted": false
+}

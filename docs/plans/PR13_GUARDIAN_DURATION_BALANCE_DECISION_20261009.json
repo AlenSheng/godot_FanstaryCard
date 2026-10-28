@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "authority": "human",
+  "state": "CurrentDecision",
+  "date": "2026-10-09",
+  "user_steering": [
+    "守护者战斗较久本身可以接受，不能仅凭测试截止就判定玩法存在问题。",
+    "如果是为了平衡性，可以削弱卡组相关数值。"
+  ],
+  "duration_interpretation": {
+    "longer_guardian_combat_is_not_by_itself_a_defect": true,
+    "observed_continuous_effective_actions_are_evidence_of_progress": true,
+    "observation_cutoff_does_not_prove_a_gameplay_deadlock": true,
+    "evaluate_terminal_reachability_and_progress_separately_from_speed": true,
+    "gdd_duration_targets_are_not_automatically_a_hard_timer_for_every_class": true,
+    "original_failed_and_censored_reports_retained": true,
+    "do_not_relabel_old_cutoff_failures_as_passed": true
+  },
+  "balance_authorization": {
+    "card_or_deck_related_numeric_nerfs_allowed_for_demonstrated_balance_issue": true,
+    "authorization_is_not_evidence_that_guardian_is_overpowered": true,
+    "no_numeric_change_only_to_make_the_load_test_complete_faster": true,
+    "before_proposal_measure": [
+      "同预算三职业的有效伤害、护盾、治疗、控制和溢出",
+      "完整路线中的生存、通关、药耗、死亡损失及每局与每分钟收益",
+      "真实 Domain PVP 对位与先后手换边；保留死亡和截止样本",
+      "差异是否来自卡牌、职业被动、对位机制或脚本策略"
+    ],
+    "candidate_execution": [
+      "确认异常后再定位具体卡牌或卡组效应，预登记单因素候选",
+      "基线与候选保留相同的初始品质、等级和资源预算",
+      "记录完整有效配置和版本，验证预览、权威、快照及 PVP 一致性",
+      "候选先隔离验证，正式默认值在证据完成前保持"
+    ]
+  },
+  "current_live_trial": {
+    "profile": "docs/plans/PR13_GDD1200_BUILD_CONTROL_20261009.json",
+    "attempt": 2,
+    "execution_source_sha": "310607074e66e4bff61991f1338cbbf157a8dab2",
+    "client_snapshot_source_sha": "0c4f5eeaa1d0fa71c9745e2e273dbdb69b9c6e84",
+    "runtime_revision": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+    "running_input_bytes_remain_immutable": true,
+    "current_observation_budget_remains_unchanged_for_reproducibility": true,
+    "report_natural_cycles_rejections_recoveries_and_cleanup_separately": true
+  },
+  "remaining_acceptance": {
+    "original_50_100_capacity_targets_windows_and_resource_guards_unchanged": true,
+    "no_capacity_acceptance_from_a_longer_or_easier_gameplay_profile": true,
+    "full_132_item_nonhuman_scope_remains_required": true,
+    "human_experience_in_scope": false,
+    "delivery": "本地阶段汇总后直接上传 release"
+  }
+}

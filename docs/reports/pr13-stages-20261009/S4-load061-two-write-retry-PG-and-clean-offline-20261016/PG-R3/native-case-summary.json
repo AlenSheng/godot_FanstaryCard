@@ -1,0 +1,64 @@
+{
+  "derived_from_sha256": "ee5b2dc96a81d08446e99eeaa76af8aee0ddf0fd56ad55b4e79c2aa604c5e2a4",
+  "G_original_root": "G:\\PR13Evidence\\goal-http-write-retry-r3-20261016-complete-originals",
+  "cases": [
+    {
+      "actual": {
+        "actual_retries": 2,
+        "actual_write_attempts": 3,
+        "attempts": [
+          {
+            "attempt": 1,
+            "cycle_id": "cycle-first",
+            "duration_ms": 117,
+            "logical_request_id": "godot-99fcf3f4433735de6847412a82168949",
+            "phase": "playing",
+            "result": "http_error",
+            "status": 503,
+            "type": "http_attempt"
+          },
+          {
+            "attempt": 2,
+            "cycle_id": "cycle-first",
+            "duration_ms": 51,
+            "logical_request_id": "godot-99fcf3f4433735de6847412a82168949",
+            "phase": "playing",
+            "result": "http_error",
+            "status": 503,
+            "type": "http_attempt"
+          },
+          {
+            "attempt": 3,
+            "cycle_id": "cycle-first",
+            "duration_ms": 50,
+            "logical_request_id": "godot-99fcf3f4433735de6847412a82168949",
+            "phase": "playing",
+            "result": "success",
+            "status": 200,
+            "type": "http_attempt"
+          }
+        ],
+        "final_database_postconditions_required": true,
+        "logical": [
+          {
+            "attempt": 3,
+            "cycle_id": "cycle-first",
+            "duration_ms": 3400,
+            "logical_request_id": "godot-99fcf3f4433735de6847412a82168949",
+            "phase": "playing",
+            "result": "success",
+            "status": 200,
+            "type": "http"
+          }
+        ]
+      },
+      "case_id": "LOAD-06.1-T01",
+      "executed": true,
+      "profiles_executed": [
+        "POSTGRES"
+      ],
+      "scope": "Real Godot gateway, binary HTTP and owned loopback fixture; Actual full Program and isolated PostgreSQL behind a declared fault proxy; final database postconditions are verified separately; no LIVE capacity or performance benefit claim",
+      "status": "Passed"
+    }
+  ]
+}

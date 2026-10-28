@@ -1,0 +1,30 @@
+{
+  "kind": "HumanAuthorizedTenfoldLargeUnfinishedAutomationSampleRevision",
+  "authority": "human",
+  "date": "2026-10-14",
+  "human_instruction": "B04 5400批改为540批；类似上千测试量缩减10倍以加快进入待最终验收或验收",
+  "application": "Apply once to unfinished automated sampling or physical-batch quotas whose original required count is at least 1000. Keep test scenario axes, isolation, default-off policy, pass conditions, actual errors and original data. Small functional regression suites keep all tests.",
+  "rounding": "Round up where a count is not divisible by ten, within each original sampling stratum; report actual balanced resulting count.",
+  "completed_evidence_not_rewritten": true,
+  "no_automatic_acceptance": true,
+  "capacity_and_failed_deferrals_unchanged": true,
+  "human_experience_excluded": true,
+  "B04": {
+    "original_parts": 5400,
+    "revised_parts": 540,
+    "original_encounters": 216000,
+    "revised_encounters": 21600,
+    "logical_blocks": 108,
+    "original_paired_seeds_per_block": 1000,
+    "revised_paired_seeds_per_block": 100,
+    "seed_blocks": 3,
+    "heroes": 3,
+    "monster_groups": 4,
+    "strategies": 3,
+    "paired_arms": 2,
+    "adopted_existing_parts": 115,
+    "remaining_parts": 425,
+    "old_G_closed_parts_retained": 1147
+  },
+  "revision_limits": "Lower sample count means weaker precision. Completion of revised sampling allows statistical and gate review; it does not establish unseen behavior or automatically promote candidate settings."
+}

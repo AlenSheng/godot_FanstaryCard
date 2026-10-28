@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "owner": "pr13-native-image-context-offload-r1",
+  "kind": "owned_successful_immutable_native_image_build_context",
+  "target_root": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image",
+  "target_root_inode": 958849,
+  "target_root_device": 64770,
+  "successful_image_id": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "successful_build_proof_sha256": "32847b6b2e1dad24d6b5753550423b6deb6e5b7b3c5088d1a8f1dc631f8f9297",
+  "Dockerfile_sha256": "41ce87f9f6d913d5acc19e7764a05cad375d66502349ff1fb66dd09928558979",
+  "context_files": 2,
+  "files": [
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image/Dockerfile",
+      "path": "context/Dockerfile",
+      "bytes": 998,
+      "sha256": "41ce87f9f6d913d5acc19e7764a05cad375d66502349ff1fb66dd09928558979",
+      "mode": 436,
+      "inode": 958851,
+      "device": 64770,
+      "nlink": 1
+    },
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image/godot",
+      "path": "context/godot",
+      "bytes": 146414384,
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "mode": 493,
+      "inode": 958850,
+      "device": 64770,
+      "nlink": 1
+    },
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/evidence/native-image-build-fixed.json",
+      "path": "metadata/successful-image-build.json",
+      "bytes": 312,
+      "sha256": "32847b6b2e1dad24d6b5753550423b6deb6e5b7b3c5088d1a8f1dc631f8f9297",
+      "mode": 436,
+      "inode": 827390,
+      "device": 64770,
+      "nlink": 1
+    },
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/evidence/native-image-context-offload-r1-20261011/restore-plan.json",
+      "path": "metadata/restore-plan.json",
+      "bytes": 1965,
+      "sha256": "d69832c97e0cb5a8bba1fbec402e2a2eaf5548e38e099a824eea0f2a4ee43647",
+      "mode": 436,
+      "inode": 966354,
+      "device": 64770,
+      "nlink": 1
+    }
+  ],
+  "exact_readonly_monitor_exemptions": [
+    {
+      "container_id": "2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a",
+      "source": "/",
+      "read_write": false
+    }
+  ],
+  "no_native_business_executed": true,
+  "cloud_archive_created": false,
+  "all_other_cache_and_production_preserved": true
+}

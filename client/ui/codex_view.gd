@@ -4,6 +4,7 @@ const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const CardGridView = preload("res://ui/card_grid_view.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const SOULS := ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]
 const SOUL_NAMES := {"PriestSoul": "牧魂", "MageSoul": "法魂", "GuardianSoul": "盾魂", "WarriorSoul": "勇士之魂"}
@@ -42,62 +43,71 @@ static func build(ui: Control, host: Control) -> void:
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
 		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(1090 + i * 132, 132, 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "Filter_" + ("All" if quality.is_empty() else quality)
+		for state_name in ["normal", "hover", "pressed", "disabled"]:
+			var style: StyleBox = filter.get_theme_stylebox(state_name).duplicate()
+			style.set_content_margin(SIDE_LEFT, 8)
+			style.set_content_margin(SIDE_RIGHT, 8)
+			style.set_content_margin(SIDE_TOP, 6)
+			style.set_content_margin(SIDE_BOTTOM, 6)
+			filter.add_theme_stylebox_override(state_name, style)
+		filter.size = Vector2(116, 62)
+		filter.tooltip_text = filter.text
+		P.fit_control_font(filter, filter.get_theme_font("font"), 24, 20.0)
 	var count: Label = ui.text("", Rect2(48, 208, 1050, 35), 20, P.MUTED)
 	count.name = "CollectionCount"
 	var scroll := _scroll(ui, Rect2(42, 257, 1840, 758))
 	scroll.name = "CodexScroll"
 	scroll.interaction_enabled = host._codex_card.is_empty()
-	var grid := GridContainer.new()
+	var grid := CardGridView.new()
 	grid.name = "CardGrid"
-	grid.columns = 8
+	grid.columns = CardGridView.display_layout(host, 8, 184.0, 1840.0, 47.0).columns
 	grid.add_theme_constant_override("h_separation", 47)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
 	_fill_grid(ui, host, grid, scroll, count)
 	scroll.set_deferred("scroll_vertical", host._codex_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_scroll = int(value))
-	search.text_changed.connect(func(value): host._search = value.strip_edges(); host._codex_scroll = 0; scroll.scroll_vertical = 0; _fill_grid(ui, host, grid, scroll, count))
+	search.text_changed.connect(func(value):
+		host._search = value.strip_edges()
+		host._codex_scroll = 0
+		scroll.scroll_vertical = 0
+		_fill_grid(ui, host, grid, scroll, count)
+		host._set_card_page_cache_key("cards"))
 	ui.text(P.localized("browse_cards"), Rect2(480, 1037, 850, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	if not host._codex_card.is_empty(): _details(ui, host)
 
 static func _fill_grid(ui: Control, host: Control, grid: GridContainer, scroll: ScrollContainer, count: Label) -> void:
-	for child in grid.get_children():
-		grid.remove_child(child)
-		child.queue_free()
 	var collected := 0
 	var total := 0
-	var shown := 0
-	var side := 184.0
+	var entries: Array = []
+	var ownership: Dictionary = {}
+	for card in host.owned:
+		if card is Dictionary: ownership[str(card.get("cardId", ""))] = card
 	for id in CardDetails.sorted_ids(host.cards.keys(), host.cards):
 		var info: Dictionary = host.cards[id]
 		if not info.get("is_codex", false): continue
 		total += 1
-		var owned: Dictionary = host._owned_card(id)
+		var owned: Dictionary = ownership.get(str(id), {})
 		var copies := int(owned.get("copyCount", 0)) if owned.get("unlocked", false) else 0
 		if copies > 0: collected += 1
 		if not host._quality.is_empty() and info.get("quality") != host._quality: continue
 		if not host._search.is_empty() and not host._search.to_lower() in (id + " " + host._card_text(id)).to_lower(): continue
-		var slot := Control.new()
-		slot.custom_minimum_size = Vector2(side, side * 376.0 / 218.0)
-		slot.mouse_filter = Control.MOUSE_FILTER_PASS
-		grid.add_child(slot)
-		var node: Button = host._card_button(slot, id, func():
-			if scroll.can_activate():
-				_open_details(ui, host, id, scroll), false, false, {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))})
-		node.name = "Card_" + id
-		node.size = Vector2(218, 376)
-		node.scale = Vector2.ONE * side / 218.0
-		node.tooltip_text = P.localized_text(node.tooltip_text + "\n持有 %s · 点击查看详情" % copies)
-		shown += 1
+		entries.append({"id": id, "slot_name": "CardSlot_" + id, "card_name": "Card_" + id, "callback": func():
+			if scroll.can_activate(): _open_details(ui, host, id, scroll),
+			"options": {"collection": true, "copy_count": copies, "level": int(owned.get("level", 0))},
+			"tooltip_suffix": card_tooltip_suffix(copies)})
+	var layout := CardGridView.display_layout(host, 8, 184.0, 1840.0, 47.0)
+	grid.columns = layout.columns
+	grid.configure(host, scroll, entries, layout.side)
 	count.text = P.localized("collected_count") % [collected, total]
-	if shown != total: count.text += P.localized_text("    筛选结果 %s 张" % shown)
-	if not host._codex_ready: count.text += P.localized_text("    持有数据未就绪，请重新进入图鉴刷新")
-	if shown == 0:
-		var empty := Label.new()
-		empty.text = P.localized_text("没有符合条件的卡牌")
-		empty.custom_minimum_size = Vector2(1000, 180)
-		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		grid.add_child(empty)
+	if entries.size() != total: count.text += filtered_count(entries.size())
+	if not host._codex_ready: count.text += "    " + P.localized("collection_not_ready")
+
+static func filtered_count(count: int) -> String:
+	return "    " + P.localized("codex_filtered_count") % count
+
+static func card_tooltip_suffix(copies: int) -> String:
+	return P.localized("codex_owned_hint") % copies
 
 static func _scroll(ui: Control, rect: Rect2) -> ScrollContainer:
 	var scroll := DragScroll.new()
@@ -154,7 +164,7 @@ static func _details(ui: Control, host: Control) -> void:
 	var owned: bool = copies > 0
 	var hero: Variant = info.get("hero_class")
 	var kind: String = entry.get("currencyKind", "WarriorSoul" if hero == null else str(hero) + "Soul")
-	var material: String = SOUL_NAMES.get(kind, kind)
+	var material: String = P.word(kind)
 	var cost := int(entry.get("craftCost", 0))
 	var refund := int(entry.get("dismantleRefund", 0))
 	var balance: int = host._card_material(kind)
@@ -185,21 +195,40 @@ static func _details(ui: Control, host: Control) -> void:
 	preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	preview.focus_mode = Control.FOCUS_NONE
 	modal.text(CardDetails.localized_name(id, info), Rect2(796, 242, 650, 64), 39)
-	_tag(modal, P.word(info.get("quality", "White")) + "色", Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
-	_tag(modal, "通用卡" if hero == null else P.word(hero) + "职业卡", Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
-	var category: String = P.word(info.get("category", "Support"))
-	if category == "Assist": category = "辅助"
+	_tag(modal, P.word(info.get("quality", "White")) + P.localized("color_suffix"), Rect2(798, 338, 155, 60), "tag_normal.png" if info.get("quality") == "White" else "tag_q_%s.png" % str(info.get("quality")).to_lower())
+	_tag(modal, P.localized("general_card") if hero == null else P.localized("codex_hero_class_tag") % P.localized("class_" + str(hero).to_lower()), Rect2(974, 338, 170, 60), "tag_normal.png" if hero == null else "tag_orange.png")
+	var category_code: String = str(info.get("category", "Support"))
+	var category: String = P.localized("word_support") if category_code == "Assist" else P.word(category_code)
 	var element: String = str(info.get("element")) if info.get("element") != null else "None"
-	if category == "伤害": category = P.word(element) + "系伤害" if element != "None" else "直接伤害"
+	if category_code == "Damage": category = P.word(element) + P.localized("codex_elemental_damage_suffix") if element != "None" else P.localized("ui_direct_damage")
 	_tag(modal, category, Rect2(1166, 338, 172, 60), "tag_%s.png" % element.to_lower() if element in ["Earth", "Metal", "Water", "Wood"] else "tag_normal.png")
 	modal.text(P.localized_text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies]) if owned else P.localized_text("未拥有 · 合成后获得 +0 ") + CardDetails.localized_name(id, info), Rect2(798, 424, 690, 50), 27)
 	var effect_text: String = host.card_description(id, "full")
 	if effect_text.is_empty():
 		var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)
 		effect_text = face[1] if face.size() > 1 else host._card_text(id)
-	if entry.get("currentEffect") is Dictionary: effect_text = "当前：" + host.CardDetails.effect_text(entry.currentEffect)
-	if entry.get("nextEffect") is Dictionary: effect_text += "\n下一级：" + host.CardDetails.effect_text(entry.nextEffect)
-	modal.text(effect_text, Rect2(798, 485, 690, 174), 23)
+	var level_effects := PackedStringArray()
+	var level := int(entry.get("level", 0))
+	if entry.get("currentEffect") is Dictionary:
+		level_effects.append(P.localized("codex_current_effect") + host.CardDetails.effect_text(entry.currentEffect))
+	elif level > 0:
+		level_effects.append(P.localized("codex_current_effect") + CardDetails.effect_text(CardDetails.at_level(info, level)))
+	if entry.get("nextEffect") is Dictionary: level_effects.append(P.localized("codex_next_effect") + host.CardDetails.effect_text(entry.nextEffect))
+	if not level_effects.is_empty():
+		if level > 0 and not effect_text.is_empty(): effect_text = ("Base: " if P.language() == "en" else "基础：") + effect_text
+		if not effect_text.is_empty(): effect_text += "\n"
+		effect_text += "\n".join(level_effects)
+	var contract: String = CardDetails.contract_text(info)
+	if not contract.is_empty(): effect_text += "\n\n" + contract
+	# Multi-effect cards can exceed this area once current/next-level values
+	# are included. Keep the full explanation scrollable at a readable size.
+	var effect_scroll := _scroll(modal, Rect2(798, 485, 690, 182))
+	effect_scroll.name = "CardEffectScroll"
+	var effect_label: Label = modal.text(effect_text, Rect2(), 23, P.PAPER, effect_scroll, false)
+	effect_label.name = "CardFullEffect"
+	effect_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	effect_label.clip_text = false
+	effect_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var box := ColorRect.new()
 	box.color = Color(0.005, 0.012, 0.013, 0.94)
 	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -247,7 +276,9 @@ static func close_details(ui: Control, host: Control) -> void:
 	if host._codex_mutating: return
 	host._codex_card = ""
 	var modal := ui.get_node_or_null("CardDetails")
-	if modal != null: modal.queue_free()
+	if modal != null:
+		host._card_pool.release_descendants(modal)
+		modal.queue_free()
 	for control in ui.find_children("*", "Control", true, false):
 		if control.has_meta("codex_previous_focus_mode"):
 			control.focus_mode = int(control.get_meta("codex_previous_focus_mode"))

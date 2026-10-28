@@ -1,0 +1,80 @@
+{
+  "checks": 18,
+  "positive_guard_path_and_allowed_preconditions_asserted": true,
+  "all_passed": true,
+  "initial13_weaker_checks_not_added_to18": true,
+  "original_existing_preview_wait_suites": {
+    "new_worlds": 0,
+    "ok": true,
+    "suites": [
+      {
+        "path": "res://tests/test_combat_preview_state.gd",
+        "result": {
+          "message": "Combat previews reject stale state, include printed direct damage, and preserve first-card core selection",
+          "ok": true
+        }
+      },
+      {
+        "path": "res://tests/test_combat_wait_state.gd",
+        "result": {
+          "checks": {
+            "connection_recovery_has_priority": true,
+            "death_fallback_inflight_keeps_legal_opportunity": true,
+            "death_fallback_sync_keeps_legal_opportunity": true,
+            "draw_block_preserves_authoritative_duration": true,
+            "empty_hand_waits_for_draw": true,
+            "explicit_play_targets_survivor": true,
+            "full_hand_still_allows_play": true,
+            "manual_target_debounce_has_specific_reason": true,
+            "manual_target_inflight_blocks_old_target_play": true,
+            "normal_hand_has_legal_opportunity": true,
+            "readonly_preview_does_not_hide_legal_play": true,
+            "revision_retry_is_confirming": true,
+            "stun_preserves_authoritative_duration": true,
+            "submitted_play_waits_for_confirmation": true,
+            "unrelated_read_does_not_hide_legal_play": true
+          },
+          "observed": {
+            "death_fallback_inflight": {
+              "hand_count": 1,
+              "legal_opportunity": true,
+              "reason": "available",
+              "remaining_ms": 0
+            },
+            "death_fallback_queued": {
+              "hand_count": 1,
+              "legal_opportunity": true,
+              "reason": "available",
+              "remaining_ms": 0
+            },
+            "manual_debounce": {
+              "hand_count": 1,
+              "legal_opportunity": false,
+              "reason": "target_confirming",
+              "remaining_ms": 0
+            },
+            "manual_inflight": {
+              "hand_count": 1,
+              "legal_opportunity": false,
+              "reason": "target_confirming",
+              "remaining_ms": 0
+            },
+            "play_submitted": {
+              "hand_count": 1,
+              "legal_opportunity": false,
+              "reason": "confirming",
+              "remaining_ms": 0
+            },
+            "unrelated_read": {
+              "hand_count": 1,
+              "legal_opportunity": true,
+              "reason": "available",
+              "remaining_ms": 0
+            }
+          },
+          "ok": true
+        }
+      }
+    ]
+  }
+}

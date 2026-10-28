@@ -1,35 +1,50 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 
 static func equipment(item: Dictionary) -> Dictionary:
-	return item.get("equipment", {}) if item.has("kind") else item
+	if not item.has("kind"): return item
+	var gear: Variant = item.get("equipment")
+	return gear if gear is Dictionary else {}
 
 static func title(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return P.word(item.get("kind", "物品"))
-	return "%s%s %s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备")), gear.get("level", 0)]
+	var affix: String = str(gear.get("effect_affix", gear.get("effectAffix", "")))
+	var attributes := ("" if P.language() == "zh-CN" else " ").join([P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备"))])
+	if affix not in ["", "<null>"]:
+		return "%s%s%s +%s" % [P.word(affix), "·" if P.language() == "zh-CN" else " · ", attributes, gear.get("level", 0)]
+	if P.language() == "zh-CN":
+		return "%s%s %s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "装备")), gear.get("level", 0)]
+	return "%s +%s" % [attributes, gear.get("level", 0)]
 
 static func description(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return "%s ×%s" % [title(item), item.get("quantity", 1)]
-	var quality: Dictionary = {}
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if row.id == gear.get("quality", ""): quality = row; break
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
 	var lines: Array[String] = [title(item)]
 	var level: int = int(gear.get("level", 0))
 	if not quality.is_empty():
-		lines.append("%s%s +%s%% · %s +%s%%" % [P.word(gear.get("element", "")), P.localized("battle_attack_bonus"), percent(float(quality.damage_percent) + level * float(quality.damage_per_level)), P.localized("resistance"), percent(float(quality.resistance_percent) + level * float(quality.resistance_per_level))])
+		var attributes: Array[String] = []
+		var damage: float = float(quality.damage_percent) + level * float(quality.damage_per_level)
+		var resistance: float = float(quality.resistance_percent) + level * float(quality.resistance_per_level)
+		if not is_zero_approx(damage): attributes.append("%s%s +%s%%" % [P.word(gear.get("element", "")), P.localized("battle_attack_bonus"), percent(damage)])
+		if not is_zero_approx(resistance): attributes.append("%s +%s%%" % [P.localized("resistance"), percent(resistance)])
+		if not attributes.is_empty(): lines.append(" · ".join(attributes))
 		var secondary_trait: String = str(gear.get("secondary_trait", gear.get("secondaryTrait", "")))
-		if secondary_trait == "DrawInterval": lines.append("%s %s%%" % [P.localized("battle_draw_interval_seconds"), percent(float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level))])
-		elif secondary_trait == "ForcedEscape": lines.append("%s +%s%%" % [P.localized("force_escape"), percent(float(quality.forced_escape_percent))])
+		var secondary_value := 0.0
+		if secondary_trait == "DrawInterval": secondary_value = float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)
+		elif secondary_trait == "ForcedEscape": secondary_value = float(quality.forced_escape_percent)
+		if not is_zero_approx(secondary_value):
+			lines.append("%s %s%%" % [P.localized("battle_draw_interval_seconds"), percent(secondary_value)] if secondary_trait == "DrawInterval" else "%s +%s%%" % [P.localized("force_escape"), percent(secondary_value)])
 	var affix: String = str(gear.get("effect_affix", gear.get("effectAffix", "")))
 	if affix not in ["", "<null>"]:
 		lines.append("%s%s" % [P.word(affix), P.localized("equipment_set_hint")])
 		var fields: Array = {"Piercing": [["piercing_percent", P.localized("penetration")]], "Bulwark": [["bulwark_reduction_percent", P.localized("damage_reduction")], ["bulwark_shield_percent", P.localized("shield_gain")]], "Vitality": [["vitality_heal_percent", P.localized("healing")], ["vitality_overcap_percent", P.localized("equipment_health_overcap")]]}.get(affix, [])
 		for field in fields:
-			lines.append("%s: %s +%s%%" % [P.localized("set_contribution"), field[1], percent(float(quality.get(field[0], 0)) + level * float(quality.get("affix_per_level", 0)))])
+			var contribution: float = float(quality.get(field[0], 0)) + level * float(quality.get("affix_per_level", 0))
+			if not is_zero_approx(contribution): lines.append("%s: %s +%s%%" % [P.localized("set_contribution"), field[1], percent(contribution)])
 		if affix == "Bulwark": lines.append(P.localized("bulwark_hint"))
 	if gear.get("is_bound", gear.get("isBound", false)): lines.append("绑定 · 不可上架")
 	return P.localized_text("\n".join(lines))
@@ -40,9 +55,7 @@ static func percent(value: float) -> String:
 static func enhancement_text(item: Dictionary) -> String:
 	var gear := equipment(item)
 	var level: int = int(gear.get("level", 0))
-	var quality: Dictionary = {}
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if row.id == gear.get("quality", ""): quality = row; break
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
 	if quality.is_empty(): return ""
 	var lines: Array[String] = [P.localized("battle_current") + " +%s → +%s" % [level, mini(level + 1, 5)]]
 	var fields: Array = [["damage_percent", "damage_per_level", P.word(gear.get("element", "")) + P.localized("battle_attack_bonus")], ["resistance_percent", "resistance_per_level", P.localized("resistance")]]

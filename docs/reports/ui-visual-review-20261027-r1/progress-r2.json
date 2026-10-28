@@ -1,0 +1,270 @@
+{
+  "at": "2026-10-27T20:10:51.129110+08:00",
+  "goal": "各玩法UI排版、多语言重叠、文字对比度与整体风格统一性验收",
+  "state": "Active_66BasicRenderedFramesAcrossFullSixCombinationMatrix;LoginFontFixVerified;RemainingDialogAndCurrentLayoutReviewPending",
+  "source_base": "40b853d644ebcecaaea3e46b3a67d895a1456948",
+  "languages": [
+    "zh-CN",
+    "en"
+  ],
+  "required_resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "required_cross_product_per_screen": 6,
+  "required_screen_families": [
+    "login",
+    "hall and three heroes",
+    "prep normal/locked",
+    "codex filters/details",
+    "deck builder selected/full",
+    "equipment and comparison",
+    "enhancement quote/blocked",
+    "shop scroll/confirmation",
+    "market listings/details",
+    "mail list/long body/attachments",
+    "settings/audio/language",
+    "ready prompt",
+    "exploration/actions/map/midlayer",
+    "inventory/details/relic replacement",
+    "PVE/PVP/status/pool/choice",
+    "settlement success/death",
+    "recovery/confirmation/notices"
+  ],
+  "baseline_actual_frames": 22,
+  "baseline_scope": "Both languages at960x540,11 basic screens,actual OpenGL rendered pixels",
+  "baseline_defects_confirmed": [
+    "English codex quality filter captions truncated",
+    "Login shell labels collapse to font size1 during container layout"
+  ],
+  "proposed_code_fixes": [
+    "Use requested font until container allocation;avoid fitting against font-derived container height",
+    "Measure button text with its actual rendered font",
+    "Use appropriate compact margins and actual font fitting for quality filters"
+  ],
+  "fixture_corrections": [
+    "Populate lobby cards before production card-pool prewarm",
+    "Use normal localized game-change notifications in isolated APPDATA",
+    "Login uses non-reference shell and is not a missing-reference error"
+  ],
+  "current_compilation_evidence": {
+    "headless05": {
+      "actual_game_matches": 0,
+      "mode": "headless",
+      "ok": true,
+      "scripts": [
+        {
+          "compiled": true,
+          "path": "res://ui/palette.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/reference_ui.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/codex_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/deck_builder_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/exploration_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://tests/ui_visual_review.gd"
+        }
+      ]
+    },
+    "later_review_harness_position_helper_requires_fresh_precheck": true
+  },
+  "new_asset": {
+    "path": "client/assets/generated/ui/exploration_move_compass.png",
+    "tool": "BuiltInImageGen",
+    "transparent_background": true,
+    "image_pixels_unmodified_after_generation": true,
+    "prompt_file": "docs/reports/ui-visual-review-20261027-r1/imagegen-prompt.txt",
+    "status": "ActuallyRenderedInAllSixBasicExplorationCombinations;visual style initially reviewed"
+  },
+  "source_changes": [
+    {
+      "path": "client/ui/palette.gd",
+      "bytes": 36189,
+      "sha256": "b0491892a85924cc79c922f1f3f71ac53b0bfcca9068076e2d7810495e37fb2a"
+    },
+    {
+      "path": "client/ui/main.gd",
+      "bytes": 94685,
+      "sha256": "97a1ae26cd09c05211f29f4658182730f3c0ac78f66451504156923a26b62658"
+    },
+    {
+      "path": "client/ui/reference_ui.gd",
+      "bytes": 75937,
+      "sha256": "b6c2262d9b51831241fea137c46af3b16dad4c9cea72b27db30ca0644cc28177"
+    },
+    {
+      "path": "client/ui/card_grid_view.gd",
+      "bytes": 5435,
+      "sha256": "8ccdd54c485cb180856f8ecd6599803617f9b6193508a0e343c3e15031d88164"
+    },
+    {
+      "path": "client/ui/codex_view.gd",
+      "bytes": 18502,
+      "sha256": "bd796c6f8aa07c9498718474f6d7d60c3b2904c65f6a81bd24e9a4834b7f27c3"
+    },
+    {
+      "path": "client/ui/deck_builder_view.gd",
+      "bytes": 20659,
+      "sha256": "9ed7a27f6a218987758bfbc55c3e468ddebcb3f410eb33cdec11ac750775bfdf"
+    },
+    {
+      "path": "client/ui/exploration_view.gd",
+      "bytes": 47576,
+      "sha256": "853b262db6550bb4ed85e1b9ddb79940f03738bcf0061c29c093601d8c2b9eb1"
+    },
+    {
+      "path": "client/tests/codex_preview.gd",
+      "bytes": 13470,
+      "sha256": "ce1b8f16d74de6c387cdca99efc7192bc1ac9a884c353f5e9f59b60973c141c0"
+    },
+    {
+      "path": "client/tests/deck_builder_preview.gd",
+      "bytes": 6830,
+      "sha256": "945708c3a958d29ffc393f09d281645077574b5c22ab4ebb34ea379ed0c6ee91"
+    },
+    {
+      "path": "client/tests/ui_visual_review.gd",
+      "bytes": 7945,
+      "sha256": "b8b00e8ba647184372b8692ab7ebec2f4746c8579826746fb31ec9cf33523f5e"
+    },
+    {
+      "path": "client/tests/ui_visual_validation.gd",
+      "bytes": 1214,
+      "sha256": "9429cdef74e0fcd0466594f2d23697c838c5e8ffe5cdc07065b6981b2d4b8968"
+    },
+    {
+      "path": "client/assets/generated/ui/exploration_move_compass.png",
+      "bytes": 2557094,
+      "sha256": "b2b53f73c94482410a2cf4fdf6a066e05a23662bd85d57b606e318a90ee5a0c5"
+    }
+  ],
+  "render_mode_policy": {
+    "headless_for_script_checks": true,
+    "visible_user_desktop_windows_allowed": false,
+    "real_rendering_requires_inactive_private_Windows_desktop": true,
+    "never_switch_or_activate_user_desktop": true,
+    "no_visible_fallback_if_private_desktop_fails": true,
+    "owned_processes_only_stopped": true,
+    "private_desktop_actual_render_verified": true
+  },
+  "attempts": {
+    "baseline01": "Native0_22actualPNGs",
+    "pass02": "MemoryAdmissionRejected_NoNative",
+    "import03": "HeadlessImportNative0",
+    "pass03": "ScriptIndentError_NoNewPNGs_UserClosedOwnWindow",
+    "headless04": "CheckOnlyAutoloadContextUnsupported_NotProductFailure",
+    "headless05": "All6ScriptsCompile_HeadlessNative0",
+    "offscreen06": "DesktopVisibilityGuardStoppedOwnProcess_NoPNGs",
+    "isolated08": "MemoryAdmissionRejected_BeforeDesktopOrNativeCreation",
+    "isolated09": "Native0_66PNGs_All6Combinations_218PrivateDesktopChecks_NoUserDesktopSwitch",
+    "login10": "HeadlessTypeInferenceError_CaughtBeforeGPUWorker",
+    "login11": "Native0_6LoginPNGs_AllFontTitleChecksPass_PrivateDesktop28Checks",
+    "login12": "AdmissionRejected_NoNative"
+  },
+  "resource_policy": {
+    "reserve_GiB": 6,
+    "single_renderer_startup_budget_GiB": 1,
+    "admission_requires_min7GiB_and_guarded_sequential_launches": true,
+    "other_project_processes_not_modified": true
+  },
+  "next_actions": [
+    "Read current resource admission and live owned handle state;never lower6GiB reserve or duplicate a live run",
+    "When min7GiB stable, copy the successful private-desktop09 launcher to a new immutable attempt;headless10-script precheck must pass before GPU launch",
+    "Validate compact login and adaptive codex/deck layouts at all6 combinations;test actual window resize caching and scroll anchors",
+    "Expand scenarios to mail,settings/language,card/equipment details,PVE/PVP/choice/map/ready/settlement/recovery and long text states",
+    "Verify cached selected-card label refresh across language changes;signature lacks explicit language but remains unproven,do not change solely on suspicion",
+    "Check text-background contrast and missing glyphs with real rendered frames;see W3C source;do not infer all screenshots passed from process exit0",
+    "Run relevant codex/deck interaction previews using current dynamic-grid-aware scroll helpers",
+    "Full goal remainsactive and requires final rendered style/legibility audit before completion"
+  ],
+  "new_capacity_or_actual_game_matches": 0,
+  "old_acceptance_reports_and_GDD_not_modified": true,
+  "active_goal_complete": false,
+  "private_evidence_root": "G:\\PR13Evidence\\ui-visual-review-20261027-r1",
+  "references": {
+    "contrast": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "private_desktop": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createdesktopw",
+    "desktop_launch": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-startupinfow"
+  },
+  "previous_progress": "progress-r1.json",
+  "actual_rendered_matrix_evidence": {
+    "root": "G:\\PR13Evidence\\ui-visual-review-20261027-r1\\isolated09",
+    "actual_frames": 66,
+    "screen_families": 11,
+    "language_resolution_combinations": 6,
+    "native_exit": 0,
+    "headless_precheck_passed": true,
+    "foreground_desktop_switches": 0,
+    "private_desktop_checks": 218,
+    "all_checked_threads_private": true,
+    "active_user_desktop_unchanged": true,
+    "checks_passed": 84,
+    "checks_total": 90,
+    "failed_checks_retained": [
+      "en_1280_login: readable login title",
+      "en_1920_login: readable login title",
+      "en_960_login: readable login title",
+      "zh-CN_1280_login: readable login title",
+      "zh-CN_1920_login: readable login title",
+      "zh-CN_960_login: readable login title"
+    ]
+  },
+  "login_followup_evidence": {
+    "root": "G:\\PR13Evidence\\ui-visual-review-20261027-r1\\login11",
+    "frames": 6,
+    "all_login_title_checks_passed": true,
+    "min_actual_GameTitle_font_size": 38,
+    "current_compact_layout_changed_after_this_evidence": true
+  },
+  "additional_confirmed_findings": [
+    "Container clip_text suppresses text minimum height;responsive main labels now retain shaped height",
+    "English small-window card codex title/effect measured7.17/6.75px before responsive grid;adaptive columns now implemented and await renderer validation"
+  ],
+  "no_popup_user_request_applied": true,
+  "pending_current_changes": [
+    "Compact login help moved to existing localized tooltips;retest first-screen action reachability",
+    "Responsive codex/deck columns plus resize cache key;retest actual card label pixel size,selection and scrolling",
+    "Updated existing preview scroll helpers use actual slot minimum height/columns,not hardcoded rows"
+  ],
+  "current_no_popup_backend": {
+    "headless_scene": "res://tests/ui_visual_validation.tscn",
+    "GPU_driver": "InactivePrivateWindowsDesktop",
+    "known_successful_launcher": "G:/PR13Evidence/launch-ui-private-desktop09-20261027-r1.py",
+    "active_user_desktop_never_switched": true,
+    "desktop_context_verified_in_successful_runs": true,
+    "visible_fallback_prohibited": true
+  },
+  "current_resume_entry": "Copy successful private-desktop09 launcher to a new immutable folder,with FANTASYCARD_REVIEW_SCREENS=login,cards,deck first;run headless precheck,then GPU only after stable7GiB admission",
+  "last_resource_samples_GiB": [
+    6.1,
+    6.09,
+    5.94
+  ],
+  "last_launch_admitted": false,
+  "new_game_matches": 0,
+  "goal_complete": false,
+  "existing_preview_scroll_helpers": "Use actual target-slot position after layout;no hardcoded column count or authored card height."
+}

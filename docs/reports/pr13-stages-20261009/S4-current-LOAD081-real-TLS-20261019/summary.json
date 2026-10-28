@@ -1,0 +1,70 @@
+{
+  "kind": "ActualTLS3ExperimentsPassed_TaskReadyDependencyPending",
+  "case_reviews": [
+    {
+      "case": "LOAD-08.1-T01",
+      "actual": "Complete262163B close/delayedFIN150ms and262158B immediateclose exactSHA succeed; each followingrequest actualnewTLSsocket succeeds. Oldrealnextrequestfailed exit1 kept.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    },
+    {
+      "case": "LOAD-08.1-T02",
+      "actual": "ContentLength+100/halfchunk/missingterminalzero returnnonzero,publicstatus0andemptybody; validchunkpositive exactSHA.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    },
+    {
+      "case": "LOAD-08.1-T03",
+      "actual": "Untrustedroot andwrongSAN eachTLSreject/noHTTP; 2097153B/rawandgzip-expansion rejected2MiB bound. No verificationbypass.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    }
+  ],
+  "Native_checks29_passed": true,
+  "independent_checks90_passed": true,
+  "actual_HTTPrequests21_TLSconnections14_rejections2": true,
+  "current_full_native": {
+    "ok": true,
+    "suites": 22,
+    "checks": 351,
+    "actual_exit": 0,
+    "source_inputs": 2146,
+    "only_input_delta": [
+      "client/network/reusable_http_client.gd"
+    ],
+    "no_visible_windows_focus_or_input": true,
+    "dual_logs_clean": true,
+    "new_worlds_accounts": 0
+  },
+  "original_real_R1failure_and_fixtureerrors_kept": true,
+  "analysis_corrections_not_transport_retests": "RawA13+B1=14connectionsinsteadguessed13; connect_to_hostHTTPSschemeusesdefaultvalidation,notexplicitTLSOptionscall. Rejectedanalyzerskept,noSUTreexecution.",
+  "production_change": "HonorConnectionclosecaseinsensitivetokensaftercompletebody;closebeforecachingreusableconnection",
+  "no_certificate_bypass_or_bodylimit_or_timeout_relaxation": true,
+  "test_fixture_request_deadline_ms4000_not_production10s30s": true,
+  "private_CAonly_processsetting_no_systemtrust_or_realprojectsettings": true,
+  "all_owned_processes_servers_stopped": true,
+  "new_worlds_accounts_assets_currency0": true,
+  "no_cloud_prod_localGUI_UIart_or_render": true,
+  "headless_Dummy_hidden_belowNormal": true,
+  "task_state": "ReadyForAcceptance",
+  "whole_task_accepted": false,
+  "dependency_hold": "LOAD05.4 threeLIVEcasesstillmissing;081082083084remainReady_notAccepted.",
+  "counts": {
+    "Accepted": 60,
+    "Partial": 59,
+    "ReadyForAcceptance": 13,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 72,
+  "missing_profiles_before": 259,
+  "missing_profiles_after": 256,
+  "other131tasks_globalgates_unchanged": true,
+  "G": "G:\\PR13Evidence\\load081-real-TLS-20261019-r2-originals",
+  "primary_documentation": [
+    "https://docs.godotengine.org/en/4.6/classes/class_projectsettings.html#class-projectsettings-property-network-tls-certificate-bundle-override",
+    "https://docs.godotengine.org/en/4.4/classes/class_httpclient.html"
+  ]
+}

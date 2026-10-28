@@ -27,32 +27,51 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.panel(Rect2(955, 145, 900, 800))
 	ui.text("背包 %s / %s · 安全格 %s" % [items.size(), capacity, safe_slots.size()], Rect2(995, 172, 790, 50), 31, P.GOLD)
 	ui.text(P.localized("drag_inventory_hint"), Rect2(995, 226, 790, 36), 22, P.MUTED)
-	for index in range(capacity):
+	var safe_slot_lookup: Dictionary = {}
+	var slot_order: Array = []
+	for value in safe_slots:
+		var safe_index := int(value)
+		if safe_index >= 0 and safe_index < capacity and not safe_slot_lookup.has(safe_index):
+			safe_slot_lookup[safe_index] = true
+			slot_order.append(safe_index)
+	for slot_index in range(capacity):
+		if not safe_slot_lookup.has(slot_index): slot_order.append(slot_index)
+	var row_count := int(ceil(float(capacity) / 6.0))
+	var slots_scroll: ScrollContainer = ui._scroll(Rect2(992, 270, 640, 408))
+	slots_scroll.name = "InventorySlotsScroll"
+	var slots_grid := Control.new()
+	slots_grid.name = "InventorySlotsContent"
+	slots_grid.custom_minimum_size = Vector2(616, maxi(0, row_count * 104 - Art.COMMON_CELL_GAP))
+	slots_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	slots_grid.mouse_filter = Control.MOUSE_FILTER_PASS
+	slots_scroll.add_child(slots_grid)
+	for display_index in range(capacity):
+		var slot_index: int = int(slot_order[display_index])
+		var is_safe: bool = safe_slot_lookup.has(slot_index)
 		var item: Dictionary = {}
 		for candidate in items:
-			if int(candidate.get("slot_index", -1)) == index: item = candidate; break
+			if int(candidate.get("slot_index", -1)) == slot_index: item = candidate; break
 		var slot := Slot.new()
-		slot.name = "InventorySlot_%s" % index
-		slot.slot_index = index
+		slot.name = "InventorySlot_%s" % slot_index
+		slot.slot_index = slot_index
 		slot.item_id = item.get("item_id", "")
-		slot.position = Vector2(992 + (index % 6) * 104, 270 + int(index / 6) * 104)
+		slot.position = Vector2((display_index % 6) * 104, int(display_index / 6) * 104)
 		slot.size = Art.COMMON_CELL_DISPLAY_SIZE
 		slot.custom_minimum_size = Art.COMMON_CELL_DISPLAY_SIZE
 		slot.clip_contents = true
-		var marker_text := P.localized_text(("安全 " if index in safe_slots else "") + str(index + 1))
+		var marker_text := "" if is_safe else str(slot_index + 1)
 		slot.text = marker_text
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "空格")
-		Art.button(slot, CELL)
+		slot.tooltip_text = P.localized_text(("安全格 · " if is_safe else "") + (Details.description(item) if not item.is_empty() else "空格"))
+		if not is_safe: Art.button(slot, CELL)
 		if not item.is_empty():
-			if item.get("kind", "") == "Equipment":
-				# Equipment slots use the shared layered visual so the quality fill and
-				# frame stay consistent with preparation, rewards and comparisons.
-				slot.text = ""
-				var equipment_visual := ItemVisual.equipment(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
-				equipment_visual.position = Vector2.ZERO
-				equipment_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
+			# All occupied slots use the configured quality background and frame.
+			slot.text = ""
+			var item_visual := ItemVisual.item(slot, item, Art.COMMON_CELL_DISPLAY_SIZE)
+			item_visual.position = Vector2.ZERO
+			item_visual.size = Art.COMMON_CELL_DISPLAY_SIZE
+			if not is_safe:
 				var marker := Label.new()
 				marker.name = "SlotMarker"
 				marker.text = marker_text
@@ -62,32 +81,24 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 				marker.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 				marker.add_theme_font_override("font", P.font_for_text(marker.text, 16))
 				marker.add_theme_font_size_override("font_size", 16)
-				marker.add_theme_color_override("font_color", P.GOLD if index in safe_slots else P.MUTED)
+				marker.add_theme_color_override("font_color", P.MUTED)
 				marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
 				slot.add_child(marker)
-			else:
-				var quality_style := Art.item_cell_style(item)
-				slot.add_theme_stylebox_override("normal", quality_style)
-				slot.add_theme_stylebox_override("hover", quality_style)
-				slot.add_theme_stylebox_override("pressed", quality_style)
-				slot.icon = Art.item_texture(item)
-				slot.expand_icon = true
-				slot.add_theme_constant_override("icon_max_width", 58)
-				if int(item.get("quantity", 1)) > 1: slot.text = marker_text + "\n×%s" % item.get("quantity", 1)
-		if index in safe_slots: slot.add_theme_color_override("font_color", P.GOLD)
+		if is_safe: Art.apply_safe_slot_button(slot)
+		if is_safe: slot.add_theme_color_override("font_color", P.GOLD)
 		if item.get("item_id", "") == selected.get("item_id", "unused"):
 			slot.add_theme_stylebox_override("normal", P.box(Color("29474a"), P.GOLD, 2))
 		slot.pressed.connect(func():
 			if not selected.is_empty() and selected.get("item_id", "") != item.get("item_id", ""):
-				Game.command("inventory.move", {"item_id": selected.item_id, "target_slot_index": index})
+				Game.command("inventory.move", {"item_id": selected.item_id, "target_slot_index": slot_index})
 				host.set_meta("inventory_selected", "")
 			else: host.set_meta("inventory_selected", "" if not selected.is_empty() else item.get("item_id", ""))
 			host._schedule_render())
-		ui.add_child(slot)
+		slots_grid.add_child(slot)
 	if pile_id.is_empty(): _equipment(ui, host, player, selected)
 	else: _relic(ui, host, state, pile_id, selected)
 	ui.button("返回", Rect2(80, 983, 245, 58), func(): host.set_meta("inventory_open", false); host._schedule_render())
-	ui.text(P.localized("safe_slot_hint"), Rect2(990, 888, 800, 35), 23, P.MUTED)
+	ui.text(P.localized("safe_slot_hint"), Rect2(990, 704, 800, 60), 23, P.MUTED)
 
 static func _equipment(ui: Control, host: Control, player: Dictionary, selected: Dictionary) -> void:
 	ui.text(P.localized("equipped"), Rect2(115, 174, 690, 48), 32, P.GOLD)
@@ -96,7 +107,7 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 		var slot: String = ["Head", "Chest", "Hands", "Legs", "Feet"][index]
 		var item: Dictionary = {}
 		for candidate in worn:
-			if candidate.get("equipment", {}).get("slot", "") == slot: item = candidate; break
+			if candidate.get("equipment") is Dictionary and candidate.equipment.get("slot", "") == slot: item = candidate; break
 		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
 		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "未穿戴")
@@ -152,10 +163,16 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 
 static func _description(ui: Control, host: Control, item: Dictionary, rect: Rect2) -> void:
 	var scroll: ScrollContainer = ui._scroll(rect)
-	var label: Label = host._label(scroll, Details.description(item), 21)
+	var label := Label.new()
+	label.text = P.localized_text(Details.description(item))
+	label.add_theme_font_override("font", P.font_for_text(label.text, 21))
+	label.add_theme_font_size_override("font_size", 21)
+	label.add_theme_color_override("font_color", P.PAPER)
 	label.custom_minimum_size.x = rect.size.x - 28
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	scroll.add_child(label)
 	var positions: Dictionary = host.get_meta("item_detail_scroll", {})
 	var id: String = item.get("item_id", "")
 	scroll.set_deferred("scroll_vertical", int(positions.get(id, 0)))

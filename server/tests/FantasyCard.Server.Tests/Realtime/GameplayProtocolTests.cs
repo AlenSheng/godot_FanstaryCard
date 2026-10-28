@@ -102,7 +102,9 @@ public sealed class GameplayProtocolTests
         Assert.Equal(before.Revision, preview.RoomRevision);
         Assert.Equivalent(before, room.Capture(), strict: true);
         Assert.Empty(room.DrainCombatFeedback());
-        var played = Assert.Single(await router.RouteAsync(player, new("battle.play_cards", "play", room.Revision, payload), "test", TestContext.Current.CancellationToken));
+        var playedResponse = await router.RouteAsync(player, new("battle.play_cards", "play", room.Revision, payload), "test", TestContext.Current.CancellationToken);
+        var played = Assert.Single(playedResponse, message => message.Type == "battle.combo_resolved");
+        Assert.Equal("room.snapshot", playedResponse[^1].Type);
         Assert.Equal("battle.combo_resolved", played.Type);
         Assert.Equivalent(preview.Payload, played.Payload, strict: true);
         Assert.Equal(before.Revision + 1, room.Revision);

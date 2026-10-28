@@ -1,0 +1,1 @@
+当前三职业独立schema/服务端/账号各三局新反例已启动，仅针对第二局真实旧事件不污染，未授新的通过层。先Guardian再Mage/Priest，原cyclic-gameplay、baseline_all_hand及自然终态/ACK不变；Guardian2400s每局，其余1200s，不用弃战/强制终态/截止样本充数。实际Native PID与创建ticks、当前在线有效推进已核对；66缺层/32未验收不变。运行中所有输入和原始输出保持，不得按旧状态文件重启。

@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Identity;
@@ -16,7 +17,7 @@ public static class PlayerEndpoints
 
     public static IEndpointRouteBuilder MapPlayerEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/v1/players").WithTags("Players");
+        var group = endpoints.MapGroup("/api/v1/players").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Players");
         group.MapGet("/me", GetMeAsync).Produces<PlayerProfileResponse>().ProducesProblem(401);
         group.MapPut("/me", UpdateMeAsync)
             .RequireRateLimiting(RequestLimitOptions.WritePolicy)
@@ -37,7 +38,7 @@ public static class PlayerEndpoints
     }
 
     private static async Task<IResult> UpdateMeAsync(
-        UpdatePlayerProfileRequest request,
+        GameBody<UpdatePlayerProfileRequest> request,
         HttpContext context,
         IdentityService identityService,
         PlayerRepository playerRepository,
@@ -50,7 +51,7 @@ public static class PlayerEndpoints
             return context.UnauthorizedProblem();
         }
 
-        if (request.DisplayName is null && request.SelectedClass is null)
+        if (request.Value.DisplayName is null && request.Value.SelectedClass is null)
         {
             return Results.Problem(
                 statusCode: StatusCodes.Status400BadRequest,

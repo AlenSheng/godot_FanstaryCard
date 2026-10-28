@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "kind": "separate_preregistered_gdd_expedition_budget",
+  "basis": {
+    "objective": "用户要求继续自动测试并解决守护者对局超时",
+    "gdd": "GDD.md §2, §5 继承 GDD_BASE_v0.69.md；基础卷中深对局目标 10–20 分钟",
+    "observed_failure": "S5-cloud-unrestricted-baseline: 18/30；守护者 E4 连续有效战斗约 400 秒",
+    "interpretation": "以 GDD 完整中深对局预算执行独立验证；不回写原 600 秒结果"
+  },
+  "profile": {
+    "clients": 10,
+    "hero_class": "4 Mage, 3 Priest, 3 Guardian",
+    "strategy": "baseline_all_hand",
+    "load_profile": "cyclic-gameplay",
+    "strategy_seed": 20260930,
+    "cycles_per_client": 3,
+    "natural_cycle_target": 30,
+    "cycle_limit_seconds": 1200,
+    "overall_limit_seconds": 3900,
+    "budget_formula": "3 * (1200 seconds expedition + 60 seconds matchmaking) + 120 seconds cleanup",
+    "cleanup_seconds": 120,
+    "launch_interval_seconds": 1,
+    "owned_cloud_test_bypass": true
+  },
+  "invariants": {
+    "combat_and_enemy_rules_unchanged": true,
+    "starter_decks_and_budgets_unchanged": true,
+    "map_movement_and_evacuation_rules_unchanged": true,
+    "capacity_sample_targets_and_resource_stops_unchanged": true,
+    "fallback_drain_or_forced_termination_not_natural_completion": true,
+    "original_600_second_failure_preserved": true,
+    "new_profile_not_relabelled_as_original_capacity_or_historical_acceptance": true,
+    "complete_raw_sequences_and_read_only_asset_audit_required": true
+  },
+  "state": "Preregistered",
+  "accepted": false,
+  "human_experience_in_scope": false
+}

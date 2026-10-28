@@ -1,0 +1,107 @@
+{
+  "kind": "A081-source-parent-progress-and-approved-production-readonly-check",
+  "source_checkout_at_review": "a0b0d2a8c203dfd677f35b9445c673541a1f73b8",
+  "ok_for_stated_bounded_review": true,
+  "whole_scope_accepted": false,
+  "A081_state": "ReadyForAcceptance",
+  "source_relations": {
+    "path": "docs/reports/pr13-stages-20261009/S5-A081-preroom-source-parents-and-approved-production-check-20261024/source-relations.json",
+    "bytes": 3947,
+    "sha256": "cc6ff8aacf66f8a49ece1a923f166b1d0c00ffd47331c8c80a53873972cb30ff"
+  },
+  "production": {
+    "application_source_revision": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "health_HTTP": 200,
+    "checks": {
+      "approved_application_container": true,
+      "approved_image": true,
+      "approved_start_time": true,
+      "application_running": true,
+      "postgres_identity_unchanged": true,
+      "postgres_running": true,
+      "same_post_reboot_boot_id": true,
+      "ready_HTTP200": true
+    },
+    "same_previous_app_container_start_and_post_reboot_boot": true,
+    "new_deployment_or_reboot_performed": false,
+    "user_decision": "Application only; preserve historical ledger anomaly as unaccepted; do not change assets or ledger.",
+    "ledger_anomaly_repaired_or_reclassified": false,
+    "read_only_witness": {
+      "path": "G:\\PR13Evidence\\production-approved-app-readonly-check-20261024-r412-originals\\result.original.json",
+      "bytes": 980,
+      "sha256": "1dc04a96bda358ca1ed2943a1919ed75498e131d9c4c95cf337dafae645e1eef"
+    }
+  },
+  "A073": {
+    "actual_fork_PR_case_passed": false,
+    "current_authenticated_login_matches_repo_owner": true,
+    "API_observed_orgs": 0,
+    "API_observed_existing_forks": 0,
+    "API_observed_pull_requests_firstpage": 22,
+    "API_observed_fork_head_PRs_firstpage": 0,
+    "bounded_API_observation_not_global_impossibility_claim": true,
+    "new_repo_fork_PR_dispatch_or_message_created": false,
+    "missing_environment_question_sent": true,
+    "answer_not_inferred_from_preselected_option": true,
+    "case_profile_gap_unchanged": true
+  },
+  "reader_correction": {
+    "r409_original_reader_assumed_APP_docker_run_and_stopped_at_assertion": true,
+    "r410_corrected_selector_APP_docker_create": true,
+    "original_runtime_bytes_did_not_mismatch": true,
+    "failed_reader_source_and_terminal_preserved": true
+  },
+  "acceptance": {
+    "register_unchanged": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+      "bytes": 17458066,
+      "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8"
+    },
+    "task_states": {
+      "Accepted": 111,
+      "Partial": 20,
+      "ReadyForAcceptance": 1,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 21,
+    "missing_case_profile_pairs": 46,
+    "CAPACITY": 36,
+    "POSTGRES": 7,
+    "LIVE": 2,
+    "AUDIT": 1,
+    "all6gates": "NotAccepted",
+    "canonical_cases_or_profiles_closed": 0
+  },
+  "constraints": {
+    "GDD_pinned": true,
+    "Priest80_Mage70_Guardian100_legal_base_maxima": true,
+    "human_experience_excluded": true,
+    "current_cloud_host_only_resource_shortage_remains_unpassed": true,
+    "local_Godot_GUI_or_fullscreen_started": false,
+    "new_worlds_accounts_synthetic_items_gameplay_PG_instances": 0,
+    "UI_assets_game_rules_limits_changed": false
+  },
+  "proofs": {
+    "run_parent_join": {
+      "path": "G:\\PR13Evidence\\A081-preroom-stop-run-parent-join-20261024-r410-originals\\result.original.json",
+      "bytes": 1049,
+      "sha256": "f54d3fd539d547daa47a17b954828895d6d16c6c3e8d1a0ec7f3813ab84a1b33"
+    },
+    "independent_recheck": {
+      "path": "G:\\PR13Evidence\\A081-preroom-source-independent-verification-20261024-r413-originals\\result.original.json",
+      "bytes": 1058,
+      "sha256": "9bb2f0ca79db2446f2f084e29f67813c0ce48461bd6d946cacbc1cac98c23351"
+    },
+    "production_readonly": {
+      "path": "G:\\PR13Evidence\\production-approved-app-readonly-check-20261024-r412-originals\\result.original.json",
+      "bytes": 980,
+      "sha256": "1dc04a96bda358ca1ed2943a1919ed75498e131d9c4c95cf337dafae645e1eef"
+    },
+    "fork_environment_readonly": {
+      "path": "G:\\PR13Evidence\\A073-fork-environment-readonly-feasibility-20261024-r411-originals\\result.private.original.json",
+      "bytes": 7489,
+      "sha256": "b223b9314b7ee1dd5b91792c4f029cf4131af00c27c3370fe31c0b4bcc3f8de5"
+    }
+  }
+}

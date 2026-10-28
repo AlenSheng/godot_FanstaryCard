@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="0cd94b37-4e65-4070-b0a8-28b1314dd24e" name="@a3910471e91e 2026-10-14 09:34:30" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-14T09:34:30.2741678+00:00" queuing="2026-10-14T09:34:30.2741679+00:00" start="2026-10-14T09:33:52.9310133+00:00" finish="2026-10-14T09:35:21.1005434+00:00" />
+  <TestSettings name="default" id="69be7ece-0fba-4b67-a47e-eac16d9991e1">
+    <Deployment runDeploymentRoot="_a3910471e91e_2026-10-14_09_34_30" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="49cd520c-db5b-4b66-926b-9729521144cc" testId="8079b2ad-de68-7b6c-7349-28d3cbd77616" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once" computerName="a3910471e91e" duration="00:00:02.7158224" startTime="2026-10-14T09:34:55.2970020+00:00" endTime="2026-10-14T09:34:58.0129703+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="49cd520c-db5b-4b66-926b-9729521144cc" />
+    <UnitTestResult executionId="aeb037ce-b0e7-4429-9b56-2c3317385cd6" testId="26474f5b-4756-1036-a831-454d47427bd9" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping" computerName="a3910471e91e" duration="00:00:02.9953452" startTime="2026-10-14T09:35:18.0140851+00:00" endTime="2026-10-14T09:35:21.0096054+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aeb037ce-b0e7-4429-9b56-2c3317385cd6" />
+    <UnitTestResult executionId="20fe74a4-82e3-4787-a32f-57f231a054dc" testId="7b92823e-6543-0f26-608f-139070b14080" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" computerName="a3910471e91e" duration="00:00:04.5915530" startTime="2026-10-14T09:35:13.4208326+00:00" endTime="2026-10-14T09:35:18.0125309+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="20fe74a4-82e3-4787-a32f-57f231a054dc">
+      <Output>
+        <StdOut>PB ready begin: POST /api/v1/auth/local, players=0
+PB ready headers: POST /api/v1/auth/local, elapsedMs=385.57, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=386.11, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=1
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=215.34, status=200, length=36075
+PB ready body: GET /api/v1/bootstrap, elapsedMs=215.47, bytes=36075
+PB ready begin: GET /api/v1/loadouts/Priest, players=1
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=9.22, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=9.31, bytes=20
+PB ready begin: POST /api/v1/preparations, players=1
+PB ready headers: POST /api/v1/preparations, elapsedMs=101.38, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=101.45, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=1
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=13.11, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=13.19, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=1
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=44.44, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=44.54, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=1
+PB ready headers: POST /api/v1/auth/local, elapsedMs=135.66, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=135.74, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=2
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=55.15, status=200, length=36075
+PB ready body: GET /api/v1/bootstrap, elapsedMs=55.25, bytes=36075
+PB ready begin: GET /api/v1/loadouts/Priest, players=2
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=3.60, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=3.67, bytes=20
+PB ready begin: POST /api/v1/preparations, players=2
+PB ready headers: POST /api/v1/preparations, elapsedMs=8.33, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=8.44, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=2
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=2.30, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.37, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=2
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=9.00, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=9.08, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=2
+PB ready headers: POST /api/v1/auth/local, elapsedMs=186.17, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=186.27, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=3
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=71.09, status=200, length=36075
+PB ready body: GET /api/v1/bootstrap, elapsedMs=71.19, bytes=36075
+PB ready begin: GET /api/v1/loadouts/Priest, players=3
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=2.28, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=2.33, bytes=20
+PB ready begin: POST /api/v1/preparations, players=3
+PB ready headers: POST /api/v1/preparations, elapsedMs=7.20, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=7.27, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=3
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=2.06, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.14, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=3
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=7.19, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=7.27, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=3
+PB ready headers: POST /api/v1/auth/local, elapsedMs=176.47, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=176.55, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=4
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=31.62, status=200, length=36075
+PB ready body: GET /api/v1/bootstrap, elapsedMs=31.71, bytes=36075
+PB ready begin: GET /api/v1/loadouts/Priest, players=4
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=2.86, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=2.92, bytes=20
+PB ready begin: POST /api/v1/preparations, players=4
+PB ready headers: POST /api/v1/preparations, elapsedMs=48.25, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=48.33, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=4
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=2.35, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.41, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=4
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=6.92, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=7.19, bytes=119</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cb327203-07fe-4f48-8d64-ae8b57b01eaf" testId="702e3130-a7c5-2f0f-3080-139c57f128cd" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ban-idle&quot;)" computerName="a3910471e91e" duration="00:00:07.4612464" startTime="2026-10-14T09:34:30.2468570+00:00" endTime="2026-10-14T09:34:37.7086310+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb327203-07fe-4f48-8d64-ae8b57b01eaf" />
+    <UnitTestResult executionId="d83579a9-d844-4f9e-b03b-20abf6fa16f6" testId="c4664efe-a7d7-a24c-6a9a-f7bc81a12ff4" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" computerName="a3910471e91e" duration="00:00:04.6962236" startTime="2026-10-14T09:34:58.0163062+00:00" endTime="2026-10-14T09:35:02.7126855+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d83579a9-d844-4f9e-b03b-20abf6fa16f6" />
+    <UnitTestResult executionId="a0286c85-0539-49f8-be40-80ff6f375887" testId="2205d465-9ef2-4939-9f31-9f898969b6c0" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" computerName="a3910471e91e" duration="00:00:10.6936667" startTime="2026-10-14T09:35:02.7182258+00:00" endTime="2026-10-14T09:35:13.4120785+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0286c85-0539-49f8-be40-80ff6f375887" />
+    <UnitTestResult executionId="82c380cc-8409-4ef9-ab94-99f9f5c24c2f" testId="9871c842-efbd-f68c-003d-ea7e0387f6a8" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking" computerName="a3910471e91e" duration="00:00:03.4918364" startTime="2026-10-14T09:34:48.5377542+00:00" endTime="2026-10-14T09:34:52.0297037+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82c380cc-8409-4ef9-ab94-99f9f5c24c2f" />
+    <UnitTestResult executionId="bb6db69d-16a5-4532-a919-e8e57f5d6d97" testId="883c14b2-8e3c-2dbb-a78e-43caa0970ef7" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" computerName="a3910471e91e" duration="00:00:10.8166432" startTime="2026-10-14T09:34:37.7168527+00:00" endTime="2026-10-14T09:34:48.5336347+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bb6db69d-16a5-4532-a919-e8e57f5d6d97" />
+    <UnitTestResult executionId="f1bbf9f3-7749-489b-978c-c3c093c06d3f" testId="0e87f6cb-1a84-770d-6d03-a37afea1ab9a" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" computerName="a3910471e91e" duration="00:00:03.2637579" startTime="2026-10-14T09:34:52.0310729+00:00" endTime="2026-10-14T09:34:55.2949291+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1bbf9f3-7749-489b-978c-c3c093c06d3f" />
+    <UnitTestResult executionId="b315f6d8-4956-4923-ae61-0d15ce317aca" testId="6fd4db4f-212c-9d15-4616-f35f1df37565" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ticket-expiry&quot;)" computerName="a3910471e91e" duration="00:00:34.1434852" startTime="2026-10-14T09:33:56.0528223+00:00" endTime="2026-10-14T09:34:30.2338826+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b315f6d8-4956-4923-ae61-0d15ce317aca" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping" storage="/runtime/fantasycard.server.tests.dll" id="26474f5b-4756-1036-a831-454d47427bd9">
+      <Execution id="aeb037ce-b0e7-4429-9b56-2c3317385cd6" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_supports_login_bootstrap_and_websocket_ping" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" storage="/runtime/fantasycard.server.tests.dll" id="883c14b2-8e3c-2dbb-a78e-43caa0970ef7">
+      <Execution id="bb6db69d-16a5-4532-a919-e8e57f5d6d97" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_default_binary_routes_ticket_security_and_real_sample_benchmark" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" storage="/runtime/fantasycard.server.tests.dll" id="2205d465-9ef2-4939-9f31-9f898969b6c0">
+      <Execution id="a0286c85-0539-49f8-be40-80ff6f375887" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ban-idle&quot;)" storage="/runtime/fantasycard.server.tests.dll" id="702e3130-a7c5-2f0f-3080-139c57f128cd">
+      <Execution id="cb327203-07fe-4f48-8d64-ae8b57b01eaf" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_ticket_lifecycle_rejects_expiry_and_idle_ban" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: &quot;ticket-expiry&quot;)" storage="/runtime/fantasycard.server.tests.dll" id="6fd4db4f-212c-9d15-4616-f35f1df37565">
+      <Execution id="b315f6d8-4956-4923-ae61-0d15ce317aca" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_ticket_lifecycle_rejects_expiry_and_idle_ban" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" storage="/runtime/fantasycard.server.tests.dll" id="c4664efe-a7d7-a24c-6a9a-f7bc81a12ff4">
+      <Execution id="d83579a9-d844-4f9e-b03b-20abf6fa16f6" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking" storage="/runtime/fantasycard.server.tests.dll" id="9871c842-efbd-f68c-003d-ea7e0387f6a8">
+      <Execution id="82c380cc-8409-4ef9-ab94-99f9f5c24c2f" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Migration_binary_business_equipment_cards_market_mail_matchmaking" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" storage="/runtime/fantasycard.server.tests.dll" id="7b92823e-6543-0f26-608f-139070b14080">
+      <Execution id="20fe74a4-82e3-4787-a32f-57f231a054dc" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_default_protobuf_preparation_ready_and_room_entry" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" storage="/runtime/fantasycard.server.tests.dll" id="0e87f6cb-1a84-770d-6d03-a37afea1ab9a">
+      <Execution id="f1bbf9f3-7749-489b-978c-c3c093c06d3f" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once" storage="/runtime/fantasycard.server.tests.dll" id="8079b2ad-de68-7b6c-7349-28d3cbd77616">
+      <Execution id="49cd520c-db5b-4b66-926b-9729521144cc" />
+      <TestMethod codeBase="/runtime/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_http_concurrent_card_upgrade_retries_spend_once" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8079b2ad-de68-7b6c-7349-28d3cbd77616" executionId="49cd520c-db5b-4b66-926b-9729521144cc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="26474f5b-4756-1036-a831-454d47427bd9" executionId="aeb037ce-b0e7-4429-9b56-2c3317385cd6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b92823e-6543-0f26-608f-139070b14080" executionId="20fe74a4-82e3-4787-a32f-57f231a054dc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="702e3130-a7c5-2f0f-3080-139c57f128cd" executionId="cb327203-07fe-4f48-8d64-ae8b57b01eaf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c4664efe-a7d7-a24c-6a9a-f7bc81a12ff4" executionId="d83579a9-d844-4f9e-b03b-20abf6fa16f6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2205d465-9ef2-4939-9f31-9f898969b6c0" executionId="a0286c85-0539-49f8-be40-80ff6f375887" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9871c842-efbd-f68c-003d-ea7e0387f6a8" executionId="82c380cc-8409-4ef9-ab94-99f9f5c24c2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="883c14b2-8e3c-2dbb-a78e-43caa0970ef7" executionId="bb6db69d-16a5-4532-a919-e8e57f5d6d97" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e87f6cb-1a84-770d-6d03-a37afea1ab9a" executionId="f1bbf9f3-7749-489b-978c-c3c093c06d3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6fd4db4f-212c-9d15-4616-f35f1df37565" executionId="b315f6d8-4956-4923-ae61-0d15ce317aca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="10" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.75]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.19]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.42]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:01:27.57]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

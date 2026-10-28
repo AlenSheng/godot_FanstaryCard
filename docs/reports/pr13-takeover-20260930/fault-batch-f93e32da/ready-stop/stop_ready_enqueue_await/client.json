@@ -1,0 +1,84 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a0f40a-4356-74db-bc17-62a117056945",
+	"case": "stop_ready_enqueue_await",
+	"checks": [
+		{
+			"at_unix_ms": 1790800677563,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800677597,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800677720,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800677814,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800677947,
+			"name": "create_free_preparation",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [
+		{
+			"at_unix_ms": 1790800708732,
+			"message": "Match ticket is not queued or does not belong to the player."
+		},
+		{
+			"at_unix_ms": 1790800708732,
+			"message": "Match ticket is not queued or does not belong to the player."
+		}
+	],
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f409-c82f-78b6-9a91-180cc96993a7",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 0,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"pong"
+	],
+	"stop_boundary": "ready_during_enqueue_await",
+	"ticket_reads": 0,
+	"trace": [
+		{
+			"at_ms": 32550,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 32566,
+			"boundary": "ready_during_enqueue_await",
+			"event": "coordinator_stop"
+		}
+	]
+}

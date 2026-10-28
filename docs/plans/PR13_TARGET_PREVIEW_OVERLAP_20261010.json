@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "kind": "bounded_target_preview_layout_repair",
+  "state": "Queued",
+  "task_ids": ["PR13-B10.1", "PR13-B10.4", "PR13-B11.4"],
+  "execution_priority": "development_first",
+  "source_base_sha": "fa27e3f46cfc015ebf2e50bf69fa148b40474869",
+  "observed_screenshot": "docs/reports/pr13-stages-20261009/S3-cloud-render-runtime/manual_queued_en_960.png",
+  "observation": "已选牌时，卡牌预览面板在画面中覆盖怪物目标按钮部分文字。",
+  "source_defined_geometry": {"target_button": {"y": 512, "height": 50}, "preview_panel": {"y": 528, "height": 97}, "computed_vertical_intersection": 34},
+  "native_geometry_and_pointer_repro_required": true,
+  "ownership": ["client/ui/exploration_view.gd", "client/tests/pr13_target_preview_input.gd", "client/tests/pr13_target_preview_input.tscn"],
+  "before_checks": ["选牌/未选牌分别核对实际目标按钮和预览面板边界", "通过真实 GUI 输入路由点击目标按钮中心和下半部", "记录实际点击是否进入现有目标选择命令，而非直接触发 pressed 信号"],
+  "after_contract": "预览和目标按钮不相交，文字完整，合法点击可选择预定存活目标；出牌选择顺序、目标确认与 GDD 死亡后选择存活目标保持原合同。",
+  "matrix": {"languages": ["zh-CN", "en"], "resolutions": [[1920,1080],[1280,720],[960,540]], "living_target_counts": [2,3], "selection_present": [false,true], "click_points": ["center","lower_half"], "expected_rows": 48},
+  "validation_host": "Existing owned Tencent cloud X11/Mesa rendering image, network disabled, independent user data",
+  "budget": {"seconds": 180, "memory_limit_bytes": 1610612736, "cpu_cores": 1, "memory_safety_floor_bytes": 500000000, "minimum_disk_available_percent": 15},
+  "acceptance_limits": "仅界面布局和模拟指针交互；原自然多局、容量、真人及其余缺失层不由本项替代。",
+  "rollback": "按独立布局修改提交回退，保留修前和修后实际控件/输入/图像证据。",
+  "delivery": "Each completed stage summarized locally and pushed directly to release"
+}

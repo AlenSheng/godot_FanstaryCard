@@ -2,17 +2,27 @@ extends RefCounted
 
 const MANIFEST = preload("res://assets/imported/manifest.json")
 const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
+const QUALITY_LADDER := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"]
+const SAFE_SLOT_FRAME_TEXTURE: Texture2D = preload("res://assets/generated/ui/safe_slot_frame_locked.png")
 ## Shared item-cell art used by inventory, preparation and reward/mail grids.
 ## The source is a 144x144 square and should be rendered 1:1 as 96x96.
 const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.png"
 const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
 const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
 const COMMON_CELL_GAP := 8
+const QUALITY_FILL_INSET_RATIO := 12.0 / 192.0
 ## Shared dark state for an empty equipment slot. Keep it visually distinct from White gear.
 const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
 const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
 const UNEQUIPPED_ITEM_MODULATE := Color8(115, 115, 115, 200)
 static var _textures: Dictionary = {}
+static var _styles: Dictionary = {}
+
+static func clear_texture_cache() -> void:
+	# Cached styles also own textures; live controls keep their own references.
+	_styles.clear()
+	_textures.clear()
 
 static func texture(key: String) -> Texture2D:
 	if key.is_empty(): return null
@@ -56,7 +66,11 @@ static func item_texture(item: Dictionary) -> Texture2D:
 	var id := str(item.get("item_id", item.get("itemId", "")))
 	var kind := str(item.get("kind", item.get("Kind", "")))
 	for row in CATALOG.data.get("tables", {}).get("Items", []):
-		if str(row.get("id", "")) == id or (str(row.get("kind", "")) == kind and not id.begins_with("class_soul:")):
+		if not id.is_empty() and str(row.get("id", "")) == id:
+			var key := str(row.get("icon_key", ""))
+			if not key.is_empty(): return texture(key)
+	for row in CATALOG.data.get("tables", {}).get("Items", []):
+		if str(row.get("kind", "")) == kind and kind != "ClassSoul":
 			var key := str(row.get("icon_key", ""))
 			if not key.is_empty(): return texture(key)
 	return null
@@ -72,7 +86,10 @@ static func element(value: String) -> Texture2D:
 	if value not in ["Fire", "Wood", "Water", "Metal"]: return null
 	return texture("UI/Battle/battle_element_icon_%s.png" % value.to_lower())
 
-static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
+static func _style_prototype(key: String, tint: Color) -> StyleBoxTexture:
+	var cache_key := "%s|%s" % [key, tint]
+	var cached: StyleBoxTexture = _styles.get(cache_key)
+	if cached != null: return cached
 	var box := StyleBoxTexture.new()
 	box.texture = texture(key)
 	box.modulate_color = tint
@@ -82,7 +99,12 @@ static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
 		box.set_texture_margin(pair[0], float(borders[pair[1]]))
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)
 	for side in [SIDE_TOP, SIDE_BOTTOM]: box.set_content_margin(side, 12)
+	_styles[cache_key] = box
 	return box
+
+## Independent copy. Search fields and scrollbars adjust margins after this returns.
+static func style(key: String, tint: Color = Color.WHITE) -> StyleBoxTexture:
+	return _style_prototype(key, tint).duplicate() as StyleBoxTexture
 
 static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureRect:
 	var node := TextureRect.new()
@@ -95,30 +117,57 @@ static func image(parent: Node, source: Texture2D, minimum: Vector2) -> TextureR
 	return node
 
 static func button(node: Button, key: String) -> void:
-	node.add_theme_stylebox_override("normal", style(key))
-	node.add_theme_stylebox_override("hover", style(key, Color(1.2, 1.15, 1.05)))
-	node.add_theme_stylebox_override("pressed", style(key, Color(0.8, 0.85, 0.9)))
-	node.add_theme_stylebox_override("disabled", style(key, Color(0.55, 0.55, 0.55)))
+	# Buttons do not edit these boxes, so every button of the same art shares one.
+	node.add_theme_stylebox_override("normal", _style_prototype(key, Color.WHITE))
+	node.add_theme_stylebox_override("hover", _style_prototype(key, Color(1.2, 1.15, 1.05)))
+	node.add_theme_stylebox_override("pressed", _style_prototype(key, Color(0.8, 0.85, 0.9)))
+	node.add_theme_stylebox_override("disabled", _style_prototype(key, Color(0.55, 0.55, 0.55)))
 
 static func cell_style(tint: Color = Color.WHITE) -> StyleBoxTexture:
 	return style(COMMON_CELL_KEY, tint)
 
+static func add_safe_slot_frame(parent: Control) -> TextureRect:
+	var frame := TextureRect.new()
+	frame.name = "SafeSlotFrame"
+	frame.texture = SAFE_SLOT_FRAME_TEXTURE
+	frame.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	frame.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(frame)
+	return frame
+
+static func apply_safe_slot_button(node: Button) -> void:
+	var normal := StyleBoxFlat.new()
+	normal.bg_color = Color.TRANSPARENT
+	normal.set_content_margin_all(8)
+	var hover := normal.duplicate() as StyleBoxFlat
+	hover.bg_color = Color.TRANSPARENT
+	var pressed := normal.duplicate() as StyleBoxFlat
+	pressed.bg_color = Color.TRANSPARENT
+	var disabled := normal.duplicate() as StyleBoxFlat
+	disabled.bg_color = Color.TRANSPARENT
+	node.add_theme_stylebox_override("normal", normal)
+	node.add_theme_stylebox_override("hover", hover)
+	node.add_theme_stylebox_override("pressed", pressed)
+	node.add_theme_stylebox_override("disabled", disabled)
+	add_safe_slot_frame(node)
+
 static func quality_name(rank: Variant) -> String:
 	if rank is String:
 		var raw := str(rank).capitalize()
-		if raw in ["White", "Green", "Blue", "Purple", "Orange", "Red"]: return raw
-	var numeric := int(rank)
-	return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"][clampi(numeric, 0, 6)]
+		if raw in QUALITY_LADDER and not raw.is_empty(): return raw
+	return QUALITY_LADDER[clampi(int(rank), 0, 6)]
 
 static func item_quality_rank(item: Dictionary) -> int:
 	var gear: Dictionary = item.get("equipment", {}) if item.get("equipment") is Dictionary else {}
 	if not gear.is_empty() and gear.has("quality"):
 		var gear_quality := quality_name(gear.get("quality"))
-		return ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(gear_quality)
+		return QUALITY_LADDER.find(gear_quality)
 	var raw_quality: Variant = item.get("quality", item.get("Quality", 0))
 	if raw_quality is String and not str(raw_quality).is_empty():
 		var named := quality_name(raw_quality)
-		var named_rank := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(named)
+		var named_rank := QUALITY_LADDER.find(named)
 		if named_rank > 0: return named_rank
 	if int(raw_quality) > 0: return clampi(int(raw_quality), 1, 6)
 	var id := str(item.get("item_id", item.get("itemId", "")))
@@ -132,12 +181,18 @@ static func item_quality_rank(item: Dictionary) -> int:
 static func item_quality_name(item: Dictionary) -> String:
 	return quality_name(item_quality_rank(item))
 
+static func item_background_key(item: Dictionary) -> String:
+	return str(CatalogIndex.quality(item_quality_name(item)).get("item_background_key", COMMON_CELL_KEY))
+
+static func item_frame_key(item: Dictionary) -> String:
+	return str(CatalogIndex.quality(item_quality_name(item)).get("item_frame_key", ""))
+
 static func quality_color(rank: Variant) -> Color:
 	var quality := quality_name(rank)
-	for row in CATALOG.data.get("tables", {}).get("EquipmentQuality", []):
-		if str(row.get("id", "")) == quality:
-			var configured := str(row.get("display_color", ""))
-			if not configured.is_empty(): return Color(configured)
+	var row := CatalogIndex.quality(quality)
+	if not row.is_empty():
+		var configured := str(row.get("display_color", ""))
+		if not configured.is_empty(): return Color(configured)
 	return [Color.WHITE, Color("d0c9b6"), Color("789a70"), Color("558cb8"), Color("9979b1"), Color("d99b48"), Color("ce5651")][clampi(int(rank), 1, 6)]
 
 static func item_cell_style(item: Dictionary) -> StyleBoxTexture:

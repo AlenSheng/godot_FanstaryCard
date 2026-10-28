@@ -21,7 +21,9 @@ public sealed record MailItemResponse(
     bool IsRead,
     [property: JsonPropertyName("claimed")]
     bool IsClaimed,
-    IReadOnlyList<MailAttachmentResponse> Attachments);
+    IReadOnlyList<MailAttachmentResponse> Attachments,
+    string TitleEn = "",
+    string BodyEn = "");
 
 public sealed record MailListResponse(
     IReadOnlyList<MailItemResponse> Items,
@@ -34,7 +36,8 @@ public sealed record MailClaimResponse(
 
 public sealed record MailClaimAllResponse(
     int MailCount,
-    int AttachmentCount);
+    int AttachmentCount,
+    IReadOnlyList<MailClaimResponse>? Claims = null);
 
 public sealed record MailDeleteResponse(
     int DeletedCount);

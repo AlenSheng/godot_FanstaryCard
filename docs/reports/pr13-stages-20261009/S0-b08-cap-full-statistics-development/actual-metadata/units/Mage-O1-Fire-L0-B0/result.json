@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "unit": "Mage-O1-Fire-L0-B0",
+  "exit_code": 0,
+  "oom_killed": false,
+  "compiled_runtime_unchanged": true,
+  "source_inputs_unchanged": true,
+  "validation": {
+    "ok": true,
+    "source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+    "encounters": 2000,
+    "pairs": 1000,
+    "actual_casts": 21005,
+    "actual_ticks": 351272,
+    "outcomes": {
+      "Victory": 2000
+    },
+    "case_denominators": {
+      "BaselinePurple/all_casts": 10786,
+      "BaselinePurple/T03_no_shield": 10047,
+      "BaselinePurple/all_ticks": 179596,
+      "BaselinePurple/T01_below_cap_ticks": 179596,
+      "BaselinePurple/T02_equipment_floor_ticks": 179596,
+      "BaselinePurple/T02_card_speed_ticks": 54089,
+      "BaselinePurple/T02_PVE_conversion_ticks": 10426,
+      "BaselinePurple/T02_expiry_ticks": 681,
+      "BaselinePurple/T03_positive_shield": 739,
+      "SingleOrangeHead/all_casts": 10219,
+      "SingleOrangeHead/T03_no_shield": 9515,
+      "SingleOrangeHead/all_ticks": 171676,
+      "SingleOrangeHead/T01_below_cap_ticks": 171676,
+      "SingleOrangeHead/T02_equipment_floor_ticks": 171676,
+      "SingleOrangeHead/T02_card_speed_ticks": 49261,
+      "SingleOrangeHead/T02_PVE_conversion_ticks": 9656,
+      "SingleOrangeHead/T02_expiry_ticks": 613,
+      "SingleOrangeHead/T03_positive_shield": 704
+    },
+    "negative_controls": [
+      {
+        "name": "wrong-resistance-cap",
+        "rejected": true
+      },
+      {
+        "name": "wrong-conversion-stage",
+        "rejected": true
+      },
+      {
+        "name": "wrong-shield-overflow",
+        "rejected": true
+      },
+      {
+        "name": "candidate-policy-enabled",
+        "rejected": true
+      }
+    ],
+    "full_unit": true,
+    "whole_experiment_complete": false,
+    "required_cases_accepted": false,
+    "main_acceptance_granted": false
+  },
+  "owned_container_removed": true,
+  "main_acceptance_granted": false
+}

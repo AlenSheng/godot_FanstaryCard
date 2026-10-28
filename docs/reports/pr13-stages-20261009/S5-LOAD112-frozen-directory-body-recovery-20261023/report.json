@@ -1,0 +1,168 @@
+{
+  "kind": "SealedDirectorySnapshotReplayAndFurtherSourceBodyRecovery_NotRuntimeOrOriginalRootPass",
+  "generated_at": "2026-10-23T14:43:56.054182+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "source_refs_considered": 1669,
+  "frozen_commit_records_replayed": 964,
+  "sealed_tree_objects_used": 2880,
+  "live_git_commit_or_tree_queries": 0,
+  "declared_source_refs_bound": 695,
+  "full_path_digest_versions_bound": 406,
+  "unique_source_body_objects": 365,
+  "offline_snapshot_path_controls_passed": 9,
+  "boundary_controls": [
+    {
+      "name": "offline earlier path version",
+      "actual": "8ff8f9ab42bd24f816d9a3965be63a5843d514d9",
+      "expected": "8ff8f9ab42bd24f816d9a3965be63a5843d514d9",
+      "passed": true
+    },
+    {
+      "name": "offline later path version",
+      "actual": "f81d56b9340c9617683e1dbb2ed220dc444d52f3",
+      "expected": "f81d56b9340c9617683e1dbb2ed220dc444d52f3",
+      "passed": true
+    },
+    {
+      "name": "offline renamed path",
+      "actual": "f81d56b9340c9617683e1dbb2ed220dc444d52f3",
+      "expected": "f81d56b9340c9617683e1dbb2ed220dc444d52f3",
+      "passed": true
+    },
+    {
+      "name": "same body at another name is insufficient",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "symlink source still excluded",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "directory target not a blob and descendants retained",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "unheld tree snapshot not guessed",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "recovered source path must have namespace",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "repository traversal still excluded",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    }
+  ],
+  "source_snapshot_and_trusted_reader": {
+    "source_helper_sha256": "88f6bb073ff43d69f35908c029a08cbf57f0695e7bf24595231f08cba7223b08",
+    "source_catalog_inventory": {
+      "path": "G:\\PR13Evidence\\LOAD112-repository-path-history-publication-20261023-r78-originals\\complete-captured-catalog-custody.private.original.jsonl",
+      "bytes": 2560433,
+      "sha256": "9e6397089954273c3c30fad1846df65fee24bdaa94384f67da0595f0931d80b8"
+    },
+    "source_original_catalog_result": {
+      "path": "G:\\PR13Evidence\\LOAD112-repository-path-history-20261023-r77-originals\\result.private.original.json",
+      "bytes": 6017,
+      "sha256": "48aec00c74af8e86eaacd4522787f6f5d9bb0cdf1cee233137c1d3f991899a65",
+      "git_object_type": null,
+      "git_object_sha1": null
+    }
+  },
+  "directory_replay_uses_sealed_native_tree_outputs_and_recomputed_object_identities": true,
+  "private_new_blobs_read_natively_by_exact_object_id_and_SHA1_SHA256_checked": true,
+  "prior_verified_metadata_used_only_to_skip_nonmatching_objects": true,
+  "smaller_text_code_objects_read_before_larger_binary_objects": true,
+  "candidate_full_path_blob_pairs": 2283,
+  "candidate_blob_objects": 2091,
+  "actual_blob_objects_read": 1813,
+  "actual_blob_bytes_read": 535759060,
+  "configured_per_pass_decoded_blob_cap_bytes": 536870912,
+  "native_source_reader_exits": [
+    0,
+    0
+  ],
+  "captured_source_errors": [],
+  "version_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\exact-frozen-path-version-bindings.private.original.jsonl",
+    "bytes": 2085885,
+    "sha256": "d43008ba40a4fcfe39ab853f3b32747ccccea551e559b250bd249002dc2acd03",
+    "records": 406
+  },
+  "declaration_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\source-declaration-to-frozen-version-bindings.private.original.jsonl",
+    "bytes": 485844,
+    "sha256": "80efe139fe8e1c02c959d77e6f217243747e0f1e8d112351531ce9729741993e",
+    "records": 695
+  },
+  "frozen_candidate_catalog_for_future_reads": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\frozen-full-path-blob-candidates.private.original.jsonl",
+    "bytes": 9293498,
+    "sha256": "997881838de5c93af52e6396701c8111595dbfa6914c8b791b3a00ebea7f5f0c",
+    "records": 2283
+  },
+  "actual_positive_and_negative_blob_metadata": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\actual-native-blob-metadata.private.original.jsonl",
+    "bytes": 334956,
+    "sha256": "121f828a6b63fc65bced8a755d6b9e8458b3f38bb86564ca2d2d95880d9ee9f9",
+    "records": 1813
+  },
+  "remaining_body_read_deferrals": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\source-object-read-deferrals.private.original.jsonl",
+    "bytes": 56399,
+    "sha256": "d78ef14a187e1c7ff8b03ab9e7989ac70f90b2f2dc09b0da026306e9da9c283b",
+    "records": 270
+  },
+  "distinct_blob_read_deferrals": 270,
+  "current_pass_artifact_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-publication-20261023-r80-originals\\complete-resume-artifact-custody.private.original.jsonl",
+    "bytes": 79058,
+    "sha256": "b783f8402c7489c550bb646e714d262cedecb1f6c144cd7bd57efb4b6221a51d"
+  },
+  "private_blob_objects_rehashed_at_publication": 365,
+  "external_snapshot_proof_files_reverified": 151,
+  "carrier_is_witness_not_original_caller_revision_physical_root_representation_or_execution": true,
+  "original_parent_payloads_not_reparsed_and_old_test_results_not_changed_to_pass": true,
+  "source_worktree_expected_hashes_null_sizes_and_failed_cases_not_rewritten": true,
+  "unread_or_unobserved_versions_not_marked_missing_corrupt_or_passed": true,
+  "size_omitting_reference_records_before": 2047,
+  "size_omitting_reference_records_after": 1352,
+  "remaining_size_omitting_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\remaining-size-omitting-declaration-review.private.original.jsonl",
+    "bytes": 634034,
+    "sha256": "f53001f26ddcf4d9bfefd54a8386b34efae9ad593f3802217d5071b4e2dfb9e8",
+    "records": 1352,
+    "unique_declared_digests": 714
+  },
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "original_content_review_queue_unchanged": 187,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "private_source_bodies_not_executed_or_publicly_exported": true,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_engine_or_cloud_operation": false
+}

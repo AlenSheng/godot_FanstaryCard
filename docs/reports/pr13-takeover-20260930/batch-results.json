@@ -1,0 +1,171 @@
+{
+  "batches": [
+    {
+      "modification_sha": "1bc391025c9aa5bf25c04782818f20f2f32d991d",
+      "tests": {
+        "python": {
+          "passed": 68,
+          "failed": 0,
+          "skipped": 0
+        },
+        "explicit_offline_cases": {
+          "passed": 27,
+          "unexecuted": 369
+        },
+        "http_boundaries": 13,
+        "codec": 173,
+        "http_transport": 24
+      },
+      "source_dirty": false,
+      "evidence_root": "p0-1bc3910",
+      "scope": "Offline and loopback fixtures, not live capacity."
+    },
+    {
+      "modification_sha": "9275ec295b76f10fdefb57dc83a6c59c3dbcb878",
+      "tests": {
+        "python": {
+          "passed": 71,
+          "failed": 0,
+          "skipped": 0
+        },
+        "explicit_offline_cases": {
+          "passed": 27,
+          "unexecuted": 369
+        }
+      },
+      "source_dirty": false,
+      "evidence_root": "p0-9275ec2",
+      "scope": "Offline final evidence and acknowledgement conservation."
+    },
+    {
+      "modification_sha": "a828eb583f2ae57678cb5e25d5bb70d4636f3bab",
+      "scope": "Client context/target contract",
+      "evidence_root": "combat-client",
+      "tests": {
+        "new_contract": 32,
+        "client_groups": 17
+      },
+      "source_dirty": true,
+      "note": "Original subagent report preserved with dirty source; independent clean a828 import/gates and b709 CI listed separately."
+    },
+    {
+      "modification_sha": "b7099ef716235be68395255360cbd5cf6c67baff",
+      "scope": "Launch and terminal snapshot recovery",
+      "evidence_root": "lifecycle",
+      "tests": {
+        "new_postgres_fault_cases": 8,
+        "server": 262,
+        "domain": 317
+      },
+      "source_dirty": true,
+      "note": "Original subagent dirty report preserved; exact committed b709 PG CI and clean cc6 source regression independently verified."
+    },
+    {
+      "modification_sha": "d4c3212fb32c75d4b9f9f62c08277996611b149c",
+      "scope": "Early operator stop/emergency/actual child cleanup",
+      "tests": {
+        "finalization_methods": 20
+      },
+      "evidence_root": "integrated-cc6da2e"
+    },
+    {
+      "modification_sha": "6f3b50fb73baed78ee107f309f12f815cdc3b0a2",
+      "scope": "Frozen matrices, sample budget, P95 and provenance",
+      "tests": {
+        "simulation_contracts": 25
+      },
+      "evidence_root": "simulation-contracts",
+      "note": "Fixture tests and the separately recorded completed actual4factor\u00d73block experiment are supporting evidence; neither closes legal routes, preparedBoss, PVP or recommendation."
+    },
+    {
+      "modification_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+      "scope": "Reject contradictory sample evidence in actual coordinator verdict",
+      "tests": {
+        "sampling_helper_methods": 13,
+        "actual_coordinator_methods": 2,
+        "full_python": 115,
+        "explicit_offline_passed": 27,
+        "domain": 317,
+        "server_postgres": 262,
+        "godot_gates_including_import": 6
+      },
+      "source_dirty": false,
+      "evidence_root": "integrated-cc6da2e"
+    },
+    {
+      "modification_sha": "d3c5fe6cfb3b4d10754b751a66129fc6f5880c17",
+      "scope": "Real persisted equipment semantic-name P0 +5 actual OS host support cases",
+      "evidence_root": "pb-equipment-d3c5fe6c",
+      "tests": {
+        "server": 281,
+        "domain": 317,
+        "actual_host_cases": 5,
+        "equipment_encoding_cases": 16,
+        "client_codec": 177,
+        "client_transport": 24,
+        "http_boundaries": 13,
+        "python": 115,
+        "canonical_offline": 27
+      },
+      "source_dirty_at_test": true,
+      "source_equivalence": "pb-equipment-d3c5fe6c/post-commit-source.json",
+      "ci_first_attempt": "ci-d3c5fe6c/workflows.json",
+      "note": "Four CI workflows passed; numerical acceptance280pass1fail persisted-read race retained;5 new realhost passed in failed CI artifact."
+    },
+    {
+      "modification_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+      "scope": "Await asynchronously published database snapshot revision; keep terminal/elapsed/RNG expectations",
+      "evidence_root": "checkpoint-publication-de1157fd",
+      "tests": {
+        "focused_repeat_passes": 10,
+        "server": 281,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_dirty_at_test": true,
+      "source_equivalence": "checkpoint-publication-de1157fd/post-commit-source.json",
+      "note": "Test-only 4-line correction; production/client/protocol/tool paths identical to d3. Exact new-SHA CI is separately indexed."
+    }
+  ],
+  "all_accepted": false,
+  "canonical_counts_changed": false,
+  "note": "HTTP boundary log was originally written under external baseline directory while executing clean 1bc3910 checkout; preserved as 1bc3910 evidence here, not a 73d4 run.",
+  "actual_experiments": [
+    {
+      "source_sha": "cc6da2e7b8a2c7ba46d867af74ce28a58ccfeac3",
+      "evidence_root": "actual-factors-cc6da2e",
+      "kind": "actual Domain simulation, separate from historical data",
+      "cohorts": 4,
+      "independent_blocks_each": 3,
+      "seeds_per_block_per_stratum": 1000,
+      "records_each_cohort": 216000,
+      "records_total": 864000,
+      "completed_jobs": 12,
+      "failed_jobs": 0,
+      "cancelled_jobs": 0,
+      "unaffected_paired_controls_checked": 324000,
+      "first_windup_candidate_rows_checked": 54000,
+      "raw_control_errors": 0,
+      "sample_budget_status": "BudgetMet",
+      "candidate_recommendation": "NotEvaluated",
+      "candidate_activation": false,
+      "clean_source_before_fresh_build": true,
+      "post_build_dirty": "recorded generated bin/obj only; C#manifest dirty field absent/Unknown",
+      "raw_delivery": "actual-factors-cc6da2e/raw-package-manifest.json",
+      "raw_uploaded": false,
+      "historical_raw_modified": false
+    }
+  ],
+  "current_task_states": {
+    "Partial": 45,
+    "NotRevalidated": 84,
+    "Blocked": 3,
+    "Accepted": 0
+  },
+  "remaining_canonical_cases": {
+    "explicit_current_offline_passed": 27,
+    "not_executed_by_that_runner": 369,
+    "accepted": 0,
+    "supporting_tests_auto_promoted": false
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "task_id": "LOAD-07.4",
+  "stage": "S0",
+  "integration_sha": "b2cccdee8fc67a334ddf3343ce242d26caa0b319",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "1f0c6c2fc34eb339641dc545ca6958f4e388a3a078eddb8f5d06a61cb32e7d25",
+  "algorithm_version": "pr13-local-stage-contract-v1",
+  "case_ids": [
+    "LOAD-07.4-T01",
+    "LOAD-07.4-T02",
+    "LOAD-07.4-T03"
+  ],
+  "expected": {
+    "runtime_cases": [
+      {
+        "id": "LOAD-07.4-T01",
+        "setup_and_injection": "坏最终JSON",
+        "expected": "证据无效不Pass",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-07.4-T02",
+        "setup_and_injection": "STOP后exit7",
+        "expected": "清理失败可见",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-07.4-T03",
+        "setup_and_injection": "一进程hang",
+        "expected": "有界强退并不操作其他PID",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "所有故障有分类和尾部验收；安全人数/时长上限不取消。"
+  },
+  "actual": {
+    "scope_frozen": true,
+    "runtime_executed": false,
+    "profile_budgets": {
+      "OFFLINE": {
+        "deadline_seconds": 600,
+        "case_deadline_seconds": 30,
+        "godot_case_deadline_seconds": 90,
+        "child_grace_seconds": 10,
+        "cleanup_seconds": 30,
+        "network": "Loopback fixtures only; no default public server",
+        "pass_criteria": "Every mandatory normal/boundary/fault expectation matches; no unclassified failure or mandatory skip",
+        "stop_conditions": [
+          "deadline",
+          "unowned child",
+          "unexpected public network target"
+        ]
+      },
+      "LIVE": {
+        "deadline_seconds": 2400,
+        "single_account_limit_seconds": 600,
+        "ten_account_limit_seconds": 1800,
+        "cleanup_seconds": 120,
+        "classes": [
+          "Mage",
+          "Priest",
+          "Guardian"
+        ],
+        "accounts": [
+          1,
+          10
+        ],
+        "cycles_per_account": 3,
+        "incomplete_allowed_for_pass": 0,
+        "target": "Owned loopback server with default request limits",
+        "pass_criteria": "Each account has three natural completed games and authoritative ACK/asset/route parity; abandon/fallback/drain are separate",
+        "stop_conditions": [
+          "deadline",
+          "three consecutive historical safety windows",
+          "monitoring unavailable",
+          "invalid evidence",
+          "unowned target"
+        ]
+      }
+    },
+    "inputs": "轻量子进程、慢I/O/探测/时钟接缝",
+    "dependencies": [
+      "LOAD-07.2",
+      "LOAD-07.3"
+    ],
+    "dependency_phase": "S4/S5 integration only",
+    "writer": "MAIN",
+    "write_scope": [
+      "tools/gameplay_load_validation.py",
+      "tools/gameplay_load_test.py",
+      "tools/tests",
+      "client/tests/gameplay_load_client.gd",
+      "client/state/game_store.gd",
+      "client/tests"
+    ],
+    "task_contract_hash": "5b5b84ae32f915d896196ca5c48087d6f3e2a08629e562d76ad6f501b144d5e7"
+  },
+  "status": "ReadyForAcceptance",
+  "sample_population": null,
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": null,
+  "commands": [
+    "python tools/pr13_plan.py --check",
+    "python tools/pr13_stages.py check --input <S0 directory>"
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet_required": "10.0.400"
+  },
+  "exit_codes": [],
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "manifest.json",
+  "reviewer": "MAIN",
+  "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "effective_room_policy": "No runtime started at S0; default policy source is pinned in source manifest.",
+    "runtime_image_digest": "Local process profile; container image is not selected. Assemblies are hashed after build.",
+    "sample_population": "S0 registers budgets; no runtime sample has been observed.",
+    "cutoff_monotonic": "No runtime cutoff exists before execution.",
+    "window_or_drain_or_final": "No runtime window exists before execution.",
+    "asset_and_route_postconditions": "Measured at S4/S5, never inferred from source."
+  },
+  "accepted_by": null,
+  "stage_states": {
+    "S1": "Queued",
+    "S2": "Queued",
+    "S3": "Queued",
+    "S4": "Queued",
+    "S5": "Queued",
+    "S6": "Queued"
+  }
+}

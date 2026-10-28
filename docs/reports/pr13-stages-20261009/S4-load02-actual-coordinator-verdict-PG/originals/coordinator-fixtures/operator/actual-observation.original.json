@@ -1,0 +1,598 @@
+{
+  "mode": "operator",
+  "actual_child_exit_code": 130,
+  "actual_report": {
+    "schema_version": 5,
+    "started": 100000.0,
+    "ended": 100000.25,
+    "groups": 1,
+    "clients": 1,
+    "stop_file": "/output/coordinator-fixtures/operator/fixture-0/20261014-053647-b31a26/STOP",
+    "stop_reason": "operator_stop_file",
+    "outcome": {
+      "classification": "operator_stopped",
+      "passed": false,
+      "exit_code": 130
+    },
+    "source": {
+      "fixture": true
+    },
+    "cleanup_error": null,
+    "load_window_verified": false,
+    "required_samples": 2,
+    "stop_issued_monotonic_ns": 250000000,
+    "stop_issued_ms": 100000250,
+    "load_contract": {
+      "profile": "cyclic-gameplay",
+      "acceptance_scope": [
+        "execution",
+        "evidence",
+        "load",
+        "gameplay",
+        "cleanup"
+      ],
+      "target_online": 1,
+      "target_active": 1,
+      "minimum_window": 600,
+      "minimum_continuous": 120,
+      "minimum_coverage": 0.95,
+      "maximum_gap": 20,
+      "minimum_command_rate": 1,
+      "launch_interval_seconds": 0,
+      "http_transport": "reusable",
+      "client_max_fps": null,
+      "fps_scope": "unchanged engine/project default",
+      "resource_source": "preregistered_prometheus",
+      "server_metrics_missing_reason": null,
+      "distinct_local_client_ips": false,
+      "client_memory_start_budget_mib": 256,
+      "minimum_generator_memory_bytes": 2147483648,
+      "minimum_cloud_memory_bytes": null,
+      "http_p95_limit_ms": 1500,
+      "command_p95_limit_ms": 2000,
+      "health_limit_ms": 5000,
+      "monitor_timeout_seconds": 3,
+      "hero_class": "Mage",
+      "strategy": "baseline_all_hand",
+      "strategy_seed": 20260930,
+      "cycle_limit_seconds": 240
+    },
+    "load_coverage": {
+      "passed": false,
+      "window_seconds": 0.25,
+      "observed_seconds": 0.0,
+      "compliant_seconds": 0.0,
+      "coverage": 0.0,
+      "longest_continuous_seconds": 0.0,
+      "intervals": [],
+      "target_online": 1,
+      "target_active": 1,
+      "minimum_command_rate": 1,
+      "maximum_gap": 20,
+      "minimum_window": 600,
+      "minimum_continuous": 120,
+      "minimum_coverage": 0.95,
+      "evidence_errors": []
+    },
+    "result_dimensions": {
+      "dimensions": {
+        "execution": "Passed",
+        "evidence": "Failed",
+        "load": "Failed",
+        "gameplay": "Failed",
+        "performance": "NotApplicable",
+        "cleanup": "Passed"
+      },
+      "applicable": [
+        "cleanup",
+        "evidence",
+        "execution",
+        "gameplay",
+        "load"
+      ],
+      "all_applicable_passed": false,
+      "full_acceptance_passed": false
+    },
+    "launch_manifest": "launch-manifest.json",
+    "launch_receipts": [
+      {
+        "client_id": "g001c01d1fc7f",
+        "group": 1,
+        "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+        "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+        "started_at_ms": 100000000,
+        "started_at_monotonic_ms": 0.0,
+        "pid": 4242,
+        "report_file": "g001c01d1fc7f.json",
+        "server_origin": {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 5000
+        },
+        "hero_class": "Mage",
+        "strategy": "baseline_all_hand",
+        "strategy_seed": 20260930,
+        "cycle_limit_seconds": 240,
+        "client_max_fps": null,
+        "command": [
+          "/opt/pr13-venv/bin/python3",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/control/context/client",
+          "res://tests/gameplay_load_client.tscn"
+        ]
+      }
+    ],
+    "sampling_integrity": {
+      "passed": false,
+      "reasons": [
+        "monotonic_observation_missing"
+      ],
+      "tail_gap_seconds": null
+    },
+    "started_monotonic_ms": 0.0,
+    "performance_inputs": {
+      "http_latency_samples": 0,
+      "realtime_latency_samples": 0,
+      "scope": "existing bounded diagnostic stop rules; not a formal service SLO",
+      "actor_wait_samples": 0,
+      "resource_source": "preregistered_prometheus"
+    },
+    "cycle_cutoffs": {
+      "running": {
+        "acknowledgements": 3,
+        "completed_cycles": 3,
+        "cycles_by_client": {
+          "g001c01d1fc7f": 3
+        },
+        "acknowledgements_by_client": {
+          "g001c01d1fc7f": 3
+        },
+        "distribution": {
+          "3": 1
+        },
+        "fallback_cycles": 0
+      },
+      "drain": {
+        "acknowledgements": 0,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {},
+        "distribution": {},
+        "fallback_cycles": 0
+      },
+      "final": {
+        "acknowledgements": 3,
+        "completed_cycles": 3,
+        "cycles_by_client": {
+          "g001c01d1fc7f": 3
+        },
+        "acknowledgements_by_client": {
+          "g001c01d1fc7f": 3
+        },
+        "distribution": {
+          "0": 0,
+          "3": 1
+        },
+        "fallback_cycles": 0
+      },
+      "zero_cycle_clients": [],
+      "zero_cycle_reason": null,
+      "evidence_errors": [],
+      "stop_ms": 100000250,
+      "final_ms": 100000250
+    },
+    "request_distributions": {
+      "algorithm_version": "owned-request-cutoffs-v1",
+      "running": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "route_http": {},
+        "observed_window_seconds": 0.25,
+        "logical_requests_per_second": 0.0,
+        "completed_requests_per_second": 0.0,
+        "throughput_missing_reason": null,
+        "logical_result_counts": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "drain": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "route_http": {},
+        "observed_window_seconds": null,
+        "logical_requests_per_second": null,
+        "completed_requests_per_second": null,
+        "throughput_missing_reason": "No measured observation interval supplied",
+        "logical_result_counts": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "final": {
+        "http": {
+          "count": 0
+        },
+        "steady_http": {
+          "count": 0
+        },
+        "cancelled_http": {
+          "count": 0
+        },
+        "realtime": {
+          "count": 0
+        },
+        "rtt": {
+          "count": 0
+        },
+        "phase_http": {},
+        "route_http": {},
+        "observed_window_seconds": 0.25,
+        "logical_requests_per_second": 0.0,
+        "completed_requests_per_second": 0.0,
+        "throughput_missing_reason": null,
+        "logical_result_counts": {},
+        "error_count": 0,
+        "sample_count": 0,
+        "logical_request_count": 0,
+        "cancelled_count": 0,
+        "all_attempt_count": null,
+        "attempt_coverage": "unavailable",
+        "attempt_result_counts": {},
+        "valid_attempt_latency_count": 0,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "valid_latency_count": 0,
+        "latency_sample_quality": {
+          "http": "unavailable",
+          "realtime": "unavailable"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 0,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "evidence_errors": [],
+      "cutoffs_unix_ms": {
+        "start": 100000000.0,
+        "stop": 100000250,
+        "final": 100000250
+      },
+      "classification": "By observed completion time; request-origin cycle/match/phase unchanged"
+    },
+    "audit_read_errors": [],
+    "final_read_errors": 0,
+    "tail_lost_event_count": 0,
+    "final_status_read_errors": [],
+    "tail_window": {
+      "http": {
+        "count": 0
+      },
+      "steady_http": {
+        "count": 0
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {},
+      "route_http": {},
+      "observed_window_seconds": null,
+      "logical_requests_per_second": null,
+      "completed_requests_per_second": null,
+      "throughput_missing_reason": "No measured observation interval supplied",
+      "logical_result_counts": {},
+      "error_count": 0,
+      "sample_count": 0,
+      "logical_request_count": 0,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "transport_phase_timings": {
+        "dns_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        },
+        "tcp_connect_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        },
+        "tls_handshake_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        }
+      },
+      "valid_latency_count": 0,
+      "latency_sample_quality": {
+        "http": "unavailable",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 0,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "post_stop_failure": false,
+    "final_audit_lost_count": 0,
+    "final_audit_count_invalid": false,
+    "final_triggers": [
+      "sampling_integrity_failed"
+    ],
+    "first_trigger": "operator_stop_file",
+    "all_triggers": [
+      "operator_stop_file",
+      "sampling_integrity_failed"
+    ],
+    "forced_termination_pids": [],
+    "process_cleanup_complete": true,
+    "business_cleanup_verified": true,
+    "cleanup_complete": true,
+    "process_exits": [
+      {
+        "client_id": "g001c01d1fc7f",
+        "before_stop": 0,
+        "after_stop": 0
+      }
+    ],
+    "group_size": 1,
+    "interval_seconds": 120,
+    "scope": "real Godot Game store: login once, repeated preparation/match/PVE or PVP/settlement; no market trades",
+    "group_launches": [
+      {
+        "group": 1,
+        "scheduled_at": 100000.0,
+        "scheduled_monotonic_ms": 0.0,
+        "started_monotonic_ms": 0.0,
+        "started_at": 100000.0,
+        "finished_at": 100000.0,
+        "clients_scheduled": 1,
+        "clients": 1
+      }
+    ],
+    "samples": [],
+    "final_clients": [
+      {
+        "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+        "client_id": "g001c01d1fc7f",
+        "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+        "pid": 4242,
+        "status_seq": 1,
+        "now_unix_ms": 100000000,
+        "online": false,
+        "room": false,
+        "last_progress_age_ms": 0,
+        "cycles_completed": 3,
+        "event_seq_max": 6,
+        "telemetry": [
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 1,
+            "at_unix_ms": 100000001,
+            "type": "lifecycle",
+            "cycle_id": "cycle:1",
+            "match_id": "match:1",
+            "event_type": "settlement.acknowledged"
+          },
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 2,
+            "at_unix_ms": 100000002,
+            "type": "lifecycle",
+            "cycle_id": "cycle:1",
+            "match_id": "match:1",
+            "event_type": "cycle.completed"
+          },
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 3,
+            "at_unix_ms": 100000003,
+            "type": "lifecycle",
+            "cycle_id": "cycle:2",
+            "match_id": "match:2",
+            "event_type": "settlement.acknowledged"
+          },
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 4,
+            "at_unix_ms": 100000004,
+            "type": "lifecycle",
+            "cycle_id": "cycle:2",
+            "match_id": "match:2",
+            "event_type": "cycle.completed"
+          },
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 5,
+            "at_unix_ms": 100000005,
+            "type": "lifecycle",
+            "cycle_id": "cycle:3",
+            "match_id": "match:3",
+            "event_type": "settlement.acknowledged"
+          },
+          {
+            "run_id": "f93e6a6c358d43cf8afb92067bdcbef5",
+            "client_id": "g001c01d1fc7f",
+            "process_epoch": "9b8e8aa38a874dde95759a0c6518812a",
+            "event_seq": 6,
+            "at_unix_ms": 100000006,
+            "type": "lifecycle",
+            "cycle_id": "cycle:3",
+            "match_id": "match:3",
+            "event_type": "cycle.completed"
+          }
+        ],
+        "operations": [],
+        "audit_lost_count": 0,
+        "errors": [],
+        "cleanup": {
+          "state": "Passed"
+        },
+        "_received_at_monotonic_ms": 250.0
+      }
+    ],
+    "local_origin_manifest": null,
+    "local_origin_errors": [],
+    "local_origin_cleanup_complete": true,
+    "acceptance_passed": false,
+    "full_acceptance_passed": false
+  },
+  "return_code_source": "coordinator.main return propagated as child exit",
+  "injection_scope": "Current coordinator and existing frozen fake observation/clock/child fixtures, with real owned child cleanup for hang and real CLI preparation. Integrated while real PostgreSQL room is held; no live load or capacity claim",
+  "all_raw_fixture_files_preserved": true
+}

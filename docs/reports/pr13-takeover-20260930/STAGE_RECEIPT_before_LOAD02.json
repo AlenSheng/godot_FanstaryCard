@@ -1,0 +1,59 @@
+{
+  "kind": "complete_offline_batch_receipt_pending_MAIN",
+  "source_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "previous_stage_receipt": "STAGE_RECEIPT_schema_4bb6c6be.json",
+  "batch": "offline-acceptance-f812/b02/ROOT_REVIEW.json",
+  "ready_for_independent_acceptance": [
+    "schema-safety-ee8adcf4/READY_FOR_INDEPENDENT_ACCEPTANCE.json",
+    "offline-acceptance-f812/b02/READY_FOR_INDEPENDENT_ACCEPTANCE.json"
+  ],
+  "ready_task_count": 8,
+  "ready_case_count": 24,
+  "task_states_current": {
+    "Partial": 49,
+    "NotRevalidated": 72,
+    "ReadyForAcceptance": 8,
+    "Blocked": 3
+  },
+  "Accepted": 0,
+  "canonical_total_cases": 396,
+  "canonical_explicit_runner_receipts_unchanged": {
+    "Passed": 27,
+    "NotExecuted": 369,
+    "not_total_coverage": true
+  },
+  "local_validation": {
+    "exact": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0
+    },
+    "C-PY": {
+      "passed": 118,
+      "failed": 0,
+      "skipped": 0
+    },
+    "schema_red_green": {
+      "before_unhandled": 4,
+      "after_unhandled": 0,
+      "after_invalid_exit3": 4
+    }
+  },
+  "production_source_frozen": "f812879e (business/client/UI)",
+  "production_changes": 0,
+  "ui_changes": 0,
+  "ci": "BillingBlocked; no CI retry; C-CI not required by these4 task contracts.",
+  "raw4_upload": "Paused; unchanged; no upload.",
+  "validation_tool_change_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "independent_MAIN": "Previous LOAD01.1 NoChange rejected; .2-.4 raw technically verified; all await metadata-complete independent actual replay.",
+  "latest_batch": {
+    "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "tasks": 4,
+    "exact_passed": 12,
+    "C-DOMAIN": 317,
+    "C-SERVER_POSTGRES": 291,
+    "critical_skips": 0
+  },
+  "source_scope_note": "Schema packet4bb; B02 packetf812. Never combine as a single actual profile SHA; B02 business/proto/config byte-equivalence verified.",
+  "schema_corrected_packet": "schema-safety-ee8adcf4/REPORT.json"
+}

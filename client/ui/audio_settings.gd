@@ -23,6 +23,7 @@ func _ready() -> void:
 	_toggle.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	_toggle.position = Vector2(-112, 26)
 	_toggle.size = Vector2(70, 70)
+	_toggle.focus_mode = Control.FOCUS_NONE
 	_toggle.ignore_texture_size = true
 	_toggle.stretch_mode = TextureButton.STRETCH_KEEP_ASPECT_CENTERED
 	_toggle.texture_normal = Art.texture("UI/Hall/settings_button.png")
@@ -38,14 +39,18 @@ func _refresh() -> void:
 
 func show_settings() -> void:
 	if is_instance_valid(_popup):
-		_popup.grab_focus()
-		return
+		if _popup.visible:
+			_popup.grab_focus()
+			return
+		_popup.queue_free()
+		_popup = null
 	_popup = PopupPanel.new()
+	var popup := _popup
 	_popup.name = "AudioSettingsPopup"
 	_popup.theme = P.theme()
 	_popup.add_theme_stylebox_override("panel", Art.style(COMMON_POPUP_PANEL_KEY))
-	_popup.window_input.connect(func(event):
-		if _mute_shortcut(event): _popup.set_input_as_handled()
+	popup.window_input.connect(func(event):
+		if _mute_shortcut(event): popup.set_input_as_handled()
 	)
 	add_child(_popup)
 	var popup_size := _settings_popup_size()
@@ -192,9 +197,10 @@ func show_settings() -> void:
 	back.pressed.connect(_popup.hide)
 	column.add_child(back)
 	P.fit_control_font(back, P.font("title"), 24, 48.0)
-	_popup.popup_hide.connect(func():
+	popup.popup_hide.connect(func():
 		Sound.save_settings()
-		_popup.queue_free()
+		if _popup == popup: _popup = null
+		popup.queue_free()
 	)
 	_popup.popup_centered()
 	slider.grab_focus()
@@ -213,14 +219,13 @@ func _settings_popup_size() -> Vector2:
 
 func _show_battle_abandon_confirmation() -> void:
 	if not Game.allowed("battle.abandon") or get_node_or_null("BattleAbandonConfirmation") != null: return
+	if is_instance_valid(_popup): _popup.hide()
 	var dialog := ConfirmationModalScene.instantiate()
 	dialog.name = "BattleAbandonConfirmation"
 	add_child(dialog)
 	dialog.configure(
 		P.localized("battle_abandon_warning"),
-		func():
-			if is_instance_valid(_popup): _popup.hide()
-			Game.command("battle.abandon"),
+		func(): Game.command("battle.abandon"),
 		{"title": P.localized("battle_abandon_title"), "confirm_text": P.localized("battle_abandon_confirm"), "cancel_text": P.localized("cancel"), "tall": true})
 
 func _unhandled_key_input(event: InputEvent) -> void:

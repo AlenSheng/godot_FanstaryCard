@@ -1,0 +1,1 @@
+LOAD-07.2 MAIN Accepted：逐PIDCPU/RSS/句柄与缺失原因、实际过程帧钟和FPS敏感完整profile补齐。4个真实新客户端，2GiB-1仅监控接缝注入未耗尽主机，实际退出负载1→0，未限帧约145与显式60约60有独立ID。128回归通过、4账号清理SQL0活动/holds/锁。原容量/15%红线不通过，物理包率仍null有原因。40Accepted、76Partial、16Ready、92未验收，全局门禁不变。

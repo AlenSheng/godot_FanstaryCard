@@ -1,0 +1,226 @@
+{
+  "attempt": "cap-budget-runtime-r1-20261011",
+  "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "equivalence_json_sha256": "19be05202e5f1e8250f36a2dbcdda13a52220c0d73ec7325640072186344794e",
+  "equivalence_ok": true,
+  "exit_code": 0,
+  "full_unit_dispatch_permitted": false,
+  "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+  "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+  "new_default_raw_bytes": 2147483648,
+  "new_explicit_raised_raw_bytes": 17179869184,
+  "ok": true,
+  "oom_killed": false,
+  "original_raw_bytes": 2147483648,
+  "owned_container_removed": true,
+  "pilot_output_bytes": 641312,
+  "same_three_seed_paired_pilots": true,
+  "source_and_runtime_inputs_unchanged": true,
+  "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "validations": {
+    "new-16g": {
+      "actual_casts": 226,
+      "actual_ticks": 3190,
+      "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "case_denominators": {
+        "BaselinePurple/T01_capped_ticks": 1595,
+        "BaselinePurple/T02_PVE_conversion_ticks": 120,
+        "BaselinePurple/T02_card_speed_ticks": 754,
+        "BaselinePurple/T02_equipment_floor_ticks": 1595,
+        "BaselinePurple/T02_expiry_ticks": 12,
+        "BaselinePurple/T03_no_shield": 107,
+        "BaselinePurple/T03_positive_shield": 6,
+        "BaselinePurple/all_casts": 113,
+        "BaselinePurple/all_ticks": 1595,
+        "SingleOrangeHead/T01_capped_ticks": 1595,
+        "SingleOrangeHead/T02_PVE_conversion_ticks": 120,
+        "SingleOrangeHead/T02_card_speed_ticks": 754,
+        "SingleOrangeHead/T02_equipment_floor_ticks": 1595,
+        "SingleOrangeHead/T02_expiry_ticks": 12,
+        "SingleOrangeHead/T03_no_shield": 107,
+        "SingleOrangeHead/T03_positive_shield": 6,
+        "SingleOrangeHead/all_casts": 113,
+        "SingleOrangeHead/all_ticks": 1595
+      },
+      "collector_metadata_complete": true,
+      "collector_negative_controls": [
+        {
+          "name": "collector-declared-budget-tampered",
+          "rejected": true
+        },
+        {
+          "name": "collector-event-part-missing",
+          "rejected": true
+        },
+        {
+          "name": "collector-cumulative-budget-exceeded",
+          "rejected": true
+        }
+      ],
+      "collector_revision": "cap-effective-raw-budget-v2",
+      "encounters": 6,
+      "event_raw_bytes": 4604437,
+      "full_unit": false,
+      "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+      "main_acceptance_granted": false,
+      "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+      "negative_controls": [
+        {
+          "name": "wrong-resistance-cap",
+          "rejected": true
+        },
+        {
+          "name": "wrong-conversion-stage",
+          "rejected": true
+        },
+        {
+          "name": "wrong-shield-overflow",
+          "rejected": true
+        },
+        {
+          "name": "candidate-policy-enabled",
+          "rejected": true
+        }
+      ],
+      "ok": true,
+      "original_two_GiB_budget_satisfied": true,
+      "outcomes": {
+        "Victory": 6
+      },
+      "pairs": 3,
+      "raw_unit_limit_bytes": 17179869184,
+      "required_cases_accepted": false,
+      "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+      "whole_experiment_complete": false
+    },
+    "new-default": {
+      "actual_casts": 226,
+      "actual_ticks": 3190,
+      "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "case_denominators": {
+        "BaselinePurple/T01_capped_ticks": 1595,
+        "BaselinePurple/T02_PVE_conversion_ticks": 120,
+        "BaselinePurple/T02_card_speed_ticks": 754,
+        "BaselinePurple/T02_equipment_floor_ticks": 1595,
+        "BaselinePurple/T02_expiry_ticks": 12,
+        "BaselinePurple/T03_no_shield": 107,
+        "BaselinePurple/T03_positive_shield": 6,
+        "BaselinePurple/all_casts": 113,
+        "BaselinePurple/all_ticks": 1595,
+        "SingleOrangeHead/T01_capped_ticks": 1595,
+        "SingleOrangeHead/T02_PVE_conversion_ticks": 120,
+        "SingleOrangeHead/T02_card_speed_ticks": 754,
+        "SingleOrangeHead/T02_equipment_floor_ticks": 1595,
+        "SingleOrangeHead/T02_expiry_ticks": 12,
+        "SingleOrangeHead/T03_no_shield": 107,
+        "SingleOrangeHead/T03_positive_shield": 6,
+        "SingleOrangeHead/all_casts": 113,
+        "SingleOrangeHead/all_ticks": 1595
+      },
+      "collector_metadata_complete": true,
+      "collector_negative_controls": [
+        {
+          "name": "collector-declared-budget-tampered",
+          "rejected": true
+        },
+        {
+          "name": "collector-event-part-missing",
+          "rejected": true
+        },
+        {
+          "name": "collector-cumulative-budget-exceeded",
+          "rejected": true
+        }
+      ],
+      "collector_revision": "cap-effective-raw-budget-v2",
+      "encounters": 6,
+      "event_raw_bytes": 4604437,
+      "full_unit": false,
+      "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+      "main_acceptance_granted": false,
+      "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+      "negative_controls": [
+        {
+          "name": "wrong-resistance-cap",
+          "rejected": true
+        },
+        {
+          "name": "wrong-conversion-stage",
+          "rejected": true
+        },
+        {
+          "name": "wrong-shield-overflow",
+          "rejected": true
+        },
+        {
+          "name": "candidate-policy-enabled",
+          "rejected": true
+        }
+      ],
+      "ok": true,
+      "original_two_GiB_budget_satisfied": true,
+      "outcomes": {
+        "Victory": 6
+      },
+      "pairs": 3,
+      "raw_unit_limit_bytes": 2147483648,
+      "required_cases_accepted": false,
+      "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+      "whole_experiment_complete": false
+    },
+    "original": {
+      "actual_casts": 226,
+      "actual_ticks": 3190,
+      "case_denominators": {
+        "BaselinePurple/T01_capped_ticks": 1595,
+        "BaselinePurple/T02_PVE_conversion_ticks": 120,
+        "BaselinePurple/T02_card_speed_ticks": 754,
+        "BaselinePurple/T02_equipment_floor_ticks": 1595,
+        "BaselinePurple/T02_expiry_ticks": 12,
+        "BaselinePurple/T03_no_shield": 107,
+        "BaselinePurple/T03_positive_shield": 6,
+        "BaselinePurple/all_casts": 113,
+        "BaselinePurple/all_ticks": 1595,
+        "SingleOrangeHead/T01_capped_ticks": 1595,
+        "SingleOrangeHead/T02_PVE_conversion_ticks": 120,
+        "SingleOrangeHead/T02_card_speed_ticks": 754,
+        "SingleOrangeHead/T02_equipment_floor_ticks": 1595,
+        "SingleOrangeHead/T02_expiry_ticks": 12,
+        "SingleOrangeHead/T03_no_shield": 107,
+        "SingleOrangeHead/T03_positive_shield": 6,
+        "SingleOrangeHead/all_casts": 113,
+        "SingleOrangeHead/all_ticks": 1595
+      },
+      "encounters": 6,
+      "full_unit": false,
+      "main_acceptance_granted": false,
+      "negative_controls": [
+        {
+          "name": "wrong-resistance-cap",
+          "rejected": true
+        },
+        {
+          "name": "wrong-conversion-stage",
+          "rejected": true
+        },
+        {
+          "name": "wrong-shield-overflow",
+          "rejected": true
+        },
+        {
+          "name": "candidate-policy-enabled",
+          "rejected": true
+        }
+      ],
+      "ok": true,
+      "outcomes": {
+        "Victory": 6
+      },
+      "pairs": 3,
+      "required_cases_accepted": false,
+      "source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+      "whole_experiment_complete": false
+    }
+  },
+  "whole_task_accepted": false
+}

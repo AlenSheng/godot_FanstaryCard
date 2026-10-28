@@ -1,0 +1,5 @@
+# PR13 配置策略回滚一项数据库证据登记
+
+复核现有腾讯云真实PG原生New_policy_source_changes_new_rooms_without_changing_current_persisted_room：默认／候选／回滚三不同房间。默认房前后状态及持久字节不变；候选房启用并保存策略，回滚后新房恢复Legacy，候选房从PG恢复仍保留冻结策略。原old／candidate／rollback来源hash及房间ID全部保留。只映射相同B12.3-T02策略回滚数据库判据，不重新计作新增样本。
+
+原九方法零跳过通过、清理及无OOM证明保留；2,199原件、原归档SHA／CRC和328当前源码成员再核对。本次POSTGRES缺口109降至108，B12.3仍Partial，该案例EXPERIMENT／RENDER以及其他案例均未补齐。不扩张为任意工作簿／生成包回滚或真实部署回滚，不关闭门禁或MAIN。

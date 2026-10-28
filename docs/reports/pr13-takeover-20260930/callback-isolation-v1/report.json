@@ -1,0 +1,705 @@
+{
+  "kind": "PR13_OFFLINE_component_evidence_not_acceptance",
+  "source_base": "de1157fdf490a5bce3ba888c07519fc957c46782",
+  "source_commits": [
+    "23f9a4cc",
+    "7686fba3",
+    "51f6b834"
+  ],
+  "source_head": "51f6b834c761f4a6ddd5b0976769cb5225c9be89",
+  "Accepted": false,
+  "execution_state": "Partial",
+  "canonical_cases": [
+    {
+      "case_id": "PR13-A03.1-T01",
+      "expected": "Duplicate real NOT_IN_ROOM retains M until the matching ready receipt arrives",
+      "red_actual": [
+        {
+          "account": "callback-A",
+          "label": "first_NOT_IN_ROOM_no_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 2
+        },
+        {
+          "account": "callback-A",
+          "label": "duplicate_NOT_IN_ROOM_no_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 2
+        },
+        {
+          "account": "callback-A",
+          "label": "M_receipt_ready",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "33333333-3333-3333-3333-333333333333",
+          "recovery_match_id": "",
+          "room_id": "",
+          "session_generation": 2
+        }
+      ],
+      "red_status": "Passed",
+      "fixed_actual": [
+        {
+          "account": "callback-A",
+          "label": "first_NOT_IN_ROOM_no_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 2
+        },
+        {
+          "account": "callback-A",
+          "label": "duplicate_NOT_IN_ROOM_no_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 2
+        },
+        {
+          "account": "callback-A",
+          "label": "M_receipt_ready",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "33333333-3333-3333-3333-333333333333",
+          "recovery_match_id": "",
+          "room_id": "",
+          "session_generation": 2
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "duplicate_preserves_M": true,
+        "real_websocket_command_sent": true,
+        "real_websocket_response_received": true,
+        "receipt_M_recovered": true,
+        "requests_completed_within_fixed_budget": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.1-T02",
+      "expected": "Paused late Bootstrap without receipt preserves M and the subsequent M receipt recovers",
+      "red_actual": [
+        {
+          "account": "callback-A",
+          "label": "two_errors_Bootstrap_paused",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 4
+        },
+        {
+          "account": "callback-A",
+          "label": "late_Bootstrap_without_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 4
+        },
+        {
+          "account": "callback-A",
+          "label": "M_ready_after_late_Bootstrap",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "33333333-3333-3333-3333-333333333333",
+          "recovery_match_id": "",
+          "room_id": "",
+          "session_generation": 4
+        }
+      ],
+      "red_status": "Passed",
+      "fixed_actual": [
+        {
+          "account": "callback-A",
+          "label": "two_errors_Bootstrap_paused",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 4
+        },
+        {
+          "account": "callback-A",
+          "label": "late_Bootstrap_without_receipt",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 4
+        },
+        {
+          "account": "callback-A",
+          "label": "M_ready_after_late_Bootstrap",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "33333333-3333-3333-3333-333333333333",
+          "recovery_match_id": "",
+          "room_id": "",
+          "session_generation": 4
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "late_bootstrap_keeps_M": true,
+        "paused_bootstrap_keeps_M": true,
+        "recovery_continues_M": true,
+        "requests_completed_within_fixed_budget": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.1-T03",
+      "expected": "An error without a verifiable match cannot clear authoritative M",
+      "red_actual": [
+        {
+          "account": "callback-A",
+          "label": "missing_origin_error",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 6
+        },
+        {
+          "account": "callback-A",
+          "label": "uncorrelated_protobuf_Gateway_receive",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 6
+        },
+        {
+          "account": "callback-A",
+          "label": "empty_match_origin_error",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 6
+        }
+      ],
+      "red_status": "Failed",
+      "fixed_actual": [
+        {
+          "account": "callback-A",
+          "label": "missing_origin_error",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 6
+        },
+        {
+          "account": "callback-A",
+          "label": "uncorrelated_protobuf_Gateway_receive",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 6
+        },
+        {
+          "account": "callback-A",
+          "label": "empty_match_origin_error",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 6
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "empty_match_cannot_clear_valid_M": true,
+        "no_context_cannot_clear_valid_M": true,
+        "requests_completed_within_fixed_budget": true,
+        "uncorrelated_wire_error_preserves_M": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.2-T01",
+      "expected": "M and uncorrelated old errors arriving after N do not clear N in the same session",
+      "red_actual": [
+        {
+          "account": "callback-A",
+          "label": "old_M_error_after_authoritative_N_same_session",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 8
+        },
+        {
+          "account": "callback-A",
+          "label": "uncorrelated_error_after_N",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "22222222-2222-2222-2222-222222222222",
+          "room_id": "",
+          "session_generation": 8
+        },
+        {
+          "account": "callback-A",
+          "label": "old_cycle_error_after_M_N_M_same_session",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 8
+        }
+      ],
+      "red_status": "Failed",
+      "fixed_actual": [
+        {
+          "account": "callback-A",
+          "label": "old_M_error_after_authoritative_N_same_session",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 8
+        },
+        {
+          "account": "callback-A",
+          "label": "uncorrelated_error_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 8
+        },
+        {
+          "account": "callback-A",
+          "label": "old_cycle_error_after_M_N_M_same_session",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 8
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "old_M_error_preserves_N": true,
+        "requests_completed_within_fixed_budget": true,
+        "same_session_cycle_rejects_old_context": true,
+        "uncorrelated_error_preserves_N": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.2-T02",
+      "expected": "Delayed M Bootstrap and settlement GET cannot overwrite N or retain M recovery ownership",
+      "red_actual": [
+        {
+          "account": "callback-A",
+          "label": "N_arrives_while_M_Bootstrap_paused",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_Bootstrap_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_settlement_GET_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "N_cancels_paused_M_poll",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": true,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_poll_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_Bootstrap_after_M_N_M_same_session",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "33333333-3333-3333-3333-333333333333",
+          "recovery_match_id": "",
+          "room_id": "",
+          "session_generation": 10
+        }
+      ],
+      "red_status": "Failed",
+      "fixed_actual": [
+        {
+          "account": "callback-A",
+          "label": "N_arrives_while_M_Bootstrap_paused",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_Bootstrap_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_settlement_GET_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "N_cancels_paused_M_poll",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_M_poll_after_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 10
+        },
+        {
+          "account": "callback-A",
+          "label": "late_Bootstrap_after_M_N_M_same_session",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 10
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "N_cancels_M_poll_ownership": true,
+        "late_Bootstrap_preserves_N": true,
+        "late_M_poll_preserves_N": true,
+        "late_settlement_GET_preserves_N": true,
+        "new_room_releases_M_recovery": true,
+        "requests_completed_within_fixed_budget": true,
+        "same_session_cycle_rejects_old_Bootstrap": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.2-T03",
+      "expected": "Changing account cancels old Bootstrap and rejects old-session callbacks even if room/match IDs match",
+      "red_actual": [
+        {
+          "account": "callback-B",
+          "label": "old_A_Bootstrap_after_B_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 14
+        },
+        {
+          "account": "callback-B",
+          "label": "old_session_error_matching_room_id_in_B",
+          "loading": "",
+          "match_id": "",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "11111111-1111-1111-1111-111111111111",
+          "room_id": "",
+          "session_generation": 14
+        }
+      ],
+      "red_status": "Failed",
+      "fixed_actual": [
+        {
+          "account": "callback-B",
+          "label": "old_A_Bootstrap_after_B_N",
+          "loading": "",
+          "match_id": "22222222-2222-2222-2222-222222222222",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-22222222-2222-2222-2222-222222222222",
+          "session_generation": 14
+        },
+        {
+          "account": "callback-B",
+          "label": "old_session_error_matching_room_id_in_B",
+          "loading": "",
+          "match_id": "11111111-1111-1111-1111-111111111111",
+          "polling": false,
+          "receipt_id": "",
+          "recovery_match_id": "",
+          "room_id": "room-11111111-1111-1111-1111-111111111111",
+          "session_generation": 14
+        }
+      ],
+      "fixed_status": "Passed",
+      "checks": {
+        "account_switch_discards_A_bootstrap": true,
+        "old_session_error_cannot_clear_B": true,
+        "requests_completed_within_fixed_budget": true
+      },
+      "execution_state": "Partial",
+      "Accepted": false,
+      "completed_profiles": [
+        "OFFLINE"
+      ],
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE"
+      ]
+    }
+  ],
+  "profile": "OFFLINE",
+  "denominator": {
+    "canonical_cases": 6,
+    "red_passed": 2,
+    "red_failed": 4,
+    "fixed_passed": 6,
+    "fixed_failed": 0,
+    "skipped": 0
+  },
+  "budgets": {
+    "case_seconds": 6,
+    "controlled_response_gate_seconds": 5,
+    "subprocess_seconds": 55,
+    "control_http_seconds": 2,
+    "fixed_poll_cadence_ms": 2500
+  },
+  "entry_points": [
+    "GameStore._on_event",
+    "Gateway._receive(binary ServerEnvelope)",
+    "Gateway.send(room.snapshot.read) over owned loopback WebSocket",
+    "Gateway.request using actual protobuf HTTP",
+    "GameStore.retry_settlement"
+  ],
+  "forbidden_shortcut_absent": "No test assigns _settlement_recovery_match_id or recovery request/epoch variables; recovery is established by real event entry.",
+  "source_overlay": {
+    "path": "client/network/gateway.gd",
+    "bytes": 33162,
+    "sha256": "946f3c5e631b828dbb97bbaadd2db549d8b2649cf4d270b678900a9c19fec7ee",
+    "SourceOverlay": "/workspace/godot_FanstaryCard/client/network/gateway.gd",
+    "base_sha256": "16699e48417c6aac8b641b37fed749a23718c5224a6cefe3e5d1884930fcc30a"
+  },
+  "source_pair_validation": {
+    "baseline_game_store_and_gateway_exact_de1157fd": true,
+    "same_Godot_case_script_hash": true,
+    "same_Python_fixture_hash": true,
+    "red_and_fixed_stderr_empty": true
+  },
+  "regressions": {
+    "run_play_retry": {
+      "groups": 17,
+      "exit_code": 0,
+      "log": "fixed-regression.log",
+      "command": "FANTASYCARD_SERVER_URL=http://127.0.0.1:1 FANTASYCARD_LOAD_RUN_ID=pr13-callback-regression $A3GAME_GODOT_EXECUTABLE --headless --path client --script res://tests/run_play_retry.gd"
+    },
+    "run_lobby_race": {
+      "exit_code": 0,
+      "log": "fixed-lobby-race.log",
+      "command": "FANTASYCARD_SERVER_URL=http://127.0.0.1:1 FANTASYCARD_LOAD_RUN_ID=pr13-callback-regression $A3GAME_GODOT_EXECUTABLE --headless --path client --script res://tests/run_lobby_race.gd"
+    }
+  },
+  "support_only": [
+    {
+      "case_id": "PR13-B11.2-T01",
+      "basis": [
+        "PR13-A03.1-T01",
+        "PR13-A03.1-T02",
+        "PR13-A03.1-T03"
+      ],
+      "Accepted": false,
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ]
+    },
+    {
+      "case_id": "PR13-B11.2-T02",
+      "basis": [
+        "PR13-A03.2-T01",
+        "PR13-A03.2-T02",
+        "PR13-A03.2-T03"
+      ],
+      "Accepted": false,
+      "remaining_profiles": [
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ]
+    }
+  ],
+  "remaining_blockers": [
+    {
+      "stage": "S4/S5",
+      "reason": "Controlled local service has no PostgreSQL, full production server or live sessions. Canonical POSTGRES/LIVE profiles remain unexecuted.",
+      "unblock_condition": "Run corresponding profiles against parent integrated clean SHA."
+    },
+    {
+      "stage": "S6",
+      "reason": "MAIN independent acceptance has not occurred.",
+      "unblock_condition": "Parent reruns clean combined SHA with owned Gateway guard and records decision."
+    },
+    {
+      "stage": "B11.2 S5",
+      "reason": "Headless component run supplies recovery state support only; rendered UI and ACK asset guarantees require separate evidence.",
+      "unblock_condition": "Combine ACK evidence and required POSTGRES/LIVE/RENDER runs."
+    }
+  ],
+  "rollback": "Revert GameStore callback/epoch and test commits. No asset, ledger, database history, remote deployment or raw ZIP was modified."
+}

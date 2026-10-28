@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "rows": [
+    {
+      "result": {
+        "checks": {
+          "duplicate_control_reason_trace_without_state_change": true,
+          "foreign_started_reason_preserves_route_and_recovery": true,
+          "guard_trace_has_no_auth_or_packet_payload": true,
+          "ordinary_duplicate_does_not_add_control_trace_volume": true,
+          "same_context_positive_control_still_delivered": true
+        },
+        "legacy_sequence_checks_passed": true,
+        "message": "Duplicate event ignored; sequence gap locks commands until authoritative snapshot; lifecycle rejection reasons remain trace-only",
+        "ok": true
+      },
+      "suite": "test_session_sequence.gd"
+    },
+    {
+      "result": {
+        "checks": {
+          "authority read keeps verified identity and an empty wire command": true,
+          "duplicate start hints cannot rearm the fourth read": true,
+          "foreign start cannot grant another read": true,
+          "late foreign snapshot cannot replace the verified room": true,
+          "matching real start grants one authority read after exhausted speculation": true,
+          "only the current correlated snapshot releases recovery": true,
+          "ordinary retries cannot exceed three reads": true,
+          "original deadline remains unchanged": true,
+          "owned binary WebSocket opens": true,
+          "start hint cannot apply route or advance across the sequence gap": true,
+          "three actual speculative reads preserve the unresolved cursor": true
+        },
+        "ok": true,
+        "scope": "OFFLINE actual binary WebSocket and production Gateway, elapsed throttling, permanent sequence gap and delayed registration; no real worlds or deadline relaxation"
+      },
+      "suite": "test_prelaunch_snapshot_recovery.gd"
+    },
+    {
+      "result": {
+        "checks": {
+          "actual store adopts authoritative start and one epoch": true,
+          "both actual READY sends precede late responses": true,
+          "diagnostic cannot confirm pending business operation": true,
+          "diagnostic cannot trigger a snapshot confirmation read": true,
+          "foreign_worker keeps real rejection/error path": true,
+          "invalid_epoch_type keeps real rejection/error path": true,
+          "joined READY no longer emits user or probe errors": true,
+          "late READY retains exactly one original rejected measurement": true,
+          "missing_epoch keeps real rejection/error path": true,
+          "missing_origin keeps real rejection/error path": true,
+          "missing_session keeps real rejection/error path": true,
+          "next_cycle keeps real rejection/error path": true,
+          "normal client raw rejection is still measured once": true,
+          "normal client without load instrumentation resolves same-room late READY": true,
+          "not_joined keeps real rejection/error path": true,
+          "old_session keeps real rejection/error path": true,
+          "other_error keeps real rejection/error path": true,
+          "real owned WebSocket opens": true,
+          "replayed keeps real rejection/error path": true,
+          "resolved observation does not confirm rejected command": true,
+          "same_ids_reentered keeps real rejection/error path": true,
+          "unchanged_epoch keeps real rejection/error path": true,
+          "uncorrelated keeps real rejection/error path": true,
+          "uncorrelated start still has Unknown business origin": true,
+          "verified late READY remains diagnostic with frozen origin": true,
+          "wrong_action keeps real rejection/error path": true,
+          "wrong_match keeps real rejection/error path": true,
+          "wrong_room keeps real rejection/error path": true
+        },
+        "ok": true,
+        "scope": "OFFLINE actual Gateway.send/receive, owned WebSocket, real Store and recorder; causal order from recorded R2 late READY. No server/world or capacity qualification; original failed run retained."
+      },
+      "suite": "test_late_ready_rejection.gd"
+    }
+  ],
+  "scope": "Current OFFLINE original component regressions only; fake controlled Gateway, no real login/PG/world/pixels"
+}

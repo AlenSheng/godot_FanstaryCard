@@ -1,0 +1,324 @@
+{
+  "stage": "S4",
+  "status": "Partial",
+  "scope": "Real GameStore/gateway clients, owned loopback process and fresh disposable PostgreSQL; free preparations and default rules",
+  "runs": [
+    {
+      "name": "live-single",
+      "source_sha": "c4a3bffecda6c7a42ffe680720c75accdec6f18b",
+      "server_assembly_sha256": "4f3b4876be496490d3fd44a94e6c762b87ed8bf099d509105790fabd1ae60c64",
+      "profile_hash": "1a585653991be393d38decf62878dcdc3c05044060ea6f02d009fbca30f1c66e",
+      "duration_seconds": 500.5700886249542,
+      "exit_code": 0,
+      "stop_reason": "smoke_passed",
+      "dimensions": {
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Passed",
+          "gameplay": "Passed",
+          "performance": "NotApplicable",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "gameplay",
+          "load"
+        ],
+        "all_applicable_passed": true,
+        "full_acceptance_passed": false
+      },
+      "cycle_cutoffs": {
+        "running": {
+          "acknowledgements": 3,
+          "completed_cycles": 3,
+          "cycles_by_client": {
+            "g001c01e831a4": 3
+          },
+          "acknowledgements_by_client": {
+            "g001c01e831a4": 3
+          },
+          "distribution": {
+            "3": 1
+          },
+          "fallback_cycles": 0
+        },
+        "drain": {
+          "acknowledgements": 0,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {},
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "final": {
+          "acknowledgements": 3,
+          "completed_cycles": 3,
+          "cycles_by_client": {
+            "g001c01e831a4": 3
+          },
+          "acknowledgements_by_client": {
+            "g001c01e831a4": 3
+          },
+          "distribution": {
+            "0": 0,
+            "3": 1
+          },
+          "fallback_cycles": 0
+        },
+        "zero_cycle_clients": [],
+        "zero_cycle_reason": null,
+        "evidence_errors": [],
+        "stop_ms": 1791449235810,
+        "final_ms": 1791449235828
+      },
+      "first_trigger": "smoke_passed",
+      "all_triggers": [
+        "smoke_passed"
+      ],
+      "final_triggers": [],
+      "audit_error_count": 0,
+      "audit_lost_count": 0,
+      "cleanup_complete": true,
+      "owned_runtime_stopped_and_database_removed": true,
+      "database_postconditions": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 3,
+        "ledger_rows": 0
+      },
+      "clients": [
+        {
+          "client_id": "g001c01e831a4",
+          "hero_class": "Mage",
+          "cycles_completed": 3,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        }
+      ]
+    },
+    {
+      "name": "live-ten",
+      "source_sha": "4732f0fca2498b0e1402b3fffddcab679c387e3f",
+      "server_assembly_sha256": "d51a3d7b453e6dadac113bfa981a14bc103c5fb1268fdc96e89cff1c499cabcb",
+      "profile_hash": "1a585653991be393d38decf62878dcdc3c05044060ea6f02d009fbca30f1c66e",
+      "duration_seconds": 275.1427731513977,
+      "exit_code": 3,
+      "stop_reason": "invalid_evidence:workload_or_generator_failure",
+      "dimensions": {
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Failed",
+          "load": "Failed",
+          "gameplay": "Failed",
+          "performance": "NotApplicable",
+          "cleanup": "Failed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "gameplay",
+          "load"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "cycle_cutoffs": {
+        "running": {
+          "acknowledgements": 8,
+          "completed_cycles": 4,
+          "cycles_by_client": {
+            "g001c01c4acdf": 1,
+            "g001c04a89c18": 1,
+            "g001c0735ce93": 1,
+            "g001c106b03e0": 1
+          },
+          "acknowledgements_by_client": {
+            "g001c01c4acdf": 1,
+            "g001c033f284d": 1,
+            "g001c04a89c18": 1,
+            "g001c059e247d": 1,
+            "g001c0628a82e": 1,
+            "g001c0735ce93": 1,
+            "g001c08160827": 1,
+            "g001c106b03e0": 1
+          },
+          "distribution": {
+            "1": 4
+          },
+          "fallback_cycles": 0
+        },
+        "drain": {
+          "acknowledgements": 6,
+          "completed_cycles": 0,
+          "cycles_by_client": {},
+          "acknowledgements_by_client": {
+            "g001c01c4acdf": 1,
+            "g001c02933936": 1,
+            "g001c04a89c18": 1,
+            "g001c0735ce93": 1,
+            "g001c090a60de": 1,
+            "g001c106b03e0": 1
+          },
+          "distribution": {},
+          "fallback_cycles": 0
+        },
+        "final": {
+          "acknowledgements": 14,
+          "completed_cycles": 4,
+          "cycles_by_client": {
+            "g001c01c4acdf": 1,
+            "g001c04a89c18": 1,
+            "g001c0735ce93": 1,
+            "g001c106b03e0": 1
+          },
+          "acknowledgements_by_client": {
+            "g001c01c4acdf": 2,
+            "g001c02933936": 1,
+            "g001c033f284d": 1,
+            "g001c04a89c18": 2,
+            "g001c059e247d": 1,
+            "g001c0628a82e": 1,
+            "g001c0735ce93": 2,
+            "g001c08160827": 1,
+            "g001c090a60de": 1,
+            "g001c106b03e0": 2
+          },
+          "distribution": {
+            "0": 6,
+            "1": 4
+          },
+          "fallback_cycles": 0
+        },
+        "zero_cycle_clients": [
+          "g001c02933936",
+          "g001c033f284d",
+          "g001c059e247d",
+          "g001c0628a82e",
+          "g001c08160827",
+          "g001c090a60de"
+        ],
+        "zero_cycle_reason": null,
+        "evidence_errors": [],
+        "stop_ms": 1791450386251,
+        "final_ms": 1791450410579
+      },
+      "first_trigger": "workload_or_generator_failure",
+      "all_triggers": [
+        "invalid_evidence:workload_or_generator_failure",
+        "post_stop_process_failure",
+        "workload_or_generator_failure"
+      ],
+      "final_triggers": [
+        "post_stop_process_failure"
+      ],
+      "audit_error_count": 0,
+      "audit_lost_count": 0,
+      "cleanup_complete": false,
+      "owned_runtime_stopped_and_database_removed": true,
+      "database_postconditions": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 14,
+        "ledger_rows": 0
+      },
+      "clients": [
+        {
+          "client_id": "g001c01c4acdf",
+          "hero_class": "Mage",
+          "cycles_completed": 1,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c02933936",
+          "hero_class": "Priest",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c033f284d",
+          "hero_class": "Guardian",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c04a89c18",
+          "hero_class": "Mage",
+          "cycles_completed": 1,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c059e247d",
+          "hero_class": "Priest",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c0628a82e",
+          "hero_class": "Guardian",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c0735ce93",
+          "hero_class": "Mage",
+          "cycles_completed": 1,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c08160827",
+          "hero_class": "Priest",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c090a60de",
+          "hero_class": "Guardian",
+          "cycles_completed": 0,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        },
+        {
+          "client_id": "g001c106b03e0",
+          "hero_class": "Mage",
+          "cycles_completed": 1,
+          "outcome": null,
+          "message": null,
+          "cleanup_state": "Passed"
+        }
+      ]
+    }
+  ],
+  "runtime_accepted": 0,
+  "findings": [
+    "Single Mage completed three natural cycles with matching ACKs and no fallback; cleanup passed.",
+    "Ten mixed-class clients failed the three-natural-cycle contract. Four cycles completed before STOP; remaining ACKs during drain are not completed games.",
+    "Priest/Guardian clients reached the existing 240-second per-expedition script limit while still progressing through battles. This is a measured script-bound issue; it does not establish a global gameplay/server root cause.",
+    "Both owned runtimes stopped and their disposable databases were removed. Before removal pending holds and active match players were zero.",
+    "Single-client request throughput from the old clock-mixed sampler is not accepted as current throughput evidence; that sampler was corrected before the ten-client run."
+  ],
+  "next_action": "Preregister an explicit per-cycle observation limit within the existing overall LIVE deadline, retain rules/strategy and rerun all ten clients.",
+  "production_enablement": false,
+  "human_acceptance": "Pending"
+}

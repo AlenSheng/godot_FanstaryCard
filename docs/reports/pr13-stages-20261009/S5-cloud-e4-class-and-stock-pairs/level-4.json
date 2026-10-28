@@ -1,0 +1,944 @@
+{
+  "schema_version": 2,
+  "report_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+  "report_git_dirty": false,
+  "report_algorithm_sha256": "1320187c906625ceb85ee8e7f6f06ad43f12951e6c60846b3f4ce38b158fbd72",
+  "algorithm_version": "raw-nearest-rank-paired-seed-bootstrap-v2",
+  "sources": [
+    {
+      "path": "/home/ubuntu/pr13-acceptance-20261009/source-plan-identity/outputs/pr13-tencent-20261009/cloud-remaining-checks/e4-level4-seed100001",
+      "raw_sha256": "56c0b2493d43cfc4f56aded4aa908748cc0a91d69370bbdaae7155400434a779",
+      "raw_bytes": 5670385,
+      "count": 6000,
+      "manifest_sha256": "46ddf0a7dd636e1eba0694737d091dd8b6612fba869157ad4822ebf98bb98c5e",
+      "summary_sha256": "5d90d3fdd70decfc8bd396f59e3bbc07700f6032104415ae0c642b80ef4b9891",
+      "source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+      "domain_sha256": "0143452eb5a67de6976bf49b0b56aa2b27e265022467c8d5caf87544fc9ee833",
+      "simulator_sha256": "cef8313ae424e04563a0aebf7e0b6b2b2dc5301ebe12d3a8e2b58583105185c2",
+      "config_sha256": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+      "source_git_dirty": "Unknown",
+      "kind": "actual_domain_encounter_simulation",
+      "seed_start": 100001,
+      "samples_per_stratum": 1000
+    },
+    {
+      "path": "/home/ubuntu/pr13-acceptance-20261009/source-plan-identity/outputs/pr13-tencent-20261009/cloud-remaining-checks/e4-level4-seed101001",
+      "raw_sha256": "ab930f0256e476db25b85fece09a992a0db1bbfd36994ad10b79e0dd4b4c017c",
+      "raw_bytes": 5671316,
+      "count": 6000,
+      "manifest_sha256": "3eed13b346a61f14b785ece618d98f91529225906998ca8fe5e0647f553e5b62",
+      "summary_sha256": "28ba3dcddb14fc9826b59498bce499ca877b3640b79ada879ef3562dd646de32",
+      "source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+      "domain_sha256": "0143452eb5a67de6976bf49b0b56aa2b27e265022467c8d5caf87544fc9ee833",
+      "simulator_sha256": "cef8313ae424e04563a0aebf7e0b6b2b2dc5301ebe12d3a8e2b58583105185c2",
+      "config_sha256": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+      "source_git_dirty": "Unknown",
+      "kind": "actual_domain_encounter_simulation",
+      "seed_start": 101001,
+      "samples_per_stratum": 1000
+    },
+    {
+      "path": "/home/ubuntu/pr13-acceptance-20261009/source-plan-identity/outputs/pr13-tencent-20261009/cloud-remaining-checks/e4-level4-seed102001",
+      "raw_sha256": "0910e70707b9764d446cadb226f6b1b95dcfe96b809b613877fb69898544f4b5",
+      "raw_bytes": 5671279,
+      "count": 6000,
+      "manifest_sha256": "d643851090c12370325335a5f0917b9231f78e935fc27e7b9397acecabc79e63",
+      "summary_sha256": "0f5215c5fa9de2c39a304434f7a70b2252af02da5d5beacba98a43ed971ffc00",
+      "source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+      "domain_sha256": "0143452eb5a67de6976bf49b0b56aa2b27e265022467c8d5caf87544fc9ee833",
+      "simulator_sha256": "cef8313ae424e04563a0aebf7e0b6b2b2dc5301ebe12d3a8e2b58583105185c2",
+      "config_sha256": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+      "source_git_dirty": "Unknown",
+      "kind": "actual_domain_encounter_simulation",
+      "seed_start": 102001,
+      "samples_per_stratum": 1000
+    }
+  ],
+  "total": 18000,
+  "errors": 0,
+  "scope": "Raw encounter statistics; input kind and frozen provenance recorded per source. No network, legal route, prepared Boss or human UX claim.",
+  "frozen_inputs": {
+    "Kind": "actual_domain_encounter_simulation",
+    "SourceSha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+    "DomainAssemblySha256": "0143452eb5a67de6976bf49b0b56aa2b27e265022467c8d5caf87544fc9ee833",
+    "SimulatorAssemblySha256": "cef8313ae424e04563a0aebf7e0b6b2b2dc5301ebe12d3a8e2b58583105185c2",
+    "SourceConfigSha256": "5f9d2c8b5a41a086faa383add2a5d4235c484853c461a572aeaa1f6c2366dd1d",
+    "ConfigVersion": "gdd-0.70-numerical-1",
+    "Candidate": "class-passives",
+    "CutoffSeconds": 600,
+    "ActionIntervalSeconds": 0.4,
+    "WeaponLevel": 4,
+    "StrategyPolicy": "baseline_all_hand spends immediately; basic/build wait for three cards or two core cards above 25% HP, then score legal visible subsets",
+    "ProductionDefaults": {
+      "CardsSpentDraw": false,
+      "FractionalGuardian": false,
+      "OptionalMonsterPool": false,
+      "MonsterCapacity": 5,
+      "BudgetedBotLoot": false,
+      "BotLootCount": 2,
+      "MortalBotPve": false,
+      "FenxianPolicy": 1,
+      "GuardianPolicy": 1
+    },
+    "PreviewAudit": "first_three_legal_actions_per_encounter",
+    "Decks": [
+      {
+        "Hero": "Guardian",
+        "Key": "default",
+        "CardIds": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10",
+          "C11",
+          "C12",
+          "C13",
+          "GUA-01",
+          "GUA-02",
+          "GUA-03",
+          "GUA-04",
+          "GUA-05",
+          "GUA-06",
+          "GUA-07"
+        ],
+        "Level": 0,
+        "Ownership": "one enabled codex copy per selected card",
+        "Budget": {
+          "Rarity": 20,
+          "UnlockCost": 0
+        },
+        "Sha256": "43a31cd14284120b540fbd4b593c0279d80dd68a9fe4cac8fe5ce1a15b946078"
+      }
+    ],
+    "Groups": [
+      "E4"
+    ],
+    "Strategies": [
+      "baseline_all_hand",
+      "basic",
+      "build"
+    ],
+    "CandidateWhitelist": [
+      "E4"
+    ],
+    "SingleFactorOnly": true,
+    "SourceGitDirty": null
+  },
+  "candidate_recommendation": "NotEvaluated",
+  "multiple_comparison_plan": null,
+  "limitations": [
+    "Sample budget is not a precision guarantee.",
+    "Intervals are descriptive per stratum; no preregistered primary endpoint or multiple-comparison plan was supplied.",
+    "Victory-only quantiles do not establish an all-started TTK tail with censoring or competing outcomes."
+  ],
+  "candidate_activation": false,
+  "human_experience_verified": false,
+  "strata": [
+    {
+      "stratum": "Guardian/4/default/E4/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 116459,
+        "effective": 78917,
+        "overflow": 37542,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 392.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 377.12,
+        "p10": 360.1,
+        "p50": 384.1,
+        "p90": 388.1,
+        "p95": 392.1,
+        "p99": 404.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 377.12,
+        "p10": 360.1,
+        "p50": 384.1,
+        "p90": 388.1,
+        "p95": 392.1,
+        "p99": 404.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.038666666666667,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.675,
+        "p10": 75,
+        "p50": 81,
+        "p90": 86,
+        "p95": 88,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 264.321,
+        "p10": 242,
+        "p50": 268,
+        "p90": 279,
+        "p95": 280,
+        "p99": 288
+      },
+      "heal_overflow": 37542,
+      "shield_overflow": 4923,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/4/default/E4/baseline_all_hand/FractionalRemainder",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 116459,
+        "effective": 86222,
+        "overflow": 30237,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 392.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 377.12,
+        "p10": 360.1,
+        "p50": 384.1,
+        "p90": 388.1,
+        "p95": 392.1,
+        "p99": 404.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 377.12,
+        "p10": 360.1,
+        "p50": 384.1,
+        "p90": 388.1,
+        "p95": 392.1,
+        "p99": 404.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.009333333333333,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.675,
+        "p10": 75,
+        "p50": 81,
+        "p90": 86,
+        "p95": 88,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 254.36866666666666,
+        "p10": 232,
+        "p50": 259,
+        "p90": 268,
+        "p95": 270,
+        "p99": 277
+      },
+      "heal_overflow": 30237,
+      "shield_overflow": 1201,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/4/default/E4/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 95719,
+        "effective": 67652,
+        "overflow": 28067,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 408.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 369.5133333333333,
+        "p10": 340.1,
+        "p50": 368.1,
+        "p90": 400.1,
+        "p95": 408.1,
+        "p99": 424.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 369.5133333333333,
+        "p10": 340.1,
+        "p50": 368.1,
+        "p90": 400.1,
+        "p95": 408.1,
+        "p99": 424.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.942666666666666,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.49633333333334,
+        "p10": 70,
+        "p50": 78,
+        "p90": 87,
+        "p95": 89,
+        "p99": 93
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 255.82466666666667,
+        "p10": 227,
+        "p50": 257,
+        "p90": 282,
+        "p95": 291,
+        "p99": 301
+      },
+      "heal_overflow": 28067,
+      "shield_overflow": 3546,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/4/default/E4/basic/FractionalRemainder",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 113970,
+        "effective": 86989,
+        "overflow": 26981,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 412.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 374.38,
+        "p10": 344.1,
+        "p50": 372.1,
+        "p90": 404.1,
+        "p95": 412.1,
+        "p99": 432.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 374.38,
+        "p10": 344.1,
+        "p50": 372.1,
+        "p90": 404.1,
+        "p95": 412.1,
+        "p99": 432.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.972,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.41766666666666,
+        "p10": 70,
+        "p50": 78,
+        "p90": 87,
+        "p95": 89,
+        "p99": 93
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 248.878,
+        "p10": 221,
+        "p50": 250,
+        "p90": 276,
+        "p95": 286,
+        "p99": 298
+      },
+      "heal_overflow": 26981,
+      "shield_overflow": 699,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/4/default/E4/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 96008,
+        "effective": 65459,
+        "overflow": 30549,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 364.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 340.02400000000006,
+        "p10": 320.1,
+        "p50": 340.1,
+        "p90": 364.1,
+        "p95": 364.1,
+        "p99": 380.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 340.02400000000006,
+        "p10": 320.1,
+        "p50": 340.1,
+        "p90": 364.1,
+        "p95": 364.1,
+        "p99": 380.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.94,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 82.45566666666667,
+        "p10": 74,
+        "p50": 82,
+        "p90": 90,
+        "p95": 92,
+        "p99": 96
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 234.50233333333333,
+        "p10": 206,
+        "p50": 236,
+        "p90": 261,
+        "p95": 266,
+        "p99": 275
+      },
+      "heal_overflow": 30549,
+      "shield_overflow": 2727,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/4/default/E4/build/FractionalRemainder",
+      "n": 3000,
+      "independent_seed_runs": [
+        100001,
+        101001,
+        102001
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "recovery_accounting": {
+        "available": true,
+        "requested": 111192,
+        "effective": 82439,
+        "overflow": 28753,
+        "scope": "actual native authoritative draft and capped result fields"
+      },
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "censored_rate": 0.0,
+      "victory_ttk_p95_all_started": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 3000,
+        "identified": true,
+        "value": 368.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 342.47333333333336,
+        "p10": 320.1,
+        "p50": 344.1,
+        "p90": 364.1,
+        "p95": 368.1,
+        "p99": 384.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 342.47333333333336,
+        "p10": 320.1,
+        "p50": 344.1,
+        "p90": 364.1,
+        "p95": 368.1,
+        "p99": 384.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.970666666666666,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 82.418,
+        "p10": 74,
+        "p50": 82,
+        "p90": 90,
+        "p95": 92,
+        "p99": 96
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 227.101,
+        "p10": 199,
+        "p50": 228,
+        "p90": 254,
+        "p95": 259,
+        "p99": 269
+      },
+      "heal_overflow": 28753,
+      "shield_overflow": 558,
+      "preview_parity_checks": 9000
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "baseline": "Guardian/4/default/E4/baseline_all_hand/Baseline",
+      "candidate": "Guardian/4/default/E4/baseline_all_hand/FractionalRemainder",
+      "n": 3000,
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "paired_seed_cluster_summary": {
+        "paired_battles": 3000,
+        "independent_seed_clusters": 3000,
+        "mean_delta": 0.0,
+        "paired_seed_cluster_bootstrap95": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_seed": 20260930,
+        "resamples": 1000,
+        "precision_guaranteed": false,
+        "capacity_acceptance": false,
+        "production_activation": false
+      },
+      "mean_effective_shield_delta": -9.952333333333334,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/4/default/E4/basic/Baseline",
+      "candidate": "Guardian/4/default/E4/basic/FractionalRemainder",
+      "n": 3000,
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "mean_damage60_delta": -0.07866666666666666,
+      "paired_seed_bootstrap_damage60_95": [
+        -0.13166666666666665,
+        -0.03
+      ],
+      "paired_seed_cluster_summary": {
+        "paired_battles": 3000,
+        "independent_seed_clusters": 3000,
+        "mean_delta": -0.07866666666666666,
+        "paired_seed_cluster_bootstrap95": [
+          -0.13166666666666665,
+          -0.03
+        ],
+        "bootstrap_seed": 20260930,
+        "resamples": 1000,
+        "precision_guaranteed": false,
+        "capacity_acceptance": false,
+        "production_activation": false
+      },
+      "mean_effective_shield_delta": -6.946666666666666,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 4.866666666666666,
+        "p10": -12.0,
+        "p50": 0.0,
+        "p90": 28.0,
+        "p95": 40.0,
+        "p99": 60.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/4/default/E4/build/Baseline",
+      "candidate": "Guardian/4/default/E4/build/FractionalRemainder",
+      "n": 3000,
+      "sample_budget": {
+        "seed_blocks": [
+          {
+            "seed_start": 100001,
+            "n": 1000
+          },
+          {
+            "seed_start": 101001,
+            "n": 1000
+          },
+          {
+            "seed_start": 102001,
+            "n": 1000
+          }
+        ],
+        "required_independent_blocks": 3,
+        "required_paired_seeds_per_block": 1000,
+        "main_sample_floor_met": true,
+        "status": "BudgetMet",
+        "precision_guaranteed": false
+      },
+      "mean_damage60_delta": -0.03766666666666667,
+      "paired_seed_bootstrap_damage60_95": [
+        -0.086,
+        0.006
+      ],
+      "paired_seed_cluster_summary": {
+        "paired_battles": 3000,
+        "independent_seed_clusters": 3000,
+        "mean_delta": -0.03766666666666667,
+        "paired_seed_cluster_bootstrap95": [
+          -0.086,
+          0.006
+        ],
+        "bootstrap_seed": 20260930,
+        "resamples": 1000,
+        "precision_guaranteed": false,
+        "capacity_acceptance": false,
+        "production_activation": false
+      },
+      "mean_effective_shield_delta": -7.4013333333333335,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 2.449333333333333,
+        "p10": -8.0,
+        "p50": 0.0,
+        "p90": 20.0,
+        "p95": 28.0,
+        "p99": 44.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    }
+  ]
+}

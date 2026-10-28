@@ -1,0 +1,506 @@
+{
+  "kind": "ActualFrozenIntegrationApplicableRegressionAndRejectionCommands",
+  "runtime_source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+  "review_head_sha": "158434d49a1573437df82e52023b4df37b24f858",
+  "required_command_refs": [
+    "C-BUILD",
+    "C-DOMAIN",
+    "C-SERVER",
+    "C-GODOT",
+    "C-CI"
+  ],
+  "current_gate_run": {
+    "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\result.private.original.json",
+    "bytes": 6729,
+    "sha256": "ca13d3ec5612336bb23d5be6791983917203f772b631aef3443d93a70deb3597"
+  },
+  "parent_build_fresh_original": {
+    "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r249-originals\\strict-parent-build.terminal.original.json",
+    "bytes": 635,
+    "sha256": "513f678e743819b054c15f606a553be972e7807573389d5105bf0edf2419abee"
+  },
+  "same_parent_runtime": {
+    "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\verified-parent-runtime.original.json",
+    "bytes": 49883,
+    "sha256": "64ec9de8f93f82b95ee44a5d061ec476f327488ebec4e951b44f333c0c5f3b27"
+  },
+  "clean_full_solution": [
+    {
+      "path": "G:\\PR13Evidence\\A074-clean-full-build-domain-20261024-r252-originals\\full-offline-restore.command.original.json",
+      "bytes": 692,
+      "sha256": "f2a446c51da92e3bc80cb98b40c24514738da868634381e00a5f360a47952262"
+    },
+    {
+      "path": "G:\\PR13Evidence\\A074-clean-full-build-domain-20261024-r252-originals\\full-strict-build.command.original.json",
+      "bytes": 403,
+      "sha256": "d53d1d23a3fa22c462dcc52654633161b7280953cf174a1cb3bfe5246283cb13"
+    }
+  ],
+  "full_build_native_exit": {
+    "path": "G:\\PR13Evidence\\A074-clean-full-build-domain-20261024-r252-originals\\full-strict-build.terminal.original.json",
+    "bytes": 98,
+    "sha256": "5d503dfd709f679137b9180ac9c14e78858454c05d4a353da9dc71e7dc3962a8"
+  },
+  "unfiltered_domain_native": {
+    "path": "G:\\PR13Evidence\\A074-domain-normal-project-layout-20261024-r254-originals\\native-command.original.json",
+    "bytes": 383,
+    "sha256": "9a7188eeca300152f42258a9976043f9e9b0b3dd09b60f0bb8ceaa1baa2a7dd8"
+  },
+  "unfiltered_domain_terminal": {
+    "path": "G:\\PR13Evidence\\A074-domain-normal-project-layout-20261024-r254-originals\\result.original.json",
+    "bytes": 599,
+    "sha256": "1edf5093d5bc6031be6471a576510a7703cec2d0d1ef926bd46414c3aac7b63f"
+  },
+  "current_hosted_PG_native": {
+    "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\postgres-full.original.trx",
+    "bytes": 1479051,
+    "sha256": "15bd30de7db0bc0cb47ce264c2edab0807d5f39c42d73771dda422d3d36659d7"
+  },
+  "current_hosted_jobs": {
+    "path": "G:\\PR13Evidence\\release-current-native-PG-final-20261024-r228-originals\\jobs.original.json",
+    "bytes": 11006,
+    "sha256": "965193ca125a2b9d28ab95f213470a8f899423d00d692804473e5d13b4b927a4"
+  },
+  "headless22_parser": {
+    "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r249-originals\\applicable-headless-client-actual22-and-parser.original.json",
+    "bytes": 2072,
+    "sha256": "24f5c4aa60fc9aa193b40f2acc237b6ec02ddcfb7682fe30a86523ae3f48f688"
+  },
+  "private_fixture_cases": {
+    "PR13-A07.4-T01": {
+      "receipt": {
+        "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\receipts\\PR13-A07.4-T01.json",
+        "bytes": 5532,
+        "sha256": "55027285d4eb828748aca6109904f333eb1b1e1e269f497bdc9da395aa2aa36a"
+      },
+      "actual": {
+        "roomId": "8cfc9c82-fac2-418b-9c4d-2c78563009f0",
+        "actualConfigVersion": "gdd-0.70-numerical-1",
+        "cards": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10",
+          "C11",
+          "C12",
+          "C13",
+          "GUA-01",
+          "GUA-02",
+          "GUA-03",
+          "GUA-04",
+          "GUA-05",
+          "GUA-06",
+          "GUA-07"
+        ],
+        "actualGateGuard": {
+          "ok": true,
+          "mode": "load-passed-numerical-failed",
+          "actual_observation": {
+            "actual_load_exit": 0,
+            "actual_numerical_exit": 1,
+            "actual_numerical_coverage": {
+              "state": "Failed",
+              "missing_assertion_rows": {
+                "Exact_GDD_fire_contexts_restore_from_database_to_46_72_113": 1
+              },
+              "failed_cases": [
+                "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113"
+              ],
+              "skipped_cases": [],
+              "counters": {
+                "total": 1,
+                "executed": 1,
+                "passed": 0,
+                "failed": 1,
+                "error": 0,
+                "timeout": 0,
+                "aborted": 0,
+                "inconclusive": 0,
+                "passedButRunAborted": 0,
+                "notRunnable": 0,
+                "notExecuted": 0,
+                "disconnected": 0,
+                "warning": 0,
+                "completed": 0,
+                "inProgress": 0,
+                "pending": 0
+              },
+              "acceptance": false
+            },
+            "actual_assertion_failure": "Assert.Equal() Failure: Values differ\r\nExpected: Tuple (47, 0, Fire, 3, 0)\r\nActual:   Tuple (46, 0, Fire, 3, 0)",
+            "actual_gate": {
+              "state": "Failed",
+              "missing_suites": [],
+              "stale_source_suites": [],
+              "failed_suites": [
+                "PostgresNumerical"
+              ],
+              "incomplete_suites": [
+                "PostgresNumerical"
+              ],
+              "baseline_compile_exit": 0,
+              "acceptance": false
+            },
+            "actual_suites": {
+              "DedicatedLoadPython": {
+                "state": "CoveredForMainReview",
+                "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+                "actual_exit_code": 0,
+                "scope": "All current tests in four dedicated Python LOAD modules; no workflow, Godot, public load or capacity claim"
+              },
+              "PostgresNumerical": {
+                "state": "Failed",
+                "missing_assertion_rows": {
+                  "Exact_GDD_fire_contexts_restore_from_database_to_46_72_113": 1
+                },
+                "failed_cases": [
+                  "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113"
+                ],
+                "skipped_cases": [],
+                "counters": {
+                  "total": 1,
+                  "executed": 1,
+                  "passed": 0,
+                  "failed": 1,
+                  "error": 0,
+                  "timeout": 0,
+                  "aborted": 0,
+                  "inconclusive": 0,
+                  "passedButRunAborted": 0,
+                  "notRunnable": 0,
+                  "notExecuted": 0,
+                  "disconnected": 0,
+                  "warning": 0,
+                  "completed": 0,
+                  "inProgress": 0,
+                  "pending": 0
+                },
+                "acceptance": false,
+                "source_sha": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2"
+              }
+            },
+            "controlled_test_expectation_change": {
+              "before": "(3, 46), (4, 72), (5, 113)",
+              "after": "(3, 47), (4, 72), (5, 113)",
+              "before_sha256": "65a7cda12ecd2cbd35e3874d6b7563c694443fbaed70b7fc40673f1ded0a7419",
+              "after_sha256": "724a54984960ae8fb84802c877b8c22fd5e85ead17bdca7425279939fadf6866"
+            },
+            "production_domain_source_modified": false,
+            "fault_child_domain_assembly_sha256": "0ef834a50cd8cacf692b455a2f9cd0e8432b4bd3a368ec2cdf7726f4ad482201"
+          },
+          "actual_phases": [
+            {
+              "label": "actual-dedicated-load-python",
+              "arguments": [
+                "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+                "-B",
+                "-m",
+                "unittest",
+                "-v",
+                "tools.tests.test_gameplay_load_validation",
+                "tools.tests.test_gameplay_load_finalization",
+                "tools.tests.test_gameplay_load_stop",
+                "tools.tests.test_gameplay_load_sampling_contract"
+              ],
+              "actual_exit_code": 0,
+              "expected_exit_code": 0
+            },
+            {
+              "label": "negative-restore",
+              "arguments": [
+                "dotnet",
+                "restore",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\numerical-failure-source\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+                "--source",
+                "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\.packages",
+                "--artifacts-path",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\child-artifacts\\numerical-failure",
+                "-p:RestorePackagesPath=G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\packages",
+                "-p:UseSharedCompilation=false",
+                "-maxcpucount:1"
+              ],
+              "actual_exit_code": 0,
+              "expected_exit_code": 0
+            },
+            {
+              "label": "negative-build",
+              "arguments": [
+                "dotnet",
+                "build",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\numerical-failure-source\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+                "-c",
+                "Release",
+                "--no-restore",
+                "--artifacts-path",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\child-artifacts\\numerical-failure",
+                "-p:UseSharedCompilation=false",
+                "-maxcpucount:1"
+              ],
+              "actual_exit_code": 0,
+              "expected_exit_code": 0
+            },
+            {
+              "label": "actual-numerical-failure",
+              "arguments": [
+                "dotnet",
+                "vstest",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\child-artifacts\\numerical-failure\\bin\\FantasyCard.Server.Tests\\release\\FantasyCard.Server.Tests.dll",
+                "/TestCaseFilter:FullyQualifiedName=FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113",
+                "/ResultsDirectory:G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\output\\load-passed-numerical-failed\\native",
+                "/Logger:trx;LogFileName=actual.original.trx"
+              ],
+              "actual_exit_code": 1,
+              "expected_exit_code": 1
+            }
+          ],
+          "full_MAIN_gate_was_not_accepted": true,
+          "faulted_source_copies_never_deployed": true
+        },
+        "actualExitCode": 0,
+        "snapshotBeforeHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "snapshotAfterHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "databaseBeforeHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "databaseAfterHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "actualMatches": 1,
+        "actualSnapshots": 1,
+        "productionSourceModified": false,
+        "faultedSourcesAreOwnedDeclaredTestCopies": true,
+        "fullMAINAcceptance": false
+      }
+    },
+    "PR13-A07.4-T02": {
+      "receipt": {
+        "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\receipts\\PR13-A07.4-T02.json",
+        "bytes": 4254,
+        "sha256": "ac5ce15a6c10d857a0aebaf2da59a60a54f7163d51cebc01c0573028f5e6dccd"
+      },
+      "actual": {
+        "roomId": "8cfc9c82-fac2-418b-9c4d-2c78563009f0",
+        "actualConfigVersion": "gdd-0.70-numerical-1",
+        "cards": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10",
+          "C11",
+          "C12",
+          "C13",
+          "GUA-01",
+          "GUA-02",
+          "GUA-03",
+          "GUA-04",
+          "GUA-05",
+          "GUA-06",
+          "GUA-07"
+        ],
+        "actualGateGuard": {
+          "ok": true,
+          "mode": "baseline-compile-failed",
+          "actual_observation": {
+            "actual_full_server_test_project_compile_exit": 1,
+            "actual_positive_original_PG_coverage": {
+              "state": "CoveredForMainReview",
+              "missing_assertion_rows": {},
+              "failed_cases": [],
+              "skipped_cases": [],
+              "counters": {
+                "total": 9,
+                "executed": 9,
+                "passed": 9,
+                "failed": 0,
+                "error": 0,
+                "timeout": 0,
+                "aborted": 0,
+                "inconclusive": 0,
+                "passedButRunAborted": 0,
+                "notRunnable": 0,
+                "notExecuted": 0,
+                "disconnected": 0,
+                "warning": 0,
+                "completed": 0,
+                "inProgress": 0,
+                "pending": 0
+              },
+              "acceptance": false
+            },
+            "actual_gate": {
+              "state": "Blocked",
+              "missing_suites": [],
+              "stale_source_suites": [],
+              "failed_suites": [],
+              "incomplete_suites": [],
+              "baseline_compile_exit": 1,
+              "acceptance": false
+            },
+            "positive_original_source_gate": {
+              "state": "ReadyForMainReview",
+              "missing_suites": [],
+              "stale_source_suites": [],
+              "failed_suites": [],
+              "incomplete_suites": [],
+              "baseline_compile_exit": 0,
+              "acceptance": false
+            },
+            "controlled_compile_fault_prefix": "#error PR13_DECLARED_BASELINE_COMPILATION_FAILURE\n",
+            "original_parent_source_sha256": "65a7cda12ecd2cbd35e3874d6b7563c694443fbaed70b7fc40673f1ded0a7419",
+            "faulted_baseline_source_sha256": "caabcfeadb1727014732a62243b5ce8b166e8fa39d2f746a5b6960b1b731a9db",
+            "scope": "Full current Server.Tests project and referenced production projects; not the entire solution or an obsolete-API miniature probe. Positive nine run from original parent artifacts; faulty clone is separately recorded."
+          },
+          "actual_phases": [
+            {
+              "label": "baseline-restore",
+              "arguments": [
+                "dotnet",
+                "restore",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\baseline-compile-failure-source\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+                "--source",
+                "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\.packages",
+                "--artifacts-path",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\child-artifacts\\baseline-compile-failure",
+                "-p:RestorePackagesPath=G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\packages",
+                "-p:UseSharedCompilation=false",
+                "-maxcpucount:1"
+              ],
+              "actual_exit_code": 0,
+              "expected_exit_code": 0
+            },
+            {
+              "label": "actual-full-server-tests-baseline-build",
+              "arguments": [
+                "dotnet",
+                "build",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\baseline-compile-failure-source\\server\\tests\\FantasyCard.Server.Tests\\FantasyCard.Server.Tests.csproj",
+                "-c",
+                "Release",
+                "--no-restore",
+                "--artifacts-path",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\child-artifacts\\baseline-compile-failure",
+                "-p:UseSharedCompilation=false",
+                "-maxcpucount:1"
+              ],
+              "actual_exit_code": 1,
+              "expected_exit_code": 1
+            },
+            {
+              "label": "actual-original-nine-positive",
+              "arguments": [
+                "dotnet",
+                "vstest",
+                "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r249-originals\\runtime\\source\\.artifacts\\bin\\FantasyCard.Server.Tests\\release\\FantasyCard.Server.Tests.dll",
+                "/TestCaseFilter:FullyQualifiedName~PostgresNumericalContractTests&FullyQualifiedName!~Actual_failed_numerical_and_baseline_build_gates_preserve_postgres_room",
+                "/ResultsDirectory:G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\control\\output\\baseline-compile-failed\\original-nine",
+                "/Logger:trx;LogFileName=actual.original.trx"
+              ],
+              "actual_exit_code": 0,
+              "expected_exit_code": 0
+            }
+          ],
+          "full_MAIN_gate_was_not_accepted": true,
+          "faulted_source_copies_never_deployed": true
+        },
+        "actualExitCode": 0,
+        "snapshotBeforeHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "snapshotAfterHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "databaseBeforeHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "databaseAfterHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "actualMatches": 1,
+        "actualSnapshots": 1,
+        "productionSourceModified": false,
+        "faultedSourcesAreOwnedDeclaredTestCopies": true,
+        "fullMAINAcceptance": false
+      }
+    },
+    "PR13-A07.4-T03": {
+      "receipt": {
+        "path": "G:\\PR13Evidence\\A074-current-native-gate-controls-20261024-r251-originals\\runtime\\receipts\\PR13-A07.4-T03.json",
+        "bytes": 1866,
+        "sha256": "fe26809567ebb90c636e071d206b1fa5dbeee55527a71e60c209d1e26d2b1ae3"
+      },
+      "actual": {
+        "roomId": "8cfc9c82-fac2-418b-9c4d-2c78563009f0",
+        "actualConfigVersion": "gdd-0.70-numerical-1",
+        "cards": [
+          "C01",
+          "C02",
+          "C03",
+          "C04",
+          "C05",
+          "C06",
+          "C07",
+          "C08",
+          "C09",
+          "C10",
+          "C11",
+          "C12",
+          "C13",
+          "GUA-01",
+          "GUA-02",
+          "GUA-03",
+          "GUA-04",
+          "GUA-05",
+          "GUA-06",
+          "GUA-07"
+        ],
+        "actualGateGuard": {
+          "ok": true,
+          "mode": "actual-stale-CI-source",
+          "actual_observation": {
+            "actual_gate": {
+              "state": "Blocked",
+              "missing_suites": [],
+              "stale_source_suites": [
+                "ActualHostedPostgres"
+              ],
+              "failed_suites": [],
+              "incomplete_suites": [],
+              "baseline_compile_exit": 0,
+              "acceptance": false
+            },
+            "same_source_positive_gate": {
+              "state": "ReadyForMainReview",
+              "missing_suites": [],
+              "stale_source_suites": [],
+              "failed_suites": [],
+              "incomplete_suites": [],
+              "baseline_compile_exit": 0,
+              "acceptance": false
+            },
+            "actual_original_PG418_source": "1cf7250b59e35aa93c73c631f97ccf16ac1d2dc2",
+            "expected_new_review_head": "158434d49a1573437df82e52023b4df37b24f858",
+            "actual_original_TRX_sha256": "15bd30de7db0bc0cb47ce264c2edab0807d5f39c42d73771dda422d3d36659d7",
+            "original_native_TRX_unchanged": true,
+            "actual_passed418_skip0_retained_not_relabelled_current_head": true,
+            "scope": "Real immutable hosted native418 receipt and exact source marker; no manufactured old source identity and no new hosted dispatch."
+          },
+          "actual_phases": [],
+          "full_MAIN_gate_was_not_accepted": true,
+          "faulted_source_copies_never_deployed": true
+        },
+        "actualExitCode": 0,
+        "snapshotBeforeHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "snapshotAfterHash": "f1aa19d2233ade41fd8899a62426357fe5e7c96f8e51d21520b4f6f35ccd337d",
+        "databaseBeforeHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "databaseAfterHash": "e182d73c269987bf2afe2e57d51b4b21c3df3203e95f8dc82c89f60b91089bf3",
+        "actualMatches": 1,
+        "actualSnapshots": 1,
+        "productionSourceModified": false,
+        "faultedSourcesAreOwnedDeclaredTestCopies": true,
+        "fullMAINAcceptance": false
+      }
+    }
+  },
+  "all_local_children_no_window_below_normal": true,
+  "no_new_Godot_or_cloud_or_live_game_process": true
+}

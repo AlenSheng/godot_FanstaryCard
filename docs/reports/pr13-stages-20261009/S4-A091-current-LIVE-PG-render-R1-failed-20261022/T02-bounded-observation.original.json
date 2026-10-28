@@ -1,0 +1,37 @@
+{
+  "ok": true,
+  "case_id": "PR13-A09.1-T02",
+  "actual": {
+    "first_manifest": {
+      "path": "room-observation.json",
+      "bytes": 4940,
+      "sha256": "c6e60994a60713e94b418cf2d70ff92ce921f75e3f1197507bedc324c090098c"
+    },
+    "fresh_manifest": {
+      "path": "room-observation.json",
+      "bytes": 5225,
+      "sha256": "6cc21de43ff6e8f52a540b82d596279cdf3d0774c26345de52ec46411457e222"
+    },
+    "actual_old_manifest_rejected": true,
+    "actual_fresh_manifest_verified": true,
+    "both_are_real_received_authority_observations_not_synthetic_game_state": true
+  },
+  "actual_host_liveness": {
+    "PID": 104,
+    "start_ticks": "5174768",
+    "expected_argument": "/runtime/FantasyCard.Server.dll"
+  },
+  "actual_Godot_liveness": {
+    "PID": 143,
+    "start_ticks": "5175974",
+    "expected_argument": "res://tests/A091_live_source_attribution.gd"
+  },
+  "actual_SQL_schema": "fc_runtime_test_ec4522b19b01427ca2af2b03854dba7c",
+  "actual_SQL_before": "SQL-T02-before.original.json",
+  "actual_SQL_after": "SQL-T02-after.original.json",
+  "actual_assets_SHA_before": "228851ad5eb350f97bd66b043817ae13c1c0ae997892920ce2455e54101826cd",
+  "actual_assets_SHA_after": "228851ad5eb350f97bd66b043817ae13c1c0ae997892920ce2455e54101826cd",
+  "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "frozen_running_receipt_SHA_unchanged": "ff1461599b0af130d6da9c59ab7935e3c3f694fbcdc2a3551a9345f767efe2a9",
+  "source_boundary_not_runtime_acceptance": true
+}

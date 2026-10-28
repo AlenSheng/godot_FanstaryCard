@@ -1,0 +1,90 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A04.1-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "原始完整入口在前两次ticket请求只受声明的wire UUID故障，真实Program返回404；用相同鉴权公开取消原所属ticket后，第三次原始查询实际Cancelled200。匹配阶段恰3读、收尾另1次权威Cancelled200读，零READY。原ready_ticket_terminal守卫false、报告false、OS1原样保留，cleanupPassed。",
+      "original_fullrunner_expected_exit": 1,
+      "original_report_ok": false,
+      "original_failure_guard_preserved": true,
+      "criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/commands.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A04.1-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "实际Matched200 HTTP传输完成后，只暂停原逻辑结果的消费；真实15秒ready_removed经原Gateway/Store/driver处理、清空ticket/prompt后，交回同SHA原Matched结果。原immutabledeadline判断ready_deadline_expired，零READY、0完成数、报告false及OS1保留，cleanupPassed；历史Matched/botsRunning与本账号Removed并存合法。",
+      "original_fullrunner_expected_exit": 1,
+      "original_report_ok": false,
+      "original_failure_guard_preserved": true,
+      "criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A041-current-terminal-cases-20261021/commands.json"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "task_id": "PR13-A04.1",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false,
+      "basis": "Threecanonicalcases requiredprofiles verified, current source qualified anddependenciesAccepted"
+    },
+    {
+      "task_id": "PR13-A04.2",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false,
+      "basis": "Threecanonicalcases priorcurrent4609profiles complete, nowA041dependencyAccepted; no newA042game replay"
+    }
+  ],
+  "summary": {
+    "counts": {
+      "Accepted": 94,
+      "Partial": 29,
+      "ReadyForAcceptance": 9,
+      "Failed": 0
+    },
+    "newly_accepted": [
+      "PR13-A04.1",
+      "PR13-A04.2"
+    ],
+    "remaining_unaccepted": 38,
+    "missing_case_profile_pairs_before": 134,
+    "missing_case_profile_pairs_after": 132,
+    "new_case_profile_closures": 2,
+    "additional_physical_match_worlds": 1,
+    "additional_UIDs": 2,
+    "actual_native_completed_cycles": 0,
+    "actual_ACKs": 0,
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A041-A042-accepted-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-A042-order-ready-20261021/register.json",
+      "sha256": "f658de9b4247a423cfc7f21db4caed8d7c4e9215deff820466454b173c31e306"
+    }
+  }
+}

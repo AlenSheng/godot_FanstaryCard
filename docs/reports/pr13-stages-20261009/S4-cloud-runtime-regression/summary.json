@@ -1,0 +1,44 @@
+{
+  "phase": "S4-cloud-runtime-regression",
+  "source_sha": "c351184f3598c3a591fef3e2e5171662161edea3",
+  "execution_host": "Tencent cloud",
+  "state": "Partial",
+  "native_server": {
+    "passed": 297,
+    "failed": 0,
+    "skipped": 20,
+    "elapsed_seconds": 396.1953926086426,
+    "owned_schema_count_after_tests": 0,
+    "owned_host_and_postgres_cleanup": true
+  },
+  "python_tools": {
+    "passed": 192,
+    "failed": 0,
+    "skipped": 0
+  },
+  "deployment_tools": {
+    "passed": 41,
+    "failed": 0,
+    "skipped": 0
+  },
+  "all_pr13_accepted": false,
+  "resource_guard": {
+    "windows": 39,
+    "max_host_cpu_percent": 72.74549098196393,
+    "min_host_memory_available_percent": 60.94672724730584,
+    "min_host_disk_available_percent": 52.83312455328447,
+    "redline_stop_triggered": false,
+    "scope": "Cloud host guard during native suite only; not capacity workload or per-room actor telemetry"
+  },
+  "raw_private_parents": {
+    "server_trx": {
+      "bytes": 530353,
+      "sha256": "65b54f502b49cd94689fd655c8c322dbe40669d46710f47f2e7b9367c7cfe9c9"
+    },
+    "server_log": {
+      "bytes": 9264,
+      "sha256": "8470f593fae848acb9e03e83e7682ac67fe1fae54b6447c6f173ff2a78ee9896"
+    }
+  },
+  "source_reuse": "New release changes after c351184 contain only reports and ignore/byte-preservation metadata. Runtime production files, protocol, client and native test implementations remain unchanged. Original cloud trial source is retained at c351184; no new trial or zero-skip claim is inferred from later HEAD."
+}

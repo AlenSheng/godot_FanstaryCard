@@ -1,0 +1,128 @@
+{
+  "ok": true,
+  "checks": {
+    "p1-baseline_actor0_three_sequential_Bootstrap_slots": true,
+    "p1-baseline_actor1_three_sequential_Bootstrap_slots": true,
+    "p1-baseline_actor2_three_sequential_Bootstrap_slots": true,
+    "p1-baseline_actor3_three_sequential_Bootstrap_slots": true,
+    "p1-baseline_4_unknown_ID_full_catalog_reads": true,
+    "p1-r2_actor0_three_sequential_Bootstrap_slots": true,
+    "p1-r2_actor1_three_sequential_Bootstrap_slots": true,
+    "p1-r2_actor2_three_sequential_Bootstrap_slots": true,
+    "p1-r2_actor3_three_sequential_Bootstrap_slots": true,
+    "p1-r2_4_unknown_ID_full_catalog_reads": true,
+    "p2-r2_actor0_three_sequential_Bootstrap_slots": true,
+    "p2-r2_actor1_three_sequential_Bootstrap_slots": true,
+    "p2-r2_actor2_three_sequential_Bootstrap_slots": true,
+    "p2-r2_actor3_three_sequential_Bootstrap_slots": true,
+    "p2-r2_4_unknown_ID_full_catalog_reads": true,
+    "p2-baseline_actor0_three_sequential_Bootstrap_slots": true,
+    "p2-baseline_actor1_three_sequential_Bootstrap_slots": true,
+    "p2-baseline_actor2_three_sequential_Bootstrap_slots": true,
+    "p2-baseline_actor3_three_sequential_Bootstrap_slots": true,
+    "p2-baseline_4_unknown_ID_full_catalog_reads": true,
+    "p3-baseline_actor0_three_sequential_Bootstrap_slots": true,
+    "p3-baseline_actor1_three_sequential_Bootstrap_slots": true,
+    "p3-baseline_actor2_three_sequential_Bootstrap_slots": true,
+    "p3-baseline_actor3_three_sequential_Bootstrap_slots": true,
+    "p3-baseline_4_unknown_ID_full_catalog_reads": true,
+    "p3-r2_actor0_three_sequential_Bootstrap_slots": true,
+    "p3-r2_actor1_three_sequential_Bootstrap_slots": true,
+    "p3-r2_actor2_three_sequential_Bootstrap_slots": true,
+    "p3-r2_actor3_three_sequential_Bootstrap_slots": true,
+    "p3-r2_4_unknown_ID_full_catalog_reads": true,
+    "R2_full_workflow_not_passed_not_auto_accepted": true
+  },
+  "checked_invariants": 31,
+  "six_complete_worlds": [
+    {
+      "case": "p1-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145349,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 160.492981
+      },
+      "whole_response_body_bytes": 439416,
+      "whole_SQL": 402,
+      "settlement_byte_share": 0.33077766854188284,
+      "settlement_SQL_share": 0.1890547263681592
+    },
+    {
+      "case": "p1-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 112.272777
+      },
+      "whole_response_body_bytes": 439514,
+      "whole_SQL": 399,
+      "settlement_byte_share": 0.330451362186415,
+      "settlement_SQL_share": 0.19047619047619047
+    },
+    {
+      "case": "p2-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 144.195115
+      },
+      "whole_response_body_bytes": 439514,
+      "whole_SQL": 399,
+      "settlement_byte_share": 0.330451362186415,
+      "settlement_SQL_share": 0.19047619047619047
+    },
+    {
+      "case": "p2-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145240,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 152.616558
+      },
+      "whole_response_body_bytes": 439307,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.3306116223961831,
+      "settlement_SQL_share": 0.19143576826196473
+    },
+    {
+      "case": "p3-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145242,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 184.433926
+      },
+      "whole_response_body_bytes": 439309,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.33061466985652466,
+      "settlement_SQL_share": 0.19143576826196473
+    },
+    {
+      "case": "p3-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 280.769057
+      },
+      "whole_response_body_bytes": 439305,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.3306085749080935,
+      "settlement_SQL_share": 0.19143576826196473
+    }
+  ],
+  "cause": "Real stack _poll_ready_settlement from _process dispatches before receiptIDnotification. KnownIDinflightguarddoesnotremoveunknownIDfullBootstrap;24settlementreadsacrosssixroomsloadcatalog.",
+  "not_a_global_capacity_hotspot_claim": true,
+  "minimal_contract_review_candidate": "Opt-in existingBootstrap query settlementMatchId=M returns only serverTime/configVersion/ownunACKedassets-readyunfinishedSettlement using unchangedBootstrapwirefields. Full/noquery behavior remains;caller+match+notACK+NOTEXISTS Pending inoneSQLsnapshot. Older servers ignorequery and returnexistingfullBootstrap safe fallback. No raw matchdetail200 asreadiness.",
+  "implementation_not_yet_done": true,
+  "NoChange_not_granted": true
+}

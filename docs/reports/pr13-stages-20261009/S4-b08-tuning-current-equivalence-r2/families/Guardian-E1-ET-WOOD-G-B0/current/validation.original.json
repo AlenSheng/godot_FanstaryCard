@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "encounters": 6,
+  "pairs": 3,
+  "actual_events": 206,
+  "outcomes": {
+    "Victory": 6
+  },
+  "applicable_cases": {
+    "T01": {
+      "BaselineGreenWater": 20,
+      "SingleGreenReplacement": 18
+    },
+    "T02": {
+      "BaselineGreenWater": 4,
+      "SingleGreenReplacement": 4
+    },
+    "T03": {
+      "BaselineGreenWater": 22,
+      "SingleGreenReplacement": 21
+    }
+  },
+  "case_denominators": {
+    "BaselineGreenWater/all_casts": 103,
+    "BaselineGreenWater/T01_applicable": 20,
+    "BaselineGreenWater/T02_applicable": 4,
+    "BaselineGreenWater/T03_applicable": 22,
+    "BaselineGreenWater/T01_not_applicable": 83,
+    "BaselineGreenWater/T02_not_applicable": 99,
+    "BaselineGreenWater/T03_not_applicable": 81,
+    "BaselineGreenWater/ordinary_and_conflict": 1,
+    "SingleGreenReplacement/all_casts": 103,
+    "SingleGreenReplacement/T01_applicable": 18,
+    "SingleGreenReplacement/T02_not_applicable": 99,
+    "SingleGreenReplacement/T03_not_applicable": 82,
+    "SingleGreenReplacement/T01_not_applicable": 85,
+    "SingleGreenReplacement/T03_applicable": 21,
+    "SingleGreenReplacement/ordinary_and_conflict": 1,
+    "SingleGreenReplacement/T02_applicable": 4
+  },
+  "negative_controls": [
+    {
+      "name": "wrong-main-core-count",
+      "rejected": true
+    },
+    {
+      "name": "merged-heal",
+      "rejected": true
+    },
+    {
+      "name": "duplicate-owned-card",
+      "rejected": true
+    },
+    {
+      "name": "native-contract-failed",
+      "rejected": true
+    }
+  ],
+  "full_unit": false,
+  "whole_experiment_complete": false,
+  "required_cases_accepted": false,
+  "main_acceptance_granted": false
+}

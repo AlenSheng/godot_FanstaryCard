@@ -1,0 +1,35 @@
+{
+  "before": {
+    "stage": "before",
+    "actual_exit": 1,
+    "ok": false,
+    "suites": 23,
+    "checks": 364,
+    "failed": [
+      {
+        "suite": "test_prelaunch_snapshot_recovery.gd",
+        "checks": [
+          "authority read keeps verified identity and an empty wire command",
+          "late foreign snapshot cannot replace the verified room",
+          "matching real start grants one authority read after exhausted speculation",
+          "only the current correlated snapshot releases recovery"
+        ],
+        "error": null
+      }
+    ],
+    "logs_clean": true,
+    "source_files": 2147,
+    "new_worlds0_no_visible_window": true
+  },
+  "after": {
+    "stage": "after",
+    "actual_exit": 0,
+    "ok": true,
+    "suites": 23,
+    "checks": 364,
+    "failed": [],
+    "logs_clean": true,
+    "source_files": 2147,
+    "new_worlds0_no_visible_window": true
+  }
+}

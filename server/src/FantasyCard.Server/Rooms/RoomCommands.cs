@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Server.Rooms;
@@ -6,17 +7,67 @@ namespace FantasyCard.Server.Rooms;
 public interface IRoomCommand<out TResult>
 {
     TResult Execute(BattleRoom room);
+
+    // Commands that only read a projection must not enqueue persistence work
+    // or force RoomActor to create an unrelated full-room snapshot.
+    bool NotifyObservers => true;
 }
 
 public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>
 {
+    public bool NotifyObservers => false;
     public BattleRoomSnapshot Execute(BattleRoom room) => room.Capture();
 }
 
 public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjection Map, RoomCombatInfo? CombatInfo = null);
 
+public interface IRoomCommandSnapshotResult
+{
+    BattleRoomSnapshot? Snapshot { get; }
+}
+
+public sealed record RoomCommandWithClientState<TResult>(
+    TResult Result,
+    RoomClientState? ClientState) : IRoomCommandSnapshotResult
+{
+    public BattleRoomSnapshot? Snapshot => ClientState?.Snapshot;
+}
+
+public sealed record ExecuteWithClientStateCommand<TResult>(
+    IRoomCommand<TResult> Mutation,
+    Guid PlayerId) : IRoomCommand<RoomCommandWithClientState<TResult>>
+{
+    public bool NotifyObservers => Mutation.NotifyObservers;
+
+    public RoomCommandWithClientState<TResult> Execute(BattleRoom room)
+    {
+		if (room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)
+            throw new RoomAlreadyEndedException(new GetRoomClientStateCommand(PlayerId).Execute(room));
+        var result = Mutation.Execute(room);
+        RoomClientState? clientState = null;
+        try
+        {
+            clientState = new GetRoomClientStateCommand(PlayerId).Execute(room);
+        }
+        catch (Exception exception) when (exception is DomainValidationException or InvalidOperationException)
+        {
+            // A mutation remains authoritative even when a transitional room
+            // cannot produce the optional map projection yet.
+        }
+        return new(result, clientState);
+    }
+}
+
+// The mutation was never invoked. Kept distinct from validation errors so a
+// scoped caller can receive an explicit cancellation instead of a false ACK.
+public sealed class RoomAlreadyEndedException(RoomClientState state) : Exception("The player's room has ended.")
+{
+    public RoomClientState State { get; } = state;
+}
+
 public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
 {
+    public bool NotifyObservers => false;
     public RoomClientState Execute(BattleRoom room) =>
         new(room.Capture(), room.GetMapProjection(PlayerId), room.GetCombatInfo(PlayerId));
 }
@@ -160,6 +211,7 @@ public sealed record RelicReplaceResult(Guid PileId, string ItemId, string Retur
 
 public sealed record GetRewardChoiceCommand(Guid PlayerId) : IRoomCommand<RewardChoiceSnapshot>
 {
+    public bool NotifyObservers => false;
     public RewardChoiceSnapshot Execute(BattleRoom room) => room.GetRewardChoice(PlayerId);
 }
 
@@ -190,6 +242,7 @@ public sealed record UnequipArmorCommand(Guid PlayerId, string Slot) : IRoomComm
 
 public sealed record GetRelicPilesCommand(Guid PlayerId) : IRoomCommand<IReadOnlyList<RelicPileSnapshot>>
 {
+    public bool NotifyObservers => false;
     public IReadOnlyList<RelicPileSnapshot> Execute(BattleRoom room) => room.GetAvailableRelicPiles(PlayerId);
 }
 
@@ -213,12 +266,14 @@ public sealed record PreviewRoomCardsCommand(
     long ExpectedRevision,
     DateTimeOffset Now) : IRoomCommand<CombatResolution>
 {
+    public bool NotifyObservers => false;
     public CombatResolution Execute(BattleRoom room) =>
         room.PreviewCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
 }
 
 public sealed record GetCombatInfoCommand(Guid PlayerId) : IRoomCommand<RoomCombatInfo>
 {
+    public bool NotifyObservers => false;
     public RoomCombatInfo Execute(BattleRoom room) => room.GetCombatInfo(PlayerId);
 }
 
@@ -252,4 +307,10 @@ public sealed record MoveRoomPlayerCommand(Guid PlayerId, MapPosition Target, lo
         var result = room.MovePlayerAndPair(PlayerId, Target, ExpectedRevision, Now);
         return new(result.Position, result.StartedDuel, result.RoomRevision);
     }
+}
+
+public sealed record ChooseMonsterCardCommand(Guid PlayerId, Guid CandidateId, bool Accept, Guid? ReplaceId,
+    string RequestId, long ExpectedRevision) : IRoomCommand<long>
+{
+    public long Execute(BattleRoom room) => room.DecideMonsterCard(PlayerId, CandidateId, Accept, ReplaceId, RequestId, ExpectedRevision);
 }

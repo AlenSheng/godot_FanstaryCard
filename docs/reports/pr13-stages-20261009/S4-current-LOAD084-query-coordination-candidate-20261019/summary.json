@@ -1,0 +1,59 @@
+{
+  "kind": "KnownIdAndFallbackReadCoordinationCandidate_OFFLINEPassed_NotFullPerformanceAccepted",
+  "source_release_base": "6f00f322952a104bb8d165687395a609def0781c",
+  "uncommitted_candidate_not_pushed_or_deployed": true,
+  "product_changes": [
+    {
+      "path": "client/state/game_store.gd",
+      "bytes": 94723,
+      "sha256": "20546b162012fac151ac3f82285454a75856fbc538e82bf2d2c74e878de07d07"
+    },
+    {
+      "path": "client/tests/run_native_regressions.gd",
+      "bytes": 2086,
+      "sha256": "d33f22803683a837ca06b2640aed0d7b5bf4e44359b3528d5eb097b9899858cd"
+    },
+    {
+      "path": "client/tests/test_settlement_query_coordination.gd",
+      "bytes": 3964,
+      "sha256": "1c219a2df7b484d1905ecd7fd350ca86aa96850554b7e1d40dfafceeae297d6c"
+    }
+  ],
+  "before_GameStore_sha256": "f585306278224555c4e5bc033bb162f69b10ea45fb95e6c07b60a31071441c21",
+  "after_GameStore_sha256": "20546b162012fac151ac3f82285454a75856fbc538e82bf2d2c74e878de07d07",
+  "actual_baseline_Native_exit1_two_failed_checks": [
+    "known-ID read suppresses full Bootstrap while pending false",
+    "known-ID read suppresses full Bootstrap while pending true"
+  ],
+  "candidate_targeted_Native_checks12_exit0": true,
+  "candidate20Native_suites341checks_exit0": true,
+  "meaningful_states_covered": [
+    "Point GET suspended: no concurrent full Bootstrap dispatch.",
+    "Successful same-match point result: no catalog fallback.",
+    "Failed point result: immediate fallback resumes;Pending stays notready then same receipt recovers.",
+    "RoomM read still pending duringN: N fallback allowed,lateM cannot replaceN receipt.",
+    "Existing settlement polling/ACK,room/replay/deadline,command/audit/native socket regressions."
+  ],
+  "game_behavior_change": "Existing by-ID load now suppresses Bootstrap fallback while its request is active;when it ends,normal fallback remains.",
+  "scope_limit": "OFFLINE controlled asynchronous read scheduling and existing native regressions only. Does not prove current candidate whole-room performance,PG/Pending runtime,actualUI/render,capacity,or positiveCI.",
+  "material_runtime_limit": "A slow known-ID request remains governed by existing HTTP attempt10/logical30second limits before failure fallback; candidate runtime latency must be measured,not assumed improved.",
+  "no_new_endpoint_or_Server_rule_or_UI_art_change": true,
+  "new_worlds": 0,
+  "new_accounts": 0,
+  "local_visible_windows": 0,
+  "original_benchmark_mixed_results_and_failures_retained": true,
+  "LOAD084_T01_EXPERIMENT_still_pending": true,
+  "NoChange_or_threshold_relaxation_not_granted": true,
+  "whole_task_or_whole_goal_accepted": false,
+  "current_register_unchanged": "docs/reports/pr13-stages-20261009/S6-current-LOAD084-historical-fallback-scoped-20261019/register.json",
+  "counts": {
+    "Accepted": 60,
+    "Partial": 63,
+    "ReadyForAcceptance": 9,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 72,
+  "missing_case_profile_pairs": 266,
+  "new_supplement_budget8_still_spent_no_room_replay": true,
+  "G": "G:\\PR13Evidence\\load084-query-coordination-20261019-r1-originals"
+}

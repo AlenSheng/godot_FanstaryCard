@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using FantasyCard.Contracts.Realtime;
+using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
@@ -69,29 +71,37 @@ public sealed partial class RealtimeCommandRouter
         string traceId,
         CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(command.RequestId))
-            return await RouteCoreAsync(player, command, traceId, cancellationToken);
-
-        var fingerprint = Convert.ToHexString(
-            SHA256.HashData(RealtimeProtobufCodec.EncodeClient(command)));
-        var once = await _requestStore.ExecuteAsync(
-            player.UserId,
-            command.RequestId,
-            fingerprint,
-            () => RouteCoreAsync(player, command, traceId, cancellationToken));
-        if (once.FingerprintMismatch)
+        var startedAt = Stopwatch.GetTimestamp();
+        try
         {
-            return
-            [
-                Reject(
-                    player.UserId,
-                    traceId,
-                    command.RequestId,
-                    "REQUEST_ID_REUSED",
-                    "requestId was already used for a different command.")
-            ];
+            if (string.IsNullOrWhiteSpace(command.RequestId))
+                return await RouteContextualCoreAsync(player, command, traceId, cancellationToken);
+
+            var fingerprint = Convert.ToHexString(
+                SHA256.HashData(RealtimeProtobufCodec.EncodeClient(command)));
+            var once = await _requestStore.ExecuteAsync(
+                player.UserId,
+                command.RequestId,
+                fingerprint,
+                () => RouteContextualCoreAsync(player, command, traceId, cancellationToken));
+            if (once.FingerprintMismatch)
+            {
+                return
+                [
+                    Reject(
+                        player.UserId,
+                        traceId,
+                        command.RequestId,
+                        "REQUEST_ID_REUSED",
+                        "requestId was already used for a different command.")
+                ];
+            }
+            return once.Events!;
         }
-        return once.Events!;
+        finally
+        {
+            _metrics?.ObserveRealtimeCommandDuration(command.Type, Stopwatch.GetElapsedTime(startedAt));
+        }
     }
 
     private async ValueTask<IReadOnlyList<ServerEvent>> RouteCoreAsync(
@@ -145,8 +155,8 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "room.snapshot.read payload is required.")];
             if (_roomRegistry is null ||
                 !_roomRegistry.TryGetForPlayer(player.UserId, out var snapshotActor, out var snapshotMatchId) ||
-                snapshotActor is null)
-                return [Reject(player.UserId, traceId, command.RequestId, "NOT_IN_ROOM", "The player is not assigned to an active room.")];
+                snapshotActor is null || !MatchesRequestedRoom(command, snapshotActor, snapshotMatchId))
+                return await ResolveTerminalCommandAsync(player, command, traceId, cancellationToken);
             var state = await snapshotActor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
             return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, snapshotMatchId)];
         }
@@ -154,6 +164,7 @@ public sealed partial class RealtimeCommandRouter
             !string.Equals(command.Type, "combat.preview", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.select_target", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "battle.abandon", StringComparison.Ordinal) &&
+            !string.Equals(command.Type, "monster.choose", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "room.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "map.move", StringComparison.Ordinal) &&
             !string.Equals(command.Type, "duel.leave", StringComparison.Ordinal) &&
@@ -200,19 +211,30 @@ public sealed partial class RealtimeCommandRouter
         }
         if (_roomRegistry is null ||
             !_roomRegistry.TryGetForPlayer(player.UserId, out var actor, out var currentMatchId) ||
-            actor is null)
+            actor is null || !MatchesRequestedRoom(command, actor, currentMatchId))
         {
-            return
-            [
-                Reject(
-                    player.UserId,
-                    traceId,
-                    command.RequestId,
-                    "NOT_IN_ROOM",
-                    "The player is not assigned to an active room.")
-            ];
+            return await ResolveTerminalCommandAsync(player, command, traceId, cancellationToken);
         }
         var expectedRevision = command.ExpectedRevision ?? 0;
+
+        if (command.Type == "monster.choose")
+        {
+            if (command.Payload is not MonsterCardChooseCommandPayload choice || choice.CandidateId == Guid.Empty)
+                return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "A monster candidate is required.")];
+            try
+            {
+                var result = await ExecuteWithClientStateAsync(actor,
+                    new ChooseMonsterCardCommand(player.UserId, choice.CandidateId, choice.Accept,
+                        choice.ReplaceInstanceId, command.RequestId!, expectedRevision),
+                    player.UserId, expectedRevision, cancellationToken);
+                return AppendRoomSnapshot(player.UserId, traceId, command.RequestId, currentMatchId,
+                    [], result.ClientState);
+            }
+            catch (DomainValidationException exception)
+            {
+                return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", exception.Message)];
+            }
+        }
 
         if (command.Type == "relic.read")
         {
@@ -239,17 +261,20 @@ public sealed partial class RealtimeCommandRouter
         {
             try
             {
-                var revision = command.Payload switch
+                IRoomCommand<long> inventoryCommand = command.Payload switch
                 {
                     InventoryMoveCommandPayload move when command.Type == "inventory.move" &&
                         !string.IsNullOrWhiteSpace(move.ItemId) && move.TargetSlotIndex is >= 0 and < 36 =>
-                        await actor.ExecuteAsync(new MoveInventoryItemCommand(player.UserId, move.ItemId, move.TargetSlotIndex), expectedRevision, cancellationToken),
+                        new MoveInventoryItemCommand(player.UserId, move.ItemId, move.TargetSlotIndex),
                     InventoryEquipCommandPayload equip when command.Type == "inventory.equip" && !string.IsNullOrWhiteSpace(equip.ItemId) =>
-                        await actor.ExecuteAsync(new EquipInventoryItemCommand(player.UserId, equip.ItemId), expectedRevision, cancellationToken),
+                        new EquipInventoryItemCommand(player.UserId, equip.ItemId),
                     InventoryUnequipCommandPayload unequip when command.Type == "inventory.unequip" && !string.IsNullOrWhiteSpace(unequip.Slot) =>
-                        await actor.ExecuteAsync(new UnequipArmorCommand(player.UserId, unequip.Slot), expectedRevision, cancellationToken),
+                        new UnequipArmorCommand(player.UserId, unequip.Slot),
                     _ => throw new DomainValidationException("A valid inventory item and destination are required.")
                 };
+                var inventory = await ExecuteWithClientStateAsync(
+                    actor, inventoryCommand, player.UserId, expectedRevision, cancellationToken);
+                var revision = inventory.Result;
                 var itemId = command.Payload switch
                 {
                     InventoryMoveCommandPayload move => move.ItemId,
@@ -257,13 +282,13 @@ public sealed partial class RealtimeCommandRouter
                     InventoryUnequipCommandPayload unequip => unequip.Slot,
                     _ => ""
                 };
-                var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
-                return
+                ServerEvent[] events =
                 [
                     _eventStore.Create(player.UserId, "inventory.changed", traceId,
                         new InventoryChangedEventPayload(command.Type, itemId), command.RequestId, revision),
-                    CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, currentMatchId)
                 ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, inventory.ClientState);
             }
             catch (Exception exception) when (exception is DomainValidationException or InvalidOperationException or ArgumentException)
             {
@@ -278,11 +303,20 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "battleId and targetId are required.")];
             try
             {
-                var selected = await actor.ExecuteAsync(new SelectPveTargetCommand(
-                    player.UserId, target.BattleId, target.TargetId, expectedRevision), cancellationToken);
-                return [_eventStore.Create(player.UserId, "battle.target_selected", traceId,
-                    new BattleTargetSelectedEventPayload(selected.BattleId, selected.TargetId),
-                    command.RequestId, selected.RoomRevision)];
+                var selected = await ExecuteWithClientStateAsync(
+                    actor,
+                    new SelectPveTargetCommand(player.UserId, target.BattleId, target.TargetId, expectedRevision),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "battle.target_selected", traceId,
+                        new BattleTargetSelectedEventPayload(selected.Result.BattleId, selected.Result.TargetId),
+                        command.RequestId, selected.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, selected.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -296,9 +330,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "battle.abandon payload is required.")];
             try
             {
-                await actor.ExecuteAsync(new AbandonBattleCommand(player.UserId), expectedRevision, cancellationToken);
-                var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
-                return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, currentMatchId)];
+                var abandoned = await ExecuteWithClientStateAsync(
+                    actor,
+                    new AbandonBattleCommand(player.UserId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                return AppendRoomSnapshot(
+                    player.UserId,
+                    traceId,
+                    command.RequestId,
+                    currentMatchId,
+                    [],
+                    abandoned.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -392,8 +436,17 @@ public sealed partial class RealtimeCommandRouter
                                     _logger, command.RequestId!, roomSnapshot.RoomId, exception);
                         }
                     }
-                    return [_eventStore.Create(player.UserId, "reward.choice", traceId,
-                        new RewardChoiceEventPayload((int)receipt.Choice.Layer, receipt.Choice.Options.Select(ToPayload).ToArray(), receipt.Choice.RefreshCount, receipt.Choice.IsBoss), command.RequestId, receipt.RoomRevision)];
+                return await WithRoomSnapshotAsync(
+                    player.UserId,
+                    traceId,
+                    command.RequestId,
+                    currentMatchId,
+                    actor,
+                    [
+                        _eventStore.Create(player.UserId, "reward.choice", traceId,
+                            new RewardChoiceEventPayload((int)receipt.Choice.Layer, receipt.Choice.Options.Select(ToPayload).ToArray(), receipt.Choice.RefreshCount, receipt.Choice.IsBoss), command.RequestId, receipt.RoomRevision)
+                    ],
+                    cancellationToken);
                 }
                 catch
                 {
@@ -422,9 +475,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "optionId is required.")];
             try
             {
-                var applied = await actor.ExecuteAsync(new ClaimRewardCommand(player.UserId, claim.OptionId, claim.ReplaceItemId, claim.Equip), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "reward.choice_claimed", traceId,
-                    new RewardChoiceClaimedEventPayload(claim.OptionId, applied), command.RequestId, roomRevision: null)];
+                var applied = await ExecuteWithClientStateAsync(
+                    actor,
+                    new ClaimRewardCommand(player.UserId, claim.OptionId, claim.ReplaceItemId, claim.Equip),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "reward.choice_claimed", traceId,
+                        new RewardChoiceClaimedEventPayload(claim.OptionId, applied.Result), command.RequestId, roomRevision: null)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, applied.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -438,16 +501,22 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "row and column must be within the 6x6 map.")];
             try
             {
-                var position = await actor.ExecuteAsync(new MoveRoomPlayerCommand(player.UserId, new FantasyCard.Domain.Rooms.MapPosition(move.Row, move.Column), expectedRevision, _timeProvider.GetUtcNow()), cancellationToken);
+                var position = await ExecuteWithClientStateAsync(
+                    actor,
+                    new MoveRoomPlayerCommand(player.UserId, new FantasyCard.Domain.Rooms.MapPosition(move.Row, move.Column), expectedRevision, _timeProvider.GetUtcNow()),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
                 var events = new List<ServerEvent>
                 {
-                    _eventStore.Create(player.UserId, "room.moved", traceId, new RoomMovedEventPayload(player.UserId, position.Position.Row, position.Position.Column), command.RequestId, position.RoomRevision)
+                    _eventStore.Create(player.UserId, "room.moved", traceId, new RoomMovedEventPayload(player.UserId, position.Result.Position.Row, position.Result.Position.Column), command.RequestId, position.Result.RoomRevision)
                 };
-                if (position.StartedDuel is not null)
+                if (position.Result.StartedDuel is not null)
                     events.Add(_eventStore.Create(player.UserId, "duel.started", traceId,
-                        new DuelStartedEventPayload(position.StartedDuel.DuelId, position.StartedDuel.FirstPlayerId, position.StartedDuel.LatePlayerId,
-                            position.StartedDuel.LatePlayerUnlockAt.ToUnixTimeMilliseconds(), position.StartedDuel.LeaveWindowEndsAt.ToUnixTimeMilliseconds()), roomRevision: position.RoomRevision));
-                return events;
+                        new DuelStartedEventPayload(position.Result.StartedDuel.DuelId, position.Result.StartedDuel.FirstPlayerId, position.Result.StartedDuel.LatePlayerId,
+                            position.Result.StartedDuel.LatePlayerUnlockAt.ToUnixTimeMilliseconds(), position.Result.StartedDuel.LeaveWindowEndsAt.ToUnixTimeMilliseconds()), command.RequestId, position.Result.RoomRevision));
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, position.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -461,8 +530,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "duelId is required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new RequestDuelLeaveCommand(player.UserId, leave.DuelId, _timeProvider.GetUtcNow()), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "duel.leave_ack", traceId, new DuelLeaveEventPayload(result.DuelId, result.Completed), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new RequestDuelLeaveCommand(player.UserId, leave.DuelId, _timeProvider.GetUtcNow()),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "duel.leave_ack", traceId,
+                        new DuelLeaveEventPayload(result.Result.DuelId, result.Result.Completed), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -476,8 +556,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "duelId is required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new RequestDuelEscapeCommand(player.UserId, escape.DuelId), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "duel.escape_started", traceId, new DuelEscapeEventPayload(result.DuelId, result.Probability, "Started"), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new RequestDuelEscapeCommand(player.UserId, escape.DuelId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "duel.escape_started", traceId,
+                        new DuelEscapeEventPayload(result.Result.DuelId, result.Result.Probability, "Started"), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -491,9 +582,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "action.extract payload is required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new RequestRoomExtractionCommand(player.UserId), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "action.extract_started", traceId,
-                    new ActionExtractEventPayload("Started", result.Remaining), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new RequestRoomExtractionCommand(player.UserId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "action.extract_started", traceId,
+                        new ActionExtractEventPayload("Started", result.Result.Remaining), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -507,9 +608,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "action.spring payload is required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new RequestRoomSpringCommand(player.UserId), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "action.spring_started", traceId,
-                    new ActionSpringEventPayload("Started", result.Remaining), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new RequestRoomSpringCommand(player.UserId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "action.spring_started", traceId,
+                        new ActionSpringEventPayload("Started", result.Result.Remaining), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -523,9 +634,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "action.potion payload is required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new UseRoomPotionCommand(player.UserId), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "action.potion_used", traceId,
-                    new ActionPotionEventPayload(result.ItemId, result.Healed), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new UseRoomPotionCommand(player.UserId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "action.potion_used", traceId,
+                        new ActionPotionEventPayload(result.Result.ItemId, result.Result.Healed), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -540,9 +661,19 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "pileId, itemId, and pileVersion are required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new TakeRelicItemCommand(player.UserId, take.PileId, take.ItemId, take.PileVersion, take.ReplaceItemId), expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "relic.taken", traceId,
-                    new RelicTakeEventPayload(result.PileId, result.ItemId, result.PileVersion), command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new TakeRelicItemCommand(player.UserId, take.PileId, take.ItemId, take.PileVersion, take.ReplaceItemId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "relic.taken", traceId,
+                        new RelicTakeEventPayload(result.Result.PileId, result.Result.ItemId, result.Result.PileVersion), command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -562,12 +693,21 @@ public sealed partial class RealtimeCommandRouter
                 return [Reject(player.UserId, traceId, command.RequestId, "INVALID_PAYLOAD", "pileId, itemId, pileVersion, and replaceItemId are required.")];
             try
             {
-                var result = await actor.ExecuteAsync(new ReplaceRelicItemCommand(
-                    player.UserId, replace.PileId, replace.ItemId, replace.PileVersion, replace.ReplaceItemId),
-                    expectedRevision, cancellationToken);
-                return [_eventStore.Create(player.UserId, "relic.replaced", traceId,
-                    new RelicReplacedEventPayload(result.PileId, result.ItemId, result.ReturnedItemId, result.PileVersion),
-                    command.RequestId, result.RoomRevision)];
+                var result = await ExecuteWithClientStateAsync(
+                    actor,
+                    new ReplaceRelicItemCommand(
+                        player.UserId, replace.PileId, replace.ItemId, replace.PileVersion, replace.ReplaceItemId),
+                    player.UserId,
+                    expectedRevision,
+                    cancellationToken);
+                ServerEvent[] events =
+                [
+                    _eventStore.Create(player.UserId, "relic.replaced", traceId,
+                        new RelicReplacedEventPayload(result.Result.PileId, result.Result.ItemId, result.Result.ReturnedItemId, result.Result.PileVersion),
+                        command.RequestId, result.Result.RoomRevision)
+                ];
+                return AppendRoomSnapshot(
+                    player.UserId, traceId, command.RequestId, currentMatchId, events, result.ClientState);
             }
             catch (DomainValidationException exception)
             {
@@ -599,49 +739,59 @@ public sealed partial class RealtimeCommandRouter
         try
         {
             var preview = command.Type == "combat.preview";
+            RoomCommandWithClientState<CombatResolution>? applied = null;
             var resolution = preview
                 ? await actor.ExecuteAsync(new PreviewRoomCardsCommand(player.UserId, payload.BattleId,
                     payload.TargetId, payload.CardInstanceIds, expectedRevision, _timeProvider.GetUtcNow()), cancellationToken)
-                : await actor.ExecuteAsync(new PlayRoomCardsCommand(
+                : (applied = await ExecuteWithClientStateAsync(
+                    actor,
+                    new PlayRoomCardsCommand(
+                        player.UserId,
+                        payload.BattleId,
+                        payload.TargetId,
+                        payload.CardInstanceIds,
+                        expectedRevision,
+                        _timeProvider.GetUtcNow()),
                     player.UserId,
-                    payload.BattleId,
-                    payload.TargetId,
-                    payload.CardInstanceIds,
                     expectedRevision,
-                    _timeProvider.GetUtcNow()),
-                cancellationToken);
-            return
-            [
-                _eventStore.Create(
-                    player.UserId,
-                    preview ? "combat.previewed" : "battle.combo_resolved",
-                    traceId,
-                    new BattleComboResolvedEventPayload(
-                        resolution.BattleId,
-                        resolution.AttackerId,
-                        resolution.TargetId,
-                        resolution.Damage,
-                        resolution.ShieldDamage,
-                        resolution.HpDamage,
-                        resolution.Heal,
-                        resolution.ShieldGain,
-                        resolution.TargetDefeated,
-                        resolution.BattleEnded,
-                        resolution.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
-                        resolution.CoreElement?.ToString(), resolution.CoreCount,
-                        resolution.StunSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.DrawBlockSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.HealthCost, resolution.DrawCharge.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.ImmediateDraw, payload.CardInstanceIds, resolution.AttackerId.ToString("D"),
-                        resolution.DrawSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.DrawSpeedModifier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.ResonanceMultiplier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                        resolution.ConflictPairCount,
-                        resolution.ConflictCancellation.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
-                    command.RequestId,
-                    resolution.RoomRevision)
-            ];
+                    cancellationToken)).Result;
+            var response = _eventStore.Create(
+                player.UserId,
+                preview ? "combat.previewed" : "battle.combo_resolved",
+                traceId,
+                new BattleComboResolvedEventPayload(
+                    resolution.BattleId,
+                    resolution.AttackerId,
+                    resolution.TargetId,
+                    resolution.Damage,
+                    resolution.ShieldDamage,
+                    resolution.HpDamage,
+                    resolution.Heal,
+                    resolution.ShieldGain,
+                    resolution.TargetDefeated,
+                    resolution.BattleEnded,
+                    resolution.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
+                    resolution.CoreElement?.ToString(), resolution.CoreCount,
+                    resolution.StunSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.DrawBlockSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.HealthCost, resolution.DrawCharge.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.ImmediateDraw, payload.CardInstanceIds, resolution.AttackerId.ToString("D"),
+                    resolution.DrawSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.DrawSpeedModifier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.ResonanceMultiplier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
+                    resolution.ConflictPairCount,
+                    resolution.ConflictCancellation.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
+                command.RequestId,
+                resolution.RoomRevision);
+            if (preview) return [response];
+            return AppendRoomSnapshot(
+                player.UserId,
+                traceId,
+                command.RequestId,
+                currentMatchId,
+                [response],
+                applied!.ClientState);
         }
         catch (DomainValidationException exception)
         {
@@ -769,6 +919,62 @@ public sealed partial class RealtimeCommandRouter
             RoomSnapshotProjection.Build(state, playerId, matchId, _timeProvider.GetUtcNow()),
             requestId,
             state.Snapshot.Revision);
+
+    private static async ValueTask<RoomCommandWithClientState<TResult>> ExecuteWithClientStateAsync<TResult>(
+        RoomActor actor,
+        IRoomCommand<TResult> mutation,
+        Guid playerId,
+        long expectedRevision,
+        CancellationToken cancellationToken)
+    {
+        var command = new ExecuteWithClientStateCommand<TResult>(mutation, playerId);
+        return await actor.ExecuteAsync(command, expectedRevision, cancellationToken);
+    }
+
+    private IReadOnlyList<ServerEvent> AppendRoomSnapshot(
+        Guid playerId,
+        string traceId,
+        string? requestId,
+        Guid? matchId,
+        IReadOnlyList<ServerEvent> events,
+        RoomClientState? state)
+    {
+        if (state is null) return events;
+        return [.. events, CreateRoomSnapshot(playerId, traceId, requestId, state, matchId)];
+    }
+
+    private async ValueTask<IReadOnlyList<ServerEvent>> WithRoomSnapshotAsync(
+        Guid playerId,
+        string traceId,
+        string? requestId,
+        Guid? matchId,
+        RoomActor actor,
+        IReadOnlyList<ServerEvent> events,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(playerId), cancellationToken);
+            var snapshot = CreateRoomSnapshot(playerId, traceId, requestId, state, matchId);
+            // The event objects already own monotonically increasing sequence
+            // numbers. Keep the acknowledgement first, then append the
+            // authoritative snapshot from the same request/response so the
+            // client can apply both without a second round trip.
+            return [.. events, snapshot];
+        }
+        catch (DomainValidationException)
+        {
+            // Some non-map room states (for example an isolated duel test or a
+            // transition before map initialization) cannot produce a client
+            // projection.  The mutation itself remains authoritative; the
+            // client will use its normal snapshot recovery path.
+            return events;
+        }
+        catch (InvalidOperationException)
+        {
+            return events;
+        }
+    }
 
     private ServerEvent Reject(
         Guid playerId,

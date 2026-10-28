@@ -1,6 +1,8 @@
 """Run isolated session/authentication tests without contacting a game server."""
 
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+import base64
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -15,12 +17,30 @@ VERSION = json.loads((ROOT / "client/data/catalog.json").read_text(encoding="utf
 
 
 class Handler(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
+
+    def handle(self):
+        try:
+            super().handle()
+        except (ConnectionResetError, ConnectionAbortedError):
+            pass
     def log_message(self, *_args):
         pass
 
     def do_GET(self):
         prefix, path = self.normalized_path()
-        if path == "/":
+        if self.headers.get("Upgrade", "").lower() == "websocket":
+            # Authentication tests close this socket explicitly; acknowledge
+            # the handshake so background polling cannot report HTTP errors.
+            key = self.headers.get("Sec-WebSocket-Key", "")
+            accept = base64.b64encode(hashlib.sha1((key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").encode()).digest()).decode()
+            self.send_response(101)
+            self.send_header("Upgrade", "websocket")
+            self.send_header("Connection", "Upgrade")
+            self.send_header("Sec-WebSocket-Accept", accept)
+            self.end_headers()
+            self.close_connection = True
+        elif path in ("/", "/api/v1/client-info"):
             self.respond(200, {"configVersion": "outdated" if prefix == "mismatch" else VERSION, "capabilities": ["identity.local"]})
         elif path == "/health/ready":
             self.respond(200, {"status": "Healthy"})
@@ -33,7 +53,7 @@ class Handler(BaseHTTPRequestHandler):
                 "configVersion": "outdated" if prefix == "bootstrap-mismatch" else VERSION,
                 "player": account["player"],
                 "wallet": {"gold": account["gold"]}, "decks": [], "equippedLoadouts": [],
-                "unfinishedMatch": None, "unfinishedSettlement": None,
+                "unfinishedMatch": account.get("unfinishedMatch"), "unfinishedSettlement": account.get("unfinishedSettlement"),
             })
         elif path == "/late-unauthorized":
             time.sleep(0.4)
@@ -64,6 +84,11 @@ class Handler(BaseHTTPRequestHandler):
             token = "isolated-token-" + account["player"]["userId"]
             self.server.tokens[token] = account
             self.respond(200, {"accessToken": token, "expiresAt": "2030-01-01T00:00:00Z", "player": account["player"]})
+        elif path == "/fixture/recovery":
+            account = self.current_account()
+            account["unfinishedMatch"] = data.get("unfinishedMatch")
+            account["unfinishedSettlement"] = data.get("unfinishedSettlement")
+            self.respond(200, {})
         elif path == "/fixture/account-progress":
             account = self.current_account()
             if account is None:

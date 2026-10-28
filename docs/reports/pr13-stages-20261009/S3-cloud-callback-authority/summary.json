@@ -1,0 +1,643 @@
+{
+  "source_base_sha": "9b385171143fca4e05ac632e5ddd761df4413a44",
+  "source_overlay": {
+    "client/tests/pr13_callback_isolation.gd": "044a49197079854a5edee954c6f59f92dfdfcd15dde6ed387218ea2e54177cdb"
+  },
+  "canonical_staged_git_bytes_verified": true,
+  "execution_host": "Tencent cloud",
+  "profile": "OFFLINE",
+  "ok": true,
+  "unit_suites": 19,
+  "callback_cases": 6,
+  "native_result": {
+    "ok": true,
+    "base_sha": "9b385171143fca4e05ac632e5ddd761df4413a44",
+    "execution_host": "Tencent cloud",
+    "profile": "OFFLINE",
+    "production_changed": false,
+    "full_scope_accepted": false,
+    "overlay": {
+      "client/tests/pr13_callback_isolation.gd": "044a49197079854a5edee954c6f59f92dfdfcd15dde6ed387218ea2e54177cdb"
+    },
+    "started_at": 1791590060.23507,
+    "steps": [
+      {
+        "name": "import",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "a3d5f11a983d8967000dea42d6f606d611f61b5cf97d5e1455b538a631147912"
+      },
+      {
+        "name": "regressions",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "ccaaff2ef04a73c2633a6707876b36cfa117caa614ef4ead2b96c95d6e5bd51d"
+      },
+      {
+        "name": "parse",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "d82bc95c3f2d9533ff61022580bf6b08019a5b6d2e343ae186ce50d4c0fad3ed"
+      },
+      {
+        "name": "callbacks",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "26833a415d637cecb5dd08f9316034476a850dcd094f7cc70aaa6d6355405dea"
+      },
+      {
+        "name": "lobby-race",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "4ad46801e99caea8b4e462ffe6e95fb35ea3a13b5044d638e913b5675a0f8838"
+      },
+      {
+        "name": "schema",
+        "exit_code": 0,
+        "ok": true,
+        "log_sha256": "2a09a3d5912cece2b361ad37988861a09c131bd791bfcbf4ac9592bca5fddc25"
+      }
+    ],
+    "container_id": "292c3ea4fd66a452cd87be9974b6d334d1412d6eea70d0927b98a02396316a2f",
+    "unit_suites": [
+      {
+        "name": "test_protobuf",
+        "message": "Golden wire, nested defaults, unknown fields and truncation passed",
+        "ok": true
+      },
+      {
+        "name": "test_play_retry",
+        "checks": {
+          "battle": true,
+          "dead": true,
+          "disconnect": true,
+          "hand": true,
+          "locked": true,
+          "once": true,
+          "other_error": true,
+          "room": true,
+          "send_failed": true,
+          "success": true,
+          "timeout": true,
+          "unknown": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_confirmation_snapshot",
+        "checks": {
+          "ack_before_snapshot": true,
+          "missing_revision": true,
+          "no_per_frame_snapshot_loop": true,
+          "old_snapshot": true,
+          "other_room": true,
+          "preview_connection_transition_invalidates_authority": true,
+          "preview_debounce_preserves_explicit_latest_order": true,
+          "preview_explicit_play_after_gdd_fallback_uses_survivor": true,
+          "preview_gdd_death_fallback_keeps_left_to_right_target": true,
+          "preview_hit_invalidates_authority_before_snapshot": true,
+          "preview_live_authority_event_is_displayed": true,
+          "preview_local_feedback_is_immediate_estimate": true,
+          "preview_manual_target_click_invalidates_old_preview": true,
+          "preview_manual_target_confirmation_blocks_old_target_play": true,
+          "preview_new_selection_rejects_inflight_old_order": true,
+          "preview_no_preview_per_frame_loop": true,
+          "preview_old_battle_hit_keeps_current_authority": true,
+          "preview_preview_rejection_does_not_retry_business_command": true,
+          "preview_readonly_preview_does_not_mutate_health_or_hand": true,
+          "preview_reject_changed_config": true,
+          "preview_reject_changed_future_revision": true,
+          "preview_reject_changed_hand_level": true,
+          "preview_reject_changed_health": true,
+          "preview_reject_changed_policy": true,
+          "preview_reject_changed_recovering": true,
+          "preview_reject_changed_replayed": true,
+          "preview_reject_changed_shield": true,
+          "preview_reject_changed_status": true,
+          "preview_reject_changed_stun": true,
+          "preview_reject_changed_target_death": true,
+          "preview_reject_changed_target_health": true,
+          "preview_reject_changed_weapon": true,
+          "preview_reject_changed_wrong_order": true,
+          "preview_reject_changed_wrong_target": true,
+          "preview_selection_sends_one_readonly_preview": true,
+          "preview_target_event_invalidates_authority_before_snapshot": true,
+          "preview_timeout_does_not_resubmit_preview": true,
+          "silent_draw_refresh_is_bounded": true,
+          "snapshot_before_ack": true,
+          "synthetic_hit_refreshes_hand": true,
+          "timeout": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_room_store",
+        "message": "Authoritative action gating, recovery lock, stale hand/battle/target rejection and duel target validation",
+        "ok": true
+      },
+      {
+        "name": "test_audio_events",
+        "checks": {
+          "all_damage_types": true,
+          "combat_cues": true,
+          "confirmed_actions_once": true,
+          "duplicate_and_old_battle_silent": true,
+          "existing_terminal_room_silent": true,
+          "failed_command_no_success": true,
+          "first_snapshot_silent": true,
+          "incoming_no_card_play": true,
+          "new_battle_starts_once": true,
+          "new_card_once": true,
+          "old_transition_silent": true,
+          "other_match_settlement_silent": true,
+          "other_room_ack_silent": true,
+          "preview_silent": true,
+          "reconnected_baseline_and_pending_silent": true,
+          "recovery_selection_locked": true,
+          "replayed_snapshot_and_terminal_silent": true,
+          "settlement_fallback_once": true,
+          "snapshot_death_once": true,
+          "terminal_event_snapshot_settlement_once": true,
+          "valid_selection_only": true,
+          "wire_replay": true,
+          "zero_damage_silent": true
+        },
+        "message": "Audio follows confirmed current actions; previews, duplicates, stale rooms/battles and reconnect replay stay silent",
+        "ok": true
+      },
+      {
+        "name": "test_session_platform",
+        "message": "Session replacement/expiry clears UI and stops retries; fresh login clears replay; config mismatch blocks entry; Steam failure and ticket callbacks validated",
+        "ok": true
+      },
+      {
+        "name": "test_class_selection",
+        "checks": {
+          "confirmed class needs no duplicate write": true,
+          "default visual class is persisted": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_account_cache",
+        "message": "Market listing deltas update account cache and seller balance without a read request",
+        "ok": true
+      },
+      {
+        "name": "test_preparation_return",
+        "checks": {
+          "preparation UI receives inventory update": true,
+          "released equipment details are reloaded": true,
+          "saved equipment selection and version survive": true,
+          "timeout clears pending preparation": true,
+          "timeout refreshes inventory without saving an empty loadout": true
+        },
+        "message": "Ready timeout preserves saved equipment and reloads released inventory",
+        "ok": true
+      },
+      {
+        "name": "test_settlement_return",
+        "checks": {
+          "ack verification does not repeat the mutation false": true,
+          "ack verification does not repeat the mutation true": true,
+          "acknowledgement ends busy state": true,
+          "completed receipt cannot be acknowledged twice": true,
+          "failed acknowledgement can be retried": true,
+          "failed response handled": true,
+          "hall shown before failed response": true,
+          "hall shown before successful response": true,
+          "lost ack response resolved by authoritative state false": true,
+          "lost ack response resolved by authoritative state true": true,
+          "preparation follows acknowledgement false": true,
+          "preparation follows acknowledgement true": true,
+          "ready prompt follows acknowledgement false": true,
+          "ready prompt follows acknowledgement true": true,
+          "result reflects server acknowledgement false": true,
+          "result reflects server acknowledgement true": true,
+          "successful response handled": true
+        },
+        "message": "Settlement return is optimistic and restores the receipt on failure",
+        "ok": true
+      },
+      {
+        "name": "test_settlement_polling",
+        "checks": {
+          "M becomes ready after duplicate error": true,
+          "another match is ignored": true,
+          "boss receipt replaces pending screen": true,
+          "duplicate real rejection preserves M": true,
+          "failed query is visible and retryable": true,
+          "in-flight query is not duplicated": true,
+          "lost room keeps polling original match": true,
+          "lost room recovers ready receipt": true,
+          "lost room rejects unrelated receipt": true,
+          "old rejection cannot clear new match": true,
+          "pending assets are not treated as received": true,
+          "ready receipt stops polling": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_terminal_room_actions",
+        "checks": {
+          "match.settled: HTTP failure does not reopen actions": true,
+          "match.settled: already sent read retained, no additional read": true,
+          "match.settled: authentication reset cannot retain old closure": true,
+          "match.settled: authoritative death snapshot closes actions": true,
+          "match.settled: failed acknowledgement keeps terminal authority": true,
+          "match.settled: failed receipt remains recoverable": true,
+          "match.settled: malformed receipt does not close room": true,
+          "match.settled: new room restores legal actions": true,
+          "match.settled: notification closes actions before HTTP finishes": true,
+          "match.settled: older playing snapshot cannot reopen room": true,
+          "match.settled: ordinary terminal room remains distinct from lost-route recovery": true,
+          "match.settled: prior match notification cannot close new room": true,
+          "settlement.ready: HTTP failure does not reopen actions": true,
+          "settlement.ready: already sent read retained, no additional read": true,
+          "settlement.ready: authentication reset cannot retain old closure": true,
+          "settlement.ready: authoritative death snapshot closes actions": true,
+          "settlement.ready: failed acknowledgement keeps terminal authority": true,
+          "settlement.ready: failed receipt remains recoverable": true,
+          "settlement.ready: malformed receipt does not close room": true,
+          "settlement.ready: new room restores legal actions": true,
+          "settlement.ready: notification closes actions before HTTP finishes": true,
+          "settlement.ready: older playing snapshot cannot reopen room": true,
+          "settlement.ready: ordinary terminal room remains distinct from lost-route recovery": true,
+          "settlement.ready: prior match notification cannot close new room": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_terminal_command_context",
+        "checks": {
+          "action.extract_completed: closed room sends no additional read": true,
+          "action.extract_completed: foreign terminal frames trigger no read": true,
+          "action.extract_completed: other match keeps current actions": true,
+          "action.extract_completed: other room keeps current actions": true,
+          "action.extract_completed: terminal closes without confirming or replaying intent": true,
+          "authentication reset clears follow-up contexts": true,
+          "cancellation action must match original request": true,
+          "cancellation stale room_context_epoch cannot end self": true,
+          "cancellation stale session_generation cannot end self": true,
+          "cancellation without command identity cannot end self": true,
+          "cancelled request measured once with distinct result": true,
+          "follow-up retains old epoch and cannot release new recovery": true,
+          "fresh scoped read releases recovery": true,
+          "gap defers cancellation delivery for authoritative recovery": true,
+          "player.died: closed room sends no additional read": true,
+          "player.died: foreign terminal frames trigger no read": true,
+          "player.died: other match keeps current actions": true,
+          "player.died: other room keeps current actions": true,
+          "player.died: terminal closes without confirming or replaying intent": true,
+          "room.command_cancelled: closed room sends no additional read": true,
+          "room.command_cancelled: foreign terminal frames trigger no read": true,
+          "room.command_cancelled: other match keeps current actions": true,
+          "room.command_cancelled: other room keeps current actions": true,
+          "room.command_cancelled: terminal closes without confirming or replaying intent": true,
+          "teammate death cannot end self": true,
+          "terminal follow-up after gap never confirms cancelled mutation": true,
+          "unsolicited old snapshot cannot replace current room": true
+        },
+        "ok": true
+      },
+      {
+        "name": "test_art",
+        "message": "232 card textures, 12 species, paired aliases, boss phases, five elements and texture borders",
+        "ok": true
+      },
+      {
+        "name": "test_item_visual",
+        "checks": {
+          "class soul lookup matches its own id": true,
+          "compact gold art stays square within its row": true,
+          "every configured item has an icon and initial quality art": true,
+          "every configured quality has a background and frame": true,
+          "gold keeps a 96 square visual": true,
+          "quality fill reaches the inner edge at every common size": true,
+          "reward equipment uses its actual quality and element": true
+        },
+        "message": "Equipment icons, item quality art and backpack cell sizing",
+        "ok": true
+      },
+      {
+        "name": "test_equipment_name",
+        "checks": {
+          "equipment without set affix keeps its name": true,
+          "exploration equipment includes set prefix": true,
+          "stored equipment includes set prefix": true,
+          "tooltip uses the same name": true,
+          "upgraded draw interval is shown": true,
+          "zero draw interval is hidden": true
+        },
+        "message": "Equipment set-affix names",
+        "ok": true
+      },
+      {
+        "name": "test_equipment_compare",
+        "checks": {
+          "Bulwark totals follow GDD": true,
+          "Comparison title has no close button": true,
+          "Cross-element attributes stay separate": true,
+          "Current loadout attributes aggregate locally": true,
+          "GDD base values are used": true,
+          "Inactive present sets remain visible": true,
+          "Null affix placeholders stay hidden": true,
+          "Orange plus purple Piercing activates at two": true,
+          "Piercing total follows GDD": true,
+          "Replacing the head breaks Bulwark": true,
+          "Three purple Bulwark activates": true,
+          "Zero attributes are omitted from equipment comparison": true
+        },
+        "message": "Equipment comparison keeps elements separate and computes affix set changes",
+        "ok": true
+      },
+      {
+        "name": "test_combat_preview_state",
+        "message": "Combat previews reject stale state, include printed direct damage, and preserve first-card core selection",
+        "ok": true
+      },
+      {
+        "name": "test_client_hot_paths",
+        "message": "Shared catalog, style, ownership and map indexes stay correct. card lookup 12771 us indexed vs 311704 us scanned; owned cards 3423 us indexed vs 93463 us scanned; 300 styles 2897 us; sink 132280",
+        "ok": true
+      }
+    ],
+    "callback_ok": true,
+    "callback_cases": [
+      {
+        "id": "PR13-A03.1-T01",
+        "status": "Passed",
+        "checks": {
+          "authoritative_snapshot_1": true,
+          "duplicate_preserves_M": true,
+          "real_websocket_command_sent": true,
+          "real_websocket_response_received": true,
+          "receipt_M_recovered": true,
+          "requests_completed_within_fixed_budget": true
+        }
+      },
+      {
+        "id": "PR13-A03.1-T02",
+        "status": "Passed",
+        "checks": {
+          "authoritative_snapshot_1": true,
+          "late_bootstrap_keeps_M": true,
+          "paused_bootstrap_keeps_M": true,
+          "recovery_continues_M": true,
+          "requests_completed_within_fixed_budget": true
+        }
+      },
+      {
+        "id": "PR13-A03.1-T03",
+        "status": "Passed",
+        "checks": {
+          "authoritative_snapshot_1": true,
+          "authoritative_snapshot_3": true,
+          "empty_match_cannot_clear_valid_M": true,
+          "no_context_cannot_clear_valid_M": true,
+          "requests_completed_within_fixed_budget": true,
+          "uncorrelated_wire_error_preserves_M": true
+        }
+      },
+      {
+        "id": "PR13-A03.2-T01",
+        "status": "Passed",
+        "checks": {
+          "authoritative_snapshot_1": true,
+          "authoritative_snapshot_3": true,
+          "authoritative_snapshot_5": true,
+          "authoritative_snapshot_6": true,
+          "authoritative_snapshot_7": true,
+          "late_M_snapshot_preserves_N": true,
+          "old_M_error_preserves_N": true,
+          "requests_completed_within_fixed_budget": true,
+          "same_session_cycle_rejects_old_context": true,
+          "unannounced_N_snapshot_preserves_M": true,
+          "uncorrelated_error_preserves_N": true
+        }
+      },
+      {
+        "id": "PR13-A03.2-T02",
+        "status": "Passed",
+        "checks": {
+          "N_cancels_M_poll_ownership": true,
+          "authoritative_snapshot_1": true,
+          "authoritative_snapshot_2": true,
+          "authoritative_snapshot_3": true,
+          "authoritative_snapshot_4": true,
+          "authoritative_snapshot_5": true,
+          "authoritative_snapshot_6": true,
+          "authoritative_snapshot_7": true,
+          "authoritative_snapshot_8": true,
+          "authoritative_snapshot_9": true,
+          "late_Bootstrap_preserves_N": true,
+          "late_M_poll_preserves_N": true,
+          "late_settlement_GET_preserves_N": true,
+          "new_room_releases_M_recovery": true,
+          "requests_completed_within_fixed_budget": true,
+          "same_session_cycle_rejects_old_Bootstrap": true
+        }
+      },
+      {
+        "id": "PR13-A03.2-T03",
+        "status": "Passed",
+        "checks": {
+          "account_switch_discards_A_bootstrap": true,
+          "authoritative_snapshot_1": true,
+          "authoritative_snapshot_2": true,
+          "old_session_error_cannot_clear_B": true,
+          "requests_completed_within_fixed_budget": true
+        }
+      }
+    ],
+    "oom_killed": false,
+    "container_removed": true,
+    "inputs_unchanged": true,
+    "ended_at": 1791590372.4035292
+  },
+  "complete_private_archive": {
+    "archive": "/home/ubuntu/pr13-acceptance-20261009/evidence/callback-promotion-complete.private.tar.gz",
+    "bytes": 243707,
+    "sha256": "9585d585a39dce74135fc04ee3373c9a17e8c2862f918fdb1958121bdef355d3",
+    "files": 30,
+    "native_ok": true,
+    "unit_suites": 19,
+    "callback_cases": 6,
+    "full_scope_accepted": false
+  },
+  "prior_client_ci_failures": {
+    "38000386251": {
+      "run_id": 38000386251,
+      "job_id": 114056764595,
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Install Godot from official distribution",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Import and run client checks with networking disabled",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Loopback HTTP completeness and protocol fixtures",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 6,
+          "name": "Same-session callback races",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 7,
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "raw_log": {
+        "bytes": 45099,
+        "sha256": "ea8f8556461de38582f25e035c4c23326b8601b0ac3b98de3b6f1ba41d71d234"
+      }
+    },
+    "38003619588": {
+      "run_id": 38003619588,
+      "job_id": 114067246323,
+      "status": "completed",
+      "conclusion": "failure",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Install Godot from official distribution",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Import and run client checks with networking disabled",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Loopback HTTP completeness and protocol fixtures",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 6,
+          "name": "Same-session callback races",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 7,
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Post Run actions/checkout@v7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "raw_log": {
+        "bytes": 45200,
+        "sha256": "fbfbd72c4e2731c579b69960e250b1976924438aef93b95939e8bcb7fd61a7bf"
+      }
+    }
+  },
+  "original_ci_archives": [
+    {
+      "source": "bf516e0",
+      "archive_bytes": 3487274,
+      "sha256": "fc8fcdef0b7063aeac600b2506acb669482410806c9489c8b5b624d185e406ae",
+      "archive_entries": 147,
+      "callback_entries": [
+        "callback-isolation/cases.jsonl",
+        "callback-isolation/commands.json",
+        "callback-isolation/godot.stderr.log",
+        "callback-isolation/godot.stdout.log",
+        "callback-isolation/manifest.json",
+        "callback-isolation/report.json",
+        "callback-isolation/runtime/data/godot/app_userdata/Relicbound/logs/godot.log",
+        "callback-isolation/service_requests.jsonl",
+        "callback-isolation/source_manifest.json"
+      ]
+    },
+    {
+      "source": "9b385171",
+      "archive_bytes": 3488446,
+      "sha256": "ba0da0c255b0c2071cf7ba2bd1ba085ed63e7c026e87402ed415c4c252fad7f8",
+      "archive_entries": 147,
+      "callback_entries": [
+        "callback-isolation/commands.json",
+        "callback-isolation/cases.jsonl",
+        "callback-isolation/godot.stderr.log",
+        "callback-isolation/godot.stdout.log",
+        "callback-isolation/manifest.json",
+        "callback-isolation/report.json",
+        "callback-isolation/runtime/data/godot/app_userdata/Relicbound/logs/godot.log",
+        "callback-isolation/service_requests.jsonl",
+        "callback-isolation/source_manifest.json"
+      ]
+    }
+  ],
+  "ci_after_fix": "Pending fresh pushed revision",
+  "runtime_product_code_changed": false,
+  "whole_scope_accepted": false,
+  "capacity_accepted": false,
+  "human_experience_in_scope": false
+}

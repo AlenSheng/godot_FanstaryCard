@@ -1,0 +1,44 @@
+{
+  "ok": true,
+  "source_sha": "2bb8079561faf0949d3f52380e5009a23daaa878",
+  "source_path": "server/tools/FantasyCard.Numerics/CombatExperience.cs",
+  "original_sha256": "4cae647a26bef082b321bf416105dd942520a7231ae6480c864b30e10811879e",
+  "instrumented_sha256": "d1441b4f16779988d8dabe1eb9b5e09cb6245f37cceceb07171430e24059056b",
+  "observer_only_insertions": 7,
+  "observer_removed_bytes_exactly_equal_original_Git": true,
+  "original_business_selection_Advance_and_rules_unchanged": true,
+  "collector_observer_not_implemented_yet": true,
+  "native_not_executed": true,
+  "intended_full_matrix_encounters": 216000,
+  "scope": "External ignored fixture source only; no server/product file edits or acceptance claim",
+  "insertions": [
+    {
+      "original": "Action<TuningRecoveryCast>? tuningObserver = null, CapEncounterAudit? capAudit = null)",
+      "instrumented": "Action<TuningRecoveryCast>? tuningObserver = null, CapEncounterAudit? capAudit = null, DeckDiagnosticObserver? deckObserver = null)"
+    },
+    {
+      "original": "            var openingHp = pve.Monsters.Sum(monster => monster.Hp);",
+      "instrumented": "            deckObserver?.Entry(row, room, player);\n            var openingHp = pve.Monsters.Sum(monster => monster.Hp);"
+    },
+    {
+      "original": "                var beforeHand = player.Combat.Deck.Hand.Select(card => card.InstanceId).ToHashSet();",
+      "instrumented": "                deckObserver?.BeforeTick(row, time, room, player, ShouldHold(catalog, player.Combat, strategy));\n                var beforeHand = player.Combat.Deck.Hand.Select(card => card.InstanceId).ToHashSet();"
+    },
+    {
+      "original": "                        var controlBefore = target.StunRemaining.Ticks;",
+      "instrumented": "                        var controlBefore = target.StunRemaining.Ticks;\n                        var deckBeforeCast = deckObserver is null ? null : room.Capture();"
+    },
+    {
+      "original": "                        capAudit?.Cast(row, time, selected, definitions, capBefore!,",
+      "instrumented": "                        deckObserver?.AfterCast(row, time, deckBeforeCast!, room, player, selected, definitions, draft, result);\n                        capAudit?.Cast(row, time, selected, definitions, capBefore!,"
+    },
+    {
+      "original": "                room.Advance(tick, DateTimeOffset.UnixEpoch.AddSeconds(time + .1));",
+      "instrumented": "                room.Advance(tick, DateTimeOffset.UnixEpoch.AddSeconds(time + .1));\n                deckObserver?.AfterTick(row, time + .1, room, player);"
+    },
+    {
+      "original": "        return row;\n    }\n\n    private static CombatCardInstance[] Select",
+      "instrumented": "        deckObserver?.Exit(row);\n        return row;\n    }\n\n    private static CombatCardInstance[] Select"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "attempt": "b08-fixture-lifecycle-r4-20261011",
+  "systemd_unit": "pr13-cap-b08-fixture-lifecycle-r4-20261011",
+  "release_sha": "fdf1aa42c2726af5c1dda27ff113a58b7f7c4420",
+  "image_sha": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "input_sha256": "6cd9e024319fb9631aba003743a7809df80028b7465725297dd463319eae4f3e",
+  "input_files": 3363,
+  "current_tracked_source_files": 2117,
+  "derived_cache_files": 1246,
+  "new_source_files_written": 23,
+  "unchanged_source_files_hardlinked": 2094,
+  "source_directory": "/home/ubuntu/pr13-acceptance-20261009/work/b08-fixture-lifecycle-r4-20261011/source",
+  "helper_sha256": "98e0d2544ff76ae518d80721d99ae79813964f36fdaf55f28e299d56bb523f30",
+  "R2_GC_verifier_literal_sha256": "d15b3316b903a3dddb2ed4c07d872ed1e2c2c44aa7d3e55b47c07094a9f9d264",
+  "current_Git_source_manifest_sha256": "d7dd5f7ebd9055bfb5e99085bb48f4de5d802e0d57dea526874f1c002bdbf4a2",
+  "derived_cache_manifest_sha256": "8081624697637845ab31b1d434c4fc4542d708cc0a82058c734a178d2b60cf91",
+  "old_preservation_manifest_sha256": "fbb58bceeaf446d12b469216fa9b030bf1d004b411d1d924f5ba9c887f214ae9",
+  "failed_inputs_sha256": "a2bbfbac0bb332232c9085f65e6385e4d87cbbcca73c272374aeb5bae8e2be5f",
+  "original_native_witness_source_sha": "e371315d283f581819d7090b606dc529f61d26fa",
+  "original_native_witness_path": "client/tests/data/element_marginal_boundaries_native.json",
+  "original_native_witness_bytes": 1020093,
+  "original_native_witness_sha256": "59298cc5611cff0f21d3ed795fdefc2cc0d1bf2bebb81900d585c0932ed003e0",
+  "cases": [
+    {
+      "id": "REST",
+      "scene": "res://tests/pr13_audio_release_regression.tscn",
+      "deadline_seconds": 120,
+      "expected_rows": null,
+      "expected_png": null
+    },
+    {
+      "id": "PR13-B08.2-T01",
+      "scene": "res://tests/pr13_element_marginal_t01.tscn",
+      "deadline_seconds": 600,
+      "expected_rows": 18,
+      "expected_png": 1
+    },
+    {
+      "id": "PR13-B08.2-T02",
+      "scene": "res://tests/pr13_element_marginal_t02.tscn",
+      "deadline_seconds": 600,
+      "expected_rows": 18,
+      "expected_png": 1
+    },
+    {
+      "id": "PR13-B08.2-T03",
+      "scene": "res://tests/pr13_element_marginal_t03.tscn",
+      "deadline_seconds": 600,
+      "expected_rows": 18,
+      "expected_png": 1
+    }
+  ],
+  "memory_floor_bytes": 500000000,
+  "container_memory_bytes": 1610612736,
+  "root_free_ratio_floor": 0.15,
+  "tmpfs_output_max_bytes": 67108864,
+  "metadata_reserve_bytes": 16777216,
+  "health_timeout_seconds": 10,
+  "network": "none",
+  "source_and_cache_mounts": "readonly",
+  "driver": "This frozen helper; Godot command follows frozen current render_runtime.py, which is an input source and is not invoked as an alternate driver",
+  "Godot_only_no_NET_or_business_numeric_generation": true,
+  "automatic_dispatch_or_retry": false,
+  "failed_old_inputs_retained": true,
+  "MAIN_accepted": false,
+  "whole_task_accepted": false
+}

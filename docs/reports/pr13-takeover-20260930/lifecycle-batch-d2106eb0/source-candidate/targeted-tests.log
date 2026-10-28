@@ -1,0 +1,33 @@
+Build started 09/30/2026 21:25:52.
+Test run for /workspace/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.28]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.82]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.07]   Starting:    FantasyCard.Server.Tests
+  Passed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate [15 ms]
+  Passed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production [< 1 ms]
+  Passed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate [6 ms]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: "room-id") [1 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: "player-route") [566 ms]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [7 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-before-commit") [44 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "stop-after-commit") [41 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-uncommitted-loss") [1 m 49 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: "cycles-middle-response-loss") [1 m 51 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-first-committed") [16 s]
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-committed") [16 s]
+[xUnit.net 00:06:08.39]   Finished:    FantasyCard.Server.Tests
+  Passed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: "drop-all-uncommitted") [16 s]
+Results File: /workspace/pr13-takeover/cycle-ack-batch-20260930/source-candidate-01/results/targeted.trx
+
+Test Run Successful.
+Total tests: 13
+     Passed: 13
+ Total time: 6.1521 Minutes
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:06:10.09

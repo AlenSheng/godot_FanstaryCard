@@ -1,0 +1,216 @@
+{
+	"ok": true,
+	"scope": "Existing combat feedback, waiting UI, targets and prediction native regressions; offline only",
+	"suites": [
+		{
+			"result": {
+				"message": "Combat feedback stays within the current battle and visible targets; reconnect replay, including its final packet, never animates",
+				"ok": true
+			},
+			"suite": "test_combat_feedback_scope.gd"
+		},
+		{
+			"result": {
+				"checks": {
+					"connection_recovery_has_priority": true,
+					"death_fallback_inflight_keeps_legal_opportunity": true,
+					"death_fallback_sync_keeps_legal_opportunity": true,
+					"draw_block_preserves_authoritative_duration": true,
+					"empty_hand_waits_for_draw": true,
+					"explicit_play_targets_survivor": true,
+					"full_hand_still_allows_play": true,
+					"manual_target_debounce_has_specific_reason": true,
+					"manual_target_inflight_blocks_old_target_play": true,
+					"normal_hand_has_legal_opportunity": true,
+					"readonly_preview_does_not_hide_legal_play": true,
+					"revision_retry_is_confirming": true,
+					"stun_preserves_authoritative_duration": true,
+					"submitted_play_waits_for_confirmation": true,
+					"unrelated_read_does_not_hide_legal_play": true
+				},
+				"observed": {
+					"death_fallback_inflight": {
+						"hand_count": 1,
+						"legal_opportunity": true,
+						"reason": "available",
+						"remaining_ms": 0
+					},
+					"death_fallback_queued": {
+						"hand_count": 1,
+						"legal_opportunity": true,
+						"reason": "available",
+						"remaining_ms": 0
+					},
+					"manual_debounce": {
+						"hand_count": 1,
+						"legal_opportunity": false,
+						"reason": "target_confirming",
+						"remaining_ms": 0
+					},
+					"manual_inflight": {
+						"hand_count": 1,
+						"legal_opportunity": false,
+						"reason": "target_confirming",
+						"remaining_ms": 0
+					},
+					"play_submitted": {
+						"hand_count": 1,
+						"legal_opportunity": false,
+						"reason": "confirming",
+						"remaining_ms": 0
+					},
+					"unrelated_read": {
+						"hand_count": 1,
+						"legal_opportunity": true,
+						"reason": "available",
+						"remaining_ms": 0
+					}
+				},
+				"ok": true
+			},
+			"suite": "test_combat_wait_state.gd"
+		},
+		{
+			"result": {
+				"checks": {
+					"en_death_fallback": true,
+					"en_manual_target": true,
+					"en_recovering": true,
+					"en_submitted": true,
+					"zh-CN_death_fallback": true,
+					"zh-CN_manual_target": true,
+					"zh-CN_recovering": true,
+					"zh-CN_submitted": true
+				},
+				"observations": [
+					{
+						"expected_key": "battle_wait_target_confirming",
+						"language": "zh-CN",
+						"passed": true,
+						"scenario": "manual_target",
+						"visible_text": "正在确认目标，确认后可出牌…"
+					},
+					{
+						"expected_key": "battle_wait_drawing",
+						"language": "zh-CN",
+						"passed": true,
+						"scenario": "death_fallback",
+						"visible_text": "等待抽牌，可观察目标意图"
+					},
+					{
+						"expected_key": "battle_wait_confirming",
+						"language": "zh-CN",
+						"passed": true,
+						"scenario": "submitted",
+						"visible_text": "操作处理中，等待战斗状态更新…"
+					},
+					{
+						"expected_key": "battle_wait_recovering",
+						"language": "zh-CN",
+						"passed": true,
+						"scenario": "recovering",
+						"visible_text": "正在恢复连接，确认战斗状态…"
+					},
+					{
+						"expected_key": "battle_wait_target_confirming",
+						"language": "en",
+						"passed": true,
+						"scenario": "manual_target",
+						"visible_text": "Confirming target selection…"
+					},
+					{
+						"expected_key": "battle_wait_drawing",
+						"language": "en",
+						"passed": true,
+						"scenario": "death_fallback",
+						"visible_text": "Drawing a card; watch the target's intent"
+					},
+					{
+						"expected_key": "battle_wait_confirming",
+						"language": "en",
+						"passed": true,
+						"scenario": "submitted",
+						"visible_text": "Action pending; waiting for battle state…"
+					},
+					{
+						"expected_key": "battle_wait_recovering",
+						"language": "en",
+						"passed": true,
+						"scenario": "recovering",
+						"visible_text": "Reconnecting and checking battle state…"
+					}
+				],
+				"ok": true,
+				"scope": "Actual UI component text construction in native headless Godot; no rendered-frame or full LIVE claim"
+			},
+			"suite": "test_combat_wait_ui.gd"
+		},
+		{
+			"result": {
+				"checks": {
+					"Discard queued clicks on defeated enemies": true,
+					"Keep a living selected target": true,
+					"Manual selection remains functional": true,
+					"No duplicate synchronization while pending": true,
+					"No target after all monsters die": true,
+					"Play targets survivor without waiting for acknowledgement": true,
+					"Preview uses survivor HP": true,
+					"PvP target unchanged": true,
+					"Queue target synchronization": true,
+					"Select the sole survivor immediately": true,
+					"Snapshots do not postpone selection": true,
+					"all_dead target button count": true,
+					"last target button count": true,
+					"single target button count": true,
+					"three living button MonsterTarget_fire-bat": true,
+					"three living button MonsterTarget_murk-snail": true,
+					"three living button MonsterTarget_rust-rat": true,
+					"three raised button MonsterTarget_fire-bat": true,
+					"three raised button MonsterTarget_murk-snail": true,
+					"three raised button MonsterTarget_rust-rat": true,
+					"three target button count": true,
+					"two living button MonsterTarget_fire-bat": true,
+					"two living button MonsterTarget_murk-snail": true,
+					"two raised button MonsterTarget_fire-bat": true,
+					"two raised button MonsterTarget_murk-snail": true,
+					"two target button count": true,
+					"two_after_kill living button MonsterTarget_murk-snail": true,
+					"two_after_kill living button MonsterTarget_rust-rat": true,
+					"two_after_kill raised button MonsterTarget_murk-snail": true,
+					"two_after_kill raised button MonsterTarget_rust-rat": true,
+					"two_after_kill target button count": true
+				},
+				"ok": true
+			},
+			"suite": "test_battle_targets.gd"
+		},
+		{
+			"result": {
+				"message": "Combat previews reject stale state, include printed direct damage, and preserve first-card core selection",
+				"ok": true
+			},
+			"suite": "test_combat_preview_state.gd"
+		},
+		{
+			"result": {
+				"checks": {
+					"A new settlement notice resets the old layer translation": true,
+					"A pending notice keeps its text when the underlying screen changes": true,
+					"A single-line backing panel only slightly exceeds text height": true,
+					"Animation lasts about two seconds and rises visibly": true,
+					"Bright yellow text stays readable on a dark background": true,
+					"Clearing a notice also clears its layer translation": true,
+					"Moving a notice preserves the original animation and serial": true,
+					"Repeated same-screen placement does not restart or move the notice": true,
+					"Settlement placement follows its top anchor": true,
+					"The backing panel adapts to localized text length": true,
+					"Tips appear above screen center": true,
+					"Tips use an independent overlay layer": true
+				},
+				"message": "{\"A new settlement notice resets the old layer translation\":true,\"A pending notice keeps its text when the underlying screen changes\":true,\"A single-line backing panel only slightly exceeds text height\":true,\"Animation lasts about two seconds and rises visibly\":true,\"Bright yellow text stays readable on a dark background\":true,\"Clearing a notice also clears its layer translation\":true,\"Moving a notice preserves the original animation and serial\":true,\"Repeated same-screen placement does not restart or move the notice\":true,\"Settlement placement follows its top anchor\":true,\"The backing panel adapts to localized text length\":true,\"Tips appear above screen center\":true,\"Tips use an independent overlay layer\":true}",
+				"ok": true
+			},
+			"suite": "test_tips_overlay.gd"
+		}
+	]
+}

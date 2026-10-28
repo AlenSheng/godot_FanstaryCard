@@ -1,0 +1,100 @@
+{
+  "ok": true,
+  "observations": [
+    {
+      "sequence": 1,
+      "mode": "capacity_benefit",
+      "actual_decision": "NotAccepted",
+      "actual_review": {
+        "state": "NotAccepted",
+        "controlled_favorable_candidate": {
+          "state": "EligibleForMainReview",
+          "reason": "isolated_candidate_threshold_and_risk_checks_met",
+          "point_improvement": 0.35,
+          "improvement_interval95": [
+            0.2,
+            0.5
+          ],
+          "holm_adjusted_p": {
+            "tail": 0.001
+          },
+          "drifts": {
+            "economy": 0,
+            "strength": 0
+          },
+          "risk_drift": {},
+          "production_defaults_retained": true,
+          "production_activation": false,
+          "capacity_acceptance": false,
+          "human_experience_acceptance": false
+        },
+        "actual_G4": {
+          "gate_id": "G4",
+          "name": "\u4f20\u8f93\u6536\u76ca\u3001\u539f\u5bb9\u91cf\u3001\u5019\u9009\u4f53\u9a8c",
+          "state": "NotAccepted",
+          "pass_criteria": "\u4e09\u5bf9\u540c\u8d1f\u8f7dA/B\u3001\u9ed8\u8ba4\u9650\u6d41\u6709\u6548\u8986\u76d6/\u957f\u7a33\u3001\u6570\u503c\u914d\u5bf9/\u98ce\u9669\u4e0e\u771f\u4eba\u53cd\u9988\u5206\u522b\u88c1\u51b3\uff1b\u4e0d\u8db3Unknown\uff0c\u4e0d\u62ff\u77ed\u6218\u66ff\u539f\u5bb9\u91cf\u3002",
+          "unfinished": [
+            "LOAD-10.4",
+            "PR13-A10.4"
+          ]
+        }
+      },
+      "room_SHA": "e74ae8a7a4d4ea4d159cc5cafaccce328f6f54ba06cf63c76ec93c07f70c21a9",
+      "room_id": "f11ee9f4-d556-4d67-a931-c841967ef841",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "27d930fea8efc0facedc43d74b833f797ae20876527aa095a07fda800dfd144e",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    },
+    {
+      "sequence": 2,
+      "mode": "spec_unexecuted",
+      "actual_decision": "Queued",
+      "actual_review": {
+        "state": "Queued",
+        "actual_spec_complete": true,
+        "actual_executed_rows0": true
+      },
+      "room_SHA": "e74ae8a7a4d4ea4d159cc5cafaccce328f6f54ba06cf63c76ec93c07f70c21a9",
+      "room_id": "f11ee9f4-d556-4d67-a931-c841967ef841",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "27d930fea8efc0facedc43d74b833f797ae20876527aa095a07fda800dfd144e",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    },
+    {
+      "sequence": 3,
+      "mode": "ledger_alert",
+      "actual_decision": "Blocked",
+      "actual_review": {
+        "state": "Blocked",
+        "actual_asset_gate": {
+          "state": "Blocked",
+          "unexplained_alerts": [
+            "owned-ledger-chain-d28819380e8e4e5fb432bb9680ac987d"
+          ],
+          "asset_acceptance": false
+        },
+        "actual_ledger_alert": {
+          "id": "owned-ledger-chain-d28819380e8e4e5fb432bb9680ac987d",
+          "explained": false,
+          "actual_gap": 7
+        }
+      },
+      "room_SHA": "e74ae8a7a4d4ea4d159cc5cafaccce328f6f54ba06cf63c76ec93c07f70c21a9",
+      "room_id": "f11ee9f4-d556-4d67-a931-c841967ef841",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "27d930fea8efc0facedc43d74b833f797ae20876527aa095a07fda800dfd144e",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    }
+  ],
+  "actual_G4_not_accepted": true,
+  "actual_spec_not_executed_not_accepted": true,
+  "actual_unexplained_ledger_asset_gate_blocked": true,
+  "production_activation": false,
+  "actual_human_accepted": false
+}

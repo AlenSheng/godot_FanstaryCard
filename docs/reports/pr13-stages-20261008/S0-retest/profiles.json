@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-08",
+  "purpose": "PR13 S0 local execution preregistration; diagnostic budgets are not production SLOs",
+  "execution_boundary": "local_loopback_and_disposable_database",
+  "writer": "MAIN",
+  "parallel_agents": 0,
+  "production_enablement": false,
+  "merge_release": false,
+  "candidate_defaults": "Preserve the existing default policy; candidate variants are isolated experiments",
+  "rule_source": "GDD.md v0.70 and PR13_ACCEPTANCE_DETAILS_20260930.json",
+  "history_resolution": {
+    "decision_date": "2026-10-08",
+    "user_instruction": "已删除，如果文件缺失则重新测试",
+    "replacement_tasks": [
+      "PR13-A01.1",
+      "PR13-A01.3"
+    ],
+    "original_evidence_state": "DeletedAndUnrecoverable",
+    "replacement_scope": "Fresh 50/100 original-gameplay runs at the current frozen source/config/profile; retain new per-client JSONL, launch ownership and three cutoffs",
+    "interpretation": "New tests establish a current baseline and cannot explain or reconstruct the old 86/90 and 130/139 discrepancies",
+    "required_profiles": [
+      "CAPACITY",
+      "AUDIT"
+    ],
+    "runtime_acceptance": false
+  },
+  "human_experience_decision": {
+    "user_instruction": "机器人模拟补充体验，真人验收仍待补",
+    "simulation_is_supplemental": true,
+    "human_acceptance": "Pending"
+  },
+  "missing_server_skill": "server_create is absent from the checkout. The requested local implementation follows server/AGENTS.md's existing GDD/SERVER_SPEC/SERVER_0_TO_1_GUIDE references; no rule change is authorized.",
+  "profiles": {
+    "OFFLINE": {
+      "deadline_seconds": 600,
+      "case_deadline_seconds": 30,
+      "godot_case_deadline_seconds": 90,
+      "child_grace_seconds": 10,
+      "cleanup_seconds": 30,
+      "network": "Loopback fixtures only; no default public server",
+      "pass_criteria": "Every mandatory normal/boundary/fault expectation matches; no unclassified failure or mandatory skip",
+      "stop_conditions": [
+        "deadline",
+        "unowned child",
+        "unexpected public network target"
+      ]
+    },
+    "POSTGRES": {
+      "deadline_seconds": 1800,
+      "case_deadline_seconds": 180,
+      "connect_timeout_seconds": 10,
+      "command_timeout_seconds": 30,
+      "restart_timeout_seconds": 60,
+      "cleanup_seconds": 120,
+      "database": "Fresh loopback PostgreSQL 18 instance and explicitly disposable database; never reuse a production connection",
+      "pass_criteria": "Real migrations, settlement, ledger, holds, route and recovery tests pass with zero environment skips",
+      "stop_conditions": [
+        "deadline",
+        "database provenance missing",
+        "database health failure",
+        "cleanup cannot confirm ownership"
+      ]
+    },
+    "LIVE": {
+      "deadline_seconds": 2400,
+      "single_account_limit_seconds": 600,
+      "ten_account_limit_seconds": 1800,
+      "cleanup_seconds": 120,
+      "classes": [
+        "Mage",
+        "Priest",
+        "Guardian"
+      ],
+      "accounts": [
+        1,
+        10
+      ],
+      "cycles_per_account": 3,
+      "incomplete_allowed_for_pass": 0,
+      "target": "Owned loopback server with default request limits",
+      "pass_criteria": "Each account has three natural completed games and authoritative ACK/asset/route parity; abandon/fallback/drain are separate",
+      "stop_conditions": [
+        "deadline",
+        "three consecutive historical safety windows",
+        "monitoring unavailable",
+        "invalid evidence",
+        "unowned target"
+      ]
+    },
+    "RENDER": {
+      "deadline_seconds": 3600,
+      "session_deadline_seconds": 600,
+      "cleanup_seconds": 60,
+      "resolutions": [
+        [
+          1280,
+          720
+        ],
+        [
+          1920,
+          1080
+        ],
+        [
+          960,
+          540
+        ]
+      ],
+      "fps": [
+        30,
+        60,
+        144
+      ],
+      "added_latency_ms": [
+        0,
+        100,
+        300
+      ],
+      "languages": [
+        "zh",
+        "en"
+      ],
+      "classes": [
+        "Mage",
+        "Priest",
+        "Guardian"
+      ],
+      "cycles_per_account": 3,
+      "human_participants": 6,
+      "human_strata": "Each class x novice/experienced; three games per anonymous participant",
+      "pass_criteria": "Actual visible interactions and screenshots plus logs show no blocked core action, stale overlay or clipped critical text; missing humans remains Partial",
+      "stop_conditions": [
+        "deadline",
+        "render unavailable",
+        "critical UI obstruction",
+        "unowned process"
+      ]
+    },
+    "EXPERIMENT": {
+      "deadline_seconds": 1800,
+      "cleanup_seconds": 60,
+      "seed_blocks": [
+        {
+          "start": 100001,
+          "count": 1000
+        },
+        {
+          "start": 101001,
+          "count": 1000
+        },
+        {
+          "start": 102001,
+          "count": 1000
+        }
+      ],
+      "pair_unit": "seed x class x preregistered legal scenario; default-off and candidate-on share inputs and observation budget",
+      "classes": [
+        "Mage",
+        "Priest",
+        "Guardian"
+      ],
+      "max_actions_per_game": 2000,
+      "observation_seconds": 600,
+      "confidence_level": 0.95,
+      "resampling_unit": "seed/game cluster",
+      "multiplicity": "Holm correction across declared primary candidate comparisons; exploratory metrics labelled exploratory",
+      "primary_metrics": "B05=PVE duration/tail; B06=draw resource and idle time; B07=overflow recovery and capped resources; B08=control and action denial; B09=deck cycle dilution; exact per-task observable contract remains mandatory",
+      "candidate_decision": "Benefit requires paired 95% interval strictly on the beneficial side of zero, no correctness/rule regression and non-worsening risk interval; insufficient precision or censoring is Inconclusive",
+      "pass_criteria": "Resolver/CombatDeck/room-policy traces deterministic for fixed manifest; legal actions, equal information and budgets; all censoring and full denominators retained",
+      "stop_conditions": [
+        "deadline",
+        "rule/config/profile identity changed",
+        "simulation error",
+        "missing paired seed"
+      ]
+    },
+    "CAPACITY": {
+      "deadline_seconds": 2400,
+      "cleanup_seconds": 120,
+      "online_targets": [
+        50,
+        100
+      ],
+      "active_targets": [
+        50,
+        100
+      ],
+      "warmup_seconds": 180,
+      "hold_seconds": 600,
+      "continuous_seconds": 120,
+      "coverage_fraction": 0.95,
+      "sample_interval_seconds": 10,
+      "max_sample_gap_seconds": 20,
+      "drain_seconds": 60,
+      "soak_seconds": 1800,
+      "ab_pairs": 3,
+      "ab_order": [
+        "AB",
+        "BA",
+        "AB"
+      ],
+      "request_mix": "Frozen original gameplay/default numeric policy; warmup/window/drain/final and logical/attempt counts remain separate",
+      "rate_limits": "Read/write/auth limits stay at actual default values; record effective limits and feasible request mix before each run",
+      "pass_criteria": "Both online and active-in-room meet the declared 50/100 target for >=95% of a 600-second window including >=120 continuous seconds; no evidence gaps; successful owned cleanup",
+      "stop_conditions": [
+        "three consecutive valid historical threshold windows",
+        "monitoring unavailable",
+        "generator available memory below 2 GiB",
+        "invalid evidence",
+        "deadline"
+      ]
+    },
+    "AUDIT": {
+      "deadline_seconds": 600,
+      "cleanup_seconds": 60,
+      "query_limit_rows": 10000,
+      "query_timeout_seconds": 30,
+      "scope": "Original authorized historical files and owned disposable local account ledger; global historical production mismatch remains unresolved without source evidence",
+      "pass_criteria": "Each source file classified present/matching/missing; original raw never modified; asset/ledger/hold invariants reconstructed with explicit bounded account/time scope",
+      "stop_conditions": [
+        "deadline",
+        "hash mismatch",
+        "unbounded query",
+        "write attempted on audit target",
+        "missing access"
+      ]
+    }
+  }
+}

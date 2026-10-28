@@ -1,0 +1,21 @@
+# 已修复：弃战后的 ACK 完成不能通过正常局验收
+
+发现并复现了真实验收工具缺陷：同一账号三次ACK完成，其中一次先走弃战兜底，旧协调器仍退出0并接受正常smoke。新增完整链路反例后，当前版本退出1、不授予正常局通过；三次通用ACK完成数仍为3，正常完成2、兜底完成1。没有把成功ACK本身当作正常击杀。
+
+两个Python文件已修改。reconcile_cycles按run/client/process_epoch/cycle/match完整身份，分别汇总normal、fallback、scenario、drain_only与unclassified，保持原completed_cycles及ACK计数。STOP前记录的来源用于分类STOP后同局完成，另一match的来源不污染新局。明确兜底／功能弃战／收尾ACK不进正常数；只有battle.abandon发送痕迹而缺少来源时保留未分类，不推断服务端已执行或自然死亡原因。OwnedAuditStream压缩读取路径保留同样信息。
+
+协调器在要求正常局的smoke中检查每个已启动客户端是否达到规定正常完成数，未满足时保留原完成记录但拒绝验收，并记录normal_cycle_requirement_not_met。显式functional-cycles的功能闭环仍可通过，报告标明其功能范围。normal字段仅表示没有已观察到的非正常来源，不证明完整路线、战斗胜利或容量。
+
+9条新增反例覆盖弃战后ACK完成、跨STOP来源、旧match隔离、OwnedAuditStream功能弃战、drain-only ACK、完整协调器判定及无来源的发送痕迹。96条相关回归全部通过，零跳过，两个退出7的预期负例子进程均回收。保存了原协调器与当前main的六份完整fixture报告：正常局前后均0；弃战ACK前0后1；显式功能流程前后均0。clock／child／HTTP为明确受控fixture，这不是新增真实对局或LIVE证明。
+
+对既有LOAD054三世界／四账号原件进行了只读重算：559条原审计、12次ACK与12次流程完成保持。原件有12次显式battle.abandon发送，却未标记具体来源，新统计将12次完成单列为unclassified，正常数0。没有补造fallback来源或服务端执行证明，也不把这些功能局补成30个自然局。原归档SHA保持c5939991ca7b02ebeec42aac7f107a2ef7ab73d10ced75927185b4d3e40c6131；没有权威STOP时钟的重算不提供running/drain切分。原阶段playing审计失败依然保留。
+
+旧三局中的ACK故障确实是后端200提交后丢回复连接，再用同key重试，不能自动称为HTTP截止时间耗尽。因此本轮不关闭LOAD102-T02的真实timeout缺口，也不把计数组件修复升级为T03的实际停滞触发／PG／LIVE／CAPACITY通过。原9自然局的1200/2400秒授权修订、旧30局严格失败与删失继续保留。
+
+源文件先保存旧字节，再临时文件原子替换，未修改冻结原件。只改2个验收工具并新增1个Python测试；现有CI的tools/tests/**与unittest discover覆盖它，但没有新的远端CI成功声明。没有Lua、客户端、服务端二进制、配置、血量或UI资源变化。GDD两卷全文SHA保持，合法80/70和基础L盾没有被当异常。
+
+本地所有测试进程和后代均无窗口、低优先级；本轮Godot／数据库／真实登录／对局／云调用为0，没有新云临时源码。测试／失败／前后代码／原始数据摘录共70成员已在G完整SHA／CRC保管，旧数据只读。未提交、推送或部署。
+
+LOAD102保持Partial，6个既有缺失case/profile保持；登记仍88 Accepted、44未验收、173个缺口，全局门不变。本项完成的是实际计数缺陷修复，未授予整体验收。
+
+原件：G:\PR13Evidence\load102-fallback-normal-classification-fix-20261021-originals。

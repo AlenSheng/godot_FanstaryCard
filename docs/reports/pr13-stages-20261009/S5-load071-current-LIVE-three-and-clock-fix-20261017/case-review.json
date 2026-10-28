@@ -1,0 +1,193 @@
+{
+  "kind": "MAINIndependentActualLiveBoundedProbeSchedulerThreeCaseReview",
+  "three_LIVE_case_profiles_verified": true,
+  "cases": [
+    {
+      "case_id": "LOAD-07.1-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "case": "T01",
+        "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-bounded-probes-r1\\T01\\run\\20261017-035745-b5461c\\report.json",
+        "original_report_sha256": "364d9472da337189944c4e83b2c927ee27de511ec6ca2895df1746c492498852",
+        "original_coordinator_exit": 3,
+        "original_capacity_outcome": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "actual_clients": 4,
+        "groups": 4,
+        "samples": 2,
+        "probe_submissions": 4,
+        "worker_limit": 2,
+        "max_actual_workers": 2,
+        "max_observed_queue_before_submit": 1,
+        "actual_group_gaps_ms": [
+          10250.0,
+          21141.0,
+          10219.0
+        ],
+        "native_process_and_business_cleanup_passed": true,
+        "original_resource_redlines_retained": [
+          "disk_available_redline"
+        ],
+        "actual_delivery_hold_ms": 20000.0,
+        "first_collection_ms": 20875.0,
+        "missed_sample_slots_not_backfilled": true,
+        "no_overdue_group_burst": true
+      },
+      "scope": "Actual current coordinator and full nativeGodot client to projectpublicservice; real HTTPShealth/strictSSHliveProm responses plus declared worker/result-delivery or coordinator-module clock fault. Case verdict is scheduling contract,not whole capacity run success. Current scheduler code byte-equal actual run; post-run cutoff metadata fix validated by120regressions and immutable actual audit replay,not a fabricated new live run."
+    },
+    {
+      "case_id": "LOAD-07.1-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "case": "T02",
+        "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-bounded-probes-r1\\T02\\run\\20261017-035835-7fd676\\report.json",
+        "original_report_sha256": "c8f1d5e8ba30c8ee752295b5b723eea500696294ef9b435a08196f66592d01c2",
+        "original_coordinator_exit": 3,
+        "original_capacity_outcome": {
+          "classification": "invalid_workload_or_evidence",
+          "passed": false,
+          "exit_code": 3
+        },
+        "actual_clients": 1,
+        "groups": 1,
+        "samples": 1,
+        "probe_submissions": 2,
+        "worker_limit": 2,
+        "max_actual_workers": 2,
+        "max_observed_queue_before_submit": 0,
+        "actual_group_gaps_ms": [],
+        "native_process_and_business_cleanup_passed": true,
+        "original_resource_redlines_retained": [
+          "health_failed_or_over_5000ms",
+          "monitoring_unavailable",
+          "probe_timeout"
+        ],
+        "bounded_failure_after_probe_ms": 6032.0,
+        "second_group_not_launched": true,
+        "stop_reason": "invalid_evidence:probe_timeout,monitoring_unavailable,monitoring_unavailable"
+      },
+      "scope": "Actual current coordinator and full nativeGodot client to projectpublicservice; real HTTPShealth/strictSSHliveProm responses plus declared worker/result-delivery or coordinator-module clock fault. Case verdict is scheduling contract,not whole capacity run success. Current scheduler code byte-equal actual run; post-run cutoff metadata fix validated by120regressions and immutable actual audit replay,not a fabricated new live run."
+    },
+    {
+      "case_id": "LOAD-07.1-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "actual": {
+        "case": "T03",
+        "original_report": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-bounded-probes-r1\\T03\\run\\20261017-035910-46159e\\report.json",
+        "original_report_sha256": "f81f9a53d7c2ffbe859d0d55b87de6ba255a3b0550907f4299144a3b22b4d71d",
+        "original_coordinator_exit": 1,
+        "original_capacity_outcome": {
+          "classification": "incomplete_or_failed",
+          "passed": false,
+          "exit_code": 1
+        },
+        "actual_clients": 3,
+        "groups": 3,
+        "samples": 2,
+        "probe_submissions": 4,
+        "worker_limit": 2,
+        "max_actual_workers": 2,
+        "max_observed_queue_before_submit": 1,
+        "actual_group_gaps_ms": [
+          6031.0,
+          6047.0
+        ],
+        "native_process_and_business_cleanup_passed": true,
+        "original_resource_redlines_retained": [
+          "disk_available_redline"
+        ],
+        "wall_jump_seconds": 3600,
+        "actual_running_monotonic_seconds": 26.094,
+        "original_wrong_running_seconds": 3626.0975634765623,
+        "report_clock_defect_found_and_fixed": true,
+        "current_running_drain_and_RPS_unavailable": true,
+        "original_report_not_overwritten": true,
+        "current_guard_actual_audit_replay": true
+      },
+      "scope": "Actual current coordinator and full nativeGodot client to projectpublicservice; real HTTPShealth/strictSSHliveProm responses plus declared worker/result-delivery or coordinator-module clock fault. Case verdict is scheduling contract,not whole capacity run success. Current scheduler code byte-equal actual run; post-run cutoff metadata fix validated by120regressions and immutable actual audit replay,not a fabricated new live run."
+    }
+  ],
+  "actual_native_clients": 8,
+  "actual_room_started_participations": 2,
+  "normal_completed_cycles": 0,
+  "actual_SQL_cleanup": {
+    "owned_users": 8,
+    "owned_active_humans": 0,
+    "pending_holds": 0,
+    "locked_equipment": 0,
+    "ACK_records": 2,
+    "member_rows": 2,
+    "settlement_rows": 2,
+    "historical_Matched_ticket_or_bots_running_not_counted_as_human_occupancy": true
+  },
+  "monitoring_data_real": true,
+  "strictSSH_bridge_response_count": 9,
+  "server_container_image_started_environment_unchanged": true,
+  "source_upload_bytes": 0,
+  "rate_or_configuration_changes": false,
+  "all_owned_native_coordinator_bridge_processes_terminal": true,
+  "resource_limits_disclosed": {
+    "goal_floor_percent": 5,
+    "before_disk_available_percent": 14.284800838330206,
+    "after_disk_available_percent": 14.274329476921196,
+    "old_CLI_15percent_disk_limit_passed": false,
+    "original_capacity_runs_passed": false
+  },
+  "extra_defect_fix": {
+    "actual_forward_wall_jump_reported26seconds_as3626seconds": true,
+    "original_raw_reports_retained": true,
+    "current_coordinator_validates_UTC_vs_monotonic_cutoffs": true,
+    "uncertain_running_drain_RPS_unavailable_not_fake_zero": true,
+    "all_owned_final_counts_and_request_monotonic_latencies_retained": true,
+    "current_actual_audit_replay": "Actual raw audit replay through current helpers; original R1 writer report untouched. Final monotonic cutoff absent in R1 is not reconstructed. New writer now records it; STOP discrepancy alone already proves discontinuity.",
+    "regression_tests": 120,
+    "regression_exit_code": 0,
+    "new_live_gameplay_after_metadata_fix": false,
+    "current_scheduler_relevant_code_equal_actual_LIVE_test_source": true
+  },
+  "diagnostics_and_review_disclosed": [
+    "Initial publicauth action rejected beforeprocessstart. Evidence then verified projectCaddy domain/IP and only fresh syntheticdeviceId/displayName,same directaction approved; no indirectbypass or existing user/source/private key transfer.",
+    "Sandboxeditor import ROOTcertificate-store access error preserved; non-sandboxeditor import0errors.Only62routine.importmetadata changed,gamecode/art unchanged,noTLSverification or globaltrust change.",
+    "SQLcleanup collector initially looked foruserIDinstatus ring; corrected to PID/run/epoch-matched final native reports before anySQLquery. NoSQLwrite or falseactiveclaim.",
+    "T03original writer incorrectly used shiftedUTC forRPS/STOP windows; fixed/replayedconservatively,originalcapacity outcomes never changed toPassed."
+  ],
+  "scope_limits": [
+    "Probe20s is deliberate consumer/worker delivery stall after real dependency response,not measured20s backend HTTP latency.",
+    "Three coordinator wall-clock cases preserve raw clocks; no OS/native/serverclock change or invented cross-host map.",
+    "Eight small nativeclientroutes/2roomparticipations and earlyfaultstop do not satisfy100-player/600s capacity or normalcycle/human/renderer evidence.",
+    "Old15percent disk redline remains visible. Goal5percentfloor authorizes scopedfaulttest,not originalcapacityguard pass."
+  ],
+  "pointer_sha256": "db3f6582ed93fce89959365f34699f2ec8ffe13be2cbbf20ca9f5b3d57328ba8",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-b034-profile-boundaries-main-reviewed-20261017/register.json",
+    "sha256": "2e7e8946d35ba894e3017877fb705c12572a257dc5a6cccf7dd0d9f674afe66d"
+  },
+  "source_and_raw_hashes": {
+    "old_executed_CLI": "d2c91947f73c01c8296e472af7f8e659f838878eb8ac57007fedcad5c11141e1",
+    "current_CLI": "34d6871dac1e5f184d4d5ee807edb986098df96a7a5d0782fd95ae8be0c3a244",
+    "current_validation": "8ecd83a82b9dd91ed37f3fc67e5291baeb0725b8c66d035e8e248c71c57331a5",
+    "current_runtime_evidence": "e5da3ab84a213dc2741065e7c35c242b9f5bb25057707e1391e73c26da878be0",
+    "current_regression_log": "d01c417cdd9300e20e80acb58830c837e522c6fcb8fe4116b424c7ed10bfef03",
+    "actual_SQL": "e66ca310320c6da84e804e4c31e0b2f4cc9d196ebbb0b5921f968b73024fe4b2",
+    "cloud_before": "e4bb171e05d3eeed6a9e6a89f0fc0f5fbce5a99eb85179019e3eb73480bbe780",
+    "cloud_after": "364ffc2681f54a86edd1c5c64b86c01eda6797c18df5c09294487f276eef9563",
+    "native_source_original_manifest": "f6d86d4bea0872e5c072d674471147c658ba26dc3368351a6a144b177a816d99",
+    "native_executed_import_manifest": "b8312cc47f99086d82a9736b82f885fd5475a5e8f51e231f0d63858f99fbd03c",
+    "clock_fix_actual_replay": "cc03ba4a3c9c073c603f593aa579be113049a214668c03866d658c870ad4adcd"
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "round": "current-rebuild-20261024-r1",
+  "status": "Passed_AutomatedRealRendererAndReview_HumanExcluded",
+  "runtime_changes": [
+    "Locked preparation now shows authoritative frozen deck count and maximumHP in a separate header row",
+    "Inventory and relic long descriptions use expanding scroll content instead of zero-height box font fitting",
+    "Combat feedback waits for queued view rebuild, then revalidates session_room_match_phase_battle owner before animating current controls"
+  ],
+  "test_fixture_repairs": [
+    "ShopProductPayload now uses current Protobuf object contract rather than old JSON string",
+    "Inventory lookups follow real scroll/item layer hierarchy and configured safe overlay frame",
+    "Room view is established before opening bag or selecting an item",
+    "Confirmed preview fixture marks authority explicitly; formula/box tooltip checks use current copy formatting",
+    "Reaction checks observe a bounded actual-frame interval and still require motion, shrinking and red flash",
+    "Added cross-battle deferred-feedback rejection checks"
+  ],
+  "validation": {
+    "art_and_layout": {
+      "screenshots": 68,
+      "resolutions": [
+        1920,
+        1280
+      ],
+      "layout_errors": [],
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/ui-art-r6/frames/report.json",
+        "bytes": 67,
+        "sha256": "e07c345a454b2a216afc6f7ee94355dabef4bcb2530a7e49c5b7675e969b0165"
+      }
+    },
+    "gameplay_presentation": {
+      "screenshots": 34,
+      "checks": 100,
+      "passed_checks": 100,
+      "layout_errors": [],
+      "original": {
+        "remote_path": "/home/ubuntu/pr13-current-rebuild-20261024-r1/results/ui-gameplay-r10/frames/report.json",
+        "bytes": 5387,
+        "sha256": "bf6e623b32bebba7c5a4bb407202029a4fd26ad67ab509383225d551550ea9be"
+      }
+    },
+    "single_physical_combined102_frame_run_claimed": false,
+    "selective_validation_basis": "Final timing-only feedback adjustment is covered by final gameplay renderer; unchanged preparation/art layout is covered by art run."
+  },
+  "manual_image_review": "Actual1920px preparation/shop/inventory images reviewed: header no overlap, readable stock/HP and consistent dark-teal gold resource system. Existing resources retained; ImageGen regeneration unnecessary.",
+  "card_cache_review": {
+    "Windows_original_unmodified_test_passed": true,
+    "minimum_Windows_available_bytes": 8547495936,
+    "cloud_low_free_memory_guard_observed": {
+      "physical": 3837677568,
+      "free": 197083136,
+      "pool_size": 50,
+      "cache_growth_enabled": false,
+      "first_cached_card_freed": true
+    },
+    "memory_policy_not_weakened_or_replaced_by_swap_inclusive_available_field": true
+  },
+  "exact_validated_source_SHA256": {
+    "client/tests/art_preview.gd": "f6d7f4e352c44c092afb301a221dbeff34167653f09842fe9b6cd334ff8a84ba",
+    "client/ui/reference_ui.gd": "f63d470a4d6613bb4edfa38e31b8a6aab94827ee4c72dea50efd82f79688137f",
+    "client/tests/gameplay_ui_preview.gd": "1055015dbead31cf4c881565995970f26d0e4c6f9a4c2061f6fed6fe453dbae5",
+    "client/ui/main.gd": "600ec8dcd4c6a26c524fefef6d429b92b4b4e6971a74082dfc18f85f65e3d108",
+    "client/ui/inventory_view.gd": "fd2e6f9593b8e9492f563db8a91324687595d2060a6ae690b9ae12dffbed26e6"
+  },
+  "runtime_files": [
+    "client/ui/main.gd",
+    "client/ui/inventory_view.gd",
+    "client/ui/reference_ui.gd"
+  ],
+  "test_files": [
+    "client/tests/art_preview.gd",
+    "client/tests/gameplay_ui_preview.gd"
+  ],
+  "raw_evidence_private_only": true,
+  "does_not_assert_live_purchase_PVP_transaction_or_human_experience_results": true,
+  "final_image_review": {
+    "verified_originals": {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\continuation-20261024-cleanup-r1\\UI-inspection-final-originals\\verified.original.json",
+      "bytes": 488,
+      "sha256": "ee6add8fc8163068428693e61670fb3fde14c7aa65df34f84f3fec71b03f2b49"
+    },
+    "reviewed": [
+      "inventory_details_bottom_1920.png",
+      "combat_feedback_1920.png"
+    ],
+    "long_description_and_hit_feedback_visible": true,
+    "offline_fixture_network_disabled": true,
+    "offline_no_server_toast_is_expected_fixture_artifact_not_live_connectivity_acceptance": true
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "result": {
+    "ok": true,
+    "execution_host": "Tencent cloud",
+    "stage": "S1",
+    "expected_reproduction": true,
+    "actual_checks": 15,
+    "failed_checks": [
+      "death_fallback_inflight_keeps_legal_opportunity",
+      "death_fallback_sync_keeps_legal_opportunity",
+      "manual_target_debounce_has_specific_reason",
+      "manual_target_inflight_blocks_old_target_play",
+      "unrelated_read_does_not_hide_legal_play"
+    ],
+    "reproduced": true,
+    "observed": {
+      "death_fallback_inflight": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      },
+      "death_fallback_queued": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      },
+      "manual_debounce": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      },
+      "manual_inflight": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      },
+      "play_submitted": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      },
+      "unrelated_read": {
+        "hand_count": 1,
+        "legal_opportunity": false,
+        "reason": "confirming",
+        "remaining_ms": 0
+      }
+    },
+    "owned_container_removed": true,
+    "source_inputs_unchanged": true,
+    "commands": [
+      {
+        "name": "reproduction",
+        "exit_code": 1
+      }
+    ]
+  },
+  "source_base_sha": "a38d76a21107a089a1a5e1999098de6e05c46ec0",
+  "native_image": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "initial_import_exit_code": 124,
+  "functional_cases_executed_after_resource_cache_verification": true,
+  "resource_matches": 1789,
+  "full_source_snapshot_retained_on_cloud": true,
+  "not_live_render_or_capacity_acceptance": true,
+  "archive": {
+    "bytes": 384688,
+    "sha256": "0e9727d42a313202527dea04dcfc37f8a5bbbeef22483810ad66ec27bf583c16",
+    "verified_files": 13
+  }
+}

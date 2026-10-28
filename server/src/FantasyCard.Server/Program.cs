@@ -8,6 +8,7 @@ using FantasyCard.Server.Mail;
 using FantasyCard.Server.Persistence;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Server.Realtime;
 using FantasyCard.Server.Rooms;
 using FantasyCard.Server.Settlement;
@@ -16,9 +17,23 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+RequestLimitExtensions.ValidateOwnedTestBypass(builder.Configuration, builder.Environment);
+var localMetricsFile = builder.Configuration["Diagnostics:LocalMetricsFile"];
+if (!string.IsNullOrWhiteSpace(localMetricsFile))
+{
+    var addresses = (builder.Configuration["urls"] ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries);
+    if (!builder.Environment.IsDevelopment() || !Path.IsPathFullyQualified(localMetricsFile) || addresses.Length == 0 ||
+        addresses.Any(address => !Uri.TryCreate(address, UriKind.Absolute, out var uri) || !uri.IsLoopback))
+        throw new InvalidOperationException("Owned local diagnostics require Development, an absolute file and loopback-only bindings.");
+    builder.Services.AddHostedService(services => new LocalRuntimeDiagnostics(
+        services.GetRequiredService<ServerMetrics>(), localMetricsFile, services.GetRequiredService<ILogger<LocalRuntimeDiagnostics>>()));
+}
 // Console logging works in containers and on Windows without Event Log permissions.
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+// Hosting's informational request-start message includes raw query strings.
+// Session credentials belong neither in logs nor in tracing URL attributes.
+builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
 var requestLimitDefaults = builder.Configuration
     .GetSection(RequestLimitOptions.SectionName)
     .Get<RequestLimitOptions>() ?? new RequestLimitOptions();
@@ -40,6 +55,7 @@ builder.Services.AddProblemDetails(options =>
 });
 builder.Services.AddSingleton<ServerMetrics>();
 builder.Services.AddFantasyCardRequestLimits(builder.Configuration);
+builder.Services.AddProtobufHttp(builder.Configuration);
 
 builder.Services.AddFantasyCardPersistence(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
@@ -56,10 +72,18 @@ builder.Services.AddSettlementModule();
 builder.Services.AddRealtimeModule(builder.Configuration);
 builder.Services.AddHealthChecks().AddCheck<PostgresHealthCheck>("postgres", tags: ["ready"]);
 
-var telemetryEndpoint = Uri.TryCreate(
-    builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"], UriKind.Absolute, out var configuredTelemetryEndpoint)
-    ? configuredTelemetryEndpoint
+var defaultTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"], UriKind.Absolute, out var configuredDefaultTelemetryEndpoint)
+    ? configuredDefaultTelemetryEndpoint
     : null;
+var tracesTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_TRACES_ENDPOINT"], UriKind.Absolute, out var configuredTracesTelemetryEndpoint)
+    ? configuredTracesTelemetryEndpoint
+    : defaultTelemetryEndpoint;
+var metricsTelemetryEndpoint = Uri.TryCreate(
+    builder.Configuration["OTEL_EXPORTER_OTLP_METRICS_ENDPOINT"], UriKind.Absolute, out var configuredMetricsTelemetryEndpoint)
+    ? configuredMetricsTelemetryEndpoint
+    : defaultTelemetryEndpoint;
 builder.Services
     .AddOpenTelemetry()
     .ConfigureResource(resource => resource.AddService("FantasyCard.Server"))
@@ -78,18 +102,17 @@ builder.Services
             .AddSource("FantasyCard.Server")
             .AddSource("Npgsql");
 
-        if (telemetryEndpoint is not null)
-        {
-            trace.AddOtlpExporter(options => options.Endpoint = telemetryEndpoint);
-        }
+        if (tracesTelemetryEndpoint is not null)
+            trace.AddOtlpExporter(options => options.Endpoint = tracesTelemetryEndpoint);
     })
     .WithMetrics(metrics =>
     {
         metrics.AddMeter(ServerMetrics.MeterName)
             .AddMeter("Npgsql")
+            .AddRuntimeInstrumentation()
             .AddAspNetCoreInstrumentation();
-        if (telemetryEndpoint is not null)
-            metrics.AddOtlpExporter(options => options.Endpoint = telemetryEndpoint);
+        if (metricsTelemetryEndpoint is not null)
+            metrics.AddOtlpExporter(options => options.Endpoint = metricsTelemetryEndpoint);
     });
 
 var app = builder.Build();
@@ -111,7 +134,13 @@ app.Use(async (context, next) =>
         "camera=(), microphone=(), geolocation=(), payment=(), usb=()";
     await next(context);
 });
-app.UseExceptionHandler();
+app.UseMiddleware<ProtobufHttpMiddleware>();
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    StatusCodeSelector = exception => exception is BadHttpRequestException badRequest
+        ? badRequest.StatusCode
+        : StatusCodes.Status500InternalServerError
+});
 app.UseMiddleware<RequestTraceMiddleware>();
 app.UseRateLimiter();
 app.UseWebSockets(new WebSocketOptions

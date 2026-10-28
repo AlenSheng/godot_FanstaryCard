@@ -14,15 +14,20 @@ public sealed class CaddyfileTests
         Assert.DoesNotContain("tls /etc/caddy/certs/", domain.Body, StringComparison.Ordinal);
         Assert.Contains("reverse_proxy server:8080", domain.Body, StringComparison.Ordinal);
         Assert.Contains("Strict-Transport-Security", domain.Body, StringComparison.Ordinal);
+        Assert.Contains("handle @admin", domain.Body, StringComparison.Ordinal);
+        Assert.Contains("respond 404", domain.Body, StringComparison.Ordinal);
+        Assert.True(domain.Body.IndexOf("handle @admin", StringComparison.Ordinal) <
+                    domain.Body.IndexOf("handle @game_api", StringComparison.Ordinal));
 
         var ip = Assert.Single(sites, site => SiteMatches(site.Address, "43.172.70.182"));
         Assert.Contains("tls /etc/caddy/certs/ip2.crt", ip.Body, StringComparison.Ordinal);
         Assert.Contains("respond 404", ip.Body, StringComparison.Ordinal);
         Assert.DoesNotContain("reverse_proxy", ip.Body, StringComparison.Ordinal);
 
-        var admin = Assert.Single(sites, site => SiteMatches(site.Address, ":20000"));
-        Assert.Contains("tls /etc/caddy/certs/ip2.crt", admin.Body, StringComparison.Ordinal);
+        var admin = Assert.Single(sites, site => SiteMatches(site.Address, "www.relicbound.cn:20000"));
+        Assert.DoesNotContain("tls /etc/caddy/certs/", admin.Body, StringComparison.Ordinal);
         Assert.Contains("reverse_proxy server:8080", admin.Body, StringComparison.Ordinal);
+        Assert.Contains("respond 404", admin.Body, StringComparison.Ordinal);
     }
 
     [Fact]
@@ -45,6 +50,7 @@ public sealed class CaddyfileTests
     {
         var script = File.ReadAllText(FindServerFile(Path.Combine("deploy", "fantasycard-update.sh")));
         Assert.Contains("https://www.relicbound.cn/health/ready", script, StringComparison.Ordinal);
+        Assert.Contains("https://www.relicbound.cn:20000/admin", script, StringComparison.Ordinal);
         Assert.Contains("domain_certificate_ok", script, StringComparison.Ordinal);
         Assert.Contains("-servername www.relicbound.cn", script, StringComparison.Ordinal);
         Assert.DoesNotContain("curl -k", script, StringComparison.Ordinal);

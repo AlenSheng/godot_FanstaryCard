@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Threading.Channels;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Rooms;
@@ -8,10 +9,13 @@ namespace FantasyCard.Server.Rooms;
 public sealed class RoomActor : IAsyncDisposable
 {
     public static readonly TimeSpan TickInterval = TimeSpan.FromMilliseconds(100);
+    private const int CommandQueueCapacity = 256;
     private readonly Channel<ICommandWorkItem> _commands;
     private readonly CancellationTokenSource _shutdown = new();
     private readonly Task _reader;
-    private readonly Task? _ticker;
+    private Task? _ticker;
+    private readonly TimeProvider _timeProvider;
+    private readonly object _tickerGate = new();
     private readonly ServerMetrics? _metrics;
     private readonly Func<BattleRoomSnapshot, Task>? _snapshotObserver;
     private readonly Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? _combatObserver;
@@ -31,23 +35,34 @@ public sealed class RoomActor : IAsyncDisposable
     {
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
+        _timeProvider = timeProvider;
         _metrics = metrics;
         _snapshotObserver = snapshotObserver;
         _combatObserver = combatObserver;
-        _commands = Channel.CreateUnbounded<ICommandWorkItem>(new UnboundedChannelOptions
+        _commands = Channel.CreateBounded<ICommandWorkItem>(new BoundedChannelOptions(CommandQueueCapacity)
         {
             SingleReader = true,
             SingleWriter = false,
+            FullMode = BoundedChannelFullMode.Wait,
             AllowSynchronousContinuations = false
         });
         _reader = RunReaderAsync(room, snapshotObserver, combatObserver);
         if (startTicker)
         {
-            _ticker = RunTickerAsync(timeProvider, _shutdown.Token);
+            StartTicker();
         }
     }
 
     public Guid RoomId { get; }
+
+    internal void StartTicker()
+    {
+        lock (_tickerGate)
+        {
+            ObjectDisposedException.ThrowIf(_shutdown.IsCancellationRequested, this);
+            _ticker ??= RunTickerAsync(_timeProvider, _shutdown.Token);
+        }
+    }
 
     public ValueTask<TResult> ExecuteAsync<TResult>(
         IRoomCommand<TResult> command, long expectedRevision, CancellationToken cancellationToken = default)
@@ -58,6 +73,8 @@ public sealed class RoomActor : IAsyncDisposable
 
     private sealed record RevisionCheckedCommand<TResult>(IRoomCommand<TResult> Inner, long ExpectedRevision) : IRoomCommand<TResult>
     {
+        public bool NotifyObservers => Inner.NotifyObservers;
+
         public TResult Execute(BattleRoom room)
         {
             if (ExpectedRevision > room.Revision)
@@ -78,7 +95,8 @@ public sealed class RoomActor : IAsyncDisposable
         if (!_commands.Writer.TryWrite(workItem))
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
-            throw new InvalidOperationException("The room actor no longer accepts commands.");
+            if (_shutdown.IsCancellationRequested) throw new RoomActorClosedException(RoomId);
+            throw new InvalidOperationException("The room actor command queue is full or closed.");
         }
         return new ValueTask<TResult>(workItem.Task);
     }
@@ -111,10 +129,22 @@ public sealed class RoomActor : IAsyncDisposable
         await foreach (var command in _commands.Reader.ReadAllAsync())
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
-            command.Execute(room);
+            _metrics?.ObserveRoomActorCommandWait(
+                command.CommandName,
+                Stopwatch.GetElapsedTime(command.EnqueuedAt));
+            BattleRoomSnapshot? snapshot;
+            using (RuntimeTiming.Measure(_metrics, RuntimePhase.ActorExecute, command.EnqueueContext, room: RoomId.ToString("D")))
+                snapshot = command.Execute(room);
             var feedback = room.DrainCombatFeedback();
-            var snapshot = room.Capture();
-            EnqueueObservers(snapshot, feedback);
+            if (command.NotifyObservers)
+            {
+                snapshot ??= room.Capture();
+                EnqueueObservers(snapshot, feedback);
+            }
+            else if (feedback.Count > 0)
+            {
+                EnqueueObservers(snapshot ?? room.Capture(), feedback);
+            }
         }
     }
 
@@ -202,11 +232,11 @@ public sealed class RoomActor : IAsyncDisposable
             _metrics?.ObserveRoomActorTickDelay(now - nextTickAt);
             nextTickAt = now + TickInterval;
             var command = new AdvanceRoomTimeCommand(TickInterval, now);
-            var workItem = new CommandWorkItem<BattleRoomSnapshot>(command, cancellationToken);
             if (!await _commands.Writer.WaitToWriteAsync(cancellationToken))
             {
                 return;
             }
+            var workItem = new CommandWorkItem<BattleRoomSnapshot>(command, cancellationToken);
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Increment(ref _queuedCommands));
             if (!_commands.Writer.TryWrite(workItem))
             {
@@ -219,7 +249,11 @@ public sealed class RoomActor : IAsyncDisposable
 
     private interface ICommandWorkItem
     {
-        void Execute(BattleRoom room);
+        long EnqueuedAt { get; }
+        string CommandName { get; }
+        ActivityContext EnqueueContext { get; }
+        bool NotifyObservers { get; }
+        BattleRoomSnapshot? Execute(BattleRoom room);
     }
 
     private sealed class CommandWorkItem<TResult>(
@@ -231,21 +265,40 @@ public sealed class RoomActor : IAsyncDisposable
 
         public Task<TResult> Task => _completion.Task;
 
-        public void Execute(BattleRoom room)
+        public long EnqueuedAt { get; } = Stopwatch.GetTimestamp();
+        public ActivityContext EnqueueContext { get; } = Activity.Current?.Context ?? default;
+        public string CommandName => command.GetType().Name;
+        public bool NotifyObservers => command.NotifyObservers;
+
+        public BattleRoomSnapshot? Execute(BattleRoom room)
         {
             if (cancellationToken.IsCancellationRequested)
             {
                 _completion.TrySetCanceled(cancellationToken);
-                return;
+                return null;
             }
             try
             {
-                _completion.TrySetResult(command.Execute(room));
+                var result = command.Execute(room);
+                _completion.TrySetResult(result);
+                return result switch
+                {
+                    BattleRoomSnapshot snapshot => snapshot,
+                    RoomClientState state => state.Snapshot,
+                    IRoomCommandSnapshotResult snapshotResult => snapshotResult.Snapshot,
+                    _ => null
+                };
             }
             catch (Exception exception)
             {
                 _completion.TrySetException(exception);
+                return null;
             }
         }
     }
+}
+
+public sealed class RoomActorClosedException(Guid roomId) : Exception("The room actor has closed.")
+{
+    public Guid RoomId { get; } = roomId;
 }

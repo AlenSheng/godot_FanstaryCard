@@ -1,0 +1,199 @@
+{
+  "kind": "ReviewedClientLateReadyClassificationFix",
+  "base_release": "db7e8e8457835de9be378fd1f82aebc1b9959116",
+  "status": "BoundedClientComponentVerified",
+  "canonical_task_states": {
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "Failed": 0
+  },
+  "original_scope_tasks": 132,
+  "original_scope_cases": 396,
+  "unaccepted_tasks": 77,
+  "whole_case_or_goal_achieved": false,
+  "source_changes": [
+    {
+      "path": "client/network/gateway.gd",
+      "bytes": 48348,
+      "sha256": "061034f5f870788de96923c938672c3b5b10b47ea9e109945d15190d6bc4e31f"
+    },
+    {
+      "path": "client/tests/run_native_regressions.gd",
+      "bytes": 1815,
+      "sha256": "ad49acca8430e53e138c118144f89e76b1213fabc88b6437bf57c52b3f44f4f7"
+    },
+    {
+      "path": "client/tests/test_late_ready_rejection.gd",
+      "bytes": 10643,
+      "sha256": "7f6bf68c647690658c1d35de54674c0c36ac774f5c6a948ee6c77a4bfd999b45"
+    },
+    {
+      "path": "client/tests/test_late_ready_rejection.gd.uid",
+      "bytes": 20,
+      "sha256": "1b53d76a2144748f271c9a387f1467c01c08b68c2909eee20a38f803f95cb5ae"
+    }
+  ],
+  "observed_original_R2": {
+    "unique_rejected_request": 1,
+    "notice_error_rows": 3,
+    "wire_room_started_precedes_rejected_reply_ms": 76,
+    "later_room_started_check_after_rejection_ms": 124,
+    "original_capacity_and_execution_failed_preserved": true,
+    "wire_cycle_phase_Unknown_not_replaced_by_observer": true
+  },
+  "behavior": {
+    "only_code": "READY_NOT_FOUND",
+    "only_original_action": "room.ready",
+    "known_request_correlation_required": true,
+    "same_session_match_and_room_required": true,
+    "exact_prelaunch_to_joined_epoch_step_required": 1,
+    "replay_missing_foreign_reentered_contexts_keep_error": true,
+    "provided_worker_cycle_identity_must_match": true,
+    "normal_client_without_load_metadata_supported": true,
+    "raw_realtime_result_remains": "rejected",
+    "raw_response_type_remains": "error.command_rejected",
+    "latency_measurement_count_per_reply_unchanged": true,
+    "classification_trace_only": true,
+    "classification_never_emits_business_event": true,
+    "classification_never_confirms_pending_business_operation": true,
+    "classification_never_requests_confirmation_snapshot": true,
+    "ordinary_error_notice_and_audio_preserved": true,
+    "server_protocol_GDD_and_activity_threshold_changed": false
+  },
+  "verification_history": [
+    {
+      "phase": "Original gateway new regression baseline",
+      "checks": 24,
+      "passed": 22,
+      "failed": 2,
+      "result": "Failed expected reproduction"
+    },
+    {
+      "phase": "Uncommitted v1 candidate",
+      "focused_checks_passed": 26,
+      "suites": 12,
+      "suite_checks_passed": 148,
+      "later_consumer_gap_not_covered": true
+    },
+    {
+      "phase": "v1 new pending-operation consumer baseline",
+      "checks": 28,
+      "failed": 4,
+      "result": "Failed;includes actual false-confirmation and extra-read properties plus expected no-business-channel assertions"
+    },
+    {
+      "phase": "Final candidate",
+      "focused_checks_passed": 28,
+      "suites": 12,
+      "suite_checks_passed": 150,
+      "result": "Passed"
+    }
+  ],
+  "native_invocations": [
+    {
+      "mode": "before-import",
+      "Native_PID": 86616,
+      "exit": 0,
+      "report_ok": null,
+      "new_worlds": 0
+    },
+    {
+      "mode": "before-test",
+      "Native_PID": 12716,
+      "exit": 1,
+      "report_ok": false,
+      "new_worlds": 0
+    },
+    {
+      "mode": "after-import",
+      "Native_PID": 71812,
+      "exit": 0,
+      "report_ok": null,
+      "new_worlds": 0
+    },
+    {
+      "mode": "after-test",
+      "Native_PID": 10864,
+      "exit": 0,
+      "report_ok": true,
+      "new_worlds": 0
+    },
+    {
+      "mode": "after-suite",
+      "Native_PID": 82388,
+      "exit": 0,
+      "report_ok": true,
+      "new_worlds": 0
+    },
+    {
+      "mode": "after-exact-test",
+      "Native_PID": 110328,
+      "exit": 0,
+      "report_ok": true,
+      "new_worlds": 0
+    },
+    {
+      "mode": "consumer-before-test",
+      "Native_PID": 69200,
+      "exit": 1,
+      "report_ok": false,
+      "new_worlds": 0
+    },
+    {
+      "mode": "final-test",
+      "Native_PID": 128644,
+      "exit": 0,
+      "report_ok": true,
+      "new_worlds": 0
+    },
+    {
+      "mode": "final-suite",
+      "Native_PID": 102132,
+      "exit": 0,
+      "report_ok": true,
+      "new_worlds": 0
+    }
+  ],
+  "native_QA_start_budget": {
+    "original": 6,
+    "revised": 9,
+    "reason": "New business-consumer edge discovered before publication; add failed baseline and final focused/full regressions",
+    "new_accounts_or_worlds": 0
+  },
+  "source_integrity": {
+    "current_Root_client_inputs": 2138,
+    "all_bytes_equal_final150_test_project": true,
+    "old_R2_2136_fixture_unchanged": true,
+    "original716_working_bytes_unchanged": true,
+    "Root_changes_installed_by_atomic_replacement": true,
+    "62_task_import_metadata_changes_CRLF_LF_only": true,
+    "Root_assets_and_import_metadata_unchanged": true,
+    "LF_importer_outputs_and_intermediate148_result_retained": true,
+    "additional_exact26_check_completed_before_consumer_refinement": true
+  },
+  "case_reviews": [
+    {
+      "case_id": "PR13-A10.2-T03",
+      "status": "Partial",
+      "bounded_client_notice_fix": "Verified",
+      "new_full50_or100_capacity_run_after_fix": false,
+      "original_R2_strict50_failed_not_relabelled": true
+    },
+    {
+      "case_id": "PR13-A06.3-T01",
+      "status": "Partial",
+      "dispatch_context_and_unknown_business_origin": "Preserved by current Native regression",
+      "canonical_delayed_HTTP_Nplus1_case_newly_executed": false
+    }
+  ],
+  "execution_scope": "Local completeclient,owned realWebSocket write,actual binary receive decoder,realStore and recorder with explicit authority frames;no backend/newworlds or fullcapacity claim",
+  "unchanged": {
+    "canonical_register_gate_MAIN": true,
+    "GDD_legal80over70": true,
+    "human_experience_excluded": true,
+    "server_CSharp_config_or_deployment": true,
+    "cloud_world_budget_178of300": true,
+    "no_new_CI_pass_claimed": true
+  }
+}

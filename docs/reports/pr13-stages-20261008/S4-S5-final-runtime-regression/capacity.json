@@ -1,0 +1,242 @@
+{
+  "attempts": [
+    {
+      "target": 50,
+      "source_sha": "7018a2e9fae3872055a907615941f0556ab2f3ee",
+      "state": "ResourceBlocked",
+      "clients_launched": 39,
+      "peak_online": 32,
+      "peak_active_in_room": 30,
+      "original_load_coverage": {
+        "passed": false,
+        "window_seconds": 44.01298928260803,
+        "observed_seconds": 30.294000148773193,
+        "compliant_seconds": 0.0,
+        "coverage": 0.0,
+        "longest_continuous_seconds": 0.0,
+        "intervals": [
+          {
+            "start": 1791486772.682,
+            "end": 1791486782.833,
+            "observed": true,
+            "compliant": false
+          },
+          {
+            "start": 1791486782.833,
+            "end": 1791486792.838,
+            "observed": true,
+            "compliant": false
+          },
+          {
+            "start": 1791486792.838,
+            "end": 1791486802.976,
+            "observed": true,
+            "compliant": false
+          }
+        ],
+        "target_online": 50,
+        "target_active": 50,
+        "minimum_command_rate": 1,
+        "maximum_gap": 20,
+        "minimum_window": 600,
+        "minimum_continuous": 120,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      },
+      "local_safety_stop": "original local safety redline",
+      "minimum_host_memory_available_percent": 11.134881317893452,
+      "native_server_trend": {
+        "native_windows": 52,
+        "elapsed_seconds": 50.9990333,
+        "rss_slope_bytes_per_second": 2625662.894773209,
+        "rss_first_bytes": 78471168,
+        "rss_last_bytes": 227860480,
+        "rss_peak_bytes": 227913728,
+        "managed_allocated_bytes_delta": 310885632,
+        "managed_heap_first_bytes": 7279928,
+        "managed_heap_last_bytes": 65866328,
+        "gc_first": [
+          2,
+          1,
+          0
+        ],
+        "gc_last": [
+          10,
+          2,
+          1
+        ],
+        "leak_proven": false,
+        "capacity_acceptance": false,
+        "interpretation": "Observed RSS trend and independent native allocation/GC evidence; a slope alone does not prove a leak"
+      },
+      "native_server_cpu_peak_percent": 4.717560681771241,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "runtime_owned_cleanup": true,
+      "database_removed": true,
+      "parents": [
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/runtime.json",
+          "bytes": 867,
+          "sha256": "b5466c36b3544c5d2491723c6398e7a3a2a1277ffa624b5e33335571d41edab2"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/command.json",
+          "bytes": 1888,
+          "sha256": "f8bcea8027c72b90d0a6b57f8de1cf8dad6d4581ce31c6c2f1b3df8fe7cfe615"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/database-postconditions.json",
+          "bytes": 151,
+          "sha256": "19f50e4443637526975930fa93128f32bce95ac49ff4f8636528da8eb55e5633"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/server-metrics.private.jsonl",
+          "bytes": 62709,
+          "sha256": "f15bff7c53ca5dade262ecb23cbf9ec985be5a7ff77e26bf43fad059afc359de"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics-watchdog.json",
+          "bytes": 1601,
+          "sha256": "904a58fecda52086380869cb052446d7d48bc9865befcc8efcef3effe1aeb85b"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/load/20261009-031242-a6b642/report.json",
+          "bytes": 8568916,
+          "sha256": "24e8ceeb1fe56f89bc399f5823e346ae571083c7fda6dee0e7ad9fb4f6205ee5"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/load/20261009-031242-a6b642/launch-manifest.json",
+          "bytes": 315757,
+          "sha256": "b6a88ed3e808d1adde2edfff374488cc1c1abdc89fedad4fb18c94150b85aaa8"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-50-lazy-font-diagnostics/load/20261009-031242-a6b642/samples.jsonl",
+          "bytes": 25613,
+          "sha256": "740d0ee05d2629716370bae73e4fe12323b1dd2957594b1a24a5d4b2f7eb3d5a"
+        }
+      ],
+      "interpretation": "Fresh original target attempt; three valid shared-host memory windows below15% stopped ramp. Neither original target nor600s hold was met. Real server CPU/RSS/GC/actor data retained independently; no capacity, leak or paired performance claim."
+    },
+    {
+      "target": 100,
+      "source_sha": "7018a2e9fae3872055a907615941f0556ab2f3ee",
+      "state": "ResourceBlocked",
+      "clients_launched": 43,
+      "peak_online": 32,
+      "peak_active_in_room": 30,
+      "original_load_coverage": {
+        "passed": false,
+        "window_seconds": 47.76780462265015,
+        "observed_seconds": 30.066999912261963,
+        "compliant_seconds": 0.0,
+        "coverage": 0.0,
+        "longest_continuous_seconds": 0.0,
+        "intervals": [
+          {
+            "start": 1791486865.934,
+            "end": 1791486875.818,
+            "observed": true,
+            "compliant": false
+          },
+          {
+            "start": 1791486875.818,
+            "end": 1791486885.943,
+            "observed": true,
+            "compliant": false
+          },
+          {
+            "start": 1791486885.943,
+            "end": 1791486896.001,
+            "observed": true,
+            "compliant": false
+          }
+        ],
+        "target_online": 100,
+        "target_active": 100,
+        "minimum_command_rate": 1,
+        "maximum_gap": 20,
+        "minimum_window": 600,
+        "minimum_continuous": 120,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      },
+      "local_safety_stop": "original local safety redline",
+      "minimum_host_memory_available_percent": 11.192697811736592,
+      "native_server_trend": {
+        "native_windows": 80,
+        "elapsed_seconds": 79.00578189999999,
+        "rss_slope_bytes_per_second": 1331090.3181458926,
+        "rss_first_bytes": 78340096,
+        "rss_last_bytes": 224870400,
+        "rss_peak_bytes": 228982784,
+        "managed_allocated_bytes_delta": 391249136,
+        "managed_heap_first_bytes": 7253192,
+        "managed_heap_last_bytes": 56319088,
+        "gc_first": [
+          2,
+          1,
+          0
+        ],
+        "gc_last": [
+          13,
+          3,
+          2
+        ],
+        "leak_proven": false,
+        "capacity_acceptance": false,
+        "interpretation": "Observed RSS trend and independent native allocation/GC evidence; a slope alone does not prove a leak"
+      },
+      "native_server_cpu_peak_percent": 5.668179140544129,
+      "process_cleanup": true,
+      "business_cleanup": true,
+      "runtime_owned_cleanup": true,
+      "database_removed": true,
+      "parents": [
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/runtime.json",
+          "bytes": 866,
+          "sha256": "f72c618cdb678f167e5b8bf2754027789ff47fad9e4cff96b5c3f840cc7564ab"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/command.json",
+          "bytes": 1893,
+          "sha256": "2c81516e4703c32f3b477e54b0265cfa104e74ed278cdaf89eef03a2610d6a16"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/database-postconditions.json",
+          "bytes": 151,
+          "sha256": "5f801a5f93fb2458557294307f143a007949e9deb6461e2a9e40c3df53ce631e"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/server-metrics.private.jsonl",
+          "bytes": 90370,
+          "sha256": "3e4cd7851d8f23966ce39b187614e54e1f0e12532be2e9453a08cc8f0404f06c"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics-watchdog.json",
+          "bytes": 2012,
+          "sha256": "d215d76c439709758363dd8d374e7483369b49901f9c87462725f620a32d42a0"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/load/20261009-031415-d77981/report.json",
+          "bytes": 10053225,
+          "sha256": "a638e31722351170747126f36c6a24571e4267ec73e28eeb6dca4be24dc5ecb3"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/load/20261009-031415-d77981/launch-manifest.json",
+          "bytes": 319799,
+          "sha256": "043656a446ed0f4e50ee689bac182a6bd53bdd3e1b4d748b230c04b6a4809c19"
+        },
+        {
+          "path": "outputs/pr13-local-20261008/S5/capacity-100-lazy-font-diagnostics/load/20261009-031415-d77981/samples.jsonl",
+          "bytes": 25859,
+          "sha256": "f218ded0bcb1ccb33af96fac485da807555082bb02d2946c0aea101869c753c2"
+        }
+      ],
+      "interpretation": "Fresh original target attempt; three valid shared-host memory windows below15% stopped ramp. Neither original target nor600s hold was met. Real server CPU/RSS/GC/actor data retained independently; no capacity, leak or paired performance claim."
+    }
+  ],
+  "production_deployment": false,
+  "historical_count_discrepancies_reconstructed": false
+}

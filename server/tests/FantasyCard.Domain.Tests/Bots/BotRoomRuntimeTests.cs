@@ -110,6 +110,7 @@ public sealed class BotRoomRuntimeTests
             null,
             IsBot: true));
         room.InitializeMap(ChaosMapGenerator.Generate(144, 1));
+        AddIdleRealPlayer(room);
         var snapshot = room.Capture();
         var start = snapshot.Map!.Cells.First(cell =>
             cell.Layer == ChaosMapLayer.Outer && !cell.HasSpring && !cell.HasEvacuation).Position;
@@ -186,6 +187,7 @@ public sealed class BotRoomRuntimeTests
             null,
             IsBot: true));
         room.InitializeMap(ChaosMapGenerator.Generate(991, 1));
+        AddIdleRealPlayer(room);
         return (room, botId);
     }
 
@@ -208,6 +210,14 @@ public sealed class BotRoomRuntimeTests
             Enumerable.Repeat("common-01", 20).ToArray(),
             null,
             IsBot: lateIsBot));
+        if (firstIsBot && lateIsBot)
+            AddIdleRealPlayer(room);
         return room;
     }
+
+    // Bot behavior fixtures retain a non-combat human so the room lifetime
+    // rule does not end the isolated simulation before its AI assertions.
+    private static void AddIdleRealPlayer(BattleRoom room) =>
+        room.AddPlayer(new(Guid.NewGuid(), HeroClass.Priest,
+            Enumerable.Range(1, 20).Select(index => $"common-{index:D2}").ToArray(), null));
 }

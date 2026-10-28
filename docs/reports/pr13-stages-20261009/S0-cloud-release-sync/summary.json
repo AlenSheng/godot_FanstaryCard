@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "phase": "S0-cloud-release-sync",
+  "status": "Passed",
+  "source_sha": "c351184f3598c3a591fef3e2e5171662161edea3",
+  "runtime_image": "sha256:330e33567955abb730b953217e1afe1f9963ff770d8d40ca24255b9db217f6ce",
+  "execution_split": {
+    "server_and_domain": "Tencent cloud",
+    "real_player_client": "Local Windows Godot 4.7.2"
+  },
+  "verified": {
+    "local_and_cloud_source_files": 2762,
+    "native_domain_passed": 338,
+    "native_domain_failed": 0,
+    "native_domain_skipped": 0,
+    "actual_public_https_login": true,
+    "actual_ticket_wss_connected": true,
+    "persistent_database_preserved": true,
+    "backup_native_list_verified": true,
+    "production_candidate_on_restored_database": true
+  },
+  "first_attempt_failures": {
+    "probe": "An initial isolated restore attempt exited nonzero before production activation. Its original evidence was retained privately; the successful retry has its own release-probe.json. No live database restore was attempted.",
+    "source_transfer": "Initial thin-bundle/partial-clone imports failed. A complete current commit snapshot was reconstructed and connectivity checked before build. Failures are retained privately."
+  },
+  "scope": "Release deployment, current source consistency and actual login/bootstrap/ticket WSS. Not natural-game completion, 50/100 capacity, full handbook 132-subtask acceptance or human experience.",
+  "remaining_acceptance_register": "docs/reports/pr13-stages-20261008/S6-current-after-live-control/register.json",
+  "all_pr13_accepted": false,
+  "subsequent_summary_only_commit_policy": "A later report-only release commit may fast-forward cloud checkout without rebuilding this image only after checking that every deployed application/config/contract and client input is unchanged. Runtime image revision stays truthful at its actual build SHA."
+}

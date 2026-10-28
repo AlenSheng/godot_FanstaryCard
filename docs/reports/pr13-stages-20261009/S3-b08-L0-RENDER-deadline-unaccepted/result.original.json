@@ -1,0 +1,18 @@
+{
+  "ok": false,
+  "source_sha": "faa2adeb5a08d769aa296d8aa1e16d6391d2f560",
+  "attempt": "B08-core-render-L0-r1-20261012",
+  "candidate_activation": false,
+  "MAIN_accepted": false,
+  "error": "AssertionError",
+  "detail": "Frozen native deadline",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/B08-core-render-L0-r1-20261012/runner.original.py\", line 56, in <module>\n    phase('render',['docker','exec',cid,'xvfb-run','-a','-s','-screen 0 1920x1080x24 -nolisten tcp','godot','--path','/client','--display-driver','x11','--rendering-method','gl_compatibility','--audio-driver','Dummy','--verbose','--max-fps','30','--windowed','res://tests/b08_core_contract_frames_r1.tscn'],900)\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/B08-core-render-L0-r1-20261012/runner.original.py\", line 53, in phase\n    assert time.monotonic()<until,'Frozen native deadline';guard();assert sum(p.stat().st_size for p in (RAM/'outputs').rglob('*') if p.is_file())<64*1024**2;time.sleep(2)\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Frozen native deadline\n",
+  "failed_originals_retained": true,
+  "original_outputs_preserved_before_teardown": true,
+  "owned_container_removed": true,
+  "shared_source_and_fixture_unchanged": true,
+  "owned_overlay_unmounted": true,
+  "source_strategy": "Owned readonly hardlinked tree; no overlay filesystem",
+  "owned_source_retained_for_G": "/home/ubuntu/pr13-acceptance-20261009/work/B08-core-render-L0-r1-20261012",
+  "RAM_outputs_and_generated_upper_retained_for_G": true
+}

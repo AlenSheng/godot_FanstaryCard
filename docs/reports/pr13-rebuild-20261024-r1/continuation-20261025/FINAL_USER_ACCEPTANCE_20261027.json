@@ -1,0 +1,507 @@
+{
+  "schema": "pr13-final-user-acceptance-v1",
+  "report_date": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "created_at": "2026-10-27T11:28:27.171687+08:00",
+  "state": "Accepted_UserWaiver_Over300_WithVerifiedNative50_100GeneratorLimitedInconclusive",
+  "user_scoped_acceptance_passed": true,
+  "current_user_scoped_acceptance_completed": true,
+  "decision_authority": {
+    "type": "direct_user_instruction",
+    "prior_rule": "先100人，未通过转50再一轮，累计超过300场则认为通过",
+    "latest_rule": "不再死磕100人；按超过300场约定放行，以已通过50人容量为实测依据；100人不足为测试机供给与单机停止约束，不作为服务器并发承载失败结论"
+  },
+  "cumulative_capacity_worlds": {
+    "prior_closed": 301,
+    "three_host_prior_restored": 33,
+    "CPU_unrestricted_new": 22,
+    "latest_DB_total_including33": 55,
+    "total": 356,
+    "formula": "301 + (33 + 22) = 301 + 55 = 356",
+    "old33_not_added_twice": true,
+    "no_history_reset": true,
+    "normal18_and_UI_checks_not_counted_as_capacity_worlds": true
+  },
+  "capacity50": {
+    "technical_registered_scope_passed": true,
+    "supply_native_clients": 60,
+    "supply_by_host": {
+      "Windows": 40,
+      "Linux": 20
+    },
+    "target_online_and_active": 50,
+    "continuous_seconds": 600,
+    "window_seconds": 600,
+    "coverage": 1.0,
+    "latency_profile": "north-america-pooled5s8s-window95-v2",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "isolated_latency_warning_fraction_limit": 0.05,
+    "isolated_latency_warning_fraction_used": 0.0,
+    "controlled_refusal_fraction_limit": 0.01,
+    "inferred_stun_events_used": 0,
+    "all60_native_exit0": true,
+    "identity_repair_only_criteria_unchanged": true,
+    "original_identity_failure_retained": true,
+    "default_strict_latency_pass_claimed": false,
+    "actual_restore": {
+      "ok": true,
+      "restored_matches": 31,
+      "restored_settlements": 107,
+      "pending_holds": 0,
+      "duplicate_match_player_settlements": 0,
+      "actual_unique_participants": 64,
+      "all_participants_equal_original_backend_snapshot": true,
+      "scratch_DB_dropped": true,
+      "owned_PG_stopped_again": true,
+      "original_failed_capacity_and_evidence_outcomes_retained": true,
+      "formal_identity_unchanged": true,
+      "formal_ready_HTTP": 200,
+      "formal_DB_not_cleared": true
+    },
+    "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "reviewer": "34f1d55dd022a806edb642339872292616a29b34"
+  },
+  "capacity100": {
+    "final_disposition": "Waived_for_user_acceptance_GeneratorLimited_NoValid100Window",
+    "original_latest_batch_verdict": "NotPassed",
+    "original_capacity_accepted": false,
+    "valid100_shared_window_completed": false,
+    "empirical100_pass_proven": false,
+    "server100_capacity_failure_proven": false,
+    "server100_capacity_conclusion": "Inconclusive_NotDemonstratedByThisGeneratorLimitedRun",
+    "classification_basis": "Native client supply did not reach planned100; SJH single-host supervisor latency redlines stopped the batch. It is not evidence of a server100 concurrency ceiling.",
+    "generator_fixed45_limit_proven": false,
+    "requested_native_distribution": {
+      "sjh": 50,
+      "windows": 30,
+      "cloud": 20
+    },
+    "actual_native_distribution": {
+      "windows": 30,
+      "sjh": 45,
+      "cloud": 20
+    },
+    "actual_native_started": 95,
+    "sampled_peak_room_humans": 76,
+    "original_host_outcomes": {
+      "windows": {
+        "actual_native_launched": 30,
+        "stop_reason": "operator_stop_file",
+        "exit_code": 130,
+        "forced_count": 0,
+        "native_missing_final_count": 0,
+        "original_cleanup_complete": true,
+        "min_available_memory_bytes": 12751671296,
+        "actual_server_peak_humans_observed": 76.0
+      },
+      "sjh": {
+        "actual_native_launched": 45,
+        "stop_reason": "redline:command_p95_over_8000ms,http_p95_over_5000ms",
+        "exit_code": 3,
+        "forced_count": 28,
+        "native_missing_final_count": 28,
+        "original_cleanup_complete": false,
+        "min_available_memory_bytes": 18610520064,
+        "actual_server_peak_humans_observed": 76.0
+      },
+      "cloud": {
+        "actual_native_launched": 20,
+        "stop_reason": "operator_stop_file",
+        "exit_code": 130,
+        "forced_count": 0,
+        "native_missing_final_count": 0,
+        "original_cleanup_complete": true,
+        "min_available_memory_bytes": 1080901632,
+        "actual_server_peak_humans_observed": 76.0
+      }
+    },
+    "SJH_HTTP_p95_last3_ms": [
+      6906,
+      8718,
+      6560
+    ],
+    "SJH_command_p95_last3_ms": [
+      13931,
+      12343,
+      11803
+    ],
+    "original_missing_final28_and_forced28_cleanupFalse_preserved": true,
+    "end_to_end_latency_does_not_isolate_server_cost": true,
+    "clock_review_policy": "three-host100-predeclared-WAN-clock5000-uncertainty8000-v2",
+    "no_further100_tests_authorized_by_this_finalization": true
+  },
+  "CPU_adjustment": {
+    "host": "SJH",
+    "previous_logical_CPU_affinity": [
+      20,
+      21,
+      22,
+      23
+    ],
+    "new_logical_CPU_affinity": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "previous_count": 4,
+    "new_count": 24,
+    "priority": "BelowNormal",
+    "only_owned_test_supervisor_and_children": true,
+    "memory_protections_unchanged": true,
+    "old4CPU_and_new24CPU_outcomes_preserved_separately": true,
+    "collector_source": "92ebc20612ce3785009d9c9657ad8d33b6f13017",
+    "frozen_client_tree": "33802c85918089cbd2a367b2e7426da9591a7e74"
+  },
+  "normal_functional": {
+    "passed": true,
+    "accounts": 10,
+    "classes": {
+      "Mage": 4,
+      "Priest": 3,
+      "Guardian": 3
+    },
+    "normal_ACKs": 30,
+    "actual_worlds": 18,
+    "original_business_errors": 0,
+    "fallback_scenario_or_drain_only_cycles": 0,
+    "observation_relaxation": {
+      "original_seconds": 1200,
+      "functional_observation_seconds": 2400,
+      "previous_failures_retained": true,
+      "current_confirmed_room_to_ACK_over1200_count": 1,
+      "current_confirmed_room_to_ACK_max_seconds": 1600.528,
+      "measurement": "Per participant successful same-match native room_started check to settlement.acknowledged; excludes queue wait",
+      "original1200_duration_accepted": false,
+      "not_a_balance_or_typical_duration_guarantee": true
+    },
+    "ACK_is_not_victory_or_extraction_claim": true,
+    "actual_restore": {
+      "G_original_files": 223,
+      "archive_SHA256": "7457852fc3cfb89f8f52906dccb790e862190bdd4d75a1078b2ac6a69835217a",
+      "restored_worlds": 18,
+      "restored_settlements": 30,
+      "actual_unique_participants": 10,
+      "pending_holds": 0,
+      "duplicate_match_player_settlements": 0,
+      "all_participants_equal_original_backend": true,
+      "scratch_DB_dropped": true
+    },
+    "reexecuted_for_this_report": false
+  },
+  "final_UI": {
+    "passed": true,
+    "classes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "locales": [
+      "zh-CN",
+      "en"
+    ],
+    "resolutions": [
+      "1920x1080",
+      "1280x720"
+    ],
+    "phases": [
+      "ActionBar",
+      "Pve",
+      "Pvp"
+    ],
+    "states": [
+      "rejected_wait",
+      "fresh_state_restored"
+    ],
+    "actual_frames": 72,
+    "checks": 360,
+    "text_inside_backing_checked": true,
+    "full_notice_rise_sweep_avoids_visible_Label_and_Button_text": true,
+    "layout_errors": 0,
+    "native_renderer_exit": 0,
+    "OOMKilled": false,
+    "resource_guard_stop": null,
+    "offline_network_none_no_real_accounts_or_worlds": true,
+    "all72_visual_reviewed_via6_sheets_and2_full_resolution_originals": true,
+    "full_G_original_files": 89,
+    "full_G_archive_bytes": 144682500,
+    "full_G_archive_SHA256": "cb9554a0fbde2c4babc21fe1b90661051958dfe918e6b1c30c51a8be69f89891",
+    "animation_and_reflow": {
+      "actual_checks_passed": 11,
+      "original_two_second_lifetime_not_restarted": true,
+      "repeated_wrapped_text_inside_backing": true,
+      "same_message_and_serial_and_tween_on_context_change": true
+    },
+    "reexecuted_for_this_report": false,
+    "ImageGen_needed": false,
+    "existing_style_accepted": true
+  },
+  "recorded_CI_source_scope": {
+    "source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "run": 40311272218,
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "CI_Linux_native_suites": 29,
+    "CI_Linux_native_named_checks": 436,
+    "tool_tests_passed": 612,
+    "cloud_ownership_tests_passed": 8
+  },
+  "GDD_and_protocol_context": {
+    "all6_current_file_SHA_equal_pinned": true,
+    "documents": [
+      {
+        "path": "GDD.md",
+        "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+      },
+      {
+        "path": "GDD_BASE_v0.69.md",
+        "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+      },
+      {
+        "path": "docs/README.md",
+        "sha256": "8ce1a8f11591d4de6c98ca4adf510a8966b83172f86ded7efce52b2731065399"
+      },
+      {
+        "path": "docs/CLIENT_IMPLEMENTATION_PLAN.md",
+        "sha256": "14b2018b8eb90ea12abf284eff8fdfee0e5fc14f06bf3d635850afed6cf2c58e"
+      },
+      {
+        "path": "docs/SERVER_SPEC.md",
+        "sha256": "9ca5f8f046e64694fd1962984ee7a6c7ee97f05970aad667a2c901e87bb03f19"
+      },
+      {
+        "path": "docs/END_TO_END_FLOW_AND_PROTOCOL.md",
+        "sha256": "9cfa008191669bea7fbbae4b8ee6ee42edd2e9cf4c1f41d388f0e60fc7a4c7c2"
+      }
+    ],
+    "legal_base_HP": {
+      "Priest": 80,
+      "Mage": 70,
+      "Guardian": 100
+    },
+    "legal80over70_sentinel_preserved": true,
+    "effective_HP_and_UI_denominator_must_be_checked_before_anomaly": true,
+    "rules_not_changed_for_capacity_waiver": true
+  },
+  "latest_DB_restore": {
+    "ok": true,
+    "restored_matches": 55,
+    "restored_settlements": 208,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 208,
+    "all_participants_equal_original_backend": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "backup_SHA256": "2b22070b50f94c8c7cfaede5b2c6c94533a9a89004f1efeaa73684fbb55d7086",
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "latest_owned_cloud_cleanup": {
+    "ok": true,
+    "own_stopped_containers_removed": 6,
+    "owned_network_removed": true,
+    "owned_fixture_directory_removed": true,
+    "no_new_study_SSH_key_was_granted": true,
+    "other_SSH_keys_untouched": true,
+    "G_every_original_member_and_actual_restore_verified": true,
+    "actual_freed_bytes": 192876544,
+    "cloud_available_bytes": 3677937664,
+    "cloud_disk_percent": 5.811243161579708,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true,
+    "shared_source_and_import_cache_retained": true,
+    "at_ns": 1793070632558344073
+  },
+  "SJH_physical_cleanup": {
+    "state": "Verified_physical_cleanup_completed_without_rewriting_original_failed_cleanup",
+    "source_thread": "01a17868-1e31-71ea-aec2-216a2c503033",
+    "source_turn": "01a17b57-f247-75e7-a2f3-24e9d6ab75cf",
+    "provenance": "Current read_thread tool evidence from original SJH execution",
+    "actual_native45_and_job8324_all_terminated": true,
+    "matching_native_handles_alive": [],
+    "original_exit3_and28forced_and_cleanupFalse_retained": true,
+    "worker21988_terminated": true,
+    "keepalive6484_terminated": true,
+    "SSH12344_terminated": true,
+    "test_ports_no_listener": true,
+    "temporary_private_key_deleted": true,
+    "private_configs_deleted": 6,
+    "bootstrap_private_bundle_deleted": true,
+    "unchanged_original_files_SHA_verified": 646,
+    "dependency_nonprivate_members_retained": 29,
+    "SJH_available_samples": [
+      20811800576,
+      20859797504,
+      20859138048
+    ],
+    "SJH_CPU_samples": [
+      6.9,
+      3.4,
+      0.6
+    ],
+    "other_projects_untouched": true,
+    "at_ns": 1793071212491128500
+  },
+  "memory_and_disk_protections": {
+    "windows_and_SJH": 6442450944,
+    "per_launch": 268435456,
+    "cloud": 500000000,
+    "cloud_disk_bytes": 3000000000,
+    "cloud_disk_percent": 5
+  },
+  "remaining_scope_boundaries": {
+    "human_experience": "Excluded_by_user",
+    "historical_missing_originals": "Prior_status_retained",
+    "real_fork": "NotExecuted_no_environment",
+    "candidate_benefit": "Inconclusive_candidates_not_enabled",
+    "default1200_duration": "NotPassed_original_fact_retained",
+    "original_strict_all_technical_gates_passed": false
+  },
+  "closeout": {
+    "all_native_and_owned_controls_terminated": true,
+    "all_available_originals_G_verified": true,
+    "missing_original_native_finals_not_recreated": true,
+    "temporary_credentials_removed": true,
+    "formal_service_identity_unchanged_at_recorded_closeout": true,
+    "formal_health_at_recorded_closeout_HTTP": 200,
+    "formal_DB_not_cleared": true,
+    "other_project_processes_untouched": true,
+    "no_new_load_started_for_report": true,
+    "no_more_capacity_rounds": true,
+    "resource_heartbeat_config_files_observed": [],
+    "active_goal_at_finalization": null
+  },
+  "supersedes_as_current_summary_only": "FINAL_USER_ACCEPTANCE_20261026.md",
+  "all_historical_verdict_files_immutable": true,
+  "input_manifest": [
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\FINAL_USER_ACCEPTANCE_20261026.md",
+      "bytes": 3243,
+      "sha256": "ad55b07fbc3955226101c6e24ca176ce5e63311044070347c5b4066421cd0d65"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\FINAL_USER_ACCEPTANCE_20261026.json",
+      "bytes": 14917,
+      "sha256": "e3124ef4b7ed1d5f028fc10a58180da449220f48a92467859d22969db7039a66"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\capacity50-r34-formal-repaired-accepted.json",
+      "bytes": 33798,
+      "sha256": "043109b2a602de72d8bc4bffb403da96593db81435bb404e11fb9106c115b8fb"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\current-mixed-normal-r20-passed.json",
+      "bytes": 2805,
+      "sha256": "7e527626ddf38e8b6ca5e2e17d01843412b50eaff5dc0f21bd5f2f7dbde6e9b5"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\notice-locale-final-r19.json",
+      "bytes": 4867,
+      "sha256": "39d7183219e1c41c11e9fbbbc8ff42ff3d678adc017aaae55ff2f5c0674c804e"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\R39_CPU_UNRESTRICTED_20261027.md",
+      "bytes": 3731,
+      "sha256": "5ef986eb9758e8e5effcde5c497da8e1766369a9042b2c038fe81a2627500f4a"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\R39_CPU_UNRESTRICTED_20261027.json",
+      "bytes": 4972,
+      "sha256": "773d19886d080a6d7545d86e39ec87ed61ee375eb8049157104768eb49411a98"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\foundation.json",
+      "bytes": 2690,
+      "sha256": "76fcacdaf94c65d88454cc4dde211e102fa1b9f8d510fa6c9b64d8a41ecd1a2e"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\postgres-rollback-recheck.json",
+      "bytes": 4742,
+      "sha256": "da3369238d11533a76d1463e10b3d0390de945b11595d00d4bd985479137df0c"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\summary.json",
+      "bytes": 27567,
+      "sha256": "eac1871058eea4b25dd6318fc7b2e8fed544a8df808dd2883bca80c4efad3d24"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\plans\\PR13_CONTINUATION_CONTEXT_20261025.md",
+      "bytes": 49135,
+      "sha256": "951693d15196faef4bbcff4b0556652d97fd6a0f5875fa47277c27b48c3367b2"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity100-SJH-CPU-unrestricted-20261027-r39\\final-completion-audit.derived.json",
+      "bytes": 523,
+      "sha256": "69736027474fa59d24238c45ae0519ce21f8fa47402d603431bdebcda2536f86"
+    },
+    {
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity100-SJH-CPU-unrestricted-20261027-r39\\SJH-physical-cleanup-confirmed.from-thread.derived.json",
+      "bytes": 1033,
+      "sha256": "55a869a95fb1515c3d38082abaf103bc3280b808e963ff73898174b4a810a695"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\GDD.md",
+      "bytes": 15047,
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\GDD_BASE_v0.69.md",
+      "bytes": 271379,
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\README.md",
+      "bytes": 7681,
+      "sha256": "8ce1a8f11591d4de6c98ca4adf510a8966b83172f86ded7efce52b2731065399"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\CLIENT_IMPLEMENTATION_PLAN.md",
+      "bytes": 6491,
+      "sha256": "14b2018b8eb90ea12abf284eff8fdfee0e5fc14f06bf3d635850afed6cf2c58e"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\SERVER_SPEC.md",
+      "bytes": 10372,
+      "sha256": "9ca5f8f046e64694fd1962984ee7a6c7ee97f05970aad667a2c901e87bb03f19"
+    },
+    {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\END_TO_END_FLOW_AND_PROTOCOL.md",
+      "bytes": 27042,
+      "sha256": "9cfa008191669bea7fbbae4b8ee6ee42edd2e9cf4c1f41d388f0e60fc7a4c7c2"
+    }
+  ],
+  "report_md": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-rebuild-20261024-r1\\continuation-20261025\\FINAL_USER_ACCEPTANCE_20261027.md",
+  "report_md_sha256": "0a2117f32675f03410eeebc1fb71875c246d480a3ddd33548a1709f6729f1680"
+}

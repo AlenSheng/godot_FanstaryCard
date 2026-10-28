@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-09",
+  "authority": "human",
+  "objective": "继续自动测试剩余项目，解决守护者对局超时；必要时调整云端临时限制执行多人容量测试；真人体验移出本次范围。",
+  "human_experience": {
+    "in_scope": false,
+    "previous_requirement": "6 名真人，每人 3 局",
+    "excluded_requirement_only": "真人参与、熟练度分层和主观体验问卷",
+    "automated_combat_render_and_metrics_remain_required": true,
+    "do_not_claim_human_tests_passed": true
+  },
+  "capacity": {
+    "in_scope_when_required": true,
+    "prior_deferred_policy_superseded": "docs/plans/PR13_TENCENT_CAPACITY_DEFERRED_20261009.json",
+    "temporary_cloud_admission_changes_authorized": true,
+    "record_effective_configuration_and_resource_limits": true,
+    "real_godot_clients_required": true,
+    "do_not_omit_sample_integrity_or_business_cleanup": true
+  },
+  "guardian_timeout": {
+    "resolution_required": true,
+    "original_failed_baseline_retained": "docs/reports/pr13-stages-20261009/S5-cloud-unrestricted-baseline",
+    "do_not_replace_failure_with_an_easier_scenario_or_drain_ack": true,
+    "compare_actual_combat_and_natural_cycles": true
+  },
+  "remaining_scope": [
+    "逐项核对 132 个子项的非真人验收层和已执行证据",
+    "真实客户端自然对局与清理",
+    "完整路线、Boss、PVP、职业与策略组合实验",
+    "真实渲染、提示和操作反馈",
+    "需要的 50/100 人容量与性能裁决",
+    "新测试逐事件对账及最终验收汇总"
+  ],
+  "execution": {
+    "server_and_native_components": "Tencent cloud",
+    "player_boundary": "actual Godot clients; local clients connect to cloud",
+    "delivery": "各阶段本地总结后直接提交并上传 release",
+    "draft_pull_request_required": false,
+    "production_candidates_default_off": true
+  }
+}

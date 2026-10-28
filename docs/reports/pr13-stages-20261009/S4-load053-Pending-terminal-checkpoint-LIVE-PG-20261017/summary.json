@@ -1,0 +1,313 @@
+{
+  "kind": "LOAD053T03ActualPendingTerminalCheckpointRecoverySTOP",
+  "task_id": "LOAD-05.3",
+  "canonical_case_id": "LOAD-05.3-T03",
+  "new_current_LIVE_support_passed": true,
+  "whole_task_state": "Partial",
+  "official_register_MAIN_gate_changes": false,
+  "counts_unchanged": {
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 77,
+  "rounds": [
+    {
+      "round": 6,
+      "native_ok": false,
+      "processes": [
+        {
+          "PID": 93216,
+          "exit": 1,
+          "timed_out": false,
+          "seconds": 89.95299999997951,
+          "terminal": true,
+          "mode": "pending"
+        }
+      ],
+      "UIDs": [
+        "01a14906-38f0-7911-a4fd-497c72f3ff55"
+      ],
+      "match_ids": [
+        "01a14906-dad9-751f-b705-b179c7b29a5f"
+      ],
+      "actual_restart": {
+        "old_PID": 7,
+        "old_exit": -9,
+        "new_PID": 24,
+        "health_live": 200,
+        "health_ready": 503,
+        "same_cached_runtime_SHA_verified": 21,
+        "server_SHA": "eaaa9c35c7c8e7b06760cc25fc6a68bc9c521752f3391295da3b5a3e2f62032e",
+        "same_private_DB_and_config": true,
+        "at_unix_ns": 1792226560902884276
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "4fae9ba63f22031d301dff51f8af7aadfa1162282b33f4914aac78b439354a9d",
+        "bytes": 135803,
+        "members_verified": 36,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      },
+      "precondition_failure": "actual reconnect establishes recovery match while holds Pending",
+      "business_STOP_test_reached": false
+    },
+    {
+      "round": 7,
+      "native_ok": false,
+      "processes": [
+        {
+          "PID": 79284,
+          "exit": 1,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 68.67200000002049
+        },
+        {
+          "PID": 67348,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 68.70300000021234
+        },
+        {
+          "PID": 131708,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 68.68700000015087
+        },
+        {
+          "PID": 106488,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 68.70299999997951
+        }
+      ],
+      "UIDs": [
+        "01a1490e-4434-7857-aa7e-e2179b9e7e58",
+        "01a1490e-4437-7367-9b0b-2da0813955ae",
+        "01a1490e-4437-739f-afba-61605d0a1696",
+        "01a1490e-451e-7bb1-b9d9-8d7891f08e18"
+      ],
+      "match_ids": [
+        "01a1490e-78ae-7369-a125-b93d9ec6c8e5"
+      ],
+      "actual_restart": {
+        "old_PID": 7,
+        "old_exit": -9,
+        "new_PID": 24,
+        "health_live": 200,
+        "health_ready": 503,
+        "same_cached_runtime_SHA_verified": 21,
+        "server_SHA": "eaaa9c35c7c8e7b06760cc25fc6a68bc9c521752f3391295da3b5a3e2f62032e",
+        "same_private_DB_and_config": true,
+        "at_unix_ns": 1792227066436016313
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "bc44fe2b4d03a8e18c75c75ac5318009424da433d2b0cbc21ea393364806c0a6",
+        "bytes": 139081,
+        "members_verified": 37,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      },
+      "precondition_failure": "actual reconnect establishes recovery match while holds Pending",
+      "business_STOP_test_reached": false
+    },
+    {
+      "round": 8,
+      "native_ok": true,
+      "processes": [
+        {
+          "PID": 119100,
+          "exit": 0,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 97.09400000004098
+        },
+        {
+          "PID": 39740,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 97.11000000010245
+        },
+        {
+          "PID": 12172,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 97.11000000010245
+        },
+        {
+          "PID": 103224,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 97.09400000004098
+        }
+      ],
+      "UIDs": [
+        "01a14915-1e87-71b3-9ea3-a793806140d2",
+        "01a14915-1e8f-758e-80a8-ffa5aff66ef9",
+        "01a14915-1e92-7f70-a117-8c026f41f713",
+        "01a14915-1f81-755a-82b4-62aab4b1f773"
+      ],
+      "match_ids": [
+        "01a14915-57ad-74d8-84cf-df681fb4752d"
+      ],
+      "actual_restart": {
+        "old_PID": 7,
+        "old_exit": -9,
+        "new_PID": 24,
+        "health_live": 200,
+        "health_ready": 503,
+        "same_cached_runtime_SHA_verified": 21,
+        "server_SHA": "eaaa9c35c7c8e7b06760cc25fc6a68bc9c521752f3391295da3b5a3e2f62032e",
+        "same_private_DB_and_config": true,
+        "at_unix_ns": 1792227517632709372
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "6d4de941fc64ff15a1f17172370b1caf611ee5ed11b353103d7bd3baedb162e9",
+        "bytes": 141902,
+        "members_verified": 41,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      },
+      "precondition_failure": null,
+      "business_STOP_test_reached": true
+    }
+  ],
+  "actual_new_matches": 3,
+  "conservative_new_player_starts": 12,
+  "whole_LOAD053_actual_matches": 5,
+  "whole_LOAD053_conservative_starts": 20,
+  "whole_task_self_cap": 8,
+  "goal_cap": 300,
+  "main_original_cancelled_cycles": 0,
+  "helper_functional_cycles_6_not_natural": 6,
+  "natural_or_capacity_or_human_claim": false,
+  "current_load_client_sha256": "6d75f801bb241ce395219b8628cba9d8e36fd396db5778a07700770e1da34b5c",
+  "new_product_source_changes": false,
+  "R8": {
+    "main_PID": 119100,
+    "match_id": "01a14915-57ad-74d8-84cf-df681fb4752d",
+    "player_id": "01a14915-1f81-755a-82b4-62aab4b1f773",
+    "receipt_id": "01a14915-7a60-7ac0-b76b-427a378e3bff",
+    "equipment_id": "8ed09e1c-7469-436c-b066-d1ce8997dee2",
+    "original_cleanup": "Unknown/client_terminal_pending",
+    "valid_effective_recovery_M": "01a14915-57ad-74d8-84cf-df681fb4752d",
+    "separate_lost_room_recovery_field": "",
+    "fresh_new_peer_snapshot_metadata_only_no_full_binary_replay_claim": [
+      {
+        "at_ms": 40264,
+        "at_unix_ms": 1792227520663,
+        "case": "cancel-boundary",
+        "event": "actual_snapshot_or_marker",
+        "kind": "room.snapshot",
+        "match_id": "01a14915-57ad-74d8-84cf-df681fb4752d",
+        "original_packet_passed_to_super_unchanged": true,
+        "request_id": "0b632feaaf58c5c13388d15f7a581960",
+        "room_id": "01a14915-57ad-7832-8320-ec59b6445a23",
+        "sequence": 2,
+        "source_packet_hex_sha256": "20901e86ee023dd75e8d464aa1bc649ee9907f8ffeb5ce5ac71d179ee1d328a0"
+      },
+      {
+        "at_ms": 40265,
+        "at_unix_ms": 1792227520664,
+        "case": "cancel-boundary",
+        "event": "actual_snapshot_or_marker",
+        "kind": "room.snapshot",
+        "match_id": "01a14915-57ad-74d8-84cf-df681fb4752d",
+        "original_packet_passed_to_super_unchanged": true,
+        "request_id": "2b239b43be6c3cc6af79e92f36c40f9e",
+        "room_id": "01a14915-57ad-7832-8320-ec59b6445a23",
+        "sequence": 3,
+        "source_packet_hex_sha256": "cd651476feed11a11fbc26264aa919619a7c5b0afd695f415381bcbe11efacbf"
+      }
+    ],
+    "hold_lineage_preserved": [
+      [
+        "01a14915-7a61-733e-b498-12c17983f220",
+        "01a14915-7a60-7ac0-b76b-427a378e3bff",
+        "01a14915-1f81-755a-82b4-62aab4b1f773",
+        "8ed09e1c-7469-436c-b066-d1ce8997dee2",
+        {
+          "IsSafe": false,
+          "AssetId": "8ed09e1c-7469-436c-b066-d1ce8997dee2",
+          "Quantity": 1,
+          "AssetKind": "Equipment",
+          "Equipment": null,
+          "Destination": "RelicPile"
+        }
+      ]
+    ],
+    "final_ACKs": 1,
+    "final_asset_movements": 3,
+    "eventual_manual_public_recovery_separate_from_original_cancelled_report": true
+  },
+  "criteria_interpretation_revision": {
+    "R6": "Assumed restart forces lost room and nonempty separate recovery field; current legitimate checkpoint did not meet fixture assumption; whole original failed",
+    "R7": "Even four real members Settled/match Completed, owned terminal fallback retains real Dead room; whole original failed",
+    "R8": "Docs require recoverable ID, not one internal field. Current _settlement_match_id retains M via real authoritative terminal checkpoint. Added post-restart marker plus fresh same-request-ID snapshot response, original Unknown while Pending, unchanged holds, once-only eventual assets/ACK. No raw flag assignment, no SUT fix and no old failure relabel."
+  },
+  "criteria_relaxed": false,
+  "initial_precondition_corrected_and_explicitly_disclosed": true,
+  "qualified_fallback_source": [
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs",
+      "cloud_actual_sha256": "572ad8b6df85105d3751e053b7648f8a3426a2c15abeaa7eb4c23df50017182d",
+      "local_actual_sha256": "572ad8b6df85105d3751e053b7648f8a3426a2c15abeaa7eb4c23df50017182d",
+      "qualification": "exact_raw",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs",
+      "cloud_actual_sha256": "0a2133af12944fd223cfc93bedf4880afc7d40d8a04877838a906b272fb465cb",
+      "local_actual_sha256": "a49896120fae716ec6ea0a32c10ed7f9bc30b40b7ae5fc0f502ddef28bf2d96f",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRegistry.cs",
+      "cloud_actual_sha256": "18ce62135a512269dde69d29edcf27c9fa03d4295f7d02b3973fea1c26eb1413",
+      "local_actual_sha256": "662c071d1b7973096f76035109565e4241c7ff7df90f208fa9f0257ceec0bd05",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs",
+      "cloud_actual_sha256": "c5a0ddb7e5602d0b4cb0c2eef94e26121fe81d3178008b67152c378bc0d132a0",
+      "local_actual_sha256": "294dd43aa0ab7982bcbfc501f5e96835a69bb211a807c3ffd03b16247ddc931a",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    }
+  ],
+  "cloud_resource_minimum": {
+    "disk_free_fraction": 0.14148563119528584,
+    "memory_available_fraction": 0.590929127269506
+  },
+  "old15percent_capacity_disk_unpassed": true,
+  "source_upload_bytes": 0,
+  "runtime_rebuilt": false,
+  "all_owned_resources_terminal_and_production_unchanged": true,
+  "G_originals": "G:\\PR13Evidence\\load053-Pending-terminal-checkpoint-LIVE-PG-20261017-originals",
+  "remaining": [
+    "Matched/entering wait cancellation before READY with original public cleanup",
+    "Active battle wait STOP, original legal drain/ACK and independent business cleanup",
+    "Full per-case/profile review before changing any official acceptance state"
+  ],
+  "unproven_suspected_lost_room_cleanup_bug_not_patched": true,
+  "independent_review_checks": 469,
+  "G_members_reverified": 409,
+  "local_disks_free_fraction": {
+    "C": 0.05220096756398011,
+    "G": 0.2148900712277903
+  },
+  "next_design": "remaining-await-design.json"
+}

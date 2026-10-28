@@ -1,0 +1,57 @@
+{
+  "kind": "Offline counterexamples and native-evidence collector validation; not live capacity acceptance",
+  "tests": 83,
+  "passed": 83,
+  "failed": 0,
+  "suites": {
+    "overlap": 35,
+    "full_capacity": 43,
+    "native_process_capture": 5
+  },
+  "tested_source_sha256": {
+    "tools/pr13_distributed_capacity.py": "8fa3b539849edd354badb94d258630f188136d0ab8f3677aff1b9a7b9234d755",
+    "tools/pr13_distributed_load.py": "c7cf5eb4a2a3cd5593a75031baba7e1dc86f2c0e282a73c2b32c6832e6d09106",
+    "tools/pr13_native_capture.py": "787b0fc66c847cfde8f33cdb37fe507679a0845d405af12784ddf5ff724c4d6f",
+    "tools/tests/test_pr13_distributed_capacity.py": "95663dece1f286f0ed1ad24743578afe7c427f287f899fb047e3cfbf75b3b457",
+    "tools/tests/test_pr13_distributed_load.py": "d009ca956b2566636fc503ce0985a5917804f4e2fedb4889d0c958968c9d3133",
+    "tools/tests/test_pr13_native_capture.py": "b9e13f3b64b882810edc7204d7922b8b29d8dc06ccb8e90013fc86a8697a3b8b"
+  },
+  "profiles": [
+    "Original exact50 full-native25plus25",
+    "Explicit larger60 full-native32plus28 retaining minimum50inroomactive27plus23"
+  ],
+  "guards_unchanged": {
+    "minimum_global_active": 50,
+    "joint_window_seconds": 600,
+    "coverage": 0.95,
+    "continuous_seconds": 120,
+    "per_host_hold_seconds": 720,
+    "maximum_gap_seconds": 20,
+    "Windows_memory_reserve_bytes": 6442450944,
+    "cloud_memory_reserve_bytes": 500000000,
+    "cloud_disk_minimum_bytes": 3000000000
+  },
+  "negative_cases_include": [
+    "60online but49globalactive",
+    "60online but below one host active partition",
+    "Reused authenticated user",
+    "Duplicate strategy seed partitions",
+    "Missing declared stronger population profile",
+    "Host memory below reserve",
+    "Impossible global human count above all60producers",
+    "Changed native binary or incomplete raw evidence",
+    "Contradictory original UTC cutoff captures"
+  ],
+  "actual50_R3_failed_report_preserved": true,
+  "whole_project_accepted": false,
+  "published_source_CI": {
+    "commit": "32e493a3da6745b34c8e7f41475d902288279b4f",
+    "workflow_run": 40134290798,
+    "jobs_passed": 4,
+    "tool_tests_passed": 446,
+    "cloud_ownership_tests_passed": 8,
+    "full_PostgreSQL_actual_passed": 418,
+    "PostgreSQL_not_executed": 0,
+    "report": "CI-distributed-tools-release.json"
+  }
+}

@@ -1,0 +1,1949 @@
+{
+  "algorithm_version": "pve-intrinsic-attribution-v1",
+  "algorithm_review_SHA": "3d37d3db9863c695b565f48f4e29ab7aed69fc9384ce9aaa55d5dfdff8c7c451",
+  "whole_review_SHA": "8d21b6c858288cea6f68921d950105c4f9c4db6c786694cbc355d69350715fc2",
+  "actual_monster_configs": {
+    "O1": [
+      {
+        "MonsterId": "fire-bat",
+        "MaximumHp": 78,
+        "Hp": 78,
+        "Shield": 0,
+        "AttackInterval": "00:00:03.6000000",
+        "ElementalAmplification": 0.1,
+        "Intents": [
+          {
+            "Kind": "Attack",
+            "Value": 3,
+            "Element": "Fire"
+          }
+        ],
+        "resistance": {
+          "None": 0,
+          "Fire": 0.15,
+          "Wood": 0,
+          "Earth": 0,
+          "Metal": 0.25,
+          "Water": -0.3
+        }
+      }
+    ],
+    "O6": [
+      {
+        "MonsterId": "fire-bat-a",
+        "MaximumHp": 42,
+        "Hp": 42,
+        "Shield": 0,
+        "AttackInterval": "00:00:03.6000000",
+        "ElementalAmplification": 0.1,
+        "Intents": [
+          {
+            "Kind": "Attack",
+            "Value": 2,
+            "Element": "Fire"
+          }
+        ],
+        "resistance": {
+          "None": 0,
+          "Fire": 0.15,
+          "Wood": 0,
+          "Earth": 0,
+          "Metal": 0.25,
+          "Water": -0.3
+        }
+      },
+      {
+        "MonsterId": "fire-bat-b",
+        "MaximumHp": 42,
+        "Hp": 42,
+        "Shield": 0,
+        "AttackInterval": "00:00:03.6000000",
+        "ElementalAmplification": 0.1,
+        "Intents": [
+          {
+            "Kind": "Attack",
+            "Value": 2,
+            "Element": "Fire"
+          }
+        ],
+        "resistance": {
+          "None": 0,
+          "Fire": 0.15,
+          "Wood": 0,
+          "Earth": 0,
+          "Metal": 0.25,
+          "Water": -0.3
+        }
+      }
+    ],
+    "E4": [
+      {
+        "MonsterId": "stone-guard",
+        "MaximumHp": 184,
+        "Hp": 184,
+        "Shield": 24,
+        "AttackInterval": "00:00:04.8000000",
+        "ElementalAmplification": 0.15,
+        "Intents": [
+          {
+            "Kind": "Attack",
+            "Value": 4,
+            "Element": "Earth"
+          },
+          {
+            "Kind": "Shield",
+            "Value": 14,
+            "Element": "None"
+          },
+          {
+            "Kind": "Attack",
+            "Value": 4,
+            "Element": "Earth"
+          },
+          {
+            "Kind": "Direct",
+            "Value": 7,
+            "Element": "None"
+          }
+        ],
+        "resistance": {
+          "None": 0,
+          "Fire": 0,
+          "Wood": -0.3,
+          "Earth": 0.25,
+          "Metal": 0.15,
+          "Water": 0.25
+        }
+      }
+    ]
+  },
+  "actual_group_outcomes_and_durations": [
+    {
+      "hero": "Mage",
+      "group": "O1",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        40.1,
+        44.5,
+        33.7
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        78,
+        78,
+        78
+      ]
+    },
+    {
+      "hero": "Mage",
+      "group": "O6",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        46.9,
+        51.300000000000004,
+        40.9
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        84,
+        84,
+        84
+      ]
+    },
+    {
+      "hero": "Mage",
+      "group": "E4",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        113.39999999999999,
+        113.39999999999999,
+        124.19999999999999
+      ],
+      "outcomes": [
+        "Death",
+        "Death",
+        "Death"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        70,
+        70,
+        84
+      ],
+      "damage60": [
+        116,
+        116,
+        111
+      ]
+    },
+    {
+      "hero": "Priest",
+      "group": "O1",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        60.1,
+        64.1,
+        60.1
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        78,
+        75,
+        78
+      ]
+    },
+    {
+      "hero": "Priest",
+      "group": "O6",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        60.1,
+        72.1,
+        60.1
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        84,
+        70,
+        84
+      ]
+    },
+    {
+      "hero": "Priest",
+      "group": "E4",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        260.8,
+        299.90000000000003,
+        242.79999999999998
+      ],
+      "outcomes": [
+        "Death",
+        "Death",
+        "Death"
+      ],
+      "all3_long_observation": true,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        154,
+        182,
+        154
+      ],
+      "damage60": [
+        84,
+        79,
+        76
+      ]
+    },
+    {
+      "hero": "Guardian",
+      "group": "O1",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        68.1,
+        52.1,
+        60.1
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        76,
+        78,
+        78
+      ]
+    },
+    {
+      "hero": "Guardian",
+      "group": "O6",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        68.1,
+        64.1,
+        68.1
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": false,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        0,
+        0,
+        0
+      ],
+      "damage60": [
+        71,
+        79,
+        80
+      ]
+    },
+    {
+      "hero": "Guardian",
+      "group": "E4",
+      "actual_seeds": [
+        755001,
+        755101,
+        755201
+      ],
+      "durations": [
+        348.1,
+        328.1,
+        348.1
+      ],
+      "outcomes": [
+        "Victory",
+        "Victory",
+        "Victory"
+      ],
+      "all3_long_observation": true,
+      "observed_enemy_HP_heals": [
+        0,
+        0,
+        0
+      ],
+      "observed_enemy_shield_gains": [
+        210,
+        196,
+        210
+      ],
+      "damage60": [
+        77,
+        83,
+        86
+      ]
+    }
+  ],
+  "specific_candidate": {
+    "state": "EligibleForIsolatedDiagnosticCandidate",
+    "whitelist": [
+      "E4/stone-guard"
+    ],
+    "actual_current_witnesses3": [
+      {
+        "hero": "Guardian",
+        "group": "E4",
+        "seed": 755001,
+        "outcome": "Victory",
+        "seconds": 348.1,
+        "long_observation_ge240": true,
+        "actions": 32,
+        "effective_actions": 32,
+        "damage60": 77,
+        "total_effective_damage": 418,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 3.2,
+          "empty_hand": 109.2,
+          "visible_build_hold_on_decision_step": 58.7,
+          "await_400ms_action_step": 177.0
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 348.10000000001065,
+        "source_NoCardsSeconds": 109.19999999999807,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "stone-guard",
+            "actual_openingHP": 184,
+            "actual_openingShield": 24,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 210,
+            "actual_HP_damage": 184,
+            "actual_shield_damage": 234,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 5.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "ed681b36f429708c057ac87a9ef528ccc2c983d8eea58e8171178d34e4c862c8",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 3515,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      },
+      {
+        "hero": "Guardian",
+        "group": "E4",
+        "seed": 755101,
+        "outcome": "Victory",
+        "seconds": 328.1,
+        "long_observation_ge240": true,
+        "actions": 29,
+        "effective_actions": 29,
+        "damage60": 83,
+        "total_effective_damage": 404,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 2.9,
+          "await_400ms_action_step": 165.0,
+          "visible_build_hold_on_decision_step": 54.9,
+          "empty_hand": 105.3
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 328.1000000000061,
+        "source_NoCardsSeconds": 105.29999999999829,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "stone-guard",
+            "actual_openingHP": 184,
+            "actual_openingShield": 24,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 196,
+            "actual_HP_damage": 184,
+            "actual_shield_damage": 220,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 4.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "2772944d4148bcbb43d6d5f1a23d5d6f58d1efde105be8275d9cd2e77d166dd5",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 3312,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      },
+      {
+        "hero": "Guardian",
+        "group": "E4",
+        "seed": 755201,
+        "outcome": "Victory",
+        "seconds": 348.1,
+        "long_observation_ge240": true,
+        "actions": 32,
+        "effective_actions": 32,
+        "damage60": 86,
+        "total_effective_damage": 418,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 3.2,
+          "empty_hand": 97.5,
+          "visible_build_hold_on_decision_step": 61.4,
+          "await_400ms_action_step": 186.0
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 348.10000000001065,
+        "source_NoCardsSeconds": 97.49999999999874,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "stone-guard",
+            "actual_openingHP": 184,
+            "actual_openingShield": 24,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 210,
+            "actual_HP_damage": 184,
+            "actual_shield_damage": 234,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 4.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "3017ceede59bc9725bfee8de77c0d690349008341fd71cca2f56f32c5c6f5570",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 3515,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      }
+    ],
+    "ordinary_samehero_seed_controls3": [
+      {
+        "hero": "Guardian",
+        "group": "O1",
+        "seed": 755001,
+        "outcome": "Victory",
+        "seconds": 68.1,
+        "long_observation_ge240": false,
+        "actions": 8,
+        "effective_actions": 8,
+        "damage60": 76,
+        "total_effective_damage": 78,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 0.8,
+          "empty_hand": 15.6,
+          "visible_build_hold_on_decision_step": 12.7,
+          "await_400ms_action_step": 39.0
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 68.1000000000004,
+        "source_NoCardsSeconds": 15.59999999999996,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "fire-bat",
+            "actual_openingHP": 78,
+            "actual_openingShield": 0,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 0,
+            "actual_HP_damage": 78,
+            "actual_shield_damage": 0,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 1.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "56cb64f16c60a57a60bc774203f84156035d36e646601626e99c65672ceb7a57",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 691,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      },
+      {
+        "hero": "Guardian",
+        "group": "O1",
+        "seed": 755101,
+        "outcome": "Victory",
+        "seconds": 52.1,
+        "long_observation_ge240": false,
+        "actions": 6,
+        "effective_actions": 6,
+        "damage60": 78,
+        "total_effective_damage": 78,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 0.6,
+          "await_400ms_action_step": 27.0,
+          "visible_build_hold_on_decision_step": 8.9,
+          "empty_hand": 15.6
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 52.10000000000047,
+        "source_NoCardsSeconds": 15.59999999999996,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "fire-bat",
+            "actual_openingHP": 78,
+            "actual_openingShield": 0,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 0,
+            "actual_HP_damage": 78,
+            "actual_shield_damage": 0,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 0.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "8564e7db058577f17ff463019b4ffec52c621f7be9010dadb93af412ac7cab3f",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 529,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      },
+      {
+        "hero": "Guardian",
+        "group": "O1",
+        "seed": 755201,
+        "outcome": "Victory",
+        "seconds": 60.1,
+        "long_observation_ge240": false,
+        "actions": 6,
+        "effective_actions": 6,
+        "damage60": 78,
+        "total_effective_damage": 78,
+        "preview_purity_parity_checks": 3,
+        "preaction_mutually_exclusive_wait_seconds": {
+          "committed_play": 0.6,
+          "empty_hand": 19.5,
+          "visible_build_hold_on_decision_step": 10.0,
+          "await_400ms_action_step": 30.0
+        },
+        "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+        "source_NoCardsSeconds": 19.500000000000007,
+        "source_control_occupancy_seconds": 0,
+        "monster_ledgers": [
+          {
+            "monster_id": "fire-bat",
+            "actual_openingHP": 78,
+            "actual_openingShield": 0,
+            "observed_HP_healed": 0,
+            "observed_shield_generated": 0,
+            "actual_HP_damage": 78,
+            "actual_shield_damage": 0,
+            "finalHP": 0,
+            "finalShield": 0,
+            "observed_surviving_control_seconds": 1.0
+          }
+        ],
+        "final_pool_size": 21,
+        "defeated_monsters": 1,
+        "trace_SHA": "9df90e6261135346345fbac87c04c8a2fdbe0e934752b7da2e205ce738d4d2a6",
+        "trace_gzip_CRC_verified": true,
+        "trace_events": 609,
+        "no_network_in_intrinsic_model_not_WAN_claim": true
+      }
+    ],
+    "cause": "OpeningHP184/shield24 plus196–210actuallygeneratedshield yield404–418durabilityin3finiteGuardianvictories. NoenemyHPhealobserved. Buildcadence/draw/hold remainreported; no claimHPalonecauses duration.",
+    "downstream": "Pre-registeronefactoratB052; HPandfirsttelegraph separate; nofulltable/attacknerf; noefficacy recommendation bythisdiagnosticcohort.",
+    "notPrimaryBudgetMet": true,
+    "not_safe_forallclasses": true,
+    "current_Mage_E4_deaths3_Priest_E4_deaths3_kept": true,
+    "transport_scope": "IntrinsicactualDomainmodel hasnotransport; removesnetworkasfactorinthesecontrolledtraces, doesnotdiagnosehistoricalWANfallbackcause.",
+    "production_activation": false,
+    "production_defaults_retained": true,
+    "diagnostic_posthoc_attribution_not_preregistered_benefittest": true
+  },
+  "actual_permonster_ledgers_and_wait": [
+    {
+      "hero": "Mage",
+      "group": "O1",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 40.1,
+      "long_observation_ge240": false,
+      "actions": 5,
+      "effective_actions": 5,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.5,
+        "empty_hand": 10.7,
+        "visible_build_hold_on_decision_step": 7.0,
+        "await_400ms_action_step": 21.9
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 39.20000000000029,
+      "source_NoCardsSeconds": 10.699999999999978,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "9f42719b7b6e9c47827e833c5b9e6eba7041d12337dc53044465ac57a39cde2e",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 408,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "O1",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 44.5,
+      "long_observation_ge240": false,
+      "actions": 7,
+      "effective_actions": 7,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.7,
+        "await_400ms_action_step": 33.3,
+        "visible_build_hold_on_decision_step": 10.5
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 43.60000000000035,
+      "source_NoCardsSeconds": 0,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "706de51c352e9a796e93979ace38a4c6527bbf43a9df691f7d77d785f28d6995",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 454,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "O1",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 33.7,
+      "long_observation_ge240": false,
+      "actions": 4,
+      "effective_actions": 4,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.4,
+        "empty_hand": 8.5,
+        "await_400ms_action_step": 18.8,
+        "visible_build_hold_on_decision_step": 6.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 32.9000000000002,
+      "source_NoCardsSeconds": 8.499999999999986,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "c6f575cb7425f691b9b2c48ec684228ae1be1c71bfd699d5041a2a7832043c01",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 343,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "O6",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 46.9,
+      "long_observation_ge240": false,
+      "actions": 6,
+      "effective_actions": 6,
+      "damage60": 84,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.6,
+        "empty_hand": 10.7,
+        "visible_build_hold_on_decision_step": 8.6,
+        "await_400ms_action_step": 27.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 45.70000000000038,
+      "source_NoCardsSeconds": 10.699999999999978,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "bb6c86e76884715526eeafdef23e9b5fc008667af0ac0151b9b705968e8471ea",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 477,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "O6",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 51.300000000000004,
+      "long_observation_ge240": false,
+      "actions": 8,
+      "effective_actions": 8,
+      "damage60": 84,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.8,
+        "await_400ms_action_step": 38.4,
+        "visible_build_hold_on_decision_step": 12.1
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 50.400000000000446,
+      "source_NoCardsSeconds": 0,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "515852b1df3491c2a631d12d42be238b9708363c95dd3ffaa95d5b2ed25b18b8",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 523,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "O6",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 40.9,
+      "long_observation_ge240": false,
+      "actions": 5,
+      "effective_actions": 5,
+      "damage60": 84,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.5,
+        "empty_hand": 11.5,
+        "await_400ms_action_step": 21.9,
+        "visible_build_hold_on_decision_step": 7.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 40.0000000000003,
+      "source_NoCardsSeconds": 11.499999999999975,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "a76c31821143f566c0217cb173e11b8122539373297323ca50b5ad11fcaa4d56",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 416,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "E4",
+      "seed": 755001,
+      "outcome": "Death",
+      "seconds": 113.39999999999999,
+      "long_observation_ge240": false,
+      "actions": 21,
+      "effective_actions": 20,
+      "damage60": 116,
+      "total_effective_damage": 210,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 2.1,
+        "empty_hand": 29.1,
+        "await_400ms_action_step": 63.0,
+        "visible_build_hold_on_decision_step": 19.2
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 89.1999999999992,
+      "source_NoCardsSeconds": 29.100000000000144,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 70,
+          "actual_HP_damage": 116,
+          "actual_shield_damage": 94,
+          "finalHP": 68,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "ca5fcd60d3fed5b6fb34c529ec2a272c817013184d250cb6a28475865b29d3e7",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 1157,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "E4",
+      "seed": 755101,
+      "outcome": "Death",
+      "seconds": 113.39999999999999,
+      "long_observation_ge240": false,
+      "actions": 23,
+      "effective_actions": 22,
+      "damage60": 116,
+      "total_effective_damage": 218,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 2.3,
+        "await_400ms_action_step": 66.8,
+        "visible_build_hold_on_decision_step": 20.4,
+        "empty_hand": 23.9
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 85.39999999999942,
+      "source_NoCardsSeconds": 23.90000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 70,
+          "actual_HP_damage": 124,
+          "actual_shield_damage": 94,
+          "finalHP": 60,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "5a2b60dc8bba3bee22e79eff70dbc0ef2b9b1d1c6286569afe4788e6cfc2651e",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 1159,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Mage",
+      "group": "E4",
+      "seed": 755201,
+      "outcome": "Death",
+      "seconds": 124.19999999999999,
+      "long_observation_ge240": false,
+      "actions": 20,
+      "effective_actions": 19,
+      "damage60": 111,
+      "total_effective_damage": 230,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 2.0,
+        "empty_hand": 37.6,
+        "await_400ms_action_step": 64.3,
+        "visible_build_hold_on_decision_step": 20.3
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 100.99999999999854,
+      "source_NoCardsSeconds": 37.600000000000264,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 84,
+          "actual_HP_damage": 131,
+          "actual_shield_damage": 99,
+          "finalHP": 53,
+          "finalShield": 9,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "224caaed400c5990ece5153222f384bd9e020de94de5a82fd75adad79364ad9d",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 1264,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O1",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 60.1,
+      "long_observation_ge240": false,
+      "actions": 7,
+      "effective_actions": 7,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.7,
+        "await_400ms_action_step": 36.0,
+        "visible_build_hold_on_decision_step": 11.7,
+        "empty_hand": 11.7
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+      "source_NoCardsSeconds": 11.699999999999974,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.329
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "2f41e9e8e620162888785dc330aef568ee554651d386bee4dcd80336e64c11a6",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 610,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O1",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 64.1,
+      "long_observation_ge240": false,
+      "actions": 9,
+      "effective_actions": 9,
+      "damage60": 75,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.9,
+        "await_400ms_action_step": 48.0,
+        "visible_build_hold_on_decision_step": 15.2
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 64.10000000000063,
+      "source_NoCardsSeconds": 0,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "697d02d49facb034718e9acb91fac22188b4bc1310e3344891793fd1e73f4759",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 652,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O1",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 60.1,
+      "long_observation_ge240": false,
+      "actions": 6,
+      "effective_actions": 6,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.6,
+        "empty_hand": 19.5,
+        "visible_build_hold_on_decision_step": 10.0,
+        "await_400ms_action_step": 30.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+      "source_NoCardsSeconds": 19.500000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.373
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "a9193bc50ccf6962006d4921e15c92bb8b5cc05ce3e373ccec266eb5e5b80dd2",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 609,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O6",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 60.1,
+      "long_observation_ge240": false,
+      "actions": 7,
+      "effective_actions": 7,
+      "damage60": 84,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.7,
+        "await_400ms_action_step": 36.0,
+        "visible_build_hold_on_decision_step": 11.7,
+        "empty_hand": 11.7
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+      "source_NoCardsSeconds": 11.699999999999974,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "e64319d5398406bffec47a3cc9135fd46762a3c0e883f20785ff28b42063217a",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 610,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O6",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 72.1,
+      "long_observation_ge240": false,
+      "actions": 10,
+      "effective_actions": 10,
+      "damage60": 70,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 1.0,
+        "await_400ms_action_step": 54.0,
+        "visible_build_hold_on_decision_step": 17.1
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 72.10000000000018,
+      "source_NoCardsSeconds": 0,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.354
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "8c6e8f399d832832dd9eda6df9f01e44bb360d563850b91f7365d50e956eb7ca",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 733,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "O6",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 60.1,
+      "long_observation_ge240": false,
+      "actions": 6,
+      "effective_actions": 6,
+      "damage60": 84,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.6,
+        "empty_hand": 19.5,
+        "visible_build_hold_on_decision_step": 10.0,
+        "await_400ms_action_step": 30.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+      "source_NoCardsSeconds": 19.500000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.373
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "40306e8869a918756555560ce2ef139eeac52440c2142b8c2ec9569f61509b90",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 609,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "E4",
+      "seed": 755001,
+      "outcome": "Death",
+      "seconds": 260.8,
+      "long_observation_ge240": true,
+      "actions": 40,
+      "effective_actions": 38,
+      "damage60": 84,
+      "total_effective_damage": 321,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 4.0,
+        "await_400ms_action_step": 152.7,
+        "visible_build_hold_on_decision_step": 47.7,
+        "empty_hand": 56.4
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 211.59999999999226,
+      "source_NoCardsSeconds": 56.40000000000053,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 154,
+          "actual_HP_damage": 143,
+          "actual_shield_damage": 178,
+          "finalHP": 41,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 6.046
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "531b686b36cdf5a233d0113b198d0ffedd6dcf084e7901b5a3f9acfdccaaeb25",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 2650,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "E4",
+      "seed": 755101,
+      "outcome": "Death",
+      "seconds": 299.90000000000003,
+      "long_observation_ge240": true,
+      "actions": 47,
+      "effective_actions": 46,
+      "damage60": 79,
+      "total_effective_damage": 375,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 4.7,
+        "await_400ms_action_step": 185.3,
+        "visible_build_hold_on_decision_step": 57.8,
+        "empty_hand": 52.1
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 246.59999999999027,
+      "source_NoCardsSeconds": 52.10000000000047,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 182,
+          "actual_HP_damage": 169,
+          "actual_shield_damage": 206,
+          "finalHP": 15,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 5.958
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "54d6c016593af14a9beb5259b363807c2d3c3bd1d4e94d26c382c2d29d8fa4b5",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 3048,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Priest",
+      "group": "E4",
+      "seed": 755201,
+      "outcome": "Death",
+      "seconds": 242.79999999999998,
+      "long_observation_ge240": true,
+      "actions": 39,
+      "effective_actions": 37,
+      "damage60": 76,
+      "total_effective_damage": 318,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 3.9,
+        "empty_hand": 73.0,
+        "visible_build_hold_on_decision_step": 39.5,
+        "await_400ms_action_step": 126.4
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 188.1999999999936,
+      "source_NoCardsSeconds": 73.00000000000013,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 154,
+          "actual_HP_damage": 140,
+          "actual_shield_damage": 178,
+          "finalHP": 44,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 2.912
+        }
+      ],
+      "final_pool_size": 20,
+      "defeated_monsters": 0,
+      "trace_SHA": "dd0335f3c50cbc81f67b919eb28a87f67bb4680f5eed5432119250805e167b39",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 2469,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O1",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 68.1,
+      "long_observation_ge240": false,
+      "actions": 8,
+      "effective_actions": 8,
+      "damage60": 76,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.8,
+        "empty_hand": 15.6,
+        "visible_build_hold_on_decision_step": 12.7,
+        "await_400ms_action_step": 39.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 68.1000000000004,
+      "source_NoCardsSeconds": 15.59999999999996,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "56cb64f16c60a57a60bc774203f84156035d36e646601626e99c65672ceb7a57",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 691,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O1",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 52.1,
+      "long_observation_ge240": false,
+      "actions": 6,
+      "effective_actions": 6,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.6,
+        "await_400ms_action_step": 27.0,
+        "visible_build_hold_on_decision_step": 8.9,
+        "empty_hand": 15.6
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 52.10000000000047,
+      "source_NoCardsSeconds": 15.59999999999996,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "8564e7db058577f17ff463019b4ffec52c621f7be9010dadb93af412ac7cab3f",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 529,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O1",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 60.1,
+      "long_observation_ge240": false,
+      "actions": 6,
+      "effective_actions": 6,
+      "damage60": 78,
+      "total_effective_damage": 78,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.6,
+        "empty_hand": 19.5,
+        "visible_build_hold_on_decision_step": 10.0,
+        "await_400ms_action_step": 30.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 60.100000000000584,
+      "source_NoCardsSeconds": 19.500000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat",
+          "actual_openingHP": 78,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 78,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "9df90e6261135346345fbac87c04c8a2fdbe0e934752b7da2e205ce738d4d2a6",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 609,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O6",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 68.1,
+      "long_observation_ge240": false,
+      "actions": 8,
+      "effective_actions": 8,
+      "damage60": 71,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.8,
+        "empty_hand": 15.6,
+        "visible_build_hold_on_decision_step": 12.7,
+        "await_400ms_action_step": 39.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 68.1000000000004,
+      "source_NoCardsSeconds": 15.59999999999996,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "9491a41d21a3e6b980d169275544110f077519b0383cf2ecbc29d5b6d991b86d",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 691,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O6",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 64.1,
+      "long_observation_ge240": false,
+      "actions": 7,
+      "effective_actions": 7,
+      "damage60": 79,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.7,
+        "await_400ms_action_step": 33.0,
+        "visible_build_hold_on_decision_step": 10.9,
+        "empty_hand": 19.5
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 64.10000000000063,
+      "source_NoCardsSeconds": 19.500000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "9dc35a2d4629610bf540e67efd47fc75722b92f66e260e82d969e101b13fd5bd",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 650,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "O6",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 68.1,
+      "long_observation_ge240": false,
+      "actions": 7,
+      "effective_actions": 7,
+      "damage60": 80,
+      "total_effective_damage": 84,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 0.7,
+        "empty_hand": 19.5,
+        "visible_build_hold_on_decision_step": 11.9,
+        "await_400ms_action_step": 36.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 68.1000000000004,
+      "source_NoCardsSeconds": 19.500000000000007,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "fire-bat-a",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 0.0
+        },
+        {
+          "monster_id": "fire-bat-b",
+          "actual_openingHP": 42,
+          "actual_openingShield": 0,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 0,
+          "actual_HP_damage": 42,
+          "actual_shield_damage": 0,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 1.0
+        }
+      ],
+      "final_pool_size": 22,
+      "defeated_monsters": 2,
+      "trace_SHA": "37aa97578a7acb102df70ee3504248426ad76fb69b352582e92f6533328ed400",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 690,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "E4",
+      "seed": 755001,
+      "outcome": "Victory",
+      "seconds": 348.1,
+      "long_observation_ge240": true,
+      "actions": 32,
+      "effective_actions": 32,
+      "damage60": 77,
+      "total_effective_damage": 418,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 3.2,
+        "empty_hand": 109.2,
+        "visible_build_hold_on_decision_step": 58.7,
+        "await_400ms_action_step": 177.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 348.10000000001065,
+      "source_NoCardsSeconds": 109.19999999999807,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 210,
+          "actual_HP_damage": 184,
+          "actual_shield_damage": 234,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 5.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "ed681b36f429708c057ac87a9ef528ccc2c983d8eea58e8171178d34e4c862c8",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 3515,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "E4",
+      "seed": 755101,
+      "outcome": "Victory",
+      "seconds": 328.1,
+      "long_observation_ge240": true,
+      "actions": 29,
+      "effective_actions": 29,
+      "damage60": 83,
+      "total_effective_damage": 404,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 2.9,
+        "await_400ms_action_step": 165.0,
+        "visible_build_hold_on_decision_step": 54.9,
+        "empty_hand": 105.3
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 328.1000000000061,
+      "source_NoCardsSeconds": 105.29999999999829,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 196,
+          "actual_HP_damage": 184,
+          "actual_shield_damage": 220,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 4.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "2772944d4148bcbb43d6d5f1a23d5d6f58d1efde105be8275d9cd2e77d166dd5",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 3312,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    },
+    {
+      "hero": "Guardian",
+      "group": "E4",
+      "seed": 755201,
+      "outcome": "Victory",
+      "seconds": 348.1,
+      "long_observation_ge240": true,
+      "actions": 32,
+      "effective_actions": 32,
+      "damage60": 86,
+      "total_effective_damage": 418,
+      "preview_purity_parity_checks": 3,
+      "preaction_mutually_exclusive_wait_seconds": {
+        "committed_play": 3.2,
+        "empty_hand": 97.5,
+        "visible_build_hold_on_decision_step": 61.4,
+        "await_400ms_action_step": 186.0
+      },
+      "source_StrategyHoldSeconds_not_added_to_empty_time": 348.10000000001065,
+      "source_NoCardsSeconds": 97.49999999999874,
+      "source_control_occupancy_seconds": 0,
+      "monster_ledgers": [
+        {
+          "monster_id": "stone-guard",
+          "actual_openingHP": 184,
+          "actual_openingShield": 24,
+          "observed_HP_healed": 0,
+          "observed_shield_generated": 210,
+          "actual_HP_damage": 184,
+          "actual_shield_damage": 234,
+          "finalHP": 0,
+          "finalShield": 0,
+          "observed_surviving_control_seconds": 4.0
+        }
+      ],
+      "final_pool_size": 21,
+      "defeated_monsters": 1,
+      "trace_SHA": "3017ceede59bc9725bfee8de77c0d690349008341fd71cca2f56f32c5c6f5570",
+      "trace_gzip_CRC_verified": true,
+      "trace_events": 3515,
+      "no_network_in_intrinsic_model_not_WAN_claim": true
+    }
+  ],
+  "no_stated_empiricalP95_is_population_precision_guarantee": true
+}

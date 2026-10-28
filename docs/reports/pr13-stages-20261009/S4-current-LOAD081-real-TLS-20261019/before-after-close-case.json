@@ -1,0 +1,742 @@
+{
+  "before": {
+    "cases": [
+      {
+        "body_bytes": 524,
+        "body_sha256": "7953f84a925f6fdc306fd6c8605235e9e4b025a159efe70a0b3d94342f19a7c0",
+        "elapsed_ms": 88,
+        "expected_success": true,
+        "label": "keep-first",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/keep-one",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 524,
+        "body_sha256": "8d1657106677f0d44ef1f4a450f1010052980239497818551ccba9bee206676a",
+        "elapsed_ms": 49,
+        "expected_success": true,
+        "label": "keep-second",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/keep-two",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 262163,
+        "body_sha256": "162050b35d15629e23ca49cc33496e7108e46dfe0de53c35ad8b34ab29b21266",
+        "elapsed_ms": 116,
+        "expected_success": true,
+        "label": "full-close-late",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/full-close-late",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 63,
+        "expected_success": true,
+        "label": "after-close-late",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/after-close-late",
+        "result": 4,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 262158,
+        "body_sha256": "d91afde8ee027cee9cca00ff10676db9cdf025f3d9610a882645ddd2efb57c10",
+        "elapsed_ms": 151,
+        "expected_success": true,
+        "label": "full-close",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/full-close",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 527,
+        "body_sha256": "613b32b4e7698b340621c32a6e80b16b06d7e47b25bc6871659ffa9a85f2a1d0",
+        "elapsed_ms": 81,
+        "expected_success": true,
+        "label": "after-close",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/after-close",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 527,
+        "body_sha256": "d2ba89f5ddc5811572111542817609d7273626619f61598dadc599fa3d704305",
+        "elapsed_ms": 116,
+        "expected_success": true,
+        "label": "chunk-valid",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/chunk-valid",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 59,
+        "expected_success": false,
+        "label": "length-cut",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/length-cut",
+        "result": 1,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 78,
+        "expected_success": false,
+        "label": "chunk-cut",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/chunk-cut",
+        "result": 1,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 100,
+        "expected_success": false,
+        "label": "chunk-no-end",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/chunk-no-end",
+        "result": 4,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 599,
+        "expected_success": false,
+        "label": "oversize",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/oversize",
+        "result": 7,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 82,
+        "expected_success": false,
+        "label": "gzip-bomb",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/gzip-bomb",
+        "result": 7,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 23,
+        "expected_success": false,
+        "label": "untrusted-ca",
+        "origin": "https://127.0.0.1:5952",
+        "path": "/bad-ca",
+        "result": 2,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 33,
+        "expected_success": false,
+        "label": "wrong-hostname",
+        "origin": "https://127.0.0.1:5951",
+        "path": "/bad-name",
+        "result": 2,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 532,
+        "body_sha256": "d22db80c77676f79f34259dd082577f3a3bd109249df6134f0ed7aa1ffe194cd",
+        "elapsed_ms": 85,
+        "expected_success": true,
+        "label": "credential-a",
+        "origin": "https://127.0.0.1:5946",
+        "path": "/origin-session-a",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 532,
+        "body_sha256": "16e24451b714a42ebf714e33a6411eb88f38c16754e68383aa6dbf7694d6a58c",
+        "elapsed_ms": 83,
+        "expected_success": true,
+        "label": "credential-b",
+        "origin": "https://127.0.0.1:5947",
+        "path": "/origin-session-b",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 535,
+        "body_sha256": "268ac9e0eb45a53b55529f736885a2964c77a30270c961e8b32d004fd98b4731",
+        "elapsed_ms": 50,
+        "expected_success": true,
+        "label": "session-next",
+        "origin": "https://127.0.0.1:5947",
+        "path": "/origin-session-next",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      }
+    ],
+    "checks": [
+      {
+        "name": "actual headless backend",
+        "passed": true
+      },
+      {
+        "name": "fixture CA configured without verification bypass",
+        "passed": false
+      },
+      {
+        "name": "keep-first exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "keep-second exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "sequential complete requests report actual reuse",
+        "passed": true
+      },
+      {
+        "name": "full-close-late exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "after-close-late exact complete body succeeds",
+        "passed": false
+      },
+      {
+        "name": "Connection close header reconnects even before delayed FIN",
+        "passed": true
+      },
+      {
+        "name": "full-close exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "after-close exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "complete body plus peer close next request reconnects",
+        "passed": true
+      },
+      {
+        "name": "chunk-valid exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "length-cut rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "chunk-cut rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "chunk-no-end rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "oversize rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "over2MiB body rejected by unchanged bound",
+        "passed": true
+      },
+      {
+        "name": "gzip-bomb rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "gzip expansion above2MiB rejected",
+        "passed": true
+      },
+      {
+        "name": "untrusted-ca rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "wrong-hostname rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "credential-a exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "credential-b exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "session-next exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "actual Gateway shared TLS complete result 0",
+        "passed": true
+      },
+      {
+        "name": "actual Gateway shared TLS complete result 1",
+        "passed": true
+      },
+      {
+        "name": "actual per-request rollback TLS result 0",
+        "passed": true
+      },
+      {
+        "name": "actual per-request rollback TLS result 1",
+        "passed": true
+      },
+      {
+        "name": "actual overlapping Gateway TLS requests complete separately",
+        "passed": true
+      }
+    ],
+    "gateway_overlap_results": {
+      "one": {
+        "body_bytes": 59,
+        "data": {
+          "complete": true,
+          "marker": "owned-tls-fixture",
+          "server": "a"
+        },
+        "decode_ms": 0.0,
+        "decode_worker": false,
+        "error": "服务器不可用，请检查地址与服务器状态",
+        "headers": [
+          "Content-Type: application/json",
+          "Connection: keep-alive",
+          "Content-Length: 59"
+        ],
+        "ok": true,
+        "status": 200
+      },
+      "two": {
+        "body_bytes": 59,
+        "data": {
+          "complete": true,
+          "marker": "owned-tls-fixture",
+          "server": "a"
+        },
+        "decode_ms": 0.0,
+        "decode_worker": false,
+        "error": "服务器不可用，请检查地址与服务器状态",
+        "headers": [
+          "Content-Type: application/json",
+          "Connection: keep-alive",
+          "Content-Length: 59"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "local_visible_windows": 0,
+    "new_accounts": 0,
+    "new_worlds": 0,
+    "ok": false,
+    "privateCA_no_systemtrust_change": true,
+    "production_source_unmodified_before_probe": true
+  },
+  "after": {
+    "cases": [
+      {
+        "body_bytes": 524,
+        "body_sha256": "7953f84a925f6fdc306fd6c8605235e9e4b025a159efe70a0b3d94342f19a7c0",
+        "elapsed_ms": 86,
+        "expected_success": true,
+        "label": "keep-first",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/keep-one",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 524,
+        "body_sha256": "8d1657106677f0d44ef1f4a450f1010052980239497818551ccba9bee206676a",
+        "elapsed_ms": 40,
+        "expected_success": true,
+        "label": "keep-second",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/keep-two",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 262163,
+        "body_sha256": "162050b35d15629e23ca49cc33496e7108e46dfe0de53c35ad8b34ab29b21266",
+        "elapsed_ms": 108,
+        "expected_success": true,
+        "label": "full-close-late",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/full-close-late",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 532,
+        "body_sha256": "95721c222045fe7ac5ded1c74faeb7e673ef51ddcd4a511aed54ed18387b49c0",
+        "elapsed_ms": 74,
+        "expected_success": true,
+        "label": "after-close-late",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/after-close-late",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 262158,
+        "body_sha256": "d91afde8ee027cee9cca00ff10676db9cdf025f3d9610a882645ddd2efb57c10",
+        "elapsed_ms": 144,
+        "expected_success": true,
+        "label": "full-close",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/full-close",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 527,
+        "body_sha256": "613b32b4e7698b340621c32a6e80b16b06d7e47b25bc6871659ffa9a85f2a1d0",
+        "elapsed_ms": 74,
+        "expected_success": true,
+        "label": "after-close",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/after-close",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 527,
+        "body_sha256": "d2ba89f5ddc5811572111542817609d7273626619f61598dadc599fa3d704305",
+        "elapsed_ms": 106,
+        "expected_success": true,
+        "label": "chunk-valid",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/chunk-valid",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 41,
+        "expected_success": false,
+        "label": "length-cut",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/length-cut",
+        "result": 1,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 73,
+        "expected_success": false,
+        "label": "chunk-cut",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/chunk-cut",
+        "result": 1,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 96,
+        "expected_success": false,
+        "label": "chunk-no-end",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/chunk-no-end",
+        "result": 4,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 610,
+        "expected_success": false,
+        "label": "oversize",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/oversize",
+        "result": 7,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 78,
+        "expected_success": false,
+        "label": "gzip-bomb",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/gzip-bomb",
+        "result": 7,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 24,
+        "expected_success": false,
+        "label": "untrusted-ca",
+        "origin": "https://127.0.0.1:6578",
+        "path": "/bad-ca",
+        "result": 2,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 0,
+        "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "elapsed_ms": 27,
+        "expected_success": false,
+        "label": "wrong-hostname",
+        "origin": "https://127.0.0.1:6577",
+        "path": "/bad-name",
+        "result": 2,
+        "reused": false,
+        "status": 0
+      },
+      {
+        "body_bytes": 532,
+        "body_sha256": "d22db80c77676f79f34259dd082577f3a3bd109249df6134f0ed7aa1ffe194cd",
+        "elapsed_ms": 79,
+        "expected_success": true,
+        "label": "credential-a",
+        "origin": "https://127.0.0.1:6575",
+        "path": "/origin-session-a",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 532,
+        "body_sha256": "16e24451b714a42ebf714e33a6411eb88f38c16754e68383aa6dbf7694d6a58c",
+        "elapsed_ms": 79,
+        "expected_success": true,
+        "label": "credential-b",
+        "origin": "https://127.0.0.1:6576",
+        "path": "/origin-session-b",
+        "result": 0,
+        "reused": false,
+        "status": 200
+      },
+      {
+        "body_bytes": 535,
+        "body_sha256": "268ac9e0eb45a53b55529f736885a2964c77a30270c961e8b32d004fd98b4731",
+        "elapsed_ms": 45,
+        "expected_success": true,
+        "label": "session-next",
+        "origin": "https://127.0.0.1:6576",
+        "path": "/origin-session-next",
+        "result": 0,
+        "reused": true,
+        "status": 200
+      }
+    ],
+    "checks": [
+      {
+        "name": "actual headless backend",
+        "passed": true
+      },
+      {
+        "name": "fixture CA configured without verification bypass",
+        "passed": true
+      },
+      {
+        "name": "keep-first exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "keep-second exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "sequential complete requests report actual reuse",
+        "passed": true
+      },
+      {
+        "name": "full-close-late exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "after-close-late exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "Connection close header reconnects even before delayed FIN",
+        "passed": true
+      },
+      {
+        "name": "full-close exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "after-close exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "complete body plus peer close next request reconnects",
+        "passed": true
+      },
+      {
+        "name": "chunk-valid exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "length-cut rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "chunk-cut rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "chunk-no-end rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "oversize rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "over2MiB body rejected by unchanged bound",
+        "passed": true
+      },
+      {
+        "name": "gzip-bomb rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "gzip expansion above2MiB rejected",
+        "passed": true
+      },
+      {
+        "name": "untrusted-ca rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "wrong-hostname rejected without successful partial body",
+        "passed": true
+      },
+      {
+        "name": "credential-a exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "credential-b exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "session-next exact complete body succeeds",
+        "passed": true
+      },
+      {
+        "name": "actual Gateway shared TLS complete result 0",
+        "passed": true
+      },
+      {
+        "name": "actual Gateway shared TLS complete result 1",
+        "passed": true
+      },
+      {
+        "name": "actual per-request rollback TLS result 0",
+        "passed": true
+      },
+      {
+        "name": "actual per-request rollback TLS result 1",
+        "passed": true
+      },
+      {
+        "name": "actual overlapping Gateway TLS requests complete separately",
+        "passed": true
+      }
+    ],
+    "gateway_overlap_results": {
+      "one": {
+        "body_bytes": 59,
+        "data": {
+          "complete": true,
+          "marker": "owned-tls-fixture",
+          "server": "a"
+        },
+        "decode_ms": 0.0,
+        "decode_worker": false,
+        "error": "服务器不可用，请检查地址与服务器状态",
+        "headers": [
+          "Content-Type: application/json",
+          "Connection: keep-alive",
+          "Content-Length: 59"
+        ],
+        "ok": true,
+        "status": 200
+      },
+      "two": {
+        "body_bytes": 59,
+        "data": {
+          "complete": true,
+          "marker": "owned-tls-fixture",
+          "server": "a"
+        },
+        "decode_ms": 0.0,
+        "decode_worker": false,
+        "error": "服务器不可用，请检查地址与服务器状态",
+        "headers": [
+          "Content-Type: application/json",
+          "Connection: keep-alive",
+          "Content-Length: 59"
+        ],
+        "ok": true,
+        "status": 200
+      }
+    },
+    "local_visible_windows": 0,
+    "new_accounts": 0,
+    "new_worlds": 0,
+    "ok": true,
+    "privateCA_no_systemtrust_change": true,
+    "production_source_unmodified_before_probe": true
+  }
+}

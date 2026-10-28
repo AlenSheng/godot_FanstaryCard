@@ -1,0 +1,21 @@
+# A03.1当前真实入口：按三例合同独立验收通过，原两轮汇总失败保留
+
+MAIN仅接受PR13-A03.1「真实入口反例」，关闭三例各LIVE/POSTGRES共6个缺口。89 Accepted／35 Partial／8 Ready，43未整体验收，case/profile缺口162→156；其他131任务和所有全局gate保持。这里依据三条规范案例的真实值裁决，不把原service Failed改成整轮成功。LOAD-05.2依赖已Accepted，A03.2的跨局/跨账号LIVE与PG仍缺，不能用本项同M恢复替代。
+
+**两轮原汇总失败必须一起看。** R1真实一个账号/一个对局，所有顺序状态已到达并实际ACK；最后核对脚本错用inventory_movements.equipment_id，实际V004和原行字段为item_id，KeyError触发自有清理，Native最终报告未写出。因此R1整轮Failed，缺失最终报告不补造。查实际迁移和原PG行后，只修这个观察器字段；在R2之前冻结自设世界上限1→2，当前两轮共2世界/2账号/2件声明初始装备/2ACK，旧R1、B112既有27场及所有历史不重置，仍在用户单项几百场内。
+
+R2当前Native实际31项检查全过、OS0、无脚本/解析/资源泄漏及意外Gateway错误，PG资源核对也完成。原service仍Failed，因为它误要求全部真实NOT_IN_ROOM总数恰3；实际4条。三条冻结requestID各恰一条，另1条已逐字节证明是READY后、实际入房前的只读快照查询：原始请求未改，真实错误sequence8早于真实room.started sequence9，Native记录其发起M/room/epoch1，实际入房为epoch2；它被原Gateway正确忽略。独立观察器严格要求声明3条且额外包全部具备上述具体来源；缺目标、重复目标、错误code、额外错误晚于started、未核验额外ID这五个损坏反例都拒绝。原service及整轮False保持，不再为错误汇总计数开第三局，也不将未知额外错误一概忽略。
+
+T01两个原Gateway只读请求在room关联仍有效时发出，代理只修改声明的wire room_id，Native发起上下文仍为真实M。第一条真实NOT_IN_ROOM进入原_on_event清room，真实Bootstrap200无receipt且被原消费者应用；第二条真实回复暂停到该状态之后再原样交付。验证的是客户端消费顺序，不声称第二请求在Bootstrap后才发出，不直接填恢复ID。第二条错误仍保持M，原ready-only查询在自有锁释放后恢复同M/SID并一次公开ACK。
+
+T02第二条错误引发的真实Bootstrap200被延迟1000ms，真实Native在等待中和原字节应用后都保持M、无room/无receipt，发起/返回的trace、字节数、原响应SHA和时间对应。只有证明第二个Bootstrap已应用后才要求释放精确自有PG行锁；同M收据随提交工作器就绪，没有修改HTTP10/30秒、READY15秒、补位30秒或轮询时限。
+
+T03在有效M存在时发送一个显式未登记本地pending origin的只读原生WS请求。真实服务器NOT_IN_ROOM原包交付后，Native游标确已消费，Gateway按原规则在Store事件前拒绝；M/room保持，所属PG仍同一Pending hold/ACK0。报告明确Store负分支没有在LIVE中直接接收该包；当前OFFLINE另行通过直接Store缺少来源/空match负例，不能将人工_on_event调用冒充真实联机入口。
+
+三个关键Pending阶段和第二Bootstrap应用后均有独立PG原快照：唯一所属hold为Pending、同一receipt/物品/账号、ACK0。释放只匹配backend PID/backend_start/application_name的自有只读事务；最后一个真实世界/账号/receipt/唯一ACK，装备Equipped→PreparationLocked→InMatchEquipped→RelicPile恰3条流水，无Pending或在局锁。声明白鞋为隔离初始夹具，不是正式发放、补偿或收益。合法Mage70、Priest80及用户确认80/70边界不改、不钳制。
+
+本轮当前OFFLINE六例首次3失败，是旧夹具没有登记新的?settlementMatchId查询而返回404；相应旧轮、请求和错误保持。按当前端点和BootstrapProjectionEncodingTests确认该投影沿用原BootstrapResponse字段，COW仅修改Python夹具的精确查询/编码分支和GD三个相关计划路径；六例和全部不变量、5/6/55秒时限保持。相同六例随后全部Passed、OS0、引擎干净，本地均headless/Dummy/60FPS/CREATE_NO_WINDOW/BelowNormal，0真实账号/对局/PG/窗口。GameStore、Gateway、传输及实际schema五份SUT字节与云端同源；没有因夹具404更改产品行为。
+
+实际R2的55项独立核对、69成员raw/PGdump、106包文件、2149输入及生产器完整G封存。2149由父完整G源2102、当前delta46、R1已封存原场景补充1实际重建；旧G父在该未执行场景路径有私有fallback覆盖，未假称它相同。确认owner、全部106/2149 SHA、unit PID0/inactive、自有容器消失、生产指纹及health200后只清临时云输入。R1清理回执旧102/2148标签布尔false原样保留，派生源审查证明真实列表SHA循环已执行；R2回执直接打印实际106/2149。云raw、本地源、G和共享缓存均保留。
+
+未修改产品恢复逻辑、协议、配置、GDD规则、数值或UI资源，无需ImageGen。仅两份测试夹具变化，旧硬链接输入经原子COW保持。先前release86ddee23正式UI资源推送仍是独立已完成事项，本轮没有新Git提交/推送或部署。容量不足按用户决定保留未通过，真人体验排除，全项目尚未完成。

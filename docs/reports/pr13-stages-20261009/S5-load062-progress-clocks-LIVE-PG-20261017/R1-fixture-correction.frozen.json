@@ -1,0 +1,25 @@
+{
+  "R1_terminal_cleanup_verified": true,
+  "R1_actual_rooms": 1,
+  "R1_conservative_player_room_starts": 4,
+  "R1_passed_cases": [
+    "LOAD-06.2-T01",
+    "LOAD-06.2-T02"
+  ],
+  "R1_whole_native_failed": true,
+  "R1_unaccepted": true,
+  "cause": "Fixture used a non-Guid card instance string. Official frame reader classifies invalid Guid parse as error.invalid_message before command routing, so no correlated error.command_rejected was expected. Change test input to syntactically valid nonowned Guid to reach intended command rejection.",
+  "source_evidence": [
+    "server/src/FantasyCard.Server/Realtime/RealtimeFrameReader.cs:23-27",
+    "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:722-736"
+  ],
+  "second_fixture_correction": "Probe default hero_profile Mage was metadata only while actual four accounts/preparations selected Priest. R2 label Priest; do not claim R1 metadata correct.",
+  "failure_capture_improved": "Flush probe audit and preserve all trace/combo records before test failure; original R1 lost unflushed suffix remains not fabricated",
+  "game_or_backend_source_changes": false,
+  "criteria_relaxed": false,
+  "max_cumulative_rooms": 6,
+  "max_cumulative_player_starts": 40,
+  "new_R2_planned_rooms": 1,
+  "cumulative_planned_player_starts": 8,
+  "original_R1_all_files_preserved": true
+}

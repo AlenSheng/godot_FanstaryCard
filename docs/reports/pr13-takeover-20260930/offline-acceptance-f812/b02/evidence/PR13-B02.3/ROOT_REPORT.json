@@ -1,0 +1,4086 @@
+{
+  "task_id": "PR13-B02.3",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "execution_state": "ReadyForIndependentAcceptance",
+  "candidate_decision": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "production_changes": 0,
+  "ui_changes": 0,
+  "new_business_changes": 0,
+  "stages": [
+    {
+      "stage": "S0",
+      "status": "CompleteForReview",
+      "evidence": [
+        "canonical-B02.json",
+        "input_manifest.json",
+        "profile.json",
+        "dependencies.json",
+        "guidance-read.json"
+      ],
+      "note": "Fixed f812 source, twelve canonical cases, ownership and bounded offline/PG commands."
+    },
+    {
+      "stage": "S1",
+      "status": "Passed",
+      "evidence": [
+        "cases.jsonl",
+        "negative-case.json",
+        "B02-exact-csharp-final.log",
+        "B02-exact-godot.log"
+      ],
+      "note": "Current behavior measured; no fabricated before failure. Old API failure is the required compile-negative contract."
+    },
+    {
+      "stage": "S2",
+      "status": "NoChangeWithEvidenceCandidate",
+      "evidence": [
+        "runtime-byte-audit.json",
+        "historical-test-api-migration.patch",
+        "test-intention-count-audit.json"
+      ],
+      "note": "All 2213 tracked runtime/config/proto/exporter files byte-identical to f812; old/current CombatAuthoritativeRules method counts20/20, no removed intentions. Only isolated harness and evidence were added."
+    },
+    {
+      "stage": "S3",
+      "status": "Passed",
+      "evidence": [
+        "commands.json",
+        "cases.jsonl",
+        "suite-results.json",
+        "trx/domain.trx",
+        "trx/server.trx"
+      ],
+      "note": "12/12 exact cases; Domain317 and Server291 whole suites, zero skipped; negative probes exit1 are expected."
+    },
+    {
+      "stage": "S4",
+      "status": "PassedForIndependentReview",
+      "evidence": [
+        "dependencies.json",
+        "exact/locked-room.json",
+        "exact/duel-recovery.json",
+        "exact/old-invalid.json",
+        "exact-godot.json",
+        "config-manifest.json"
+      ],
+      "note": "Owned real PG repository persistence/restore; raw old missing fields and invalid enum read through production repository; production C# and Godot codecs and Gateway/Game protocol entry. Source-table hot update uses isolated XLSX exporter and production ReadNumerics seam, no deployment/reload API claim."
+    },
+    {
+      "stage": "S5",
+      "status": "NotApplicableWithReason",
+      "evidence": [
+        "canonical-B02.json"
+      ],
+      "note": "Canonical B02.1–.4 explicitly require only OFFLINE/POSTGRES and state public load adds no confidence. MAIN approval of this applicability remains S6; no LIVE/CI/human experience gate added."
+    },
+    {
+      "stage": "S6",
+      "status": "Pending",
+      "owner": "MAIN",
+      "note": "Independent artifact check and critical rerun; no Accepted signature."
+    }
+  ],
+  "canonical_subtask": {
+    "id": "PR13-B02.3",
+    "title": "预览/协议/权威一致",
+    "source_instruction": "校验预览/协议/结算同输入一致且预览无副作用",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "PR13-B02.2"
+    ],
+    "inputs": "相同选牌顺序、target/revision、固定random与快照",
+    "implementation_steps": "预览与提交比较有效伤害/治疗/盾/控制/余量；前后状态/RNG hash不变",
+    "test_cases": [
+      {
+        "id": "PR13-B02.3-T01",
+        "setup_and_injection": "连续preview",
+        "expected": "不抽牌不进RNG不提交盾余量",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.3-T02",
+        "setup_and_injection": "proto往返",
+        "expected": "顺序保持",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-B02.3-T03",
+        "setup_and_injection": "过期revision",
+        "expected": "预览弃置不覆盖当前",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-BUILD",
+      "C-DOMAIN",
+      "C-SERVER",
+      "C-GODOT-NUM",
+      "C-PROTO"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.3/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G1",
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+  "runtime_image_digest": null,
+  "runtime_image_digest_missing_reason": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json",
+  "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+  "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+  "case_ids": [
+    "PR13-B02.3-T01",
+    "PR13-B02.3-T02",
+    "PR13-B02.3-T03"
+  ],
+  "expected": [
+    "不抽牌不进RNG不提交盾余量",
+    "顺序保持",
+    "预览弃置不覆盖当前"
+  ],
+  "actual": [
+    {
+      "seed": 77,
+      "rows": [
+        {
+          "hero": "Mage",
+          "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+          "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+          "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+          "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+          "before_remainder": 0,
+          "after_remainder": 0,
+          "preview": {
+            "BattleId": "00000003-0000-0000-0000-000000000000",
+            "AttackerId": "00000002-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 23,
+            "ShieldDamage": 7,
+            "HpDamage": 16,
+            "Heal": 6,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 23
+              }
+            ],
+            "CoreElement": 1,
+            "CoreCount": 3,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.44,
+            "ImmediateDraw": 2,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1.4,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          },
+          "actual": {
+            "BattleId": "00000003-0000-0000-0000-000000000000",
+            "AttackerId": "00000002-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 23,
+            "ShieldDamage": 7,
+            "HpDamage": 16,
+            "Heal": 6,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 1,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 23
+              }
+            ],
+            "CoreElement": 1,
+            "CoreCount": 3,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.44,
+            "ImmediateDraw": 2,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1.4,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          }
+        },
+        {
+          "hero": "Guardian",
+          "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+          "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+          "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+          "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+          "before_remainder": 8,
+          "after_remainder": 8,
+          "preview": {
+            "BattleId": "0000001f-0000-0000-0000-000000000000",
+            "AttackerId": "0000001e-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 0,
+            "ShieldDamage": 0,
+            "HpDamage": 0,
+            "Heal": 0,
+            "ShieldGain": 8,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [],
+            "CoreElement": null,
+            "CoreCount": 0,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          },
+          "actual": {
+            "BattleId": "0000001f-0000-0000-0000-000000000000",
+            "AttackerId": "0000001e-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 0,
+            "ShieldDamage": 0,
+            "HpDamage": 0,
+            "Heal": 0,
+            "ShieldGain": 8,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 1,
+            "DamageSegments": [],
+            "CoreElement": null,
+            "CoreCount": 0,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          }
+        },
+        {
+          "hero": "Priest",
+          "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+          "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+          "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+          "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+          "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+          "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+          "before_remainder": 0,
+          "after_remainder": 0,
+          "preview": {
+            "BattleId": "00000037-0000-0000-0000-000000000000",
+            "AttackerId": "00000036-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 0,
+            "ShieldDamage": 0,
+            "HpDamage": 0,
+            "Heal": 7,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [],
+            "CoreElement": null,
+            "CoreCount": 0,
+            "StunSeconds": 0.993,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 1.863,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          },
+          "actual": {
+            "BattleId": "00000037-0000-0000-0000-000000000000",
+            "AttackerId": "00000036-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 0,
+            "ShieldDamage": 0,
+            "HpDamage": 0,
+            "Heal": 7,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 1,
+            "DamageSegments": [],
+            "CoreElement": null,
+            "CoreCount": 0,
+            "StunSeconds": 0.993,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 1.863,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 0,
+            "ConflictCancellation": 0
+          }
+        }
+      ]
+    },
+    {
+      "codec": "production RealtimeProtobufCodec",
+      "rows": [
+        {
+          "kind": "battle.play_cards",
+          "selected": [
+            "00000052-0000-0000-0000-000000000000",
+            "00000053-0000-0000-0000-000000000000"
+          ],
+          "decoded": [
+            "00000052-0000-0000-0000-000000000000",
+            "00000053-0000-0000-0000-000000000000"
+          ],
+          "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+          "result": {
+            "BattleId": "00000051-0000-0000-0000-000000000000",
+            "AttackerId": "00000050-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 7,
+            "ShieldDamage": 7,
+            "HpDamage": 0,
+            "Heal": 0,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 3
+              },
+              {
+                "Kind": "Water",
+                "Amount": 4
+              }
+            ],
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.2,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2
+          }
+        },
+        {
+          "kind": "battle.play_cards",
+          "selected": [
+            "00000053-0000-0000-0000-000000000000",
+            "00000052-0000-0000-0000-000000000000"
+          ],
+          "decoded": [
+            "00000053-0000-0000-0000-000000000000",
+            "00000052-0000-0000-0000-000000000000"
+          ],
+          "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+          "result": {
+            "BattleId": "00000051-0000-0000-0000-000000000000",
+            "AttackerId": "00000050-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 8,
+            "ShieldDamage": 7,
+            "HpDamage": 1,
+            "Heal": 0,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Water",
+                "Amount": 6
+              },
+              {
+                "Kind": "Fire",
+                "Amount": 2
+              }
+            ],
+            "CoreElement": 5,
+            "CoreCount": 1,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.2,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2
+          }
+        },
+        {
+          "kind": "combat.preview",
+          "selected": [
+            "00000052-0000-0000-0000-000000000000",
+            "00000053-0000-0000-0000-000000000000"
+          ],
+          "decoded": [
+            "00000052-0000-0000-0000-000000000000",
+            "00000053-0000-0000-0000-000000000000"
+          ],
+          "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+          "result": {
+            "BattleId": "00000051-0000-0000-0000-000000000000",
+            "AttackerId": "00000050-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 7,
+            "ShieldDamage": 7,
+            "HpDamage": 0,
+            "Heal": 0,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Fire",
+                "Amount": 3
+              },
+              {
+                "Kind": "Water",
+                "Amount": 4
+              }
+            ],
+            "CoreElement": 1,
+            "CoreCount": 1,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.2,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2
+          }
+        },
+        {
+          "kind": "combat.preview",
+          "selected": [
+            "00000053-0000-0000-0000-000000000000",
+            "00000052-0000-0000-0000-000000000000"
+          ],
+          "decoded": [
+            "00000053-0000-0000-0000-000000000000",
+            "00000052-0000-0000-0000-000000000000"
+          ],
+          "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+          "result": {
+            "BattleId": "00000051-0000-0000-0000-000000000000",
+            "AttackerId": "00000050-0000-0000-0000-000000000000",
+            "TargetId": "test-monster",
+            "Damage": 8,
+            "ShieldDamage": 7,
+            "HpDamage": 1,
+            "Heal": 0,
+            "ShieldGain": 0,
+            "TargetDefeated": false,
+            "BattleEnded": false,
+            "RoomRevision": 0,
+            "DamageSegments": [
+              {
+                "Kind": "Water",
+                "Amount": 6
+              },
+              {
+                "Kind": "Fire",
+                "Amount": 2
+              }
+            ],
+            "CoreElement": 5,
+            "CoreCount": 1,
+            "StunSeconds": 0,
+            "DrawBlockSeconds": 0,
+            "HealthCost": 0,
+            "DrawCharge": 0.2,
+            "ImmediateDraw": 0,
+            "DrawSpeedSeconds": 0,
+            "DrawSpeedModifier": 0,
+            "DrawBlockSpeedSeconds": 0,
+            "ResonanceMultiplier": 1,
+            "ConflictPairCount": 1,
+            "ConflictCancellation": 0.2
+          }
+        }
+      ]
+    },
+    {
+      "layer": "Domain; client receipt separately",
+      "current_revision": 0,
+      "requested_revision": -1,
+      "rejected": true,
+      "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+      "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+    }
+  ],
+  "status": "ReadyForIndependentAcceptance",
+  "sample_population": {
+    "canonical_cases": 3,
+    "case_execution_count": 3,
+    "supporting_suites": {
+      "Domain": 317,
+      "Server": 291
+    },
+    "suite_counts_are_not_exact_case_counts": true
+  },
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": "final_local_evidence",
+  "commands": "commands.json",
+  "tool_versions": {
+    "dotnet_sdk": "10.0.400",
+    "postgres": "18.6",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "tool_raw": [
+      "tool-dotnet.log",
+      "tool-postgres.log",
+      "tool-godot.log"
+    ]
+  },
+  "exit_codes": "commands.json; negative API compile exit1 is expected",
+  "skip_reasons": [],
+  "critical_skips": 0,
+  "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+  "artifact_manifest": "../../MANIFEST.json",
+  "reviewer": "MAIN Pending",
+  "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+  "remaining_blockers": [
+    "MAIN S6 independent decision pending"
+  ],
+  "missing_reasons": {
+    "CI": "Not part of canonical command refs for B02; not required or invoked",
+    "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+    "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+    "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+  },
+  "stage": "S3",
+  "stage_receipts": [
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S0",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "CompleteForReview",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S0",
+        "status": "CompleteForReview",
+        "evidence": [
+          "canonical-B02.json",
+          "input_manifest.json",
+          "profile.json",
+          "dependencies.json",
+          "guidance-read.json"
+        ],
+        "note": "Fixed f812 source, twelve canonical cases, ownership and bounded offline/PG commands."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S1",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "Passed",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S1",
+        "status": "Passed",
+        "evidence": [
+          "cases.jsonl",
+          "negative-case.json",
+          "B02-exact-csharp-final.log",
+          "B02-exact-godot.log"
+        ],
+        "note": "Current behavior measured; no fabricated before failure. Old API failure is the required compile-negative contract."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S2",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "NoChangeWithEvidenceCandidate",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S2",
+        "status": "NoChangeWithEvidenceCandidate",
+        "evidence": [
+          "runtime-byte-audit.json",
+          "historical-test-api-migration.patch",
+          "test-intention-count-audit.json"
+        ],
+        "note": "All 2213 tracked runtime/config/proto/exporter files byte-identical to f812; old/current CombatAuthoritativeRules method counts20/20, no removed intentions. Only isolated harness and evidence were added."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S3",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "Passed",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S3",
+        "status": "Passed",
+        "evidence": [
+          "commands.json",
+          "cases.jsonl",
+          "suite-results.json",
+          "trx/domain.trx",
+          "trx/server.trx"
+        ],
+        "note": "12/12 exact cases; Domain317 and Server291 whole suites, zero skipped; negative probes exit1 are expected."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S4",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "PassedForIndependentReview",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S4",
+        "status": "PassedForIndependentReview",
+        "evidence": [
+          "dependencies.json",
+          "exact/locked-room.json",
+          "exact/duel-recovery.json",
+          "exact/old-invalid.json",
+          "exact-godot.json",
+          "config-manifest.json"
+        ],
+        "note": "Owned real PG repository persistence/restore; raw old missing fields and invalid enum read through production repository; production C# and Godot codecs and Gateway/Game protocol entry. Source-table hot update uses isolated XLSX exporter and production ReadNumerics seam, no deployment/reload API claim."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S5",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "NotApplicableWithReason",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S5",
+        "status": "NotApplicableWithReason",
+        "evidence": [
+          "canonical-B02.json"
+        ],
+        "note": "Canonical B02.1–.4 explicitly require only OFFLINE/POSTGRES and state public load adds no confidence. MAIN approval of this applicability remains S6; no LIVE/CI/human experience gate added."
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "stage": "S6",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "CurrentRhythm/CurrentSteps default; CoreCardsSpent/FractionalRemainder only explicitly selected isolated fixtures; stored policies stay locked",
+      "runtime_image_digest": null,
+      "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+      "algorithm_version": "sha256:bc5fa48796e056aab7924c8b2f7bbc7287b298e70071a66adf1481f73365f8fe",
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "expected": [
+        "不抽牌不进RNG不提交盾余量",
+        "顺序保持",
+        "预览弃置不覆盖当前"
+      ],
+      "actual": [
+        {
+          "seed": 77,
+          "rows": [
+            {
+              "hero": "Mage",
+              "before_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "after_state_hash": "29806019b9dea8c1ee67b4837bad5dfc4aeb5923cfc159be603792f1ea34a2af",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "after_deck_hash": "bd1a61c08f662ee9d64febb63c5f3bc5832cbbf7e94fc7fde17a517018917fe7",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000003-0000-0000-0000-000000000000",
+                "AttackerId": "00000002-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 23,
+                "ShieldDamage": 7,
+                "HpDamage": 16,
+                "Heal": 6,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 23
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 3,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.44,
+                "ImmediateDraw": 2,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1.4,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Guardian",
+              "before_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "after_state_hash": "27c2c0cc1384f83ad9c37509d97a10f922ae48f198ec823b70c26c2dee69df30",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "after_deck_hash": "13c544e88877a20c206d59689dc4ae1c2692e31b3c8ff23c18dc15fc5e2fe6e4",
+              "before_remainder": 8,
+              "after_remainder": 8,
+              "preview": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "0000001f-0000-0000-0000-000000000000",
+                "AttackerId": "0000001e-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 8,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            },
+            {
+              "hero": "Priest",
+              "before_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "after_state_hash": "860a2deb5a321ef5c10567681ce233170719eec6d45fcf0275fff1344a011a3a",
+              "before_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "after_rng_hash": "0ec33d50410e23acd791ccaa1d61cd92fba4b588119bb5aaa5b88419cde23124",
+              "before_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "after_player_rng_hash": "87e833ed08cabafec6af46afc9e71e761aefdc5770b569a43455c4892aad5f4a",
+              "before_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "after_deck_hash": "4d95a518d12c6db8c33b2d8422ae55ab05c88a0ba5cc175d8a5a8da03d11d055",
+              "before_remainder": 0,
+              "after_remainder": 0,
+              "preview": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              },
+              "actual": {
+                "BattleId": "00000037-0000-0000-0000-000000000000",
+                "AttackerId": "00000036-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 0,
+                "ShieldDamage": 0,
+                "HpDamage": 0,
+                "Heal": 7,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 1,
+                "DamageSegments": [],
+                "CoreElement": null,
+                "CoreCount": 0,
+                "StunSeconds": 0.993,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 1.863,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 0,
+                "ConflictCancellation": 0
+              }
+            }
+          ]
+        },
+        {
+          "codec": "production RealtimeProtobufCodec",
+          "rows": [
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "2c84d6dad82f0f58a150fa4b0abdd52ca44179dc3be67bb5fb649078ea70d2c5",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "battle.play_cards",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "c5a3525e123c45473defa164f93f25476e2879ab9edb6915686a0b34739f2f6d",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000052-0000-0000-0000-000000000000",
+                "00000053-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "11ad8228d93b0be6c8c8eb2a26b42b2249fa03de8909c37f10cae849d140b5c9",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 7,
+                "ShieldDamage": 7,
+                "HpDamage": 0,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Fire",
+                    "Amount": 3
+                  },
+                  {
+                    "Kind": "Water",
+                    "Amount": 4
+                  }
+                ],
+                "CoreElement": 1,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            },
+            {
+              "kind": "combat.preview",
+              "selected": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "decoded": [
+                "00000053-0000-0000-0000-000000000000",
+                "00000052-0000-0000-0000-000000000000"
+              ],
+              "wire_sha256": "386cafd68f6e179266741875204c44a4650cda552ee3d43e12544832934c1a5f",
+              "result": {
+                "BattleId": "00000051-0000-0000-0000-000000000000",
+                "AttackerId": "00000050-0000-0000-0000-000000000000",
+                "TargetId": "test-monster",
+                "Damage": 8,
+                "ShieldDamage": 7,
+                "HpDamage": 1,
+                "Heal": 0,
+                "ShieldGain": 0,
+                "TargetDefeated": false,
+                "BattleEnded": false,
+                "RoomRevision": 0,
+                "DamageSegments": [
+                  {
+                    "Kind": "Water",
+                    "Amount": 6
+                  },
+                  {
+                    "Kind": "Fire",
+                    "Amount": 2
+                  }
+                ],
+                "CoreElement": 5,
+                "CoreCount": 1,
+                "StunSeconds": 0,
+                "DrawBlockSeconds": 0,
+                "HealthCost": 0,
+                "DrawCharge": 0.2,
+                "ImmediateDraw": 0,
+                "DrawSpeedSeconds": 0,
+                "DrawSpeedModifier": 0,
+                "DrawBlockSpeedSeconds": 0,
+                "ResonanceMultiplier": 1,
+                "ConflictPairCount": 1,
+                "ConflictCancellation": 0.2
+              }
+            }
+          ]
+        },
+        {
+          "layer": "Domain; client receipt separately",
+          "current_revision": 0,
+          "requested_revision": -1,
+          "rejected": true,
+          "before_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511",
+          "after_hash": "04f297b99ffebe1d94e41a880a6335c689845d7aebbff002363a355dbe5ac511"
+        }
+      ],
+      "status": "Pending",
+      "sample_population": {
+        "canonical_cases": 3,
+        "case_execution_count": 3,
+        "supporting_suites": {
+          "Domain": 317,
+          "Server": 291
+        },
+        "suite_counts_are_not_exact_case_counts": true
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "final_local_evidence",
+      "commands": "commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "postgres": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "tool_raw": [
+          "tool-dotnet.log",
+          "tool-postgres.log",
+          "tool-godot.log"
+        ]
+      },
+      "exit_codes": "commands.json; negative API compile exit1 is expected",
+      "skip_reasons": [],
+      "asset_and_route_postconditions": "Only synthetic local rooms and owned databases; frozen production source has no changes. PVP/restore and preview state postconditions are hashed in case rows. No production asset/route mutation.",
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": "MAIN Pending",
+      "rollback": "No runtime change to rollback; stop only owned PG (completed). Keep source and raw receipts.",
+      "remaining_blockers": [
+        "MAIN S6 independent decision pending"
+      ],
+      "missing_reasons": {
+        "CI": "Not part of canonical command refs for B02; not required or invoked",
+        "LIVE_RENDER_HUMAN": "Canonical runtime stage NotApplicableWithReason; no additional gate",
+        "cutoff_monotonic": "Fixed deterministic local cases, no common load/window cutoff. Actual per-command monotonic duration is retained in commands.json.",
+        "runtime_image_digest": "Local processes, no container image; executable/build SHA256 supplied in tools-and-build-manifest.json"
+      },
+      "stage_detail": {
+        "stage": "S6",
+        "status": "Pending",
+        "owner": "MAIN",
+        "note": "Independent artifact check and critical rerun; no Accepted signature."
+      }
+    }
+  ]
+}

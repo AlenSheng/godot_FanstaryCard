@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "actual_native_job_exit_code": 0,
+  "actual_native_rows": 10,
+  "actual_required_discovered_rows": 10,
+  "native_counters": {
+    "total": 10,
+    "executed": 10,
+    "passed": 10,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "inconclusive": 0,
+    "passedButRunAborted": 0,
+    "notRunnable": 0,
+    "notExecuted": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "completed": 0,
+    "inProgress": 0,
+    "pending": 0
+  },
+  "missing_actual_names": [],
+  "unexpected_actual_names": [],
+  "all_selected_rows_unskipped_passed": true,
+  "phases": [
+    {
+      "name": "actual-discovery",
+      "arguments": [
+        "dotnet",
+        "test",
+        "/runtime/FantasyCard.Server.Tests.dll",
+        "--list-tests",
+        "--filter",
+        "Category=PostgresIntegration&FullyQualifiedName~FantasyCard.Server.Tests.EndToEnd.RealNetwork"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "actual-full-real-network",
+      "arguments": [
+        "dotnet",
+        "test",
+        "/runtime/FantasyCard.Server.Tests.dll",
+        "--filter",
+        "Category=PostgresIntegration&FullyQualifiedName~FantasyCard.Server.Tests.EndToEnd.RealNetwork",
+        "--results-directory",
+        "/output/results",
+        "--logger",
+        "trx;LogFileName=all-real-network.original.trx"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "scope": "All ten current RealNetworkEndToEndTests native methods against isolated PostgreSQL and actual Program HTTP/WebSocket loopback processes; no Godot client, WAN, full solution, statistical or canonical profile acceptance claim",
+  "MAIN_accepted": false
+}

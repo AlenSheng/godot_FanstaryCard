@@ -15,7 +15,7 @@ var _far: TextureRect
 var _mid: TextureRect
 var _near: Control
 var _glow: Polygon2D
-var _mode := "hall"
+var _mode := ""
 var _time := 0.0
 
 func _ready() -> void:
@@ -107,6 +107,7 @@ func _add_line(node_name: String, points: PackedVector2Array, color: Color, widt
 	return line
 
 func set_mode(mode: String) -> void:
+	if _mode == mode: return
 	_mode = mode
 	var is_codex := mode == "codex"
 	_far.visible = true
@@ -126,6 +127,8 @@ func set_mode(mode: String) -> void:
 		_far.modulate = Color.WHITE
 		_mid.modulate = Color(0.92, 0.97, 1.0, 1.0)
 	_apply_parallax()
+	if is_instance_valid(_glow) and is_codex: _glow.color.a = 0.0
+	set_process(not is_codex)
 
 func _process(delta: float) -> void:
 	_time += delta

@@ -1,0 +1,61 @@
+{
+  "ok": true,
+  "actual_native_cases": [
+    {
+      "case": "foreignexisting",
+      "events": 0,
+      "lost": 1,
+      "segments": 1,
+      "errors": [
+        "audit_segment_size_mismatch",
+        "invalid_json",
+        "final_audit_watermark_mismatch",
+        "audit_storage_totals_mismatch"
+      ]
+    },
+    {
+      "case": "openfailure",
+      "events": 1,
+      "lost": 9,
+      "segments": 1,
+      "errors": [
+        "event_sequence_gap_or_reorder"
+      ]
+    },
+    {
+      "case": "overflow",
+      "events": 21,
+      "lost": 80,
+      "segments": 3,
+      "errors": [
+        "final_audit_watermark_mismatch"
+      ]
+    },
+    {
+      "case": "oversize",
+      "events": 1,
+      "lost": 1,
+      "segments": 1,
+      "errors": [
+        "event_sequence_gap_or_reorder"
+      ]
+    },
+    {
+      "case": "rotation",
+      "events": 13,
+      "lost": 0,
+      "segments": 2,
+      "errors": []
+    },
+    {
+      "case": "actual_native_finish_status",
+      "native_PID": 63020,
+      "events": 30,
+      "segments": 5,
+      "primary_final_matches_status": true
+    }
+  ],
+  "native_R1_certificate_error_preserved": true,
+  "R2_and_terminal_engine_clean": true,
+  "new_gameplay_worlds": 0
+}

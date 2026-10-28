@@ -1,0 +1,133 @@
+{
+  "kind": "A05_guard_interim_checkpoint_not_acceptance",
+  "at_utc": "2026-10-01T01:11:34.872345+00:00",
+  "task_id": "PR13-A05.1",
+  "state": "Partial",
+  "baseline_source": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+  "production_guard_source": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
+  "tested_failed_fixture_source": "76d7113d3888133a8d08fbd6338db838aa4cb01f",
+  "fixed_fixture_source": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "production_paths": [
+    "client/state/game_store.gd"
+  ],
+  "guard_changes": "One post-await pending-ACK guard; existing context/generation/match checks preserved.",
+  "full_failed_suite": {
+    "counters": {
+      "total": "299",
+      "executed": "299",
+      "passed": "296",
+      "failed": "3",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "trx": {
+      "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/server.trx",
+      "bytes": 658704,
+      "sha256": "839ff725eb94e5550722178b1a80a1ee7e02636b942aa5454c828aa96e1733fe"
+    },
+    "receipts": {
+      "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/receipts.jsonl",
+      "bytes": 168001,
+      "sha256": "fb86f9f3fd79b388c6c4175751fc747333acf68a20d79319bc22bcf0b21db15a"
+    },
+    "failed_client_results": [
+      {
+        "control_result": {
+          "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-ordinary-success-2f6af3e305ad439aae5991661107e620/control/result.json",
+          "bytes": 2738,
+          "sha256": "da131c94bdf2dcaa2225a30a7fca14c60c2aa89ec9529e7c1847ea5529f5da70"
+        },
+        "context": "ordinary",
+        "outcome": "success",
+        "failures": [
+          "actual next preparation cancellation clears"
+        ],
+        "first_ack_result": true,
+        "final_settlement_empty": true
+      },
+      {
+        "control_result": {
+          "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-committed-loss-7f395bfe3abd48c68296133afee87abd/control/result.json",
+          "bytes": 2743,
+          "sha256": "596b7ad097bcc985dd851be69f748f75f84ffaf5749a70c8ae5976f90af1dcba"
+        },
+        "context": "recovered",
+        "outcome": "committed-loss",
+        "failures": [
+          "actual next preparation cancellation clears"
+        ],
+        "first_ack_result": true,
+        "final_settlement_empty": true
+      },
+      {
+        "control_result": {
+          "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-uncommitted-loss-322e45aa1aa14d0191bef1cefd02d39f/control/result.json",
+          "bytes": 3061,
+          "sha256": "f6977a6a8161e877209b549a8bd494888fa9074e1068a05ed85976d3bb116961"
+        },
+        "context": "recovered",
+        "outcome": "uncommitted-loss",
+        "failures": [
+          "actual next preparation cancellation clears"
+        ],
+        "first_ack_result": false,
+        "final_settlement_empty": true
+      }
+    ]
+  },
+  "actual_relay_failure": {
+    "records": [
+      {
+        "context": "recovered",
+        "outcome": "uncommitted-loss",
+        "recordedAt": "2026-10-01T00:52:42.029662+00:00",
+        "error_count": 3,
+        "all_body_write_204_errors": true
+      },
+      {
+        "context": "ordinary",
+        "outcome": "success",
+        "recordedAt": "2026-10-01T00:53:00.9824049+00:00",
+        "error_count": 3,
+        "all_body_write_204_errors": true
+      },
+      {
+        "context": "recovered",
+        "outcome": "committed-loss",
+        "recordedAt": "2026-10-01T00:53:22.9547351+00:00",
+        "error_count": 3,
+        "all_body_write_204_errors": true
+      }
+    ],
+    "cause": "Real backend 204 cancellation was incorrectly forwarded by invoking Response.Body.WriteAsync(empty), which Kestrel rejected; relay aborted each of the three actual client attempts.",
+    "fix": "Only test relay returns genuine 204 with null Content-Type/Length and no body write. All cancellation, ACK and audit assertions retained.",
+    "content_type_415_hypothesis": "Rejected; real raw exceptions identify response-body 204 failure, not request media type."
+  },
+  "original_P0": {
+    "old_recovery_M_stale_during_and_after_ACK": true,
+    "guard_replay_stale_during_and_after_ACK": false,
+    "red_receipt": {
+      "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/RED_RECEIPT.json",
+      "bytes": 15423,
+      "sha256": "13164b306a3372aca8e5216ad8f08bcb9693205ed23a60163673f4dfcd08d378"
+    },
+    "red_trx": {
+      "path": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/red.trx",
+      "bytes": 47761,
+      "sha256": "7822cfb85ba233cc3346a42ae7f68ca6e1911dc1fbb7b446548c6923be1ca80f"
+    }
+  },
+  "next": "New focused3 and then same fixed-source full Server. LOAD-02.2 starts after A05 sealed.",
+  "S6": "Pending; ROOT does not sign Accepted",
+  "no_online_or_CI_executed": true
+}

@@ -1,0 +1,532 @@
+{
+  "state": "InterruptedAndNotAccepted",
+  "accepted": false,
+  "source_sha": "310607074e66e4bff61991f1338cbbf157a8dab2",
+  "client_snapshot_source_sha": "0c4f5eeaa1d0fa71c9745e2e273dbdb69b9c6e84",
+  "runtime_revision": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+  "clients": [
+    {
+      "client_id": "g001c0169b31e",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c02080bb9",
+      "hero_class": "Priest",
+      "cycles_completed": 1,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c03df099d",
+      "hero_class": "Guardian",
+      "cycles_completed": 1,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c04332281",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c0500f056",
+      "hero_class": "Priest",
+      "cycles_completed": 2,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c069c3ae6",
+      "hero_class": "Guardian",
+      "cycles_completed": 0,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c0773b160",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c086dab0a",
+      "hero_class": "Priest",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c0902cb07",
+      "hero_class": "Guardian",
+      "cycles_completed": 0,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c1063a5ae",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    }
+  ],
+  "target_natural_cycles": 30,
+  "natural_cycles": 19,
+  "acknowledgement_stages": {
+    "normal": 19,
+    "drain_ack_only": 5
+  },
+  "stop_reason": "operator_stop_file",
+  "all_triggers": [
+    "command_rejections_10pct",
+    "final_business_failure",
+    "http_p95_over_1500ms",
+    "operator_stop_file"
+  ],
+  "coordinator_exit_code": 130,
+  "guard_stop": [
+    "generator_memory_low"
+  ],
+  "minimum_generator_available_bytes": 1614831616,
+  "old_generator_guard_bytes": 2147483648,
+  "new_500mb_policy_not_retroactive": true,
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "cycle_cutoffs": {
+    "running": {
+      "acknowledgements": 19,
+      "completed_cycles": 19,
+      "cycles_by_client": {
+        "g001c0169b31e": 3,
+        "g001c02080bb9": 1,
+        "g001c03df099d": 1,
+        "g001c04332281": 3,
+        "g001c0500f056": 2,
+        "g001c0773b160": 3,
+        "g001c086dab0a": 3,
+        "g001c1063a5ae": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c0169b31e": 3,
+        "g001c02080bb9": 1,
+        "g001c03df099d": 1,
+        "g001c04332281": 3,
+        "g001c0500f056": 2,
+        "g001c0773b160": 3,
+        "g001c086dab0a": 3,
+        "g001c1063a5ae": 3
+      },
+      "distribution": {
+        "1": 2,
+        "2": 1,
+        "3": 5
+      },
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 5,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {
+        "g001c02080bb9": 1,
+        "g001c03df099d": 1,
+        "g001c0500f056": 1,
+        "g001c069c3ae6": 1,
+        "g001c0902cb07": 1
+      },
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 24,
+      "completed_cycles": 19,
+      "cycles_by_client": {
+        "g001c0169b31e": 3,
+        "g001c02080bb9": 1,
+        "g001c03df099d": 1,
+        "g001c04332281": 3,
+        "g001c0500f056": 2,
+        "g001c0773b160": 3,
+        "g001c086dab0a": 3,
+        "g001c1063a5ae": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c0169b31e": 3,
+        "g001c02080bb9": 2,
+        "g001c03df099d": 2,
+        "g001c04332281": 3,
+        "g001c0500f056": 3,
+        "g001c069c3ae6": 1,
+        "g001c0773b160": 3,
+        "g001c086dab0a": 3,
+        "g001c0902cb07": 1,
+        "g001c1063a5ae": 3
+      },
+      "distribution": {
+        "0": 2,
+        "1": 2,
+        "2": 1,
+        "3": 5
+      },
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": [
+      "g001c069c3ae6",
+      "g001c0902cb07"
+    ],
+    "zero_cycle_reason": null,
+    "evidence_errors": [],
+    "stop_ms": 1791538997800,
+    "final_ms": 1791539019274
+  },
+  "process_cleanup_complete": true,
+  "business_cleanup_verified": true,
+  "ssh_cleanup": true,
+  "cloud_closeout": {
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 24,
+        "ledger_rows": 0
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "cleanup": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "all_test_service_containers_removed": true,
+    "private_archive_sha256": "7047a71e7deb507ded3813bd110235898cbd1fc353baedaf6c7f82af0cbe4d8a",
+    "private_archive_bytes": 152776
+  },
+  "private_local_files": {
+    "cloud-resource-guard.jsonl": {
+      "bytes": 28980,
+      "sha256": "485bd987599f7b599fa0deda1dec4933463f59ef573210a27d7300da6c9e85f1"
+    },
+    "coordinator.private.log": {
+      "bytes": 408617,
+      "sha256": "13b7f52e872f5d76f0bb7f0ad0c14c0435cef46caf965fb5b4719c3f8927526e"
+    },
+    "execution.json": {
+      "bytes": 2772,
+      "sha256": "d1657a4ed2131b2e4ce9fb660f6127fa04e624051cd516bf191beea2620494a1"
+    },
+    "guardian-hp-progress-observation.json": {
+      "bytes": 17567,
+      "sha256": "ca74fa3b045bc05bcf3c99c83cb3f7f7fe6cec6cf882f3eb55c29f540ac830d4"
+    },
+    "last-observation.json": {
+      "bytes": 3448,
+      "sha256": "993c94d00edf292328d051dbb179a9e9ea53e348d4e314baee803907a6481748"
+    },
+    "load\\20261009-172352-a28a03\\g001c0169b31e.json": {
+      "bytes": 438697,
+      "sha256": "c46aa9ebd2a968faaa34039552535671329ac89fe8c7117a83ca3e70cb6d80ee"
+    },
+    "load\\20261009-172352-a28a03\\g001c0169b31e.json.status.json": {
+      "bytes": 364602,
+      "sha256": "bf2f2b6b9871354aa5dd7bed0b65d38bfe6f51348ca5f7fbc6c3cd0ba7022beb"
+    },
+    "load\\20261009-172352-a28a03\\g001c0169b31e.json.telemetry.jsonl": {
+      "bytes": 1686740,
+      "sha256": "6954a4bdde25c6c7029601bd113ca551073b0b214abf9f0c7e3ae3f8ae7c1d35"
+    },
+    "load\\20261009-172352-a28a03\\g001c0169b31e.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c02080bb9.json": {
+      "bytes": 419462,
+      "sha256": "65686e517bd5ffa6777a2a0708b0039e384a85a86b8bfead856bf8315fe064fc"
+    },
+    "load\\20261009-172352-a28a03\\g001c02080bb9.json.status.json": {
+      "bytes": 347358,
+      "sha256": "7fb27f116489f4ccb4a700cab2f4c3e393fb02aa807466b736a3a29bf941eb02"
+    },
+    "load\\20261009-172352-a28a03\\g001c02080bb9.json.telemetry.jsonl": {
+      "bytes": 3864061,
+      "sha256": "99874a95dd809db691e79967128dfe08f4ac27d04ecc44ca1e457a6a716847cc"
+    },
+    "load\\20261009-172352-a28a03\\g001c02080bb9.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c03df099d.json": {
+      "bytes": 409640,
+      "sha256": "df15ccdb9fbff28c39d1623e49d791d6a47977284bbcd34d93c524e8f720a62d"
+    },
+    "load\\20261009-172352-a28a03\\g001c03df099d.json.status.json": {
+      "bytes": 342943,
+      "sha256": "67fd80f308cc4891ad65e12f91c230e0a412e5a15dd2a8b591c0dbf422e074cc"
+    },
+    "load\\20261009-172352-a28a03\\g001c03df099d.json.telemetry.jsonl": {
+      "bytes": 3595508,
+      "sha256": "fc95573b109d8e7f98dea0a0ede7690d8efd2c243c73dc25d0dd005a083277f7"
+    },
+    "load\\20261009-172352-a28a03\\g001c03df099d.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c04332281.json": {
+      "bytes": 445406,
+      "sha256": "d5311d41c724a3f777460c4b7b5442fa1288e3bbc764e8f5d0b422ddd0a6fddf"
+    },
+    "load\\20261009-172352-a28a03\\g001c04332281.json.status.json": {
+      "bytes": 372138,
+      "sha256": "0fd592c56b4ca69935b965344f61fc25a967210ceadda33ae69325e97c3159c7"
+    },
+    "load\\20261009-172352-a28a03\\g001c04332281.json.telemetry.jsonl": {
+      "bytes": 1869267,
+      "sha256": "66ebebe9037a9c5fb30dc7f26ae02e2c47867ac13ef9791b8276cf361276f7f5"
+    },
+    "load\\20261009-172352-a28a03\\g001c04332281.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c0500f056.json": {
+      "bytes": 430882,
+      "sha256": "7191135b7f3da5b130868111e9566821d53210d52987608dc26b9e3f54672ca3"
+    },
+    "load\\20261009-172352-a28a03\\g001c0500f056.json.status.json": {
+      "bytes": 361531,
+      "sha256": "374fda6785210b82318395ce878446873d051034b51a9286040110af810f1b45"
+    },
+    "load\\20261009-172352-a28a03\\g001c0500f056.json.telemetry.jsonl": {
+      "bytes": 3777241,
+      "sha256": "7132ef037e993818d6860cd18c14a4d30b973a65a18ad9bdb653142937f34179"
+    },
+    "load\\20261009-172352-a28a03\\g001c0500f056.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c069c3ae6.json": {
+      "bytes": 374450,
+      "sha256": "c6ec3d584b6758456e07a0f4f1b0fa8cc4a024632d932d8ed12a7ae86bebf55b"
+    },
+    "load\\20261009-172352-a28a03\\g001c069c3ae6.json.status.json": {
+      "bytes": 311676,
+      "sha256": "8c44be04a119baab57692a9d981ee745a85b219de241a43e6153d386976d5faa"
+    },
+    "load\\20261009-172352-a28a03\\g001c069c3ae6.json.telemetry.jsonl": {
+      "bytes": 3610623,
+      "sha256": "beba9305d0182e7bd1c09f246621791e47dfcf76c8d3b771d097e294ed1bc5ee"
+    },
+    "load\\20261009-172352-a28a03\\g001c069c3ae6.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c0773b160.json": {
+      "bytes": 437178,
+      "sha256": "04b3a99960518759e06bdae09094b848b5e21e4ddccc3102884a8a47d9cfa79f"
+    },
+    "load\\20261009-172352-a28a03\\g001c0773b160.json.status.json": {
+      "bytes": 365081,
+      "sha256": "290f9cf20541fecd835bdc252590fca8ad6de26c98e575d97ae921355ce47699"
+    },
+    "load\\20261009-172352-a28a03\\g001c0773b160.json.telemetry.jsonl": {
+      "bytes": 1664329,
+      "sha256": "5429ae174dff4c4368189c16cf4f79bd297502e34b31716490893dfa10fd163c"
+    },
+    "load\\20261009-172352-a28a03\\g001c0773b160.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c086dab0a.json": {
+      "bytes": 449108,
+      "sha256": "b430e07937e7ac313bf76fcedfc76b62e7bbef6a6c28ea4d7c29a502c1999f48"
+    },
+    "load\\20261009-172352-a28a03\\g001c086dab0a.json.status.json": {
+      "bytes": 374168,
+      "sha256": "c7c82329732acb1bea1aca1b66c52565d982b0a15e16f7eb272720978bb2eb31"
+    },
+    "load\\20261009-172352-a28a03\\g001c086dab0a.json.telemetry.jsonl": {
+      "bytes": 3702234,
+      "sha256": "7141848b72ae436c32c48a531de8804156712c3144af0d8556119fa8521a2d3f"
+    },
+    "load\\20261009-172352-a28a03\\g001c086dab0a.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c0902cb07.json": {
+      "bytes": 387233,
+      "sha256": "3ace1aec9eac016c20d4603e385a1f1fc9161112f8aca08ea3516c7b04fcae06"
+    },
+    "load\\20261009-172352-a28a03\\g001c0902cb07.json.status.json": {
+      "bytes": 322110,
+      "sha256": "03801c75d0b85853d2de099db7e0a2561ecbaff830e918b6f874cd5082d9feab"
+    },
+    "load\\20261009-172352-a28a03\\g001c0902cb07.json.telemetry.jsonl": {
+      "bytes": 3533396,
+      "sha256": "31d2669add832e7f226bc898f6c01397348c688917a338c0aea21889a33e25e6"
+    },
+    "load\\20261009-172352-a28a03\\g001c0902cb07.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\g001c1063a5ae.json": {
+      "bytes": 442760,
+      "sha256": "e1ddeb793f6221c5e58e82cc2751a9c2de43091ac6643025656e00b7d3c16a78"
+    },
+    "load\\20261009-172352-a28a03\\g001c1063a5ae.json.status.json": {
+      "bytes": 371703,
+      "sha256": "b89a2b0ab944a7fc90f0257e02ef0a6cce01d15b86d54947ea2e2dfadad03321"
+    },
+    "load\\20261009-172352-a28a03\\g001c1063a5ae.json.telemetry.jsonl": {
+      "bytes": 1867049,
+      "sha256": "97896508a3228fc452ea823a13e5e4b98186bf6caaddd7d98228622990ee1e7a"
+    },
+    "load\\20261009-172352-a28a03\\g001c1063a5ae.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load\\20261009-172352-a28a03\\launch-manifest.json": {
+      "bytes": 286632,
+      "sha256": "7c4972179d106cae772f1b073e6f262d97baa9ea1a0aedf65ad8d3dae1552977"
+    },
+    "load\\20261009-172352-a28a03\\load-contract.json": {
+      "bytes": 764,
+      "sha256": "95c28dfad2c3aaf83530a26eaaab9071b8bb65419faec3cc316fe0b0973328b6"
+    },
+    "load\\20261009-172352-a28a03\\report.json": {
+      "bytes": 6292003,
+      "sha256": "0683e434a9de0740391c0b0abe0bd38d993df5a60ccd70e8004f5962d4fd9cd8"
+    },
+    "load\\20261009-172352-a28a03\\samples.jsonl": {
+      "bytes": 407240,
+      "sha256": "837c71cbfa58980f000a0240ff30f38bb3b8ae8864adb24bfcc72d004e947679"
+    },
+    "load\\20261009-172352-a28a03\\state.json": {
+      "bytes": 5051,
+      "sha256": "83be7b7a621e6b86c9b14a82a7a11175faaf8965f9de4f3775ce1eb2c4dc1efa"
+    },
+    "load\\20261009-172352-a28a03\\STOP": {
+      "bytes": 4,
+      "sha256": "6c45cb72a36e63d522aa54ed8adbd7a29a989474f2f77e0458af8800564ef3cb"
+    },
+    "runtime\\roaming\\Godot\\app_userdata\\Relicbound\\logs\\godot.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime\\roaming\\Godot\\app_userdata\\Relicbound\\logs\\godot2026-10-09T17.23.59.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime\\roaming\\Godot\\app_userdata\\Relicbound\\logs\\godot2026-10-09T17.24.00.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime\\roaming\\Godot\\app_userdata\\Relicbound\\logs\\godot2026-10-09T17.24.01.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime\\roaming\\Godot\\app_userdata\\Relicbound\\logs\\godot2026-10-09T17.24.02.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "ssh.private.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "interpretation": "Old local 2 GiB guard stopped this trial; all command rejection, HTTP latency and business failure triggers retained. Long Guardian combat alone does not prove a bug or justify a numeric nerf.",
+  "human_experience_in_scope": false,
+  "whole_scope_accepted": false
+}

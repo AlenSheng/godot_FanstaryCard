@@ -1,0 +1,173 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a0f40b-08a6-7b0a-9e23-44a07c10a494",
+	"case": "stop_ready_before_send",
+	"checks": [
+		{
+			"at_unix_ms": 1790800728457,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800728490,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800728612,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800728707,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800728841,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790800728907,
+			"name": "enqueue_match",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [
+		{
+			"at_unix_ms": 1790800759243,
+			"message": "Match ticket is not queued or does not belong to the player."
+		},
+		{
+			"at_unix_ms": 1790800759243,
+			"message": "Match ticket is not queued or does not belong to the player."
+		}
+	],
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f40a-8f2e-7d85-b8e3-96ffceee12f6",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 0,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"pong"
+	],
+	"stop_boundary": "ready_before_send",
+	"ticket_reads": 14,
+	"trace": [
+		{
+			"at_ms": 1958,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4108,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6263,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8429,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10596,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 12763,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 14929,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17096,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19262,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21429,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23570,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 25736,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 27893,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30059,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 31980,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 31980,
+			"boundary": "ready_before_send",
+			"event": "coordinator_stop"
+		}
+	]
+}

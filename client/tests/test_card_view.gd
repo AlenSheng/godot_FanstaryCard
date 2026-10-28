@@ -15,10 +15,14 @@ func run_test() -> Dictionary:
 	if card.material == null or not card.material.get_shader_parameter("grayscale"): errors.append("Unowned card must be grayscale")
 	if not card.get_node("Illustration").use_parent_material or not card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
 		errors.append("Grayscale must cover both illustration and frame")
+	if card.get_node("CardName").use_parent_material or card.get_node("CardEffect").use_parent_material:
+		errors.append("Clickable unowned-card text must not inherit the dimming shader")
+	if not card.get_node("CardName").get_theme_color("font_color").is_equal_approx(load("res://ui/palette.gd").PAPER):
+		errors.append("Unowned card names need the readable paper foreground")
 	if card.get_node("Illustration").size != Vector2(190, 285): errors.append("Codex portrait must retain a 2:3 rectangle")
-	if card.get_node("CardName").position.y < 294 or card.get_node("CardEffect").text != "造成火系伤害8点": errors.append("Card face must use the configured short description")
+	if card.get_node("CardEffect").text != "火伤8": errors.append("Card face must use the catalog's compact description")
 	_check_text(card, ["CardName", "CardEffect", "ClassSymbol"], errors)
-	if card.get_node("ClassSymbol").text != "法" or not "仅法师" in card.get_node("ClassBadge").tooltip_text: errors.append("Class badge must explain its restriction")
+	if card.get_node("ClassSymbol").text != "法" or not "法师" in card.get_node("ClassBadge").tooltip_text: errors.append("Class badge must explain its restriction")
 	if card.get_node("ClassBadge").mouse_filter != Control.MOUSE_FILTER_PASS: errors.append("Class badge must pass clicks to the card")
 	card.configure("MAG-01", info, "火系伤害8点", false, {"collection": true, "copy_count": 0, "preview": true})
 	if card.material != null or card.get_node_or_null("CardLevel") != null or card.get_node("CardFrame").material.get_shader_parameter("grayscale"):
@@ -32,12 +36,21 @@ func run_test() -> Dictionary:
 	if title.text != "火球" or card.get_node("CardLevel").text != "5": errors.append("Upgraded level must appear only in the upper-left badge")
 	if card.get_node("CardLevelBadge").position != Vector2(2, 3): errors.append("Card level badge must remain in the upper-left corner")
 	if title.position.y + title.size.y > effect.position.y: errors.append("Card name must not overlap its effect line")
-	if title.position != Vector2(24, 294) or effect.position != Vector2(24, 330) or effect.size != Vector2(170, 28):
-		errors.append("Codex/deck card text must keep its established layout")
-	if effect.max_lines_visible != 1 or effect.autowrap_mode != TextServer.AUTOWRAP_OFF:
-		errors.append("Codex/deck card effect must remain a single-line summary")
+	# The reframe shader maps the original panel below y=303. Check its top
+	# as well as its bottom so names cannot drift back into the portrait.
+	var text_panel := Rect2(24, 303, 170, 54)
+	if not text_panel.encloses(title.get_rect()) or not text_panel.encloses(effect.get_rect()):
+		errors.append("Codex/deck card name and effect must stay inside the rendered frame's text panel")
+	if effect.max_lines_visible != 1 or effect.autowrap_mode != TextServer.AUTOWRAP_OFF or effect.get_theme_font_size("font_size") < 12:
+		errors.append("Codex/deck card effect must remain a readable single-line summary")
 	if effect.horizontal_alignment != HORIZONTAL_ALIGNMENT_CENTER or effect.vertical_alignment != VERTICAL_ALIGNMENT_CENTER:
 		errors.append("Codex/deck card effect must stay centered")
+	card.configure("PRI-10", info, "fallback", false, {"collection": true, "copy_count": 1, "level": 5})
+	effect = card.get_node("CardEffect")
+	if effect.text.is_empty() or effect.get_theme_font_size("font_size") < 12 or effect.get_visible_line_count() != 1 or effect.text_overrun_behavior != TextServer.OVERRUN_TRIM_ELLIPSIS:
+		errors.append("An upgraded card's longer short description must remain visible with ellipsis")
+	if not text_panel.encloses(card.get_node("CardName").get_rect()) or not text_panel.encloses(effect.get_rect()):
+		errors.append("A longer short description must not overlap the bottom frame")
 	info.hero_class = null
 	card.configure("C01", info, "火系伤害8点", true)
 	_check_text(card, ["CardName", "CardEffect", "SelectedIndicator"], errors)
@@ -53,12 +66,14 @@ func run_test() -> Dictionary:
 	info.source = "Monster"
 	card.configure("M-FIREBAT", info, "火系伤害8点", true)
 	_check_text(card, ["MonsterName", "MonsterFooter"], errors)
-	if card.get_node("CardFrame").texture != Art.texture("UI/Cards/card_frame_monster_clean.png") or card.get_node("CardFrame").material != null:
-		errors.append("Monster cards must retain their dedicated frame and layout")
+	if card.get_node("CardFrame").texture != Art.texture("UI/Cards/card_frame_monster_clean.png") or not card.get_node("CardFrame").material.get_shader_parameter("monster_reframe"):
+		errors.append("Monster cards must retain their dedicated frame with aligned bounds")
+	if card.size != Vector2(218, 376) or card.get_node("Illustration").get_rect() != Rect2(14, 14, 190, 285):
+		errors.append("Monster and regular cards must share their outer size and portrait bounds")
 	var backdrop := card.get_node_or_null("MonsterBackdrop") as TextureRect
 	if backdrop == null or backdrop.texture != Art.texture("Cards/Art/monster_card_backdrop.png"):
 		errors.append("Monster drops must share the generated illustration backdrop")
-	elif backdrop.get_index() >= card.get_node("Illustration").get_index() or backdrop.stretch_mode != TextureRect.STRETCH_KEEP_ASPECT_COVERED:
+	elif backdrop.get_index() >= card.get_node("Illustration").get_index() or backdrop.stretch_mode != TextureRect.STRETCH_KEEP_ASPECT_COVERED or backdrop.get_rect() != card.get_node("Illustration").get_rect():
 		errors.append("Monster backdrop must cover the art window behind the species cutout")
 	card.configure("M-BOXSPIRIT", {"name": "匣灵", "source": "Monster", "element": "None"}, "直伤7点", true)
 	_check_text(card, ["MonsterName", "MonsterFooter", "MonsterElement"], errors)

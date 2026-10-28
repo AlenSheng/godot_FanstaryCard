@@ -48,6 +48,7 @@ MONSTER_VARIANTS = {
 MONSTER_ALIASES = {
     "fire-bat-a": "fire-bat", "fire-bat-b": "fire-bat",
     "murk-snail-a": "murk-snail", "murk-snail-b": "murk-snail",
+    "box-spirit": "treasure-box-spirit",
 }
 MONSTER_REPLACEMENTS = {
     "fire-bat": "UI/Monsters/fire_bat_clean.png",
@@ -247,7 +248,7 @@ def import_art(root=ROOT, *, source_root=None, ui_root=None, cards_root=None, de
                   monsters=monster_mapping(files),
                   monster_aliases=MONSTER_ALIASES, monster_variants=MONSTER_VARIANTS,
                   monster_variant_policy="Explicit phase variants only; select a variant only from authoritative phase data.",
-                  catalog_only_monsters=["treasure-box-spirit"],
+                  catalog_only_monsters=[],
                   unassigned_monsters=unassigned_monsters,
                   portraits={hero: path for hero, path in portraits.items() if path in files},
                   passives={hero: path for hero, path in PASSIVES.items() if path in files},

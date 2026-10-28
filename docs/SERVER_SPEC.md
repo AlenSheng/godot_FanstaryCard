@@ -26,7 +26,7 @@ PVE 与 1v1 **同一套服务端结算**。客户端只发意图，不提交伤�
 
 ## 1.1 通信编码
 
-- REST 继续使用 UTF-8 JSON 与 `application/problem+json`。
+- 第一方登录及内部玩法 REST 使用 `application/protobuf` 与类型化错误；外围公告、管理和登录前信息保留 UTF-8 JSON。旧游戏 JSON 仅通过显式兼容开关提供。迁移范围与验收见 [网络迁移计划](network-protobuf-migration/PLAN.md)，保持既有 HTTP 状态码、鉴权、事务及幂等语义。
 - `/ws/v1/session` 只接受/发送 Protobuf 二进制帧，schema 为 `protocol/realtime/v1/realtime.proto`；文本帧以 `InvalidMessageType` 关闭。
 - Protobuf 信封必须带 `protocol_version=1`，每条完整消息上限 16 KiB。`payload` 只能装对应的具名 Protobuf message，禁止内嵌 JSON。
 - 字段号发布后不可复用；兼容新增字段，删除字段须保留编号；破坏性变更新建协议版本。
@@ -125,7 +125,7 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 - **对真人 1v1**：同一套权威结算 + `SelectDuelCards` 中等出牌。不主动离开 / 逃脱。
 - **机机**：10 秒后按生命百分比定胜负并扣 15% / 35% L。
 - 无真人剩余：`ShouldEndRoom` → 立刻结束，机器人带出销毁。
-- 小地图投影仍只含 Boss、泉水、自己位置。
+- 小地图投影标 Boss 与泉水、自己的位置，并提供当前未撤离/未阵亡玩家总数；不提供其他玩家位置或交战状态。
 
 ---
 
@@ -159,7 +159,11 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 | `duel.escape` | PVP，读条 2s，CD 12s |
 | `session.resume` | 任意在线恢复 |
 
-房间下发快照 / 增量：`room.snapshot`、`room.revision`、`duel.started`、`duel.ended`、`battle.*`、`player.died`、`settlement.ready`。小地图投影只含 Boss 格、泉水格、自己位置。
+房间下发快照 / 增量：`room.snapshot`、`room.revision`、`map.player_count`、`duel.started`、`duel.ended`、`battle.*`、`player.died`、`settlement.ready`。小地图投影含 Boss 格、泉水格、自己位置和当前地图活跃玩家总数，不含其他玩家位置。
+
+房间请求的 `ClientEnvelope` 可成对携带 `room_id`、`match_id`（新增字段 6、7，原字段号不变）；新客户端使用发起请求时的房间上下文，旧客户端省略时保持原路由行为。指定旧房间的请求不得执行到该玩家的新房间。`player.died`、`action.extract_*` 的新增房间、对局标识用于核验结束通知的归属。
+
+当串行房间执行器在执行变更前发现本人已死亡或撤离，服务端返回 `room.command_cancelled`（`RoomEndedBeforeApply`）及同一请求的终局 `room.snapshot`，表示意图未执行，不表示成功确认。路由已释放时，只允许按已认证玩家、匹配的房间和对局、非机器人且已提交的 `Settled` 成员状态读取持久终局检查点；检查点中的本人阶段也必须为 `Dead` 或 `Extracted`。该读取不启动房间、不触发结算或资产变更。客户端保留后续响应的原始会话和房间上下文，取消通知不得确认或重放原变更。
 
 登录：原型本地开发身份；Steam 票据服务端向平台验证。微信 `code` 只留接口。
 
@@ -168,7 +172,7 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 ## 8. 服务端验收（补 GDD §10）
 
 - [ ] 客户端上报的 expectedDamage / rngResult 一律忽略。
-- [ ] 黄金向量：A0=44、A=51、A2=36、湮核 25/51。
+- [ ] 黄金向量：A0=41、A=46、A2=32、湮核 23/46；按 GDD 现行首张为核、同系后续每张增加 20%、逐牌取整规则验收。
 - [ ] 切 1v1 快照字段齐全；存活结束 PVE 三堆与生命 / 护盾与入侵前一致。
 - [ ] 满手到点不抽；库空洗回。
 - [ ] 满 4 名真人立刻开；30 秒未满则补机器人到 4。
@@ -177,4 +181,4 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 - [ ] 进格豁免时序与 GDD 5.5 表一致（不改行为）。
 ### 邮件接口
 
-`player_mail` 保存玩家邮件、JSON 附件、已读与领取时间及过期时间。`GET /api/v1/mail` 过滤过期邮件；`POST /api/v1/mail/{mailId}/claim` 以 `claimed_at IS NULL` 保证幂等领取。奖励发放必须与领取状态在同一事务完成。
+`mail_messages` 保存邮件、附件、双语文案和已读／领取时间。`GET /api/v1/mail` 返回 Protobuf 邮件列表及未读数；领取沿当前 Mail 模块的事务、Idempotency-Key 和持久回执处理。旧 `player_mail` 实现由此能力替代，不重复注册 `/api/v1/mail` 路由。测试账号邮件继续由 IdentityRepository 的现行幂等入口生成。

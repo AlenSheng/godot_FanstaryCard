@@ -1,0 +1,56 @@
+{
+  "kind": "Implemented_new_explicit_profile;full_exact_source_QA_CI_passed;new_capacity_not_yet_accepted",
+  "reason": "Exactly50 cyclic clients can temporarily leave active rooms during ordinary settlement/matching; per-host25active95percent was not sustained. Correct state-transition rejections also triggered the strict zero-notice execution gate.",
+  "user_authorization": "Original goal permits disclosed criterion revisions after repeated cycle failures, with all old failed results retained",
+  "proposed_supply": {
+    "windows": 35,
+    "cloud": 25,
+    "actual_full_native_total": 60
+  },
+  "required_global_active": 50,
+  "global_online_supply_required": 60,
+  "global_shared_window_seconds": 600,
+  "global_coverage_minimum": 0.95,
+  "global_minimum_continuous_seconds": 120,
+  "per_host_hold_seconds": 720,
+  "proposed_per_host_active_minima": {
+    "windows": 25,
+    "cloud": 15
+  },
+  "per_host_minimum_reason": "These are implied by global50 with peer maxima25 and35. They do not replace the stronger global50 overlap gate.",
+  "proposed_profile": "full-native60-global50-win35-cloud25",
+  "default_old_profiles_unchanged": true,
+  "rejection_policy_proposal": {
+    "name": "documented-authority-transition-v1",
+    "default": "strict original policy unless explicitly preregistered",
+    "only_details": [
+      "Duel is not active in this room.",
+      "A stunned player cannot play cards."
+    ],
+    "max_one_unique_rejection_per_actor_cycle": 1,
+    "maximum_fraction_of_actual_play_requests": 0.01,
+    "original_pending_and_first_fresh_authority_deadline_ms": 3000,
+    "duplicate_notice_window_ms": 100,
+    "required": [
+      "Complete unlost hash-verified audit; exact rejected request, route, epochs, cycle and fresh higher-revision nonreplayed authority",
+      "Dispatch state must show valid current battle, stun0 and actual selected card IDs in the current hand; missing input evidence never waives a refusal",
+      "For Pve-to-Pvp, new same-route duel and exactly associated successful new play within3000ms",
+      "For new stun, fresh positive stun within3000ms; no writes while known stunned; authoritative release and a new successful play within3000ms after release; original GDD8second stun-window boundary retained",
+      "No success or consumption for rejected request; no original-write retry; unknown notices, stale route, missing state, second refusal in same cycle or excessive refusal rate remain failures",
+      "No change to original native errors arrays or past failed outcome; classify only explicitly registered new runs after negative-control tests"
+    ]
+  },
+  "required_QA_before_live": [
+    "Positive complete source-bound transition cases and counterexamples for missing/replayed/old route/stun-known/invalid-hand/late/second-refusal/unexpected-detail/rate-overflow",
+    "Synthetic full global50 overlap and rejection of actual49,59supply,duplicate identities,weak evidence or reduced RAM; no synthetic fixture called live capacity",
+    "Freeze any changed test-only inputs in an isolated owned branch; preserve root unrelated changes and all R28 originals"
+  ],
+  "remaining_capacity_worlds": 78,
+  "combined_cumulative_cap": 300,
+  "GDD_server_gameplay_assets_and_FPS_resource_limits_unchanged": true,
+  "capacity_acceptance_claimed": false,
+  "next_run_not_started": true,
+  "frozen_source": "cb8010f7dc5043c9011aa95a238f1bf5bbd7e8f7",
+  "exact_CI_gate": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40274555899",
+  "implementation_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/capacity-policy-r29-implemented-QA.json"
+}

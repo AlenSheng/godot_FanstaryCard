@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "observations": [
+    {
+      "sequence": 1,
+      "mode": "off_regression",
+      "actual_decision": "Failed",
+      "actual_review": {
+        "state": "Failed",
+        "reason": "default_off_regression",
+        "production_activation": false
+      },
+      "room_SHA": "598cc575ea7885dafaf089bdfb32d8e46ab1b6bee291458bb05c1f269c88828e",
+      "room_id": "a045c56f-fd2c-4caf-8c67-d1eb44f8fb85",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "1a561d681e0f7a97a630fb354eb33ee21caef03572decb247e2cad915757d013",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    },
+    {
+      "sequence": 2,
+      "mode": "on_not_run",
+      "actual_decision": "Blocked",
+      "actual_review": {
+        "state": "Blocked",
+        "reason": "candidate_on_layer_missing",
+        "missing_candidates": [
+          "cards_spent_draw",
+          "fractional_guardian",
+          "optional_monster_pool"
+        ],
+        "production_activation": false
+      },
+      "room_SHA": "598cc575ea7885dafaf089bdfb32d8e46ab1b6bee291458bb05c1f269c88828e",
+      "room_id": "a045c56f-fd2c-4caf-8c67-d1eb44f8fb85",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "1a561d681e0f7a97a630fb354eb33ee21caef03572decb247e2cad915757d013",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    },
+    {
+      "sequence": 3,
+      "mode": "bot_headless",
+      "actual_decision": "Partial",
+      "actual_review": {
+        "state": "Partial",
+        "actual_human_accepted": false,
+        "human_in_scope": false
+      },
+      "room_SHA": "598cc575ea7885dafaf089bdfb32d8e46ab1b6bee291458bb05c1f269c88828e",
+      "room_id": "a045c56f-fd2c-4caf-8c67-d1eb44f8fb85",
+      "production_activation": false,
+      "actual_UI_PID": 19,
+      "actual_UI_live": true,
+      "actual_PG_result_SHA": "1a561d681e0f7a97a630fb354eb33ee21caef03572decb247e2cad915757d013",
+      "actual_review_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+    }
+  ],
+  "complete_machine_scope_under_explicit_user_human_exclusion": "ReadyForAcceptance",
+  "human_scope_if_it_were_included": "Partial",
+  "actual_human_accepted": false,
+  "no_fake_human_participation": true
+}

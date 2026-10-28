@@ -23,6 +23,9 @@ func _ready() -> void:
 	get_tree().quit(0 if report.ok else 1)
 
 func _verify(resolution: Vector2i) -> void:
+	Game.lobby["wallet"] = {"gold": 100000}
+	$UI.shop = {"products": _products()}
+	Game.lobby["shop"] = $UI.shop
 	get_window().size = resolution
 	$UI._render()
 	await get_tree().process_frame
@@ -44,6 +47,31 @@ func _verify(resolution: Vector2i) -> void:
 	await get_tree().process_frame
 	RenderingServer.force_draw(false)
 	get_viewport().get_texture().get_image().save_png(OUTPUT + "/shop_dragged_%s.png" % resolution.x)
+	var position_after_drag: int = scroll.scroll_horizontal
+	$UI._render()
+	$UI._render()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var restored_scroll := $UI._reference.get_node_or_null("ShopScroll") as ScrollContainer
+	if $UI.screen != "shop" or restored_scroll == null or abs(restored_scroll.scroll_horizontal - position_after_drag) > 1:
+		errors.append("Shop page or scroll position changed after rebuilding at %s" % resolution.x)
+	if restored_scroll == null: return
+	var purchased_panel := restored_scroll.get_node_or_null("ShopProductRow/Product_drag-01")
+	var other_panel := restored_scroll.get_node_or_null("ShopProductRow/Product_drag-02")
+	$UI._apply_shop_purchase("drag-01", {"quantity": 1, "goldAfter": 99890})
+	$UI._reference.sync_shop_state("drag-01")
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var current_scroll := $UI._reference.get_node_or_null("ShopScroll") as ScrollContainer
+	if current_scroll == null or current_scroll != restored_scroll or current_scroll.scroll_horizontal != position_after_drag:
+		errors.append("Shop purchase rebuilt or reset the shelf at %s" % resolution.x)
+		return
+	if not is_instance_valid(purchased_panel) or purchased_panel.get_node("ShopDetail").text.find("1 / 99") == -1:
+		errors.append("Purchased shelf count was not updated at %s" % resolution.x)
+	if current_scroll.get_node_or_null("ShopProductRow/Product_drag-02") != other_panel:
+		errors.append("An unrelated shelf was replaced at %s" % resolution.x)
+	if $UI._reference.get_node("WalletGold").text.find("99890") == -1:
+		errors.append("Shop wallet was not updated at %s" % resolution.x)
 
 func _products() -> Array:
 	var products: Array = []

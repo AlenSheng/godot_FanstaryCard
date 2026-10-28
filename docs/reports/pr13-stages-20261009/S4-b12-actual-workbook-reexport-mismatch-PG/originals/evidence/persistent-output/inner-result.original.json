@@ -1,0 +1,98 @@
+{
+  "ok": true,
+  "case_id": "PR13-B12.1-T01",
+  "actual_native_rows": 10,
+  "new_control_rows": 1,
+  "original_nine_regression_rows": 9,
+  "native_skipped": 0,
+  "phases": [
+    {
+      "name": "restore",
+      "exit_code": 0
+    },
+    {
+      "name": "build",
+      "exit_code": 0
+    },
+    {
+      "name": "original-export",
+      "exit_code": 0
+    },
+    {
+      "name": "changed-export",
+      "exit_code": 0
+    },
+    {
+      "name": "native",
+      "exit_code": 0
+    }
+  ],
+  "actual_config_version": "gdd-0.70-numerical-1",
+  "actual_source_export_witness": {
+    "changed_semantic_cells": 1,
+    "sheet": "Cards",
+    "cell": "B6",
+    "card_id": "C01",
+    "changed_column": "name",
+    "original_name": "\u706b\u65a9",
+    "controlled_name": "\u706b\u65a9 [PR13 isolated source mismatch]",
+    "original_workbook_sha256": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+    "changed_workbook_sha256": "8401f36120a9b1a2b192f63da4607fe6e5b4cbac181c897f02c3d8e4327e0a32",
+    "original_export_matches_published": true,
+    "original_exact_export_files": [
+      {
+        "side": "server",
+        "name": "fantasycard.config.bytes",
+        "bytes": 120495,
+        "sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+      },
+      {
+        "side": "server",
+        "name": "fantasycard.config.sha256",
+        "bytes": 65,
+        "sha256": "d32b4a4722dfbdcfcee1f5ef49f3642ff31eaf57f01ff6c536c6edd9bb6d034b"
+      },
+      {
+        "side": "server",
+        "name": "fantasycard.config.version.txt",
+        "bytes": 21,
+        "sha256": "ee9adb394d381fe0fada88f94dc2e91cc77059b608c6bf302acf2e64ebe79794"
+      },
+      {
+        "side": "client",
+        "name": "fantasycard.config.bytes",
+        "bytes": 120495,
+        "sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+      },
+      {
+        "side": "client",
+        "name": "fantasycard.config.sha256",
+        "bytes": 65,
+        "sha256": "d32b4a4722dfbdcfcee1f5ef49f3642ff31eaf57f01ff6c536c6edd9bb6d034b"
+      },
+      {
+        "side": "client",
+        "name": "fantasycard.config.version.txt",
+        "bytes": 21,
+        "sha256": "ee9adb394d381fe0fada88f94dc2e91cc77059b608c6bf302acf2e64ebe79794"
+      }
+    ],
+    "same_export_version": true,
+    "actual_version": "gdd-0.70-numerical-1",
+    "changed_reexport_embedded_hash_valid": true,
+    "actual_changed_generated_identities": [
+      {
+        "version": "gdd-0.70-numerical-1",
+        "content_sha256": "5aafe3b83988602589082255bfcafffbc5b3037910aa464815bee3d0f2c87e4e"
+      },
+      {
+        "version": "gdd-0.70-numerical-1",
+        "content_sha256": "5aafe3b83988602589082255bfcafffbc5b3037910aa464815bee3d0f2c87e4e"
+      }
+    ],
+    "generated_bytes_hand_modified": false,
+    "production_source_untouched": true,
+    "only_one_zip_member_changed": true
+  },
+  "MAIN_accepted": false
+}

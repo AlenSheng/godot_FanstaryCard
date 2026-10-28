@@ -10,6 +10,8 @@
 
 本文只描述当前代码中真实可调用的协议。匹配、Ready、房间、地图、战斗、奖励、遗物和结算已有纵向切片；客户端仍不得把文档中的待验收能力当成生产已上线接口。
 
+2026-09-28 网络迁移分支：第一方登录及玩法 HTTP 使用 `application/protobuf`，以 [冻结契约与端点表](../../docs/network-protobuf-migration/protocol-compatibility.md) 为准。下文旧 JSON 请求/响应示例仅展示 DTO 字段语义；实际网络使用对应的具名 Protobuf 消息。公告、管理后台及登录前 `client-info` 仍为 JSON。迁移验证结果见 `docs/network-protobuf-migration/`，此处不代表已经部署上线。
+
 ## 1. 环境与地址
 
 | 类型 | 本地地址 |
@@ -40,7 +42,7 @@ cd server
 3. 有 token 时先请求 `/api/v1/bootstrap`；只有 401 才清除 token。
 4. 无 token 或收到 401 时执行环境对应的登录：开发环境可本地登录，发行客户端走 Steam 票据登录。
 5. 登录成功后请求 Bootstrap，建立大厅 Store 的完整快照。
-6. 连接 WebSocket，收到 `session.connected` 后标记实时通道可用。
+6. 用 Bearer 通过 Protobuf 调用 `POST /api/v1/realtime/ticket`，取得 30 秒内单次有效票据，再连接 WebSocket；收到 `session.connected` 后标记实时通道可用。重连重新取票，不把长期 token 放入 URL。
 7. 若本地保存过 `lastSequence`，发送 `session.resume`。
 8. 进入大厅。`unfinishedMatch` 非空时必须优先连接 WebSocket 并恢复对应房间；否则若 `unfinishedSettlement` 非空，展示结算并在 UI 成功接收后调用确认接口。
 
@@ -52,7 +54,8 @@ cd server
 
 ```http
 Authorization: Bearer {accessToken}
-Content-Type: application/json
+Content-Type: application/protobuf
+Accept: application/protobuf
 X-Trace-Id: godot-42-a1b2c3d4
 ```
 
@@ -66,7 +69,9 @@ Idempotency-Key: prep-018f90dc19a37a3d
 
 同一次业务重试复用同一个键；新业务必须生成新键。同键不同请求体返回 409。
 
-### 3.2 REST JSON
+### 3.2 HTTP 数据语义与旧 JSON 兼容
+
+游戏 Protobuf 字段为 snake_case，客户端边界恢复下列 camelCase DTO。金额、数量、版本直接保留整数，禁止经过 JSON 浮点中转。旧 JSON 仅在 `ProtobufHttp:AllowLegacyJson=true` 时启用；不得在解析失败后改格式重发写操作。
 
 - UTF-8、字段 `camelCase`。
 - 枚举使用字符串：`Priest`、`Mage`、`Guardian`。
@@ -77,7 +82,7 @@ Idempotency-Key: prep-018f90dc19a37a3d
 
 ### 3.3 ProblemDetails
 
-REST 错误使用 `application/problem+json`：
+Protobuf 错误使用 `HttpError`，HTTP 状态码、`Retry-After` 和 `X-Trace-Id` 保留。以下为语义示例；仅显式旧 JSON 模式返回 `application/problem+json`：
 
 ```json
 {
@@ -261,6 +266,10 @@ Godot 的 `client/platform/platform_service.gd` 已封装 GodotSteam 单例初�
   "createdAt": "2026-08-29T08:15:00+00:00"
 }
 ```
+
+已知当前 `matchId`、尚未知结算 ID 时，可请求 `GET /api/v1/bootstrap?settlementMatchId={matchId}`。该模式沿用同一 `BootstrapResponse` Protobuf，只填充 `serverTime`、`configVersion` 和 `unfinishedSettlement`，不读取或返回卡牌、牌组、经济、背包和市场目录。客户端只能将它用于结算恢复，不能用这份投影替换大厅缓存。
+
+投影在同一查询快照中限定当前调用者和指定 match，且只返回未 ACK、没有 Pending asset holds 的收据；未找到、非本人、尚未就绪或已确认均为 `unfinishedSettlement = null`。参数必须是一个非空 UUID，空值、无效值或重复参数返回 400；未鉴权仍优先返回 401。省略该参数时，原完整 Bootstrap 行为保持。新客户端访问旧服务端时，旧服务端忽略此参数并返回完整 Bootstrap，恢复消费者仍只接纳同 match 的就绪收据。详情接口的 200 不能作为资产已提交的判据。
 
 死亡结算提交后身上五件防具进遗物堆，对应配装栏保持空。开局与死亡都 **不发放绑定白鞋**。专属武器始终保留，不进遗物堆。
 
@@ -584,17 +593,17 @@ Idempotency-Key: settlement-ack-018f90dc
 
 `GET /api/v1/matches/tickets/{ticketId}` 查询本人 ticket；不存在返回 404。
 
-`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 preparation 回到 Active，锁定装备恢复 `Equipped`。同键改 ticket 返回 409。已开房返回 409，不能用取消准备接口代替。
+`DELETE /api/v1/matches/tickets/{ticketId}` 必须带 `Idempotency-Key`。Queued 取消后 ticket 与对应的 Queued preparation 均变为 `Cancelled`，锁定装备恢复 `Equipped`；再次入队前需重新创建准备。同键改 ticket 返回 409。已匹配的 ticket 不能通过此接口取消，返回 409；Matched 历史票据可能保留，由权威成员、准备与 Bootstrap 状态判断是否仍占用资源，不能仅凭历史票据状态判定收尾失败。
 
 ## 10. WebSocket
 
 ### 10.1 连接与编码
 
 ```text
-ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
+ws://127.0.0.1:5080/ws/v1/session?ticket={URL 编码单次票据}
 ```
 
-- 单条完整消息上限 16 KiB，支持 WebSocket 分片。
+- 单条完整消息上限 16 KiB，支持 WebSocket 分片。票据重复、过期或所属登录会话失效时拒绝连接。`access_token` 查询兼容必须显式启用 `Realtime:AllowLegacyAccessTokenQuery`，默认关闭。
 - 只接受 Protobuf v1 **Binary** 帧；Text 帧以 `InvalidMessageType` 关闭。
 - schema：`protocol/realtime/v1/realtime.proto`。每条消息是一个 `ClientEnvelope` 或 `ServerEnvelope`，`protocol_version=1`。
 - `payload` 是该 type 对应的具名 Protobuf message，禁止传 JSON 字符串/字节。
@@ -619,6 +628,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 | `settlement.ready` / `match.settled` | S→C | `SettlementReadyEvent`；settlementId、matchId、result；资产托管全部提交后由持久 outbox 兼容发布两种名称，离线行在重连时投递，客户端按 settlementId/eventId 去重 |
 | `room.snapshot.read` | C→S | `RoomSnapshotCommand` |
 | `room.snapshot` | S→C | `RoomSnapshotEvent`；仅含当前玩家可见房间状态 |
+| `map.player_count` | S→C | `MapPlayerCountEvent`；当前地图未撤离且未阵亡玩家数变化时推送 |
 | `error.command_rejected` | S→C | `CommandRejectedEvent` |
 | `error.invalid_message` | S→C | 空 |
 | `error.rate_limited` | S→C | 空 |
@@ -657,7 +667,7 @@ ws://127.0.0.1:5080/ws/v1/session?access_token={URL 编码 token}
 
 客户端必须按 `sequence` 去重并持久化最后成功值；跳号时用 `SessionResumeCommand.last_sequence/room_id/room_revision` 请求恢复；未知字段忽略，未知 type 记录开发日志后忽略。缓存有缺口时服务端返回 `session.snapshot`，若玩家仍在房间会紧接玩家隔离的 `room.snapshot`；房间 revision 落后时也会补发。建立 WebSocket 连接时，若玩家处于确认阶段，服务端在 `session.connected` 后发送最新 `room.ready_required`；若已有活动房间，则主动发送 `room.snapshot`。
 
-`room.snapshot` 的全图只包含 6×6 形状、Boss 和泉水；不会下发其他玩家位置、人数、交战、已清格、随机撤离、宝箱怪或非当前格遗物。当前格上下文、自己的战斗/三堆摘要、临时包、PVE/PVP、奖励、读条与 `allowed_actions` 会一并返回。
+`room.snapshot` 的全图包含 6×6 形状、Boss、泉水和当前地图活跃玩家总数；不会下发其他玩家位置、交战、已清格、随机撤离、宝箱怪或非当前格遗物。活跃人数包含机器人，并在玩家撤离或阵亡时通过 `map.player_count` 实时推送。当前格上下文、自己的战斗/三堆摘要、临时包、PVE/PVP、奖励、读条与 `allowed_actions` 会一并返回。
 
 未知或未开放命令返回 `error.command_rejected`。常见 code：`INVALID_COMMAND`、`INVALID_REQUEST_ID`、`REQUEST_ID_REQUIRED`、`REQUEST_ID_REUSED`、`EXPECTED_REVISION_REQUIRED`、`INVALID_PAYLOAD`、`UNSUPPORTED_COMMAND`、`COMMAND_REJECTED`、`STALE_RELIC`、`NOT_IN_ROOM`、`READY_NOT_FOUND`、`READY_TIMEOUT`。单连接命令超过服务端窗口时返回 `error.rate_limited`；客户端应停止当帧发送、合并可覆盖命令并指数退避。版本冲突后读新快照，再为新操作生成新 request_id；同键改内容不会成为新请求。
 

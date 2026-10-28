@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "gates": [
+    {
+      "name": "import",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "started": 1790783410.995897,
+      "elapsed": 54.81043100357056,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "load-parse",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "--script",
+        "res://tests/run_gameplay_load_parse.gd"
+      ],
+      "started": 1790783465.8064363,
+      "elapsed": 0.5553905963897705,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "client-regression",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "--script",
+        "res://tests/run_play_retry.gd"
+      ],
+      "started": 1790783466.361971,
+      "elapsed": 7.851453065872192,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "lobby-race",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "--script",
+        "res://tests/run_lobby_race.gd"
+      ],
+      "started": 1790783474.2135282,
+      "elapsed": 0.8937036991119385,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "numerical",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "res://tests/numerical_integration.tscn"
+      ],
+      "started": 1790783475.1073067,
+      "elapsed": 0.6674361228942871,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "localization",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/pr13-takeover/p0-checkout/client",
+        "--script",
+        "res://tests/run_localization.gd"
+      ],
+      "started": 1790783475.7748234,
+      "elapsed": 1.2816917896270752,
+      "exit_code": 0,
+      "ok": true
+    }
+  ]
+}

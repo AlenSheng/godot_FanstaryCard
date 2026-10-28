@@ -1,0 +1,854 @@
+{
+  "kind": "CSharpSourceSyntaxIntentReview_NotRuntimeOrExportApproval",
+  "generated_at": "2026-10-23T02:52:16.513461+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "selected_content_objects": 57,
+  "exact_frozen_sources_read": 52,
+  "syntax_trees_without_error_diagnostics": 51,
+  "standalone_parser_diagnostic_objects": [
+    {
+      "sha256": "23be0f78552720be6595e8cd16bf1b7059823b390baa33c2ae8bf0da57fdd427",
+      "bytes": 5353,
+      "alias": {
+        "root": "workspace",
+        "path": "outputs/pr13-tencent-20261009/LOAD064_sensitive_PG_R1.addition.original.cs",
+        "public_report_text": false,
+        "reason": "Credential-like source text requires private classification"
+      },
+      "diagnostic_count": 1,
+      "standalone_parser_diagnostic_not_a_product_failure": true
+    }
+  ],
+  "no_current_exact_alias_objects": 5,
+  "source_result_counts": {
+    "CSharpSourceParsed_AdditionalLiteralOrPatternIntentRequired": 26,
+    "symbolic_intent_bound_observation_aliases": 677,
+    "GenericMatchesAreSymbolicCSharpSyntax_NoRuntimeValueClaim": 26,
+    "NoExactCurrentAlias_NotGlobalMissing": 5
+  },
+  "actual_Roslyn_negative_positive_controls": 15,
+  "new_exact_symbolic_intent_objects": 26,
+  "frozen_observation_aliases_covered": 677,
+  "all_new26_objects_still_match_original_source_rule": true,
+  "combined_existing_intent_objects": 139,
+  "combined_existing_intent_observations": 2121,
+  "original_frozen_objects": 679,
+  "original_frozen_observations": 8200,
+  "remaining_content_objects": 540,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 8,
+    "BoundedStreamingFormat": 29,
+    "SourceLanguageExpressionIntent": 377,
+    "PrivateStructuredOrRuntimeContent": 107
+  },
+  "extra_sensitive_dictionary_literals_checked_even_when_generic_regex_matches_only_an_earlier_field": true,
+  "old_probe_failure_epochs_retained": [
+    "Initial trusted helper compilation failed due to local switch-pattern variable shadowing; no project source was compiled.",
+    "First negative dictionary control caught missing ImplicitElementAccessSyntax. Original expectation remained false; helper was corrected before reviewing any real project sources."
+  ],
+  "no_actual_source_compilation_or_execution": true,
+  "original_source_predicate_public_guards_budget_or_project_files_modified": false,
+  "global_dotnet_user_environment_or_NuGet_sources_modified": false,
+  "private_source_custody": {
+    "ok": true,
+    "directory": "G:\\PR13Evidence\\LOAD112-csharp-source-intent-20261023-r1-originals\\exact-source-objects.private",
+    "items": [
+      {
+        "path": "1f167c1976f7f17fda4c64f00ffa745610d3442478c2ddd7bf7a0af80200416c.private-original.cs",
+        "bytes": 781513,
+        "sha256": "1f167c1976f7f17fda4c64f00ffa745610d3442478c2ddd7bf7a0af80200416c"
+      },
+      {
+        "path": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d.private-original.cs",
+        "bytes": 14819,
+        "sha256": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d"
+      },
+      {
+        "path": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802.private-original.cs",
+        "bytes": 3247,
+        "sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802"
+      },
+      {
+        "path": "c081f251afd1b662bc1c2a7bae878aeef622434471c36144cb9515a7f388de28.private-original.cs",
+        "bytes": 14754,
+        "sha256": "c081f251afd1b662bc1c2a7bae878aeef622434471c36144cb9515a7f388de28"
+      },
+      {
+        "path": "0fc1597bb19455642c2410331d655d071544329f16a2af47bae0d44ad09778a5.private-original.cs",
+        "bytes": 34996,
+        "sha256": "0fc1597bb19455642c2410331d655d071544329f16a2af47bae0d44ad09778a5"
+      },
+      {
+        "path": "e45e7bdd2341e20f0cda920c44f09a493ae95d7a475af5b652d50aa3804cecc9.private-original.cs",
+        "bytes": 23184,
+        "sha256": "e45e7bdd2341e20f0cda920c44f09a493ae95d7a475af5b652d50aa3804cecc9"
+      },
+      {
+        "path": "080546b36f7b5b854e8ccf7ef729ae40678f519d70036e76e2ec7a95db046b17.private-original.cs",
+        "bytes": 122345,
+        "sha256": "080546b36f7b5b854e8ccf7ef729ae40678f519d70036e76e2ec7a95db046b17"
+      },
+      {
+        "path": "1f59ab97cf4d6853dce74f2df3b69ba47cbb1d34559a59baa33b3fc312e5e5f7.private-original.cs",
+        "bytes": 5481,
+        "sha256": "1f59ab97cf4d6853dce74f2df3b69ba47cbb1d34559a59baa33b3fc312e5e5f7"
+      },
+      {
+        "path": "62d206b89f03a35edb8e7fe692243b745e207172bea9bc453432a6d6a8ff9316.private-original.cs",
+        "bytes": 10629,
+        "sha256": "62d206b89f03a35edb8e7fe692243b745e207172bea9bc453432a6d6a8ff9316"
+      },
+      {
+        "path": "62f4cd739bc84b61a0fc04a7976e44c5f35b12e9ba6ddc4eb0297912b8a96b75.private-original.cs",
+        "bytes": 1731,
+        "sha256": "62f4cd739bc84b61a0fc04a7976e44c5f35b12e9ba6ddc4eb0297912b8a96b75"
+      },
+      {
+        "path": "82c656598f8676c5bfe479303dfe3434f5502bd97909f837bde6fb87c038520e.private-original.cs",
+        "bytes": 32757,
+        "sha256": "82c656598f8676c5bfe479303dfe3434f5502bd97909f837bde6fb87c038520e"
+      },
+      {
+        "path": "8aef712ef55e6956ad5c939f704f5f95e2bed21e2f6d9f55a3db797ed8bb7d28.private-original.cs",
+        "bytes": 42973,
+        "sha256": "8aef712ef55e6956ad5c939f704f5f95e2bed21e2f6d9f55a3db797ed8bb7d28"
+      },
+      {
+        "path": "970943e1fb6f6a775c4de8afa5a6981e864f2ee262d9948386b01761160c6a70.private-original.cs",
+        "bytes": 11308,
+        "sha256": "970943e1fb6f6a775c4de8afa5a6981e864f2ee262d9948386b01761160c6a70"
+      },
+      {
+        "path": "bbb6253cccb079c62e7e63af609ee2e440982a165fbaca1839e37975fcdfb12d.private-original.cs",
+        "bytes": 15459,
+        "sha256": "bbb6253cccb079c62e7e63af609ee2e440982a165fbaca1839e37975fcdfb12d"
+      },
+      {
+        "path": "c6ae1c93e68a343e13e6a42026171c898282426fbc9bed9619b8f170b24366cb.private-original.cs",
+        "bytes": 9651,
+        "sha256": "c6ae1c93e68a343e13e6a42026171c898282426fbc9bed9619b8f170b24366cb"
+      },
+      {
+        "path": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a.private-original.cs",
+        "bytes": 20250,
+        "sha256": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a"
+      },
+      {
+        "path": "f17f112330e55916d198690368c3b565e97a416fb1bac1796d1315f1264a5b1b.private-original.cs",
+        "bytes": 24480,
+        "sha256": "f17f112330e55916d198690368c3b565e97a416fb1bac1796d1315f1264a5b1b"
+      },
+      {
+        "path": "fd1d154459ee107fa74ec89e086c2574cfb978417fd1346d369609804f4edd72.private-original.cs",
+        "bytes": 10162,
+        "sha256": "fd1d154459ee107fa74ec89e086c2574cfb978417fd1346d369609804f4edd72"
+      },
+      {
+        "path": "96f68b01bd48b49e70f601f147e36323cf7de274feed2cbeeabc5a1694926100.private-original.cs",
+        "bytes": 3792,
+        "sha256": "96f68b01bd48b49e70f601f147e36323cf7de274feed2cbeeabc5a1694926100"
+      },
+      {
+        "path": "c5bdf62a269cdb818c98cc922837f40212658c4064453c44de58f62afb18332a.private-original.cs",
+        "bytes": 1379,
+        "sha256": "c5bdf62a269cdb818c98cc922837f40212658c4064453c44de58f62afb18332a"
+      },
+      {
+        "path": "4c9a96098adcea36dd443038610849d7ce3c3d2c77bf874936d0615a4621e504.private-original.cs",
+        "bytes": 7209,
+        "sha256": "4c9a96098adcea36dd443038610849d7ce3c3d2c77bf874936d0615a4621e504"
+      },
+      {
+        "path": "792c9157fa0fe20568df3e044bff01f17633ea0e500ebb27be022ca0f5e6203d.private-original.cs",
+        "bytes": 26498,
+        "sha256": "792c9157fa0fe20568df3e044bff01f17633ea0e500ebb27be022ca0f5e6203d"
+      },
+      {
+        "path": "8ee16458c4702f3b146f93e80635015d3ee515c8e013c928174233577276a4e5.private-original.cs",
+        "bytes": 124382,
+        "sha256": "8ee16458c4702f3b146f93e80635015d3ee515c8e013c928174233577276a4e5"
+      },
+      {
+        "path": "0332dedfb598cd960681b7f18e1fcf89a902968e92caf49ca51ad0e0e2b827ed.private-original.cs",
+        "bytes": 8175,
+        "sha256": "0332dedfb598cd960681b7f18e1fcf89a902968e92caf49ca51ad0e0e2b827ed"
+      },
+      {
+        "path": "1745508d2f46ae5606a25b792ccd99f99cf85f623b7dbc779c08d04ab24506c5.private-original.cs",
+        "bytes": 1416,
+        "sha256": "1745508d2f46ae5606a25b792ccd99f99cf85f623b7dbc779c08d04ab24506c5"
+      },
+      {
+        "path": "241cb878ab6cfecbb026d68af0b591ede6d60046ac2e50c4d03ccf5134d4cab6.private-original.cs",
+        "bytes": 1772,
+        "sha256": "241cb878ab6cfecbb026d68af0b591ede6d60046ac2e50c4d03ccf5134d4cab6"
+      },
+      {
+        "path": "fc6aee88551be1985085d3f7c59d3548db3c62efe763ad08a28ccff04ff59122.private-original.cs",
+        "bytes": 3897,
+        "sha256": "fc6aee88551be1985085d3f7c59d3548db3c62efe763ad08a28ccff04ff59122"
+      },
+      {
+        "path": "1bce26a1bdbd46914b153b6a14cd0ac0d176b6d0f68c1ccf0a952325076ebec5.private-original.cs",
+        "bytes": 5572,
+        "sha256": "1bce26a1bdbd46914b153b6a14cd0ac0d176b6d0f68c1ccf0a952325076ebec5"
+      },
+      {
+        "path": "348a5d7804389ed27663509d87e6a32c3eddf7c66c9964919b84001e502bcaba.private-original.cs",
+        "bytes": 10830,
+        "sha256": "348a5d7804389ed27663509d87e6a32c3eddf7c66c9964919b84001e502bcaba"
+      },
+      {
+        "path": "3d743b1f2a67511e4a616796d2aa0f929fd6a7d30839045c796fd7594dba9841.private-original.cs",
+        "bytes": 33150,
+        "sha256": "3d743b1f2a67511e4a616796d2aa0f929fd6a7d30839045c796fd7594dba9841"
+      },
+      {
+        "path": "70fa20a97df0af4bb12e9d33a0dbfe6f3895d5ec468b282b9f73062f66629582.private-original.cs",
+        "bytes": 10289,
+        "sha256": "70fa20a97df0af4bb12e9d33a0dbfe6f3895d5ec468b282b9f73062f66629582"
+      },
+      {
+        "path": "78575956eef5696f44e85ccee44b209b00ac9a90c73632ec639d15db06f21f14.private-original.cs",
+        "bytes": 43637,
+        "sha256": "78575956eef5696f44e85ccee44b209b00ac9a90c73632ec639d15db06f21f14"
+      },
+      {
+        "path": "a089b135b65ca06ee02c0fc3c36b75735c7f4d733332e075e75bfb607e6ae560.private-original.cs",
+        "bytes": 15771,
+        "sha256": "a089b135b65ca06ee02c0fc3c36b75735c7f4d733332e075e75bfb607e6ae560"
+      },
+      {
+        "path": "a17f1f29512aa3729417e8cf0528f42c4edc96197569aa39404f79ec01de1224.private-original.cs",
+        "bytes": 24852,
+        "sha256": "a17f1f29512aa3729417e8cf0528f42c4edc96197569aa39404f79ec01de1224"
+      },
+      {
+        "path": "ac3d90187d61b58466293c2d2851388231459e44ebc8bccbf8592437c483f3ea.private-original.cs",
+        "bytes": 20481,
+        "sha256": "ac3d90187d61b58466293c2d2851388231459e44ebc8bccbf8592437c483f3ea"
+      },
+      {
+        "path": "b582d3b71ce2d9042c8a86a04b428c164b3997842b13234265605a007d3a9891.private-original.cs",
+        "bytes": 23514,
+        "sha256": "b582d3b71ce2d9042c8a86a04b428c164b3997842b13234265605a007d3a9891"
+      },
+      {
+        "path": "c3e611d5a4befb28ad799cfe9744be548242e43e806b1c60dfeeab7d8111bd34.private-original.cs",
+        "bytes": 11459,
+        "sha256": "c3e611d5a4befb28ad799cfe9744be548242e43e806b1c60dfeeab7d8111bd34"
+      },
+      {
+        "path": "f687aca12d2302a31d1350bc5ed3bff65de8c6e6aadf853e14ed981a4bd4a90f.private-original.cs",
+        "bytes": 9783,
+        "sha256": "f687aca12d2302a31d1350bc5ed3bff65de8c6e6aadf853e14ed981a4bd4a90f"
+      },
+      {
+        "path": "d1a5bd4b821fae2d585cbd63d877f043c3d6b5c4757acf752eb6663d7994d5c6.private-original.cs",
+        "bytes": 32260,
+        "sha256": "d1a5bd4b821fae2d585cbd63d877f043c3d6b5c4757acf752eb6663d7994d5c6"
+      },
+      {
+        "path": "23be0f78552720be6595e8cd16bf1b7059823b390baa33c2ae8bf0da57fdd427.private-original.cs",
+        "bytes": 5353,
+        "sha256": "23be0f78552720be6595e8cd16bf1b7059823b390baa33c2ae8bf0da57fdd427"
+      },
+      {
+        "path": "838032ea7dff0505f1a3410bae7f108981c639b570b9c0a3deb8d5b8fd9f3683.private-original.cs",
+        "bytes": 15526,
+        "sha256": "838032ea7dff0505f1a3410bae7f108981c639b570b9c0a3deb8d5b8fd9f3683"
+      },
+      {
+        "path": "c3118b12bd7b2e43258c019f32a9fe499b1cf0906ad7acf54662ae450d7469ae.private-original.cs",
+        "bytes": 8042,
+        "sha256": "c3118b12bd7b2e43258c019f32a9fe499b1cf0906ad7acf54662ae450d7469ae"
+      },
+      {
+        "path": "31b06f462ebaa307331a2c76c5038184388e850e5487223727b5ecd8b08bdf13.private-original.cs",
+        "bytes": 5499,
+        "sha256": "31b06f462ebaa307331a2c76c5038184388e850e5487223727b5ecd8b08bdf13"
+      },
+      {
+        "path": "c4f6c1fe57619d2dc3306a6d460cd927aa9d0a7ae352789a0b6662190c6c1ba8.private-original.cs",
+        "bytes": 8317,
+        "sha256": "c4f6c1fe57619d2dc3306a6d460cd927aa9d0a7ae352789a0b6662190c6c1ba8"
+      },
+      {
+        "path": "45980601ab9fc1248cda285a6069444789e02b56328b6ab6f7fed859677b38c1.private-original.cs",
+        "bytes": 2139,
+        "sha256": "45980601ab9fc1248cda285a6069444789e02b56328b6ab6f7fed859677b38c1"
+      },
+      {
+        "path": "60ceccd049227f020e1658f40c8c6b14fd2b263f62fb53c5f63882a436604463.private-original.cs",
+        "bytes": 10579,
+        "sha256": "60ceccd049227f020e1658f40c8c6b14fd2b263f62fb53c5f63882a436604463"
+      },
+      {
+        "path": "89c1b9e1ec63e0268c22ada79685a8022f5a72b4eea680d9e0d4f31d14e33947.private-original.cs",
+        "bytes": 14028,
+        "sha256": "89c1b9e1ec63e0268c22ada79685a8022f5a72b4eea680d9e0d4f31d14e33947"
+      },
+      {
+        "path": "9331584999ffa1a6185f84e7d26c0bd14080187ec9460276c82d4efcf9deb7c0.private-original.cs",
+        "bytes": 10023,
+        "sha256": "9331584999ffa1a6185f84e7d26c0bd14080187ec9460276c82d4efcf9deb7c0"
+      },
+      {
+        "path": "a0a0eda4455dc71d3f29bf2ca9867bbd41ad21b0f1a2be9b958fc30fba58469a.private-original.cs",
+        "bytes": 13187,
+        "sha256": "a0a0eda4455dc71d3f29bf2ca9867bbd41ad21b0f1a2be9b958fc30fba58469a"
+      },
+      {
+        "path": "bdc226b844730eb36ca7035123166b67e7fca01576dd081effbf55053719f7ff.private-original.cs",
+        "bytes": 35002,
+        "sha256": "bdc226b844730eb36ca7035123166b67e7fca01576dd081effbf55053719f7ff"
+      },
+      {
+        "path": "cfad0e1aec5a8096660e5bf6abccd85894497cb6911f82889edb6d2cafa9764f.private-original.cs",
+        "bytes": 3601,
+        "sha256": "cfad0e1aec5a8096660e5bf6abccd85894497cb6911f82889edb6d2cafa9764f"
+      },
+      {
+        "path": "d357f859ae5a3e23f3e30a57a1411f0b1d5de3a6b6e614f5d4a6216f69981980.private-original.cs",
+        "bytes": 2618,
+        "sha256": "d357f859ae5a3e23f3e30a57a1411f0b1d5de3a6b6e614f5d4a6216f69981980"
+      }
+    ],
+    "all52_source_objects_re_read_and_hashed": true
+  },
+  "trusted_runtime_custody": {
+    "directory": "G:\\PR13Evidence\\tool-runtimes\\csharp-source-intent-20261023-r1",
+    "items": [
+      {
+        "path": "bin/Release/net10.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 453968,
+        "sha256": "4b76e1ace7c4dd6d73f6577af3b33a0d70db8b65b10f292bb33f0cd364e869c7"
+      },
+      {
+        "path": "bin/Release/net10.0/cs/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 41296,
+        "sha256": "ac9a260de180f85b6aa6753698d941b91d93e8abc760505e7afaa4111accc73b"
+      },
+      {
+        "path": "bin/Release/net10.0/de/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 485672,
+        "sha256": "6f79a685c5a6246b08416b95fe12ab2fb5782ad8aeec2e8147b3c2bd216c50e3"
+      },
+      {
+        "path": "bin/Release/net10.0/de/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42792,
+        "sha256": "9d965a076507334a9b5bb5bc69b3ae60f9ff781101a8938ec597255843dcbcd8"
+      },
+      {
+        "path": "bin/Release/net10.0/es/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 474960,
+        "sha256": "985d0b52da0fb045ff19f8fb88fc872ad21f61f2aa28f7d6521d5066fccdecfe"
+      },
+      {
+        "path": "bin/Release/net10.0/es/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42280,
+        "sha256": "0407aad7b8c7417777eff8adb11278ef5b0a04db71674ec22686e5121ee2b81f"
+      },
+      {
+        "path": "bin/Release/net10.0/fr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 488744,
+        "sha256": "12fd3517fa99f8a7adecb01fea24761afac6bbf20a3bbbeee852ed2bd56151bd"
+      },
+      {
+        "path": "bin/Release/net10.0/fr/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42792,
+        "sha256": "c3a076fed478e565c8e596f6fad061e072dd262381c05b5f811d309eb0795420"
+      },
+      {
+        "path": "bin/Release/net10.0/it/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 481064,
+        "sha256": "f4e4bf358a53c792ed7034d43beaa89e06eebd727fdb0ae79df3eaef63ce36ef"
+      },
+      {
+        "path": "bin/Release/net10.0/it/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42792,
+        "sha256": "b25ca4bdbdd6a5b9901f415f80a7a4341e22335c1266cc0ddf359d7d7339a9f9"
+      },
+      {
+        "path": "bin/Release/net10.0/ja/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 530728,
+        "sha256": "3c35aeee474eecf497249841ace69ca6b2ef67209c001965599beb4b80f14526"
+      },
+      {
+        "path": "bin/Release/net10.0/ja/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 45352,
+        "sha256": "294617887471923fab516dc337dbf927bc210041c76719de7b72f78870e01796"
+      },
+      {
+        "path": "bin/Release/net10.0/ko/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 486696,
+        "sha256": "0976b69643e5e3cc4453bddc3ad64af2a96b00f5f551dd608503842a0ad89fec"
+      },
+      {
+        "path": "bin/Release/net10.0/ko/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42832,
+        "sha256": "9a9c7288b66f60934f4b37c272796775c21e209b2f3da3c968196c7641ac894f"
+      },
+      {
+        "path": "bin/Release/net10.0/Microsoft.CodeAnalysis.CSharp.dll",
+        "bytes": 19191632,
+        "sha256": "f5c3f59f88b65c04e16644ca7f53740b51859faf214f812dd601137bebe021eb"
+      },
+      {
+        "path": "bin/Release/net10.0/Microsoft.CodeAnalysis.dll",
+        "bytes": 8292136,
+        "sha256": "55e266ac4ffdf5d73fc861a35ed8c2e7c2292ebebc2107d1722b6429d7e6ab78"
+      },
+      {
+        "path": "bin/Release/net10.0/pl/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 488272,
+        "sha256": "f669d1f64392982180b69187c9f2926ef986a9d7666aa4d6eaf84dc630920cfe"
+      },
+      {
+        "path": "bin/Release/net10.0/pl/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 42832,
+        "sha256": "b360ddab71af0ddd1e75cc24762ed9e906d623e1be2d872af9ab0cc341f86fb7"
+      },
+      {
+        "path": "bin/Release/net10.0/pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 466256,
+        "sha256": "acbad09049e61074a06ff8a0cb52158d5b3bc71b53ce6218da33dcf1e40a4126"
+      },
+      {
+        "path": "bin/Release/net10.0/pt-BR/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 41768,
+        "sha256": "46916d9a42be1b6b3d9a4bd5f69dbbdd0487da02fe4f1f4389c4f0b509f4b810"
+      },
+      {
+        "path": "bin/Release/net10.0/ru/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 640848,
+        "sha256": "da16d322d14792d9e5c4715da1eb741f4a7b3b9c6935798696884b09a98ccf19"
+      },
+      {
+        "path": "bin/Release/net10.0/ru/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 51536,
+        "sha256": "989a94dff120217279bbc51bc475bf608edd2514a9f47c063cd8830c92fe0467"
+      },
+      {
+        "path": "bin/Release/net10.0/SourceIntent.deps.json",
+        "bytes": 4065,
+        "sha256": "41900d9e3f6e96a26754f1d435d5aa1f9b32e2e809c74baeb84d07c1e9cbb209"
+      },
+      {
+        "path": "bin/Release/net10.0/SourceIntent.dll",
+        "bytes": 28672,
+        "sha256": "f6f72415261de01b6842fa132842663600a424b1691bac2872999cf9849b7b0e"
+      },
+      {
+        "path": "bin/Release/net10.0/SourceIntent.exe",
+        "bytes": 162304,
+        "sha256": "5d30c77ee146aef42a85dfb4a6c13d39034734b034311b34296fb6b754942d37"
+      },
+      {
+        "path": "bin/Release/net10.0/SourceIntent.pdb",
+        "bytes": 13576,
+        "sha256": "68c87be5a5a0e69dcc16a7a79daf9021990c5736d2197eff44f88bb498ec1826"
+      },
+      {
+        "path": "bin/Release/net10.0/SourceIntent.runtimeconfig.json",
+        "bytes": 342,
+        "sha256": "c230a317a54dd960bcbeb5f347f52e18dc665a26f7efda2159fced9a5ac7e097"
+      },
+      {
+        "path": "bin/Release/net10.0/tr/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 462120,
+        "sha256": "4da062643a7ef05ae43849ee8b2fcc54479ad93b256f1b6b104e466d56c8bd70"
+      },
+      {
+        "path": "bin/Release/net10.0/tr/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 41256,
+        "sha256": "1c737ec8a28276dda105a16ae6b4b3d576344a6d6aef8bba1d24f743cbb873aa"
+      },
+      {
+        "path": "bin/Release/net10.0/zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 411472,
+        "sha256": "05c6d2ce8fff9c81fe4e43022bd54271229c1e937b35406b93aa9c1eaf07488e"
+      },
+      {
+        "path": "bin/Release/net10.0/zh-Hans/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 38736,
+        "sha256": "471fa8d76fa55d666bdece15ad3720b407f06fd93547790ac778820fcfdd89c0"
+      },
+      {
+        "path": "bin/Release/net10.0/zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll",
+        "bytes": 410920,
+        "sha256": "39c1a2ed241f86fa85b465ccfe4ee328f5da39c15705ca9fd41271fdb46b72ea"
+      },
+      {
+        "path": "bin/Release/net10.0/zh-Hant/Microsoft.CodeAnalysis.resources.dll",
+        "bytes": 38736,
+        "sha256": "e4bd4ebae62948b4c7ab90931e8c0ee7f9cff47e60822a5add2ed4005dc91087"
+      },
+      {
+        "path": "global.json",
+        "bytes": 55,
+        "sha256": "c0671c628fde8e60dc3447e54ade6280230a68e1c84b4329a24327ba05e0545f"
+      },
+      {
+        "path": "NuGet.Config",
+        "bytes": 74,
+        "sha256": "9508cae5f76364f56e80eb97cb16493977243cf38e5cca6284e3d74f83b20a2c"
+      },
+      {
+        "path": "obj/project.assets.json",
+        "bytes": 20907,
+        "sha256": "90311a8ca2daf25c0be0a50ac1c8e5beb3df3766c31056118861c5549f4f0529"
+      },
+      {
+        "path": "obj/project.nuget.cache",
+        "bytes": 231,
+        "sha256": "b1fca2a9eec78c70b40b70adc78b24188c9078076ee2b8e004c33b4ebb59467e"
+      },
+      {
+        "path": "obj/Release/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs",
+        "bytes": 200,
+        "sha256": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b"
+      },
+      {
+        "path": "obj/Release/net10.0/apphost.exe",
+        "bytes": 162304,
+        "sha256": "5d30c77ee146aef42a85dfb4a6c13d39034734b034311b34296fb6b754942d37"
+      },
+      {
+        "path": "obj/Release/net10.0/ref/SourceIntent.dll",
+        "bytes": 9216,
+        "sha256": "7efa2793b6e6e3f71f47c64fab9769d3ef8e5808e926cd7f7701223837a55a1f"
+      },
+      {
+        "path": "obj/Release/net10.0/refint/SourceIntent.dll",
+        "bytes": 9216,
+        "sha256": "7efa2793b6e6e3f71f47c64fab9769d3ef8e5808e926cd7f7701223837a55a1f"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIn.D01F72D5.Up2Date",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.AssemblyInfo.cs",
+        "bytes": 971,
+        "sha256": "326ffba994640a5c8c93c035339f33024758cb3a3204f1a7e07804d3424b4a2f"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.AssemblyInfoInputs.cache",
+        "bytes": 66,
+        "sha256": "c86a25d68b01192328a84726a8ae43e476c3adff13ba89a9db34a2df073d0008"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.assets.cache",
+        "bytes": 201,
+        "sha256": "4731eeda87dcc6f34a497aef5329670144cd81d09b7eca14a6d6165ac4252d07"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.csproj.AssemblyReference.cache",
+        "bytes": 4940,
+        "sha256": "d383686c6ebf8131f44500ef7427bf0446ccb2c2681db994bb10989e771fa031"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.csproj.CoreCompileInputs.cache",
+        "bytes": 66,
+        "sha256": "f8321233efce54495e2c52e7a124030a330c7967198daedaed06109388666fd4"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.csproj.FileListAbsolute.txt",
+        "bytes": 5371,
+        "sha256": "72db51e428ebc7e42c3122555fa6bd32e15fdca10142a662f66040453ca3d7f3"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.dll",
+        "bytes": 28672,
+        "sha256": "f6f72415261de01b6842fa132842663600a424b1691bac2872999cf9849b7b0e"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.GeneratedMSBuildEditorConfig.editorconfig",
+        "bytes": 849,
+        "sha256": "8ed86f139188422d936e21b2513f0fcc75fe8734c466912f4b061c50e0de759c"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.genruntimeconfig.cache",
+        "bytes": 66,
+        "sha256": "a1db828987d0a63a6ac5f91c834700ea74b75c459675e2f2f81f6a23f4f7e3ef"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.GlobalUsings.g.cs",
+        "bytes": 239,
+        "sha256": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227"
+      },
+      {
+        "path": "obj/Release/net10.0/SourceIntent.pdb",
+        "bytes": 13576,
+        "sha256": "68c87be5a5a0e69dcc16a7a79daf9021990c5736d2197eff44f88bb498ec1826"
+      },
+      {
+        "path": "obj/SourceIntent.csproj.nuget.dgspec.json",
+        "bytes": 21544,
+        "sha256": "cdd7e02af6ca9a39c8fdd5841abd408d6a3797e478f42d9805992a2445a54f35"
+      },
+      {
+        "path": "obj/SourceIntent.csproj.nuget.g.props",
+        "bytes": 1283,
+        "sha256": "3106485d74f7cb255e69882c4a7001a7a75b04a864dc676950f78dff6b34269e"
+      },
+      {
+        "path": "obj/SourceIntent.csproj.nuget.g.targets",
+        "bytes": 150,
+        "sha256": "971cc9b535384849b5c661d776cd7a80833a416265e32e8968e06c367368b8b5"
+      },
+      {
+        "path": "owned-dotnet-home/.dotnet/.workloadAdvertisingManifestSentinel10.0.400",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "owned-dotnet-home/.dotnet/10.0.400.aspNetCertificateSentinel",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "owned-dotnet-home/.dotnet/10.0.400.dotnetFirstUseSentinel",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "owned-dotnet-home/.dotnet/10.0.400.toolpath.sentinel",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "Program.cs",
+        "bytes": 7442,
+        "sha256": "ab5fbde810a800e8b4447a681bf145f2b407b8344ff8d61e69665b7ccb33e3ac"
+      },
+      {
+        "path": "SourceIntent.csproj",
+        "bytes": 790,
+        "sha256": "5ab1228701268dc059de80e473753bc7bf797fa2745a309e518b31286f510ccf"
+      }
+    ],
+    "all_files_read_and_hashed": true,
+    "probe_DLL_sha256": "f6f72415261de01b6842fa132842663600a424b1691bac2872999cf9849b7b0e",
+    "only_trusted_probe_was_compiled": true,
+    "reviewed_sources_not_compiled_or_executed": true,
+    "external_NuGet_feeds_configured": false
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-csharp-source-intent-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-executions/actual-Roslyn-controls-qualified.original.json",
+        "bytes": 22096,
+        "sha256": "d8f9cea3c62c2891f8692c9dcc0c307fb4c0ba55f6bed78b6acb3364ace8b63b"
+      },
+      {
+        "path": "native-executions/actual-source-objects.native-exit.original.json",
+        "bytes": 36,
+        "sha256": "9b226763f3ecfa4a5ce8e94858bbcf22e8d95d10e186ec369fd82ed2e2c8233b"
+      },
+      {
+        "path": "native-executions/actual-source-objects.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/actual-source-objects.stdout.original.json",
+        "bytes": 68635,
+        "sha256": "3f620f8c33003f50ce3a398d7e6b251f6e7871907427b4ff19aff295d6e11544"
+      },
+      {
+        "path": "native-executions/build-r2.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/build-r2.stdout.original.log",
+        "bytes": 203,
+        "sha256": "651f98df23bc73b6163bcebaedc24099237d516f43517206684bd651eb614968"
+      },
+      {
+        "path": "native-executions/build-r3.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/build-r3.stdout.original.log",
+        "bytes": 203,
+        "sha256": "bb459e772ad1e45b60f37123666ffde49747069bc51674fee424f0dc70098a5a"
+      },
+      {
+        "path": "native-executions/build.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/build.stdout.original.log",
+        "bytes": 727,
+        "sha256": "33638002ee961eb9bd1a9fa8c770b786efba3da43b0d37e734fb3c560c120d51"
+      },
+      {
+        "path": "native-executions/controls-r2.native-exit.original.json",
+        "bytes": 36,
+        "sha256": "9b226763f3ecfa4a5ce8e94858bbcf22e8d95d10e186ec369fd82ed2e2c8233b"
+      },
+      {
+        "path": "native-executions/controls-r2.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/controls-r2.stdout.original.json",
+        "bytes": 11611,
+        "sha256": "b01d4de98d8c6e5996b7d369b2e127b36429853f2fff3de7425d7650d7fbcc43"
+      },
+      {
+        "path": "native-executions/controls.native-exit.original.json",
+        "bytes": 36,
+        "sha256": "9b226763f3ecfa4a5ce8e94858bbcf22e8d95d10e186ec369fd82ed2e2c8233b"
+      },
+      {
+        "path": "native-executions/controls.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/controls.stdout.original.json",
+        "bytes": 11421,
+        "sha256": "809f9d401249bcc8e978f2d76836147c716c273833d0e276ac134343e4403400"
+      },
+      {
+        "path": "native-executions/executed-build-r3-driver.original.py",
+        "bytes": 2068,
+        "sha256": "89b2021c488de687b22d2263f77f6e73acf7b4297044f83437b40bf6fd701461"
+      },
+      {
+        "path": "native-executions/executed-build-repair-driver.original.py",
+        "bytes": 2431,
+        "sha256": "37f0ead9fa3ebe8e5ab6ff95f77dd08d44349a0ed31f75a0d4da6e9fc79f8608"
+      },
+      {
+        "path": "native-executions/executed-review-driver.original.py",
+        "bytes": 8641,
+        "sha256": "64997853b1ff93ea8a1c203074d90533aee73fc962c6bb752a46dfd589ce06f1"
+      },
+      {
+        "path": "native-executions/native-build-progress.original.json",
+        "bytes": 851,
+        "sha256": "c8172ad81f98d6cb2dd9e0a341fb64144ba5a51e43af1a553e81dc6964341620"
+      },
+      {
+        "path": "native-executions/probe-build-qualified-r3.original.json",
+        "bytes": 1107,
+        "sha256": "2ae6b0e105a149da7875ce6fc4057519ced9494579cff96a47babf6593f0b45d"
+      },
+      {
+        "path": "native-executions/probe-build-qualified.original.json",
+        "bytes": 1289,
+        "sha256": "a0d44a9035efc2a31c21caedf9ae529289314f37cae8457757880a50863f16a5"
+      },
+      {
+        "path": "native-executions/probe-compiled-source-r3.original.cs",
+        "bytes": 7442,
+        "sha256": "ab5fbde810a800e8b4447a681bf145f2b407b8344ff8d61e69665b7ccb33e3ac"
+      },
+      {
+        "path": "native-executions/probe-compiled-source.original.cs",
+        "bytes": 7096,
+        "sha256": "1d0621517a551f1b82dfa7dffce74acca35f28b55f6051d021bbb2595a5640ab"
+      },
+      {
+        "path": "native-executions/probe-controls-R1-build-qualified.exact-copy.json",
+        "bytes": 1289,
+        "sha256": "a0d44a9035efc2a31c21caedf9ae529289314f37cae8457757880a50863f16a5"
+      },
+      {
+        "path": "native-executions/probe-controls-R1-Program.original.cs",
+        "bytes": 7096,
+        "sha256": "1d0621517a551f1b82dfa7dffce74acca35f28b55f6051d021bbb2595a5640ab"
+      },
+      {
+        "path": "native-executions/probe-controls-R1.original.dll",
+        "bytes": 28160,
+        "sha256": "7122cb175e9852671dde273e44f325421b6846368ba73502bf9e48789eeac78c"
+      },
+      {
+        "path": "native-executions/probe-R1-Program.original.cs",
+        "bytes": 7027,
+        "sha256": "203f865854cbd8431669301cce8489866c39ded56d9cb1cc330978e5175aeb77"
+      },
+      {
+        "path": "native-executions/restore.stderr.original.log",
+        "bytes": 664,
+        "sha256": "286f0c73239d1d8f037ac08fa7ab358934da8405a64deab07b719fdf605700ca"
+      },
+      {
+        "path": "native-executions/restore.stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/result.original.json",
+        "bytes": 164654,
+        "sha256": "0a2a631a5eba3c9cd9d1a95092b6804d13addd16c29bc071366338094cdf7e09"
+      },
+      {
+        "path": "native-executions/review-controls-R1-driver.original.py",
+        "bytes": 8546,
+        "sha256": "c2863d00a25e239fc47bda4590d640416e3f7f1a7b907d26fa2dac3e900bcc82"
+      },
+      {
+        "path": "native-executions/review-controls-R1-failure.original.json",
+        "bytes": 365,
+        "sha256": "f76dab5b385efdff1170aa2e442d971a93d2ee93610d753d0fa2f15474bcb4bc"
+      },
+      {
+        "path": "source-custody-closure.original.json",
+        "bytes": 11625,
+        "sha256": "161cc96edab7dc564b9b0b3b7428887eb7837bcbebd23b48dd418b91304a5fb3"
+      },
+      {
+        "path": "trusted-probe-runtime-custody.original.json",
+        "bytes": 11981,
+        "sha256": "ada2cceb518e25b4612f245cdfb3ea167a46dbe0e9a07fe9a32032f0709c4b3d"
+      },
+      {
+        "path": "remaining540-content-review-queue.private.original.jsonl",
+        "bytes": 1657922,
+        "sha256": "61c3d21bc1b9207c42d830458faf95c3969a43581c452428ee91b2d71cedee74"
+      },
+      {
+        "path": "new26-symbolic-source-proofs.original.json",
+        "bytes": 18666,
+        "sha256": "06b87e6a1d62a0c40ffa8a8eab3efee53cda6b3f0c8f26e36b65c92989ed04da"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 10565,
+        "sha256": "9a0c42dd1f66f9da0c60977c8411a4def0454f695112202084a02fa2ca840920"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 95409,
+        "sha256": "68ddcfc595a40efa527184f8bf1ea995db732982438b606ecec1930f58ec2631"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

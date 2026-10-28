@@ -1,0 +1,111 @@
+{
+  "kind": "AdditionalOriginalPhysicalPGSnapshotMembership_NotDBOrCapacityAcceptance",
+  "generated_at": "2026-10-23T05:38:04.298770+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "new_original_snapshot_bindings": 1,
+  "new_actual_file_members_verified": 1434,
+  "native_receipt_member_binding": {
+    "manifest_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+    "manifest_sha256": "c92e4bd7eecc7d41a0d7083b74b135352b322bb6deea93bf3bb3dfbc002dfe68",
+    "manifest_bytes": 227175,
+    "archive_source": {
+      "root": "private-G",
+      "path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+      "bytes": 8506321,
+      "sha256": "8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933",
+      "frozen_snapshot_alias_paths": 2
+    },
+    "receipt_path": "G:\\PR13Evidence\\coordinator-native-package-smoke-20261018-r1-originals\\cloud-originals-before-PG-cleanup\\physical-before-PG-cleanup.archive-ready.original.json",
+    "receipt_sha256": "9e447bf8c8bad7a6f023fa55ebcc90d19faf4bed9de5d4e88fff290bb9376a71",
+    "receipt_binds_both_actual_manifest_and_archive": true,
+    "complete_native_tar_and_gzip_footer": true,
+    "stable_outer_hash_equals_frozen_inventory": true,
+    "expected_files": 1434,
+    "actual_files": 1434,
+    "missing_paths": [],
+    "extra_paths": [],
+    "different_hash_paths": [],
+    "invalid_paths": [],
+    "state": "ExactReceiptBoundWholePGDATAMembershipVerified",
+    "old_capacity_or_transaction_case_success_not_inferred": true
+  },
+  "previous_qualified_snapshots_retained_without_payload_replay": 5,
+  "current_verified_snapshot_memberships": 6,
+  "total_original_snapshot_manifests": 14,
+  "remaining_pending_snapshot_manifests": 8,
+  "same_original_receipt_binds_exact_manifest_and_archive_bytes": true,
+  "native_whole_outer_identity_and_tar_gzip_footer_complete": true,
+  "no_missing_extra_duplicate_invalid_or_changed_members": true,
+  "native_open_handle_size_used_instead_of_cached_directory_length": true,
+  "captured_native_prefixes_re_read_equal_source_and_copies_rehashed": true,
+  "native_prefix_sources_still_live_not_terminal_claim": true,
+  "archive_payload_reparsed_or_database_restored": false,
+  "old_capacity_transaction_and_runtime_case_verdicts_not_changed": true,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-PGDATA-new-one-membership-20261023-r5-originals",
+    "items": [
+      {
+        "path": "native-prefixes/R3-outer.private-exact-prefix.jsonl",
+        "bytes": 5269847,
+        "sha256": "3230ae1ce787fc3a16dbaedf666cbfd3bea3ba8038d9a145365d5c3e1a4fc956",
+        "native_complete_prefix_not_terminal_source": true
+      },
+      {
+        "path": "native-prefixes/R3-members.private-exact-prefix.jsonl",
+        "bytes": 158800474,
+        "sha256": "ea3e242ba9eddfcbc6e23dff154c123f148487388cc436af7f28d9af0e17d733",
+        "native_complete_prefix_not_terminal_source": true
+      },
+      {
+        "path": "exact-manifest-receipts/8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933/manifest.private-original.json",
+        "bytes": 227175,
+        "sha256": "c92e4bd7eecc7d41a0d7083b74b135352b322bb6deea93bf3bb3dfbc002dfe68"
+      },
+      {
+        "path": "exact-manifest-receipts/8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933/receipt.private-original.json",
+        "bytes": 819,
+        "sha256": "9e447bf8c8bad7a6f023fa55ebcc90d19faf4bed9de5d4e88fff290bb9376a71"
+      },
+      {
+        "path": "completed-native-binding/executed-membership-binding-source.original.py",
+        "bytes": 7279,
+        "sha256": "a87809a00ccd32576dbecb18fbc206550ac7c5e47c40bd4cf6ef270b1f47be3b"
+      },
+      {
+        "path": "completed-native-binding/result.original.json",
+        "bytes": 7829,
+        "sha256": "cbbca75ff063f92be684793d3ce4159f457ab03002b74fe876f88dc87738eb3d"
+      },
+      {
+        "path": "preparation-source.original.py",
+        "bytes": 2513,
+        "sha256": "a54997a8b44d52fccb15c64e7be39767318bbdb32042a94698a79aaf1ea6db7e"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 7576,
+        "sha256": "8dc020f92e91a896b16f71dddb2087230c487039aa02e9acf5f02568326a4156"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 104166,
+        "sha256": "6785149d6f7ee58272962a457d076dfcc94ed381724bb28524daf801c9a1a9a6"
+      }
+    ]
+  },
+  "source_content_queue_still": 448,
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "production_update_or_OS_reboot_performed": false
+}

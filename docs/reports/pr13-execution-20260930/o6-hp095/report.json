@@ -1,0 +1,5597 @@
+{
+  "schema_version": 1,
+  "report_source_sha": "eb9149bb110f301ec614033c22023e60c859e13f",
+  "sources": [
+    {
+      "path": "outputs\\pr13-execution-20260930\\o6-first-intent-three-runs\\outer-o6-hp095\\0",
+      "raw_sha256": "a587d2a6c10a01e92771f1eb20351a9abc1602b0b6072b43051ca47df9c20420",
+      "raw_bytes": 68009914,
+      "count": 72000,
+      "manifest_sha256": "1da364640deda5add07075f62f7211fef23abebf973fa647f1d4418afdb27ef4",
+      "summary_sha256": "9bd97d22effd9d96b7849c18ce077d1c226af89641331cc635abebe05c8cfff1",
+      "source_sha": "6eeff4ae2cd4923f7e429e30accb3c1627f09320",
+      "domain_sha256": "cb82bddb8287253f011d923a7dcdc2fd1ae66096ba46785659d0f68f34bb3759",
+      "simulator_sha256": "1e2355a4d028e40d9e09b70ed83c6c0bfc5c17f24ecb57552f0deca31347fea2",
+      "seed_start": 0
+    },
+    {
+      "path": "outputs\\pr13-execution-20260930\\o6-first-intent-three-runs\\outer-o6-hp095\\1000",
+      "raw_sha256": "a6ccbf6d728e44b49827b82bce59fe46480a6fa6334298a0efc37a41df075cf6",
+      "raw_bytes": 68086000,
+      "count": 72000,
+      "manifest_sha256": "af3b9b5ed913d3b19e585f681b94925d86565ac72a8b5022baf80508d526532d",
+      "summary_sha256": "41bce794dd3eba11dd60076bbfd25ae81d6d5d0d6ccfe9830e7d38dd3ed8c435",
+      "source_sha": "6eeff4ae2cd4923f7e429e30accb3c1627f09320",
+      "domain_sha256": "cb82bddb8287253f011d923a7dcdc2fd1ae66096ba46785659d0f68f34bb3759",
+      "simulator_sha256": "1e2355a4d028e40d9e09b70ed83c6c0bfc5c17f24ecb57552f0deca31347fea2",
+      "seed_start": 1000
+    },
+    {
+      "path": "outputs\\pr13-execution-20260930\\o6-first-intent-three-runs\\outer-o6-hp095\\2000",
+      "raw_sha256": "d9ec0e69bc926493556cbd43db80d644871884fec44763c0823e042d6ad856d6",
+      "raw_bytes": 68087004,
+      "count": 72000,
+      "manifest_sha256": "a6d403df3fe54791f38f568cad1a4b543ae2c13bcebc0c4730b2c02670e0f842",
+      "summary_sha256": "11f2d2a57ac126d23f322b87d134e879c85e8237eb2c8a89e9904cdcf5e259f5",
+      "source_sha": "6eeff4ae2cd4923f7e429e30accb3c1627f09320",
+      "domain_sha256": "cb82bddb8287253f011d923a7dcdc2fd1ae66096ba46785659d0f68f34bb3759",
+      "simulator_sha256": "1e2355a4d028e40d9e09b70ed83c6c0bfc5c17f24ecb57552f0deca31347fea2",
+      "seed_start": 2000
+    }
+  ],
+  "total": 216000,
+  "errors": 0,
+  "scope": "Actual Domain encounters; default 20-card decks. Synthetic entry; no network, legal route, prepared Boss or human UX claim.",
+  "candidate_activation": false,
+  "human_experience_verified": false,
+  "strata": [
+    {
+      "stratum": "Guardian/0/default/BOSS/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2997,
+        "Death": 3
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.9909333333334,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 71.95766666666667,
+        "p10": 66,
+        "p50": 72,
+        "p90": 78,
+        "p95": 79,
+        "p99": 82
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 164.95233333333334,
+        "p10": 156,
+        "p50": 166,
+        "p90": 173,
+        "p95": 174,
+        "p99": 176
+      },
+      "heal_overflow": 8726,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2997,
+        "Death": 3
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.9909333333334,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 71.95766666666667,
+        "p10": 66,
+        "p50": 72,
+        "p90": 78,
+        "p95": 79,
+        "p99": 82
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 164.95233333333334,
+        "p10": 156,
+        "p50": 166,
+        "p90": 173,
+        "p95": 174,
+        "p99": 176
+      },
+      "heal_overflow": 8726,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/BOSS/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2991,
+        "Death": 9
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.97366666666665,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 70.25533333333334,
+        "p10": 62,
+        "p50": 70,
+        "p90": 79,
+        "p95": 81,
+        "p99": 85
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 162.805,
+        "p10": 151,
+        "p50": 163,
+        "p90": 174,
+        "p95": 176,
+        "p99": 182
+      },
+      "heal_overflow": 6539,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2991,
+        "Death": 9
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.97366666666665,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 70.25533333333334,
+        "p10": 62,
+        "p50": 70,
+        "p90": 79,
+        "p95": 81,
+        "p99": 85
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 162.805,
+        "p10": 151,
+        "p50": 163,
+        "p90": 174,
+        "p95": 176,
+        "p99": 182
+      },
+      "heal_overflow": 6539,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/BOSS/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2932,
+        "Death": 68
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.75806666666665,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.199,
+        "p10": 67,
+        "p50": 75,
+        "p90": 83,
+        "p95": 85,
+        "p99": 89
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 161.40833333333333,
+        "p10": 148,
+        "p50": 162,
+        "p90": 174,
+        "p95": 176,
+        "p99": 182
+      },
+      "heal_overflow": 7043,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2932,
+        "Death": 68
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.75806666666665,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.199,
+        "p10": 67,
+        "p50": 75,
+        "p90": 83,
+        "p95": 85,
+        "p99": 89
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 161.40833333333333,
+        "p10": 148,
+        "p50": 162,
+        "p90": 174,
+        "p95": 176,
+        "p99": 182
+      },
+      "heal_overflow": 7043,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 300.0,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.936,
+        "p10": 75,
+        "p50": 81,
+        "p90": 87,
+        "p95": 89,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 169.155,
+        "p10": 160,
+        "p50": 170,
+        "p90": 177,
+        "p95": 178,
+        "p99": 179
+      },
+      "heal_overflow": 9342,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 300.0,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.936,
+        "p10": 75,
+        "p50": 81,
+        "p90": 87,
+        "p95": 89,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 169.155,
+        "p10": 160,
+        "p50": 170,
+        "p90": 177,
+        "p95": 178,
+        "p99": 179
+      },
+      "heal_overflow": 9342,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2996,
+        "Victory": 4
+      },
+      "victory_rate": 0.0013333333333333333,
+      "victory_rate_wilson95": [
+        0.0005186256496617009,
+        0.0034234794790633924
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.98946666666666,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 4,
+        "mean": 292.1,
+        "p10": 288.1,
+        "p50": 288.1,
+        "p90": 296.1,
+        "p95": 296.1,
+        "p99": 296.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.93233333333333,
+        "p10": 70,
+        "p50": 79,
+        "p90": 87,
+        "p95": 90,
+        "p99": 94
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 166.24,
+        "p10": 153,
+        "p50": 167,
+        "p90": 177,
+        "p95": 180,
+        "p99": 188
+      },
+      "heal_overflow": 8974,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2996,
+        "Victory": 4
+      },
+      "victory_rate": 0.0013333333333333333,
+      "victory_rate_wilson95": [
+        0.0005186256496617009,
+        0.0034234794790633924
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.98946666666666,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 4,
+        "mean": 292.1,
+        "p10": 288.1,
+        "p50": 288.1,
+        "p90": 296.1,
+        "p95": 296.1,
+        "p99": 296.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.93233333333333,
+        "p10": 70,
+        "p50": 79,
+        "p90": 87,
+        "p95": 90,
+        "p99": 94
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 166.24,
+        "p10": 153,
+        "p50": 167,
+        "p90": 177,
+        "p95": 180,
+        "p99": 188
+      },
+      "heal_overflow": 8974,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2759,
+        "Victory": 241
+      },
+      "victory_rate": 0.08033333333333334,
+      "victory_rate_wilson95": [
+        0.07113507420425678,
+        0.09060497282586681
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.1107,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 241,
+        "mean": 288.92987551867225,
+        "p10": 280.1,
+        "p50": 288.1,
+        "p90": 296.1,
+        "p95": 296.1,
+        "p99": 296.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 83.77633333333333,
+        "p10": 75,
+        "p50": 84,
+        "p90": 92,
+        "p95": 94,
+        "p99": 98
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 165.55933333333334,
+        "p10": 152,
+        "p50": 166,
+        "p90": 178,
+        "p95": 181,
+        "p99": 188
+      },
+      "heal_overflow": 10287,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Censored": 2759,
+        "Victory": 241
+      },
+      "victory_rate": 0.08033333333333334,
+      "victory_rate_wilson95": [
+        0.07113507420425678,
+        0.09060497282586681
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 299.1107,
+        "p10": 300,
+        "p50": 300,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 241,
+        "mean": 288.92987551867225,
+        "p10": 280.1,
+        "p50": 288.1,
+        "p90": 296.1,
+        "p95": 296.1,
+        "p99": 296.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 12.0,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 83.77633333333333,
+        "p10": 75,
+        "p50": 84,
+        "p90": 92,
+        "p95": 94,
+        "p99": 98
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 165.55933333333334,
+        "p10": 152,
+        "p50": 166,
+        "p90": 178,
+        "p95": 181,
+        "p99": 188
+      },
+      "heal_overflow": 10287,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 59.46933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 64.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 59.46933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 64.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.11633333333333,
+        "p10": 75,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 38.553666666666665,
+        "p10": 26,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 46
+      },
+      "heal_overflow": 8341,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 59.46933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 64.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 59.46933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 64.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.11633333333333,
+        "p10": 75,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 38.553666666666665,
+        "p10": 26,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 46
+      },
+      "heal_overflow": 8341,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 63.461333333333336,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 63.461333333333336,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.918666666666667,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.09366666666666,
+        "p10": 69,
+        "p50": 77,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 40.62133333333333,
+        "p10": 31,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 57
+      },
+      "heal_overflow": 5927,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 63.461333333333336,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 63.461333333333336,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.918666666666667,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.09366666666666,
+        "p10": 69,
+        "p50": 77,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 40.62133333333333,
+        "p10": 31,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 57
+      },
+      "heal_overflow": 5927,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 60.38933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 60.38933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.914666666666667,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.72733333333333,
+        "p10": 73,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 38.83266666666667,
+        "p10": 28,
+        "p50": 43,
+        "p90": 45,
+        "p95": 46,
+        "p99": 54
+      },
+      "heal_overflow": 5959,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 60.38933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 60.38933333333333,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.914666666666667,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.72733333333333,
+        "p10": 73,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 38.83266666666667,
+        "p10": 28,
+        "p50": 43,
+        "p90": 45,
+        "p95": 46,
+        "p99": 54
+      },
+      "heal_overflow": 5959,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 67.21999999999998,
+        "p10": 64.1,
+        "p50": 68.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 67.21999999999998,
+        "p10": 64.1,
+        "p50": 68.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.16633333333333,
+        "p10": 72,
+        "p50": 77,
+        "p90": 83,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 42.74966666666667,
+        "p10": 34,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 57
+      },
+      "heal_overflow": 7581,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 61.605333333333334,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 68.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 61.605333333333334,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 68.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 4.0,
+        "p10": 4,
+        "p50": 4,
+        "p90": 4,
+        "p95": 4,
+        "p99": 4
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.764,
+        "p10": 71,
+        "p50": 77,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 39.50966666666667,
+        "p10": 29,
+        "p50": 44,
+        "p90": 46,
+        "p95": 46,
+        "p99": 46
+      },
+      "heal_overflow": 7580,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 72.10533333333332,
+        "p10": 64.1,
+        "p50": 72.1,
+        "p90": 80.1,
+        "p95": 84.1,
+        "p99": 88.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 72.10533333333332,
+        "p10": 64.1,
+        "p50": 72.1,
+        "p90": 80.1,
+        "p95": 84.1,
+        "p99": 88.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.984,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 72.62966666666667,
+        "p10": 64,
+        "p50": 73,
+        "p90": 82,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 45.605333333333334,
+        "p10": 42,
+        "p50": 44,
+        "p90": 54,
+        "p95": 57,
+        "p99": 65
+      },
+      "heal_overflow": 4622,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 66.19733333333333,
+        "p10": 56.1,
+        "p50": 68.1,
+        "p90": 72.1,
+        "p95": 76.1,
+        "p99": 80.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 66.19733333333333,
+        "p10": 56.1,
+        "p50": 68.1,
+        "p90": 72.1,
+        "p95": 76.1,
+        "p99": 80.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.966666666666667,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 72.02766666666666,
+        "p10": 64,
+        "p50": 73,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 41.958666666666666,
+        "p10": 32,
+        "p50": 44,
+        "p90": 46,
+        "p95": 52,
+        "p99": 57
+      },
+      "heal_overflow": 4559,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 68.652,
+        "p10": 60.1,
+        "p50": 68.1,
+        "p90": 76.1,
+        "p95": 80.1,
+        "p99": 84.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 68.652,
+        "p10": 60.1,
+        "p50": 68.1,
+        "p90": 76.1,
+        "p95": 80.1,
+        "p99": 84.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.981333333333334,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.96733333333333,
+        "p10": 67,
+        "p50": 76,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 43.44766666666667,
+        "p10": 34,
+        "p50": 44,
+        "p90": 51,
+        "p95": 54,
+        "p99": 59
+      },
+      "heal_overflow": 4767,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Guardian/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 63.256,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 63.256,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.964,
+        "p10": 12,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 74.37966666666667,
+        "p10": 67,
+        "p50": 77,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 40.21233333333333,
+        "p10": 31,
+        "p50": 44,
+        "p90": 45,
+        "p95": 46,
+        "p99": 55
+      },
+      "heal_overflow": 4650,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 96.80146666666666,
+        "p10": 96.8,
+        "p50": 96.8,
+        "p90": 96.8,
+        "p95": 96.8,
+        "p99": 96.8
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 6.6564000000000005,
+        "p10": 6,
+        "p50": 6.8,
+        "p90": 7.599999999999998,
+        "p95": 7.600000000000001,
+        "p99": 7.6000000000000085
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 108.13633333333334,
+        "p10": 100,
+        "p50": 108,
+        "p90": 117,
+        "p95": 121,
+        "p99": 130
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3152,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 96.80146666666666,
+        "p10": 96.8,
+        "p50": 96.8,
+        "p90": 96.8,
+        "p95": 96.8,
+        "p99": 96.8
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 6.6564000000000005,
+        "p10": 6,
+        "p50": 6.8,
+        "p90": 7.599999999999998,
+        "p95": 7.600000000000001,
+        "p99": 7.6000000000000085
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 108.13633333333334,
+        "p10": 100,
+        "p50": 108,
+        "p90": 117,
+        "p95": 121,
+        "p99": 130
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3152,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 103.89206666666666,
+        "p10": 96.8,
+        "p50": 101.8,
+        "p90": 111.8,
+        "p95": 111.8,
+        "p99": 122.39999999999999
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.716,
+        "p10": 7.600000000000001,
+        "p50": 11.599999999999998,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.999999999999996
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 100.46833333333333,
+        "p10": 90,
+        "p50": 100,
+        "p90": 111,
+        "p95": 114,
+        "p99": 122
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2592,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 103.89206666666666,
+        "p10": 96.8,
+        "p50": 101.8,
+        "p90": 111.8,
+        "p95": 111.8,
+        "p99": 122.39999999999999
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.716,
+        "p10": 7.600000000000001,
+        "p50": 11.599999999999998,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.999999999999996
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 100.46833333333333,
+        "p10": 90,
+        "p50": 100,
+        "p90": 111,
+        "p95": 114,
+        "p99": 122
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2592,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 104.0088,
+        "p10": 96.8,
+        "p50": 101.8,
+        "p90": 111.8,
+        "p95": 111.8,
+        "p99": 122.39999999999999
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.860800000000001,
+        "p10": 7.6000000000000085,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 107.491,
+        "p10": 99,
+        "p50": 107,
+        "p90": 116,
+        "p95": 119,
+        "p99": 125
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3092,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 104.0088,
+        "p10": 96.8,
+        "p50": 101.8,
+        "p90": 111.8,
+        "p95": 111.8,
+        "p99": 122.39999999999999
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.860800000000001,
+        "p10": 7.6000000000000085,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 107.491,
+        "p10": 99,
+        "p50": 107,
+        "p90": 116,
+        "p95": 119,
+        "p99": 125
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3092,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2999,
+        "Victory": 1
+      },
+      "victory_rate": 0.0003333333333333333,
+      "victory_rate_wilson95": [
+        5.8843941871566355e-05,
+        0.0018858188843041794
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 100.11569999999999,
+        "p10": 100,
+        "p50": 100,
+        "p90": 100,
+        "p95": 100,
+        "p99": 105
+      },
+      "victory_seconds": {
+        "n": 1,
+        "mean": 92.1,
+        "p10": 92.1,
+        "p50": 92.1,
+        "p90": 92.1,
+        "p95": 92.1,
+        "p99": 92.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 6.684666666666667,
+        "p10": 6,
+        "p50": 6.800000000000001,
+        "p90": 7.599999999999998,
+        "p95": 7.600000000000001,
+        "p99": 7.6000000000000085
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 129.42233333333334,
+        "p10": 120,
+        "p50": 129,
+        "p90": 139,
+        "p95": 145,
+        "p99": 157
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3351,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2999,
+        "Victory": 1
+      },
+      "victory_rate": 0.0003333333333333333,
+      "victory_rate_wilson95": [
+        5.8843941871566355e-05,
+        0.0018858188843041794
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 100.11569999999999,
+        "p10": 100,
+        "p50": 100,
+        "p90": 100,
+        "p95": 100,
+        "p99": 105
+      },
+      "victory_seconds": {
+        "n": 1,
+        "mean": 92.1,
+        "p10": 92.1,
+        "p50": 92.1,
+        "p90": 92.1,
+        "p95": 92.1,
+        "p99": 92.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 6.684666666666667,
+        "p10": 6,
+        "p50": 6.800000000000001,
+        "p90": 7.599999999999998,
+        "p95": 7.600000000000001,
+        "p99": 7.6000000000000085
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 129.42233333333334,
+        "p10": 120,
+        "p50": 129,
+        "p90": 139,
+        "p95": 145,
+        "p99": 157
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3351,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2965,
+        "Victory": 35
+      },
+      "victory_rate": 0.011666666666666667,
+      "victory_rate_wilson95": [
+        0.008400690168042686,
+        0.016181652087025673
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 110.42223333333334,
+        "p10": 105,
+        "p50": 110,
+        "p90": 120,
+        "p95": 120,
+        "p99": 125
+      },
+      "victory_seconds": {
+        "n": 35,
+        "mean": 107.04857142857142,
+        "p10": 93.3,
+        "p50": 108.89999999999999,
+        "p90": 114.89999999999999,
+        "p95": 114.89999999999999,
+        "p99": 114.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.754133333333334,
+        "p10": 7.600000000000001,
+        "p50": 11.599999999999998,
+        "p90": 11.6,
+        "p95": 11.600000000000001,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 120.942,
+        "p10": 107,
+        "p50": 119,
+        "p90": 136,
+        "p95": 142,
+        "p99": 159
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2603,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2965,
+        "Victory": 35
+      },
+      "victory_rate": 0.011666666666666667,
+      "victory_rate_wilson95": [
+        0.008400690168042686,
+        0.016181652087025673
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 110.42223333333334,
+        "p10": 105,
+        "p50": 110,
+        "p90": 120,
+        "p95": 120,
+        "p99": 125
+      },
+      "victory_seconds": {
+        "n": 35,
+        "mean": 107.04857142857142,
+        "p10": 93.3,
+        "p50": 108.89999999999999,
+        "p90": 114.89999999999999,
+        "p95": 114.89999999999999,
+        "p99": 114.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.754133333333334,
+        "p10": 7.600000000000001,
+        "p50": 11.599999999999998,
+        "p90": 11.6,
+        "p95": 11.600000000000001,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 120.942,
+        "p10": 107,
+        "p50": 119,
+        "p90": 136,
+        "p95": 142,
+        "p99": 159
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2603,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2398,
+        "Victory": 602
+      },
+      "victory_rate": 0.20066666666666666,
+      "victory_rate_wilson95": [
+        0.18672210662433125,
+        0.21537683081256387
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 109.7278,
+        "p10": 102.89999999999999,
+        "p50": 110,
+        "p90": 120,
+        "p95": 120,
+        "p99": 125
+      },
+      "victory_seconds": {
+        "n": 602,
+        "mean": 102.71328903654484,
+        "p10": 88.5,
+        "p50": 106.1,
+        "p90": 114.1,
+        "p95": 118.5,
+        "p99": 122.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.8036,
+        "p10": 7.6000000000000085,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.600000000000001,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 139.035,
+        "p10": 121,
+        "p50": 136,
+        "p90": 159,
+        "p95": 171,
+        "p99": 201
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3383,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2398,
+        "Victory": 602
+      },
+      "victory_rate": 0.20066666666666666,
+      "victory_rate_wilson95": [
+        0.18672210662433125,
+        0.21537683081256387
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 109.7278,
+        "p10": 102.89999999999999,
+        "p50": 110,
+        "p90": 120,
+        "p95": 120,
+        "p99": 125
+      },
+      "victory_seconds": {
+        "n": 602,
+        "mean": 102.71328903654484,
+        "p10": 88.5,
+        "p50": 106.1,
+        "p90": 114.1,
+        "p95": 118.5,
+        "p99": 122.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.8036,
+        "p10": 7.6000000000000085,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.600000000000001,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 139.035,
+        "p10": 121,
+        "p50": 136,
+        "p90": 159,
+        "p95": 171,
+        "p99": 201
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3383,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 35.571600000000004,
+        "p10": 30.900000000000002,
+        "p50": 36.1,
+        "p90": 40.1,
+        "p95": 40.5,
+        "p99": 42.9
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 35.571600000000004,
+        "p10": 30.900000000000002,
+        "p50": 36.1,
+        "p90": 40.1,
+        "p95": 40.5,
+        "p99": 42.9
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 5.330933333333333,
+        "p10": 4,
+        "p50": 4.0000000000000036,
+        "p90": 6.800000000000001,
+        "p95": 7.200000000000003,
+        "p99": 7.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3254,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 35.571600000000004,
+        "p10": 30.900000000000002,
+        "p50": 36.1,
+        "p90": 40.1,
+        "p95": 40.5,
+        "p99": 42.9
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 35.571600000000004,
+        "p10": 30.900000000000002,
+        "p50": 36.1,
+        "p90": 40.1,
+        "p95": 40.5,
+        "p99": 42.9
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 5.330933333333333,
+        "p10": 4,
+        "p50": 4.0000000000000036,
+        "p90": 6.800000000000001,
+        "p95": 7.200000000000003,
+        "p99": 7.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3254,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 40.9232,
+        "p10": 34.1,
+        "p50": 40.9,
+        "p90": 46.9,
+        "p95": 48.1,
+        "p99": 51.7
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 40.9232,
+        "p10": 34.1,
+        "p50": 40.9,
+        "p90": 46.9,
+        "p95": 48.1,
+        "p99": 51.7
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.756533333333334,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2712,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 40.9232,
+        "p10": 34.1,
+        "p50": 40.9,
+        "p90": 46.9,
+        "p95": 48.1,
+        "p99": 51.7
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 40.9232,
+        "p10": 34.1,
+        "p50": 40.9,
+        "p90": 46.9,
+        "p95": 48.1,
+        "p99": 51.7
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.756533333333334,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2712,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 38.52653333333333,
+        "p10": 33.300000000000004,
+        "p50": 39.7,
+        "p90": 44.5,
+        "p95": 44.9,
+        "p99": 47.300000000000004
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 38.52653333333333,
+        "p10": 33.300000000000004,
+        "p50": 39.7,
+        "p90": 44.5,
+        "p95": 44.9,
+        "p99": 47.300000000000004
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.837333333333333,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3084,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 38.52653333333333,
+        "p10": 33.300000000000004,
+        "p50": 39.7,
+        "p90": 44.5,
+        "p95": 44.9,
+        "p99": 47.300000000000004
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 38.52653333333333,
+        "p10": 33.300000000000004,
+        "p50": 39.7,
+        "p90": 44.5,
+        "p95": 44.9,
+        "p99": 47.300000000000004
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.837333333333333,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3084,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 40.39346666666667,
+        "p10": 35.7,
+        "p50": 40.5,
+        "p90": 44.5,
+        "p95": 46.5,
+        "p99": 48.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 40.39346666666667,
+        "p10": 35.7,
+        "p50": 40.5,
+        "p90": 44.5,
+        "p95": 46.5,
+        "p99": 48.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 5.503333333333333,
+        "p10": 4,
+        "p50": 6.399999999999999,
+        "p90": 6.800000000000004,
+        "p95": 7.599999999999998,
+        "p99": 7.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 84.0,
+        "p10": 84,
+        "p50": 84,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3254,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 37.13093333333333,
+        "p10": 32.5,
+        "p50": 37.300000000000004,
+        "p90": 41.300000000000004,
+        "p95": 42.9,
+        "p99": 44.5
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 37.13093333333333,
+        "p10": 32.5,
+        "p50": 37.300000000000004,
+        "p90": 41.300000000000004,
+        "p95": 42.9,
+        "p99": 44.5
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 5.393866666666667,
+        "p10": 4,
+        "p50": 6,
+        "p90": 6.800000000000001,
+        "p95": 7.200000000000003,
+        "p99": 7.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.0,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3254,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 46.61386666666667,
+        "p10": 39.7,
+        "p50": 46.9,
+        "p90": 52.1,
+        "p95": 54.9,
+        "p99": 58.5
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 46.61386666666667,
+        "p10": 39.7,
+        "p50": 46.9,
+        "p90": 52.1,
+        "p95": 54.9,
+        "p99": 58.5
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.7488,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 83.995,
+        "p10": 84,
+        "p50": 84,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2696,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 43.211333333333336,
+        "p10": 36.1,
+        "p50": 43.7,
+        "p90": 50.5,
+        "p95": 52.1,
+        "p99": 56.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 43.211333333333336,
+        "p10": 36.1,
+        "p50": 43.7,
+        "p90": 50.5,
+        "p95": 52.1,
+        "p99": 56.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.735866666666666,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.999,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 2696,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 44.96373333333334,
+        "p10": 39.300000000000004,
+        "p50": 44.9,
+        "p90": 51.300000000000004,
+        "p95": 52.5,
+        "p99": 56.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 44.96373333333334,
+        "p10": 39.300000000000004,
+        "p50": 44.9,
+        "p90": 51.300000000000004,
+        "p95": 52.5,
+        "p99": 56.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.828666666666667,
+        "p10": 7.6000000000000005,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 83.99633333333334,
+        "p10": 84,
+        "p50": 84,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3084,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Mage/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 40.87426666666667,
+        "p10": 33.7,
+        "p50": 40.9,
+        "p90": 47.7,
+        "p95": 48.9,
+        "p99": 52.5
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 40.87426666666667,
+        "p10": 33.7,
+        "p50": 40.9,
+        "p90": 47.7,
+        "p95": 48.9,
+        "p99": 52.5
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 10.820266666666667,
+        "p10": 7.6,
+        "p50": 11.6,
+        "p90": 11.6,
+        "p95": 11.6,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.99966666666667,
+        "p10": 78,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "heal_overflow": 3084,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 207.1334,
+        "p10": 183.5,
+        "p50": 209.2,
+        "p90": 226.6,
+        "p95": 229.1,
+        "p99": 238.2
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 8.825966666666668,
+        "p10": 8,
+        "p50": 8,
+        "p90": 11.600000000000001,
+        "p95": 11.600000000000023,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 74.545,
+        "p10": 68,
+        "p50": 75,
+        "p90": 81,
+        "p95": 82,
+        "p99": 86
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 13.201666666666666,
+        "p10": 10,
+        "p50": 15,
+        "p90": 15,
+        "p95": 15,
+        "p99": 15
+      },
+      "heal_overflow": 15182,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 207.1334,
+        "p10": 183.5,
+        "p50": 209.2,
+        "p90": 226.6,
+        "p95": 229.1,
+        "p99": 238.2
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 8.825966666666668,
+        "p10": 8,
+        "p50": 8,
+        "p90": 11.600000000000001,
+        "p95": 11.600000000000023,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 74.545,
+        "p10": 68,
+        "p50": 75,
+        "p90": 81,
+        "p95": 82,
+        "p99": 86
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 13.201666666666666,
+        "p10": 10,
+        "p50": 15,
+        "p90": 15,
+        "p95": 15,
+        "p99": 15
+      },
+      "heal_overflow": 15182,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 222.35046666666668,
+        "p10": 200.1,
+        "p50": 223.1,
+        "p90": 242.7,
+        "p95": 249.7,
+        "p99": 260.90000000000003
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.330866666666665,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 73.31566666666667,
+        "p10": 64,
+        "p50": 74,
+        "p90": 82,
+        "p95": 84,
+        "p99": 88
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 14.675,
+        "p10": 10,
+        "p50": 15,
+        "p90": 20,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 8727,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 222.35046666666668,
+        "p10": 200.1,
+        "p50": 223.1,
+        "p90": 242.7,
+        "p95": 249.7,
+        "p99": 260.90000000000003
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.330866666666665,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 73.31566666666667,
+        "p10": 64,
+        "p50": 74,
+        "p90": 82,
+        "p95": 84,
+        "p99": 88
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 14.675,
+        "p10": 10,
+        "p50": 15,
+        "p90": 20,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 8727,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 214.59133333333332,
+        "p10": 194.1,
+        "p50": 216.29999999999998,
+        "p90": 233.29999999999998,
+        "p95": 241,
+        "p99": 251.4
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.327733333333333,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.218,
+        "p10": 69,
+        "p50": 78,
+        "p90": 87,
+        "p95": 89,
+        "p99": 94
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 14.178333333333333,
+        "p10": 10,
+        "p50": 15,
+        "p90": 15,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 9169,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 3000
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 214.59133333333332,
+        "p10": 194.1,
+        "p50": 216.29999999999998,
+        "p90": 233.29999999999998,
+        "p95": 241,
+        "p99": 251.4
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.327733333333333,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.218,
+        "p10": 69,
+        "p50": 78,
+        "p90": 87,
+        "p95": 89,
+        "p99": 94
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 14.178333333333333,
+        "p10": 10,
+        "p50": 15,
+        "p90": 15,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 9169,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2971,
+        "Censored": 29
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 243.16883333333334,
+        "p10": 201,
+        "p50": 240.7,
+        "p90": 282.8,
+        "p95": 294.20000000000005,
+        "p99": 299.8
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 8.966400000000002,
+        "p10": 8,
+        "p50": 8,
+        "p90": 11.600000000000009,
+        "p95": 11.600000000000023,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.03133333333334,
+        "p10": 74,
+        "p50": 80,
+        "p90": 86,
+        "p95": 88,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 15.345,
+        "p10": 10,
+        "p50": 15,
+        "p90": 20,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 14943,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 2971,
+        "Censored": 29
+      },
+      "victory_rate": 0.0,
+      "victory_rate_wilson95": [
+        0,
+        0.0012788487253259629
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 243.16883333333334,
+        "p10": 201,
+        "p50": 240.7,
+        "p90": 282.8,
+        "p95": 294.20000000000005,
+        "p99": 299.8
+      },
+      "victory_seconds": {
+        "n": 0
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 8.966400000000002,
+        "p10": 8,
+        "p50": 8,
+        "p90": 11.600000000000009,
+        "p95": 11.600000000000023,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 80.03133333333334,
+        "p10": 74,
+        "p50": 80,
+        "p90": 86,
+        "p95": 88,
+        "p99": 91
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 15.345,
+        "p10": 10,
+        "p50": 15,
+        "p90": 20,
+        "p95": 20,
+        "p99": 20
+      },
+      "heal_overflow": 14943,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 1952,
+        "Censored": 1039,
+        "Victory": 9
+      },
+      "victory_rate": 0.003,
+      "victory_rate_wilson95": [
+        0.0015791325142942543,
+        0.005692043118679753
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 279.0124,
+        "p10": 241.6,
+        "p50": 290.90000000000003,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 9,
+        "mean": 292.14444444444445,
+        "p10": 278.90000000000003,
+        "p50": 297.3,
+        "p90": 298.90000000000003,
+        "p95": 298.90000000000003,
+        "p99": 298.90000000000003
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.551866666666665,
+        "p10": 9.600000000000023,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.89566666666667,
+        "p10": 70,
+        "p50": 78,
+        "p90": 86,
+        "p95": 89,
+        "p99": 93
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 18.225,
+        "p10": 15,
+        "p50": 20,
+        "p90": 20,
+        "p95": 25,
+        "p99": 25
+      },
+      "heal_overflow": 8911,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 1952,
+        "Censored": 1039,
+        "Victory": 9
+      },
+      "victory_rate": 0.003,
+      "victory_rate_wilson95": [
+        0.0015791325142942543,
+        0.005692043118679753
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 279.0124,
+        "p10": 241.6,
+        "p50": 290.90000000000003,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 9,
+        "mean": 292.14444444444445,
+        "p10": 278.90000000000003,
+        "p50": 297.3,
+        "p90": 298.90000000000003,
+        "p95": 298.90000000000003,
+        "p99": 298.90000000000003
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.551866666666665,
+        "p10": 9.600000000000023,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.89566666666667,
+        "p10": 70,
+        "p50": 78,
+        "p90": 86,
+        "p95": 89,
+        "p99": 93
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 18.225,
+        "p10": 15,
+        "p50": 20,
+        "p90": 20,
+        "p95": 25,
+        "p99": 25
+      },
+      "heal_overflow": 8911,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 1828,
+        "Censored": 862,
+        "Victory": 310
+      },
+      "victory_rate": 0.10333333333333333,
+      "victory_rate_wilson95": [
+        0.09294337324704591,
+        0.11473784674171267
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 278.556,
+        "p10": 241.6,
+        "p50": 286.90000000000003,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 310,
+        "mean": 289.72967741935486,
+        "p10": 279.70000000000005,
+        "p50": 290.90000000000003,
+        "p90": 298.90000000000003,
+        "p95": 298.90000000000003,
+        "p99": 298.90000000000003
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.568400000000002,
+        "p10": 10,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 82.328,
+        "p10": 74,
+        "p50": 82,
+        "p90": 91,
+        "p95": 93,
+        "p99": 97
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 18.231666666666666,
+        "p10": 15,
+        "p50": 20,
+        "p90": 20,
+        "p95": 25,
+        "p99": 25
+      },
+      "heal_overflow": 9288,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Death": 1828,
+        "Censored": 862,
+        "Victory": 310
+      },
+      "victory_rate": 0.10333333333333333,
+      "victory_rate_wilson95": [
+        0.09294337324704591,
+        0.11473784674171267
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 278.556,
+        "p10": 241.6,
+        "p50": 286.90000000000003,
+        "p90": 300,
+        "p95": 300,
+        "p99": 300
+      },
+      "victory_seconds": {
+        "n": 310,
+        "mean": 289.72967741935486,
+        "p10": 279.70000000000005,
+        "p50": 290.90000000000003,
+        "p90": 298.90000000000003,
+        "p95": 298.90000000000003,
+        "p99": 298.90000000000003
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.568400000000002,
+        "p10": 10,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 82.328,
+        "p10": 74,
+        "p50": 82,
+        "p90": 91,
+        "p95": 93,
+        "p99": 97
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 18.231666666666666,
+        "p10": 15,
+        "p50": 20,
+        "p90": 20,
+        "p95": 25,
+        "p99": 25
+      },
+      "heal_overflow": 9288,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 56.05173333333334,
+        "p10": 50.9,
+        "p50": 56.1,
+        "p90": 62.9,
+        "p95": 62.9,
+        "p99": 63.7
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 56.05173333333334,
+        "p10": 50.9,
+        "p50": 56.1,
+        "p90": 62.9,
+        "p95": 62.9,
+        "p99": 63.7
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 7.723199999999999,
+        "p10": 4.000000000000001,
+        "p50": 8,
+        "p90": 8,
+        "p95": 10.8,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.63133333333333,
+        "p10": 76,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.045,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 15211,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 56.05173333333334,
+        "p10": 50.9,
+        "p50": 56.1,
+        "p90": 62.9,
+        "p95": 62.9,
+        "p99": 63.7
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 56.05173333333334,
+        "p10": 50.9,
+        "p50": 56.1,
+        "p90": 62.9,
+        "p95": 62.9,
+        "p99": 63.7
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 7.723199999999999,
+        "p10": 4.000000000000001,
+        "p50": 8,
+        "p90": 8,
+        "p95": 10.8,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.63133333333333,
+        "p10": 76,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.045,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 15211,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 59.57,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 59.57,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.138666666666667,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.13466666666666,
+        "p10": 71,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.23,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 10010,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 59.57,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 59.57,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.138666666666667,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.13466666666666,
+        "p10": 71,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.23,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 10010,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 56.38466666666667,
+        "p10": 48.1,
+        "p50": 56.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 68.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 56.38466666666667,
+        "p10": 48.1,
+        "p50": 56.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 68.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.156,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.36166666666666,
+        "p10": 75,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.0183333333333335,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 10270,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 56.38466666666667,
+        "p10": 48.1,
+        "p50": 56.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 68.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 56.38466666666667,
+        "p10": 48.1,
+        "p50": 56.1,
+        "p90": 64.1,
+        "p95": 64.1,
+        "p99": 68.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.156,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 77.36166666666666,
+        "p10": 75,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.0183333333333335,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 10270,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/baseline_all_hand/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 63.7084,
+        "p10": 58.9,
+        "p50": 62.9,
+        "p90": 66.89999999999999,
+        "p95": 67.69999999999999,
+        "p99": 74.89999999999999
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 63.7084,
+        "p10": 58.9,
+        "p50": 62.9,
+        "p90": 66.89999999999999,
+        "p95": 67.69999999999999,
+        "p99": 74.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 7.987466666666667,
+        "p10": 7.6,
+        "p50": 8,
+        "p90": 8,
+        "p95": 10.8,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 79.171,
+        "p10": 73,
+        "p50": 80,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.525,
+        "p10": 5,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 13792,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 58.49093333333333,
+        "p10": 51.7,
+        "p50": 58.9,
+        "p90": 62.9,
+        "p95": 66.89999999999999,
+        "p99": 66.89999999999999
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 58.49093333333333,
+        "p10": 51.7,
+        "p50": 58.9,
+        "p90": 62.9,
+        "p95": 66.89999999999999,
+        "p99": 66.89999999999999
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 7.788,
+        "p10": 6.8,
+        "p50": 8,
+        "p90": 8,
+        "p95": 10.8,
+        "p99": 11.600000000000001
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.69766666666666,
+        "p10": 73,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.195,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 13817,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/basic/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 67.98333333333333,
+        "p10": 60.1,
+        "p50": 68.1,
+        "p90": 76.1,
+        "p95": 76.1,
+        "p99": 84.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 67.98333333333333,
+        "p10": 60.1,
+        "p50": 68.1,
+        "p90": 76.1,
+        "p95": 76.1,
+        "p99": 84.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.138666666666667,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 75.81266666666667,
+        "p10": 67,
+        "p50": 76,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.821666666666666,
+        "p10": 5,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 10
+      },
+      "heal_overflow": 7613,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 62.506,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 62.506,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 68.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.139866666666666,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 74.33233333333334,
+        "p10": 68,
+        "p50": 76,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.406666666666666,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 7632,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/build/Baseline",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 64.42066666666666,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 64.42066666666666,
+        "p10": 56.1,
+        "p50": 64.1,
+        "p90": 72.1,
+        "p95": 72.1,
+        "p99": 76.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.157333333333334,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 78.716,
+        "p10": 71,
+        "p50": 80,
+        "p90": 84,
+        "p95": 84,
+        "p99": 84
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.523333333333333,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 7928,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    },
+    {
+      "stratum": "Priest/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "independent_seed_runs": [
+        0,
+        1000,
+        2000
+      ],
+      "outcomes": {
+        "Victory": 3000
+      },
+      "victory_rate": 1.0,
+      "victory_rate_wilson95": [
+        0.9987211512746742,
+        1
+      ],
+      "all_outcome_observed_seconds": {
+        "n": 3000,
+        "mean": 59.554,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "victory_seconds": {
+        "n": 3000,
+        "mean": 59.554,
+        "p10": 52.1,
+        "p50": 60.1,
+        "p90": 68.1,
+        "p95": 68.1,
+        "p99": 72.1
+      },
+      "longest_effective_gap_seconds": {
+        "n": 3000,
+        "mean": 11.157333333333334,
+        "p10": 8,
+        "p50": 12,
+        "p90": 12,
+        "p95": 12,
+        "p99": 12
+      },
+      "damage60": {
+        "n": 3000,
+        "mean": 76.07433333333333,
+        "p10": 71,
+        "p50": 78,
+        "p90": 78,
+        "p95": 78,
+        "p99": 78
+      },
+      "effective_shield": {
+        "n": 3000,
+        "mean": 4.251666666666667,
+        "p10": 0,
+        "p50": 5,
+        "p90": 5,
+        "p95": 5,
+        "p99": 5
+      },
+      "heal_overflow": 7981,
+      "shield_overflow": 0,
+      "preview_parity_checks": 9000
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "baseline": "Guardian/0/default/BOSS/baseline_all_hand/Baseline",
+      "candidate": "Guardian/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3,
+      "candidate_deaths": 3,
+      "baseline_censored": 2997,
+      "candidate_censored": 2997,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/BOSS/basic/Baseline",
+      "candidate": "Guardian/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 9,
+      "candidate_deaths": 9,
+      "baseline_censored": 2991,
+      "candidate_censored": 2991,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/BOSS/build/Baseline",
+      "candidate": "Guardian/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 68,
+      "candidate_deaths": 68,
+      "baseline_censored": 2932,
+      "candidate_censored": 2932,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/E1/baseline_all_hand/Baseline",
+      "candidate": "Guardian/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 3000,
+      "candidate_censored": 3000,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/E1/basic/Baseline",
+      "candidate": "Guardian/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 4,
+      "candidate_wins": 4,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 2996,
+      "candidate_censored": 2996,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/E1/build/Baseline",
+      "candidate": "Guardian/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 241,
+      "candidate_wins": 241,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 2759,
+      "candidate_censored": 2759,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O1/baseline_all_hand/Baseline",
+      "candidate": "Guardian/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O1/basic/Baseline",
+      "candidate": "Guardian/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O1/build/Baseline",
+      "candidate": "Guardian/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O6/baseline_all_hand/Baseline",
+      "candidate": "Guardian/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -1.4023333333333334,
+      "paired_seed_bootstrap_damage60_95": [
+        -1.52,
+        -1.2903333333333333
+      ],
+      "mean_effective_shield_delta": -3.24,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -5.614666666666664,
+        "p10": -11.999999999999993,
+        "p50": -4.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O6/basic/Baseline",
+      "candidate": "Guardian/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -0.602,
+      "paired_seed_bootstrap_damage60_95": [
+        -0.8086666666666666,
+        -0.4036666666666667
+      ],
+      "mean_effective_shield_delta": -3.6466666666666665,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -5.907999999999999,
+        "p10": -15.999999999999993,
+        "p50": -4.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 4.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Guardian/0/default/O6/build/Baseline",
+      "candidate": "Guardian/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -1.5876666666666666,
+      "paired_seed_bootstrap_damage60_95": [
+        -1.7666666666666666,
+        -1.4146666666666667
+      ],
+      "mean_effective_shield_delta": -3.235333333333333,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -5.395999999999998,
+        "p10": -15.999999999999993,
+        "p50": -4.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 4.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/BOSS/baseline_all_hand/Baseline",
+      "candidate": "Mage/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/BOSS/basic/Baseline",
+      "candidate": "Mage/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/BOSS/build/Baseline",
+      "candidate": "Mage/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/E1/baseline_all_hand/Baseline",
+      "candidate": "Mage/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 1,
+      "candidate_wins": 1,
+      "baseline_deaths": 2999,
+      "candidate_deaths": 2999,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/E1/basic/Baseline",
+      "candidate": "Mage/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0
+      },
+      "baseline_wins": 35,
+      "candidate_wins": 35,
+      "baseline_deaths": 2965,
+      "candidate_deaths": 2965,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/E1/build/Baseline",
+      "candidate": "Mage/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0.0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0.0
+      },
+      "baseline_wins": 602,
+      "candidate_wins": 602,
+      "baseline_deaths": 2398,
+      "candidate_deaths": 2398,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O1/baseline_all_hand/Baseline",
+      "candidate": "Mage/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O1/basic/Baseline",
+      "candidate": "Mage/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O1/build/Baseline",
+      "candidate": "Mage/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O6/baseline_all_hand/Baseline",
+      "candidate": "Mage/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -6.0,
+      "paired_seed_bootstrap_damage60_95": [
+        -6.0,
+        -6.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -3.2625333333333333,
+        "p10": -6.800000000000004,
+        "p50": -3.200000000000003,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O6/basic/Baseline",
+      "candidate": "Mage/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -5.996,
+      "paired_seed_bootstrap_damage60_95": [
+        -5.999333333333333,
+        -5.992
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -3.4025333333333334,
+        "p10": -10.800000000000004,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.4000000000000057,
+        "p99": 4.799999999999997
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Mage/0/default/O6/build/Baseline",
+      "candidate": "Mage/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -5.996666666666667,
+      "paired_seed_bootstrap_damage60_95": [
+        -6.0,
+        -5.991
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -4.089466666666667,
+        "p10": -11.2,
+        "p50": -2.799999999999997,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 3.6000000000000014
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/BOSS/baseline_all_hand/Baseline",
+      "candidate": "Priest/0/default/BOSS/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/BOSS/basic/Baseline",
+      "candidate": "Priest/0/default/BOSS/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/BOSS/build/Baseline",
+      "candidate": "Priest/0/default/BOSS/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 3000,
+      "candidate_deaths": 3000,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/E1/baseline_all_hand/Baseline",
+      "candidate": "Priest/0/default/E1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 0,
+      "candidate_wins": 0,
+      "baseline_deaths": 2971,
+      "candidate_deaths": 2971,
+      "baseline_censored": 29,
+      "candidate_censored": 29,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/E1/basic/Baseline",
+      "candidate": "Priest/0/default/E1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0.0
+      },
+      "baseline_wins": 9,
+      "candidate_wins": 9,
+      "baseline_deaths": 1952,
+      "candidate_deaths": 1952,
+      "baseline_censored": 1039,
+      "candidate_censored": 1039,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/E1/build/Baseline",
+      "candidate": "Priest/0/default/E1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0,
+        "p50": 0.0,
+        "p90": 0,
+        "p95": 0,
+        "p99": 0.0
+      },
+      "baseline_wins": 310,
+      "candidate_wins": 310,
+      "baseline_deaths": 1828,
+      "candidate_deaths": 1828,
+      "baseline_censored": 862,
+      "candidate_censored": 862,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O1/baseline_all_hand/Baseline",
+      "candidate": "Priest/0/default/O1/baseline_all_hand/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O1/basic/Baseline",
+      "candidate": "Priest/0/default/O1/basic/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O1/build/Baseline",
+      "candidate": "Priest/0/default/O1/build/BaselinePairedControl",
+      "n": 3000,
+      "mean_damage60_delta": 0.0,
+      "paired_seed_bootstrap_damage60_95": [
+        0.0,
+        0.0
+      ],
+      "mean_effective_shield_delta": 0.0,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": 0.0,
+        "p10": 0.0,
+        "p50": 0.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O6/baseline_all_hand/Baseline",
+      "candidate": "Priest/0/default/O6/baseline_all_hand/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -2.473333333333333,
+      "paired_seed_bootstrap_damage60_95": [
+        -2.5896666666666666,
+        -2.3706666666666667
+      ],
+      "mean_effective_shield_delta": -0.33,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -5.217466666666663,
+        "p10": -11.999999999999993,
+        "p50": -4.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 0.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O6/basic/Baseline",
+      "candidate": "Priest/0/default/O6/basic/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -1.4803333333333333,
+      "paired_seed_bootstrap_damage60_95": [
+        -1.651,
+        -1.3126666666666666
+      ],
+      "mean_effective_shield_delta": -0.415,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -5.4773333333333305,
+        "p10": -12.0,
+        "p50": -4.0,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 4.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    },
+    {
+      "baseline": "Priest/0/default/O6/build/Baseline",
+      "candidate": "Priest/0/default/O6/build/TargetedO6Hp095",
+      "n": 3000,
+      "mean_damage60_delta": -2.6416666666666666,
+      "paired_seed_bootstrap_damage60_95": [
+        -2.792,
+        -2.492
+      ],
+      "mean_effective_shield_delta": -0.27166666666666667,
+      "observed_seconds_delta_all_outcomes": {
+        "n": 3000,
+        "mean": -4.8666666666666645,
+        "p10": -11.999999999999993,
+        "p50": -3.999999999999993,
+        "p90": 0.0,
+        "p95": 0.0,
+        "p99": 4.0
+      },
+      "baseline_wins": 3000,
+      "candidate_wins": 3000,
+      "baseline_deaths": 0,
+      "candidate_deaths": 0,
+      "baseline_censored": 0,
+      "candidate_censored": 0,
+      "retain_production_defaults": true
+    }
+  ]
+}

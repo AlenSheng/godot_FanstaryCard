@@ -1,0 +1,5 @@
+# PR13 B12正式候选误开启阻止真实PG验证
+
+新增隔离PG方法持有当前配置/守护者默认20张房间，先调用当前default_policy确认正式默认，再分别仅开启cards_spent_draw、fractional_guardian、optional_monster_pool、budgeted_bot_loot、mortal_bot_pve或将monster_capacity从5改6，共六个负例。当前守卫必须全部明确拒绝exit3，基线exit0；每次从PG恢复仍保持原快照、持久字节、默认出牌/护盾策略，matches和snapshot均1，无候选入库。
+
+仅修改受控catalog副本及独立测试源码的一个方法，原生产配置和源、共享328源及1465包不变；原九项数值数据库合同加新方法十项零跳过。保持原内存/磁盘线、截止及单工作进程，在B04物理批次边界执行，原件先G校验后回收拥有副本。S0尚未执行、不关闭任何验收层。

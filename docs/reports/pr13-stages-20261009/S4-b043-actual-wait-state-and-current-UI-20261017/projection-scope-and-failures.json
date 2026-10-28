@@ -1,0 +1,487 @@
+{
+  "original_source_scopes": [
+    {
+      "id": "full_hand5",
+      "case_id": "PR13-B04.3-T01",
+      "room": {
+        "room_id": "083105d1-0790-d255-d9b1-25ea7875ad43",
+        "match_id": "083105d1-0790-d255-d9b1-25ea7875ad43",
+        "room_revision": 1,
+        "config_version": "gdd-0.70-numerical-1",
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "player": {
+          "player_id": "a689658b-f0f3-4ba4-7d75-abf2ec993cc4",
+          "hero_class": "Mage",
+          "phase": "Pve",
+          "combat": {
+            "hp": 70,
+            "maximum_hp": 70,
+            "shield": 0
+          },
+          "hand": [
+            {
+              "instance_id": "01a13efa-299f-7f04-b663-ec5940172393",
+              "card_id": "C04",
+              "level": 0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "01a13efa-299f-7f09-bff1-deaf4368b0a5",
+              "card_id": "C09",
+              "level": 0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "01a13efa-299f-7070-ae68-566f6890cebd",
+              "card_id": "C10",
+              "level": 0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "01a13efa-299f-78eb-8718-47f962347352",
+              "card_id": "MAG-06",
+              "level": 0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "01a13efa-299f-7515-bb7f-dc3b2a65d678",
+              "card_id": "C13",
+              "level": 0,
+              "element_override": ""
+            }
+          ],
+          "library_count": 9,
+          "discard_count": 6,
+          "draw_charge": 0,
+          "stun_remaining_ms": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_speed_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "base_draw_interval_seconds": "4"
+        },
+        "pve": {
+          "battle_id": "01a13efa-299f-74bf-a5a0-4aa8d496c87d",
+          "current_target_id": "fire-bat",
+          "monsters": [
+            {
+              "monster_id": "fire-bat",
+              "hp": 78,
+              "maximum_hp": 78,
+              "shield": 0,
+              "intent_kind": "Attack",
+              "intent_element": "Fire",
+              "intent_value": 3,
+              "boss_phase": 1
+            }
+          ]
+        }
+      },
+      "reason": "full_hand",
+      "remaining_ms": 0,
+      "selected": [
+        "01a13efa-299f-7f04-b663-ec5940172393"
+      ],
+      "play_disabled": false,
+      "scope": "Actual B06after_hand5/hp/count accounting, initial monster and initial draw-charge as declared presentation context; no full-skip expiry measurement"
+    },
+    {
+      "id": "stunned1499",
+      "case_id": "PR13-B04.3-T02",
+      "room": {
+        "room_id": "cd64cacc-8568-4e13-bb7c-df4c77a33abe",
+        "match_id": "a783d771-d137-4e91-b8b0-ce090463afaa",
+        "room_revision": 1,
+        "config_version": "gdd-0.70-numerical-1",
+        "allowed_actions": [
+          "battle.abandon"
+        ],
+        "player": {
+          "player_id": "003a91aa-261d-4e1f-ae44-80eaf60482ee",
+          "hero_class": "Priest",
+          "phase": "Pve",
+          "combat": {
+            "hp": 80,
+            "maximum_hp": 80,
+            "shield": 0
+          },
+          "hand": [
+            {
+              "instance_id": "declared-ui-0",
+              "card_id": "PRI-01",
+              "level": 3.0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "declared-ui-1",
+              "card_id": "PRI-02",
+              "level": 0.0,
+              "element_override": ""
+            },
+            {
+              "instance_id": "declared-ui-2",
+              "card_id": "PRI-05",
+              "level": 0.0,
+              "element_override": ""
+            }
+          ],
+          "library_count": 17,
+          "discard_count": 0,
+          "draw_charge": 0,
+          "stun_remaining_ms": 1499,
+          "draw_block_remaining_ms": 0,
+          "draw_speed_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "base_draw_interval_seconds": "4"
+        },
+        "pve": {
+          "battle_id": "declared-stun-ui-context",
+          "current_target_id": "fire-bat-a",
+          "monsters": [
+            {
+              "monster_id": "fire-bat-a",
+              "hp": 42,
+              "maximum_hp": 42,
+              "shield": 0,
+              "intent_kind": "Attack",
+              "intent_element": "Fire",
+              "intent_value": 2
+            }
+          ]
+        }
+      },
+      "reason": "stunned",
+      "remaining_ms": 1499,
+      "selected": [
+        "declared-ui-0"
+      ],
+      "play_disabled": true,
+      "scope": "Actual controlled1499ms, native observedhand3 and knowncards/levels/hp80/80; visualization instanceIDs and other display context explicit, not originalwire. Official projector permits onlyabandon while stunned"
+    },
+    {
+      "id": "zero_charge",
+      "case_id": "PR13-B04.3-T03",
+      "room": {
+        "room_id": "431f461f-1087-45ce-a9f3-d37bd8ba2480",
+        "match_id": "431f461f-1087-45ce-a9f3-d37bd8ba2480",
+        "room_revision": 2,
+        "config_version": "gdd-0.70-numerical-1",
+        "allowed_actions": [
+          "battle.play_cards",
+          "battle.abandon"
+        ],
+        "player": {
+          "player_id": "1e522e58-d7f5-49ce-b8d4-09f5f80e43f4",
+          "hero_class": "Guardian",
+          "phase": "Pve",
+          "combat": {
+            "hp": 100,
+            "maximum_hp": 100,
+            "shield": 19
+          },
+          "hand": [],
+          "library_count": 17,
+          "discard_count": 3,
+          "draw_charge": 0,
+          "stun_remaining_ms": 0,
+          "draw_block_remaining_ms": 0,
+          "draw_speed_remaining_ms": 0,
+          "draw_block_speed_remaining_ms": 0,
+          "base_draw_interval_seconds": "4"
+        },
+        "pve": {
+          "battle_id": "01a139e3-59a7-79c8-af76-409d8d36d7b8",
+          "current_target_id": "annihilation-core",
+          "monsters": [
+            {
+              "monster_id": "annihilation-core",
+              "hp": 280,
+              "maximum_hp": 280,
+              "shield": 14,
+              "intent_kind": "Attack",
+              "intent_element": "Fire",
+              "intent_value": 4,
+              "boss_phase": 1
+            }
+          ]
+        }
+      },
+      "reason": "drawing",
+      "remaining_ms": 0,
+      "selected": [],
+      "play_disabled": true,
+      "scope": "Exact private postcast zero-charge/empty-hand snapshot projected; original first naturaldrawclock4s separate, no walltime/20swait inference"
+    }
+  ],
+  "R1failure_review": {
+    "at_ns": 1792243799291899600,
+    "R1_18_raw_target_checks_passed_preserved": true,
+    "R1_whole_picture_passive_body_not_accepted": true,
+    "cause": "Synthetic battle_status object had onlydraw_interval_seconds, so production correctly tried authoritative passive_text with no passive_kind and produced empty description. Not a game bug or missing art.",
+    "fix": "Omit unknown full battle_status. Existing static class description is used; base_draw_interval_seconds4 and defaultinterval4 remain. No fabricated authoritative bonus fields.",
+    "preview_banner_scope": "Calculating preview remains because selected-card preview response was not provided by this partial source fixture. It is not a measured network stall, confirmed damage preview or full-screen gameplay acceptance.",
+    "R2_added_assertion": "Actual passive description nonempty, visible and withinfontbounds",
+    "new_affected_contexts18": true,
+    "conservative_UI_total36": true,
+    "original_self_max60_unchanged": true,
+    "new_worlds": 0,
+    "no_product_source_changes": true
+  },
+  "R2failure_review": {
+    "at_ns": 1792243947588636300,
+    "R2_smoke_actual_exit1_rawokfalse_preserved": true,
+    "actual_pixel_review": "Description is correctly wrapped into two visible English lines; source UI font/layout correct.",
+    "observer_error": "Reused fits() compared full authored string width as one line, inappropriate for actual AUTOWRAP_WORD_SMART passive label.",
+    "correct_rule": "Use actual shaped line_count, visible_line_count>=line_count and bounds; keep original width tests for nonwrapped wait/status/percent labels. No font or label text shortened.",
+    "product_changes": 0,
+    "R2_matrix_not_run": true,
+    "R3_affected_smoke_and_remaining17_planned": true,
+    "actual_UI_total_projected37_of_original60": true,
+    "new_worlds": 0
+  },
+  "PVP18source_discovery_no_states_found": {
+    "ok": true,
+    "branch_coverage_not_rewritten": [
+      {
+        "cell": {
+          "Index": 0,
+          "WeaponLevel": 0,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 1,
+          "WeaponLevel": 0,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 2,
+          "WeaponLevel": 0,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 3,
+          "WeaponLevel": 1,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 4,
+          "WeaponLevel": 1,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 4,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 2,
+          "NaturalPvpEntryRecoveryBranchesVerified": 2
+        }
+      },
+      {
+        "cell": {
+          "Index": 5,
+          "WeaponLevel": 1,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 6,
+          "WeaponLevel": 2,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 7,
+          "WeaponLevel": 2,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 8,
+          "WeaponLevel": 2,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 9,
+          "WeaponLevel": 3,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 10,
+          "WeaponLevel": 3,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 11,
+          "WeaponLevel": 3,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 12,
+          "WeaponLevel": 4,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 13,
+          "WeaponLevel": 4,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 6,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 2,
+          "NaturalDeathBeforePvp": 2
+        }
+      },
+      {
+        "cell": {
+          "Index": 14,
+          "WeaponLevel": 4,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 15,
+          "WeaponLevel": 5,
+          "PeerHero": "Mage"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 16,
+          "WeaponLevel": 5,
+          "PeerHero": "Priest"
+        },
+        "routes": 4,
+        "branch_casts": 0,
+        "outcomes": {
+          "NaturalDeathBeforePvp": 4
+        }
+      },
+      {
+        "cell": {
+          "Index": 17,
+          "WeaponLevel": 5,
+          "PeerHero": "Guardian"
+        },
+        "routes": 4,
+        "branch_casts": 12,
+        "outcomes": {
+          "NaturalPvpEntryRecoveryBranchesVerified": 4
+        }
+      }
+    ],
+    "totals": {
+      "route_start": 72,
+      "typed_wire": 5665,
+      "room_snapshots": 5637,
+      "hand_count_0": 5254,
+      "route_terminal": 72,
+      "hand_count_1": 101,
+      "hand_count_3": 282,
+      "natural_pvp_entry": 28,
+      "branch_start": 84,
+      "branch_verified": 84,
+      "actual_pvp_cast": 82,
+      "actual_cast_checkpoint_verified": 28,
+      "disconnected_checkpoint": 28,
+      "reconnected_policy_and_state": 28
+    },
+    "found_states": [],
+    "no_new_native_game_or_server_code": true,
+    "all_reached_and_unreached_branches_preserved": true
+  },
+  "no_directorystate_or_server_skill_override_inferred": true
+}

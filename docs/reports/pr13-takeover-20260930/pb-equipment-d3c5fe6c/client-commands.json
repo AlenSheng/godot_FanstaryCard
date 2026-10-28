@@ -1,0 +1,70 @@
+[
+  {
+    "command": [
+      "python",
+      "tools/generate_network_protocol.py",
+      "--check"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 0.06452355299916235,
+    "log": "protocol-check.log"
+  },
+  {
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 6.454839739999443,
+    "log": "client-import.log"
+  },
+  {
+    "command": [
+      "python",
+      "client/tests/run_http_protobuf_client.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--work-dir",
+      "/workspace/pr13-takeover/pb-equipment-20260930/http-fixture"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 10.281503255999269,
+    "log": "client-http-codec.log"
+  },
+  {
+    "command": [
+      "python",
+      "client/tests/run_http_boundary.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--output",
+      "/workspace/pr13-takeover/pb-equipment-20260930/http-boundary"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 1.9817155210002966,
+    "log": "client-http-boundary.log"
+  },
+  {
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_play_retry.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "elapsed_seconds": 8.317733642999883,
+    "log": "client-retry.log"
+  }
+]

@@ -1,0 +1,237 @@
+{
+  "kind": "User-authorized G-drive and current-cloud historical backup search",
+  "source_checkout_at_review": "45be567c2b899f4136f763dfd9d1f248903e7a51",
+  "user_instruction": "检查云端和本地G盘有无备份，没有就是没有了",
+  "conclusion": "Partial historical backups exist: three PostgreSQL custom dumps, eight environment/limits/patch/control files and one retained old rollback image. No original payload backup for the13 declared Sept29 runs was found in the accessible named-file/archive searches.",
+  "qualification": {
+    "ok": true,
+    "user_instruction": "检查云端和本地G盘有无备份，没有就是没有了",
+    "search_scope": "Accessible local G files/archives/recycle metadata, current cloud host filesystem/archives/retained Docker images and volumes; no deleted-sector forensics or external provider snapshot account access.",
+    "historical_target_runs": 13,
+    "declared_original_files": 2144,
+    "local_G": {
+      "files_enumerated": 2894177,
+      "archive_candidates": 5181,
+      "archive_indexes_read": 4986,
+      "archive_errors": 16,
+      "rg_exit": 2,
+      "protected_System_Volume_Information_access_denied": true,
+      "related_recycle_metadata_matches": 0,
+      "backup_suffix_candidates": 462,
+      "renamed_backup_exact_matches": 0,
+      "disk_image_candidates": 0
+    },
+    "cloud_host": {
+      "file_records_enumerated": 931325,
+      "root_walk_completed": true,
+      "remaining_archives": 0,
+      "unique_archive_paths_discovered": 313,
+      "archive_indexes_read": 285,
+      "archive_error_observations": 14,
+      "filesystem_errors": 0,
+      "SQL_dump_backup_suffix_candidates": 1309,
+      "production_identity_env_unchanged": true
+    },
+    "generic_byte_matches": {
+      "count": 322,
+      "kind": "Four-byte STOP sentinel from different runs/fixtures, not original 13-run evidence",
+      "original_run_specific_payloads_recovered": 0,
+      "same_bytes_not_original_namespace_or_backup_identity": true
+    },
+    "actual_historical_backups_found": {
+      "postgres_custom_dump_files": 3,
+      "other_environment_limit_patch_control_files": 8,
+      "files": [
+        {
+          "remote_file_name": "settlement-hotfix-20260929.started",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 21,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "settlement-hotfix-20260929.patch",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 1019,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "pr13-env-before-capacity-20260929",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 341,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "fantasycard-20260929T001948Z-before-c0a8ebd462502df327e4bc98cd4c9356e14ad1da.dump",
+          "role": "PostgreSQL_custom_dump",
+          "bytes": 2038756,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "settlement-hotfix-20260929.dump",
+          "role": "PostgreSQL_custom_dump",
+          "bytes": 2061161,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "fantasycard-20260929T070844Z-before-cb96d163d14719b24b89bceeefe1e7be24eff4ff.dump",
+          "role": "PostgreSQL_custom_dump",
+          "bytes": 2500075,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "restored-limits.txt",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 117,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "restore.sh",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 384,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "override.yaml",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 331,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "restored-at.txt",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 32,
+          "private_copy_only": true
+        },
+        {
+          "remote_file_name": "original-limits.txt",
+          "role": "configuration_or_historical_control_metadata",
+          "bytes": 117,
+          "private_copy_only": true
+        }
+      ],
+      "existing_old_rollback_image": {
+        "id": "sha256:0fb94d16741a65de08e7401a0f106797796608abe5b96e5cfc0ec115f4aa1379",
+        "tags": [
+          "fantasycard-settlement-rollback:20260929"
+        ],
+        "created": "2026-09-28T21:59:16.007739274+08:00",
+        "bytes": 97841026,
+        "source_revision_label": null
+      },
+      "old_image_source_revision_label_absent": true,
+      "tag_date_not_proof_of_actual_13run_runtime_image": true
+    },
+    "private_copy_custody": {
+      "files": 11,
+      "bytes": 6602354,
+      "all_size_SHA_match_original": true,
+      "remote_original_metadata_and_production_identity_unchanged": true,
+      "private_manifest": {
+        "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\verified-historical-backup-copies-native\\verified-copy-manifest.private.original.json",
+        "bytes": 7479,
+        "sha256": "97d8a4f20a3ed8cd2a7c0b15b84c9c4a4909dd685b95401818feea500ed9a7dd"
+      },
+      "raw_not_for_Git_publication": true,
+      "no_database_restore_or_SQL_execution": true
+    },
+    "remaining_historical_gap": {
+      "original_13run_logs_request_result_payloads_not_found": true,
+      "actual_per_run_image_config_association_not_restored": true,
+      "database_or_environment_backup_not_substituted_for_runtime_raw": true,
+      "historical_comparisons_remain_unaccepted": true,
+      "stop_repeating_same_backup_search_without_new_location_or_evidence": true
+    },
+    "access_boundaries": {
+      "protected_G_system_directory_not_read": true,
+      "local_VSS_query_failed_initialization_not_proof_of_no_snapshots": true,
+      "cloud_provider_CLI_config_and_credential_environment_not_available": true,
+      "external_cloud_provider_snapshot_catalog_not_queried_no_absence_claim": true,
+      "corrupt_or_truncated_archives_not_usable_complete_backups": true
+    },
+    "transfer_correction": {
+      "prior_raw_SSH_stdout_dump_truncated262144_and_rejected": true,
+      "native_SFTP_read_only_R_all11_reverified": true,
+      "original_backups_not_changed": true
+    },
+    "whole_A081_accepted": false,
+    "no_gameplay_Godot_PG_restore_asset_ledger_configuration_deploy_or_restart_mutation": true
+  },
+  "private_proofs": {
+    "G_search": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\local-G\\result.original.json",
+      "bytes": 846,
+      "sha256": "845d38294beda61b805a27efd787798da944f446936a6807bc20d3bb55a2861e"
+    },
+    "cloud_initial": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\cloud\\result.original.json",
+      "bytes": 596,
+      "sha256": "2d61aad8eb3d8f50d2d5565c76b6d27f3b796198b3bba6356f997827a02257cf"
+    },
+    "cloud_pass2": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\cloud-pass2\\result.original.json",
+      "bytes": 854,
+      "sha256": "17680cbdcce8c6a6d61cf109e965552334bad711c95751057361e153784ab130"
+    },
+    "cloud_pass3": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\cloud-pass3\\result.original.json",
+      "bytes": 496,
+      "sha256": "d70e15ab2d2842a0aec15e848e7da10f1aee338ff9ad3569c9ac22bd38c0029a"
+    },
+    "cloud_pass4": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\cloud-pass4\\result.original.json",
+      "bytes": 490,
+      "sha256": "9edc09f4a118ffe30542c2b7ce93e305ef994d94a70d82ce07ff33255d712a01"
+    },
+    "backup_name_supplement": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\cloud-name-supplement-fixed\\result.original.json",
+      "bytes": 2140,
+      "sha256": "4d5a0111ed20db66c6e8ccf57de41affd882ccb5918dc0a8dafa8436f3570c5d"
+    },
+    "private_verified_copies": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\verified-historical-backup-copies-native\\result.original.json",
+      "bytes": 635,
+      "sha256": "fd2383ece392be2aa0ebdb0090f0cf1fa6fdfb9f20e4d1c7fe92c06b3ec70612"
+    },
+    "private_copy_manifest": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\verified-historical-backup-copies-native\\verified-copy-manifest.private.original.json",
+      "bytes": 7479,
+      "sha256": "97d8a4f20a3ed8cd2a7c0b15b84c9c4a4909dd685b95401818feea500ed9a7dd"
+    },
+    "qualified_search": {
+      "path": "G:\\PR13Evidence\\old-20260929-backup-search-20261024-r449-originals\\qualified-result\\result.original.json",
+      "bytes": 5989,
+      "sha256": "2365b8f2c3a06a0be98c0a6af96ab6988cb03339515815fbc9451aad05a00a08"
+    }
+  },
+  "originals_only_private_not_Git": true,
+  "database_restore_or_SQL_execution": false,
+  "current_assets_ledger_env_or_deployment_changed": false,
+  "historical_actual_image_config_association_not_inferred_from_backup_filename_or_tag": true,
+  "no_new_original_run_reports_fabricated": true,
+  "stop_repeating_same_historical_backup_search_without_new_backup_location_or_evidence": true,
+  "acceptance": {
+    "register_unchanged": {
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+      "bytes": 17458066,
+      "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8"
+    },
+    "task_states": {
+      "Accepted": 111,
+      "Partial": 20,
+      "ReadyForAcceptance": 1,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 21,
+    "A081": "ReadyForAcceptance_not_whole_MAIN_accepted",
+    "missing_case_profiles46_unchanged": true,
+    "all6gates": "NotAccepted"
+  },
+  "scope_boundaries": {
+    "protected_G_System_Volume_Information_not_read": true,
+    "local_VSS_query_failed_initialization": true,
+    "external_cloud_provider_snapshot_catalog_unavailable_via_current_configured_tools_not_queried": true,
+    "no_global_absence_claim_for_unavailable_system_provider_snapshots": true,
+    "damaged_or_truncated_archives_recorded_not_treated_usable_complete_backups": true
+  },
+  "no_gameplay_Godot_or_Unity_started": true
+}

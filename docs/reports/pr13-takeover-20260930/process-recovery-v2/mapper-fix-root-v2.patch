@@ -1,0 +1,70 @@
+diff --git a/protocol/http/v1/game.proto b/protocol/http/v1/game.proto
+index 95a95f05..9f3858c4 100644
+--- a/protocol/http/v1/game.proto
++++ b/protocol/http/v1/game.proto
+@@ -416,6 +416,8 @@ message SettlementDetails { string room_id = 1; int64 revision = 2; int32 phase
+ message SettlementPosition { int32 row = 1; int32 column = 2; }
+ message SettlementDisplayItem { SettlementDisplayAsset item = 1; bool equipped = 2; }
+ message SettlementDisplayAsset { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; SettlementEquipment equipment = 5; }
+-message SettlementEquipment { int32 slot = 1; int32 quality = 2; int32 element = 3; optional string effect_affix = 4; optional string secondary_trait = 5; int32 level = 6; bool is_bound = 7; }
++// Tags 1-3 retain historical numeric receipts. Domain equipment uses names;
++// additive labels preserve them without inventing numeric slot/quality codes.
++message SettlementEquipment { int32 slot = 1; int32 quality = 2; int32 element = 3; optional string effect_affix = 4; optional string secondary_trait = 5; int32 level = 6; bool is_bound = 7; optional string slot_name = 8; optional string quality_name = 9; optional string element_name = 10; }
+ 
+ message ShopProductPayload { optional string card_id = 1; optional string quality = 2; optional string rarity = 3; optional int32 count = 4; optional int64 amount = 5; optional string hero_class = 6; }
+diff --git a/server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs b/server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs
+index 9e8b3b88..f508f5d3 100644
+--- a/server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs
++++ b/server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs
+@@ -7,6 +7,7 @@ using System.Text;
+ using System.Text.Json;
+ using Google.Protobuf;
+ using Google.Protobuf.Reflection;
++using HttpWire = FantasyCard.Contracts.Http.V1;
+ 
+ namespace FantasyCard.Contracts.Http;
+ 
+@@ -119,6 +120,7 @@ public static class HttpDtoMapper
+             object? source = wrapItems && field.Name == "items" ? value
+                 : value is JsonElement element ? ReadJson(element, field.Name) : binding.Get?.Invoke(value);
+             if (source is null) continue;
++            if (WriteSettlementEquipmentName(message, field, source)) continue;
+             if (field.IsRepeated)
+             {
+                 var destination = (IList)field.Accessor.GetValue(message);
+@@ -129,6 +131,35 @@ public static class HttpDtoMapper
+         return message;
+     }
+ 
++    private static bool WriteSettlementEquipmentName(IMessage message, FieldDescriptor field, object source)
++    {
++        if (message is not HttpWire.SettlementEquipment equipment || field.Name is not ("slot" or "quality" or "element"))
++            return false;
++        var name = source switch
++        {
++            string text => text,
++            JsonElement { ValueKind: JsonValueKind.String } element => element.GetString(),
++            _ => null
++        };
++        if (name is null || int.TryParse(name, NumberStyles.Integer, CultureInfo.InvariantCulture, out _))
++            return false; // Preserve historical numeric values, including numeric JSON strings.
++        var valid = field.Name switch
++        {
++            "slot" => name is "Head" or "Chest" or "Hands" or "Legs" or "Feet",
++            "quality" => name is "White" or "Green" or "Blue" or "Purple" or "Orange",
++            "element" => name is "Fire" or "Wood" or "Earth" or "Metal" or "Water",
++            _ => false
++        };
++        if (!valid) throw new InvalidDataException($"Invalid persisted equipment name for {field.FullName}.");
++        switch (field.Name)
++        {
++            case "slot": equipment.SlotName = name; break;
++            case "quality": equipment.QualityName = name; break;
++            case "element": equipment.ElementName = name; break;
++        }
++        return true;
++    }
++
+     public static object ToDto(IMessage message, Type dtoType)
+     {
+         ArgumentNullException.ThrowIfNull(message);

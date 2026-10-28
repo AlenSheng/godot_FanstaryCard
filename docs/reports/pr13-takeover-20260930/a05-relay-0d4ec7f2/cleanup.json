@@ -1,0 +1,217 @@
+{
+  "at_utc": "2026-10-01T03:33:02.629058+00:00",
+  "cutoff_monotonic_ns": 44922130567214,
+  "processes": {
+    "profiles": [
+      {
+        "profile": "green-unix",
+        "host_starts": 3,
+        "host_stops": 3,
+        "relays": [
+          {
+            "_mode": "committed-response-loss",
+            "DirectoryPath": "/tmp/fc-a05-relay-3210ea2da9054ed9ac8a3706ba5def27",
+            "Dropped": 1,
+            "removed": true
+          },
+          {
+            "_mode": "precommit",
+            "DirectoryPath": "/tmp/fc-a05-relay-6332db8add6f4f1985459c2eb49f5336",
+            "Dropped": 2,
+            "removed": true
+          }
+        ],
+        "children": [
+          {
+            "pid": 132187,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132216,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132236,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132264,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132296,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132325,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132344,
+            "state": "absent",
+            "live_owned": false
+          }
+        ],
+        "live_owned_children": 0
+      },
+      {
+        "profile": "green-tcp",
+        "host_starts": 3,
+        "host_stops": 3,
+        "relays": [
+          {
+            "_mode": "committed-response-loss",
+            "DirectoryPath": "/tmp/fc-a05-relay-1f42ae1887414395a329b805b1557535",
+            "Dropped": 1,
+            "removed": true
+          },
+          {
+            "_mode": "precommit",
+            "DirectoryPath": "/tmp/fc-a05-relay-d273000258364abca535d9d104cd3cd0",
+            "Dropped": 4,
+            "removed": true
+          }
+        ],
+        "children": [
+          {
+            "pid": 132494,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132524,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132580,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132603,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132636,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132665,
+            "state": "absent",
+            "live_owned": false
+          },
+          {
+            "pid": 132686,
+            "state": "absent",
+            "live_owned": false
+          }
+        ],
+        "live_owned_children": 0
+      }
+    ],
+    "all_known_hosts_stopped": true,
+    "all_owned_relay_directories_removed": true,
+    "live_owned_children": 0
+  },
+  "host_pairs": 6,
+  "relay_directories_removed": 4,
+  "live_owned_children": 0,
+  "final_readonly_audits": [
+    {
+      "path": "green-unix/a05-audit-db-committed-response-loss-after.json",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "requireClear": true,
+      "counts": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "path": "green-unix/a05-audit-db-precommit-after.json",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "requireClear": true,
+      "counts": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "path": "green-tcp/a05-audit-db-committed-response-loss-after.json",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "requireClear": true,
+      "counts": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "path": "green-tcp/a05-audit-db-precommit-after.json",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "requireClear": true,
+      "counts": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    }
+  ],
+  "final_zero_counts": 32,
+  "owned_pg": {
+    "at_utc": "2026-10-01T03:33:01.640401+00:00",
+    "cutoff_monotonic_ns": 44921141923746,
+    "owned_port": 55453,
+    "owned_database": "a05_transport_owned",
+    "postmaster_pid": 131770,
+    "postmaster_state": "Z",
+    "state_interpretation": "Z is stopped zombie, not live server; accurately retained",
+    "final_readonly": {
+      "at_utc": "2026-10-01T03:24:28.638306+00:00",
+      "database": "a05_transport_owned",
+      "user": "agent",
+      "server_addr": "127.0.0.1",
+      "listen_addresses": "127.0.0.1",
+      "port": "55453",
+      "remaining_fixture_schemas": 0,
+      "other_owned_database_backends": 0
+    },
+    "stop_exit_code": 0,
+    "status_exit_code": 3,
+    "data_removed": true,
+    "socket_removed": true,
+    "policy_before_removal": "owned-pg-policy/",
+    "scope": "only this task-owned cluster/socket removed"
+  },
+  "audit_scope": "four fixture-owned schemas; no inference about external/global ledger health"
+}

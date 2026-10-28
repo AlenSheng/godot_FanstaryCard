@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="abfa4431-65bd-4eb9-8205-f15cfbae7b0d" name="@09ccdc1ef110 2026-10-12 11:36:50" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-10-12T11:36:50.3391363+00:00" queuing="2026-10-12T11:36:50.3391363+00:00" start="2026-10-12T11:36:35.7590546+00:00" finish="2026-10-12T11:36:50.3474798+00:00" />
+  <TestSettings name="default" id="845a73f6-22ef-4f70-abd9-1ed46592e6f5">
+    <Deployment runDeploymentRoot="_09ccdc1ef110_2026-10-12_11_36_50" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="004665eb-1924-4bc0-8940-4b67e5d25041" testId="59c40a56-582e-f16d-eac1-c15860967724" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets" computerName="09ccdc1ef110" duration="00:00:11.2609593" startTime="2026-10-12T11:36:38.8798191+00:00" endTime="2026-10-12T11:36:50.1959559+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="004665eb-1924-4bc0-8940-4b67e5d25041">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-10-12T11:36:40.347434+00:00","evidence":{"label":"rollback-current","Id":84,"executable":"dotnet","dll":"/artifacts/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.dll","port":43709,"SearchPath":"fc_runtime_test_d19d8f2be4f14cc4ac88fdc1d0c25612","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-10-12T11:36:42.9395989+00:00","evidence":{"label":"rollback-current","ProcessId":84,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/artifacts/outputs/pr13-local-20261008/rollback-audit/process-evidence/rollback-current-84.log"}}
+{"caseId":"process-start","recordedAt":"2026-10-12T11:36:42.9433233+00:00","evidence":{"label":"rollback-preserved-previous","Id":103,"executable":"dotnet","dll":"/artifacts/outputs/pr13-local-20261008/previous0cf/FantasyCard.Server.dll","port":43709,"SearchPath":"fc_runtime_test_d19d8f2be4f14cc4ac88fdc1d0c25612","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-10-12T11:36:48.3653585+00:00","evidence":{"label":"rollback-preserved-previous","ProcessId":103,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/artifacts/outputs/pr13-local-20261008/rollback-audit/process-evidence/rollback-preserved-previous-103.log"}}
+{"caseId":"actual-code-rollback","recordedAt":"2026-10-12T11:36:48.366006+00:00","evidence":{"oldServerSha256":"87e323557fe609a58a7a4cb227c70d40dd45a9bb6f72f6d2af19d20baa4ce844","match":"eee90a77-411a-43d4-abdc-7347b6c8d9ca","receiptId":"01a12fe6-a7e4-77ee-88c7-f74744300c72","currentSnapshotRestoredByPreviousBinary":true,"legalExtractionAfterRollback":true,"originalAssetsOnce":true,"scope":"only the declared current and retained 0cf43db binary/config pair; no production deployment or arbitrary older compatibility claim"}}
+{"caseId":"actual-native-backup-restore","recordedAt":"2026-10-12T11:36:49.7311784+00:00","evidence":{"containerId":"09ccdc1ef1106f222a7c7d65cfb2f9386f3137e8f4d188bd4993ec43b211782a","dumpSha256":"909aa4164d5afff27f9b0ca158180bcc452da189066f57e05250037e7e4dab58","dumpBytes":124312,"nativeTools":"pg_dump custom schema backup and pg_restore into a newly owned isolated database","originalBalance":23,"restoredBalance":23,"committedLedgerRows":1,"repeatedAckAndHoldCommitDoNotCopyAssets":true,"assetCorrection":false,"scope":"same restored database scope, never combine original/clone balances or repair deleted historical ledgers"}}
+{"caseId":"owned-restored-database-removed","recordedAt":"2026-10-12T11:36:49.8629406+00:00","evidence":{"created":true,"removed":true,"restoredName":"ready_stop_ce07b8b5f39947a9aebd714c416884cb"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets" storage="/artifacts/bin/fantasycard.server.tests/release/fantasycard.server.tests.dll" id="59c40a56-582e-f16d-eac1-c15860967724">
+      <Execution id="004665eb-1924-4bc0-8940-4b67e5d25041" />
+      <TestMethod codeBase="/artifacts/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="59c40a56-582e-f16d-eac1-c15860967724" executionId="004665eb-1924-4bc0-8940-4b67e5d25041" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.71]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.19]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.43]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:13.90]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

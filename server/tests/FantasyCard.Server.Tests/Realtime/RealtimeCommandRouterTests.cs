@@ -43,9 +43,9 @@ public sealed class RealtimeCommandRouterTests
 
         Assert.Equal(goldBefore - 60, roomPlayer.Inventory.GoldQuantity);
         Assert.Equal(revisionAfterFirst, room.Revision);
-        Assert.Equal(revisionAfterFirst, Assert.Single(first).RoomRevision);
-        Assert.Equal(revisionAfterFirst, Assert.Single(replay).RoomRevision);
-        Assert.Equivalent(Assert.Single(first).Payload, Assert.Single(replay).Payload, strict: true);
+        Assert.Equal(revisionAfterFirst, FindEvent(first, "room.snapshot").RoomRevision);
+        Assert.Equal(revisionAfterFirst, FindEvent(replay, "room.snapshot").RoomRevision);
+        Assert.Equivalent(FindEvent(first, "reward.choice").Payload, FindEvent(replay, "reward.choice").Payload, strict: true);
     }
 
     [Fact]
@@ -255,7 +255,7 @@ public sealed class RealtimeCommandRouterTests
             "trace",
             TestContext.Current.CancellationToken);
 
-        var started = Assert.Single(response);
+        var started = FindEvent(response, "action.spring_started");
         Assert.Equal("action.spring_started", started.Type);
         Assert.Equal(TimeSpan.FromSeconds(1.2), Assert.IsType<ActionSpringEventPayload>(started.Payload).Remaining);
         Assert.NotNull(room.CapturePlayer(playerId).SpringDrink);
@@ -314,7 +314,7 @@ public sealed class RealtimeCommandRouterTests
             "trace",
             TestContext.Current.CancellationToken);
 
-        var used = Assert.Single(response);
+        var used = FindEvent(response, "action.potion_used");
         Assert.Equal("action.potion_used", used.Type);
         var payload = Assert.IsType<ActionPotionEventPayload>(used.Payload);
         Assert.Equal("health_potion:1", payload.ItemId);
@@ -459,7 +459,7 @@ public sealed class RealtimeCommandRouterTests
             router.RouteAsync(player, command, "trace", TestContext.Current.CancellationToken).AsTask()));
 
         Assert.Equal(1, room.Revision);
-        var events = responses.Select(Assert.Single).ToArray();
+        var events = responses.Select(response => FindEvent(response, "battle.combo_resolved")).ToArray();
         Assert.Single(events.Select(message => message.EventId).Distinct());
         Assert.Single(events.Select(message => message.Sequence).Distinct());
         Assert.All(events, message => Assert.Equal("battle.combo_resolved", message.Type));
@@ -518,7 +518,7 @@ public sealed class RealtimeCommandRouterTests
             "trace",
             TestContext.Current.CancellationToken);
 
-        var selected = Assert.Single(response);
+        var selected = FindEvent(response, "battle.target_selected");
         Assert.Equal("battle.target_selected", selected.Type);
         Assert.Equal("monster-2", Assert.IsType<BattleTargetSelectedEventPayload>(selected.Payload).TargetId);
         Assert.Equal("monster-2", room.CapturePlayer(playerId).Pve!.CurrentTargetId);
@@ -558,7 +558,7 @@ public sealed class RealtimeCommandRouterTests
             new ClientCommand("battle.select_target", "last-survivor", room.Revision,
                 new BattleSelectTargetCommandPayload(pve.BattleId, survivor.MonsterId)),
             "trace", TestContext.Current.CancellationToken);
-        Assert.Equal("battle.target_selected", Assert.Single(selected).Type);
+        Assert.Equal("battle.target_selected", FindEvent(selected, "battle.target_selected").Type);
         Assert.Equal(survivor.MonsterId, room.CapturePlayer(playerId).Pve!.CurrentTargetId);
     }
 
@@ -602,6 +602,9 @@ public sealed class RealtimeCommandRouterTests
             return Assert.Single(snapshot.Pve!.Monsters);
         }
     }
+
+    private static ServerEvent FindEvent(IReadOnlyList<ServerEvent> events, string type) =>
+        Assert.Single(events, message => message.Type == type);
 
     private sealed class StubReadyService(ReadyLobbyView result) : IRoomReadyService
     {

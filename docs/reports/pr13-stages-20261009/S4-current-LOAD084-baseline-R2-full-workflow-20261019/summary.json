@@ -1,0 +1,322 @@
+{
+  "kind": "ThreeFullWorkflowBaselineVsR2Pairs_FunctionalPassed_PerformanceNotPassed",
+  "source_base_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+  "baseline_GameStore_sha256": "f585306278224555c4e5bc033bb162f69b10ea45fb95e6c07b60a31071441c21",
+  "candidate_GameStore_sha256": "592bdc0948c3fe69c30fcd692a1312f58ea2de767e833e1c07d559b7f45cb2a2",
+  "uncommitted_client_candidate_not_deployed": true,
+  "Server_DLL_245265ff_unchanged": true,
+  "baseline2143_candidate2144_inputs_actual_cloud_SHAverified": true,
+  "installer_printed2143_constant_is_cosmetic_not_actual_candidate_manifest_count": true,
+  "new_worlds": 6,
+  "new_accounts": 0,
+  "four_real_returning_Mage_accounts_reused": true,
+  "six_Native_processes_four_connections_each_headless_exit0": true,
+  "Native_checks": 306,
+  "independent_invariants": 686,
+  "physical_HTTP_requests": 296,
+  "new_unique_ACKs": 24,
+  "actual_final_players24_matches12_receipts48_ACK48_noholds_orlocks": true,
+  "all24_new_preparation_snapshots_equal": true,
+  "new_synthetic_items": 0,
+  "pairs": [
+    {
+      "pair": 1,
+      "baseline_case": "p1-baseline",
+      "candidate_case": "p1-r2",
+      "baseline": {
+        "response_body_bytes": 439416,
+        "client_duration_ms": 4138,
+        "server_http_ms": 1502.4026480000005,
+        "Npgsql_operations": 342,
+        "explicit_SQL_statements": 402,
+        "SQL_activity_sum_ms": 2232.0489,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 1257.080233,
+        "first_to_last_HTTP_ms": 3994.684178,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 618,
+        "receipt_wait_max_ms": 184,
+        "PG_background_inclusive_SQL_calls": 1164
+      },
+      "candidate": {
+        "response_body_bytes": 439514,
+        "client_duration_ms": 3190,
+        "server_http_ms": 582.1687689999998,
+        "Npgsql_operations": 339,
+        "explicit_SQL_statements": 399,
+        "SQL_activity_sum_ms": 921.3805000000001,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 537.698934,
+        "first_to_last_HTTP_ms": 2895.809618,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 583,
+        "receipt_wait_max_ms": 166,
+        "PG_background_inclusive_SQL_calls": 1112
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": -98,
+        "client_duration_ms": 948,
+        "server_http_ms": 920.2338790000007,
+        "Npgsql_operations": 3,
+        "explicit_SQL_statements": 3,
+        "SQL_activity_sum_ms": 1310.6683999999996,
+        "HTTP_requests": -1,
+        "whole_HTTP_union_ms": 719.3812989999999,
+        "first_to_last_HTTP_ms": 1098.8745600000002,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 35,
+        "receipt_wait_max_ms": 18,
+        "PG_background_inclusive_SQL_calls": 52
+      },
+      "byte_SQL_receipt_wait_all_improved": false,
+      "random_world_seeds_not_matched": true
+    },
+    {
+      "pair": 2,
+      "baseline_case": "p2-baseline",
+      "candidate_case": "p2-r2",
+      "baseline": {
+        "response_body_bytes": 439307,
+        "client_duration_ms": 3408,
+        "server_http_ms": 633.9435340000001,
+        "Npgsql_operations": 337,
+        "explicit_SQL_statements": 397,
+        "SQL_activity_sum_ms": 963.1382000000001,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 605.865396,
+        "first_to_last_HTTP_ms": 3102.526639,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 618,
+        "receipt_wait_max_ms": 162,
+        "PG_background_inclusive_SQL_calls": 1108
+      },
+      "candidate": {
+        "response_body_bytes": 439514,
+        "client_duration_ms": 3393,
+        "server_http_ms": 640.9002750000001,
+        "Npgsql_operations": 339,
+        "explicit_SQL_statements": 399,
+        "SQL_activity_sum_ms": 988.8272999999998,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 611.293457,
+        "first_to_last_HTTP_ms": 3300.558888,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 649,
+        "receipt_wait_max_ms": 200,
+        "PG_background_inclusive_SQL_calls": 1114
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": -207,
+        "client_duration_ms": 15,
+        "server_http_ms": -6.956740999999965,
+        "Npgsql_operations": -2,
+        "explicit_SQL_statements": -2,
+        "SQL_activity_sum_ms": -25.689099999999712,
+        "HTTP_requests": -1,
+        "whole_HTTP_union_ms": -5.428060999999957,
+        "first_to_last_HTTP_ms": -198.03224899999987,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": -31,
+        "receipt_wait_max_ms": -38,
+        "PG_background_inclusive_SQL_calls": -6
+      },
+      "byte_SQL_receipt_wait_all_improved": false,
+      "random_world_seeds_not_matched": true
+    },
+    {
+      "pair": 3,
+      "baseline_case": "p3-baseline",
+      "candidate_case": "p3-r2",
+      "baseline": {
+        "response_body_bytes": 439309,
+        "client_duration_ms": 3329,
+        "server_http_ms": 802.4649819999998,
+        "Npgsql_operations": 337,
+        "explicit_SQL_statements": 397,
+        "SQL_activity_sum_ms": 1253.8339,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 770.643064,
+        "first_to_last_HTTP_ms": 3177.464046,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 633,
+        "receipt_wait_max_ms": 193,
+        "PG_background_inclusive_SQL_calls": 1114
+      },
+      "candidate": {
+        "response_body_bytes": 439305,
+        "client_duration_ms": 3692,
+        "server_http_ms": 990.8399469999997,
+        "Npgsql_operations": 337,
+        "explicit_SQL_statements": 397,
+        "SQL_activity_sum_ms": 1271.9,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 964.159145,
+        "first_to_last_HTTP_ms": 3721.045104,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 751,
+        "receipt_wait_max_ms": 217,
+        "PG_background_inclusive_SQL_calls": 1114
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": 4,
+        "client_duration_ms": -363,
+        "server_http_ms": -188.37496499999986,
+        "Npgsql_operations": 0,
+        "explicit_SQL_statements": 0,
+        "SQL_activity_sum_ms": -18.066100000000006,
+        "HTTP_requests": 0,
+        "whole_HTTP_union_ms": -193.51608099999999,
+        "first_to_last_HTTP_ms": -543.5810579999998,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": -118,
+        "receipt_wait_max_ms": -24,
+        "PG_background_inclusive_SQL_calls": 0
+      },
+      "byte_SQL_receipt_wait_all_improved": false,
+      "random_world_seeds_not_matched": true
+    }
+  ],
+  "all3_byte_SQL_receipt_wait_improved": false,
+  "performance_decision": "NotPassed_StableWholeRoomImprovementNotEstablished",
+  "whole_task_accepted": false,
+  "LOAD084_T01_EXPERIMENT_stays_missing": true,
+  "NoChange_or_threshold_relaxation_granted": false,
+  "hotspot_summary": [
+    {
+      "case": "p1-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145349,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 160.492981
+      },
+      "whole_response_body_bytes": 439416,
+      "whole_SQL": 402,
+      "settlement_byte_share": 0.33077766854188284,
+      "settlement_SQL_share": 0.1890547263681592
+    },
+    {
+      "case": "p1-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 112.272777
+      },
+      "whole_response_body_bytes": 439514,
+      "whole_SQL": 399,
+      "settlement_byte_share": 0.330451362186415,
+      "settlement_SQL_share": 0.19047619047619047
+    },
+    {
+      "case": "p2-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 144.195115
+      },
+      "whole_response_body_bytes": 439514,
+      "whole_SQL": 399,
+      "settlement_byte_share": 0.330451362186415,
+      "settlement_SQL_share": 0.19047619047619047
+    },
+    {
+      "case": "p2-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145240,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 152.616558
+      },
+      "whole_response_body_bytes": 439307,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.3306116223961831,
+      "settlement_SQL_share": 0.19143576826196473
+    },
+    {
+      "case": "p3-baseline",
+      "variant": "baseline",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145242,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 184.433926
+      },
+      "whole_response_body_bytes": 439309,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.33061466985652466,
+      "settlement_SQL_share": 0.19143576826196473
+    },
+    {
+      "case": "p3-r2",
+      "variant": "candidate-r2",
+      "settlement_fallback_HTTP4": true,
+      "settlement_fallback": {
+        "response_body_bytes": 145238,
+        "explicit_SQL_statements": 76,
+        "server_http_ms": 280.769057
+      },
+      "whole_response_body_bytes": 439305,
+      "whole_SQL": 397,
+      "settlement_byte_share": 0.3306085749080935,
+      "settlement_SQL_share": 0.19143576826196473
+    }
+  ],
+  "root_cause": "Unknown-ID fallback starts fullBootstrap before delayedReadyIDnotification;4settlementfallbacksperworldpersistinbaselineandR2. KnownIDguardaloneisnotfullworkloadoptimization.",
+  "original_startup_cancel_analyzer_error_preserved": "Generation0client-info physicallyHTTP200/149B islegitimatecancelledstalesession;logicalstatus0/public401 mustnotbeSUTfailure. Actualattemptbytes149andservertracecounted.",
+  "original_cost_mixed_and_R1_manual_latency_regression_retained": true,
+  "G_beforePG309_final314_all_SHA_verified": true,
+  "cloud_code637members_G_custodied": true,
+  "cloud_temporary_roots2_file_names_removed": 6823,
+  "cleanup": {
+    "ok": true,
+    "only_exact_owned_roots_removed": true,
+    "roots_removed": [
+      {
+        "root": "/home/ubuntu/pr13-acceptance-20261009/work/goal-load084-r2pairs-01a152f7-r1-20261019-inputs",
+        "file_names": 6818
+      },
+      {
+        "root": "/home/ubuntu/pr13-load084-r2pairs-upload-01a152f7-r1",
+        "file_names": 5
+      }
+    ],
+    "file_names_removed": 6823,
+    "empty_work_dirs_removed": [
+      "/home/ubuntu/pr13-acceptance-20261009/work/goal-load084-r2pairs-01a152f7-r1-20261019"
+    ],
+    "unexpected_work_dirs_preserved": [],
+    "raw_cloud_evidence_preserved": true,
+    "all_local_test_code_preserved": true,
+    "cloud_code_originals_G_SHA_verified_before_deletion": true,
+    "shared_cached_base2104_inputs_unchanged": true,
+    "production_unchanged": true,
+    "production_health": 200,
+    "all_private_credentials_previously_removed": true,
+    "at_ns": 1792417438820135752,
+    "temporary_cleanup_launcher_removed": true
+  },
+  "source_cloud_raw_and_local_code_kept": true,
+  "original8plusnew6_cumulative14_spent": true,
+  "B11121_B11227_not_reset": true,
+  "original15percent_capacity_gate_unpassed": true,
+  "human_experience_excluded": true,
+  "no_UI_render_art_or_capacity_or_positiveCI_claim": true,
+  "local_visible_windows": 0,
+  "G": "G:\\PR13Evidence\\load084-baseline-r2-worlds-20261019-r1-originals",
+  "limitations": [
+    "Three configuration-matched pairs,random world seeds not controlled.",
+    "Returning four actual accounts inoneheadlessOSprocess/fourStores,not freshauth299SQL nor capacity.",
+    "Only response protobuf body bytes,not HTTP headers/TLS/WSS bytes.",
+    "Npgsql operations are not explicitSQLstatement counts;transaction traffic excluded.",
+    "PG stat windows include real background/WSwork and do not isolate causal foreground effects.",
+    "Pool queued-request integral isallpooloverlap,not everyOpen or perendpointwait.",
+    "Summed foreground durations can overlap;union recorded separately.",
+    "Receipt wait is actual public abandon-to-receipt atclient sampling intervals,not human/UIrender response time."
+  ]
+}

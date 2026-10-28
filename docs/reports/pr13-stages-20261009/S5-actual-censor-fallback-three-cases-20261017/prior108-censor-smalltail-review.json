@@ -1,0 +1,684 @@
+{
+  "kind": "ExistingActualExperimentCensorAndSmallTailContractReview",
+  "raw_encounters": 108,
+  "outcomes": {
+    "Victory": 40,
+    "Censored": 68
+  },
+  "all_started_accounting_exact": true,
+  "right_censored": 68,
+  "censor_rate": 0.6296296296296297,
+  "censored_observed_duration_seconds": 60,
+  "completed_victory_TTK_fabricated_for_censored": false,
+  "all_started_victory_TTK_p95": {
+    "endpoint": "time_to_victory_among_all_started_encounters",
+    "population_n": 108,
+    "identified": false,
+    "value": null,
+    "missing_reasons": [
+      "insufficient_observed_victories_for_p95",
+      "right_censored_outcomes"
+    ],
+    "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+  },
+  "small_tail_strata": [
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "basic",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "basic",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "build",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Guardian",
+        "default",
+        "O6",
+        "build",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 43.7,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 43.7,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "basic",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 51.300000000000004,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "basic",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 53.300000000000004,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "build",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 52.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Mage",
+        "default",
+        "O6",
+        "build",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Victory": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": true,
+        "value": 52.1,
+        "missing_reasons": [],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 6,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 4,
+        "Victory": 2
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 2,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "baseline_all_hand",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 4,
+        "Victory": 2
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 2,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "basic",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "basic",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "build",
+        "Baseline"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    },
+    {
+      "stratum": [
+        "Priest",
+        "default",
+        "O6",
+        "build",
+        "CandidateClassPassives"
+      ],
+      "all_started_raw": 6,
+      "unique_seed_clusters": 3,
+      "repeats_per_seed": 2,
+      "outcomes": {
+        "Censored": 6
+      },
+      "empirical_all_started_victory_ttk_p95": {
+        "endpoint": "time_to_victory_among_all_started_encounters",
+        "population_n": 6,
+        "identified": false,
+        "value": null,
+        "missing_reasons": [
+          "insufficient_observed_victories_for_p95",
+          "right_censored_outcomes"
+        ],
+        "method": "nearest-rank among all starts; death never becomes victory; censored outcomes must not alter the rank; no independent-censoring assumption"
+      },
+      "population_P99_claim": {
+        "state": "Unknown",
+        "n": 0,
+        "required_n": 3000,
+        "quantile": 0.99,
+        "value": null,
+        "reason": "sample_count_below_preregistered_floor"
+      },
+      "minimum_tail_floor_unchanged": 3000
+    }
+  ],
+  "strata_count": 18,
+  "no_stratum_P99_qualified": true,
+  "original_encounter_and_action_traces_not_rewritten": true,
+  "new_native_encounters": 0,
+  "source_experiment": "Current actualDomain and existingNumerics run, synthetic legal encounter entry; no natural-route/PG/LIVE/capacity/human claim",
+  "raw_source_path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\local-strategy-boundary-r1\\encounters.original.json",
+  "raw_sha256": "7b6d9b2638a5bd506c3ad7b7b0eeea96130b13c2e06bce34e40fc585e32d2075",
+  "current_simulator_source_manifest_sha256": "825c99d5c922e7d7ecc14398cd0ef936973a151ab8fcd8c496e21c76bb303790",
+  "cases": [
+    {
+      "case_id": "PR13-B01.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "raw_starts": 108,
+        "actual_censored_at60s": 68,
+        "zero_completed_TTK_substitutions": 0,
+        "all_outcomes_retained": {
+          "Victory": 40,
+          "Censored": 68
+        }
+      },
+      "scope": "Postcollection current production report helper on immutable actual experiment rows; no new scenes or strength conclusion"
+    },
+    {
+      "case_id": "PR13-B01.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "strata": 18,
+        "raw_per_stratum": 6,
+        "seed_clusters_per_stratum": 3,
+        "P99_all_Unknown": true,
+        "population_tail_floor": 3000
+      },
+      "scope": "Actual immutable stratum rows and production tail gate; repeated seeds not independent, no budget/precision equivalence claim"
+    }
+  ]
+}

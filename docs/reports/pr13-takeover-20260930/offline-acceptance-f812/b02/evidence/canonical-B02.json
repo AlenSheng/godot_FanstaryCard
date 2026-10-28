@@ -1,0 +1,316 @@
+{
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "package": {
+    "id": "PR13-B02",
+    "title": "数值合同、预览和CI一致性",
+    "owner_role": "AG-04",
+    "write_scope": [
+      "server/src/FantasyCard.Domain/Combat",
+      "server/src/FantasyCard.Domain/Rooms",
+      "server/tests/FantasyCard.Domain.Tests",
+      "client/tests",
+      "protocol"
+    ],
+    "file_lock_required": true,
+    "state": "SpecificationReady_NotAccepted",
+    "subtasks": [
+      {
+        "id": "PR13-B02.1",
+        "title": "过期测试API迁移",
+        "source_instruction": "将旧布尔参数/属性迁移为当前枚举策略及盾余量合同，不删失败测试",
+        "specification_state": "ReviewReady",
+        "execution_state": "NotRevalidated",
+        "accepted_by": null,
+        "requires_before_integration": [
+          "LOAD-11.1"
+        ],
+        "inputs": "CombatAuthoritativeRulesTests及当前枚举/快照",
+        "implementation_steps": "旧布尔与余量成员逐断言映射CurrentRhythm/CoreCardsSpent、CurrentSteps/FractionalRemainder；先编译复现",
+        "test_cases": [
+          {
+            "id": "PR13-B02.1-T01",
+            "setup_and_injection": "旧参数构造",
+            "expected": "编译失败证据",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.1-T02",
+            "setup_and_injection": "默认构造",
+            "expected": "仍CurrentRhythm/CurrentSteps",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.1-T03",
+            "setup_and_injection": "候选显式枚举",
+            "expected": "候选断言独立",
+            "executed": false,
+            "evidence": null
+          }
+        ],
+        "pass_criteria": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+        "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "command_refs": [
+          "C-BUILD",
+          "C-DOMAIN",
+          "C-SERVER",
+          "C-GODOT-NUM",
+          "C-PROTO"
+        ],
+        "stage_refs": [
+          "S0",
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "runtime_stage": "NotApplicableWithReason",
+        "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+        "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.1/",
+        "deliverables": [
+          "report.json（逐条预期/实际/判定）",
+          "cases.jsonl（用例与业务关联）",
+          "commands.json（命令/工具版本/退出码/跳过）",
+          "manifest.json（相对路径/大小/SHA256）"
+        ],
+        "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+        "gate_refs": [
+          "G1",
+          "G2",
+          "G5"
+        ],
+        "historical_execution_state": "Queued"
+      },
+      {
+        "id": "PR13-B02.2",
+        "title": "真实Resolver规则向量",
+        "source_instruction": "真实Resolver覆盖现行GDD向量、顺序、取整、调节及治疗路径",
+        "specification_state": "ReviewReady",
+        "execution_state": "NotRevalidated",
+        "accepted_by": null,
+        "requires_before_integration": [
+          "PR13-B02.1"
+        ],
+        "inputs": "GDD对应实例/等级/抗性/顺序输入",
+        "implementation_steps": "首核/R/P/B/逐卡floor、46/72/113限定向量、双元素/调节/两种治疗用真实Resolver",
+        "test_cases": [
+          {
+            "id": "PR13-B02.2-T01",
+            "setup_and_injection": "重排同牌",
+            "expected": "按首核合同可不同",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.2-T02",
+            "setup_and_injection": "GDD三四五火指定向量",
+            "expected": "46/72/113",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.2-T03",
+            "setup_and_injection": "普通治疗与向反E0",
+            "expected": "分别计算不共套牧师倍率",
+            "executed": false,
+            "evidence": null
+          }
+        ],
+        "pass_criteria": "金标准向量有完整配置上下文；数值不能推广为任意三张火牌伤害。",
+        "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "command_refs": [
+          "C-BUILD",
+          "C-DOMAIN",
+          "C-SERVER",
+          "C-GODOT-NUM",
+          "C-PROTO"
+        ],
+        "stage_refs": [
+          "S0",
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "runtime_stage": "NotApplicableWithReason",
+        "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+        "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.2/",
+        "deliverables": [
+          "report.json（逐条预期/实际/判定）",
+          "cases.jsonl（用例与业务关联）",
+          "commands.json（命令/工具版本/退出码/跳过）",
+          "manifest.json（相对路径/大小/SHA256）"
+        ],
+        "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+        "gate_refs": [
+          "G1",
+          "G2",
+          "G5"
+        ],
+        "historical_execution_state": "Queued"
+      },
+      {
+        "id": "PR13-B02.3",
+        "title": "预览/协议/权威一致",
+        "source_instruction": "校验预览/协议/结算同输入一致且预览无副作用",
+        "specification_state": "ReviewReady",
+        "execution_state": "NotRevalidated",
+        "accepted_by": null,
+        "requires_before_integration": [
+          "PR13-B02.2"
+        ],
+        "inputs": "相同选牌顺序、target/revision、固定random与快照",
+        "implementation_steps": "预览与提交比较有效伤害/治疗/盾/控制/余量；前后状态/RNG hash不变",
+        "test_cases": [
+          {
+            "id": "PR13-B02.3-T01",
+            "setup_and_injection": "连续preview",
+            "expected": "不抽牌不进RNG不提交盾余量",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.3-T02",
+            "setup_and_injection": "proto往返",
+            "expected": "顺序保持",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.3-T03",
+            "setup_and_injection": "过期revision",
+            "expected": "预览弃置不覆盖当前",
+            "executed": false,
+            "evidence": null
+          }
+        ],
+        "pass_criteria": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+        "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "command_refs": [
+          "C-BUILD",
+          "C-DOMAIN",
+          "C-SERVER",
+          "C-GODOT-NUM",
+          "C-PROTO"
+        ],
+        "stage_refs": [
+          "S0",
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "runtime_stage": "NotApplicableWithReason",
+        "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+        "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.3/",
+        "deliverables": [
+          "report.json（逐条预期/实际/判定）",
+          "cases.jsonl（用例与业务关联）",
+          "commands.json（命令/工具版本/退出码/跳过）",
+          "manifest.json（相对路径/大小/SHA256）"
+        ],
+        "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+        "gate_refs": [
+          "G1",
+          "G2",
+          "G5"
+        ],
+        "historical_execution_state": "Queued"
+      },
+      {
+        "id": "PR13-B02.4",
+        "title": "房间策略和恢复",
+        "source_instruction": "核对有效房间policy及快照/PVP/旧版本恢复兼容",
+        "specification_state": "ReviewReady",
+        "execution_state": "NotRevalidated",
+        "accepted_by": null,
+        "requires_before_integration": [
+          "PR13-B02.3"
+        ],
+        "inputs": "effective room policy/config hash及旧快照fixture",
+        "implementation_steps": "创建/PVE/PVP工作副本/持久化/恢复保策略；缺旧字段按已批准默认解释",
+        "test_cases": [
+          {
+            "id": "PR13-B02.4-T01",
+            "setup_and_injection": "当前room热更源表",
+            "expected": "policy不静默换",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.4-T02",
+            "setup_and_injection": "PVP结束",
+            "expected": "恢复PVE原state",
+            "executed": false,
+            "evidence": null
+          },
+          {
+            "id": "PR13-B02.4-T03",
+            "setup_and_injection": "旧snapshot缺策略/无效枚举",
+            "expected": "兼容默认或明确拒绝不半恢复",
+            "executed": false,
+            "evidence": null
+          }
+        ],
+        "pass_criteria": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+        "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES"
+        ],
+        "command_refs": [
+          "C-BUILD",
+          "C-DOMAIN",
+          "C-SERVER",
+          "C-GODOT-NUM",
+          "C-PROTO"
+        ],
+        "stage_refs": [
+          "S0",
+          "S1",
+          "S2",
+          "S3",
+          "S4",
+          "S5",
+          "S6"
+        ],
+        "runtime_stage": "NotApplicableWithReason",
+        "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+        "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-B02.4/",
+        "deliverables": [
+          "report.json（逐条预期/实际/判定）",
+          "cases.jsonl（用例与业务关联）",
+          "commands.json（命令/工具版本/退出码/跳过）",
+          "manifest.json（相对路径/大小/SHA256）"
+        ],
+        "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+        "gate_refs": [
+          "G1",
+          "G2",
+          "G5"
+        ],
+        "historical_execution_state": "Queued"
+      }
+    ],
+    "related_evidence_tasks": []
+  }
+}

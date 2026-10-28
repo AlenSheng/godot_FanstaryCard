@@ -1,0 +1,84 @@
+{
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "task_ids": [
+    "PR13-B02.1",
+    "PR13-B02.2",
+    "PR13-B02.3",
+    "PR13-B02.4"
+  ],
+  "canonical_cases_passed": 12,
+  "canonical_cases_total": 12,
+  "critical_skips": 0,
+  "supporting_suites": {
+    "server.trx": {
+      "total": "291",
+      "executed": "291",
+      "passed": "291",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "domain.trx": {
+      "total": "317",
+      "executed": "317",
+      "passed": "317",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    }
+  },
+  "candidate_state": "ReadyForIndependentAcceptance",
+  "candidate_decision": "NoChangeWithEvidence",
+  "S6": "MAIN Pending",
+  "Accepted_count": 0,
+  "runtime_byte_identical": true,
+  "compared_runtime_files": 2213,
+  "production_changes": 0,
+  "ui_changes": 0,
+  "new_business_changes": 0,
+  "source_main_status": "",
+  "profile_hash": "b285ddd79932748e92438afcd3383672c8831050d013d44574cec513a728a5bc",
+  "config_manifest": "config-manifest.json",
+  "case_evidence": "cases.jsonl",
+  "commands": "commands.json",
+  "manifest": "manifest.json",
+  "remaining_blockers": [
+    "MAIN S6 independent artifact check and rerun"
+  ],
+  "bounded_scope_limitations": [
+    "Protocol tested as real C#/Godot codec and Gateway/Game event fixture, without cloud WS deployment.",
+    "Hot source-table fixture compiled outside source and uses production ReadNumerics via isolated reflection seam; existing room is immutable.",
+    "Old/invalid PG snapshot fixtures are local owned data; no production DB recovery performed."
+  ],
+  "reproduce_key_cases": [
+    "source /workspace/relicround-env/activate.sh",
+    "python3 /workspace/pr13-takeover/b02-acceptance-f812/harness/negative-probes.py",
+    "python3 /workspace/pr13-takeover/b02-acceptance-f812/harness/run_exact.py"
+  ],
+  "case_reports": [
+    "PR13-B02.1/report.json",
+    "PR13-B02.2/report.json",
+    "PR13-B02.3/report.json",
+    "PR13-B02.4/report.json"
+  ]
+}

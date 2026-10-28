@@ -1,0 +1,32 @@
+{
+  "exit_code": 0,
+  "execution_host": "Tencent cloud",
+  "hashes": {
+    "tools/pr13_resource_policy.py": "411f17c3b225012e6f40e1f473fdd5f05ec93081f680db63fc13b1299aab5b63",
+    "tools/gameplay_load_test.py": "d96e4565b98733af51eb1d2aa52616a7561a30bc52f7a4c6dd6d803aa2ac2400",
+    "tools/cloud/pr13/isolated_runtime.py": "67ed3d9e1ed764f64cfc5fac1dc0243bbc2b179b8073c145291884a9328b9d78",
+    "tools/cloud/pr13/test_isolated_runtime.py": "11bba38b05a779dab79b23da1aef44e49e9d14bf08c5bd18dbdac136c7ef0c6b",
+    "tools/tests/test_pr13_resource_policy.py": "7a5400ac91df0434ef08fd1ce74ec4ac3097dfdc4806f457bb97bf25ca1c1cca",
+    "tools/tests/test_gameplay_load_sampling_contract.py": "a27b6a14bd30b52f50095f8beffe5d5613fbab05090cc6140f8a093790c50e09"
+  },
+  "stderr": "....................................................................\n----------------------------------------------------------------------\nRan 68 tests in 7.344s\n\nOK\n",
+  "setup_failures_retained": true,
+  "dependency": {
+    "name": "psutil",
+    "version": "7.0.0",
+    "wheel": "psutil-7.0.0-cp36-abi3-manylinux_2_12_x86_64.manylinux2010_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+    "sha256": "4b1388a4f6875d7e2aff5c4ca1cc16c545ed41dd8bb596cefea80111db353a34",
+    "scope": "Isolated task directory only"
+  },
+  "fixture_repair": "Existing valid capacity fixtures now explicitly supply valid generator observations and deterministic launch memory. Existing verdict expectations retained; three missing/boundary/absolute-override regression cases added.",
+  "passed": 68,
+  "failed": 0,
+  "accepted_scope": "Resource-policy and coordinator contract regressions only; actual capacity remains separate",
+  "private_full_receipt": {
+    "path": "outputs/pr13-tencent-20261009/final-memory-policy-checks.json",
+    "bytes": 1680,
+    "sha256": "617415acd59624506321ad1858f1692e30da4105c625237864c78b526d5e1ef3"
+  },
+  "whole_scope_accepted": false,
+  "temporary_database_override_requires_owned_bypass": true
+}

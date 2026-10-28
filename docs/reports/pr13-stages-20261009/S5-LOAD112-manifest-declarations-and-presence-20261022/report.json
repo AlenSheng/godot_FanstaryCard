@@ -1,0 +1,382 @@
+{
+  "kind": "ManifestDeclarationDiscoveryAndObservedDigestPresence_NoCausalAcceptance",
+  "generated_at": "2026-10-22T23:40:11.461329+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "metadata_discovery": {
+    "kind": "DeclaredManifestAndLineageDiscovery_NotValidatedCausality",
+    "ok": true,
+    "candidate_paths": 21132,
+    "distinct_content_objects": 11520,
+    "counts": {
+      "declared_members": 720714,
+      "metadata_objects_parsed": 11517,
+      "objects_attempted": 11520,
+      "explicit_lineage": 1031,
+      "oversized_metadata_deferred": 3,
+      "metadata_objects_not_parsed": 3
+    },
+    "elapsed_seconds": 564.2339999999967,
+    "database_bytes": 282841088,
+    "membership_and_parent_relations_are_declarations_not_acceptance": true,
+    "next_required": "Resolve exact locators and hash identities, classify syntax/private source profiles, and bind actual producer execution rather than infer causality from equal digests",
+    "source_bytes_modified": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "three_large_reports_streamed": {
+    "kind": "ThreeOversizedPrivateReports_StreamingMetadataDeclarationReview",
+    "ok": true,
+    "reports": [
+      {
+        "source": {
+          "root": "private-G",
+          "path": "capacity-command-state100-20261019-r1-originals/actual-capacity-command-state100-r1/coordinator-output/20261019-041430-2b7325/report.json"
+        },
+        "bytes": 128911557,
+        "sha256": "8aba0923bdc04954b5f6bdb1ac258b7d465751781bbf01823490a019537fff56",
+        "format": "WholeStrictJSONStreamParsed",
+        "parser_counts": {
+          "events": 5879140,
+          "maps": 200547,
+          "members": 100,
+          "explicit_lineage": 0
+        },
+        "declared_counts": {
+          "members": 100,
+          "lineage": 0
+        },
+        "source_fd_and_path_stable": true,
+        "relations_are_only_declared_not_causal_acceptance": true
+      },
+      {
+        "source": {
+          "root": "private-G",
+          "path": "capacity-current100-20261018-r1-originals/actual-capacity100-r1/coordinator-output/20261018-162106-71ee15/report.json"
+        },
+        "bytes": 84727651,
+        "sha256": "9e7d9ef14495a2f828fc62053798329050311cfec0d07b85af897cb4d818fbb4",
+        "format": "WholeStrictJSONStreamParsed",
+        "parser_counts": {
+          "events": 3905499,
+          "maps": 136413,
+          "members": 0,
+          "explicit_lineage": 0
+        },
+        "declared_counts": {
+          "members": 0,
+          "lineage": 0
+        },
+        "source_fd_and_path_stable": true,
+        "relations_are_only_declared_not_causal_acceptance": true
+      },
+      {
+        "source": {
+          "root": "private-G",
+          "path": "capacity-current100-debug-20261018-r2-originals/actual-capacity100-debug-r2/coordinator-output/20261018-203104-ce2557/report.json"
+        },
+        "bytes": 122684080,
+        "sha256": "a5afc5f9c649d9d3e865b1e79d1745e090de0aa3932d9fa5916e12d4b3c516d0",
+        "format": "WholeStrictJSONStreamParsed",
+        "parser_counts": {
+          "events": 5608844,
+          "maps": 194689,
+          "members": 100,
+          "explicit_lineage": 0
+        },
+        "declared_counts": {
+          "members": 100,
+          "lineage": 0
+        },
+        "source_fd_and_path_stable": true,
+        "relations_are_only_declared_not_causal_acceptance": true
+      }
+    ],
+    "counts": {
+      "members": 200,
+      "lineage": 0
+    },
+    "elapsed_seconds": 37.546999999991385,
+    "original64MiB_public_export_limit_unchanged": true,
+    "private_reports_not_made_public_or_credential_free": true,
+    "raw_reports_modified": false,
+    "whole_report_memory_load_avoided": true,
+    "declared_relations_not_validated_causality": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "total_declared_members": 720914,
+  "explicit_parent_declarations": 1031,
+  "unique_explicit_parent_digest_size_pairs": 6,
+  "digest_presence_snapshot": {
+    "kind": "DeclaredDigestPresenceSnapshotOnly_NotCausalProof",
+    "ok": true,
+    "snapshot": {
+      "manifest_objects_at_snapshot": 11520,
+      "declared_members_at_snapshot": 720714,
+      "declared_unique_digest_size_pairs": 94969
+    },
+    "counts": {
+      "pairs_examined": 94969,
+      "observed_pairs": 87675,
+      "unobserved_pairs": 7294
+    },
+    "elapsed_seconds": 86.6710000000021,
+    "observed_content_is_not_a_causal_derived_from_relationship": true,
+    "unobserved_content_is_not_automatically_deleted_or_corrupt": true,
+    "full_live_archive_progress_not_in_earlier_member_index": true,
+    "source_files_modified": false,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "streaming_parser": {
+    "name": "ijson",
+    "version": "3.6.0",
+    "source": "https://pypi.org/project/ijson/3.6.0/",
+    "installation_scope": "Task-owned isolated output directory; system Python unchanged",
+    "qualified_controls": 9,
+    "first_invalid-control_exception-catch_failure_preserved": true
+  },
+  "interpretation_limits": [
+    "Membership descriptors and derived_from fields are declarations until exact locators and producer execution are verified",
+    "Repeated declarations are not independent relationships",
+    "Content equality is not itself causal derivation",
+    "7294 unobserved digest/size pairs are not labelled missing/corrupt while later archive indexes are not yet complete",
+    "The digest-presence snapshot predates the200 descriptors extracted from large reports",
+    "Private raw reports remain nonpublic; public64MiB and strict original rules unchanged"
+  ],
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-manifest-discovery-presence-20261022-r1-originals",
+    "items": [
+      {
+        "path": "discovery/result.original.json",
+        "bytes": 837,
+        "sha256": "7b939347ee95c08fd575b7f2ea78b1404ef07179a3d1f6753080c41ddd201e78"
+      },
+      {
+        "path": "discovery/started.original.json",
+        "bytes": 451,
+        "sha256": "c4220add1d44ed8748e8b3d8478bcb38ec363d6df76c5a25c72e3afce6aa69f2"
+      },
+      {
+        "path": "discovery/object-aliases.private.original.jsonl",
+        "bytes": 3898585,
+        "sha256": "78011b2e28e17b5f2ab40d6edd9b19d21f65c32aec7c58896eb57251f85e3c0b"
+      },
+      {
+        "path": "discovery/declared-lineage.private.sqlite3",
+        "bytes": 339169280,
+        "sha256": "d9c6ae1185a4ef3255303e8f30c9958959d88e2d51dadb65dd9ff30b9b4bda72"
+      },
+      {
+        "path": "discovery/executed-discovery-source.original.py",
+        "bytes": 9792,
+        "sha256": "dba1d8db5cc67a1622142bf0c2ab21c5fa384217836dfd11a2539ae21f791c7e"
+      },
+      {
+        "path": "presence/result.original.json",
+        "bytes": 703,
+        "sha256": "16c0ce63265feb46bbeb60d39a561e721317be57bbb97f1202f583b014922d7a"
+      },
+      {
+        "path": "presence/started.original.json",
+        "bytes": 316,
+        "sha256": "63a30db7e1f0345229748032d590220d3304fa1a0a4fadcf84356f9b0ba784ff"
+      },
+      {
+        "path": "presence/observed-digest-presence.private.original.jsonl",
+        "bytes": 51845952,
+        "sha256": "8f8877ab9fc7812addaa3c73850fb86145ec5893af4721d3d935b9eb810eae8e"
+      },
+      {
+        "path": "presence/executed-resolver-source.original.py",
+        "bytes": 4533,
+        "sha256": "bcd825bce8d2c8f5c9f25ae43be9b53ae4a2036f924a93881748e68f5a747f39"
+      },
+      {
+        "path": "large/result.original.json",
+        "bytes": 2715,
+        "sha256": "8e05963f40529784547c4eb60b01be129e5655c545b8204b931e8282c5749371"
+      },
+      {
+        "path": "large/executed-large-review-source.original.py",
+        "bytes": 5310,
+        "sha256": "8853351b00e4cc40311b67d19db48f05726a094aefc1a4fc513f40e3b5e1e6ef"
+      },
+      {
+        "path": "large/executed-stream-extractor.original.py",
+        "bytes": 3207,
+        "sha256": "832ee137b592f065adf8cfadb26effdb3fe658565ad4abb3922892cef0f13879"
+      },
+      {
+        "path": "large/failed-controls-R1-exception-catch.original.json",
+        "bytes": 213,
+        "sha256": "bdbf69a024d3a1f7bffc6f139c89ec2b8ad1e4aaf2c3a587e1e535de07bd3a7c"
+      },
+      {
+        "path": "large/failed-controls-R1-source.original.py",
+        "bytes": 3054,
+        "sha256": "94c275e8bffb0a6630eeb8f3cef094f3cd56da8d045775b89b402a16db738eaa"
+      },
+      {
+        "path": "large/progress.snapshot.json",
+        "bytes": 253,
+        "sha256": "c5f2d8cc68a514b6e1fea521e269f9f842fc6681aecd6bbc932793b332c42e64"
+      },
+      {
+        "path": "large/started.original.json",
+        "bytes": 277,
+        "sha256": "0f727c86fe74f6a2d04b015f1cb2f41328cdbcc9ea5298632f1c454df6110bd3"
+      },
+      {
+        "path": "large/streamed-declared-lineage.private.sqlite3",
+        "bytes": 94208,
+        "sha256": "dc13174e43cbffe4eeb5bec7133f216ec295e572a2fb55842b59771b5dea073f"
+      },
+      {
+        "path": "stream-controls/controls-qualified.original.json",
+        "bytes": 1270,
+        "sha256": "ea361959c80ac1b6de48698936e1508c17168beb043ab39f0c04100f6c9f83b4"
+      },
+      {
+        "path": "stream-controls/executed-controls-source.original.py",
+        "bytes": 3128,
+        "sha256": "d01c59d1e3a7f1ec1d05a8b5d7877f29007f22332bb24d7f41d2b2726328e4a1"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/__init__.py",
+        "bytes": 1902,
+        "sha256": "161650e42af10ee56d46249d3a607ef4e5ef29d7f6458a40139587ce667c5ad3"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/adapters.py",
+        "bytes": 1746,
+        "sha256": "eaf648668963d4b2b26276f876e8e1c5aa51750c0e44c4e86a0ae8b5f2a07cf6"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/__init__.py",
+        "bytes": 1821,
+        "sha256": "d787ccaf7c46d4d14cc6ff5c1fc65ec45aab5f967b76ba9e4d43c0fd5edb91d9"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/_yajl2.cp310-win_amd64.pyd",
+        "bytes": 54272,
+        "sha256": "b10bcf8bd1c0221a55026ccf00a5d9e564aacc0ea2532e4a7ee1df357f6441ea"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/_yajl2_ctypes_common.py",
+        "bytes": 2852,
+        "sha256": "e8c5aab356d5ad0f37e068feefdc3dbee0b3f4ccb39601bdd8da59de9d38acf2"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/python.py",
+        "bytes": 10182,
+        "sha256": "11ed9bd15d6fed8d8fc4800eaf5776d76205dc73b6d437a132fb7f39a8c24198"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/yajl.py",
+        "bytes": 2114,
+        "sha256": "2fbea4f0543d17644ea5a03a6c78c4442c2274667b68f9995174a97da929d2df"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/yajl2.py",
+        "bytes": 1849,
+        "sha256": "fb30440e371cfe4953a8e98c44fbb44f092ff4ba31e17a507f51113022c51277"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/yajl2_c.py",
+        "bytes": 2350,
+        "sha256": "1d6a9f88e24176fe228fd7cf5f462bbb408420034a8040e2dd937e8e9ebc3246"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/backends/yajl2_cffi.py",
+        "bytes": 6657,
+        "sha256": "3b272b2e370f2bd35e90eed4c8a69b430f5aa219d7a8d214b7867953f9520408"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/benchmark.py",
+        "bytes": 9133,
+        "sha256": "3f00bd3b384a9b5fc3e643fbe0541c19e74c47058a3975aacd9c29684b7108b0"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/common.py",
+        "bytes": 16823,
+        "sha256": "b5ac45c0a20c7b19ee0d8b86d720c07e4a0d05980c4c8e1180dbb92dd86f8f94"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/compat.py",
+        "bytes": 1259,
+        "sha256": "7bc32b403e3f176634b111e2c548d6d0e2795c8a4bb8d2a1a93428815cf714e6"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/dump.py",
+        "bytes": 1921,
+        "sha256": "eebe35f683ccf46a17adf4338ff32887edbeb469d2570984880ecb36812ad3f1"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/utils.py",
+        "bytes": 2205,
+        "sha256": "aa8655972f8427ec1be0c00ed549b60c13c21cd813b7b2baaa1ae15001397ded"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/utils35.py",
+        "bytes": 2962,
+        "sha256": "bb149cc1d4e6af19921dcd94c588185c178e2a404733ffea3515b8cee1abfdd9"
+      },
+      {
+        "path": "isolated-stream-parser/ijson/version.py",
+        "bytes": 23,
+        "sha256": "5e773afdf2018479b24662a816ed805fae285e07e1ccd0aff8a6dabfc9f0a587"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/INSTALLER",
+        "bytes": 4,
+        "sha256": "ceebae7b8927a3227e5303cf5e0f1f7b34bb542ad7250ac03fbcde36ec2f1508"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/licenses/LICENSE.txt",
+        "bytes": 2310,
+        "sha256": "cb8ba2b01e4f031cc25572d83aa4fca399c92f83f73aaa3627d381a7e9d7adca"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/METADATA",
+        "bytes": 24375,
+        "sha256": "9add8d2d8780d26ac070fdf3965f57e0ecf99a7aae91a98c88dc17355e10d0ae"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/RECORD",
+        "bytes": 2713,
+        "sha256": "c71266b27af94fe42e6d1c1a63cf185b069c86ecb82a9dbc5ef33b6f73466963"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/REQUESTED",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/top_level.txt",
+        "bytes": 6,
+        "sha256": "608c3328e729de4464ad7bae793f58de9854d3739d9e8bf176c267a7906b4a4a"
+      },
+      {
+        "path": "isolated-stream-parser/ijson-3.6.0.dist-info/WHEEL",
+        "bytes": 101,
+        "sha256": "6a325e0caffc116d685650873e4bd5513c03efd9e65f5a9c75c04b606505c8b9"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 6177,
+        "sha256": "ece3203dcdeab44f0c7f0b19c3cc34dfccee313ab3be5862e6bf028936aaf45f"
+      }
+    ]
+  },
+  "whole_corpus_parentgraph_accepted": false,
+  "source_payloads_or_metadata_originals_modified": false,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

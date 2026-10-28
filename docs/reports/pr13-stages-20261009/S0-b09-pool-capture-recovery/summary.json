@@ -1,0 +1,42 @@
+{
+  "stage": "S0",
+  "task_id": "PR13-B09.2",
+  "state": "EvidenceCaptureFixPrepared",
+  "original_render_source_sha": "b40cb46f0540741059c301bd02e14b1c2def775d",
+  "original_segment": "Guardian-8-T02-zh-CN",
+  "native_observation_rows": 81,
+  "native_PNGs": 9,
+  "actual_command_wire_empty_rows": 81,
+  "actual_command_payload_empty_rows": 81,
+  "independent_verification_passed": false,
+  "native_ok_is_insufficient_for_acceptance": true,
+  "original_G_archive": {
+    "bytes": 316798,
+    "sha256": "7a48026b93af431c19f3f3fe44c15394f9d577a5330e3690dfa8ebfbc0f7ab9d",
+    "members": 19,
+    "manifest_sha256": "4bfbd01c8c754369b5dfb49a4948d257573a051267e50ee03cb934efa3086ee9"
+  },
+  "remediation": "Freeze original outgoing command payload and encoded bytes before applying the authority snapshot and refreshing UI; require both nonempty. Execute a new named cloud attempt and preserve the first attempt.",
+  "volatile_directory_loss": {
+    "cloud_reboot_claimed": false,
+    "original_full_render_raw_missing": true,
+    "B08_completed_native_units": 88,
+    "B08_G_verified_units": 87,
+    "B08_G_verified_encounters": 174000,
+    "B08_missing_raw_unit": "Mage-E1-Water-L5-B0",
+    "B08_recovery_pending": true
+  },
+  "persistent_output_policy": "Bounded owned persistent output; direct G stream; verify raw bytes, independent command fields and PNGs before cleanup.",
+  "required_matrix_unchanged": {
+    "segments": 135,
+    "rows": 14580,
+    "PNGs": 1215
+  },
+  "canonical_render_accepted": false,
+  "formal_experiment_accepted": false,
+  "LIVE_accepted": false,
+  "MAIN_accepted": false,
+  "acceptance_states_unchanged": true,
+  "human_experience_in_scope": false,
+  "capacity_failures_deferred": true
+}

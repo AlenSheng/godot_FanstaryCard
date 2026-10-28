@@ -1,0 +1,72 @@
+{
+  "ok": true,
+  "production_source_sha": "e32f756b52c7a9e6f46779acc0c3eabfa23ac081",
+  "native_source_cache_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "MAIN_accepted": false,
+  "exit_code": 0,
+  "oom_killed": false,
+  "inner": {
+    "ok": true,
+    "MAIN_accepted": false,
+    "production_source_sha": "e32f756b52c7a9e6f46779acc0c3eabfa23ac081",
+    "native_exit_code": 0,
+    "native_rows_passed": 3,
+    "expected_TLS_errors": [
+      "ERROR: TLS handshake error: -9984"
+    ],
+    "actual_player_id": "01a12deb-6091-7f78-9a13-126916e1b7db",
+    "actual_profile_version": 1,
+    "all_TLS_body_framing_assertions_passed": true,
+    "untrusted_TLS_never_reached_backend": true,
+    "frozen_executed_client_bytes_unchanged": true,
+    "final_PG_postconditions_still_required": true,
+    "phases": [
+      {
+        "name": "trusted-ca",
+        "exit_code": 0
+      },
+      {
+        "name": "trusted-csr",
+        "exit_code": 0
+      },
+      {
+        "name": "trusted-leaf",
+        "exit_code": 0
+      },
+      {
+        "name": "untrusted-cert",
+        "exit_code": 0
+      },
+      {
+        "name": "restore",
+        "exit_code": 0
+      },
+      {
+        "name": "build",
+        "exit_code": 0
+      },
+      {
+        "name": "godot-import",
+        "exit_code": 0
+      }
+    ],
+    "owned_backend_stopped": true
+  },
+  "original_database_postconditions": {
+    "player_id": "01a12deb-6091-7f78-9a13-126916e1b7db",
+    "version": 1,
+    "gold": 0,
+    "potions": 0,
+    "purchase_rows": 0,
+    "economy_ledger_rows": 0,
+    "session_rows": 1
+  },
+  "target_POSTGRES_profiles_verified": 3,
+  "owned_containers_removed": true,
+  "cleanup": {
+    "pr13-cap-real-pg-tls-framing-r2-20261012": true,
+    "pr13-cap-real-pg-tls-framing-r2-20261012-pg": true
+  },
+  "frozen_source_package_and_client_bytes_unchanged": true,
+  "all_original_outputs_retained_pending_G_backup": true
+}

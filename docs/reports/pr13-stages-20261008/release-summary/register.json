@@ -1,0 +1,5448 @@
+{
+  "schema_version": 1,
+  "kind": "runtime_execution_register",
+  "generated_at": 1791451762.5079782,
+  "integration_source_sha": "8fd34873a964f2def801a619090d2da33ade6bd4",
+  "plan_sha256": "24988217f35979fb3c028c2a535a931fe692045ed38bb04d4321e7a91d02332b",
+  "release_base": "28c6c7e7d3898e4d2abd186f53361477ba380330",
+  "counts": {
+    "packages": 33,
+    "tasks": 132,
+    "cases": 396,
+    "task_states": {
+      "ReadyForAcceptance": 11,
+      "Partial": 37,
+      "Queued": 82,
+      "Failed": 1,
+      "Blocked": 1
+    },
+    "case_states": {
+      "Passed": 37,
+      "NotExecuted": 359
+    }
+  },
+  "all_accepted": false,
+  "user_experience_override": "机器人模拟补充体验，真人验收仍待补",
+  "delivery_policy": {
+    "schema_version": 1,
+    "decision_date": "2026-10-08",
+    "authority": "Direct human instruction in this session",
+    "user_instruction": "不需要写入草稿，把要写草稿的都在本地做一次总结直接合入传到远端release",
+    "destination": "origin/release",
+    "merge_release": true,
+    "draft_pr_updates": false,
+    "local_summary_required": true,
+    "supersedes": [
+      "The delivery-only merge_release=false field in the immutable S0 preregistration",
+      "Draft retention and publication decisions in the historical PR13 handbook"
+    ],
+    "acceptance_rule": "Merge authorization does not imply runtime acceptance. Retain concrete current results, failures, missing cases, capacity gaps and pending human acceptance.",
+    "execution_profiles": "PR13_LOCAL_PROFILES_20261008.json remains the immutable source of budgets, targets, stop conditions and default-off candidate policy.",
+    "human_experience_decision": "机器人模拟补充体验，真人验收仍待补",
+    "deleted_history_decision": "已删除，如果文件缺失则重新测试",
+    "production_deployment": false,
+    "remaining_work": "Continue the original S0-S6 implementation and staged verification; publish local summaries directly to release without inventing acceptance."
+  },
+  "production_runtime": null,
+  "session_closeout": null,
+  "tasks": [
+    {
+      "task_id": "LOAD-01.1",
+      "title": "输入schema",
+      "package_id": "LOAD-01",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1"
+      ],
+      "dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-01.1-T01",
+        "LOAD-01.1-T02",
+        "LOAD-01.1-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "所有负例有分类，采样函数不异常退出，非法值不变成0延迟或成功。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "title": "唯一进程归属",
+      "package_id": "LOAD-01",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1"
+      ],
+      "dependencies": [
+        "LOAD-01.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-01.2-T01",
+        "LOAD-01.2-T02",
+        "LOAD-01.2-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "所有聚合先验归属，同一身份最多一个活跃状态，无跨run污染。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "title": "拆分负载人数",
+      "package_id": "LOAD-01",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1"
+      ],
+      "dependencies": [
+        "LOAD-01.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-01.3-T01",
+        "LOAD-01.3-T02",
+        "LOAD-01.3-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "人数列各有定义和截止点，客户端active明确为存活且新鲜且在线且在房。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "title": "真实进程反例",
+      "package_id": "LOAD-01",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1"
+      ],
+      "dependencies": [
+        "LOAD-01.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-01.4-T01",
+        "LOAD-01.4-T02",
+        "LOAD-01.4-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "真实子进程全被回收，反例不靠仅构造dict替代进程行为。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "title": "多维结果模型",
+      "package_id": "LOAD-02",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 1,
+        "NotExecuted": 2
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-01.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-02.1-T01",
+        "LOAD-02.1-T02",
+        "LOAD-02.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-02.1-T02",
+        "LOAD-02.1-T03"
+      ],
+      "pass_criteria": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+      "next_action": "独立生成六维判定，保存首个和全部触发；exit0只由适用合同全满足推出",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "title": "STOP前后边界",
+      "package_id": "LOAD-02",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-02.1",
+        "LOAD-06.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-02.2-T01",
+        "LOAD-02.2-T02",
+        "LOAD-02.2-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "每cycle一个终态，取消不抹去先前失败，未知资产写入不猜成功/失败。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "title": "有界清理和应急报告",
+      "package_id": "LOAD-02",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-02.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-02.3-T01",
+        "LOAD-02.3-T02",
+        "LOAD-02.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-02.3-T01",
+        "LOAD-02.3-T02",
+        "LOAD-02.3-T03"
+      ],
+      "pass_criteria": "进程清理与业务清理分列，所有强退和报告失败可见，非本轮进程不被操作。",
+      "next_action": "排队取消/结算保留/关闭连接/回收进程分步；最终报告写失败产出独立应急摘要",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "title": "退出码兼容",
+      "package_id": "LOAD-02",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 2,
+        "NotExecuted": 1
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-02.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-02.4-T01",
+        "LOAD-02.4-T02",
+        "LOAD-02.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-02.4-T02"
+      ],
+      "pass_criteria": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+      "next_action": "固定0/1/2/3/130及preparation-only语义，调用者读取六维结果而非只读0",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "title": "事件水位",
+      "package_id": "LOAD-03",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-01.2",
+        "LOAD-06.4"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-03.1-T01",
+        "LOAD-03.1-T02",
+        "LOAD-03.1-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "JSONL原样本与汇总逐事件可对账；缺失不能因下次快照到达静默消失。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "title": "生命周期阶段",
+      "package_id": "LOAD-03",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-03.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-03.2-T01",
+        "LOAD-03.2-T02",
+        "LOAD-03.2-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "当前阶段与历史auth-excluded列不能互相替代；迟到回包仍用发起阶段。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-03.3",
+      "title": "请求完整分母",
+      "package_id": "LOAD-03",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-03.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-03.3-T01",
+        "LOAD-03.3-T02",
+        "LOAD-03.3-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "started=各互斥终态+pending；all_attempt与valid_latency可独立重算。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "title": "分布与错误率",
+      "package_id": "LOAD-03",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-03.3",
+        "LOAD-06.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-03.4-T01",
+        "LOAD-03.4-T02",
+        "LOAD-03.4-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "三截止点和全程指标可重算，末窗零错误不取代全场；算法版本明确。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-04.1",
+      "title": "当前匹配状态机",
+      "package_id": "LOAD-04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-04.1-T01",
+        "LOAD-04.1-T02",
+        "LOAD-04.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-04.1-T01",
+        "LOAD-04.1-T02",
+        "LOAD-04.1-T03"
+      ],
+      "pass_criteria": "转移表每条有事件来源与关联条件，非法转移拒绝且记录原因。",
+      "next_action": "定义Queued至RoomStarted及取消/超时终态，权威ticket校验后才确认当前match",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-04.2",
+      "title": "有界ready发送",
+      "package_id": "LOAD-04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-04.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-04.2-T01",
+        "LOAD-04.2-T02",
+        "LOAD-04.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-04.2-T01",
+        "LOAD-04.2-T02",
+        "LOAD-04.2-T03"
+      ],
+      "pass_criteria": "无无限重试、跨match确认或靠延长服务端15秒规则通过。",
+      "next_action": "send=false不认成功；次数/截止双界；accepted后迟到required不回退",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-04.3",
+      "title": "缺通知/started恢复",
+      "package_id": "LOAD-04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-04.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-04.3-T01",
+        "LOAD-04.3-T02",
+        "LOAD-04.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-04.3-T01",
+        "LOAD-04.3-T02",
+        "LOAD-04.3-T03"
+      ],
+      "pass_criteria": "不能无限等通知，room快照只应用当前匹配；每种超时可归因。",
+      "next_action": "通知丢失也启动有界权威查询；分别测queue/ready/start等待，不清全局WS游标",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-04.4",
+      "title": "ready全矩阵",
+      "package_id": "LOAD-04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-04.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-04.4-T01",
+        "LOAD-04.4-T02",
+        "LOAD-04.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-04.4-T01",
+        "LOAD-04.4-T02",
+        "LOAD-04.4-T03"
+      ],
+      "pass_criteria": "每种反例先复现或证明当前正确，再在集成SHA运行；同账号三局第二次匹配不污染。",
+      "next_action": "组合重复/乱序/丢失/send失败/断连/STOP/旧局事件；记录预期终态与票据后置状态",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-05.1",
+      "title": "服务端ack完成依据",
+      "package_id": "LOAD-05",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-04.1",
+        "LOAD-02.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-05.1-T01",
+        "LOAD-05.1-T02",
+        "LOAD-05.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-05.1-T01",
+        "LOAD-05.1-T02",
+        "LOAD-05.1-T03"
+      ],
+      "pass_criteria": "completed具有唯一ack证据，清空UI不是成功凭据。",
+      "next_action": "返回成功/拒绝/忙/过期会话/结果未知类型，只有同match真实ack成功才计completed",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-05.2",
+      "title": "跨局状态隔离",
+      "package_id": "LOAD-05",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-05.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-05.2-T01",
+        "LOAD-05.2-T02",
+        "LOAD-05.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-05.2-T01",
+        "LOAD-05.2-T02",
+        "LOAD-05.2-T03"
+      ],
+      "pass_criteria": "每局资源和回调隔离；新局不被旧事件清空，状态清理表完整。",
+      "next_action": "成功清局部ready/ticket/选牌/pending/poll；迟到HTTP/WS核验发起epoch，失败原状态可恢复",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-05.3",
+      "title": "各await取消",
+      "package_id": "LOAD-05",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-05.2",
+        "LOAD-02.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-05.3-T01",
+        "LOAD-05.3-T02",
+        "LOAD-05.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-05.3-T01",
+        "LOAD-05.3-T02",
+        "LOAD-05.3-T03"
+      ],
+      "pass_criteria": "取消有界，未确认资产操作可恢复，不二次领奖不丢失业务状态。",
+      "next_action": "登录/排队/进房/战斗/结算/ack所有等待点有取消；业务回收独立于进程退出",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-05.4",
+      "title": "幂等三局矩阵",
+      "package_id": "LOAD-05",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-05.3",
+        "LOAD-04.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-05.4-T01",
+        "LOAD-05.4-T02",
+        "LOAD-05.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-05.4-T01",
+        "LOAD-05.4-T02",
+        "LOAD-05.4-T03"
+      ],
+      "pass_criteria": "started=completed+failed+cancelled+incomplete，同cycle互斥；资产账本与持久状态一致。",
+      "next_action": "测ack响应丢失/重复receipt/旧snapshot/重启/重连；对每cutoff核对cycle与资产",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-06.1",
+      "title": "HTTP不可变上下文",
+      "package_id": "LOAD-06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-06.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-06.1-T01",
+        "LOAD-06.1-T02",
+        "LOAD-06.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-06.1-T01",
+        "LOAD-06.1-T02",
+        "LOAD-06.1-T03"
+      ],
+      "pass_criteria": "request与attempt可关联，回调不读取当前stage重贴标签。",
+      "next_action": "冻结origin/session/cycle/phase/trace；记录每attempt、decode、backoff、body、总等待与pending终态",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-06.2",
+      "title": "生命周期/玩法进度",
+      "package_id": "LOAD-06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-06.4",
+        "LOAD-04.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-06.2-T01",
+        "LOAD-06.2-T02",
+        "LOAD-06.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-06.2-T01",
+        "LOAD-06.2-T02",
+        "LOAD-06.2-T03"
+      ],
+      "pass_criteria": "能定位失败cycle的等待阶段；无事件到达掩盖停滞。",
+      "next_action": "分transport_progress与gameplay_progress，记录prepare至ack及命令确认、有效状态变化",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-06.3",
+      "title": "服务端分段",
+      "package_id": "LOAD-06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-06.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-06.3-T01",
+        "LOAD-06.3-T02",
+        "LOAD-06.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-06.3-T01",
+        "LOAD-06.3-T02",
+        "LOAD-06.3-T03"
+      ],
+      "pass_criteria": "至少一个失败cycle可关联实际服务端trace；单位/起止统一且无高基数业务label。",
+      "next_action": "测本机连接获取/执行/锁等待、launch各段、command排队执行发送；无法可靠测量写null",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-06.4",
+      "title": "时间/缺失/脱敏",
+      "package_id": "LOAD-06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-11.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-06.4-T01",
+        "LOAD-06.4-T02",
+        "LOAD-06.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-06.4-T01",
+        "LOAD-06.4-T02",
+        "LOAD-06.4-T03"
+      ],
+      "pass_criteria": "同字段同单位同语义；外部curl和Godot请求分列，敏感值不进入提交。",
+      "next_action": "冻结单位/基数/缺失原因/版本；UTC只关联，不跨机相减伪造DNS/TLS/单向延迟",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-07.1",
+      "title": "有界探测调度",
+      "package_id": "LOAD-07",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "LIVE"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-01.1",
+        "LOAD-03.1",
+        "LOAD-06.4"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-07.1-T01",
+        "LOAD-07.1-T02",
+        "LOAD-07.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-07.1-T01",
+        "LOAD-07.1-T02",
+        "LOAD-07.1-T03"
+      ],
+      "pass_criteria": "无无界future/追赶发压，监控失效不得继续扩组。",
+      "next_action": "分离健康/Prometheus探测，记录schedule/actual/lag，超时future不无界堆积",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-07.2",
+      "title": "实际发压与资源",
+      "package_id": "LOAD-07",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "LIVE"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-07.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-07.2-T01",
+        "LOAD-07.2-T02",
+        "LOAD-07.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-07.2-T01",
+        "LOAD-07.2-T02",
+        "LOAD-07.2-T03"
+      ],
+      "pass_criteria": "生成器瓶颈和服务器指标分列，采样有实际launch时刻和速率。",
+      "next_action": "总/每进程CPU/RSS/可用内存/可得句柄与发包率；不可得值带原因，FPS候选单独profile",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-07.3",
+      "title": "有界JSONL与session隔离",
+      "package_id": "LOAD-07",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 1,
+        "NotExecuted": 2
+      },
+      "profiles": [
+        "OFFLINE",
+        "LIVE"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-07.1",
+        "LOAD-06.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-07.3-T01",
+        "LOAD-07.3-T02",
+        "LOAD-07.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-07.3-T02",
+        "LOAD-07.3-T03"
+      ],
+      "pass_criteria": "内存/文件上限可测，退出尾部flush可对账，不静默丢事件换性能。",
+      "next_action": "批写/flush/轮转记录序号；会话隔离在autoload读取前；原子替换缺口仅用有界新鲜缓存",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-07.4",
+      "title": "发压器故障矩阵",
+      "package_id": "LOAD-07",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "LIVE"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-07.2",
+        "LOAD-07.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "LOAD-07.4-T01",
+        "LOAD-07.4-T02",
+        "LOAD-07.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-07.4-T01",
+        "LOAD-07.4-T02",
+        "LOAD-07.4-T03"
+      ],
+      "pass_criteria": "所有故障有分类和尾部验收；安全人数/时长上限不取消。",
+      "next_action": "注入慢磁盘、坏JSON、单进程hang、信号、STOP与监控失败；记录停止后最终错误",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-08.1",
+      "title": "TLS连接复用边界",
+      "package_id": "LOAD-08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-05.4",
+        "LOAD-06.1",
+        "LOAD-07.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-08.1-T01",
+        "LOAD-08.1-T02",
+        "LOAD-08.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-08.1-T01",
+        "LOAD-08.1-T02",
+        "LOAD-08.1-T03"
+      ],
+      "pass_criteria": "无截断成功、跨origin/session泄漏，复用证据是底层连接行为；旧transport可回滚。",
+      "next_action": "复用顺序连接，重叠请求走兼容fallback；验证完整body而非简单Connected状态",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-08.2",
+      "title": "GET单飞一致性",
+      "package_id": "LOAD-08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-08.2-T01",
+        "LOAD-08.2-T02",
+        "LOAD-08.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-08.2-T01",
+        "LOAD-08.2-T02",
+        "LOAD-08.2-T03"
+      ],
+      "pass_criteria": "请求数下降且状态新鲜无退化；无收益以数据裁决NoChange，不伪造正在处理成功。",
+      "next_action": "合并同一只读请求并共享真实结果；写后新版本隔离旧响应；先量化重复读取",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-08.3",
+      "title": "有界去同步重试",
+      "package_id": "LOAD-08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-08.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-08.3-T01",
+        "LOAD-08.3-T02",
+        "LOAD-08.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-08.3-T01",
+        "LOAD-08.3-T02",
+        "LOAD-08.3-T03"
+      ],
+      "pass_criteria": "用户总等待与attempt放大均报告；候选无确定收益可保留现行重试。",
+      "next_action": "抖动在最小等待之后、受总deadline/取消约束；不重放解码失败/跨会话不确定写入",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-08.4",
+      "title": "结算轻量查询",
+      "package_id": "LOAD-08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-08.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-08.4-T01",
+        "LOAD-08.4-T02",
+        "LOAD-08.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-08.4-T01",
+        "LOAD-08.4-T02",
+        "LOAD-08.4-T03"
+      ],
+      "pass_criteria": "每局字节/SQL/等待改善有三轮配对；无热点证据不新增接口，不绕过资产完成检查。",
+      "next_action": "有ID优先单项，无ID经协议评审最小只读入口；保留旧fallback/鉴权/match/holds边界",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-09.1",
+      "title": "enqueue回放关联",
+      "package_id": "LOAD-09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-11.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-09.1-T01",
+        "LOAD-09.1-T02",
+        "LOAD-09.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-09.1-T01",
+        "LOAD-09.1-T02",
+        "LOAD-09.1-T03"
+      ],
+      "pass_criteria": "实际PostgreSQL复现与回归通过，无重复冻结或错误历史match。",
+      "next_action": "固定回放ticket与其preparation/match关联，与GetTicket一致，保留玩家锁/冲突",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-09.2",
+      "title": "launch与旧路由恢复",
+      "package_id": "LOAD-09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-09.1",
+        "LOAD-04.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-09.2-T01",
+        "LOAD-09.2-T02",
+        "LOAD-09.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-09.2-T01",
+        "LOAD-09.2-T02",
+        "LOAD-09.2-T03"
+      ],
+      "pass_criteria": "DB、room registry、asset hold、客户端终态一致；不无lease增加launch worker。",
+      "next_action": "注入snapshot保存/registry/MarkRunning失败；释放终态玩家路由只删仍指旧room者",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-09.3",
+      "title": "慢连接隔离候选",
+      "package_id": "LOAD-09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-09.2",
+        "LOAD-06.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-09.3-T01",
+        "LOAD-09.3-T02",
+        "LOAD-09.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-09.3-T01",
+        "LOAD-09.3-T02",
+        "LOAD-09.3-T03"
+      ],
+      "pass_criteria": "性能收益配对可解释且无乱序/泄漏；无阻塞热点则NoChangeWithEvidence。",
+      "next_action": "先测队头阻塞；必要时同match内有界投递且每玩家序列仍保序",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-09.4",
+      "title": "实例级热点裁决",
+      "package_id": "LOAD-09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-06.3",
+        "LOAD-07.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-09.4-T01",
+        "LOAD-09.4-T02",
+        "LOAD-09.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-09.4-T01",
+        "LOAD-09.4-T02",
+        "LOAD-09.4-T03"
+      ],
+      "pass_criteria": "所有优化有前后同负载证据和回滚点，schema变化独立审查而非直接生产DDL。",
+      "next_action": "逐热点最小候选，固定SQL计划与资源限额；不凭整机平均加资源",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-10.1",
+      "title": "独立离线/协议套件",
+      "package_id": "LOAD-10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-01.4",
+        "LOAD-02.4",
+        "LOAD-03.4",
+        "LOAD-07.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-10.1-T01",
+        "LOAD-10.1-T02",
+        "LOAD-10.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-10.1-T01",
+        "LOAD-10.1-T02",
+        "LOAD-10.1-T03"
+      ],
+      "pass_criteria": "集成SHA适用测试真实执行，原断言不删除放宽，跳过清单逐项解释。",
+      "next_action": "非实现作者视角重跑统计/真实进程/exit/schema兼容，新增文件纳入CI触发",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "title": "真实同账号三局",
+      "package_id": "LOAD-10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-05.4",
+        "LOAD-09.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-10.2-T01",
+        "LOAD-10.2-T02",
+        "LOAD-10.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-10.2-T01",
+        "LOAD-10.2-T02",
+        "LOAD-10.2-T03"
+      ],
+      "pass_criteria": "每局匹配/settlement/ack可关联且DB资产一次；30局目标缺一正常终态即不能称全通过。",
+      "next_action": "各职业单账号连续至少三局，再10账号各三局；明确正常/兜底/清理完成",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-10.3",
+      "title": "全链路故障用例",
+      "package_id": "LOAD-10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-10.1",
+        "LOAD-10.2",
+        "LOAD-08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-10.3-T01",
+        "LOAD-10.3-T02",
+        "LOAD-10.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-10.3-T01",
+        "LOAD-10.3-T02",
+        "LOAD-10.3-T03"
+      ],
+      "pass_criteria": "故障矩阵逐行有实际值，组合失败不被正常三局掩盖。",
+      "next_action": "逐用例冻结注入点、预期终态、DB/route后置条件，再在集成SHA运行",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "title": "同负载性能与保持",
+      "package_id": "LOAD-10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-10.3",
+        "LOAD-09.3",
+        "LOAD-09.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-10.4-T01",
+        "LOAD-10.4-T02",
+        "LOAD-10.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-10.4-T01",
+        "LOAD-10.4-T02",
+        "LOAD-10.4-T03"
+      ],
+      "pass_criteria": "有界退出与性能/SLO分别判定，默认限流和临时覆盖结果分列，原停止线保留。",
+      "next_action": "单→10→50→100，三轮交错配对，保持期按覆盖率与实际请求率验收",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-11.1",
+      "title": "基线来源冻结",
+      "package_id": "LOAD-11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-11.1-T01",
+        "LOAD-11.1-T02",
+        "LOAD-11.1-T03"
+      ],
+      "missing_cases": [
+        "LOAD-11.1-T01",
+        "LOAD-11.1-T02",
+        "LOAD-11.1-T03"
+      ],
+      "pass_criteria": "baseline可追溯到实际运行内容，缺证据及范围在开工前可见。",
+      "next_action": "分开source checkout、CI checkout、实际运行镜像digest、部署marker、有效配置hash；保存差异",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "package_id": "LOAD-11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-11.2-T01",
+        "LOAD-11.2-T02",
+        "LOAD-11.2-T03"
+      ],
+      "missing_cases": [
+        "LOAD-11.2-T01",
+        "LOAD-11.2-T02",
+        "LOAD-11.2-T03"
+      ],
+      "pass_criteria": "可重算资料来源完整，Git仅脱敏摘要，历史字节不被新报告覆盖。",
+      "next_action": "记录字节hash、种子/flags/硬件/region/selector，私密原始资料只保存在授权artifact",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-11.3",
+      "title": "可重复CI覆盖",
+      "package_id": "LOAD-11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-11.2",
+        "LOAD-10.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-11.3-T01",
+        "LOAD-11.3-T02",
+        "LOAD-11.3-T03"
+      ],
+      "missing_cases": [
+        "LOAD-11.3-T01",
+        "LOAD-11.3-T02",
+        "LOAD-11.3-T03"
+      ],
+      "pass_criteria": "适用关键测试非跳过，报告命令/退出码/版本，CI成功不自动推广到未运行场景。",
+      "next_action": "检查新增文件触发、当前checkoutSHA、真实执行/跳过、日志artifact；非可信PR无生产凭据",
+      "observation": {}
+    },
+    {
+      "task_id": "LOAD-11.4",
+      "title": "MAIN交付与回滚",
+      "package_id": "LOAD-11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B12.4",
+        "PR13-A08.4",
+        "PR13-A09.4",
+        "PR13-A10.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "LOAD-11.4-T01",
+        "LOAD-11.4-T02",
+        "LOAD-11.4-T03"
+      ],
+      "missing_cases": [
+        "LOAD-11.4-T01",
+        "LOAD-11.4-T02",
+        "LOAD-11.4-T03"
+      ],
+      "pass_criteria": "每子项都有有证据裁决，未完清单和默认值真实；代码/配置/数据库回滚分别可执行。",
+      "next_action": "汇总逐项实现/NoChange/Blocked、配置/兼容/风险和演练回滚；保持Draft到人工合并决定",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A01.1",
+      "title": "历史raw取证",
+      "package_id": "PR13-A01",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-03.4",
+        "LOAD-11.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A01.1-T01",
+        "PR13-A01.1-T02",
+        "PR13-A01.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A01.1-T01",
+        "PR13-A01.1-T02",
+        "PR13-A01.1-T03"
+      ],
+      "pass_criteria": "2,084项及早期清单全部有存在/匹配/缺失分类，原始文件不改写。",
+      "next_action": "逐文件核对路径/大小/hash，建立run至代码/镜像/配置关系；缺失原样标注",
+      "observation": {
+        "task_id": "PR13-A01.1",
+        "state": "Partial",
+        "stage": "S1",
+        "reason": "Original files were deleted. Current original-profile 50/100 attempts and owned launch manifests are retained, but capacity targets were not met and old count differences cannot be reconstructed.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
+    },
+    {
+      "task_id": "PR13-A01.2",
+      "title": "统一三截止点",
+      "package_id": "PR13-A01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-A01.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A01.2-T01",
+        "PR13-A01.2-T02",
+        "PR13-A01.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A01.2-T01",
+        "PR13-A01.2-T02",
+        "PR13-A01.2-T03"
+      ],
+      "pass_criteria": "每cutoff的总ack=逐客户端和=各至少k次人数之和；无法关联事件明确缺证据。",
+      "next_action": "独立算运行期、收尾增量、最终累计；ack与cycle完成分开，兜底分层",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "package_id": "PR13-A01",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-A01.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A01.3-T01",
+        "PR13-A01.3-T02",
+        "PR13-A01.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A01.3-T01",
+        "PR13-A01.3-T02",
+        "PR13-A01.3-T03"
+      ],
+      "pass_criteria": "两处总数差异和旧失败表均有可审查映射；未能解释则G3仍Blocked。",
+      "next_action": "输出每client/cycle/event的截止点/定义差异，解释报告差额而不直接改成较大值",
+      "observation": {
+        "task_id": "PR13-A01.3",
+        "state": "Partial",
+        "stage": "S1",
+        "reason": "Original files were deleted. Current original-profile 50/100 attempts and owned launch manifests are retained, but capacity targets were not met and old count differences cannot be reconstructed.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
+    },
+    {
+      "task_id": "PR13-A01.4",
+      "title": "单来源报告生成",
+      "package_id": "PR13-A01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "AUDIT"
+      ],
+      "gates": [
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-A01.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A01.4-T01",
+        "PR13-A01.4-T02",
+        "PR13-A01.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A01.4-T01",
+        "PR13-A01.4-T02",
+        "PR13-A01.4-T03"
+      ],
+      "pass_criteria": "报告数字不能分散手工维护；所有修正引用run/hash/cutoff和算法版本。",
+      "next_action": "正文/分布/总表由同一派生数据生成，旧统计与新口径并存；加入守恒回归",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "title": "负载模型预登记",
+      "package_id": "PR13-A02",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-02.4",
+        "LOAD-07.4"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A02.1-T01",
+        "PR13-A02.1-T02",
+        "PR13-A02.1-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "合同在运行前hash冻结，测后不能根据结果降低目标；目标与观测用同窗口。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "title": "时间覆盖验收函数",
+      "package_id": "PR13-A02",
+      "state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "Passed": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A02.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-python",
+          "scope": "153 tool regression tests; support only, explicit required case coverage is tracked separately.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/python-release-final.private.log"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A02.2-T01",
+        "PR13-A02.2-T02",
+        "PR13-A02.2-T03"
+      ],
+      "missing_cases": [],
+      "pass_criteria": "覆盖率分母含全部声明稳定时长，实际负载下降可见；exit0不推出容量通过。",
+      "next_action": "复核逐用例证据、依赖与当前CI后由MAIN裁决。",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A02.3",
+      "title": "STOP尾部证据",
+      "package_id": "PR13-A02",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A02.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A02.3-T01",
+        "PR13-A02.3-T02",
+        "PR13-A02.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A02.3-T01",
+        "PR13-A02.3-T02",
+        "PR13-A02.3-T03"
+      ],
+      "pass_criteria": "最后一窗之后的事件亦守恒，先前错误不被stop_all成功抹去。",
+      "next_action": "grace结束重读所有最终状态与尾事件，累加最终读取错误和STOP后异常",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A02.4",
+      "title": "服务端后置清理",
+      "package_id": "PR13-A02",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A02.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A02.4-T01",
+        "PR13-A02.4-T02",
+        "PR13-A02.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A02.4-T01",
+        "PR13-A02.4-T02",
+        "PR13-A02.4-T03"
+      ],
+      "pass_criteria": "每测试账号有业务后置报告，无route错误残留和无界冻结；无法验证为Blocked。",
+      "next_action": "grace内查询取消/超时回收和待结算恢复；进程结束与业务资源状态单独签署",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A03.1",
+      "title": "真实入口反例",
+      "package_id": "PR13-A03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-05.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A03.1-T01",
+        "PR13-A03.1-T02",
+        "PR13-A03.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A03.1-T01",
+        "PR13-A03.1-T02",
+        "PR13-A03.1-T03"
+      ],
+      "pass_criteria": "反例先测当前行为并留证；修复只由关联的非空match更新恢复上下文。",
+      "next_action": "第一次NOT_IN_ROOM清room，Bootstrap无receipt，再发同错误，然后M就绪；不直接填恢复变量绕入口",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A03.2",
+      "title": "旧局回调隔离",
+      "package_id": "PR13-A03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A03.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A03.2-T01",
+        "PR13-A03.2-T02",
+        "PR13-A03.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A03.2-T01",
+        "PR13-A03.2-T02",
+        "PR13-A03.2-T03"
+      ],
+      "pass_criteria": "相同session不同cycle也隔离，不能只依赖session_generation。",
+      "next_action": "HTTP/WS/恢复poll异步沿用context，回调重新核对当前局与恢复目标",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A03.3",
+      "title": "ack丢响应恢复",
+      "package_id": "PR13-A03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A03.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A03.3-T01",
+        "PR13-A03.3-T02",
+        "PR13-A03.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A03.3-T01",
+        "PR13-A03.3-T02",
+        "PR13-A03.3-T03"
+      ],
+      "pass_criteria": "unknown不猜成功，恢复后一个cycle只有一个明确终态。",
+      "next_action": "超时后查询receipt/ack事实，重试同一幂等操作；UI显示已提交待核实",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "title": "三局和回归",
+      "package_id": "PR13-A03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A03.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A03.4-T01",
+        "PR13-A03.4-T02",
+        "PR13-A03.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A03.4-T01",
+        "PR13-A03.4-T02",
+        "PR13-A03.4-T03"
+      ],
+      "pass_criteria": "新真实入口反例、既有settlement/play-retry回归和持久资产验证同SHA通过。",
+      "next_action": "结合重复错误、旧回包、ack失败恢复做同账号三局，核对资产与poll清理",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A04.1",
+      "title": "丢required主动恢复",
+      "package_id": "PR13-A04",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "LOAD-04.4",
+        "LOAD-09.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A04.1-T01",
+        "PR13-A04.1-T02",
+        "PR13-A04.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A04.1-T01",
+        "PR13-A04.1-T02",
+        "PR13-A04.1-T03"
+      ],
+      "pass_criteria": "恢复不受ready_required为true前置卡死，权威15秒/bot填充规则不变。",
+      "next_action": "无required也有界查询可ready状态，合法确认；定义NOT_FOUND/expired分类",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A04.2",
+      "title": "ready乱序/send失败",
+      "package_id": "PR13-A04",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A04.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A04.2-T01",
+        "PR13-A04.2-T02",
+        "PR13-A04.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A04.2-T01",
+        "PR13-A04.2-T02",
+        "PR13-A04.2-T03"
+      ],
+      "pass_criteria": "转移日志可重放且每match至多一个启动/ready确认结果。",
+      "next_action": "测send=false/重复accepted/accepted后required/旧match；不把本地send当权威成功",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A04.3",
+      "title": "启动失败与恢复",
+      "package_id": "PR13-A04",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A04.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A04.3-T01",
+        "PR13-A04.3-T02",
+        "PR13-A04.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A04.3-T01",
+        "PR13-A04.3-T02",
+        "PR13-A04.3-T03"
+      ],
+      "pass_criteria": "不遗留不可恢复Starting，启动/扣资源恰好一次；不是只提高客户端timeout。",
+      "next_action": "在三处单独失败再重试并重启，验证room唯一、route、hold和ticket终态",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "title": "多局/STOP组合",
+      "package_id": "PR13-A04",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "gates": [
+        "G2"
+      ],
+      "dependencies": [
+        "PR13-A04.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A04.4-T01",
+        "PR13-A04.4-T02",
+        "PR13-A04.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A04.4-T01",
+        "PR13-A04.4-T02",
+        "PR13-A04.4-T03"
+      ],
+      "pass_criteria": "每例有客户端终态和服务端DB/route证据，测试不能绕过实际事件入口。",
+      "next_action": "合并断线resume、晚通知、第二/第三局和取消，逐账号查后置状态",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "title": "持久化失败恢复",
+      "package_id": "PR13-A05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-05.4",
+        "LOAD-09.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "pass_criteria": "durable settlement、holds、route、玩家下一局权限一致。",
+      "next_action": "提交前/后分别故障，按durable事实决定释放路由和结算可见，不提前成功",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "title": "队友和旧房间隔离",
+      "package_id": "PR13-A05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A05.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A05.2-T01",
+        "PR13-A05.2-T02",
+        "PR13-A05.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A05.2-T01",
+        "PR13-A05.2-T02",
+        "PR13-A05.2-T03"
+      ],
+      "pass_criteria": "A可继续多局、B可完成旧局，旧新room registry与DB关联无污染。",
+      "next_action": "A进入新局后旧房snapshot继续；旧route删除只在仍指旧room时发生",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "title": "幂等/重启资产矩阵",
+      "package_id": "PR13-A05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A05.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A05.3-T01",
+        "PR13-A05.3-T02",
+        "PR13-A05.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A05.3-T01",
+        "PR13-A05.3-T02",
+        "PR13-A05.3-T03"
+      ],
+      "pass_criteria": "账户/物品实例/流水在允许交易转移后守恒，不删测试数据伪造通过。",
+      "next_action": "重复请求/ack/通知与重启覆盖持久资源，比较金额和实例集合",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "title": "ledgerChainMismatches告警归因",
+      "package_id": "PR13-A05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A05.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-pg",
+          "scope": "Unfiltered 302 passed/0 skipped before optional observation-limit change; focused 3 passed/0 skipped on new default client entry. Never mapped to unexecuted canonical cases.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/server-release/server-release.trx",
+            "outputs/pr13-local-20261008/S3/cycle-entry-integration/cycle-entry-integration.trx"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-A05.4-T01",
+        "PR13-A05.4-T02",
+        "PR13-A05.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A05.4-T01",
+        "PR13-A05.4-T02",
+        "PR13-A05.4-T03"
+      ],
+      "pass_criteria": "给独立有证据结论；未知风险不由压测exit0覆盖，不自动修余额或删流水。",
+      "next_action": "只读取证定位受影响账户及前后变化，复算链并判既有/测试相关/未定；修数据另起审查",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A06.1",
+      "title": "响应完整性fixture",
+      "package_id": "PR13-A06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "LOAD-06.1",
+        "LOAD-08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A06.1-T01",
+        "PR13-A06.1-T02",
+        "PR13-A06.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A06.1-T01",
+        "PR13-A06.1-T02",
+        "PR13-A06.1-T03"
+      ],
+      "pass_criteria": "连接状态不独自决定成功；测试记录真实字节/分帧与transport结果。",
+      "next_action": "按协议判断body完整结束；合法close与截断区分，保留大小/超时保护",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A06.2",
+      "title": "连接失效/并发/会话",
+      "package_id": "PR13-A06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A06.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A06.2-T01",
+        "PR13-A06.2-T02",
+        "PR13-A06.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A06.2-T01",
+        "PR13-A06.2-T02",
+        "PR13-A06.2-T03"
+      ],
+      "pass_criteria": "不支持的并发不压到单HTTPClient，TLS失败不退化为不校验。",
+      "next_action": "空闲close下一请求重连、重叠走fallback，generation变化取消并阻旧响应",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A06.3",
+      "title": "请求开始context",
+      "package_id": "PR13-A06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A06.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03"
+      ],
+      "pass_criteria": "每请求可对账，缺上下文标Unknown不冒名贴当前cycle。",
+      "next_action": "发起时冻结run/client/cycle/match/phase/logicalID，attempt及终态沿用",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A06.4",
+      "title": "边界与收益复验",
+      "package_id": "PR13-A06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A06.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A06.4-T01",
+        "PR13-A06.4-T02",
+        "PR13-A06.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A06.4-T01",
+        "PR13-A06.4-T02",
+        "PR13-A06.4-T03"
+      ],
+      "pass_criteria": "正确性零退化，收益与负载同口径；无收益候选可回退现行并有NoChange证据。",
+      "next_action": "先全部边界通过，再三轮固定请求组合A/B；报告成功/失败/pending及实际复用率",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A07.1",
+      "title": "旧数值合同定位",
+      "package_id": "PR13-A07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-10.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A07.1-T01",
+        "PR13-A07.1-T02",
+        "PR13-A07.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A07.1-T01",
+        "PR13-A07.1-T02",
+        "PR13-A07.1-T03"
+      ],
+      "pass_criteria": "每编译错误有当前合同去向，无删测试/禁分析器/改默认迎合断言。",
+      "next_action": "复现旧布尔/余量成员错误，列每断言迁移映射给B02；不恢复废弃参数",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A07.2",
+      "title": "全PG关键矩阵",
+      "package_id": "PR13-A07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A07.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A07.2-T01",
+        "PR13-A07.2-T02",
+        "PR13-A07.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A07.2-T01",
+        "PR13-A07.2-T02",
+        "PR13-A07.2-T03"
+      ],
+      "pass_criteria": "关键用例actual executed且无环境性跳过，PG版本与迁移log齐全。",
+      "next_action": "执行完整适用Server测试；关键settlement/asset/route/restart/replay用例不用单个filter替代",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "package_id": "PR13-A07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A07.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A07.3-T01",
+        "PR13-A07.3-T02",
+        "PR13-A07.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A07.3-T01",
+        "PR13-A07.3-T02",
+        "PR13-A07.3-T03"
+      ],
+      "pass_criteria": "能证明哪些用例在当前SHA运行，不能只用工作流绿色徽标替代清单。",
+      "next_action": "覆盖所有新增测试/helper路径，上传TRX/日志/skip/版本；离线网络隔离",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A07.4",
+      "title": "MAIN复跑适用套件",
+      "package_id": "PR13-A07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A07.3",
+        "PR13-B02.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A07.4-T01",
+        "PR13-A07.4-T02",
+        "PR13-A07.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A07.4-T01",
+        "PR13-A07.4-T02",
+        "PR13-A07.4-T03"
+      ],
+      "pass_criteria": "同一集成SHA全部适用门具真实证据，跳过清单和失败原因逐项可追踪。",
+      "next_action": "MAIN固定SHA重跑关键回归并核对计数/skip/artifact，独立Numerical和load均记录",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "package_id": "PR13-A08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-11.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A08.1-T01",
+        "PR13-A08.1-T02",
+        "PR13-A08.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A08.1-T01",
+        "PR13-A08.1-T02",
+        "PR13-A08.1-T03"
+      ],
+      "pass_criteria": "每历史与新run有完整source/config/image关系，不靠部署marker替代内容证据。",
+      "next_action": "区分cb96d16构建与a33f58f仅checkout；记当前head与历史run来源，无法读取写missing",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A08.2",
+      "title": "任务状态同步",
+      "package_id": "PR13-A08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A08.2-T01",
+        "PR13-A08.2-T02",
+        "PR13-A08.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A08.2-T01",
+        "PR13-A08.2-T02",
+        "PR13-A08.2-T03"
+      ],
+      "pass_criteria": "状态与当前证据一致，规范Ready和运行Accepted分开。",
+      "next_action": "每项分别记录实现存在/历史测试/当前复验/可验收；对账差异加入阻塞非覆盖历史",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A08.3",
+      "title": "隔离回滚演练",
+      "package_id": "PR13-A08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A08.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A08.3-T01",
+        "PR13-A08.3-T02",
+        "PR13-A08.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A08.3-T01",
+        "PR13-A08.3-T02",
+        "PR13-A08.3-T03"
+      ],
+      "pass_criteria": "三类回滚分别有真实日志与适用边界，生产备份不是演练通过本身。",
+      "next_action": "在隔离实例恢复旧镜像/配置，验证健康/房间/receipt；DB迁移单独预演",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "package_id": "PR13-A08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A08.3",
+        "PR13-B12.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A08.4-T01",
+        "PR13-A08.4-T02",
+        "PR13-A08.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A08.4-T01",
+        "PR13-A08.4-T02",
+        "PR13-A08.4-T03"
+      ],
+      "pass_criteria": "文档事实与版本可核对，未合并/未启用不伪称上线完成。",
+      "next_action": "更新PR/报告/状态一致，记录暂存旧云端补丁、备份和临时范围；未验证线上状态标历史",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A09.1",
+      "title": "固定集成验收输入",
+      "package_id": "PR13-A09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-A05.3",
+        "PR13-A06.4",
+        "PR13-A07.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A09.1-T01",
+        "PR13-A09.1-T02",
+        "PR13-A09.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A09.1-T01",
+        "PR13-A09.1-T02",
+        "PR13-A09.1-T03"
+      ],
+      "pass_criteria": "所有证据有同一集成来源和执行身份，静态自述不能代替运行。",
+      "next_action": "测前冻结输入与必跑用例，独立设计反例；每run只验一个确切集成版本",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A09.2",
+      "title": "多账号正常三局",
+      "package_id": "PR13-A09",
+      "state": "Failed",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A09.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A09.2-T01",
+        "PR13-A09.2-T02",
+        "PR13-A09.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A09.2-T01",
+        "PR13-A09.2-T02",
+        "PR13-A09.2-T03"
+      ],
+      "pass_criteria": "同match ack/DB实例/终态可关联，玩法可恢复且统计守恒。",
+      "next_action": "headless流程和rendered操作分别跑，正常完成/撤离/死亡/兜底/drain分列",
+      "observation": {
+        "task_id": "PR13-A09.2",
+        "state": "Failed",
+        "reason": "Only four of ten mixed-class accounts completed three natural games within the preregistered observation budget.",
+        "evidence": "docs/reports/pr13-stages-20261008/S4-ten-bounded/summary.json",
+        "next_action": "Resolve class/script/build limitations with controlled comparisons; keep rendered verification separate."
+      }
+    },
+    {
+      "task_id": "PR13-A09.3",
+      "title": "全故障与资产后置",
+      "package_id": "PR13-A09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A09.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A09.3-T01",
+        "PR13-A09.3-T02",
+        "PR13-A09.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A09.3-T01",
+        "PR13-A09.3-T02",
+        "PR13-A09.3-T03"
+      ],
+      "pass_criteria": "每必测行有injection/expected/actual/exit/hash，关键故障无跳过。",
+      "next_action": "注入丢失/乱序/超时/重启/STOP，记录客户端DB/route/holds四方实际状态",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A09.4",
+      "title": "独立裁决反馈",
+      "package_id": "PR13-A09",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A09.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A09.4-T01",
+        "PR13-A09.4-T02",
+        "PR13-A09.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A09.4-T01",
+        "PR13-A09.4-T02",
+        "PR13-A09.4-T03"
+      ],
+      "pass_criteria": "不把QA自述自动当MAIN Accepted，结果引用完整report/artifact。",
+      "next_action": "Require every actual client to finish three natural cycles; retain old failed raw and new cutoff records.",
+      "observation": {
+        "task_id": "PR13-A09.4",
+        "state": "Partial",
+        "reason": "Rerun on the new observed source completed and still failed the ten-account natural-cycle contract.",
+        "next_action": "Continue baseline-script/build diagnosis before larger acceptance runs."
+      }
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "title": "三组成对A/B预登记",
+      "package_id": "PR13-A10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A09.4",
+        "PR13-A02.4",
+        "PR13-A01.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A10.1-T01",
+        "PR13-A10.1-T02",
+        "PR13-A10.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-A10.1-T01",
+        "PR13-A10.1-T02",
+        "PR13-A10.1-T03"
+      ],
+      "pass_criteria": "三对均有实际负载和完整结果，不能选择性删红线/失败配对。",
+      "next_action": "AB/BA顺序交错至少三对，固定warmup/hold/drain/拒绝标准；收益目标先冻结",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A10.2",
+      "title": "默认限流建立负载",
+      "package_id": "PR13-A10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A10.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A10.2-T01",
+        "PR13-A10.2-T02",
+        "PR13-A10.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-A10.2-T01",
+        "PR13-A10.2-T02",
+        "PR13-A10.2-T03"
+      ],
+      "pass_criteria": "默认限流保持，50/100各独立声明目标与覆盖；临时覆盖不替代默认容量。",
+      "next_action": "合法多发压源或预登录/渐进启动，记录各IP持续写/读率；无法建立目标直接Blocked",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "title": "长期资源回收",
+      "package_id": "PR13-A10",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A10.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A10.3-T01",
+        "PR13-A10.3-T02",
+        "PR13-A10.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-A10.3-T01",
+        "PR13-A10.3-T02",
+        "PR13-A10.3-T03"
+      ],
+      "pass_criteria": "无未解释单调资源增长或业务遗留；时长/目标预登记，30分钟不冒称无限稳定。",
+      "next_action": "先30分钟稳定观察再明确预算的浸泡；资源斜率/GC后水位/每已完成局回收及drain核查",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "title": "性能收益和容量裁决",
+      "package_id": "PR13-A10",
+      "state": "Blocked",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "CAPACITY"
+      ],
+      "gates": [
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-A10.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-A10.4-T01",
+        "PR13-A10.4-T02",
+        "PR13-A10.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-A10.4-T01",
+        "PR13-A10.4-T02",
+        "PR13-A10.4-T03"
+      ],
+      "pass_criteria": "G4分别给传输收益/原profile容量/候选玩法结果，不用单个exit0代替所有结论。",
+      "next_action": "原性能红线与正式预登记SLO独立；timeout/pending和失败率一起评估，给benefit/nochange/blocked结论",
+      "observation": {
+        "task_id": "PR13-A10.4",
+        "state": "Blocked",
+        "stage": "S5",
+        "owner": "MAIN",
+        "reason": "Local generator safety redline stops the original 50/100 target; shared-host diagnostics lack actual server/actor metrics and the mixed-class correctness prerequisite remains failed.",
+        "missing_input_or_environment": "Sufficient controlled generator resources, actual server metrics and prerequisite gameplay correctness.",
+        "affected_gates": [
+          "G4",
+          "G5"
+        ],
+        "unblock_condition": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance.",
+        "evidence": "docs/reports/pr13-stages-20261008/S1-capacity-retests/summary.json",
+        "next_action": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance."
+      }
+    },
+    {
+      "task_id": "PR13-B01.1",
+      "title": "战斗关联合同",
+      "package_id": "PR13-B01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "LOAD-06.4",
+        "LOAD-03.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B01.1-T01",
+        "PR13-B01.1-T02",
+        "PR13-B01.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B01.1-T01",
+        "PR13-B01.1-T02",
+        "PR13-B01.1-T03"
+      ],
+      "pass_criteria": "每异步事件可追溯原上下文，字段与LOAD06共用字典和版本。",
+      "next_action": "冻结config hash/strategy/seed/phase与发起context；数据不可得为null+原因",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B01.2",
+      "title": "通信、机会和有效进展",
+      "package_id": "PR13-B01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B01.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B01.2-T01",
+        "PR13-B01.2-T02",
+        "PR13-B01.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B01.2-T01",
+        "PR13-B01.2-T02",
+        "PR13-B01.2-T03"
+      ],
+      "pass_criteria": "同一等待区间有可审查原因，0伤害回包不能掩盖停滞也不能把合法蓄牌算卡死。",
+      "next_action": "区分心跳、动作机会、submit/ack、有效伤害/治疗/盾/抽牌、目标变化及等待原因",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B01.3",
+      "title": "分层体验指标",
+      "package_id": "PR13-B01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B01.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B01.3-T01",
+        "PR13-B01.3-T02",
+        "PR13-B01.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B01.3-T01",
+        "PR13-B01.3-T02",
+        "PR13-B01.3-T03"
+      ],
+      "pass_criteria": "指标分子分母和窗口明确，可从case事件重算；延迟三段不混HTTP P95。",
+      "next_action": "输出首次有效操作、10/30/60秒有效量、操作占比、连续控制、抽牌/溢出/请求率",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B01.4",
+      "title": "终点与删失",
+      "package_id": "PR13-B01",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G1",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B01.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B01.4-T01",
+        "PR13-B01.4-T02",
+        "PR13-B01.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B01.4-T01",
+        "PR13-B01.4-T02",
+        "PR13-B01.4-T03"
+      ],
+      "pass_criteria": "started battle=互斥结果+active/unknown；TTK结论附终点定义、删失率与限制。",
+      "next_action": "保留全部分母，截止样本observed_duration+censored；停滞兜底单列非独立随机删失",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "title": "过期测试API迁移",
+      "package_id": "PR13-B02",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "LOAD-11.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03"
+      ],
+      "pass_criteria": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+      "next_action": "旧布尔与余量成员逐断言映射CurrentRhythm/CoreCardsSpent、CurrentSteps/FractionalRemainder；先编译复现",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "title": "真实Resolver规则向量",
+      "package_id": "PR13-B02",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B02.2-T01",
+        "PR13-B02.2-T02",
+        "PR13-B02.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B02.2-T01",
+        "PR13-B02.2-T02",
+        "PR13-B02.2-T03"
+      ],
+      "pass_criteria": "金标准向量有完整配置上下文；数值不能推广为任意三张火牌伤害。",
+      "next_action": "首核/R/P/B/逐卡floor、46/72/113限定向量、双元素/调节/两种治疗用真实Resolver",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "title": "预览/协议/权威一致",
+      "package_id": "PR13-B02",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B02.3-T01",
+        "PR13-B02.3-T02",
+        "PR13-B02.3-T03"
+      ],
+      "pass_criteria": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+      "next_action": "预览与提交比较有效伤害/治疗/盾/控制/余量；前后状态/RNG hash不变",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "title": "房间策略和恢复",
+      "package_id": "PR13-B02",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "gates": [
+        "G1",
+        "G2",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B02.4-T01",
+        "PR13-B02.4-T02",
+        "PR13-B02.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B02.4-T01",
+        "PR13-B02.4-T02",
+        "PR13-B02.4-T03"
+      ],
+      "pass_criteria": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+      "next_action": "创建/PVE/PVP工作副本/持久化/恢复保策略；缺旧字段按已批准默认解释",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B03.1",
+      "title": "三种脚本策略",
+      "package_id": "PR13-B03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B01.4",
+        "PR13-B02.4"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B03.1-T01",
+        "PR13-B03.1-T02",
+        "PR13-B03.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B03.1-T01",
+        "PR13-B03.1-T02",
+        "PR13-B03.1-T03"
+      ],
+      "pass_criteria": "策略版本与信息边界可审查，合法率与放弃/失败完整报告。",
+      "next_action": "保留baseline_all_hand，新增确定性basic/build策略；不能看库序/隐藏路线/未来drop",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B03.2",
+      "title": "同预算场景矩阵",
+      "package_id": "PR13-B03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B03.1"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B03.2-T01",
+        "PR13-B03.2-T02",
+        "PR13-B03.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B03.2-T01",
+        "PR13-B03.2-T02",
+        "PR13-B03.2-T03"
+      ],
+      "pass_criteria": "每主要层有scenario_id/config/seed/策略，失败场景保留不过滤。",
+      "next_action": "默认/纯核/续航/控制过牌/调节混核，同品质等级成本；单/双/精英/Boss/PVP换边，成对加极值",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B03.3",
+      "title": "配对样本与区间",
+      "package_id": "PR13-B03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B03.2"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B03.3-T01",
+        "PR13-B03.3-T02",
+        "PR13-B03.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B03.3-T01",
+        "PR13-B03.3-T02",
+        "PR13-B03.3-T03"
+      ],
+      "pass_criteria": "样本预算不等于精度保证，报告全部结果与95%区间/多比较方案；bot不能称真人体验。",
+      "next_action": "首轮每主要声明层至少1000配对seed、三独立seed块；按seed成对重抽样，真人资料另记",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B03.4",
+      "title": "profile边界和可重放",
+      "package_id": "PR13-B03",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G3",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B03.3"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B03.4-T01",
+        "PR13-B03.4-T02",
+        "PR13-B03.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B03.4-T01",
+        "PR13-B03.4-T02",
+        "PR13-B03.4-T03"
+      ],
+      "pass_criteria": "配置可复现、时限有界、删失可见；真人缺失仅阻塞体验结论，不抹去算法证据。",
+      "next_action": "策略/卡组/时长/兜底任何变化均新profile；原baseline保留同版本可重放",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B04.1",
+      "title": "真实默认牌表诊断",
+      "package_id": "PR13-B04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B03.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B04.1-T01",
+        "PR13-B04.1-T02",
+        "PR13-B04.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B04.1-T01",
+        "PR13-B04.1-T02",
+        "PR13-B04.1-T03"
+      ],
+      "pass_criteria": "20张预算与牌实例全列出，问题能区分配置/策略/流程来源。",
+      "next_action": "读取有效牌表，测无有效行动、缺防御、满血治疗、凑核和关键牌到手；区分策略打空",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B04.2",
+      "title": "单卡替换候选",
+      "package_id": "PR13-B04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B04.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B04.2-T01",
+        "PR13-B04.2-T02",
+        "PR13-B04.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B04.2-T01",
+        "PR13-B04.2-T02",
+        "PR13-B04.2-T03"
+      ],
+      "pass_criteria": "收益须同预算且资源守恒；默认构筑变更是后续显式配置评审。",
+      "next_action": "一次替一张，先协同再收益；保留正式默认，不加初始资源或改基础手牌",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B04.3",
+      "title": "抽牌与等待提示",
+      "package_id": "PR13-B04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B04.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B04.3-T01",
+        "PR13-B04.3-T02",
+        "PR13-B04.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B04.3-T01",
+        "PR13-B04.3-T02",
+        "PR13-B04.3-T03"
+      ],
+      "pass_criteria": "中文英文及现有其他语种无缺键/硬编码，宽高边界可读，按钮原因与action门一致。",
+      "next_action": "显示正在抽牌/受控/阻断/满手轮空/等确认，ETA仅在可可靠估计时显示",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B04.4",
+      "title": "初始体验裁决",
+      "package_id": "PR13-B04",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B04.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B04.4-T01",
+        "PR13-B04.4-T02",
+        "PR13-B04.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B04.4-T01",
+        "PR13-B04.4-T02",
+        "PR13-B04.4-T03"
+      ],
+      "pass_criteria": "无新增不可恢复无动作状态；体验与策略选择共同评估，缺真人则结论Partial。",
+      "next_action": "对比有效操作、首战结果、凑核、资源守恒和保留牌决策；不只看点击频率",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B05.1",
+      "title": "具体怪物归因",
+      "package_id": "PR13-B05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B04.4",
+        "PR13-B01.4"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B05.1-T01",
+        "PR13-B05.1-T02",
+        "PR13-B05.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B05.1-T01",
+        "PR13-B05.1-T02",
+        "PR13-B05.1-T03"
+      ],
+      "pass_criteria": "每长尾有具体原因和对照，自动弃战不能充当怪物过强证据。",
+      "next_action": "复现白名单长尾并区分高耐久/恢复闭环/克制/控制/目标/通信问题",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B05.2",
+      "title": "单因素HP/预告实验",
+      "package_id": "PR13-B05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B05.1"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B05.2-T01",
+        "PR13-B05.2-T02",
+        "PR13-B05.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B05.2-T01",
+        "PR13-B05.2-T02",
+        "PR13-B05.2-T03"
+      ],
+      "pass_criteria": "单因素差异manifest可审查，候选仅隔离；不全表降血不掩盖流程缺陷。",
+      "next_action": "HP1.00/0.95/0.90一轮；首意图预告0/0.25/0.50秒另轮，不组合偷因果",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B05.3",
+      "title": "强度/经济边界",
+      "package_id": "PR13-B05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B05.2"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B05.3-T01",
+        "PR13-B05.3-T02",
+        "PR13-B05.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B05.3-T01",
+        "PR13-B05.3-T02",
+        "PR13-B05.3-T03"
+      ],
+      "pass_criteria": "经济投放与损失不改来补偿候选，无未解释资源漂移。",
+      "next_action": "保留Boss阶段/PVP，算每局与每分钟收益、药耗和死亡损失；漂移先阻塞",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B05.4",
+      "title": "候选推荐判据",
+      "package_id": "PR13-B05",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B05.3"
+      ],
+      "evidence": [
+        {
+          "id": "supplemental-experiment",
+          "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance.",
+          "paths": [
+            "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B05.4-T01",
+        "PR13-B05.4-T02",
+        "PR13-B05.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B05.4-T01",
+        "PR13-B05.4-T02",
+        "PR13-B05.4-T03"
+      ],
+      "pass_criteria": "阈值标候选评审而非正式SLO；正收益/副作用/缺证据分别给裁决。",
+      "next_action": "用配对区间判断：长尾P95相对改善15%草案、通关率5百分点/资源分钟5%漂移复审；high censoring不按完成样本推断",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B06.1",
+      "title": "CurrentRhythm对照",
+      "package_id": "PR13-B06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.4",
+        "PR13-B03.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B06.1-T01",
+        "PR13-B06.1-T02",
+        "PR13-B06.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B06.1-T01",
+        "PR13-B06.1-T02",
+        "PR13-B06.1-T03"
+      ],
+      "pass_criteria": "仅证明代码资源路径，不把局部路径宣称全卡池无限循环。",
+      "next_action": "固定同核单张推rhythm至5的返2路径，核对手牌上限/抽牌来源/洗牌/动作节拍",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B06.2",
+      "title": "CoreCardsSpent候选",
+      "package_id": "PR13-B06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B06.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B06.2-T01",
+        "PR13-B06.2-T02",
+        "PR13-B06.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B06.2-T01",
+        "PR13-B06.2-T02",
+        "PR13-B06.2-T03"
+      ],
+      "pass_criteria": "formal默认CurrentRhythm，房间有效policy显式；不给点击全局冷却掩盖问题。",
+      "next_action": "R1/2/3/4/5返0/0/1/1/2，B不作真实消耗；C/E继续既有蓄能0.5上限",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B06.3",
+      "title": "复合过牌长序列",
+      "package_id": "PR13-B06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B06.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B06.3-T01",
+        "PR13-B06.3-T02",
+        "PR13-B06.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B06.3-T01",
+        "PR13-B06.3-T02",
+        "PR13-B06.3-T03"
+      ],
+      "pass_criteria": "ledger闭合，触动作上限样本为未结束；局部证明和全卡池测试范围分列。",
+      "next_action": "被动单独/水调节/即时抽/双抽/加速分别及组合，记消耗、请求draw、实际draw、蓄能、洗牌与cap",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B06.4",
+      "title": "候选体验和版本",
+      "package_id": "PR13-B06",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B06.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B06.4-T01",
+        "PR13-B06.4-T02",
+        "PR13-B06.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B06.4-T01",
+        "PR13-B06.4-T02",
+        "PR13-B06.4-T03"
+      ],
+      "pass_criteria": "默认无退化，候选资源问题与体验都获证据；缺真人只给算法/仿真Partial推荐。",
+      "next_action": "比净卡差、10/30/60秒有效量、空等/死亡/对位，测试restore与PVP持同policy",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B07.1",
+      "title": "当前与定点表",
+      "package_id": "PR13-B07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.4",
+        "PR13-B03.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B07.1-T01",
+        "PR13-B07.1-T02",
+        "PR13-B07.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B07.1-T01",
+        "PR13-B07.1-T02",
+        "PR13-B07.1-T03"
+      ],
+      "pass_criteria": "不使用概率触发、不改牌面floor/HP/护盾帽，正式默认不变。",
+      "next_action": "对照[1,1,2,2,3,3]与十分点[10,14,18,22,26,30]，上限与端点不变",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B07.2",
+      "title": "存量+2/+4影响",
+      "package_id": "PR13-B07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B07.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B07.2-T01",
+        "PR13-B07.2-T02",
+        "PR13-B07.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B07.2-T01",
+        "PR13-B07.2-T02",
+        "PR13-B07.2-T03"
+      ],
+      "pass_criteria": "每等级独立结果，不称全等级加强、不自动改强化价/退款。",
+      "next_action": "单独评价2至1.8、3至2.6的生存/溢出/实际盾；记录受影响等级与审核",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B07.3",
+      "title": "余量提交/清零",
+      "package_id": "PR13-B07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B07.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B07.3-T01",
+        "PR13-B07.3-T02",
+        "PR13-B07.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B07.3-T01",
+        "PR13-B07.3-T02",
+        "PR13-B07.3-T03"
+      ],
+      "pass_criteria": "定点累计精确，所有cap边界有golden state；默认和candidate分开执行。 (Already-full/zero-card-shield retains the existing remainder; a successful play exactly filling or overflowing the cap commits zero; leaving the cell clears it.)",
+      "next_action": "无截断五次贡献5/7/9/11/13/15；逐边界验证余量一次提交及清零",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B07.4",
+      "title": "有效盾和余量显示",
+      "package_id": "PR13-B07",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B07.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B07.4-T01",
+        "PR13-B07.4-T02",
+        "PR13-B07.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B07.4-T01",
+        "PR13-B07.4-T02",
+        "PR13-B07.4-T03"
+      ],
+      "pass_criteria": "预览无副作用、显示不误导概率/平均，数值推荐需独立存量等级裁决。",
+      "next_action": "显示本次整数、实际盾、溢出和候选余量；候选字段不假扮已启正式规则",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B08.1",
+      "title": "既有8秒控制合同",
+      "package_id": "PR13-B08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B02.4",
+        "PR13-B03.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B08.1-T01",
+        "PR13-B08.1-T02",
+        "PR13-B08.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B08.1-T01",
+        "PR13-B08.1-T02",
+        "PR13-B08.1-T03"
+      ],
+      "pass_criteria": "不再加第二套递减，控制统计不累计重复重叠时长。",
+      "next_action": "分请求/减免后/重叠新增控制和不可操作union，核对full/half/zero边界",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B08.2",
+      "title": "同品质单卡边际",
+      "package_id": "PR13-B08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B08.2-T01",
+        "PR13-B08.2-T02",
+        "PR13-B08.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B08.2-T01",
+        "PR13-B08.2-T02",
+        "PR13-B08.2-T03"
+      ],
+      "pass_criteria": "不以静态总V或更频繁动作判平衡，不统一削所有调节牌。",
+      "next_action": "分净卡差、有效伤害/盾/治疗/控制和cap损失，整体输出与稀释一起比较",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B08.3",
+      "title": "主核/抵消/回复合同",
+      "package_id": "PR13-B08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B08.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B08.3-T01",
+        "PR13-B08.3-T02",
+        "PR13-B08.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B08.3-T01",
+        "PR13-B08.3-T02",
+        "PR13-B08.3-T03"
+      ],
+      "pass_criteria": "服务端/preview/proto顺序同输入零合同差异，说明中英同步。",
+      "next_action": "调节可定核/计同核不增P不进E0，但其他反牌可经K影响；两类治疗分开",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B08.4",
+      "title": "帽内有效值和候选条件",
+      "package_id": "PR13-B08",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4"
+      ],
+      "dependencies": [
+        "PR13-B08.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B08.4-T01",
+        "PR13-B08.4-T02",
+        "PR13-B08.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B08.4-T01",
+        "PR13-B08.4-T02",
+        "PR13-B08.4-T03"
+      ],
+      "pass_criteria": "cap计算与现行规则一致，有候选只隔离且一因素；显示不把不适用职业误称超帽。",
+      "next_action": "理论/有效/溢出/边际强化并列；只有获证异常提单卡/同来源版本候选",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B09.1",
+      "title": "实际怪物pool基线",
+      "package_id": "PR13-B09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B02.4",
+        "PR13-B03.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B09.1-T01",
+        "PR13-B09.1-T02",
+        "PR13-B09.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B09.1-T01",
+        "PR13-B09.1-T02",
+        "PR13-B09.1-T03"
+      ],
+      "pass_criteria": "从有效room policy出发，牌池实例与来源可追踪，新增数不直接推出强弱。",
+      "next_action": "核查已有接纳/跳过/替换能力，再测池大小/关键牌到手/同核/路线稀释",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B09.2",
+      "title": "3/5/8位候选",
+      "package_id": "PR13-B09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B09.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B09.2-T01",
+        "PR13-B09.2-T02",
+        "PR13-B09.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B09.2-T01",
+        "PR13-B09.2-T02",
+        "PR13-B09.2-T03"
+      ],
+      "pass_criteria": "默认现行rule保留，每profile只有cap差异，种子/策略/成本相同。",
+      "next_action": "比3/5/8，同基础20，新接纳入弃牌不补抽，非战斗选择，无跳过补偿",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B09.3",
+      "title": "来源、幂等和状态切换",
+      "package_id": "PR13-B09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B09.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B09.3-T01",
+        "PR13-B09.3-T02",
+        "PR13-B09.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B09.3-T01",
+        "PR13-B09.3-T02",
+        "PR13-B09.3-T03"
+      ],
+      "pass_criteria": "基础20不删、总实例守恒、无跨room污染；操作只有非战斗合法时机。",
+      "next_action": "重复submit、满位、入侵中断、恢复、死亡撤离清理；验证唯一instance和本玩家击杀",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B09.4",
+      "title": "连续性与选择成本",
+      "package_id": "PR13-B09",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B09.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B09.4-T01",
+        "PR13-B09.4-T02",
+        "PR13-B09.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B09.4-T01",
+        "PR13-B09.4-T02",
+        "PR13-B09.4-T03"
+      ],
+      "pass_criteria": "同预算合法信息可复现，体验Partial不伪称真人，收益需来源和实例守恒通过。",
+      "next_action": "比有效构筑/选择时长/请求量/资源分钟与可见策略，不自动启用候选",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B10.1",
+      "title": "顺序/主核可见",
+      "package_id": "PR13-B10",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B02.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B10.1-T01",
+        "PR13-B10.1-T02",
+        "PR13-B10.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B10.1-T01",
+        "PR13-B10.1-T02",
+        "PR13-B10.1-T03"
+      ],
+      "pass_criteria": "客户端推荐/显示/序列化顺序一致，快照不暗排。",
+      "next_action": "选序编号/主核标识，明确重选/调整；preview绑定target/room/revision/policy不暗中排序",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B10.2",
+      "title": "有效值与多语言说明",
+      "package_id": "PR13-B10",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B10.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B10.2-T01",
+        "PR13-B10.2-T02",
+        "PR13-B10.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B10.2-T01",
+        "PR13-B10.2-T02",
+        "PR13-B10.2-T03"
+      ],
+      "pass_criteria": "解释数值与实际合同一致，显示变更不改公式、不泄露未来隐藏信息。",
+      "next_action": "展示基础/核倍率/向反/伤害/治疗/盾，随机或不可得阶段不虚构精确值，窄屏折叠",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B10.3",
+      "title": "本地按下与权威成功",
+      "package_id": "PR13-B10",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B10.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B10.3-T01",
+        "PR13-B10.3-T02",
+        "PR13-B10.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B10.3-T01",
+        "PR13-B10.3-T02",
+        "PR13-B10.3-T03"
+      ],
+      "pass_criteria": "业务去重与视觉状态真实，提交/成功音效沿已有权威事件门。",
+      "next_action": "本地选中/按下及时反馈；submitted/confirmed/rejected/recovering不同，合法业务command单条",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B10.4",
+      "title": "帧率/延迟/失效目标",
+      "package_id": "PR13-B10",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B10.3"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B10.4-T01",
+        "PR13-B10.4-T02",
+        "PR13-B10.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B10.4-T01",
+        "PR13-B10.4-T02",
+        "PR13-B10.4-T03"
+      ],
+      "pass_criteria": "三段时间分别报告与设备基线，未预登记UX阈值不写达标；无重复出牌/幽灵结果。",
+      "next_action": "测input至local feedback、command RTT、authority至animation；目标死亡/手牌变化/切room/重连回归",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B11.1",
+      "title": "可见等待状态",
+      "package_id": "PR13-B11",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-B01.2"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B11.1-T01",
+        "PR13-B11.1-T02",
+        "PR13-B11.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B11.1-T01",
+        "PR13-B11.1-T02",
+        "PR13-B11.1-T03"
+      ],
+      "pass_criteria": "状态与可操作门一致，倒计时有来源，网络/资源未知不编预计秒数。",
+      "next_action": "准备确认/进房/抽牌受控/切目标/终态/资产处理中/待ack各显示真实原因",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B11.2",
+      "title": "结算UI恢复",
+      "package_id": "PR13-B11",
+      "state": "Partial",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B11.1"
+      ],
+      "evidence": [
+        {
+          "id": "current-client",
+          "scope": "Five current actual Godot regression groups. Rendering/human interaction remains unverified.",
+          "paths": [
+            "outputs/pr13-local-20261008/S3/client-release/results.json"
+          ]
+        }
+      ],
+      "case_ids": [
+        "PR13-B11.2-T01",
+        "PR13-B11.2-T02",
+        "PR13-B11.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B11.2-T01",
+        "PR13-B11.2-T02",
+        "PR13-B11.2-T03"
+      ],
+      "pass_criteria": "资产一次且恢复入口可见，动画不阻塞合法新局动作。",
+      "next_action": "复用重复NOT_IN_ROOM/旧回调隔离，回大厅不吞未确认receipt；ack丢包有待核实入口",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B11.3",
+      "title": "有证据才轻量化",
+      "package_id": "PR13-B11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B11.2"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B11.3-T01",
+        "PR13-B11.3-T02",
+        "PR13-B11.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B11.3-T01",
+        "PR13-B11.3-T02",
+        "PR13-B11.3-T03"
+      ],
+      "pass_criteria": "请求下降不漏资产验证，用户等待原因/恢复无退化，候选收益同profile可重算。",
+      "next_action": "成本显著才评审轻量查询/单飞/退避，复用LOAD08.4同契约与兼容，不另造接口",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B11.4",
+      "title": "有渲染三局和窄屏",
+      "package_id": "PR13-B11",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "gates": [
+        "G2",
+        "G3"
+      ],
+      "dependencies": [
+        "PR13-B11.3"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B11.4-T01",
+        "PR13-B11.4-T02",
+        "PR13-B11.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B11.4-T01",
+        "PR13-B11.4-T02",
+        "PR13-B11.4-T03"
+      ],
+      "pass_criteria": "无关键文字溢出/误导状态/动画阻塞；真人反馈缺失标Partial，截图不能替代操作日志。",
+      "next_action": "headless流程另列，录rendered准备至ack三局；长文/语言/断线等待全检查",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "package_id": "PR13-B12",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT",
+        "RENDER",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-A08.1"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B12.1-T01",
+        "PR13-B12.1-T02",
+        "PR13-B12.1-T03"
+      ],
+      "missing_cases": [
+        "PR13-B12.1-T01",
+        "PR13-B12.1-T02",
+        "PR13-B12.1-T03"
+      ],
+      "pass_criteria": "code/config/evidence对应同一确定运行输入；candidate标签不能代替有效策略。",
+      "next_action": "收集source SHA、配置内容hash与策略版本；原始/派生hash分开，由MAIN核实",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "package_id": "PR13-B12",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT",
+        "RENDER",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B12.1",
+        "PR13-A07.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B09.4",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B12.2-T01",
+        "PR13-B12.2-T02",
+        "PR13-B12.2-T03"
+      ],
+      "missing_cases": [
+        "PR13-B12.2-T01",
+        "PR13-B12.2-T02",
+        "PR13-B12.2-T03"
+      ],
+      "pass_criteria": "当前SHA全部适用层实际执行；每候选有范围/分母/失败/区间，不用历史load CI替代。",
+      "next_action": "独立重跑默认与每candidate及获益组合，真人反馈按skill分层；失效反例回owner",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "package_id": "PR13-B12",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT",
+        "RENDER",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B12.1",
+        "PR13-B02.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B12.3-T01",
+        "PR13-B12.3-T02",
+        "PR13-B12.3-T03"
+      ],
+      "missing_cases": [
+        "PR13-B12.3-T01",
+        "PR13-B12.3-T02",
+        "PR13-B12.3-T03"
+      ],
+      "pass_criteria": "源/生成物hash链完整，价格/drop/冻结候选启用须独立决策；资产不倒灌。",
+      "next_action": "只改受控源定义，经现有export/校验；生成bytes不手改，新房策略锁定，旧房保原",
+      "observation": {}
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "package_id": "PR13-B12",
+      "state": "Queued",
+      "accepted_by": null,
+      "owner": "MAIN",
+      "case_counts": {
+        "NotExecuted": 3
+      },
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "EXPERIMENT",
+        "RENDER",
+        "AUDIT"
+      ],
+      "gates": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-A10.4",
+        "PR13-A05.4"
+      ],
+      "evidence": [],
+      "case_ids": [
+        "PR13-B12.4-T01",
+        "PR13-B12.4-T02",
+        "PR13-B12.4-T03"
+      ],
+      "missing_cases": [
+        "PR13-B12.4-T01",
+        "PR13-B12.4-T02",
+        "PR13-B12.4-T03"
+      ],
+      "pass_criteria": "132细项有清楚证据/裁决/风险，未启用不写上线，合并仍由用户决定。",
+      "next_action": "MAIN逐项Accepted/NoChangeWithEvidence/Blocked，原容量与候选体验分开；存在阻塞保持Draft",
+      "observation": {}
+    }
+  ],
+  "gates": [
+    {
+      "gate_id": "G0",
+      "name": "来源、范围与基线",
+      "state": "NotAccepted",
+      "pass_criteria": "source/CI/image/config/seed/profile可追溯，文件锁与有界范围明确；missing单列。",
+      "unfinished": [
+        "LOAD-06.4",
+        "LOAD-11.1",
+        "PR13-A01.1",
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ]
+    },
+    {
+      "gate_id": "G1",
+      "name": "离线、进程与合同",
+      "state": "NotAccepted",
+      "pass_criteria": "关键正常/边界/故障实际执行，数值合同编译修复，关键case无环境性skip。",
+      "unfinished": [
+        "LOAD-01.4",
+        "LOAD-02.4",
+        "LOAD-03.4",
+        "LOAD-07.4",
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A06.4",
+        "PR13-A07.4",
+        "PR13-B02.4"
+      ]
+    },
+    {
+      "gate_id": "G2",
+      "name": "玩法闭环和资产/战斗合同",
+      "state": "NotAccepted",
+      "pass_criteria": "正常三局/多账号、PG持久幂等、route/holds及资源/控制/选序/恢复合同一致；headless与render证据分层。",
+      "unfinished": [
+        "LOAD-04.4",
+        "LOAD-05.4",
+        "LOAD-09.2",
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-A05.3",
+        "PR13-A09.4",
+        "PR13-B02.4",
+        "PR13-B06.3",
+        "PR13-B07.3",
+        "PR13-B08.3",
+        "PR13-B09.3",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ]
+    },
+    {
+      "gate_id": "G3",
+      "name": "观测、历史和体验对账",
+      "state": "NotAccepted",
+      "pass_criteria": "三截止点守恒，86/90与130/139及旧52/77差异可解释；缺序号不造关联，删失/兜底/未知完整。",
+      "unfinished": [
+        "LOAD-03.4",
+        "LOAD-06.4",
+        "PR13-A01.4",
+        "PR13-A02.3",
+        "PR13-A06.3",
+        "PR13-B01.4",
+        "PR13-B03.4"
+      ]
+    },
+    {
+      "gate_id": "G4",
+      "name": "传输收益、原容量、候选体验",
+      "state": "NotAccepted",
+      "pass_criteria": "三对同负载A/B、默认限流有效覆盖/长稳、数值配对/风险与真人反馈分别裁决；不足Unknown，不拿短战替原容量。",
+      "unfinished": [
+        "LOAD-08.4",
+        "LOAD-09.4",
+        "LOAD-10.4",
+        "PR13-A10.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B09.4"
+      ]
+    },
+    {
+      "gate_id": "G5",
+      "name": "当前证据、源配置和回滚交付",
+      "state": "NotAccepted",
+      "pass_criteria": "132项实现或有证据NoChange/阻塞逐项可查；适用CI、账链告警、默认off、兼容与隔离回滚都有结论。完整交付允许列阻塞，验收通过要求适用阻塞清零。",
+      "unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.3",
+        "LOAD-11.4",
+        "PR13-A05.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ]
+    }
+  ],
+  "state_update": "MAIN review of S4-ten-bounded plus S1-capacity-retests; actual source/evidence identities retained."
+}

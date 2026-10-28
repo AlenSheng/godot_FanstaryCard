@@ -1,0 +1,128 @@
+{
+  "kind": "ReviewedEvidenceSummaryNotAcceptance",
+  "updated_at_local": "2026-10-15T20:30:54.882987+08:00",
+  "authoritative_register_SHA256": "37a8ca2b8994bab75ba5169ba10ded4b0bc5cd9d34a16e5b2dbbf92254d9fa70",
+  "original_goal_scope": {
+    "tasks": 132,
+    "cases": 396
+  },
+  "register_modified": false,
+  "MAIN_accepted": false,
+  "prior_completed_B04_not_reexecuted": {
+    "sampling_batches": 540,
+    "encounters": 21600,
+    "PG_boundary_passed": 2,
+    "statistics_report_SHA256": "b282bbe599a8d812b96da482ebfa22a62fb04aab48c35cbda2d3ac29079783ac"
+  },
+  "UI": {
+    "product_files_SHA256": {
+      "client/ui/exploration_view.gd": "80e147e401690ce327d851ecfa5ee71be67ffeee92e385eaabd76e4037e829e7",
+      "client/ui/deck_builder_view.gd": "aa691f17d15d2c9df3c0ea8a0ed06585b46425f7d9809cbc55296601ff3ca095",
+      "client/data/localization_battle.json": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759"
+    },
+    "native_rows_passed": 52,
+    "original_screenshots_reviewed": 52,
+    "original_custody": {
+      "new48": "B04-remaining-ui-r1-terminal-originals-20261015-r1/complete-original-custody-receipt.json",
+      "final4": "B04-filter-clarity-ui-r2-terminal-originals-20261015-r1/complete-original-custody-receipt.json"
+    },
+    "suitable_existing_sprites_retained": true,
+    "original_failed_filter_fixture_retained": true
+  },
+  "B06_controls": [
+    {
+      "original_custody_folder": "B06-paused-room-resource-r1-terminal-originals-20261015-r1",
+      "archive_SHA256": "3719d291d744b845b3b41e1025f30b1fa9cd54dd3503a2daa61044614e13924a",
+      "original_files": 73,
+      "trajectories": 864,
+      "errors": 0,
+      "actual_room_casts": 4644,
+      "room_snapshot_restore_checks": 484,
+      "actual_reshuffle_phase_witnesses": 0
+    },
+    {
+      "original_custody_folder": "B06-empty-library-resource-r1-terminal-originals-20261015-r1",
+      "archive_SHA256": "30a93c928b7bf8046e902a6c2b9ee0390c3cb3f804bae1d24fe23b861bd94112",
+      "original_files": 73,
+      "trajectories": 288,
+      "errors": 0,
+      "actual_room_casts": 1864,
+      "room_snapshot_restore_checks": 216,
+      "actual_reshuffle_phase_witnesses": 288
+    },
+    {
+      "original_custody_folder": "B06-bonus-not-core-resource-r1-terminal-originals-20261015-r1",
+      "archive_SHA256": "773d12957ba309c1a3d83cd4e81569a5ee24c8cf3dc8e2b178d61143eea8792a",
+      "original_files": 73,
+      "trajectories": 288,
+      "errors": 0,
+      "actual_room_casts": 2228,
+      "room_snapshot_restore_checks": 336,
+      "actual_reshuffle_phase_witnesses": 0
+    }
+  ],
+  "B06_independent_raw_ledger_audit": {
+    "original_cases": 1440,
+    "archive_SHA256": "0f02f1b4d9745e547fdf9dd4ef85416f636e3dd4f7b575dc50da96e81de560b9",
+    "source_SHA256": "eac3106f23f35d8f1d7237778a3589bad31ffb31d3df35198288e2f0dbb9ad63",
+    "no_native_replay": true
+  },
+  "B06_timed_study": {
+    "status": "SamplingAndOriginalCustodyCompleteStatisticsNotStarted",
+    "original_cases_collected": 86400,
+    "strata": 144,
+    "matched_seed_IDs_per_stratum": 300,
+    "shared_seed_IDs_across_strata_are_not_extra_independent_clusters": true,
+    "pilot_cases_adopted_without_replay": 288,
+    "remaining_closed_parts": 432,
+    "max_cases_per_physical_part": 200,
+    "analysis_SHA256": "79accbe9571406392d76afb9596682b0fd937ee524b1e638ad3a976bbb2286fb",
+    "independent_statistics_verifier_SHA256": "c37c8a3e97347e145424600166216325b500bca4acca9a785c7a1320fef1fe31",
+    "candidate_activation": false,
+    "G_remaining_parts_verified": 432,
+    "full_control_archive_SHA256": "5fd659ecf2dc97cc4a4055f865fe9f9bd012a0152225b3d25156688e6a0b73f7",
+    "all432_cloud_ACKs_match_G_original_receipts": true,
+    "statistical_input_packets_verified_snapshot": 2,
+    "exposure_phase_review": {
+      "original_event_and_source_confirmed": "PR13_B06_TIMED_EXPOSURE_PHASE_DEFINITION_REVIEW_20261015_R1.json",
+      "separate_post_collection_plan": "PR13_B06_POSTCAST_EXPOSURE_RECONCILIATION_PLAN_20261015_R2.json",
+      "original_86400_cases_and_primary_frozen_analysis_unchanged": true,
+      "original_empty_full_legal_grid_metrics": "predecision100ms snapshots; cannot relabel as post-action empty duration",
+      "new_postaction_empty_full_reader": "reconcile_b06_postcast_exposure_r1.py",
+      "independent_expanded_interval_verifier": "verify_b06_postcast_exposure_r1.py",
+      "supplementary_CI_pairs": 432,
+      "supplementary_all_metric_looks_Holm_hypotheses": 432,
+      "primary288_and1440CI_verification_still_required": true,
+      "full_corrected_results_not_yet_computed": true,
+      "no_native_replay": true,
+      "not_automatic_acceptance": true
+    }
+  },
+  "resource_policy": {
+    "disk_floor_fraction": 0.05,
+    "memory_floor_fraction": 0.05,
+    "reserve_actual_allocation_before_start": true,
+    "passed_cloud_copy_cleanup_only_after_G_SHA_CRC_custody": true
+  },
+  "evidence_storage": "Raw originals in local G outputs/pr13-tencent-20261009; ignored raw data and temporary cloud copies are not release assets",
+  "still_required": [
+    "Positive compound-resource closure/source localization or bounded legalpool counterexamples;neverinterpretfinitecontrolsasglobalnoncycle",
+    "Full frozen PVE pairedstatistics+independent1440CI/288hypotheses;separate disclosed postcast source reconciliation+independent432CI/432jointdistincthypotheses",
+    "Review actual timed output,netcard/wait/decisionopportunity/death outcomes without conflating predecision samples and post-action exposure",
+    "NaturalPVP14missingcell/policywitnessgroups remainpartial;source-nativeJSON/typedresume results cannot replace authenticatedWSS,Godotrender or comparativePVPstrength layers",
+    "Remaining original132task profiles,realclients/capacity/reconciliation;humanparticipationexcluded"
+  ],
+  "B06_natural_PVP_functional": {
+    "aggregate": "PR13_B06_PVP_NATURAL_FULL108_ORIGINAL_AGGREGATE_20261015_R1.json",
+    "source_routes": 108,
+    "natural_PVP_entries": 50,
+    "natural_deaths_before_PVP": 58,
+    "recovery_checks": 150,
+    "actual_PVP_casts": 146,
+    "missing_cell_policy_groups": 14,
+    "native_or_old_B09_replayed": false,
+    "pilot_custody": "B06-pvp-natural-policy-pilot-r1-complete-originals-20261015-r1/complete-original-custody-receipt.json",
+    "full_custody": "B06-pvp-natural-policy-full-r1-complete-originals-20261015-r1/complete-original-custody-receipt.json",
+    "scope": "Actual legal natural pairing,whole JSON checkpoints,registry connected/disconnected transitions,typed native Protobuf router and stale-revision session.resume hydration;no authenticated WSS/Godotrender/strength claim"
+  }
+}

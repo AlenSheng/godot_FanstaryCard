@@ -1,0 +1,226 @@
+{
+  "kind": "bounded_offline_lifecycle_batch_not_full_acceptance",
+  "candidate_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "frozen_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "source_proof": "source-proof.json",
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "source_cohorts_separate": true,
+  "production_changes": 0,
+  "verified_new_production_defects": 0,
+  "tests": {
+    "targeted_dotnet": {
+      "total": 13,
+      "executed": 13,
+      "passed": 13,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "server_nonpg": {
+      "total": 206,
+      "executed": 206,
+      "passed": 206,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "overlap_note": "3 Caddy cases occur in both groups; counts are separate executions, never summed as distinct coverage.",
+    "new_dotnet_cases": 7,
+    "new_ready_cases": 5,
+    "ready_clean": {
+      "passed": 5,
+      "failed": 0,
+      "source_sha": "54e7452f971148db0fad313108c6fbdb6c1811ab",
+      "source_dirty": []
+    },
+    "ready_development_regression": {
+      "passed": 8,
+      "new_cases": 5,
+      "previous_cases": 3,
+      "source_dirty_preserved": true
+    },
+    "registration_transport_followup": {
+      "unix": {
+        "passed": 3,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      "loopback_tcp": {
+        "passed": 3,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      "source_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+      "source_cleanliness": "Exact committed test/runtime source; derived docs/bin/obj dirt retained separately",
+      "ci_unix_only_skip_gap_closed_locally": true,
+      "not_actual_CI_execution": true
+    },
+    "registration_0cab_receipts_superseded_by_transport_followup": true
+  },
+  "cycles": {
+    "cycles-middle-uncommitted-loss": {
+      "evidence": "source-candidate/raw/ack-client-runner-cycles-middle-uncommitted-loss-0b3f11268afb4582afe6134babe3c9f1/load-result.json.accounting.json",
+      "partition": {
+        "cancelled": 0,
+        "completed": 3,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 3
+      },
+      "completed_events": [
+        {
+          "cycle_id": "cycles-middle-uncommitted-loss:1",
+          "match_id": "01a0f437-c49d-7efc-998d-6bb077a8af9b"
+        },
+        {
+          "cycle_id": "cycles-middle-uncommitted-loss:2",
+          "match_id": "01a0f438-47aa-7bb5-a20c-71e15a9a2e35"
+        },
+        {
+          "cycle_id": "cycles-middle-uncommitted-loss:3",
+          "match_id": "01a0f438-d11f-73bc-82cf-04d0159f82eb"
+        }
+      ],
+      "entered_matches": [
+        "01a0f437-c49d-7efc-998d-6bb077a8af9b",
+        "01a0f438-47aa-7bb5-a20c-71e15a9a2e35",
+        "01a0f438-d11f-73bc-82cf-04d0159f82eb"
+      ],
+      "legal_abandons": 3,
+      "legal_extractions": 0
+    },
+    "stop-before-commit": {
+      "evidence": "source-candidate/raw/ack-client-runner-stop-before-commit-49933dc3fa764b148d9ce33d01c13569/load-result.json.accounting.json",
+      "partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 1
+      },
+      "completed_events": [],
+      "entered_matches": [
+        "01a0f436-7de7-796d-b97d-3e6bea3b811d"
+      ],
+      "legal_abandons": 1,
+      "legal_extractions": 0
+    },
+    "stop-after-commit": {
+      "evidence": "source-candidate/raw/ack-client-runner-stop-after-commit-0c099187fb2a4831883177d4a4675a68/load-result.json.accounting.json",
+      "partition": {
+        "cancelled": 1,
+        "completed": 0,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 1
+      },
+      "completed_events": [],
+      "entered_matches": [
+        "01a0f437-2417-7256-bb28-e1cac3516a81"
+      ],
+      "legal_abandons": 1,
+      "legal_extractions": 0
+    },
+    "cycles-middle-response-loss": {
+      "evidence": "source-candidate/raw/ack-client-runner-cycles-middle-response-loss-4f4761caa0264493a9f21384784e8829/load-result.json.accounting.json",
+      "partition": {
+        "cancelled": 0,
+        "completed": 3,
+        "failed": 0,
+        "incomplete": 0,
+        "started": 3
+      },
+      "completed_events": [
+        {
+          "cycle_id": "cycles-middle-response-loss:1",
+          "match_id": "01a0f439-7849-7e42-871a-c391d442a374"
+        },
+        {
+          "cycle_id": "cycles-middle-response-loss:2",
+          "match_id": "01a0f439-fc38-715f-820e-5ea0266152b5"
+        },
+        {
+          "cycle_id": "cycles-middle-response-loss:3",
+          "match_id": "01a0f43a-8369-7418-a261-b2e7f87b1314"
+        }
+      ],
+      "entered_matches": [
+        "01a0f439-7849-7e42-871a-c391d442a374",
+        "01a0f439-fc38-715f-820e-5ea0266152b5",
+        "01a0f43a-8369-7418-a261-b2e7f87b1314"
+      ],
+      "legal_abandons": 3,
+      "legal_extractions": 0
+    }
+  },
+  "canonical_case_matrix": "CASE_MATRIX.json",
+  "fixture_before_after": {
+    "registration_pool_reset": "Before misclassified Npgsql DISCARD ALL completion as target UPDATE; corrected fixture classifier, preserved original FixtureFailure. Actual production behavior passed.",
+    "registration_outside_build": "External build nonPG203pass3layoutfail preserved; internal source frozen build now13/13 and206/206 closes path limitation. Temporary external symlink supplemental retest is not official evidence.",
+    "ready": "Before omitted legitimate Active state and expected zero bot room after all humans removed; client5/5 had passed, wrapper3 failures were fixture assertions. Corrected checks keep unchanged15s deadline and explicit Removed/Cancelled/released assets; final actual5/5 clean commit passes.",
+    "root_development": "Initial3/3 support preserved; test driver evolved during development, exact copied source manifests retained. Final frozen4/4 adds uncommitted second-cycle drop, partition and exact persisted match comparison; current production unchanged.",
+    "registration_tcp": "bc43bd2f TCP relay2pass1login timeout with fixed10s HTTP timeout. Relay fragmented header/payload writes added TCP delayed-ACK latency; match Npgsql TCP_NODELAY, unchanged deadlines.38c2cacc full process drops actual committed UPDATE response and all3 cases pass on own loopback TCP and Unix. No production change."
+  },
+  "task_states_before": {
+    "Partial": 53,
+    "NotRevalidated": 76,
+    "Blocked": 3,
+    "Accepted": 0
+  },
+  "task_states_after": {
+    "Partial": 53,
+    "NotRevalidated": 76,
+    "Blocked": 3,
+    "Accepted": 0
+  },
+  "task_state_transitions": [],
+  "case_evidence_strengthened": [
+    "LOAD-04.4-T02 previously unexercised now component Register + actual process MarkRunning evidence",
+    "LOAD-05.4-T03 previously unexercised now production Godot three-entry failed transport retry counting evidence"
+  ],
+  "all_accepted": false,
+  "gates": "G0-G5 NotAccepted",
+  "CI": {
+    "status": "AccountBillingBlocked",
+    "manual_retries": 0,
+    "reason": "Parent verified recent account payments failed OR spending limit; exact subcause unknown. Await user action; no billing/permissions modification.",
+    "source_candidate_pending": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+    "new_delivery_runs": "record after push without generating a CI retry loop"
+  },
+  "cleanup": "source-candidate/cleanup-proof.json; ready-clean/report.json and owned-pg-cleanup.log",
+  "raw_upload": "Four original simulation raw ZIPs remain local unchanged; awaiting user approval; no upload/destination attempt.",
+  "remaining": [
+    "full Program Register failure with actual Godot",
+    "client pending-holds and busy/old receipt concrete injection",
+    "STOP during settlement poll/reconnect await",
+    "three full gameplay/prepared Boss routes and repeated NOT_IN_ROOM across real cycles",
+    "LIVE/RENDER/human/independent stage adjudication",
+    "exact future CI after user billing resolution",
+    "UI/PR14 final independent fixed combination regression",
+    "historical raw gaps, global ledger mismatch1, full capacity/soak/experiments"
+  ],
+  "prior_candidate_sha": "d2106eb0039699a9e6f6d70ea8e5d38db5d3076b"
+}

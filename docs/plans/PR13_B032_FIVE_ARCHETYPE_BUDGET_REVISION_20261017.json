@@ -1,0 +1,144 @@
+{
+  "kind": "ExplicitB032SamplingBudgetRevisionAndFairBudgetFiveArchetypePlan",
+  "pre_execution_plan": true,
+  "original_conservative_limit": 300,
+  "prior_conservative_executed": 298,
+  "revised_conservative_limit": 500,
+  "planned_additional_PVE": 180,
+  "planned_additional_PVP_rooms": 10,
+  "planned_additional_PVP_player_participations": 20,
+  "planned_conservative_final": 498,
+  "diagnostic_headroom": 2,
+  "human_policy_basis": "User explicitly requested per-task at most a few hundred encounters; the earlier300 was this goal implementation choice. 500 remains a few hundred and preserves scope rather than silently dropping archetypes.",
+  "reason": "Verified zero-cost white budgets have only18/18/19 pure-compatible cards and zero tuning cards. Current generator silently supplies default only because same-cost positive-core replacement does not exist. Need separate equal40cost white experimental tier for allfive styles, not higher rarity or more levels.",
+  "business_or_statistical_pass_criteria_relaxed": false,
+  "precision_guarantee": false,
+  "prior_failures_and_original_300_limit_retained": true,
+  "all_other_tasks_default_limit": 300,
+  "PVE_matrix": {
+    "heroes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "styles": [
+      "default_equivalent",
+      "pure_core",
+      "sustain",
+      "control_draw",
+      "tuning_mixed"
+    ],
+    "strategies": [
+      "baseline_all_hand",
+      "basic",
+      "build"
+    ],
+    "groups": [
+      "O1",
+      "O6",
+      "E1",
+      "BOSS"
+    ],
+    "one_seed_per_cell": true,
+    "seed_blocks": [
+      202610190,
+      202610191,
+      202610192
+    ],
+    "cutoff_seconds": 60
+  },
+  "PVP_plan": "Each of the five styles is mirrored in both side orders; heroes cycleMage/Priest/Guardian/Mage/Priest. Old36actual PVPmirrorrooms separately cover allheroes at canonical0budget. Coupled coverage,not all PVPhero/style cross product or autonomous combat.",
+  "comparison_scope": "Canonical actual default0 remains separate oldreference, not pooled with40cost profiles. default_equivalent40 replaces4common with exact-effect current paidwhite cards. All five experimental40cost decks have same20white/level0 and own-copy expenditure, not strength estimates.",
+  "zero_budget_feasibility": [
+    {
+      "hero": "Mage",
+      "default_unlock_cost": 0,
+      "zero_cost_pure_or_neutral_count": 18,
+      "zero_cost_tuning_count": 0,
+      "minimum_tuning_cost": 10
+    },
+    {
+      "hero": "Priest",
+      "default_unlock_cost": 0,
+      "zero_cost_pure_or_neutral_count": 18,
+      "zero_cost_tuning_count": 0,
+      "minimum_tuning_cost": 10
+    },
+    {
+      "hero": "Guardian",
+      "default_unlock_cost": 0,
+      "zero_cost_pure_or_neutral_count": 19,
+      "zero_cost_tuning_count": 0,
+      "minimum_tuning_cost": 10
+    }
+  ],
+  "definitions_sha256": "50048365bb09984d8759e521de777aec1d56af7eac5a93839c07d261e55eac20",
+  "source_catalog_sha256": "2dd3c43876a58c5027beeb0c8e692341638c8061cdefb42d2253c1df74c270e5",
+  "pointer_sha256": "b293fded0b0ec85e632089f20addd22896f9910f761a89d479a87d52014dadd2",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-b034-three-profiles-dependency-partial-20261017/register.json",
+    "sha256": "501c9ec17fd851bfc9379421f657794f076de74038f05264e7f343ba7687a4a2"
+  },
+  "owned_runtime": "Local actual current Domain/Numerics with immutable config, no production/server edits, no network/source upload.",
+  "failure_handling": "Persist every start and result incrementally. Do not restart completed cells; final counter includes all diagnostics. No automatic acceptance on errors.",
+  "actual_static_validation_passed": true,
+  "actual_new_encounters_executed_at_freeze": 0,
+  "current_default_generator_verified": [
+    "Mage: default only",
+    "Priest: default only",
+    "Guardian: default only"
+  ],
+  "source_execution_context_original_sha256": "99af466852e637014b6163317c5fa8291eeb64c3a214a0542338c30cdfa73c94",
+  "G_before_execution_receipt": {
+    "path": "G:\\PR13Evidence\\b032-budget-revision-before-execution-20261017",
+    "files": [
+      {
+        "path": "execution-context-before.original.md",
+        "bytes": 3675,
+        "sha256": "99af466852e637014b6163317c5fa8291eeb64c3a214a0542338c30cdfa73c94"
+      },
+      {
+        "path": "plan-before-execution.original.json",
+        "bytes": 3720,
+        "sha256": "3fdc5c0077d80241bccb60c8f59c35d758420cbd1a6810d842d3954e43ce896f"
+      },
+      {
+        "path": "profiles-before-execution.original.json",
+        "bytes": 23156,
+        "sha256": "50048365bb09984d8759e521de777aec1d56af7eac5a93839c07d261e55eac20"
+      },
+      {
+        "path": "actual-definition-validation.original.json",
+        "bytes": 6515,
+        "sha256": "d97e842f8e2bc328aecac661a44b9a76b4b5ab4d871f0d1fb831b20e509d8fcd"
+      },
+      {
+        "path": "validation-process.original.json",
+        "bytes": 263,
+        "sha256": "f1b5d8d4754ffb4d810405dd58def2ec6b2f6466df356a6b282b3308367b4ac5"
+      },
+      {
+        "path": "source-manifest.json",
+        "bytes": 7345,
+        "sha256": "825c99d5c922e7d7ecc14398cd0ef936973a151ab8fcd8c496e21c76bb303790"
+      },
+      {
+        "path": "Probe.frozen.cs",
+        "bytes": 10142,
+        "sha256": "9d72e837b348355713b818c48c79e8452d88b570c4056dd8be86fe2d0ba8619a"
+      },
+      {
+        "path": "actual-catalog.original.json",
+        "bytes": 128200,
+        "sha256": "2dd3c43876a58c5027beeb0c8e692341638c8061cdefb42d2253c1df74c270e5"
+      }
+    ],
+    "members_verified": 8,
+    "all_before_new_encounter_execution": true,
+    "source_upload_bytes": 0
+  },
+  "frozen_source_code_sha256": "9d72e837b348355713b818c48c79e8452d88b570c4056dd8be86fe2d0ba8619a",
+  "main_gdd_sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+  "base_gdd_sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1",
+  "no_register_or_gate_change_by_this_plan": true
+}

@@ -1,0 +1,22 @@
+{
+  "authority": "MAIN",
+  "task_decisions": [
+    {
+      "task_id": "LOAD-06.4",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "at_local": "2026-10-16T20:43:12.664439+08:00",
+      "human_authorization": "本次goal继续未验收项目自动测试并最终验收；本项三个案例各层已独立审查。",
+      "reason": "本地单调钟、不可测阶段明确null/unavailable、敏感证据拒绝输出三案例的OFFLINE/POSTGRES/LIVE均有准确证据。补齐剩余PG时钟两层，复用同一真实隔离PG reusable调用的66/50ms attempt与5149ms逻辑耗时；计时、复用传输、编解码、选中路由和schema结构与当前一致。真实PG生成会话/票据的拒绝输出控制10条原生记录零跳过，服务端生产树和检查器保持一致。当前公网98条HTTP记录及报告输出边界已补齐。",
+      "source_scope_limit": "只复用已验证等价的reusable计时路径，未称整份旧Gateway与当前字节相同或新版native204分支在旧PG运行中执行过。路由表归档副本现缺失，但原始已记录Git对象SHA与选中路由/结构核验通过；不恢复或改写原生运行日志。",
+      "acceptance_scope": "时钟、缺失和报告输出合同，不代表网络SLO、容量、三职业自然多局或真人体验通过。",
+      "case_review": "docs/reports/pr13-stages-20261009/S6-load064-all-profiles-main-reviewed-20261016/case-review.json",
+      "review_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+      "new_PG_or_gameplay_runs": 0,
+      "old_observation_preserved": {},
+      "rollback": "切回父register撤销本次单项验收；保留原件、来源等价性限制和全部未完成项目，不改服务器或资产。"
+    }
+  ],
+  "all_other_task_and_gate_rows_unchanged": true,
+  "whole_scope_accepted": false
+}

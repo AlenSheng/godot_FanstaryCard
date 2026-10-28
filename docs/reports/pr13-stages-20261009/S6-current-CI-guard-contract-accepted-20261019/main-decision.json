@@ -1,0 +1,19 @@
+{
+  "task_id": "LOAD-11.3",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-19T19:48:43.341030+08:00",
+  "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+  "human_authorization": "本goal自动测试和逐项验收授权，真人体验排除。",
+  "scope": "OFFLINE/AUDIT CI保护合同：新文件单独变更的配置路径覆盖、无PG原生真实Skip必须Blocked并列出、历史成功不能当前headPass。不是当前工作流或Server正向矩阵通过。",
+  "reason": "当前源码原生缺PG测试1项真实NotExecuted/0Passed，退出0仍被两个当前验收器拒绝；三项当前Python保护回归执行且0skip；新client和四个pr13工具路径均匹配PR/releasepush，路径配置与GitHub曾实际触发的b77源一致；实时查旧run四jobs无teststeps，当前head无runs且明确skipci，不产生假成功。",
+  "current_native_database_test_passed": false,
+  "current_CI_pipeline_passed": false,
+  "current_Godot_Server_positive_matrix_passed": false,
+  "no_source_changes_to_make_assertions_pass": true,
+  "new_worlds_accounts_windows": 0,
+  "criteria_relaxed": false,
+  "scope_limits_not_whole_project_acceptance": true,
+  "dependencies": "使用LOAD11.2不可变原件/当前G盘校验及LOAD10.1跳过不能通过的最小证据合同；父包未Accepted不自动阻塞或升级。",
+  "rollback": "current pointer退回父register，本轮没有产品/生产/工作流配置变更。"
+}

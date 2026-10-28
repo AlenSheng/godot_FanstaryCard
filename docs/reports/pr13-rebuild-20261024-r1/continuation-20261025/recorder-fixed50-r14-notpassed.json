@@ -1,0 +1,148 @@
+{
+  "kind": "Recorder-fixed exact50 North America capacity R14 completed; not passed",
+  "source_commit": "c655d1ba2702febb26bbf247c75e063349d26311",
+  "latency_profile": "north-america-5s-8s-10s-monitor10s",
+  "actual_native_clients": {
+    "Windows": 25,
+    "cloud": 25
+  },
+  "original_both_exit": 1,
+  "original_stop_reason": "duration_limit",
+  "original_dimensions": [
+    {
+      "host": "windows",
+      "outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "dimensions": {
+        "dimensions": {
+          "execution": "Failed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "coverage": {
+        "coverage": 0.3615750001536475,
+        "observed_seconds": 710.6679999828339,
+        "longest_continuous_seconds": 90.05599999427795,
+        "passed": false
+      },
+      "final_triggers": [
+        "final_business_failure"
+      ],
+      "lost_events": 0,
+      "forced_termination": [],
+      "cleanup": true
+    },
+    {
+      "host": "cloud",
+      "outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "dimensions": {
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Failed",
+          "gameplay": "NotApplicable",
+          "performance": "Unknown",
+          "cleanup": "Passed"
+        },
+        "applicable": [
+          "cleanup",
+          "evidence",
+          "execution",
+          "load",
+          "performance"
+        ],
+        "all_applicable_passed": false,
+        "full_acceptance_passed": false
+      },
+      "coverage": {
+        "coverage": 0.5990875002410677,
+        "observed_seconds": 711.1640000343323,
+        "longest_continuous_seconds": 150.74000000953674,
+        "passed": false
+      },
+      "final_triggers": [],
+      "lost_events": 0,
+      "forced_termination": [],
+      "cleanup": true
+    }
+  ],
+  "normal_rejoin_gaps_and_all_failing_intervals_retained": true,
+  "business_rejections": {
+    "unexpected_battle_play_rejections": 2,
+    "same_client_same_cycle": true,
+    "original_detail": "Duel is not active in this room.",
+    "first_rejection_to_second_send_ms": 222,
+    "second_send_precedes_next_owned_snapshot_response_ms": 296,
+    "actor_exact_state_at_rejection_not_observed_this_round": true,
+    "resolved_ready_rejection_retained_separately": true,
+    "not_waived_by_single_transition_rejection_criterion": true,
+    "after_next_snapshot_client_switched_battle_id_and_play_succeeded": true
+  },
+  "raw_replay": {
+    "request_evidence_errors": [],
+    "HTTP_count": 1178,
+    "HTTP_p95_ms": 1435,
+    "realtime_count": 45069,
+    "realtime_p95_ms": 1071,
+    "scope": "Pooled raw running-period requests; not overall SLO or capacity pass"
+  },
+  "clock_evidence": {
+    "joint_overlap_not_qualified": true,
+    "original_error": "invalid_clock_round_trip",
+    "all10_Windows_probe_intervals_zero_ms": true,
+    "one_cloud_after_probe_RTT_ms": 1610,
+    "registered_max_RTT_ms": 1500,
+    "no_bad_probe_discarded_or_rewritten": true,
+    "zero_ms_local_probe_is_not_rejected_by_current_envelope_validator": true,
+    "direct_rejection_reason": "Cloud after probe1610ms exceeds registered1500ms; local0ms is retained as a precision observation, not a separate rejection"
+  },
+  "recorder_fix_observation": {
+    "prior_R10_90second_progress_stall_not_repeated": true,
+    "no_new_stall_or_resource_guard_stop": true,
+    "does_not_clear_other_execution_or_load_failures": true
+  },
+  "backup_and_state": {
+    "Windows_originals_sealed_on_G": true,
+    "cloud_cohort_members_G_verified": true,
+    "full_cloud_original_files_G_SHA256_verified": 326,
+    "archive_SHA256": "e6c054138bf0088305dd5cb025d2d9f97d6678f1986090a4ead0bf9bc1905c99",
+    "dump_bytes": 305985,
+    "dump_SHA256": "f2d593558baccff39cb49ccb52062b6089bc550adf89951ecb21a255e3d8e89e",
+    "actual_DB_dump_matches": 27,
+    "actual_DB_dump_settlements": 87,
+    "pending_holds": 0,
+    "actual_R14_dump_restore_pending": true,
+    "all4_owned_services_stopped_source_and_DB_retained": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "capacity_accepted": false,
+  "whole_project_accepted": false,
+  "actual100": "NotExecuted",
+  "next_required": [
+    "Block a second stale room write after the first authoritative rejection until an owned fresh state arrives; reproduce before editing",
+    "Repair zero-width Windows clock collection and predeclare quality rules without rewriting current probes",
+    "Keep exact50 result separate from any stronger60producers_for50active experiment"
+  ],
+  "at_unix_ms": 1792899105732.8875
+}

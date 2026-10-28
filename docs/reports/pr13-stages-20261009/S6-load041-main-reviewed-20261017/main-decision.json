@@ -1,0 +1,14 @@
+{
+  "task_id": "LOAD-04.1",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T10:28:02.449314+08:00",
+  "reason": "当前完整Program/原生四客户端两局及取消/默认READY超时，独立SQL和三案控制故障逐项通过；新增trace拒绝原因，48不变量复核、回归四套通过及所有资源清理。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load041-current-match-LIVE-PG-20261017/main-independent-review.json",
+  "human_authorization": "本goal自动补验未通过项目与云端临时测试限制授权。",
+  "business_criteria_relaxed": false,
+  "scope": "Current-match functional LIVE/POSTGRES; declared consumer replay/HTTP delay seams; no natural-cycle/default-capacity/human claim",
+  "old15percent_capacity_resource_floor_unpassed": true,
+  "original_failures_preserved": true,
+  "rollback": "回到父register可撤销本项裁决；本轮gateway三诊断hunk及两测试有原字节备份，无生产或后端变更。"
+}

@@ -1,0 +1,188 @@
+{
+  "kind": "CurrentPolicyOnActualNativeRowsAndNativeTRX",
+  "raw_archives101_members": [
+    {
+      "case": "T01",
+      "archive": "G:\\PR13Evidence\\A094T01-current-PG-LIVE-button-20261022-r1-originals\\RAM-native-prebuilt-recovery.original.tar.xz",
+      "bytes": 624872,
+      "sha256": "44ad6b0a89f8f78da958ee8e181f16416ee5847d456c0cda027f8b3653066363",
+      "all_original_members_SHA_reopened": 32
+    },
+    {
+      "case": "T02",
+      "archive": "G:\\PR13Evidence\\A094T02-current-noDB-LIVE-render-20261022-r5-originals\\RAM-native-prebuilt-recovery.original.tar.xz",
+      "bytes": 3652188,
+      "sha256": "068e4e726bc1e5074f0a5a3e83b6bd521023dec221255a92c77c8ddef725c92d",
+      "all_original_members_SHA_reopened": 23
+    },
+    {
+      "case": "T03-R2",
+      "archive": "G:\\PR13Evidence\\A094T03-current-repaired-head-20261022-r2-originals\\RAM-native-prebuilt-recovery.original.tar.xz",
+      "bytes": 7967900,
+      "sha256": "a7d3132b3181fbf237bb26b52924bb9e4cdde52cac75db0a67f5b23f01b46d62",
+      "all_original_members_SHA_reopened": 35
+    },
+    {
+      "case": "T03-R3",
+      "archive": "G:\\PR13Evidence\\A094T03-current-repaired-head-20261022-r3-originals\\RAM-native-prebuilt-recovery.original.tar.xz",
+      "bytes": 3651756,
+      "sha256": "2ee3a87c7bd213c818069d2c257505f5cdee8cac7609d5121e8ca61b2006bf52",
+      "all_original_members_SHA_reopened": 11
+    }
+  ],
+  "T01_actual_current_policy": [
+    "ReadyForAcceptance",
+    "Failed",
+    "ReadyForAcceptance"
+  ],
+  "T01_script0_health200_threecommits_not_game_DB": true,
+  "T01_final_dump_decode_scope": {
+    "input_command": {
+      "path": "G:\\PR13Evidence\\A094-positive-gate-native-symbols-20261024-r351-originals\\dump-decode.command.original.json",
+      "bytes": 926,
+      "sha256": "79b36fee611f66bafc39741d5f297d94a2d9f0cdc5b9bdebf36dc14c166abfc6"
+    },
+    "actual_table_counts": {
+      "public.admin_audit": 0,
+      "public.class_weapons": 0,
+      "public.client_settings": 1,
+      "public.economy_ledger": 0,
+      "public.equipments": 0,
+      "public.external_identities": 0,
+      "public.idempotency_records": 0,
+      "public.inventory_movements": 0,
+      "public.mail_messages": 0,
+      "public.market_listings": 0,
+      "public.market_transactions": 0,
+      "public.match_players": 0,
+      "public.match_settlements": 0,
+      "public.match_tickets": 0,
+      "public.matches": 0,
+      "public.player_bans": 0,
+      "public.player_cards": 0,
+      "public.player_consumables": 0,
+      "public.player_deck_cards": 0,
+      "public.player_decks": 0,
+      "public.player_loadouts": 0,
+      "public.player_materials": 0,
+      "public.player_sessions": 0,
+      "public.player_wallets": 0,
+      "public.players": 0,
+      "public.pr13_a094t01_marker": 3,
+      "public.preparation_assets": 0,
+      "public.preparations": 0,
+      "public.red_equipment_weekly_quotas": 0,
+      "public.relic_items": 0,
+      "public.relic_piles": 0,
+      "public.reward_refresh_operations": 0,
+      "public.room_event_buffers": 0,
+      "public.room_snapshots": 0,
+      "public.schema_migrations": 26,
+      "public.settlement_asset_holds": 0,
+      "public.settlement_notification_outbox": 0,
+      "public.shop_purchases": 0,
+      "public.shop_refresh_states": 0,
+      "public.shop_rotations": 0
+    },
+    "decode_only_no_DB_started_connected": true,
+    "marker3_players0_matches0": true
+  },
+  "T02_current_noDB_gate_reassessed": {
+    "state": "Blocked",
+    "pipeline_exit": 3,
+    "native_exit": 0,
+    "source_reference": "86ddee230a785d793757da6d0d24056a64a25955",
+    "expected_source_reference": "86ddee230a785d793757da6d0d24056a64a25955",
+    "source_is_reference_not_clean_build_claim": true,
+    "actual_input_manifest_SHA": "d87268696281ad7286bf1bd805303e31de6a295de19173b40a5fbe2ad5d944f3",
+    "TRX_SHA": "7a6b961d7a5192363e8af7e567039860e4f596846d1fda7ea7510d7f47290c99",
+    "required_manifest_SHA": "5da6caa56a6b4744c17d35d75f6ac167b2b707e2be7a0fcc45a6a68d8c5a1bee",
+    "required_methods": {
+      "Persisted_current_contract_does_not_revive_obsolete_boolean_or_remainder_API": 1,
+      "Default_persisted_constructor_stays_current_rhythm_and_current_steps": 1,
+      "Explicit_candidate_enums_survive_database_restore_and_have_independent_assertions": 1,
+      "Persisted_resolver_context_preserves_first_core_floor_tuning_and_dual_element_contracts": 1,
+      "Exact_GDD_fire_contexts_restore_from_database_to_46_72_113": 1,
+      "Priest_card_heal_and_conflict_E0_remain_separate_after_database_restore": 1,
+      "New_policy_source_changes_new_rooms_without_changing_current_persisted_room": 1,
+      "Persisted_PVP_working_copy_restores_complete_original_PVE_and_policy": 1,
+      "Missing_legacy_policy_fields_use_defaults_and_invalid_values_reject_before_mutation": 1
+    },
+    "coverage": {
+      "state": "Blocked",
+      "reason": "native_TRX_invalid_or_inconsistent",
+      "error_type": "ValueError",
+      "acceptance": false
+    },
+    "task_or_project_acceptance": false,
+    "scope": "Declared native PG method coverage and source reference only; not full hosted workflow or deployment"
+  },
+  "T02_actualProgram_exit_minus6_UI_native0_good6clicks": true,
+  "T02_originalTRX9NotExecuted_counter0_not_repaired": true,
+  "T03_current_positive_gate_reassessed": {
+    "state": "CoveredForMainReview",
+    "pipeline_exit": 0,
+    "native_exit": 0,
+    "source_reference": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+    "expected_source_reference": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+    "source_is_reference_not_clean_build_claim": true,
+    "actual_input_manifest_SHA": "ee53f016cb68c5c1ed1cbc2953ebf4284bbd5c0c6561612b2b36d762efe46e83",
+    "TRX_SHA": "15c4be515169e5e9fbc433a2b0b7cbd581877fe7eea3c72f9536d648b48ab918",
+    "required_manifest_SHA": "decc5d0110c95d9d56f76a5fd8056aa815af34b03309520f9f23ea311fbcdd04",
+    "required_methods": {
+      "Projection_is_scoped_to_caller_match_unacknowledged_and_completed_holds_without_writes": 1,
+      "Projection_does_not_wait_on_locked_wallet_or_card_catalog_tables": 1,
+      "Bootstrap_projection_real_HTTP_preserves_auth_scope_pending_errors_and_full_legacy_response": 1,
+      "Projection_uses_existing_bootstrap_wire_fields_without_catalogs": 2
+    },
+    "coverage": {
+      "state": "CoveredForMainReview",
+      "missing_assertion_rows": {},
+      "failed_cases": [],
+      "skipped_cases": [],
+      "counters": {
+        "total": 5,
+        "executed": 5,
+        "passed": 5,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "inconclusive": 0,
+        "passedButRunAborted": 0,
+        "notRunnable": 0,
+        "notExecuted": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "completed": 0,
+        "inProgress": 0,
+        "pending": 0
+      },
+      "acceptance": false
+    },
+    "task_or_project_acceptance": false,
+    "scope": "Declared native PG method coverage and source reference only; not full hosted workflow or deployment"
+  },
+  "T03_old_source_refused_fresh_source_accepted": {
+    "ok": true,
+    "prior_actual_manifest_rejected": true,
+    "prior_manifest": {
+      "path": "client/ui/main.gd",
+      "bytes": 90160,
+      "sha256": "89ca2b63d87937d3acd1a6c27742ef8c6ac3e164bde036db6d9c2edcc0ac5e66"
+    },
+    "fresh_manifest": {
+      "path": "client/ui/main.gd",
+      "bytes": 91569,
+      "sha256": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002"
+    },
+    "fresh_manifest_accepted": true,
+    "current_release": "e24ac80789c9f0b6eb24d17a4c9ad143d7cdf770",
+    "fresh_TRX_SHA": "15c4be515169e5e9fbc433a2b0b7cbd581877fe7eea3c72f9536d648b48ab918",
+    "actual_Server_SHA": "2ba808b09b358c7829d5cbdfada0f94ff1938dfd0327dcb5204cbe7212111378",
+    "actual_test_DLL_SHA": "8603e35e0243ab9eedd50e42d44352559c8a15252e1a10c3947410474740647a"
+  },
+  "T03_actual_old0_and_fixed6_clicks": true,
+  "T03_actual_health7_status200": true,
+  "expected_negative_contract_pass_does_not_accept_underlying_DB_or_failed_UI_as_passed": true
+}

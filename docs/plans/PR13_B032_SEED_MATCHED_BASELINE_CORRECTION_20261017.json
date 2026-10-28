@@ -1,0 +1,101 @@
+{
+  "kind": "B032ExplicitSeedMatchedBaselineCorrectionBeforeExecution",
+  "previous_limit": 500,
+  "previous_actual_conservative": 498,
+  "revised_limit": 600,
+  "actual_required_additional_baselines": 72,
+  "planned_final_conservative": 570,
+  "original_300_and_500_plans_and_all_originals_retained": true,
+  "human_policy_basis": "User upper limit is a few hundred per task. This explicit600ceiling remains within it; it corrects an underplanned comparison design rather than relaxing game/statistical criteria.",
+  "actual_gap": {
+    "actual_starts": 180,
+    "outcomes": {
+      "Victory": 35,
+      "Censored": 145
+    },
+    "five_style_coverage": {
+      "default_equivalent": 36,
+      "pure_core": 36,
+      "sustain": 36,
+      "control_draw": 36,
+      "tuning_mixed": 36
+    },
+    "candidate_rows": 144,
+    "candidate_rows_with_matching_baseline": 36,
+    "missing_unique_baseline_controls": 72,
+    "requires_new_comparison_controls": true
+  },
+  "reason": "Original180 valid coverage rows rotated seed by style,leaving108candidate rows without their default-equivalent seed match.72unique additional baseline cells cover those missing pairs. Preserve180originals,no repeat or relabel.",
+  "runtime_method": "Invoke the original frozen StrategyProbe CombatExperience.Simulate by reflection using the exact original FantasyCard.Domain.dll and StrategyProbe.dll,not rebuilt equivalents.",
+  "frozen_runtime_SHA256": {
+    "FantasyCard.Domain.dll": "0d878f51bc1ef39e6ad78b622c3ba35ed23305f5b3a82fd486d7525e46989514",
+    "StrategyProbe.dll": "ecec2108e4bbac89df3de30bd9e9ec5f3436fb1c439295ef14f2f1e07c0b0a04"
+  },
+  "original_definitions_sha256": "50048365bb09984d8759e521de777aec1d56af7eac5a93839c07d261e55eac20",
+  "original_pve_sha256": "7619b06631cb8b3180d4f76dd6c7674ac7073635e32c8bd981e6ea266c407115",
+  "original_definition_validation_sha256": "d97e842f8e2bc328aecac661a44b9a76b4b5ab4d871f0d1fb831b20e509d8fcd",
+  "original_plan_sha256": "3fdc5c0077d80241bccb60c8f59c35d758420cbd1a6810d842d3954e43ce896f",
+  "unchanged_gameplay_inputs": "Same exact20white/40cost definitions,source config,60s,0levels/weapon,policy and group; add only missing declared seed controls. Original read-only tuning observer omitted; engine/first3preview audit unchanged.",
+  "criteria_relaxed": false,
+  "no_source_upload_or_production_change": true,
+  "scope": "Actual additional72baseline encounters for fair individual candidate pairing. Repeated seeds across cells remain clusters,not independent largeN; no strength/precision/production inference.",
+  "actual_preflight": {
+    "passed": true,
+    "missing_cells": 72,
+    "domain_assembly_sha256": "0d878f51bc1ef39e6ad78b622c3ba35ed23305f5b3a82fd486d7525e46989514",
+    "simulator_assembly_sha256": "ecec2108e4bbac89df3de30bd9e9ec5f3436fb1c439295ef14f2f1e07c0b0a04",
+    "no_sut_rebuild": true,
+    "actual_new_encounters": 0
+  },
+  "original_failed_preflight_new_encounters": 0,
+  "actual_new_baselines_executed_at_freeze": 0,
+  "context_before_sha256": "ec3524022db34656b990a4c340170647bfcdc09d0f530607b493f6423aa1007a",
+  "original_frozen_300_to_500_doc": "docs/plans/PR13_B032_FIVE_ARCHETYPE_BUDGET_REVISION_20261017.json",
+  "G_before_execution_receipt": {
+    "path": "G:\\PR13Evidence\\b032-seed-matching-correction-before-execution-20261017",
+    "files": [
+      {
+        "path": "execution-context-before-600.original.md",
+        "bytes": 5347,
+        "sha256": "ec3524022db34656b990a4c340170647bfcdc09d0f530607b493f6423aa1007a"
+      },
+      {
+        "path": "seed-correction-plan-before-execution.original.json",
+        "bytes": 2596,
+        "sha256": "c8a2e899f95e10875d50e3e1878572c9672521dc9ca018477a653b800ed7821f"
+      },
+      {
+        "path": "independent-seed-pair-gap.original.json",
+        "bytes": 412,
+        "sha256": "ffd93fbbdd2bf2d4421fe5335a75afa0ae8e3859b7ec95b271f51157fbeb458d"
+      },
+      {
+        "path": "BaselineCompletion.frozen.cs",
+        "bytes": 5250,
+        "sha256": "a82565ef6eb9255990fadc18191a31623253cecc75a7c0c614364387ec7de945"
+      },
+      {
+        "path": "actual-frozen-runtime-preflight.original.json",
+        "bytes": 269,
+        "sha256": "454e5294400d3e5286b631ab94327a7be404b0064d343061ab45a1ab2ca5aaa4"
+      },
+      {
+        "path": "preflight-process-r2.original.json",
+        "bytes": 262,
+        "sha256": "e5ac36971922c5a4d83ba851fcf08d9b53a493ed8b480a05410ebe04205a0feb"
+      },
+      {
+        "path": "original-failed-project-preflight.original.json",
+        "bytes": 134,
+        "sha256": "12bc527b5dfd11920c3da4603b4045747caaab482508c72565cbd1edfebd5508"
+      }
+    ],
+    "members_verified": 7,
+    "all_before_72_new_encounters": true,
+    "source_upload_bytes": 0
+  },
+  "host_source_sha256": "a82565ef6eb9255990fadc18191a31623253cecc75a7c0c614364387ec7de945",
+  "host_executable_sha256": "cb1570505d01c1209a893c0631140ad381fe287e3b1699dfff38cd0b45614bc7",
+  "pointer_before_sha256": "b293fded0b0ec85e632089f20addd22896f9910f761a89d479a87d52014dadd2",
+  "register_or_global_gate_changed_by_this_plan": false
+}

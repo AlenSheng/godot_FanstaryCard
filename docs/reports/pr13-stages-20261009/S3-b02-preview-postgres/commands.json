@@ -1,0 +1,70 @@
+{
+  "server": {
+    "ids": {
+      "pr13-b02-preview-pg-attempt3-database": "0d852036b36e41fd3974f00c70fccd7f7142bd5f590e480b3291d5e78db15e9d",
+      "pr13-b02-preview-pg-attempt3": "cc05c50fa84b5a75ac43119146eee1e4214379bafa0e9e20bcade3cb5078de7d"
+    },
+    "command": [
+      "dotnet",
+      "test",
+      "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--artifacts-path",
+      "/evidence/build",
+      "--filter",
+      "FullyQualifiedName~PostgresCombatPreviewTests",
+      "--logger",
+      "trx;LogFileName=preview.trx",
+      "--results-directory",
+      "/evidence",
+      "-p:UseSharedCompilation=false",
+      "-p:NuGetAudit=false",
+      "-maxcpucount:1"
+    ],
+    "owner": "pr13-b02-preview-20261010"
+  },
+  "client": {
+    "container_id": "6d473b6608e5b909ecc0cf3c488aeabd6eda2af77f8e7841fa1a1bcddb789d19",
+    "owner": "pr13-b02-preview-20261010",
+    "command": [
+      "create",
+      "--name",
+      "pr13-b02-preview-client-continued",
+      "--label",
+      "codex.owner=pr13-b02-preview-20261010",
+      "--memory",
+      "900m",
+      "--cpus",
+      ".5",
+      "--user",
+      "1000:1000",
+      "-v",
+      "/home/ubuntu/pr13-acceptance-20261009/evidence/b02-preview-pg-complete/client:/work/client:ro",
+      "-v",
+      "/home/ubuntu/pr13-acceptance-20261009/evidence/b02-preview-pg-complete:/evidence",
+      "-v",
+      "/home/ubuntu/pr13-acceptance-20261009/cache:/cache",
+      "-w",
+      "/work/client",
+      "-e",
+      "PR13_PREVIEW_WIRE_INPUT=/evidence/receipts/PR13-B02.3-T02-ordered-protobuf.json",
+      "-e",
+      "PR13_PREVIEW_WIRE_OUTPUT=/evidence/client-result.json",
+      "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+      "godot",
+      "--headless",
+      "--path",
+      "/work/client",
+      "res://tests/pr13_postgres_preview_wire.tscn"
+    ],
+    "memory_available": 2942148608,
+    "disk_fraction": 0.1517687281399005
+  },
+  "all_applicable_skips": 0,
+  "owned_cleanup": {
+    "pr13-b02-preview-pg-attempt3": true,
+    "pr13-b02-preview-pg-attempt3-database": true,
+    "pr13-b02-preview-client-continued": true
+  }
+}

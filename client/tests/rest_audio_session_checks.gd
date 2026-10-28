@@ -13,17 +13,37 @@ class SessionGateway extends "res://network/gateway.gd":
 func run_test(host: Control) -> Dictionary:
 	var original_gateway: Node = Game.gateway
 	var original_busy: bool = Game.busy
+	var original_lobby: Dictionary = Game.lobby
+	var original_cache_syncing: Dictionary = Game._cache_syncing
+	var original_cache_sync_again: Dictionary = Game._cache_sync_again
+	var original_cache_versions: Dictionary = Game._cache_versions
 	var original_owned: Array = host.owned
 	var original_ready: bool = host._codex_ready
 	var original_mutating: bool = host._codex_mutating
 	var original_screen: String = host.screen
+	var original_deck: Array = host.deck_draft.duplicate()
+	var original_session_generation: int = host._session_generation
+	var original_inventory: Dictionary = host.inventory
+	var original_shop: Dictionary = host.shop
+	var original_listings: Array = host.listings
+	var original_shop_inventory_ready: bool = host._shop_inventory_ready
+	var original_card_prewarm_started: bool = host._card_prewarm_started
 	var original_sound := {"muted": Sound.muted, "volume": Sound.volume, "persist": Sound.persist_settings}
 	var fake := SessionGateway.new()
 	fake.persist_session = false
 	fake.online = true
+	fake.token = "rest-audio-session-fixture"
 	Game.gateway = fake
+	# Isolate the fixture's materials/cards/decks and cache refresh bookkeeping.
+	Game.lobby = original_lobby.duplicate(true)
+	Game._cache_syncing = {}
+	Game._cache_sync_again = {}
+	Game._cache_versions = original_cache_versions.duplicate(true)
 	host.screen = "hall"
 	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 0, "version": 1, "currencyKind": "WarriorSoul", "upgradeCost": 0, "upgradeCopyCost": 0, "canUpgrade": true}]
+	if not Game.lobby.get("player") is Dictionary: Game.lobby["player"] = {"userId": "rest-audio-session-fixture"}
+	Game.lobby["cards"] = host.owned.duplicate(true)
+	Game.lobby["materials"] = {"warriorSoul": 0}
 	host._codex_ready = true
 	Sound.persist_settings = false
 	Sound.set_muted(false)
@@ -35,10 +55,15 @@ func run_test(host: Control) -> Dictionary:
 	var listener := func(cue): heard.append(cue)
 	Sound.cue_started.connect(listener)
 	for action in ["card_upgrade", "deck_save", "purchase", "deck_refresh_switch"]:
+		host.deck_draft = []
+		for index in range(1, 14): host.deck_draft.append("C%02d" % index)
+		var prefix: String = {"Mage":"MAG", "Priest":"PRI", "Guardian":"GUA"}.get(Game.hero_class, "MAG")
+		for index in range(1, 8): host.deck_draft.append("%s-%02d" % [prefix, index])
+		Game.lobby["decks"] = [{"heroClass": Game.hero_class, "cardIds": host.deck_draft.duplicate(), "version": 1}]
 		fake.paths.clear()
 		fake.responses = [{"result": {"ok": false, "status": 401, "stale_session": true}}]
 		if action == "deck_refresh_switch":
-			fake.responses = [{"result": {"ok": true, "status": 200, "data": {}}}, {"advance_generation": true, "result": {"ok": false, "status": 401, "stale_session": true}}]
+			fake.responses = [{"result": {"ok": false, "status": 409}}, {"advance_generation": true, "result": {"ok": false, "status": 401, "stale_session": true}}]
 		Game.busy = false
 		host._codex_mutating = false
 		heard.clear()
@@ -49,8 +74,9 @@ func run_test(host: Control) -> Dictionary:
 			"purchase": await host._mutate("/shop/purchases", HTTPClient.METHOD_POST, {"productId": "fixture", "quantity": 1})
 		checks["Stale REST audio stays silent: " + action] = heard.is_empty()
 		var expected: Array = ["/api/v1/cards/C01/upgrade"] if action == "card_upgrade" else (["/api/v1/shop/purchases"] if action == "purchase" else ["/api/v1/decks/" + Game.hero_class])
-		if action == "deck_refresh_switch": expected.append("/api/v1/bootstrap")
+		if action == "deck_refresh_switch": expected.append("/api/v1/decks/")
 		checks["Stale REST stops follow-up requests: " + action] = fake.paths == expected
+		checks["Stale REST scenario reaches supplied response: " + action] = fake.responses.is_empty()
 	Game.busy = false
 	host._codex_mutating = false
 	host.owned = [{"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 0, "version": 1, "currencyKind": "WarriorSoul", "upgradeCost": 5, "upgradeCopyCost": 0, "canUpgrade": true}]
@@ -59,6 +85,9 @@ func run_test(host: Control) -> Dictionary:
 	await host._card_action("C01", "upgrade")
 	checks["Insufficient card upgrade is rejected before networking"] = fake.paths.is_empty()
 	Game.lobby["materials"] = {"warriorSoul": 10}
+	# The audible success case keeps the same fixture account and skips prewarming.
+	host._session_generation = fake.session_generation
+	host._card_prewarm_started = true
 	fake.responses = [{"result": {"ok": true, "status": 200, "data": {"card": {"cardId": "C01", "craftCost": 1, "copyCount": 1, "level": 1, "version": 2, "currencyKind": "WarriorSoul", "upgradeCost": 10, "upgradeCopyCost": 0, "canUpgrade": true}, "materials": {"warriorSoul": 5}}}}]
 	fake.paths.clear()
 	await host._card_action("C01", "upgrade")
@@ -68,10 +97,21 @@ func run_test(host: Control) -> Dictionary:
 	Sound.stop_all()
 	Game.gateway = original_gateway
 	Game.busy = original_busy
+	Game.lobby = original_lobby
+	Game._cache_syncing = original_cache_syncing
+	Game._cache_sync_again = original_cache_sync_again
+	Game._cache_versions = original_cache_versions
 	host.owned = original_owned
 	host._codex_ready = original_ready
 	host._codex_mutating = original_mutating
 	host.screen = original_screen
+	host.deck_draft = original_deck
+	host._session_generation = original_session_generation
+	host.inventory = original_inventory
+	host.shop = original_shop
+	host.listings = original_listings
+	host._shop_inventory_ready = original_shop_inventory_ready
+	host._card_prewarm_started = original_card_prewarm_started
 	Sound.set_volume(float(original_sound.volume), false)
 	Sound.set_muted(bool(original_sound.muted))
 	Sound.persist_settings = bool(original_sound.persist)

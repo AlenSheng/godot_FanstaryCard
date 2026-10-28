@@ -82,8 +82,43 @@ public sealed class EquipmentCombatRulesTests
         var versusMetalGuard = CombatResolver.Resolve(cards, attacker, _ => -.30);
         var versusPlayer = CombatResolver.Resolve(cards, attacker, _ => .08);
 
-        Assert.Equal(54, versusMetalGuard.Damage); // floor(23*1.5*1.14*1.30) + floor(8*.24)+floor(3*.24)+floor(12*.24)
-        Assert.Equal(39, versusPlayer.Damage);     // floor(23*1.5*1.14*.92) + the same piercing segment
+        // User reaffirmed the 54cab7f rules on 2026-09-28: first core card is
+        // baseline, later core cards add 20%, and elemental cards floor individually.
+        Assert.Equal(1.4, versusMetalGuard.ResonanceMultiplier, 6);
+        Assert.Equal(3, versusMetalGuard.CoreCount);
+        Assert.Equal(46, versusMetalGuard.DamageSegments!.Single(segment => segment.Kind == "Fire").Amount); // 16 + 6 + 24
+        Assert.Equal(3, versusMetalGuard.DamageSegments!.Single(segment => segment.Kind == "Direct").Amount); // 1 + 0 + 2
+        Assert.Equal(49, versusMetalGuard.Damage);
+        Assert.Equal(32, versusPlayer.DamageSegments!.Single(segment => segment.Kind == "Fire").Amount); // 11 + 4 + 17
+        Assert.Equal(3, versusPlayer.DamageSegments!.Single(segment => segment.Kind == "Direct").Amount);
+        Assert.Equal(35, versusPlayer.Damage);
+    }
+
+    [Theory]
+    [InlineData(.14, -.30, 0, 46, 0)]
+    [InlineData(.14, .15, 0, 30, 0)]
+    [InlineData(.14, .08, 0, 32, 0)]
+    [InlineData(.14, .35, 0, 23, 0)]
+    [InlineData(.75, .49, .40, 26, 8)]
+    [InlineData(.82, .45, .45, 31, 9)]
+    [InlineData(.75, .54, .40, 25, 8)]
+    [InlineData(.92, .45, .50, 32, 11)]
+    [InlineData(1.27, .45, .50, 38, 11)]
+    [InlineData(.75, .60, .40, 20, 8)]
+    [InlineData(1.12, .45, .50, 36, 11)]
+    [InlineData(1.47, .45, .50, 42, 11)]
+    [InlineData(.44, -.30, 0, 58, 0)]
+    [InlineData(.44, .08, 0, 41, 0)]
+    public void Approved_current_gdd_examples_preserve_separate_elemental_and_direct_segments(
+        double bonus, double resistance, double piercing, int elemental, int direct)
+    {
+        var state = State(HeroClass.Mage, new CombatEquipmentProfile(
+            new ElementalEquipmentModifiers(FireDamageBonus: bonus), PiercingBonus: piercing));
+        var result = CombatResolver.Resolve([Card("slash", 8), Card("spark", 3), Card("burst", 12)], state, _ => resistance);
+        Assert.Equal(1.4, result.ResonanceMultiplier, 6);
+        Assert.Equal(elemental, result.DamageSegments!.Where(segment => segment.Kind == "Fire").Sum(segment => segment.Amount));
+        Assert.Equal(direct, result.DamageSegments!.Where(segment => segment.Kind == "Direct").Sum(segment => segment.Amount));
+        Assert.Equal(elemental + direct, result.Damage);
     }
 
     [Fact]

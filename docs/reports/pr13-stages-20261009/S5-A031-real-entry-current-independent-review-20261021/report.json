@@ -1,0 +1,228 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A03.1-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "expected": "重复同错误",
+      "actual": "两个关联请求在旧room仍有效时发送，第二条真实回复在第一条NOT_IN_ROOM导致的Bootstrap200被应用且无receipt之后再交付；同M保持，随后原ready-only查询恢复同M并公开ACK。消费顺序符合真实入口反例，不声称第二请求在Bootstrap后才发出。",
+      "current_OFFLINE_checks": {
+        "authoritative_snapshot_1": true,
+        "duplicate_preserves_M": true,
+        "real_websocket_command_sent": true,
+        "real_websocket_response_received": true,
+        "receipt_M_recovered": true,
+        "requests_completed_within_fixed_budget": true
+      },
+      "shared_actual": {
+        "canonical_case_ids": [
+          "PR13-A03.1-T01",
+          "PR13-A03.1-T02",
+          "PR13-A03.1-T03"
+        ],
+        "current_live_actor31_checks_allpass_OS0_engineclean": true,
+        "current_OFFLINE6_cases_allpassed": true,
+        "independent_actual_case_checks": 55,
+        "same_originals_five_negative_classification_controls_rejected": true,
+        "R2_worlds_realUIDs_receipts_uniqueACKs": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "R2_initial_item_moves3_destination": "RelicPile",
+        "first_bootstrap_applied_ms": 1792551287192,
+        "second_error_delivered_after_first_applied_ms": 1792551287209,
+        "second_real_Bootstrap_hold_ms": 1001,
+        "uncorrelated_error_actual_Native_cursor_consumes_Store_event_notdelivered": true,
+        "direct_Store_missingmatch_guard_verified_in_current_OFFLINE": true,
+        "no_recovery_match_or_room_or_receipt_or_cursor_assignment_in_LIVEactor": true,
+        "original_two_cloud_whole_Failed_results_retained": true,
+        "current_verdict": "Independent scoped contract Passed; original producer Failed remains",
+        "business_criteria_relaxed": false
+      },
+      "source": "Actual Root GameStore/Gateway/HTTPcodec and Program8eb/config49ce; explicit private functional actor/readonly protocol faults/one initial item/owned PG rowlock. Current OFFLINE fixtures corrected to existing ready-only query and existing BootstrapResponse fields.",
+      "scope": "Independent exact case contract, not a producer whole-round pass, naturalvictory, capacity or humanexperience claim.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/independent-case-review.json"
+      ],
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A03.1-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "expected": "Bootstrap晚返回",
+      "actual": "第二条错误引发的真实Bootstrap200延迟1000ms，等待中及原字节应用后均保持M/无room/无receipt；释放自有行锁后同receipt就绪并一次ACK。",
+      "current_OFFLINE_checks": {
+        "authoritative_snapshot_1": true,
+        "late_bootstrap_keeps_M": true,
+        "paused_bootstrap_keeps_M": true,
+        "recovery_continues_M": true,
+        "requests_completed_within_fixed_budget": true
+      },
+      "shared_actual": {
+        "canonical_case_ids": [
+          "PR13-A03.1-T01",
+          "PR13-A03.1-T02",
+          "PR13-A03.1-T03"
+        ],
+        "current_live_actor31_checks_allpass_OS0_engineclean": true,
+        "current_OFFLINE6_cases_allpassed": true,
+        "independent_actual_case_checks": 55,
+        "same_originals_five_negative_classification_controls_rejected": true,
+        "R2_worlds_realUIDs_receipts_uniqueACKs": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "R2_initial_item_moves3_destination": "RelicPile",
+        "first_bootstrap_applied_ms": 1792551287192,
+        "second_error_delivered_after_first_applied_ms": 1792551287209,
+        "second_real_Bootstrap_hold_ms": 1001,
+        "uncorrelated_error_actual_Native_cursor_consumes_Store_event_notdelivered": true,
+        "direct_Store_missingmatch_guard_verified_in_current_OFFLINE": true,
+        "no_recovery_match_or_room_or_receipt_or_cursor_assignment_in_LIVEactor": true,
+        "original_two_cloud_whole_Failed_results_retained": true,
+        "current_verdict": "Independent scoped contract Passed; original producer Failed remains",
+        "business_criteria_relaxed": false
+      },
+      "source": "Actual Root GameStore/Gateway/HTTPcodec and Program8eb/config49ce; explicit private functional actor/readonly protocol faults/one initial item/owned PG rowlock. Current OFFLINE fixtures corrected to existing ready-only query and existing BootstrapResponse fields.",
+      "scope": "Independent exact case contract, not a producer whole-round pass, naturalvictory, capacity or humanexperience claim.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/independent-case-review.json"
+      ],
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A03.1-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "expected": "错误无可验证match",
+      "actual": "真实只读请求故意不登记本地pending origin；真实服务器NOT_IN_ROOM被Native游标消费，Gateway依原规则在Store前拒绝，当前有效M/room不清。Store无匹配来源的直接分支由同源当前OFFLINE负例另证，不冒充LIVE直接调用。",
+      "current_OFFLINE_checks": {
+        "authoritative_snapshot_1": true,
+        "authoritative_snapshot_3": true,
+        "empty_match_cannot_clear_valid_M": true,
+        "no_context_cannot_clear_valid_M": true,
+        "requests_completed_within_fixed_budget": true,
+        "uncorrelated_wire_error_preserves_M": true
+      },
+      "shared_actual": {
+        "canonical_case_ids": [
+          "PR13-A03.1-T01",
+          "PR13-A03.1-T02",
+          "PR13-A03.1-T03"
+        ],
+        "current_live_actor31_checks_allpass_OS0_engineclean": true,
+        "current_OFFLINE6_cases_allpassed": true,
+        "independent_actual_case_checks": 55,
+        "same_originals_five_negative_classification_controls_rejected": true,
+        "R2_worlds_realUIDs_receipts_uniqueACKs": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "R2_initial_item_moves3_destination": "RelicPile",
+        "first_bootstrap_applied_ms": 1792551287192,
+        "second_error_delivered_after_first_applied_ms": 1792551287209,
+        "second_real_Bootstrap_hold_ms": 1001,
+        "uncorrelated_error_actual_Native_cursor_consumes_Store_event_notdelivered": true,
+        "direct_Store_missingmatch_guard_verified_in_current_OFFLINE": true,
+        "no_recovery_match_or_room_or_receipt_or_cursor_assignment_in_LIVEactor": true,
+        "original_two_cloud_whole_Failed_results_retained": true,
+        "current_verdict": "Independent scoped contract Passed; original producer Failed remains",
+        "business_criteria_relaxed": false
+      },
+      "source": "Actual Root GameStore/Gateway/HTTPcodec and Program8eb/config49ce; explicit private functional actor/readonly protocol faults/one initial item/owned PG rowlock. Current OFFLINE fixtures corrected to existing ready-only query and existing BootstrapResponse fields.",
+      "scope": "Independent exact case contract, not a producer whole-round pass, naturalvictory, capacity or humanexperience claim.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/independent-case-review.json"
+      ],
+      "business_criteria_relaxed": false
+    }
+  ],
+  "decision": {
+    "task_id": "PR13-A03.1",
+    "authority": "MAIN",
+    "state": "Accepted",
+    "classification": "独立合同复核通过，原两轮汇总Failed不改判",
+    "reason": "Three exact current real-entry/lateBootstrap/unverified-origin contracts proved by actualNative31 checks/OS0, realserverrequestIDs, PGonceassets, exactwire/time andcurrentOFFLINE. Aggregate all-errorcount assertion wasoverbroad; stricttargetcounts/extraprelaunchprovenance andfive negativecontrols enforcecorrect frozen scope.",
+    "new_case_profiles_closed": {
+      "PR13-A03.1-T01": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "PR13-A03.1-T02": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "PR13-A03.1-T03": [
+        "LIVE",
+        "POSTGRES"
+      ]
+    },
+    "no_product_logic_change": true,
+    "whole_project_or_global_gate_accepted": false,
+    "business_criteria_relaxed": false,
+    "limits_and_original_failures": "docs/reports/pr13-stages-20261009/S5-A031-real-entry-current-independent-review-20261021/limits-and-original-failures.json"
+  },
+  "summary": {
+    "counts": {
+      "Accepted": 89,
+      "Partial": 35,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "newly_accepted": [
+      "PR13-A03.1"
+    ],
+    "remaining_unaccepted": 43,
+    "missing_case_profile_pairs_before": 162,
+    "missing_case_profile_pairs_after": 156,
+    "new_case_profile_closures": 6,
+    "original_cloud_whole_failed_rounds_preserved": 2,
+    "new_actual_DBworlds_in_series": 2,
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A031-independent-accepted-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-LOAD103-T03-full-await-functional-20261021/register.json",
+      "sha256": "8b7cca26f4f9ae38e687dd4ae97ce3f801f65a89daafb91722e656dabb210e6d"
+    }
+  }
+}

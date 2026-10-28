@@ -1,0 +1,7 @@
+# PR13 A07 真实PostgreSQL退出码零的漏跑拒绝
+
+腾讯云R2在隔离PG中实际执行Default_persisted_constructor_stays_current_rhythm_and_current_steps一项。原生TRX明确1/1执行通过、0跳过、退出码0；数据库存取默认Mage/Guardian策略的原回执保留。原要求九项的当前覆盖守卫准确列出缺少八项，返回Blocked且acceptance=false。该负例验证通过，不代表这个局部原生任务覆盖整套件。
+
+未改写的原完整九项TRX作为阳性对照，守卫确认CoveredForMainReview；没有重计为新增九项执行。隔离PG开始/结束附加schema均为零、两个拥有容器正常移除、私有环境文件在终止后移除；无OOM。22原件及归档SHA/CRC、328当前Git源成员、146共享G运行时成员独立复核通过。R1启动前失败保留，不加入执行分母。
+
+此S4归档实际数据；尚未补入规范登记。只支持A07.3-T03的POSTGRES覆盖拒绝判据，不替代CI触发、fork安全、完整回归、数值实验、容量或MAIN。

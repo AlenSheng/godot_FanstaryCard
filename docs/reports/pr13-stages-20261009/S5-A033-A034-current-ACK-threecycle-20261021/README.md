@@ -1,0 +1,23 @@
+# A03.3／A03.4：当前原始ACK恢复与同账号三局组合故障验收通过
+
+MAIN接受A03.3三例及A03.4三例，关闭8个缺失层级。92 Accepted／32 Partial／8 Ready，40未整体验收，case/profile缺口150→142，其他130任务和全部全局gate保持。两项共享新增的3物理世界／1真实账号／1件声明初始装备，不把它算成6场，所有旧失败、旧限额和B112既有27场不重置。
+
+一个实际Native、同一UID、generation1、同一原生socket，三个不同match/receipt、epochs2/3/4。原Root Store的_on_event、recovery、ACK逻辑未修改；私有Store仅在原_ready构造器选择继承Gateway，Gateway仅暂停一个传输已完成的旧M成功Bootstrap返回。未填room、recoveryID、receipt、cursor或认证UID。公开abandon作为明确功能终态，不称自然胜利、完整远征或容量正常周期。
+
+第一局新账号只声明一件绑定White/0级/Fire/DrawInterval脚装备，通过真实Bootstrap/配装/准备进入实际M。只读事务锁精确所属InMatchEquipped行，公开退出后PG产生真实Pending hold。两个真实原Gateway只读请求仅wire room_id被声明故障修改，Native原始上下文M保持。第一NOT_IN_ROOM清room，真实Bootstrap200无收据已应用，第二真实错误才原样交付；后续仍保持同M，无猜测成功。精确backend PID/start/application_name的自有事务释放后，同M/SID由原ready-only查询恢复。M的真实成功Bootstrap在传输完成后另行扣留，留待N验证旧receipt隔离。
+
+第一ACK三次相同逻辑key实际到达后端并返回200，73字节响应SHA三次完全相同，全部在交付前丢弃。Native原逻辑6.630秒后三次运输失败，未收到成功响应；实际Game仍busy、pendingSID、空receipt和完成计数0，原ReferenceUI hall显示“正在确认结算…”／“正在等待服务器确认本局结算。”并禁用进入按钮。PG此时已唯一ACK1，客户端没有据自身空状态猜成功；原Store再查权威Bootstrap无unfinished业务后，才返回成功并完成本局一次。非零装备已经按真实死亡资产提交，ACK丢包和验证不撤销死亡、不复活装备、不重复入账。
+
+第二局N实际就绪时才原样交付M成功Bootstrap，原成功值SHA及N完整业务字典/指纹、recovery、poll/load/lobby归属保持，完成数仍1、PG仍ACK1。第二ACK的3次同key请求都在后端前扣留且永不再转发，实际Native三次timeout为10010／10000／6933ms，原逻辑结束30009ms。源10秒单次/30秒逻辑预算未改；最后9ms是原事件循环/OS完成观测，不伪造严格30000ms，也不改预算。原Store查询实际仍未ACK的收据，返回false并恢复N收据，完成数不增；PG确认失败key无幂等记录、ACK仍1。随后公开重试新逻辑key、相同SID成功，才完成第二局。报告不声称人工再点重试与首轮逻辑key相同；首轮内部三次才是同key重试。
+
+第三局P实际ACK在后端之前短暂扣留，原busy/pendingSID和相同等待控件可见；并发第二次公开ACK返回false，不发送额外HTTP、不计完成，PG仍ACK2。释放声明请求后实际200并完成一次。最终Native完成数3与3个不同SID/3条唯一持久ACK逐一对应；8次网络ACK尝试、5次实际后端接触、4个逻辑key只有3个成功幂等记录，第二局未提交key不在其中。整个过程一件装备只有Equipped→PreparationLocked→InMatchEquipped→RelicPile三条流水，第一提交后的全部检查点equipment/movement/hold/wallet/material/ledger保持，最终无Pending或装备锁。
+
+60项客户端检查、74项独立原件核对通过，Native/服务/控制进程退出0、引擎干净。全部Native遥测分片连续、实际ACK原响应/报文SHA、三次Pending PG快照和七个阶段PG握手保留。当前settlement_return、play_retry、settlement_polling、terminal_command_context四份原有OFFLINE组件套件同源全过、OS0、无泄漏，不用新镜像或旧提取结果冒充。当前LOAD103原完整主程序ACK丢响应并真实Program强杀重启的独立父证据保留且不重跑；本项三局是专属功能actor，原压测normal计数不回填。
+
+界面检查是实际busy模型下原ReferenceUI控件的文本、可见和disabled语义，未渲染像素，不扩张为本轮视觉/分辨率/FPS验收。没有UI或资源修改，已有正式资源仍为先前release86ddee23已推送的独立范围，无需ImageGen。合法Mage70/Priest80/Guardian100及用户80/70边界按完整GDD两卷解释，不钳制或误报。
+
+**上传中断原件同样保留。** 首次SSH10054/EOF发生于上传阶段，测试0局。没有盲重放：复查精确inputroot只存0字节包、原上传writer仍活且unit未创建；核对owner/root/commandSHA/startticks后只停止断链writer。既有G盘冻结包字节不变，SFTP写自有staging，核对原0字节前缀和完整SHA后接续原包，安装111文件/2151输入校验完成才唯一启动本次测试。没有重建包或增加测试次数。
+
+97成员raw/PGdump、111包文件、2151实际输入、全部生产器及原工具失败已完整G95成员封存，源码由父G2100+本次delta50+原场景补充1实际重建。确认owner、111/2151 SHA、unit PID0/inactive、自有容器消失及生产指纹/health200不变后，只清理精确临时云输入，staging随同自有输入移除；本地代码、云raw、G和共享缓存保持。
+
+本地始终headless/Dummy/60FPS/CNO/BelowNormal，无窗口、全屏、焦点、输入、真实登录/对局/PG。仅现有云主机，功能500MB/5percent余量不能代替容量SLO，资源不足容量项继续未通过。真人体验排除；未改规则、默认限流、HTTP/READY/botfill或资产正确性标准，没有新Git提交、推送或生产部署。全项目仍未验收完成。

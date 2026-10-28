@@ -1,0 +1,100 @@
+{
+	"Accepted": false,
+	"active_match_id": "",
+	"case": "late_accepted_before_ticket",
+	"checks": [
+		{
+			"at_unix_ms": 1790799958045,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799958094,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799958218,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799958312,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799958479,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790799958562,
+			"name": "enqueue_match",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {
+		"_event_revision": -1,
+		"_replayed": false,
+		"_request_id": "",
+		"_sequence": 2,
+		"deadline_unix_ms": 0,
+		"match_id": "aaaaaaaa-aaaa-4aaa-aaaa-aaaaaaaaaaaa",
+		"ready_players": 0,
+		"required_players": 0,
+		"room_id": "bbbbbbbb-bbbb-4bbb-bbbb-bbbbbbbbbbbb"
+	},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "SupportOnly",
+	"errors": [],
+	"local_terminal": false,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f3fe-cd52-7264-9a11-5161e971af32",
+	"passed": false,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 0,
+	"required_delivered": 0,
+	"required_dropped": false,
+	"route_probe_clear": true,
+	"route_probe_events": [],
+	"stop_boundary": "support_observation_window_complete",
+	"ticket_reads": 2,
+	"trace": [
+		{
+			"at_ms": 2338,
+			"event": "synthetic_old_cycle_packet",
+			"support_only": true
+		},
+		{
+			"at_ms": 2388,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4541,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 5860,
+			"boundary": "support_observation_window_complete",
+			"event": "coordinator_stop"
+		}
+	]
+}

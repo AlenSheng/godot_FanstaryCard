@@ -1,0 +1,131 @@
+[
+  {
+    "ok": false,
+    "execution_host": "Tencent cloud",
+    "whole_scope_accepted": false,
+    "phases": {
+      "pr13-b02-policy-pg-attempt1": {
+        "exit_code": 1,
+        "oom_killed": false
+      }
+    },
+    "source_base_sha": "5be22e2fe751ebaad818db003a09f4fb3371a87a",
+    "database_storage": {
+      "tmpfs": {
+        "/var/lib/postgresql": "rw,size=160m"
+      },
+      "mounts": []
+    },
+    "error": "RuntimeError",
+    "detail": "Native phase failed: pr13-b02-policy-pg-attempt1",
+    "remaining_schemas": "0",
+    "source_inputs_unchanged": true,
+    "client_inputs_unchanged": true,
+    "cleanup": {
+      "pr13-b02-policy-pg-attempt1": true,
+      "pr13-b02-policy-pg-attempt1-database": true
+    },
+    "elapsed_seconds": 85.03577327728271,
+    "resources_after": {
+      "memory_available": 2982039552,
+      "disk_free": 9593909248,
+      "disk_fraction": 0.15158641772525788
+    }
+  },
+  {
+    "ok": false,
+    "execution_host": "Tencent cloud",
+    "whole_scope_accepted": false,
+    "phases": {
+      "pr13-b02-policy-pg-attempt2": {
+        "exit_code": 0,
+        "oom_killed": false
+      },
+      "pr13-b02-policy-pg-attempt2-domain": {
+        "exit_code": 1,
+        "oom_killed": false
+      }
+    },
+    "source_base_sha": "5be22e2fe751ebaad818db003a09f4fb3371a87a",
+    "database_storage": {
+      "tmpfs": {
+        "/var/lib/postgresql": "rw,size=160m"
+      },
+      "mounts": []
+    },
+    "postgres": {
+      "counters": {
+        "total": "9",
+        "executed": "9",
+        "passed": "9",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "rows": [
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_PVP_working_copy_restores_complete_original_PVE_and_policy",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Priest_card_heal_and_conflict_E0_remain_separate_after_database_restore",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_current_contract_does_not_revive_obsolete_boolean_or_remainder_API",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.New_policy_source_changes_new_rooms_without_changing_current_persisted_room",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Missing_legacy_policy_fields_use_defaults_and_invalid_values_reject_before_mutation",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Persisted_resolver_context_preserves_first_core_floor_tuning_and_dual_element_contracts",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Exact_GDD_fire_contexts_restore_from_database_to_46_72_113",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Default_persisted_constructor_stays_current_rhythm_and_current_steps",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresNumericalContractTests.Explicit_candidate_enums_survive_database_restore_and_have_independent_assertions",
+          "outcome": "Passed"
+        }
+      ]
+    },
+    "error": "RuntimeError",
+    "detail": "Native phase failed: pr13-b02-policy-pg-attempt2-domain",
+    "remaining_schemas": "0",
+    "source_inputs_unchanged": true,
+    "client_inputs_unchanged": true,
+    "cleanup": {
+      "pr13-b02-policy-pg-attempt2": true,
+      "pr13-b02-policy-pg-attempt2-domain": true,
+      "pr13-b02-policy-pg-attempt2-database": true
+    },
+    "elapsed_seconds": 124.72330617904663,
+    "resources_after": {
+      "memory_available": 2972954624,
+      "disk_free": 9532882944,
+      "disk_fraction": 0.15062218525533944
+    }
+  }
+]

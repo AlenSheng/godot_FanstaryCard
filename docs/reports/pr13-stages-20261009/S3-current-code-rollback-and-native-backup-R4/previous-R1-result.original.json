@@ -1,0 +1,16 @@
+{
+  "ok": false,
+  "implementation_source_sha": "6d919055c3be56ea4c5690071bab80714d5ff121",
+  "previous_source_sha": "0cf43dba7a28e936f82bc3e73ed9c6427092c2fb",
+  "MAIN_accepted": false,
+  "error": "AssertionError",
+  "detail": "",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/ubuntu/pr13-acceptance-20261009/evidence/current-code-rollback-native-r1-20261012/outer.original.py\", line 36, in <module>\n    while not (bridge_root/'owned-postgres.sock').exists():assert bridge.poll() is None and time.monotonic()<until;time.sleep(.2)\n                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "failed_originals_retained": true,
+  "owned_containers_removed": false,
+  "cleanup": {
+    "pr13-cap-current-code-rollback-native-r1-20261012-pg": true
+  },
+  "source_and_runtime_unchanged": true,
+  "owned_secret_removed": true
+}

@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B08.3",
+  "stage": "S0_for_S5",
+  "date": "2026-10-10",
+  "execution_state": "Running",
+  "purpose": "Validate first-eligible tuning, indirect K reduction and separate recovery in actual advancing encounters; retain paired effect metrics without proposing a balance change.",
+  "candidate_activation": false,
+  "production_numerical_rules": "Current unchanged configuration",
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "groups": [
+    "O1",
+    "O6",
+    "E1",
+    "BOSS"
+  ],
+  "seed_blocks": [
+    420001,
+    421001,
+    422001
+  ],
+  "paired_seeds_per_block_and_stratum": 1000,
+  "baseline_deck": "Same legal twenty-card deck frozen for the OFFLINE matrix: common C01-C11, C15, ET-FIRE-G, ET-WATER-G and class 01-06",
+  "single_replacement": {
+    "old_card": "ET-WATER-G",
+    "alternatives": [
+      "ET-WOOD-G",
+      "ET-EARTH-G",
+      "ET-METAL-G"
+    ],
+    "require_same_quality_rarity_unlock_cost": true
+  },
+  "pairing": "Same hero, level-zero weapon/cards, empty equipment, strategy, seed, encounter inputs, information budget and 600-second observation limit; replace exactly one Green tuning card.",
+  "strategy": "Current basic visible-hand subset selection; no library, future intent or RNG inspection",
+  "weapon_level": 0,
+  "card_level": 0,
+  "equipment": "Empty",
+  "cutoff_seconds": 600,
+  "comparison_families": 36,
+  "expected_encounter_rows": 216000,
+  "expected_pairs": 108000,
+  "required_actual_event_checks": [
+    "First eligible element and selected order",
+    "Tuning counts toward R and does not increase P",
+    "Other counter cards can lower same-core tuning K",
+    "Tuning excluded from E0",
+    "Ordinary and conflict recovery independently rounded",
+    "Conflict recovery does not use Priest low-HP or weapon multiplier",
+    "Requested/effective/overflow accounting"
+  ],
+  "required_case_denominators": "Record applicable and non-applicable casts by case, hero, group, replacement and seed block; zero applicable events cannot pass a required case.",
+  "evidence": "Preserve every actual cast input and contract result in bounded gzip JSONL parts plus encounter outcomes; original bytes, CRC, SHA256 and manifests required. No digest-only replacement for event evidence.",
+  "primary_metrics": [
+    "Damage30",
+    "ImmediateCardsDrawn",
+    "ObservedAliveControlUnionTicks",
+    "EffectiveHeal",
+    "EffectiveShield",
+    "HealOverflow",
+    "ShieldOverflow"
+  ],
+  "statistics": {
+    "paired_cluster_bootstrap_resamples": 1000,
+    "bootstrap_seed": 20261010,
+    "interval": 0.95,
+    "multiplicity": "Holm across all 36 declared comparison families within each primary metric",
+    "zero_variance": "Descriptive difference only; no significance or equivalence claim",
+    "secondary_metrics": "Descriptive only; no post-hoc promotion"
+  },
+  "outcome_accounting": "Retain Victory, Death, Censored and Error independently; no longer-fight failure or nerf merely because Guardian fights last longer. Contract violations fail independently of encounter duration.",
+  "run_budget": {
+    "unit": "One hero/group/replacement/seed block, both arms",
+    "encounter_rows_per_unit": 2000,
+    "units": 108,
+    "native_container_memory_mib": 950,
+    "cpu_cores": 1,
+    "memory_floor_bytes": 500000000,
+    "disk_free_ratio": 0.15,
+    "temporary_RAM_output_bytes": 536870912,
+    "raw_event_bytes_per_part": 134217728,
+    "maximum_raw_event_bytes_per_unit": 2147483648,
+    "unit_deadline_seconds": 1200,
+    "pilot_first": true
+  },
+  "storage": "Tencent cloud execution; download and verify each completed unit on local G drive before reclaiming passed cloud raw files; retain source/runtime needed by active units, metadata, receipts and failed records.",
+  "human_experience_in_scope": false,
+  "capacity_tests_deferred": true,
+  "balance_change_recommendation": "NoChange unless an independently reproduced current contract defect is observed; do not infer a buff or nerf from these effect deltas alone.",
+  "main_acceptance_granted": false,
+  "native_source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+  "runtime_reused_after_successful_exact_source_pilot": true
+}

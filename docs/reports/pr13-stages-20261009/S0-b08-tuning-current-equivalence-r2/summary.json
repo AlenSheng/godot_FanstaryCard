@@ -1,0 +1,99 @@
+{
+  "ok": true,
+  "stage": "S0_B08_TUNING_CURRENT_EQUIVALENCE_R2_DEVELOPMENT",
+  "task_id": "PR13-B08.3",
+  "scope": "R2 comparator/runner/preregistration development, synthetic metadata checks and independent readonly code review",
+  "R2_files": [
+    {
+      "path": "tools/pr13_tuning_current_equivalence.py",
+      "bytes": 17734,
+      "sha256": "65764b8640c1795a325274ecac97c541b9e97c3dd35a63cb34fd8bcfeca4b1a5",
+      "git_blob_sha1": "d9dd2c58d5d85a29389da501e171fa3422166922"
+    },
+    {
+      "path": "tools/cloud/pr13/tuning_current_equivalence.py",
+      "bytes": 36856,
+      "sha256": "9aa5f6cebf59bf2d8ab354eab12be9b0cf3cb5e2a131f8b17b8026742f688720",
+      "git_blob_sha1": "f4b919de72d141b153de5ce76fdce563a435b9bb"
+    },
+    {
+      "path": "docs/plans/PR13_B08_TUNING_CURRENT_EQUIVALENCE_20261011.json",
+      "bytes": 9636,
+      "sha256": "99f66a2412c734a788655503854a38e9b4af4fd5e6c4b3cf34d921c28770d6fd",
+      "git_blob_sha1": "3a32247004666ed9e79eff38dea49f9fc19f43c9"
+    }
+  ],
+  "synthetic_metadata_checks_passed": 20,
+  "independent_readonly_review_passed": true,
+  "independent_review_is_execution_or_acceptance": false,
+  "R1_original_tools_preserved": true,
+  "R1_attempt": "tuning-current-equivalence-r1-20261011",
+  "R1_actual_native_source_sets": [
+    {
+      "role": "old",
+      "native_source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+      "native_encounters": 6,
+      "paired_seeds": 3,
+      "native_passed": true,
+      "original_oracle_passed": true,
+      "original_oracle_negative_controls_rejected": 4,
+      "source_payload": "old-native.log / old-validation.json"
+    },
+    {
+      "role": "current",
+      "native_source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+      "native_encounters": 6,
+      "paired_seeds": 3,
+      "native_passed": true,
+      "original_oracle_passed": true,
+      "original_oracle_negative_controls_rejected": 4,
+      "source_payload": "current-native.log / current-validation.json"
+    }
+  ],
+  "R1_actual_native_encounters": 12,
+  "R1_actual_native_sets": 2,
+  "R1_original_oracle_sets_passed": 2,
+  "R1_driver_families_compared_successfully": 0,
+  "R1_driver_original_total_unique_native_encounters_field": 0,
+  "R1_driver_zero_count_is_not_zero_native_execution": true,
+  "R1_comparator_passed": false,
+  "R1_comparator_rejection": "Exact scalar differs at cast.Actual.BattleId",
+  "R1_cloud_failed_prefix_retained_as_inspected": true,
+  "R1_complete_G_backup_verified_by_this_stage": false,
+  "R1_complete_raw_retention_and_backup_scope": "Root separately retains/verifies complete cloud/G originals; this development report does not fabricate a backup receipt or cleanup",
+  "R2_allowed_identity_bijections": [
+    "Selected.InstanceId: stable per semantic card identity and encounter",
+    "Actual.BattleId: UUID v7, stable semantic encounter mapping, global no aliases within its namespace",
+    "Actual.AttackerId: UUID v4, stable semantic encounter mapping, global no aliases within its namespace"
+  ],
+  "all_other_fields_exact": true,
+  "numeric_tolerance": 0,
+  "unknown_fields_or_other_UUID_paths_ignored": false,
+  "R2_required_family_global_noalias_gate": 36,
+  "R2_preregistered_total_unique_native_encounters": 432,
+  "R2_preregistered_reused_R1_native_encounters": 12,
+  "R2_preregistered_new_native_encounters": 420,
+  "R2_native_or_oracle_or_comparator_cloud_executed_by_this_stage": false,
+  "R2_actual_cloud_result_present_in_this_stage": false,
+  "R2_actual_equivalence_accepted": false,
+  "selected_related_source_scope_files": 51,
+  "whole_Git_source_identity_proven": false,
+  "old_216000_native_source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+  "old_216000_relabelled_to_current_source": false,
+  "frozen_selected_current_release_source_sha": "18ae9d4e949cbdb4882b6469aff016f6568fb0fd",
+  "selected_current_native_source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "full_current_source_216000_rerun_complete": false,
+  "card_or_balance_values_changed": false,
+  "full_EXPERIMENT_accepted": false,
+  "required_cases_accepted": false,
+  "integration_promotion_allowed": false,
+  "MAIN_accepted": false,
+  "LIVE_accepted": false,
+  "whole_task_accepted": false,
+  "capacity_or_human_acceptance_granted": false,
+  "master_acceptance_register_unchanged": true,
+  "native_business_or_statistics_executed_locally": false,
+  "cloud_operations_executed_by_report_builder": false,
+  "raw_archives_published": false,
+  "committed_byte_policy": "docs/reports/pr13-stages-20261009/** -text"
+}

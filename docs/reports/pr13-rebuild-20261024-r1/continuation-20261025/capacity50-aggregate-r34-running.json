@@ -1,0 +1,175 @@
+{
+  "state": "Actual_native40plus20_running_registered_window_pending",
+  "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+  "preparer": {
+    "PID": 3447526,
+    "owned_infrastructure_started": true,
+    "native_clients_started": false
+  },
+  "local3_point_admission": {
+    "local_samples": [
+      {
+        "at_ns": 1793007555693879100,
+        "available_bytes": 14858862592,
+        "host_cpu_percent": 6.3
+      },
+      {
+        "at_ns": 1793007557716057600,
+        "available_bytes": 14952669184,
+        "host_cpu_percent": 5.1
+      },
+      {
+        "at_ns": 1793007559736466300,
+        "available_bytes": 14960635904,
+        "host_cpu_percent": 5.1
+      }
+    ],
+    "local_required_bytes": 14092861440,
+    "local_reserve_bytes": 6442450944,
+    "per_process_planning_bytes": 184549376,
+    "startup_guard_bytes": 268435456,
+    "cloud20_required_after_infra_warmup_bytes": 2446157056,
+    "historical_process_basis": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-recovery-20261026-r27\\full-cohort-resource-estimate.original.json"
+  },
+  "pipeline_handle": {
+    "PID": 11476,
+    "create_time": 1793007647.5185623,
+    "at_ns": 1793007647717963600
+  },
+  "warmup_handle": {
+    "PID": 3448740,
+    "mode": "warmup"
+  },
+  "planned_full_supply": {
+    "Windows": 40,
+    "Linux": 20
+  },
+  "required_actual_global_online_active": 50,
+  "profile": "full-native60-global50-aggregate-v2",
+  "prior_completed_capacity_worlds": 253,
+  "fresh_DB_world_cap_including_warmup": 47,
+  "no_retry_budget_reset": true,
+  "all_resource_floors_unchanged": true,
+  "capacity_accepted": false,
+  "whole_project_accepted": false,
+  "heartbeat": "PAUSED_current_goal_has_actual_pipeline",
+  "external_originals": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-aggregate-20261026-r34",
+  "at_ns": 1793007923059442200,
+  "actual_measurement_handles": {
+    "parent_PID": 66336,
+    "Windows_PID": 32736,
+    "cloud_controller_PID": 3450722,
+    "spec_sha256": "c7c497e5b4bce8fadc7888c3708e3556cf849ac6dd058e3c44889c8e98c867b5",
+    "at_unix_ms": 1793007781076.62
+  },
+  "warmup_completed": {
+    "original_stop_reason": "smoke_passed",
+    "original_duration_limit_reached": false,
+    "ok": true,
+    "container": "88c5122237a59bbcaed98293898b6d25a609291a77108667762536f8895688bc",
+    "exit": 0,
+    "OOMKilled": false,
+    "guard_stop": null,
+    "native_process_inspection": "NotApplicable_warmup",
+    "capacity_verdict_not_inferred_from_exit": true,
+    "mode": "warmup"
+  },
+  "registered_spec": {
+    "study_id": "0e9455d46868416f8438b30a535f5bc5",
+    "owner": "01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3",
+    "source_head": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "target_clients": 50,
+    "target_online_clients": 50,
+    "native_supply_clients": 60,
+    "workload_profile": "full-native60-global50-aggregate-v2",
+    "authority_transition_policy": "capacity-budgeted-authority-recovery-v2",
+    "latency_profile": "north-america-pooled5s8s-window95-v2",
+    "latency_warning_budget_fraction": 0.05,
+    "world_budget": 47,
+    "prior_capacity_worlds": 253,
+    "combined_capacity_world_cap": 300,
+    "reference_host_id": "windows",
+    "seed_start": 20261026,
+    "registered_at_reference_ms": 1793007749441.983,
+    "planned_launch_reference_ms": 1793007779441.983,
+    "window_start_ms": 1793008079441.983,
+    "window_end_ms": 1793008679441.983,
+    "warmup_matches": 1,
+    "warmup_user_ids": [
+      "01a17795-ac93-7f2a-97c4-c1d5168adfc4",
+      "01a17795-b0b0-7d3b-8989-1cf39753a236",
+      "01a17795-b425-7fbd-884c-fd6ea629a332",
+      "01a17795-b882-72bf-b441-b930a888f1c7"
+    ],
+    "partitions": [
+      {
+        "host_id": "windows",
+        "platform": "windows",
+        "clients": 40,
+        "target_active": 30,
+        "target_online": 30,
+        "seed_start": 20261026,
+        "memory_floor_bytes": 6442450944,
+        "engine_path": "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "project_path": "G:\\PR13Evidence\\work\\t15\\client",
+        "server_origin": {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 18691
+        },
+        "cpu_affinity": [
+          12,
+          13,
+          14,
+          15
+        ]
+      },
+      {
+        "host_id": "cloud",
+        "platform": "linux",
+        "clients": 20,
+        "target_active": 10,
+        "target_online": 10,
+        "seed_start": 20261066,
+        "memory_floor_bytes": 500000000,
+        "engine_path": "/usr/local/bin/godot",
+        "project_path": "/home/ubuntu/pr13-resource100-admission-20261025-r18/project/client",
+        "server_origin": {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 18591
+        }
+      }
+    ]
+  },
+  "after_warmup_stable_admission": [
+    {
+      "cloud_available_bytes": 2691760128,
+      "disk_available_bytes": 3656957952,
+      "disk_available_percent": 5.778094636773195,
+      "local_available_bytes": 15757524992,
+      "at_ns": 1793007724696369800
+    },
+    {
+      "cloud_available_bytes": 2682888192,
+      "disk_available_bytes": 3656929280,
+      "disk_available_percent": 5.7780493342207455,
+      "local_available_bytes": 15678296064,
+      "at_ns": 1793007728630043500
+    },
+    {
+      "cloud_available_bytes": 2661412864,
+      "disk_available_bytes": 3656892416,
+      "disk_available_percent": 5.777991088081882,
+      "local_available_bytes": 15691018240,
+      "at_ns": 1793007732251756000
+    }
+  ],
+  "actual_launch_full_queue_admission": {
+    "memory_available_bytes": 2698440704,
+    "disk_available_bytes": 3656015872,
+    "disk_available_percent": 5.776606124335573,
+    "local_available_bytes": 15713075200,
+    "at_ns": 1793007780287904900
+  }
+}

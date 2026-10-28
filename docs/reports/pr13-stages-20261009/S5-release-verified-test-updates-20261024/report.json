@@ -1,0 +1,2784 @@
+{
+  "kind": "LocalVerifiedReleaseDeliverySummary_ApplicationSourceUnchanged",
+  "generated_at_UTC": "2026-10-23T17:27:36.325805+00:00",
+  "base_source_commit": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "destination": "origin/release",
+  "direct_human_release_authorization": true,
+  "publication_state": "VerifiedLocalSnapshotForExactWhitelistReleasePublication",
+  "source_changes": [
+    {
+      "path": "client/tests/test_audio_events.gd",
+      "bytes": 10658,
+      "sha256": "7608342356256aec6ecb40f4db513ded0cb57670727086cb135045cdeb1ac070",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "client/tests/test_terminal_room_actions.gd",
+      "bytes": 4616,
+      "sha256": "beb15ac1799200c4152b1c2d76602064dc678aa8b611d50dcd1c209efe28472d",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+      "bytes": 43768,
+      "sha256": "c576a762692e64c9567c50411cbe7ed525c71f6a93c710d86b9f160ee8d15eb9",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessRollbackBackupTests.cs",
+      "bytes": 12952,
+      "sha256": "94c7a945c4d66fe9e24ebcc413f061c32866eb7dce33020c4f1ec347afb55fa4",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs",
+      "bytes": 26930,
+      "sha256": "cb68e2946d8cd7ccc610855bdb980a4cc8aa9994157f900d322ed90cce4cff7b",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/NativeRollbackPostgres.cs",
+      "bytes": 11844,
+      "sha256": "51a009b18a5c4a993a2ca75ecb467e2b52f6bb6d4a9b2bfbb4cffdf0a4ae91a8",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "tools/pr13_single_source_report.py",
+      "bytes": 8367,
+      "sha256": "574ee0a7e9446bebe6d2a8318f47a61f808ad2a0fbcfcad0c94bd3179be90208",
+      "scope": "validated test/reporting code only"
+    },
+    {
+      "path": "tools/tests/test_pr13_single_source_report.py",
+      "bytes": 5655,
+      "sha256": "f0ad6b7f3067a93cf10f0ee2fbe81956869adcb5862e1b1085b3f24c2fa70913",
+      "scope": "validated test/reporting code only"
+    }
+  ],
+  "scope": "Verified test launch isolation, native PG rollback ownership adapter and single-source reporting; formal game code/protocol/config/assets unchanged.",
+  "verification": {
+    "unfiltered_Server_Passed418_skip0": true,
+    "current_state_PG10_passed": true,
+    "current_numerical_PG9_passed": true,
+    "single_source_targeted_tests17_passed": true,
+    "real_six_original_replay_repeat5_views_byte_stable": true,
+    "all_local_native_headless_or_no_window": true
+  },
+  "current_acceptance_register": "docs/reports/pr13-stages-20261009/S6-A014-current-accepted-20261024/register.json",
+  "counts": {
+    "Accepted": 105,
+    "Partial": 24,
+    "ReadyForAcceptance": 3,
+    "Failed": 0
+  },
+  "not_accepted_tasks": 27,
+  "missing_case_profile_pairs": 47,
+  "whole_project_accepted": false,
+  "global_gates": [
+    {
+      "gate_id": "G0",
+      "name": "来源、范围与基线",
+      "state": "NotAccepted",
+      "pass_criteria": "source/CI/image/config/seed/profile可追溯，文件锁与有界范围明确；missing单列。",
+      "unfinished": [
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ],
+      "execution_deferred_tasks": []
+    },
+    {
+      "gate_id": "G1",
+      "name": "离线、进程与合同",
+      "state": "NotAccepted",
+      "pass_criteria": "关键正常/边界/故障实际执行，数值合同编译修复，关键case无环境性skip。",
+      "unfinished": [
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A07.4"
+      ],
+      "execution_deferred_tasks": [
+        "LOAD-10.1",
+        "PR13-A02.3"
+      ]
+    },
+    {
+      "gate_id": "G2",
+      "name": "玩法闭环和资产/战斗合同",
+      "state": "NotAccepted",
+      "pass_criteria": "正常三局/多账号、PG持久幂等、route/holds及资源/控制/选序/恢复合同一致；headless与render证据分层。",
+      "unfinished": [
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A09.4"
+      ],
+      "execution_deferred_tasks": [
+        "LOAD-10.2",
+        "LOAD-10.3"
+      ]
+    },
+    {
+      "gate_id": "G3",
+      "name": "观测、历史和体验对账",
+      "state": "NotAccepted",
+      "pass_criteria": "三截止点守恒，86/90与130/139及旧52/77差异可解释；缺序号不造关联，删失/兜底/未知完整。",
+      "unfinished": [
+        "PR13-A02.3"
+      ],
+      "execution_deferred_tasks": [
+        "PR13-A02.3"
+      ]
+    },
+    {
+      "gate_id": "G4",
+      "name": "传输收益、原容量、候选体验",
+      "state": "NotAccepted",
+      "pass_criteria": "三对同负载A/B、默认限流有效覆盖/长稳、数值配对/风险与真人反馈分别裁决；不足Unknown，不拿短战替原容量。",
+      "unfinished": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ],
+      "execution_deferred_tasks": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ]
+    },
+    {
+      "gate_id": "G5",
+      "name": "当前证据、源配置和回滚交付",
+      "state": "NotAccepted",
+      "pass_criteria": "132项实现或有证据NoChange/阻塞逐项可查；适用CI、账链告警、默认off、兼容与隔离回滚都有结论。完整交付允许列阻塞，验收通过要求适用阻塞清零。",
+      "unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ],
+      "execution_deferred_tasks": []
+    }
+  ],
+  "task_dispositions": [
+    {
+      "task_id": "LOAD-01.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-02.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-02.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-02.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.2",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-03.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-03.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-03.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-03.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-04.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-04.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-04.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-04.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-04.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-04.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-04.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-05.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-04.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-02.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-05.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-05.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.2",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-02.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-05.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-04.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-06.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-06.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-04.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-06.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-06.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-07.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-03.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-07.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-07.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-07.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-07.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-07.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-07.2",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-07.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-08.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-07.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-08.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-08.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-08.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-08.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-08.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-08.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "LOAD-09.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "LOAD-09.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-09.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-04.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "LOAD-09.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-09.2",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "LOAD-09.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-07.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "LOAD-10.1",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.1-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "LOAD-01.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-03.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-07.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.2-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-09.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-10.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.3-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "LOAD-10.1",
+          "state": "Partial"
+        },
+        {
+          "task_id": "LOAD-10.2",
+          "state": "Partial"
+        },
+        {
+          "task_id": "LOAD-08.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.4-T01": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T02": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "LOAD-10.3",
+          "state": "Partial"
+        },
+        {
+          "task_id": "LOAD-09.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-09.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "LOAD-11.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。"
+    },
+    {
+      "task_id": "LOAD-11.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "PendingPrivateArchiveContentAndSourceRelationsReview"
+      ],
+      "rollback_contract": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。"
+    },
+    {
+      "task_id": "LOAD-11.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.2",
+          "state": "Partial"
+        },
+        {
+          "task_id": "LOAD-10.1",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。"
+    },
+    {
+      "task_id": "LOAD-11.4",
+      "runtime_state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B12.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A08.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A09.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A10.4",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。"
+    },
+    {
+      "task_id": "PR13-A01.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-03.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A01.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A01.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A01.3-T02": [
+          "AUDIT"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A01.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "HistoricalDeletedOriginalAuditInputStillMissing"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A01.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A01.3",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.1-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "LOAD-02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-07.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.2-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A02.1",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A02.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A02.2",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A02.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A02.3",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A03.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A03.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A03.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A03.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A03.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A03.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A04.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-04.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-09.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A04.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A04.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A04.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A04.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A04.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A04.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-05.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-09.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A05.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A05.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A05.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A06.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.1",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-08.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A06.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A06.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A06.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A06.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A06.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A06.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A07.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-10.1",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A07.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A07.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A07.3-T01": [
+          "POSTGRES"
+        ],
+        "PR13-A07.3-T02": [
+          "POSTGRES"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A07.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "HostedCIActualStepsNotStarted"
+      ],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A07.4",
+      "runtime_state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A07.3",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "HostedCIActualStepsNotStarted",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "runtime_state": "ReadyForAcceptance",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "HistoricalRuntimeSourceImageEngineAndOverlayRelationsIncomplete"
+      ],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A08.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A08.1",
+          "state": "ReadyForAcceptance"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A08.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A08.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A08.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B12.4",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-A09.1",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A03.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-A04.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-A05.3",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-A06.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-A07.4",
+          "state": "ReadyForAcceptance"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A09.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A09.1",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A09.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A09.2",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A09.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A09.3",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.1-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A09.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A02.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A01.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A10.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.2-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A10.1",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A10.2",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "dependencies": [
+        {
+          "task_id": "PR13-A10.3",
+          "state": "Partial"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "CurrentHostCapacityOrOriginalProfileResourceConstraint",
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-B01.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-06.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "LOAD-03.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-B01.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B01.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-B01.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B01.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-B01.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B01.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。"
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "LOAD-11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。"
+    },
+    {
+      "task_id": "PR13-B03.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B01.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B03.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B03.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B03.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B03.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B03.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B03.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B04.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B04.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B04.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B04.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B04.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B04.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B04.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B05.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B04.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B01.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B05.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B05.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B05.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B05.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B05.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B05.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B06.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B06.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B06.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B06.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B06.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B06.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B06.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B07.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B07.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B07.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B07.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B07.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B07.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B07.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B08.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B08.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B08.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B08.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B08.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B08.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B08.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B09.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B09.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B09.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B09.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B09.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B09.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B09.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B10.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B02.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B10.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B10.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B10.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B10.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B10.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B10.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B11.1",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A03.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-A04.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B01.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B11.2",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B11.1",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B11.3",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B11.2",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B11.4",
+      "runtime_state": "Accepted",
+      "accepted_by": "MAIN",
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B11.3",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "AcceptedUnderRecordedMAINScope",
+      "reason_codes": [],
+      "rollback_contract": "回退客户端状态/流程提交，保留未确认结算上下文；不清空服务器资产或重放游标。"
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-A08.1",
+          "state": "ReadyForAcceptance"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B12.1",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A07.4",
+          "state": "ReadyForAcceptance"
+        },
+        {
+          "task_id": "PR13-B03.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B04.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B05.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B06.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B07.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B08.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B09.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B10.4",
+          "state": "Accepted"
+        },
+        {
+          "task_id": "PR13-B11.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B12.1",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-B02.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "runtime_state": "Partial",
+      "accepted_by": null,
+      "mandatory_missing_cases": [],
+      "missing_case_profiles": {},
+      "dependencies": [
+        {
+          "task_id": "PR13-B12.2",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-B12.3",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A10.4",
+          "state": "Partial"
+        },
+        {
+          "task_id": "PR13-A05.4",
+          "state": "Accepted"
+        }
+      ],
+      "disposition": "NotAccepted",
+      "reason_codes": [
+        "RequiredUpstreamArtifactOrWholeScopeReviewStillPending"
+      ],
+      "rollback_contract": "候选切回原策略/原配置；已创建房间沿锁定策略完成；不逆向发放资产或退款。"
+    }
+  ],
+  "production_readonly_observation": {
+    "kind": "CurrentReadonlyProductionDeliveryObservation",
+    "observed_UTC": "2026-10-23T17:09:50.782809+00:00",
+    "container_id": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112",
+    "image_id": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "running": true,
+    "started_at": "2026-10-23T01:38:31.393085673Z",
+    "environment_sha256": "a50d16851ede044a93abd7df8e9ece899700292ba5c287a0433622dde6de20ec",
+    "ready_health": 200,
+    "boot_id": "4eab2634-08f1-4535-96d6-6ad1a54b1b3d",
+    "memory": {
+      "MemTotal": 3837677568,
+      "MemAvailable": 2816196608,
+      "SwapTotal": 2084564992
+    },
+    "root_disk_free_ratio": 0.03280331935684872,
+    "root_disk_free_bytes": 2076123136,
+    "read_only_no_deployment_or_restart_or_data_repair": true
+  },
+  "production_application_source": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "publication_does_not_rebuild_or_restart_application": true,
+  "PR13_current_state": {
+    "number": 13,
+    "state": "closed",
+    "draft": true,
+    "merged": true,
+    "merged_at": "2026-10-08T09:39:02Z",
+    "closed_at": "2026-10-08T09:39:02Z",
+    "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/pull/13",
+    "head_sha": "d2fe95d78c093cc4443c048bb2779352d9d83956",
+    "head_ref": "fix/gameplay-load-evidence-20260929",
+    "base_ref": "release"
+  },
+  "current4a_hosted_CI": null,
+  "current4a_hosted_CI_read_error": {
+    "type": "HTTPError",
+    "http_status": 403,
+    "previous_terminal_observation_not_relabelled": true
+  },
+  "historical_ledger_mismatch": "RetainedNotAccepted_NoAssetOrLedgerRepair",
+  "human_experience_in_scope": false,
+  "cloud_resource_policy": "Only current host; insufficient capacity remains unpassed.",
+  "raw_storage": "Private/raw originals retained in authorized G storage; qualified public metadata and exact approved helper code only are selected.",
+  "historical_draft_rule_superseded_by_direct_human_release_instruction": true
+}

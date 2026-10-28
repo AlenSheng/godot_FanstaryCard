@@ -1,0 +1,455 @@
+{
+  "kind": "LOAD112_PrivateStreamingAndDeclaredEncodingProgress_NoWholeAcceptance",
+  "generated_at": "2026-10-22T19:42:14.031459+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "current_register_reference": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "current_register_sha256": "95efd64340e6439dfe96cbe556d73275de9cab332f8c60581284c06c9dd6a29f",
+  "selected_files": 18,
+  "all18_original_hashes_match_captured_inventory": true,
+  "large_JSONL": {
+    "root": "workspace",
+    "path": "outputs/pr13-tencent-20261009/LIVE-ten-natural3-r2-local-20261016/run/cloud-monitor.original.jsonl",
+    "bytes": 431914577,
+    "inventory_sha256": "2ad99f36690227e8f303977ffda263562c1d8b1aee0bb4cd4d1908e9defbfe9d",
+    "original_finding": "OversizedTextNeedsStreamingAndStructuredInspection",
+    "method": "BoundedPhysicalJSONLRecordInspection_AllBytesHashed",
+    "physical_records": 124,
+    "nonempty_records_inspected": 124,
+    "max_record_bytes": 3735408,
+    "policy_failure_counts": {},
+    "first_failed_physical_records_metadata_only": [],
+    "source_stable_during_read": true,
+    "source_exact_inventory_identity": true,
+    "content_inspection_passed": true,
+    "whole_file_strict_public_export_still_rejected_for_size": true,
+    "public_validator_and_size_limit_unchanged": true
+  },
+  "BOM_declared_Unicode_private_log_files": [
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/native-server.log",
+      "bytes": 43048,
+      "inventory_sha256": "997beb8224dfc71239f6247313204dd3a6f6825eefa643f44c9047c749ba6cce",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/native-server2.log",
+      "bytes": 2448,
+      "inventory_sha256": "b53980160b66bc014911a386abd328148dfbbf17936e112f34396b53554ac1bd",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/native-server3.log",
+      "bytes": 2448,
+      "inventory_sha256": "b53980160b66bc014911a386abd328148dfbbf17936e112f34396b53554ac1bd",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/harness/live-run.log",
+      "bytes": 4698,
+      "inventory_sha256": "cdde9759ef4cf3b1aa42700ec8d392973e807e60b0eb6c5894f37fdb1e9e26f3",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/harness/live-run2.log",
+      "bytes": 12768,
+      "inventory_sha256": "afd074c515d93f58454e8597028c413704248ecc722c474834bb7acd70e5882d",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/harness/live-run3.log",
+      "bytes": 11052,
+      "inventory_sha256": "cdd6f6d8cab2d8ccd70ea97a805eb7f36152fbf03c96c857c626230c1b691765",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/harness/live-run4.log",
+      "bytes": 12872,
+      "inventory_sha256": "f8ea90a9e3eb440daf981deeef407c5b7eea348eabee17fcbaa3c40acd57e0df",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/harness/live-run5.log",
+      "bytes": 5950,
+      "inventory_sha256": "e1cf4e35da530c7f258aebdb37a13201ab5169a678640c04621c0f7d10e4670d",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": "utf-16",
+      "classification": "BOMDeclaredUnicode_PrivateLogContentInspected",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    }
+  ],
+  "encoding_unresolved_files": [
+    {
+      "root": "workspace",
+      "path": "tools/engine-local/protected/template-build.log",
+      "bytes": 150804,
+      "inventory_sha256": "cfeda1c4a73b6999aa78c52fdef2bf4d739574368cae360db5aa81fb4f9e47a7",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/protobuf_client/editmode-run2.log",
+      "bytes": 63171,
+      "inventory_sha256": "06e6d2913d6d5d55a50a67ff26c2903b7a8612bb387b31a0ef96a3e571535d92",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/cap-full-final-B1-metadata-recovery-r2-process.stderr.log",
+      "bytes": 62,
+      "inventory_sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/cap-T03-full18-RENDER-publication-process.stderr.log",
+      "bytes": 1902,
+      "inventory_sha256": "742f7362bc76ffe7afa399c1a677cf7f525552f3603b77d1863cee8987bdacca",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/full-cap-remaining14-recovery-process.stderr.log",
+      "bytes": 62,
+      "inventory_sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/full-statistics-original-G-backup-r4-process.stderr.log",
+      "bytes": 1062,
+      "inventory_sha256": "01ce006d0999462955de57732d5f18ba820c65325cefeb46298c9c80176c77fd",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/natural-Priest480001-both-locales-actual-visual-review.json",
+      "bytes": 3826,
+      "inventory_sha256": "10ab41939cea5eeefa15f84bddf4c9fd7d69b724b2e58f46efac8a21fbbcd80a",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/T03-full18-publication-prefix-recovery-r2-process.stderr.log",
+      "bytes": 4043,
+      "inventory_sha256": "ceed556ca5aeee91324f4bc76b0963757c4cd1d0767e67864071ba4d5815e823",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    },
+    {
+      "root": "workspace",
+      "path": "outputs/pr13-tencent-20261009/dual-GUI-authority-full-six-segment-controller-r2/queue_dual-GUI-full-guardian-zh-cn-r2_between_native_units_once.py-stderr.txt",
+      "bytes": 1271,
+      "inventory_sha256": "4cf908915d8d21653078f052a1d85ab10bf1a8730778a8c00e78377251893df9",
+      "original_finding": "Public evidence text is not UTF-8",
+      "method": "DeclaredBOMOnly_NoHeuristicEncodingGuess",
+      "declared_encoding": null,
+      "classification": "EncodingUnresolved_NoGuessOrTranscode",
+      "content_policy_failure_metadata_only": null,
+      "source_stable_during_read": true,
+      "source_exact_inventory_identity": true,
+      "original_bytes_unchanged": true,
+      "strict_public_UTF8_rejection_retained": true,
+      "no_decoded_source_or_values_exported": true
+    }
+  ],
+  "unresolved_encoding_count": 9,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-stream-and-encoding-inspection-20261022-r1-originals",
+    "files": [
+      {
+        "name": "LOAD112_inspect_oversized_and_encodings_20261022.py",
+        "bytes": 7540,
+        "sha256": "cc726868cc666dad8aaad08ca72303616b5078b5fc879e2cd15b7e3525b383a5",
+        "G_copy_verified": true
+      },
+      {
+        "name": "started.original.json",
+        "bytes": 428,
+        "sha256": "a6684f480627e9b97b70291d7a4be519e5a2f85fb15b7c9750caddd057c18e40",
+        "G_copy_verified": true
+      },
+      {
+        "name": "result.original.json",
+        "bytes": 14114,
+        "sha256": "af2db1f621313996c37c5e5d8d9168228861063b815092e0955ea8501cb47b40",
+        "G_copy_verified": true
+      },
+      {
+        "name": "findings-captured-prefix.private.snapshot.jsonl",
+        "bytes": 191761,
+        "sha256": "7a4eb62f8e6e15827d21985ae8569e9cab58fa13b70c48df544f29fa5121ce7b",
+        "G_copy_verified": true
+      },
+      {
+        "name": "publish_LOAD112_stream_encoding_progress_20261022.py",
+        "bytes": 6170,
+        "sha256": "dfed12bbf65bf6860627baaf3cac10fc08bb60546f68b619c9f06e4866035fe1",
+        "G_copy_verified": true
+      }
+    ]
+  },
+  "lineage_scope": {
+    "raw_inputs": [
+      {
+        "workspace_path": "tools/engine-local/protected/template-build.log",
+        "bytes": 150804,
+        "sha256": "cfeda1c4a73b6999aa78c52fdef2bf4d739574368cae360db5aa81fb4f9e47a7"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/editmode-run2.log",
+        "bytes": 63171,
+        "sha256": "06e6d2913d6d5d55a50a67ff26c2903b7a8612bb387b31a0ef96a3e571535d92"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/native-server.log",
+        "bytes": 43048,
+        "sha256": "997beb8224dfc71239f6247313204dd3a6f6825eefa643f44c9047c749ba6cce"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/native-server2.log",
+        "bytes": 2448,
+        "sha256": "b53980160b66bc014911a386abd328148dfbbf17936e112f34396b53554ac1bd"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/native-server3.log",
+        "bytes": 2448,
+        "sha256": "b53980160b66bc014911a386abd328148dfbbf17936e112f34396b53554ac1bd"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/harness/live-run.log",
+        "bytes": 4698,
+        "sha256": "cdde9759ef4cf3b1aa42700ec8d392973e807e60b0eb6c5894f37fdb1e9e26f3"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/harness/live-run2.log",
+        "bytes": 12768,
+        "sha256": "afd074c515d93f58454e8597028c413704248ecc722c474834bb7acd70e5882d"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/harness/live-run3.log",
+        "bytes": 11052,
+        "sha256": "cdd6f6d8cab2d8ccd70ea97a805eb7f36152fbf03c96c857c626230c1b691765"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/harness/live-run4.log",
+        "bytes": 12872,
+        "sha256": "f8ea90a9e3eb440daf981deeef407c5b7eea348eabee17fcbaa3c40acd57e0df"
+      },
+      {
+        "workspace_path": "outputs/protobuf_client/harness/live-run5.log",
+        "bytes": 5950,
+        "sha256": "e1cf4e35da530c7f258aebdb37a13201ab5169a678640c04621c0f7d10e4670d"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/cap-full-final-B1-metadata-recovery-r2-process.stderr.log",
+        "bytes": 62,
+        "sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/cap-T03-full18-RENDER-publication-process.stderr.log",
+        "bytes": 1902,
+        "sha256": "742f7362bc76ffe7afa399c1a677cf7f525552f3603b77d1863cee8987bdacca"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/full-cap-remaining14-recovery-process.stderr.log",
+        "bytes": 62,
+        "sha256": "2aa304cb19e17d2921840d4fe6a0b39a9dbb78f45ad67341b54b81792ab9fdcf"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/full-statistics-original-G-backup-r4-process.stderr.log",
+        "bytes": 1062,
+        "sha256": "01ce006d0999462955de57732d5f18ba820c65325cefeb46298c9c80176c77fd"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/natural-Priest480001-both-locales-actual-visual-review.json",
+        "bytes": 3826,
+        "sha256": "10ab41939cea5eeefa15f84bddf4c9fd7d69b724b2e58f46efac8a21fbbcd80a"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/T03-full18-publication-prefix-recovery-r2-process.stderr.log",
+        "bytes": 4043,
+        "sha256": "ceed556ca5aeee91324f4bc76b0963757c4cd1d0767e67864071ba4d5815e823"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/LIVE-ten-natural3-r2-local-20261016/run/cloud-monitor.original.jsonl",
+        "bytes": 431914577,
+        "sha256": "2ad99f36690227e8f303977ffda263562c1d8b1aee0bb4cd4d1908e9defbfe9d"
+      },
+      {
+        "workspace_path": "outputs/pr13-tencent-20261009/dual-GUI-authority-full-six-segment-controller-r2/queue_dual-GUI-full-guardian-zh-cn-r2_between_native_units_once.py-stderr.txt",
+        "bytes": 1271,
+        "sha256": "4cf908915d8d21653078f052a1d85ab10bf1a8730778a8c00e78377251893df9"
+      }
+    ],
+    "inspection_source_sha256": "cc726868cc666dad8aaad08ca72303616b5078b5fc879e2cd15b7e3525b383a5",
+    "derived_inspection_result_sha256": "af2db1f621313996c37c5e5d8d9168228861063b815092e0955ea8501cb47b40",
+    "relationship": "The exact18 raw files were read by the preserved inspection source to produce the distinct private inspection result; this public report derives from that result.",
+    "originals_overwritten": false,
+    "full_corpus_parent_graph_established": false
+  },
+  "whole_432MB_file_remains_ineligible_for_bounded_public_export": true,
+  "all_nonUTF8_originals_still_rejected_by_strict_public_exporter": true,
+  "no_original_transcoding_or_public_validator_changes": true,
+  "remaining": [
+    "Full related physical inventory still running; read errors are not cleared",
+    "Other credential-like/source-policy hits require exact-content classification",
+    "All archive members and nested archives remain outside this18-file check",
+    "Complete related raw-to-derived parent graph remains incomplete"
+  ],
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "task_and_gate_states_unchanged": true,
+  "new_game_samples": 0,
+  "local_no_Godot_or_visible_window_started": true,
+  "BelowNormal": true,
+  "Windows_background_mode": true
+}

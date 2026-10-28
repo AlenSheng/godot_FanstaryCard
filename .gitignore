@@ -6,8 +6,25 @@
 *.key
 *.dpapi
 __pycache__/
+/outputs/pr13-local-20261008/
+/outputs/pr13-tencent-20261009/
 /server/.artifacts/
 /server/.env
+/server/.env.before-*
 /server/cloud-env.local.bat
 /server/local-backups/*.dump
 /server/local-backups/*.dump.sha256
+
+# Local protocol migration toolchains, test workspaces and generated build output.
+/work/
+/server/.packages/
+/server/**/bin/
+/server/**/obj/
+/server/artifacts/protobuf-*/
+/protocol/tests/bin/
+/protocol/tests/obj/
+/server/tests/**/TestResults/
+
+# Generated full-ledger snapshots are preserved in the verified lossless archive.
+# Existing tracked snapshots remain tracked; new historical copies stay private.
+/docs/reports/pr13-stages-20261009/**/register.json

@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "actual_native_job_exit_code": 0,
+  "actual_native_rows": 85,
+  "actual_required_discovered_rows": 85,
+  "native_counters": {
+    "total": 85,
+    "executed": 85,
+    "passed": 85,
+    "failed": 0,
+    "error": 0,
+    "timeout": 0,
+    "aborted": 0,
+    "inconclusive": 0,
+    "passedButRunAborted": 0,
+    "notRunnable": 0,
+    "notExecuted": 0,
+    "disconnected": 0,
+    "warning": 0,
+    "completed": 0,
+    "inProgress": 0,
+    "pending": 0
+  },
+  "missing_actual_names": [],
+  "unexpected_actual_names": [],
+  "all_selected_rows_unskipped_passed": true,
+  "phases": [
+    {
+      "name": "actual-discovery",
+      "arguments": [
+        "dotnet",
+        "test",
+        "/runtime/FantasyCard.Server.Tests.dll",
+        "--list-tests",
+        "--filter",
+        "Category=PostgresIntegration&FullyQualifiedName~FantasyCard.Server.Tests.Persistence"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "actual-full-persistence",
+      "arguments": [
+        "dotnet",
+        "test",
+        "/runtime/FantasyCard.Server.Tests.dll",
+        "--filter",
+        "Category=PostgresIntegration&FullyQualifiedName~FantasyCard.Server.Tests.Persistence",
+        "--results-directory",
+        "/output/results",
+        "--logger",
+        "trx;LogFileName=all-persistence.original.trx"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "scope": "All current Category=PostgresIntegration tests in Persistence namespace; no full solution, Program/Godot/WAN, strength statistics or canonical cell claim",
+  "MAIN_accepted": false
+}

@@ -1,0 +1,246 @@
+{
+  "kind": "FiveLegacyDiagnosticEmptyAccessTokenOccurrencesScoped_OriginalRawExportRejectionsRetained",
+  "generated_at": "2026-10-23T13:56:57.859266+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "exact_legacy_log_objects": 5,
+  "exact_empty_field_occurrences": 5,
+  "observed_sensitive_field_path": [
+    "AccessToken"
+  ],
+  "observed_field_type": "str",
+  "observed_field_length": 0,
+  "known_structured_message_type": "UpdateLicenseRequest",
+  "exact_known_JSON_messages_pass_original_structured_public_rules": true,
+  "source_remainder_excluding_only_verified_JSON_spans_has_no_other_original_text_predicate_matches": true,
+  "trailing_numeric_identifier_bytes_retained_not_removed_or_claimed_safe": true,
+  "boundary_controls_passed": 25,
+  "prior20_control_expectations_unchanged": true,
+  "boundary_controls": [
+    {
+      "name": "empty field with routing suffix",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "empty field without suffix",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "nonempty field remains pending",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "null is another schema",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "missing field is not exact empty field",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "masked marker not claimed empty",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "another message kind",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "nested supplied field still rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "another empty sensitive field not generalized",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "credential-like suffix retained",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "structured suffix not discarded",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "other source line remains pending",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "malformed JSON remains pending",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "embedded marker is not a diagnostic frame",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "unicode nonsensitive metadata",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "private block outside frame retained",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "Bearer outside frame retained",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "other inspected non-sensitive frame retained",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "lowercase field not this exact schema",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "two explicit empty frames retain both occurrences",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "known decimal identifier suffix retained",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "name": "unknown suffix preposition not inferred",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "different identifier width not inferred",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "mixed opaque identifier not inferred",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "name": "extra suffix words not discarded",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ],
+  "original_R74_known_suffix_parser_rejection_retained": {
+    "ok": false,
+    "native_exit": 1,
+    "exception": "AssertionError",
+    "failed_line": 107,
+    "failed_assumption": "Known logger suffix contains alphabetic routing text only",
+    "observed_format": "Known preposition followed by a ten-digit identifier after the JSON payload",
+    "source_sha256": "617d71a689e1441694af66760e2c89d3479ee827367b4f060e522a85fdd4fa3f",
+    "old20_controls_passed_before_source_rejection": true,
+    "original_logs_public_guard_and_authoritative_pointer_modified": false,
+    "case_profiles_closed": 0
+  },
+  "prior_whole_suffix_JSON_probe_failure": {
+    "native_exit": 1,
+    "exception": "JSONDecodeError Extra data",
+    "cause": "The log appends routing text after its JSON object; whole-suffix json.loads is not the log format",
+    "not_a_game_or_product_failure": true
+  },
+  "R75_native_exit_observed": 0,
+  "original_raw_logs_still_rejected_by_unchanged_public_validator": 5,
+  "legacy_paths_still_tracked_as_before": [
+    "outputs/protobuf_client/editmode-run.log",
+    "outputs/protobuf_client/editmode-run3.log",
+    "outputs/protobuf_client/editmode-run4.log",
+    "outputs/protobuf_client/editmode-run5.log",
+    "outputs/protobuf_client/editmode-run6.log"
+  ],
+  "source_or_Git_log_bytes_not_modified_removed_or_republished": true,
+  "no_original_raw_export_permission_granted": true,
+  "other_opaque_licensing_fields_license_validity_runtime_credentials_or_global_Git_privacy_not_attested": true,
+  "empty_field_keyword_hit_not_reported_as_a_nonempty_token_leak": true,
+  "private_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-empty-licensing-diagnostic-20261023-r75-originals\\exact-empty-field-diagnostic-contexts.private.original.jsonl",
+    "bytes": 7923,
+    "sha256": "a77691e7654914d72cacbde9ee30b4f92c7803a797c5708675c5875841991aea",
+    "records": 5
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-empty-licensing-context-publication-20261023-r76-originals\\verified-empty-field-context-custody.original.json",
+    "bytes": 5034,
+    "sha256": "364dc2fa7ea05ac14a24e0b691fd23cf8d17fe256126c63e7bf5a1de188de0cf"
+  },
+  "original_content_review_objects_before": 192,
+  "original_content_review_objects_after": 187,
+  "remaining_original_content_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-empty-licensing-diagnostic-20261023-r75-originals\\remaining187-content-review-queue.private.original.jsonl",
+    "bytes": 346518,
+    "sha256": "27d51d20a3ce5e44ab5d6b3d075079b35b1f3741bbe72aaa1ef78c50443a72a6",
+    "remaining_objects": 187,
+    "remaining_aliases": 1084
+  },
+  "remaining_content_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "SourceLanguageExpressionIntent": 131,
+    "PrivateStructuredOrRuntimeContent": 36
+  },
+  "size_omitting_reference_records_unchanged": 3516,
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "public_guard_source_sha256_unchanged": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_Godot_Unity_or_cloud_operation": false
+}

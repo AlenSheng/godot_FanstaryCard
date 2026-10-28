@@ -3,11 +3,12 @@ extends Control
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const Details = preload("res://ui/equipment_details.gd")
+const ItemVisual = preload("res://ui/item_visual.gd")
 
 var item_id := ""
 var item: Dictionary = {}
 
-func configure(value: Dictionary, icon: Texture2D) -> void:
+func configure(value: Dictionary) -> void:
 	item = value.duplicate(true)
 	item_id = str(item.get("item_id", ""))
 	custom_minimum_size = Vector2(137, 83)
@@ -15,21 +16,9 @@ func configure(value: Dictionary, icon: Texture2D) -> void:
 	mouse_default_cursor_shape = Control.CURSOR_DRAG
 	tooltip_text = P.localized_text(Details.description(item))
 
-	var frame := Panel.new()
-	frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	frame.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY))
-	add_child(frame)
-
-	if icon != null:
-		var image := TextureRect.new()
-		image.texture = icon
-		image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		image.position = Vector2(7, 8)
-		image.size = Vector2(64, 60)
-		image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(image)
+	var visual := ItemVisual.item(self, item, Vector2(76, 76), false)
+	visual.position = Vector2(2, 3)
+	visual.size = Vector2(76, 76)
 
 	var quantity := Label.new()
 	quantity.text = "×%s" % item.get("quantity", 0)
@@ -59,19 +48,11 @@ func _make_drag_preview() -> Control:
 	var preview := Panel.new()
 	preview.custom_minimum_size = Vector2(137, 83)
 	preview.size = preview.custom_minimum_size
-	preview.add_theme_stylebox_override("panel", Art.style(Art.COMMON_CELL_KEY))
+	preview.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
 	preview.modulate = Color(1.0, 1.0, 1.0, 0.88)
-	if item.get("kind", "") != "":
-		var icon := Art.item_texture(item)
-		if icon != null:
-			var image := TextureRect.new()
-			image.texture = icon
-			image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			image.position = Vector2(7, 8)
-			image.size = Vector2(64, 60)
-			image.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			preview.add_child(image)
+	var visual := ItemVisual.item(preview, item, Vector2(76, 76), false)
+	visual.position = Vector2(2, 3)
+	visual.size = Vector2(76, 76)
 	var quantity := Label.new()
 	quantity.text = "×%s" % item.get("quantity", 0)
 	quantity.position = Vector2(75, 27)

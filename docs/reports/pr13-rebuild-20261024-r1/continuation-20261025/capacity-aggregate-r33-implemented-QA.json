@@ -1,0 +1,244 @@
+{
+  "state": "All_exact_CI_and_Windows28_29_native_QA_passed;R34_warmup_started_capacity_pending",
+  "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+  "parent": "6be9071b87d0c5d53747bccde83e05bd731d77e3",
+  "branch": "codex/capacity-global50-r29-20261026",
+  "source_freeze": {
+    "ok": true,
+    "head": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "parent": "6be9071b87d0c5d53747bccde83e05bd731d77e3",
+    "branch": "codex/capacity-global50-r29-20261026",
+    "files": [
+      "client/tests/gameplay_load_client.gd",
+      "client/tests/run_play_retry.gd",
+      "client/tests/test_command_state_observation.gd",
+      "docs/plans/PR13_CAPACITY_ACTUAL50_RECOVERY_BUDGET_PROPOSAL_20261026_R33.json",
+      "docs/plans/PR13_GLOBAL50_AUTHORITY_POLICY_20261026_R29.md",
+      "tools/gameplay_load_test.py",
+      "tools/pr13_authority_transitions.py",
+      "tools/pr13_distributed_capacity.py",
+      "tools/pr13_distributed_load.py",
+      "tools/tests/test_pr13_aggregate_capacity_v2.py",
+      "tools/tests/test_pr13_authority_policy_integration.py",
+      "tools/tests/test_pr13_capacity_recovery_v2.py",
+      "tools/tests/test_pr13_distributed_capacity.py",
+      "tools/tests/test_pr13_global50_aggregate_v2.py"
+    ],
+    "all20_control_and_tracked_client_bytes_equal_frozen_Git": true,
+    "client_tracked_files": 2159,
+    "focused_python_tests_passed": 166,
+    "new_live_worlds": 0,
+    "Windows_native_QA": "NotStarted_resource_floor",
+    "full_exact_CI_pending": true,
+    "GDD_server_UI_network_wire_config_unchanged": true,
+    "combined_worlds_used": 253,
+    "remaining": 47,
+    "at_ns": 1793005877540827500
+  },
+  "focused_QA": {
+    "passed": true,
+    "tests": 166,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "source_sha256": {
+      "tools/pr13_authority_transitions.py": "69f57f92dde014ab678d8cb3e350dc131bf21f41a1531e077255afac0803a2ea",
+      "tools/pr13_distributed_load.py": "7b4d2238b858848d582c97e61a523e967c0b8d586eadf637bcc9f7eb039927a1",
+      "tools/pr13_distributed_capacity.py": "aad180fb6608680dac41af15bdf0cdf0dc495080461885ca1542e20bbd04cc4c",
+      "tools/gameplay_load_test.py": "2fa65b20120cd25aff16c2bbaf54618ef909761e38e89db0e33f169db702d085"
+    },
+    "new_live_worlds": 0,
+    "headless_native_processes_started": 0,
+    "scope": "Focused Python policy/legacy/integration and source-freeze tests,not real capacity",
+    "at_ns": 1793005513189559900
+  },
+  "initial_unit_failures_retained": {
+    "kind": "Development unit failures;not gameplay or live capacity failures",
+    "tests": 17,
+    "failures": 3,
+    "recorded_tool_output_chunk": "3678cf",
+    "failed_tests": [
+      "actual49_should_reach_shared_guard",
+      "actual50_valid_fixture_still_blocked_by_old_per_host_full_online_replay",
+      "raw_pooled_redline_fixture_was_already_blocked_by_stricter_three_window_guard"
+    ],
+    "source_sha256": {
+      "tools/pr13_distributed_capacity.py": "b7293f6804fcabb45a25a4f15ad7785ab50675261fd635263998f279e3b07242",
+      "tools/tests/test_pr13_aggregate_capacity_v2.py": "f891be02c1cb8bba83f90a0ca3d4d7ab56cab5b4a03a92d3ed52cb3e0463e6ac"
+    },
+    "new_live_worlds": 0,
+    "at_ns": 1793002732547167600
+  },
+  "corrected_whole_verifier_tests": {
+    "passed": true,
+    "tests": 17,
+    "failures": 0,
+    "errors": 0,
+    "new_live_worlds": 0,
+    "at_ns": 1793002752892415300
+  },
+  "same_source_CRLF_only_audit_correction": {
+    "first_audit_failed_at": "client/tests/run_native_regressions.gd",
+    "original_tool_chunk": "b82943",
+    "same_existing_commit_resumed": true,
+    "prior_owned_R32_CRLF_only_corrected": [
+      {
+        "path": "client/tests/run_native_regressions.gd",
+        "before_sha256": "9e1527e96dcf61d6405de29e4fb6db337eebeb5966f0bb94f48ef63838766207",
+        "Git_sha256": "ef25e2cf67a7ca14ebe150bbe28f7142b14a83f40821b1edc190b9dbfb834e4e",
+        "only_CRLF_difference": true
+      }
+    ],
+    "no_gameplay_test_failure": true,
+    "new_live_worlds": 0
+  },
+  "exact_CI": {
+    "id": 40297686876,
+    "name": "Gameplay load offline checks",
+    "head_sha": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "head_branch": "codex/capacity-global50-r29-20261026",
+    "status": "queued",
+    "conclusion": null,
+    "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40297686876",
+    "run_attempt": 1
+  },
+  "active_CI_watcher_session": null,
+  "expected_CI_native_suites": 29,
+  "Windows_offline_native": {
+    "ok": true,
+    "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "phases": [
+      {
+        "phase": "common",
+        "exit": 0,
+        "guard": null,
+        "minimum_available_bytes": 11202551808,
+        "suites": 28,
+        "named_checks": 513,
+        "native_ok": true,
+        "CNO_BelowNormal_last4_headless_Dummy": true,
+        "new_worlds": 0
+      },
+      {
+        "phase": "extended",
+        "exit": 0,
+        "guard": null,
+        "minimum_available_bytes": 9888370688,
+        "suites": 29,
+        "named_checks": 436,
+        "native_ok": true,
+        "CNO_BelowNormal_last4_headless_Dummy": true,
+        "new_worlds": 0
+      }
+    ],
+    "overlapping_checks_not_added": true,
+    "new_worlds": 0
+  },
+  "actual_global_online_active_target": 50,
+  "actual_required_native_supply": 60,
+  "planned_partition": {
+    "Windows": 40,
+    "Linux": 20
+  },
+  "partial_local_floors_do_not_replace_global50": true,
+  "revised_profiles": {
+    "workload": "full-native60-global50-aggregate-v2",
+    "latency": "north-america-pooled5s8s-window95-v2",
+    "refusal": "capacity-budgeted-authority-recovery-v2"
+  },
+  "strict_default_and_v1_unchanged": true,
+  "raw_errors_samples_and_old_failed_results_unchanged": true,
+  "positive_stun_not_observed_is_explicitly_inferred_not_execution_proof": true,
+  "all60_OS_source_fresh_frame_audit_and_DB_cleanup_requirements_kept": true,
+  "whole_queue_memory_bytes": {
+    "Windows40": 14092861440,
+    "Linux20_after_infra_warmup": 2446157056
+  },
+  "reserves_unchanged": {
+    "Windows": 6442450944,
+    "Linux": 500000000,
+    "next_launch": 268435456,
+    "cloud_disk_bytes": 3000000000,
+    "cloud_disk_percent": 5
+  },
+  "last_local_readonly": {
+    "UTC": "2026-10-26T09:00:32.2049122Z",
+    "available_bytes": 6560493568,
+    "below_full_queue_and_next_launch_budget": true
+  },
+  "new_live_worlds": 0,
+  "capacity_worlds_used": 253,
+  "capacity_worlds_remaining_including_warmup": 47,
+  "capacity50_or100_accepted": false,
+  "whole_project_accepted": false,
+  "heartbeat": "PAUSED_goal_following_live_CI",
+  "external_originals": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity-aggregate-v2-qa-20261026-r33",
+  "at_ns": 1793006305047579300,
+  "latest_exact_CI_jobs": {
+    "accounting": "success",
+    "server-contract": "success",
+    "client": "success",
+    "server-postgres": "in_progress"
+  },
+  "latest_CI_checked_at_ns": 1793006404969168600,
+  "final_source_CI_gate": {
+    "ok": true,
+    "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "run": 40297686876,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40297686876",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12639538256,
+        "name": "gameplay-load-postgres-7b0f6008f4527c5c1536e9090d7d21820e72551a",
+        "bytes": 3611915,
+        "sha256": "3ff01448296920fd8bcaf1d528c901d3084431b4a0610e946e380ef7a3c386b4",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12639131728,
+        "name": "gameplay-load-accounting-7b0f6008f4527c5c1536e9090d7d21820e72551a",
+        "bytes": 555045,
+        "sha256": "c955b8fd1f58d09ffcd78d91552220efc57ccbaf1301be4463a054407c3bcc43",
+        "all_members_verified": true,
+        "members": 166
+      },
+      {
+        "id": 12638588755,
+        "name": "gameplay-load-server-7b0f6008f4527c5c1536e9090d7d21820e72551a",
+        "bytes": 120582,
+        "sha256": "82dcda8ac0e7f4c0be784310195bfc246880ca0f5943b03633d7824aa3b5b917",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12638244697,
+        "name": "gameplay-load-client-7b0f6008f4527c5c1536e9090d7d21820e72551a",
+        "bytes": 3590471,
+        "sha256": "c06dc6224e95e7ca065545def9e0878b232dbde68aae71027e12ac84b793df3e",
+        "all_members_verified": true,
+        "members": 175
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "tool_tests_passed": 599,
+    "cloud_ownership_tests_passed": 8,
+    "offline_server_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "CI_Linux_native_suites": 29,
+    "CI_Linux_native_named_checks": 436,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1793007012638553100
+  }
+}

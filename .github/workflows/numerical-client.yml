@@ -1,0 +1,70 @@
+name: Numerical client checks
+on:
+  pull_request:
+    paths: ['client/**', 'server/src/FantasyCard.Domain/**', 'server/tools/FantasyCard.Numerics/**', 'config/**', 'protocol/**', 'tools/pr13_preview_checks.py', '.github/workflows/numerical-client.yml']
+  push:
+    branches: ['codex/numerical-integration-20260928']
+    paths: ['.github/workflows/numerical-client.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: numerical-client-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  godot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Install repository Godot version from official distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot" test-results/godot
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot.zip"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64"
+          "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --version | tee test-results/godot/version.txt
+          grep -q '^4\.7\.2\.' test-results/godot/version.txt
+      - name: Import and parse scripts in a network-isolated namespace
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          sudo -E unshare -n timeout 600 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client --editor --import --quit > test-results/godot/import.log 2>&1
+          code=$?
+          set -e
+          tail -n 140 test-results/godot/import.log
+          test "$code" -eq 0
+          ! grep -E 'SCRIPT ERROR|Parse Error|Failed to load script' test-results/godot/import.log
+      - name: Numerical scene checks without production network access
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          sudo -E unshare -n timeout 60 "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --headless --path client res://tests/numerical_integration.tscn > test-results/godot/numerics.log 2>&1
+          code=$?
+          set -e
+          cat test-results/godot/numerics.log
+          test "$code" -eq 0
+          grep -q '"ok":true' test-results/godot/numerics.log
+          ! grep -E 'SCRIPT ERROR|Parse Error' test-results/godot/numerics.log
+      - name: Compare local previews with authoritative room preview and play
+        run: python3 tools/pr13_preview_checks.py --godot "$RUNNER_TEMP/godot/Godot_v4.7.2-stable_linux.x86_64" --output test-results/godot/preview-parity
+      - name: Stage only named numerical reports and fixture logs
+        id: numerical_evidence
+        if: always()
+        run: python3 tools/cloud/export_evidence.py --profile numerical-client --source test-results/godot --destination "$RUNNER_TEMP/numerical-client-public"
+      - uses: actions/upload-artifact@v7
+        if: always() && steps.numerical_evidence.outputs.artifact_directory != ''
+        with:
+          name: numerical-godot-${{ github.sha }}
+          path: ${{ steps.numerical_evidence.outputs.artifact_directory }}
+          retention-days: 7
+          if-no-files-found: ignore

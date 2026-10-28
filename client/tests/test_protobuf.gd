@@ -28,6 +28,14 @@ func run_test() -> Dictionary:
 	var legacy: Dictionary = proto.decode("RoomMonster", PackedByteArray([16, 1]))
 	if maxi(1, int(legacy.get("boss_phase", 1))) != 1:
 		return {"ok": false, "message": "Legacy low-HP monster must remain phase one"}
+	var market_event := {"action": "market.listed", "item_id": "listing-1", "listing": {
+		"listing_id": "listing-1", "seller_id": "seller", "equipment_id": "item-1",
+		"price_gold": 150, "status": "Active", "version": 2,
+		"expires_at_unix_ms": 1790000000000,
+		"equipment": {"instance_id": "item-1", "slot": "Head", "quality": "Blue", "version": 4}}}
+	var market_decoded: Dictionary = proto.decode("InventoryChangedEvent", proto.encode("InventoryChangedEvent", market_event))
+	if market_decoded.get("listing", {}).get("equipment", {}).get("quality", "") != "Blue" or int(market_decoded.listing.price_gold) != 150:
+		return {"ok": false, "message": "Market listing delta lost nested equipment"}
 	for malformed in [PackedByteArray([18, 127, 65]), PackedByteArray([8, 128]), PackedByteArray([0]), PackedByteArray([13, 0])]:
 		proto.decode("ClientEnvelope", malformed)
 		if proto.error.is_empty(): return {"ok": false, "message": "Malformed packet accepted"}

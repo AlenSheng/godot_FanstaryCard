@@ -1,0 +1,77 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "integration_source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "task_decisions": [
+    {
+      "task_id": "PR13-A08.2",
+      "state": "Accepted",
+      "runtime_review_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "reason": "MAIN verified all three current policy/classification cases in an actual owned PG room and independently audited frozen current state. Historical191/62 and130/139 remain historical/unreconciled, all48 original Queued tasks with144 absent control records remain Queued, and current102 Accepted tasks map to27 direct,31 embedded and44 root MAIN decisions. Snapshot/durable bytes stay unchanged. The initial75 direct-field-only observer flags are explicitly corrected without changing any accepted state or historical proof. A081 minimum current/unknown-source inputs are available; its full historical provenance remains unaccepted.",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/report.json",
+          "bytes": 6067,
+          "sha256": "00d7bfef3a6957294b7b0e6fcf422f704c10b287846b00792b7b71f40c59e6d6"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/cases.jsonl",
+          "bytes": 67182,
+          "sha256": "b8ac576d8154a4a310f7a713eade549c2360a27402257116b0e30bc65f427d0e"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/native-observations.json",
+          "bytes": 119150,
+          "sha256": "0b4c99b63057969c5a874895eb85ff0205ea8ff4cfc8a324695df97ce4fdc3d1"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/commands.json",
+          "bytes": 6107,
+          "sha256": "164fb8438a3acd558050802558de181ca3f14cabfb33fceb8a950747738de73e"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/manifest.json",
+          "bytes": 1048,
+          "sha256": "34e87a44672b87a76315bd52e0cc994d25aa19d22f5c77627c7476c00d542084"
+        }
+      ],
+      "rollback": "Restore the prior register to revoke this scoped review. No product logic/config/default/production data was changed; keep all raw native results, observer errors and original backups.",
+      "scope_limit": "Only declared OFFLINE/POSTGRES/AUDIT contracts. Original historical raw/source/CI/capacity/whole-project gaps remain; current source4a has explicit private test overlays, not a clean full-test-tree claim."
+    },
+    {
+      "task_id": "PR13-A08.3",
+      "state": "Accepted",
+      "runtime_review_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "reason": "MAIN separately verified the three bounded rollback contracts: current4a room handled/extracted by immutable retained0cf binary; current PG policy-source revert creates legacy new rooms while persisted old/candidate rooms stay frozen; actual native custom backup restores into a separate owned database and repeated ACK/commit cannot copy assets. Positive and unfiltered418-run receipts, exact dump hashes,26 migration checksums and unchanged49ce config package identities are inspected. A082 is approved first; no production or arbitrary-old-version rollback is claimed.",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/report.json",
+          "bytes": 6067,
+          "sha256": "00d7bfef3a6957294b7b0e6fcf422f704c10b287846b00792b7b71f40c59e6d6"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/cases.jsonl",
+          "bytes": 67182,
+          "sha256": "b8ac576d8154a4a310f7a713eade549c2360a27402257116b0e30bc65f427d0e"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/native-observations.json",
+          "bytes": 119150,
+          "sha256": "0b4c99b63057969c5a874895eb85ff0205ea8ff4cfc8a324695df97ce4fdc3d1"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/commands.json",
+          "bytes": 6107,
+          "sha256": "164fb8438a3acd558050802558de181ca3f14cabfb33fceb8a950747738de73e"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A082-A083-current-state-and-rollback-20261024/manifest.json",
+          "bytes": 1048,
+          "sha256": "34e87a44672b87a76315bd52e0cc994d25aa19d22f5c77627c7476c00d542084"
+        }
+      ],
+      "rollback": "Restore the prior register to revoke this scoped review. No product logic/config/default/production data was changed; keep all raw native results, observer errors and original backups.",
+      "scope_limit": "Only declared OFFLINE/POSTGRES/AUDIT contracts. Original historical raw/source/CI/capacity/whole-project gaps remain; current source4a has explicit private test overlays, not a clean full-test-tree claim."
+    }
+  ]
+}

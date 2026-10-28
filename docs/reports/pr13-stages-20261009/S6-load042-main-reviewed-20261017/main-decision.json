@@ -1,0 +1,25 @@
+{
+  "task_id": "LOAD-04.2",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T13:10:45.778090+08:00",
+  "reason": "真实R2竞态修复，三案实际LIVE分层复核与独立PG：3false有限失败、接受后迟到required不重发、真实移除清提示后旧Matched结果0READY。R3整轮夹具失败保留，仅T02由原审计/冻结控制流/独立SQL重建；八套原生回归通过。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load042-bounded-ready-current-LIVE-20261017/main-independent-review.json",
+  "human_authorization": "本goal自动补验及真实缺陷修复、测试云临时限制和多轮失败后执行限制修订授权。",
+  "business_criteria_relaxed": false,
+  "execution_volume_revision": {
+    "old_self_imposed_max_matches": 6,
+    "new_self_imposed_max_matches": 7,
+    "old_max_player_starts": 24,
+    "new_max_player_starts": 28,
+    "human_goal_task_cap": 300,
+    "reason": "R4 zero READY passed but real ready_removed arrived216ms AFTER old result return, so exact R2 cleared-hint-first failure order needs one additional current real match. All6 old actual matches retained; business correctness/server deadlines not relaxed.",
+    "declared_before_R5_dispatch": true
+  },
+  "actual_matches": 7,
+  "conservative_player_room_starts": 28,
+  "scope": "Current bounded READY functional LIVE; T01prioractualtwo executions sourcequalified; T02R3business independently reconstructed despite wholeFailed; T03currentR5exactremovedfirstrace plusR4otherorder; no natural/default-capacity/human claim",
+  "old15percent_capacity_resource_floor_unpassed": true,
+  "original_failures_preserved": true,
+  "rollback": "父register恢复可撤销此裁决；本轮两处SUT修复前原字节在G盘。无后端、正式配置或生产容器变更。"
+}

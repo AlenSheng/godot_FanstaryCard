@@ -1,0 +1,101 @@
+{
+  "kind": "current natural-cycle diagnostic",
+  "scenario": "build-control",
+  "status": "Failed",
+  "source_sha": "e3868fa93b61df07ec66817e2b72f05b72919861",
+  "exit_code": 3,
+  "natural_cycles": 17,
+  "acknowledgements": 23,
+  "distribution": {
+    "0": 2,
+    "1": 3,
+    "2": 1,
+    "3": 4
+  },
+  "clients": [
+    {
+      "class": "Mage",
+      "strategy": "build",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "build",
+      "natural_cycles": 0,
+      "message": "Expedition did not reach acknowledged settlement",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "build",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "build",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "build",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "build",
+      "natural_cycles": 0,
+      "message": "Expedition did not reach acknowledged settlement",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "build",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "build",
+      "natural_cycles": 2,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "build",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "build",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    }
+  ],
+  "business_cleanup": true,
+  "owned_runtime_cleanup": true,
+  "postconditions": {
+    "read_only": true,
+    "result": [
+      {
+        "pending_holds": 0,
+        "active_match_players": 0
+      }
+    ]
+  },
+  "primary_report_sha256": "dcd45806d59fc8d8b0a72d785bfa2b7a324a296060b2c901702a1019824667f2",
+  "profile": "separately preregistered legal build; unpaired room seeds, no benefit claim",
+  "candidate_activation": false
+}

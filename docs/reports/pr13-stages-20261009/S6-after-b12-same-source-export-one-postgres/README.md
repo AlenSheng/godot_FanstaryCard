@@ -1,0 +1,5 @@
+# PR13 B12同源重导一项真实PG补登记
+
+复核已有R4腾讯云真实导出及PG阳性检查：原工作簿c5cffc9b由当前ConfigExporter重导，server/client的bytes、sha256、version六成员逐字节等于当前发布件。实际PG用例持有当前默认20张守护者房间时再次调用阳性检查exit0，导出bytes亦等于当前Domain嵌入49ce83c0；PG状态未变。原十项PG、完整6319原件/归档/328源和2815上下文校验链保留。
+
+本次只核对并映射原六导出成员、原工作簿和原实际阳性PG回执，没有新增或重跑原生/数值样本。仅补齐B12.3-T01的POSTGRES，缺口104降至103；EXPERIMENT/RENDER及其他缺项、原失败、门禁和MAIN仍保留，B12.3仍Partial。

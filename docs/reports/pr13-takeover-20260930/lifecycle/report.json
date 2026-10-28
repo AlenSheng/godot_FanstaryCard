@@ -1,0 +1,110 @@
+{
+  "generated_at_utc": "2026-09-30T15:44:18.910570+00:00",
+  "base_head": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+  "worktree_head_at_handoff": "9275ec295b76f10fdefb57dc83a6c59c3dbcb878",
+  "state": "Partial_LocalRegressionPassed_NotAccepted",
+  "accepted_by": null,
+  "instruction_gap": "server/AGENTS.md指定.agents/skills/server_create/SKILL.md；固定head/工作区均不存在，已回报父任务，未虚构已读。",
+  "documents_read": [
+    "server/AGENTS.md",
+    "GDD.md",
+    "docs/SERVER_SPEC.md",
+    "docs/SERVER_0_TO_1_GUIDE.md",
+    "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.json的LOAD-09/PR13-A04/PR13-A05完整包"
+  ],
+  "confirmed_defects": [
+    {
+      "id": "mark-running-lost-response",
+      "before": "真实UPDATE提交后吞应答：DB Running，Actor被删，第二次ProcessNext=false；重复MarkRunning抛异常。",
+      "after": "保留同launch重试，恢复已存snapshot；MarkRunning接受已Running，拒绝Completed；确认Running前不启动ticker。",
+      "evidence": [
+        "logs/baseline-final.trx",
+        "logs/matrix-final-verified.trx"
+      ]
+    },
+    {
+      "id": "snapshot-settlement-order",
+      "before": "PG trigger拒绝terminal snapshot更新，match_player仍被持久置Settled，形成旧active snapshot。",
+      "after": "关键快照保存异常停止该轮settlement；terminal checkpoint重试成功后才持久settlement。",
+      "evidence": [
+        "logs/baseline-final.trx",
+        "logs/matrix-final-verified.trx"
+      ]
+    },
+    {
+      "id": "stale-snapshot-terminal-route",
+      "before": "durable A已Extracted，旧active snapshot先占route，A新房恢复失败。",
+      "after": "恢复核对match_player/receipt；不一致旧房单独隔离、readiness失败；继续扫描A新房并保留其route。",
+      "evidence": [
+        "logs/baseline-final.trx",
+        "logs/matrix-final-verified.trx"
+      ]
+    }
+  ],
+  "existing_correct_behavior": [
+    "旧room的ReleaseTerminalPlayers仅删仍指旧room的route；RecoveredTerminalPlayer不注册活动route，原head已修复。",
+    "settlement提交后丢应答仍恢复同receipt，Pending holds门控正常，重复commit资产仅转移一次：新真实协议故障测试验证，不改变Settlement生产代码。"
+  ],
+  "modified_files": [
+    "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+    "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+    "server/src/FantasyCard.Server/Rooms/RoomActor.cs",
+    "server/src/FantasyCard.Server/Rooms/RoomRecoveryWorker.cs",
+    "server/src/FantasyCard.Server/Rooms/RoomRegistry.cs",
+    "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs",
+    "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs"
+  ],
+  "validation": {
+    "new_fault_matrix": {
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "logs/matrix-final-verified.trx"
+    },
+    "full_server_private_postgres": {
+      "passed": 262,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "logs/server-final.trx",
+      "exit": 0
+    },
+    "full_domain": {
+      "passed": 317,
+      "failed": 0,
+      "skipped": 0,
+      "trx": "logs/domain-final.trx",
+      "exit": 0
+    },
+    "diff_check": "pass",
+    "tracked_bin_obj_changes": 0
+  },
+  "cleanup": {
+    "private_pg_stopped": true,
+    "private_pg_data_and_socket_removed": true,
+    "external_db_used": false,
+    "committed_or_pushed": false
+  },
+  "canonical_scope": [
+    {
+      "ids": [
+        "LOAD-09.1",
+        "LOAD-09.2",
+        "PR13-A04.3",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3"
+      ],
+      "state": "Partial",
+      "detail": "本地反例/PG回归证据，不代表全部profile/整合SHA/实际客户端入口验收。"
+    }
+  ],
+  "remaining": [
+    "父任务尚需统一审查、提交，并在最终纯worktree集成SHA重跑；本代理未commit/push。",
+    "未部署、重启线上/测试服、合并，未访问测试服；本批无LIVE客户端组合/STOP/迟到事件证据。",
+    "未执行LOAD-09.3慢连接隔离、LOAD-09.4热点三轮AB与EXPERIMENT性能验收。",
+    "未取得历史ledgerChainMismatches时间/账户/链证据，PR13-A05.4仍Blocked；新fixture资产/ledger断言不能代表历史账链无风险。",
+    "已经存在的durable终态与旧active snapshot冲突房间会隔离且readiness不健康；本修复不推断修复遗物/战斗状态，队友旧房恢复仍需单独有证据审查。",
+    "启动snapshot/registry失败测试覆盖同进程重试；同进程内重建Repository/Registry/RecoveryWorker覆盖MarkRunning提交后丢应答及既有Running冷启动恢复；全部测试未做独立OS进程kill/restart。",
+    "强制server_create skill缺失仍是仓库指令缺口。"
+  ]
+}

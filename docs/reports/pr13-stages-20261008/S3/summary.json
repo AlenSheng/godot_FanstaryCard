@@ -1,0 +1,47 @@
+{
+  "stage": "S3",
+  "status": "Partial",
+  "source_sha": "40c0c016b9949ecbd3d9c75609a9075fcae7e21d",
+  "python": {
+    "passed": 148,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "domain": {
+    "passed": 317,
+    "failed": 0,
+    "skipped": 0
+  },
+  "offline_cases": {
+    "passed": 27,
+    "executed": 27,
+    "all_cases": 396
+  },
+  "http_transports": {
+    "per_request": {
+      "codec": 177,
+      "transport": 24,
+      "passed": true
+    },
+    "reusable": {
+      "codec": 177,
+      "transport": 24,
+      "passed": true
+    }
+  },
+  "database_original": {
+    "passed": 300,
+    "failed": 2,
+    "skipped": 0,
+    "source": "outputs/pr13-local-20261008/S3/server-complete/server-complete.trx"
+  },
+  "database_focused_rechecks": {
+    "settlement_transactions": 2,
+    "registration_response_loss": 1,
+    "current_card_purchase_contract": 1,
+    "all_passed": true
+  },
+  "database_current_full_suite": "Running; no acceptance inferred from focused rechecks",
+  "runtime_accepted": 0,
+  "remaining": "Full 396-case mapping, remaining functional implementation and all applicable runtime layers are still required"
+}

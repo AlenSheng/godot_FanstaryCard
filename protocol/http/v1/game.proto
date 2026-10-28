@@ -1,0 +1,423 @@
+syntax = "proto3";
+
+package fantasycard.http.v1;
+
+option csharp_namespace = "FantasyCard.Contracts.Http.V1";
+
+// Authoritative HTTP wire contract. Field numbers are append-only.
+
+// ISO-8601 dates, canonical UUIDs, enum names, and invariant decimals use strings.
+
+// Nullable equipment slots use empty string; repeated collections use empty lists.
+
+message Empty {}
+
+message UnfinishedMatchResponse {
+  string match_id = 1;
+  string room_id = 2;
+  string status = 3;
+  optional int64 room_revision = 4;
+  string config_version = 5;
+}
+
+message BootstrapResponse {
+  string server_time = 1;
+  string config_version = 2;
+  PlayerProfileResponse player = 3;
+  WalletResponse wallet = 4;
+  MaterialsResponse materials = 5;
+  repeated ClassWeaponResponse class_weapons = 6;
+  repeated LoadoutResponse equipped_loadouts = 7;
+  repeated DeckResponse decks = 8;
+  repeated CardResponse cards = 9;
+  InventorySummaryResponse inventory_summary = 10;
+  UnfinishedMatchResponse unfinished_match = 11;
+  SettlementResponse unfinished_settlement = 12;
+  InventoryResponse inventory = 13;
+  ShopResponse shop = 14;
+  repeated MarketListingResponse market = 15;
+  MailListResponse mail = 16;
+  PreparationResponse active_preparation = 17;
+}
+
+message LocalSignInRequest {
+  optional string device_id = 1;
+  optional string display_name = 2;
+}
+
+message SteamSignInRequest {
+  optional string ticket = 1;
+  optional string display_name = 2;
+}
+
+message LocalSignInResponse {
+  string access_token = 1;
+  string expires_at = 2;
+  PlayerProfileResponse player = 3;
+}
+
+message MailAttachmentResponse {
+  string kind = 1;
+  int64 amount = 2;
+  optional string item_id = 3;
+  optional string hero_class = 4;
+  optional string effect_affix = 5;
+  optional string secondary_trait = 6;
+}
+
+message MailItemResponse {
+  string id = 1;
+  string title = 2;
+  string body = 3;
+  string sender = 4;
+  string sent_at = 5;
+  optional string expires_at = 6;
+  bool read = 7;
+  bool claimed = 8;
+  repeated MailAttachmentResponse attachments = 9;
+  string title_en = 10;
+  string body_en = 11;
+}
+
+message MailListResponse {
+  repeated MailItemResponse items = 1;
+  int32 unread_count = 2;
+}
+
+message MailClaimResponse {
+  string mail_id = 1;
+  bool already_claimed = 2;
+  repeated MailAttachmentResponse granted = 3;
+}
+
+message MailClaimAllResponse {
+  int32 mail_count = 1;
+  int32 attachment_count = 2;
+  repeated MailClaimResponse claims = 3;
+}
+
+message MailDeleteResponse {
+  int32 deleted_count = 1;
+}
+
+message EnqueueMatchRequest {
+  string preparation_id = 1;
+}
+
+message MatchTicketResponse {
+  string ticket_id = 1;
+  string preparation_id = 2;
+  string status = 3;
+  string queued_at = 4;
+  optional string match_id = 5;
+}
+
+message CreatePreparationRequest {
+  string hero_class = 1;
+  int64 deck_version = 2;
+  repeated string equipment_ids = 3;
+  string backpack_tier = 4;
+  repeated int32 safe_slot_indexes = 5;
+  int32 potion_count = 6;
+  optional string difficulty = 7;
+}
+
+message PreparationSnapshotResponse {
+  string hero_class = 1;
+  int32 maximum_hp = 2;
+  repeated string card_ids = 3;
+  repeated string equipment_ids = 4;
+  int32 class_weapon_level = 5;
+  string backpack_tier = 6;
+  int32 backpack_capacity = 7;
+  repeated int32 safe_slot_indexes = 8;
+  int32 potion_count = 9;
+  string difficulty = 10;
+  string config_version = 11;
+  repeated PreparationEquipmentSnapshotResponse equipment_snapshots = 12;
+  repeated int32 card_levels = 13;
+}
+
+message PreparationEquipmentSnapshotResponse {
+  string instance_id = 1;
+  string slot = 2;
+  string quality = 3;
+  int32 level = 4;
+  string element = 5;
+  optional string effect_affix = 6;
+  optional string secondary_trait = 7;
+}
+
+message PreparationResponse {
+  string preparation_id = 1;
+  string status = 2;
+  PreparationSnapshotResponse snapshot = 3;
+  string created_at = 4;
+  string expires_at = 5;
+}
+
+message SettlementResponse {
+  string settlement_id = 1;
+  string match_id = 2;
+  string player_id = 3;
+  string result = 4;
+  SettlementDetails details = 5;
+  string created_at = 6;
+}
+
+message SettlementAcknowledgementResponse {
+  string settlement_id = 1;
+  string acknowledged_at = 2;
+}
+
+message PlayerProfileResponse {
+  string user_id = 1;
+  string display_name = 2;
+  optional string selected_class = 3;
+  int64 version = 4;
+  string created_at = 5;
+  string updated_at = 6;
+}
+
+message UpdatePlayerProfileRequest {
+  optional string display_name = 1;
+  optional string selected_class = 2;
+  int64 expected_version = 3;
+}
+
+message ShopProductResponse {
+  string product_id = 1;
+  string kind = 2;
+  int64 price_gold = 3;
+  int32 limit = 4;
+  int32 purchased = 5;
+  ShopProductPayload payload = 6;
+  bool already_owned = 7;
+}
+
+message ShopResponse {
+  string reset_key = 1;
+  repeated ShopProductResponse products = 2;
+  int32 refreshes_used = 3;
+  int32 refresh_limit = 4;
+}
+
+message ShopInventoryContextResponse {
+  ShopResponse shop = 1;
+  InventoryResponse inventory = 2;
+}
+
+message PurchaseShopRequest {
+  string product_id = 1;
+  optional int32 quantity = 2;
+}
+
+message ShopPurchaseResponse {
+  string product_id = 1;
+  int32 quantity = 2;
+  int64 gold_after = 3;
+  string granted = 4;
+}
+
+message CreateMarketListingRequest {
+  string equipment_id = 1;
+  int64 price_gold = 2;
+}
+
+message MarketListingResponse {
+  string listing_id = 1;
+  string seller_id = 2;
+  string equipment_id = 3;
+  int64 price_gold = 4;
+  string status = 5;
+  int64 version = 6;
+  string created_at = 7;
+  string expires_at = 8;
+  EquipmentResponse equipment = 9;
+}
+
+message MarketInventoryContextResponse {
+  repeated MarketListingResponse listings = 1;
+  InventoryResponse inventory = 2;
+}
+
+message EconomyContextResponse {
+  ShopResponse shop = 1;
+  repeated MarketListingResponse market = 2;
+  InventoryResponse inventory = 3;
+}
+
+message MarketPurchaseResponse {
+  MarketListingResponse listing = 1;
+  int64 buyer_gold_after = 2;
+}
+
+message WalletResponse {
+  int64 gold = 1;
+  int64 diamond = 2;
+}
+
+message MaterialsResponse {
+  int64 warrior_soul = 1;
+  int64 priest_soul = 2;
+  int64 mage_soul = 3;
+  int64 guardian_soul = 4;
+  int64 equipment_fragments = 5;
+}
+
+message CardResponse {
+  string card_id = 1;
+  optional string hero_class = 2;
+  string rarity = 3;
+  bool unlocked = 4;
+  int32 copy_count = 5;
+  int32 level = 6;
+  int64 version = 7;
+  int64 craft_cost = 8;
+  int64 upgrade_soul_spent = 9;
+  int64 dismantle_refund = 10;
+  string currency_kind = 11;
+  bool can_dismantle = 12;
+  optional string blocked_reason = 13;
+  int64 upgrade_cost = 14;
+  int32 upgrade_copy_cost = 15;
+  bool can_upgrade = 16;
+  optional string upgrade_blocked_reason = 17;
+  CardEffectResponse current_effect = 18;
+  CardEffectResponse next_effect = 19;
+}
+
+message CardEffectResponse {
+  int32 elemental_damage = 1;
+  string element = 2;
+  int32 direct_damage = 3;
+  int32 heal = 4;
+  int32 shield = 5;
+  string draw_charge = 6;
+  int32 immediate_draw = 7;
+  string draw_speed_modifier = 8;
+  string draw_speed_seconds = 9;
+  string stun_seconds = 10;
+  string draw_block_seconds = 11;
+  int32 health_cost = 12;
+  int32 same_element_bonus = 13;
+  int32 resonance_bonus = 14;
+  string conflict_cancel_bonus = 15;
+  string conflict_heal_coefficient = 16;
+  bool is_class_reveal = 17;
+  int32 secondary_elemental_damage = 18;
+  string secondary_element = 19;
+}
+
+message CardMutationRequest {
+  int64 expected_version = 1;
+}
+
+message CardMutationResponse {
+  CardResponse card = 1;
+  MaterialsResponse materials = 2;
+  string currency_kind = 3;
+  int64 soul_amount = 4;
+  int32 consumed_copies = 5;
+}
+
+message DeckResponse {
+  string deck_id = 1;
+  string hero_class = 2;
+  repeated string card_ids = 3;
+  int64 version = 4;
+  string updated_at = 5;
+}
+
+message UpdateDeckRequest {
+  repeated string card_ids = 1;
+  int64 expected_version = 2;
+}
+
+message ClassWeaponResponse {
+  string hero_class = 1;
+  int32 level = 2;
+  int64 version = 3;
+}
+
+message EquipmentResponse {
+  string instance_id = 1;
+  string slot = 2;
+  string quality = 3;
+  int32 level = 4;
+  bool is_bound = 5;
+  string location = 6;
+  int64 version = 7;
+  optional string element = 8;
+  optional string effect_affix = 9;
+  optional string secondary_trait = 10;
+}
+
+message LoadoutResponse {
+  string hero_class = 1;
+  repeated string equipment_ids = 2;
+  int64 version = 3;
+}
+
+message InventorySummaryResponse {
+  int32 capacity = 1;
+  int32 equipment_count = 2;
+  int32 free_slots = 3;
+}
+
+message InventoryConsumablesResponse {
+  int32 health_potion_count = 1;
+  int32 advanced_bag_count = 2;
+  int32 top_bag_count = 3;
+}
+
+message InventoryResponse {
+  InventorySummaryResponse summary = 1;
+  repeated EquipmentResponse equipments = 2;
+  InventoryConsumablesResponse consumables = 3;
+}
+
+message UpdateLoadoutRequest {
+  repeated string equipment_ids = 1;
+  int64 expected_version = 2;
+}
+
+message EnhanceEquipmentRequest {
+  int64 expected_version = 1;
+  optional string material_equipment_id = 2;
+}
+
+message EnhancementQuoteResponse {
+  string target_kind = 1;
+  int32 current_level = 2;
+  optional int32 next_level = 3;
+  int64 expected_version = 4;
+  int64 fragment_cost = 5;
+  int32 material_count = 6;
+  optional string material_quality = 7;
+  int64 available_fragments = 8;
+  int32 available_material_count = 9;
+  bool can_enhance = 10;
+  optional string blocked_reason = 11;
+}
+
+message EnhanceResult {
+  EquipmentResponse equipment = 1;
+  int64 equipment_fragments = 2;
+  optional string consumed_material_equipment_id = 3;
+}
+
+message CardListResponse { repeated CardResponse items = 1; }
+message DeckListResponse { repeated DeckResponse items = 1; }
+message MarketListResponse { repeated MarketListingResponse items = 1; }
+message HttpError { string type = 1; string title = 2; int32 status = 3; string detail = 4; string trace_id = 5; string code = 6; optional int32 retry_after_seconds = 7; }
+message RealtimeTicketResponse { string ticket = 1; string expires_at = 2; }
+message SettlementDetails { string room_id = 1; int64 revision = 2; int32 phase = 3; SettlementPosition position = 4; string hero_class = 5; int32 asset_count = 6; repeated SettlementDisplayItem items = 7; }
+message SettlementPosition { int32 row = 1; int32 column = 2; }
+message SettlementDisplayItem { SettlementDisplayAsset item = 1; bool equipped = 2; }
+message SettlementDisplayAsset { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; SettlementEquipment equipment = 5; }
+// Tags 1-3 retain historical numeric receipts. Domain equipment uses names;
+// additive labels preserve them without inventing numeric slot/quality codes.
+message SettlementEquipment { int32 slot = 1; int32 quality = 2; int32 element = 3; optional string effect_affix = 4; optional string secondary_trait = 5; int32 level = 6; bool is_bound = 7; optional string slot_name = 8; optional string quality_name = 9; optional string element_name = 10; }
+
+message ShopProductPayload { optional string card_id = 1; optional string quality = 2; optional string rarity = 3; optional int32 count = 4; optional int64 amount = 5; optional string hero_class = 6; }

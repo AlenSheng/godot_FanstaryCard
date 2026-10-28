@@ -1,0 +1,281 @@
+{
+  "kind": "ThreeAdditionalPGSnapshotMembershipBindings_NotDatabaseOrCapacityAcceptance",
+  "generated_at": "2026-10-23T04:21:11.424527+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "native_receipt_member_binding": {
+    "kind": "ThreeNewReceiptBoundPGDATAWholeMemberships_NativeCompletedPrefix",
+    "ok": true,
+    "new_snapshot_bindings": [
+      {
+        "manifest_path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "dc9a298ff88c442e94f714c5e2be5c0094991960508fe5ac611d8f160a4be456",
+        "manifest_bytes": 231943,
+        "archive_source": {
+          "root": "private-G",
+          "path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+          "bytes": 105543640,
+          "sha256": "60086507d42058d16a275bf2e3b38890f3485e4679fd6091408072391ca0ca8d",
+          "frozen_snapshot_alias_paths": 2
+        },
+        "receipt_path": "G:\\PR13Evidence\\capacity-current-ramp50-20261018-r2-originals\\cloud-originals-before-PG-cleanup\\physical-before-PG-cleanup.archive-ready.original.json",
+        "receipt_sha256": "ab51d69bca0230355f953b1d1c1ed597781df32c533a4aa672f91dfb138c2f96",
+        "receipt_binds_both_actual_manifest_and_archive": true,
+        "complete_native_tar_and_gzip_footer": true,
+        "stable_outer_hash_equals_frozen_inventory": true,
+        "expected_files": 1462,
+        "actual_files": 1462,
+        "missing_paths": [],
+        "extra_paths": [],
+        "different_hash_paths": [],
+        "invalid_paths": [],
+        "state": "ExactReceiptBoundWholePGDATAMembershipVerified",
+        "old_capacity_or_transaction_case_success_not_inferred": true
+      },
+      {
+        "manifest_path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "e52160ef23cdf7b9e2e4839e2ff8e31cd9f7c083d617fb12b281111e5c03d7b5",
+        "manifest_bytes": 233847,
+        "archive_source": {
+          "root": "private-G",
+          "path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+          "bytes": 170458551,
+          "sha256": "66abeb6e4324c56af27f95fef28f1d6d0d15e81ad93308e4590e89248630f1ba",
+          "frozen_snapshot_alias_paths": 2
+        },
+        "receipt_path": "G:\\PR13Evidence\\capacity-current100-20261018-r1-originals\\cloud-originals-before-PG-cleanup\\physical-before-PG-cleanup.archive-ready.original.json",
+        "receipt_sha256": "92eaeb88af3f158d11e1158f01b8115b1cf3c4c83f284afe0d35e95d260eeae0",
+        "receipt_binds_both_actual_manifest_and_archive": true,
+        "complete_native_tar_and_gzip_footer": true,
+        "stable_outer_hash_equals_frozen_inventory": true,
+        "expected_files": 1473,
+        "actual_files": 1473,
+        "missing_paths": [],
+        "extra_paths": [],
+        "different_hash_paths": [],
+        "invalid_paths": [],
+        "state": "ExactReceiptBoundWholePGDATAMembershipVerified",
+        "old_capacity_or_transaction_case_success_not_inferred": true
+      },
+      {
+        "manifest_path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "manifest_sha256": "c749c4aeb4970562f6a56529a6cc54727c68853fc36c708c045a74a4a9084d4e",
+        "manifest_bytes": 203658,
+        "archive_source": {
+          "root": "private-G",
+          "path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+          "bytes": 6846668,
+          "sha256": "66caa6bd7a9cafae90d96105ad103ef50eac7a83892e76c6535de4ed0caa7ab8",
+          "frozen_snapshot_alias_paths": 2
+        },
+        "receipt_path": "G:\\PR13Evidence\\pg-atomic-budget600-cloud-20261018-r1-originals\\cloud-originals-before-PG-cleanup\\archive-ready.original.json",
+        "receipt_sha256": "376138400041cf9e7b34d6c1ebe9f5c043a5d8ca9b5b4af512e7141f615360ee",
+        "receipt_binds_both_actual_manifest_and_archive": true,
+        "complete_native_tar_and_gzip_footer": true,
+        "stable_outer_hash_equals_frozen_inventory": true,
+        "expected_files": 1289,
+        "actual_files": 1289,
+        "missing_paths": [],
+        "extra_paths": [],
+        "different_hash_paths": [],
+        "invalid_paths": [],
+        "state": "ExactReceiptBoundWholePGDATAMembershipVerified",
+        "old_capacity_or_transaction_case_success_not_inferred": true
+      }
+    ],
+    "newly_verified_files": 4224,
+    "prior_qualified_snapshots_retained_without_replay": 2,
+    "all14_original_snapshot_manifests_accounted": true,
+    "remaining_pending_snapshot_manifests": [
+      {
+        "manifest_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "a94205a949bbea90037cefcaccb9ce4c718c404a53dbe983ce857080fd8f0277",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ac40a624dae3a04bc4dff4e33d66d96b6b344d39e49217b698e2e859ba585a2f",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "9399f361c78181cc4856b46d51066fee186d26b15ec9eba419d3327057df5820",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "988a293497c42241acf1aca552afce334f40f3815a618ca18b8c0314e8965dd2",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "archive_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "f35450553cde12a23cdf7adfbb3e119a4a0219dd0ad54ab22271e36b6b4a158b",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "b3eb546bddfc211d41605f53c59c6ea80a25cbad8da24e8432e99667efcf086b",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ab936d196ea96ebdafcc679d796620337300f7d5d0787876c21db1d2e8bee106",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      }
+    ],
+    "native_prefix_custody": [
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r3\\outer-identities.private.original.jsonl",
+        "private_G_prefix": "G:\\PR13Evidence\\LOAD112-PGDATA-new-three-membership-20261023-r4-originals\\native-prefixes\\R3-outer.private-exact-prefix.jsonl",
+        "captured_limit": 3962557,
+        "complete_prefix_bytes": 3962557,
+        "complete_rows": 7706,
+        "prefix_sha256": "fa8adab6ee0bca9db62a92e9d6af4fde9d26a75e962e0a6993e243c2c340e6e4",
+        "live_append_source_not_terminal_claim": true
+      },
+      {
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r3\\member-identities.private.original.jsonl",
+        "private_G_prefix": "G:\\PR13Evidence\\LOAD112-PGDATA-new-three-membership-20261023-r4-originals\\native-prefixes\\R3-members.private-exact-prefix.jsonl",
+        "captured_limit": 115380839,
+        "complete_prefix_bytes": 115380839,
+        "complete_rows": 159926,
+        "prefix_sha256": "dc56200956e27f9b64d1fb89861cb01656a09b3a8c5967fd27348594f52a9155",
+        "live_append_source_not_terminal_claim": true
+      }
+    ],
+    "raw_PG_archives_not_reparsed_or_restored": true,
+    "current_PG_data_or_case_verdicts_not_modified": true,
+    "no_50_or_100_capacity_pass_claim": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "new_complete_snapshot_memberships": 3,
+  "new_original_file_members_verified": 4224,
+  "prior_qualified_snapshots_retained_without_reinspection": 2,
+  "total_original_snapshot_manifests": 14,
+  "current_verified_snapshot_memberships": 5,
+  "remaining_snapshot_manifests_waiting_native_completion": 9,
+  "exact_same_receipt_binds_manifest_archive_and_named_root_mapping": true,
+  "raw_archive_hash_and_full_native_tar_gzip_footer_complete": true,
+  "no_PG_restore_database_connection_or_game_execution_performed": true,
+  "original_failed50_100_capacity_and_other_case_outcomes_retained": true,
+  "source_content_queue_still": 464,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-PGDATA-new-three-membership-20261023-r4-originals",
+    "items": [
+      {
+        "path": "native-prefixes/R3-outer.private-exact-prefix.jsonl",
+        "bytes": 3962557,
+        "sha256": "fa8adab6ee0bca9db62a92e9d6af4fde9d26a75e962e0a6993e243c2c340e6e4",
+        "captured_complete_native_prefix_not_live_final_result": true
+      },
+      {
+        "path": "native-prefixes/R3-members.private-exact-prefix.jsonl",
+        "bytes": 115380839,
+        "sha256": "dc56200956e27f9b64d1fb89861cb01656a09b3a8c5967fd27348594f52a9155",
+        "captured_complete_native_prefix_not_live_final_result": true
+      },
+      {
+        "path": "exact-manifest-receipts/60086507d42058d16a275bf2e3b38890f3485e4679fd6091408072391ca0ca8d/manifest.private-original.json",
+        "bytes": 231943,
+        "sha256": "dc9a298ff88c442e94f714c5e2be5c0094991960508fe5ac611d8f160a4be456"
+      },
+      {
+        "path": "exact-manifest-receipts/60086507d42058d16a275bf2e3b38890f3485e4679fd6091408072391ca0ca8d/receipt.private-original.json",
+        "bytes": 822,
+        "sha256": "ab51d69bca0230355f953b1d1c1ed597781df32c533a4aa672f91dfb138c2f96"
+      },
+      {
+        "path": "exact-manifest-receipts/66abeb6e4324c56af27f95fef28f1d6d0d15e81ad93308e4590e89248630f1ba/manifest.private-original.json",
+        "bytes": 233847,
+        "sha256": "e52160ef23cdf7b9e2e4839e2ff8e31cd9f7c083d617fb12b281111e5c03d7b5"
+      },
+      {
+        "path": "exact-manifest-receipts/66abeb6e4324c56af27f95fef28f1d6d0d15e81ad93308e4590e89248630f1ba/receipt.private-original.json",
+        "bytes": 818,
+        "sha256": "92eaeb88af3f158d11e1158f01b8115b1cf3c4c83f284afe0d35e95d260eeae0"
+      },
+      {
+        "path": "exact-manifest-receipts/66caa6bd7a9cafae90d96105ad103ef50eac7a83892e76c6535de4ed0caa7ab8/manifest.private-original.json",
+        "bytes": 203658,
+        "sha256": "c749c4aeb4970562f6a56529a6cc54727c68853fc36c708c045a74a4a9084d4e"
+      },
+      {
+        "path": "exact-manifest-receipts/66caa6bd7a9cafae90d96105ad103ef50eac7a83892e76c6535de4ed0caa7ab8/receipt.private-original.json",
+        "bytes": 2001,
+        "sha256": "376138400041cf9e7b34d6c1ebe9f5c043a5d8ca9b5b4af512e7141f615360ee"
+      },
+      {
+        "path": "native-binding/executed-membership-binding-source.original.py",
+        "bytes": 6749,
+        "sha256": "26237f9048d60fe297a47cf2a747222412c347371145b3ca2fe89fbd3ee40334"
+      },
+      {
+        "path": "native-binding/result.original.json",
+        "bytes": 11170,
+        "sha256": "8b9c904a0783ad98803a316a9a9f57188bbbb153f868f58fc2de4063a14def82"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 6457,
+        "sha256": "5a1630bd16f1044113fc8c67c2b2f0a90deeb82a5c204808b9bbc059d64bf825"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 99556,
+        "sha256": "4662ae61a1ba56c57980ef0707ae8ae72ad297f809aaabd71498f0cb4cfc0d45"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

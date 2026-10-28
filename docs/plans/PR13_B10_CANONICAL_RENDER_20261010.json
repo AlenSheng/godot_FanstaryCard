@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "kind": "required_b10_render_profile_completion",
+  "source_base_sha": "a0620761b0d004da74f6096932ef39bf3a6e7110",
+  "task_ids": ["PR13-B10.1", "PR13-B10.2", "PR13-B10.3"],
+  "case_ids": ["PR13-B10.1-T01", "PR13-B10.1-T02", "PR13-B10.1-T03", "PR13-B10.2-T01", "PR13-B10.2-T02", "PR13-B10.2-T03", "PR13-B10.3-T01", "PR13-B10.3-T02", "PR13-B10.3-T03"],
+  "matrix": {"languages": ["zh-CN", "en"], "resolutions": [[1920,1080],[1280,720],[960,540]], "rows_per_case": 6, "expected_rows": 54, "expected_screenshots": 9},
+  "validation_host": "Owned Tencent cloud X11/Mesa software renderer, network disabled, independent user data",
+  "ownership": ["client/tests/pr13_b10_render_cases.gd", "client/tests/pr13_b10_render_cases.tscn", "client/ui/exploration_view.gd", "tools/cloud/pr13/render_runtime.py", "tools/tests/test_pr13_cloud_render_runtime.py"],
+  "before_candidate_issue": "满血治疗时有效治疗为0，预览可能缺少明确的0值标签；以原生画面判据确认，不将静态推断当作复现。",
+  "contracts": "使用实际GUI输入、真实store与Protobuf编码，观察顺序/主核/旧revision拒绝/重连合法选择/有效值及溢出/多语言/业务去重/提交非成功/断线队列有界。",
+  "budget": {"seconds_per_run": 180, "memory_limit_bytes": 1610612736, "cpu_cores": 1, "memory_safety_floor_bytes": 500000000, "disk_available_percent": 15},
+  "delivery": "Completed stage summary pushed directly to release; canonical evidence merged only for actually validated profiles and cases",
+  "limits": "真人、严格自然多局和容量继续按现有决定暂缓；不得将软件渲染当作硬件FPS或服务器LIVE。原其他子项状态、失败和缺失层保留。"
+}

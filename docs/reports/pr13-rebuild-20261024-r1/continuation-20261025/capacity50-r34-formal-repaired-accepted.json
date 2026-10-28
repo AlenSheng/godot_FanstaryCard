@@ -1,0 +1,987 @@
+{
+  "state": "Accepted_for_registered_R33_revised_native50_scope_after_exact_versioned_identity_repair",
+  "original_collector_source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+  "reviewer_source": "34f1d55dd022a806edb642339872292616a29b34",
+  "formal_review": {
+    "capacity_accepted": true,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [],
+    "latency_profile": "north-america-pooled5s8s-window95-v2",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "participants": 60,
+    "target_active": 50,
+    "overlap": {
+      "joint_overlap_passed": true,
+      "capacity_acceptance": false,
+      "scope": "Clock-bounded shared-window overlap only",
+      "evidence_errors": [],
+      "remaining_required_checks": [
+        "Original cohort evidence and latency gates",
+        "Actual official full native executable and identical game inputs",
+        "Distinct process-client-user identities on both hosts",
+        "One unchanged isolated backend and real global human gauge",
+        "Original process and business cleanup for every participant"
+      ],
+      "target_clients": 50,
+      "target_online_clients": 50,
+      "window_seconds": 600.0,
+      "compliant_seconds": 600.0,
+      "coverage": 1.0,
+      "longest_continuous_seconds": 600.0,
+      "common_intervals_reference_seconds": [
+        [
+          1793008079.441983,
+          1793008679.441983
+        ]
+      ],
+      "hosts": [
+        {
+          "host_id": "windows",
+          "clients": 40,
+          "target_active": 30,
+          "clock": {
+            "lower_ms": -500.0,
+            "upper_ms": 552.2783203125,
+            "maximum_round_trip_ms": 47.0,
+            "measured_remote_drift_ms": 29.0908203125,
+            "measured_reference_drift_ms": 31.40869140625,
+            "before_probes": 5,
+            "after_probes": 5
+          },
+          "certified_runs_reference_seconds": [
+            [
+              1793008079.441983,
+              1793008679.441983
+            ]
+          ]
+        },
+        {
+          "host_id": "cloud",
+          "clients": 20,
+          "target_active": 10,
+          "clock": {
+            "lower_ms": -885.721435546875,
+            "upper_ms": 483.406982421875,
+            "maximum_round_trip_ms": 360.0,
+            "measured_remote_drift_ms": 0.999755859375,
+            "measured_reference_drift_ms": 25.090087890625,
+            "before_probes": 5,
+            "after_probes": 5
+          },
+          "certified_runs_reference_seconds": [
+            [
+              1793008079.441983,
+              1793008679.441983
+            ]
+          ]
+        }
+      ],
+      "native_active_aggregation": "clock-eroded-count-level-set-union",
+      "necessary_host_active_floor_sum": 40,
+      "actual_native_active_required": 50,
+      "native_supply_clients": 60,
+      "latency_warning_reviews": {
+        "windows": {
+          "passed": true,
+          "fraction": 0.0,
+          "maximum_fraction": 0.05,
+          "clock_expanded_warning_seconds": 0,
+          "warning_windows": 0,
+          "intervals_reference_seconds": [],
+          "pooled_raw_latency_check_still_required": true,
+          "original_sample_reasons_preserved": true
+        },
+        "cloud": {
+          "passed": true,
+          "fraction": 0.0,
+          "maximum_fraction": 0.05,
+          "clock_expanded_warning_seconds": 0,
+          "warning_windows": 0,
+          "intervals_reference_seconds": [],
+          "pooled_raw_latency_check_still_required": true,
+          "original_sample_reasons_preserved": true
+        }
+      },
+      "joint_latency_warning_seconds": 0,
+      "joint_latency_warning_fraction": 0.0,
+      "revised_aggregate_policy": true,
+      "original_strict_profile_accepted": false
+    },
+    "per_host_latency": {
+      "windows": {
+        "http": {
+          "count": 933,
+          "min_ms": 317,
+          "mean_ms": 1013.61,
+          "max_ms": 5372,
+          "p50_ms": 842,
+          "p95_ms": 2207,
+          "p99_ms": 4989
+        },
+        "steady_http": {
+          "count": 799,
+          "min_ms": 317,
+          "mean_ms": 1014.64,
+          "max_ms": 5372,
+          "p50_ms": 803,
+          "p95_ms": 2347,
+          "p99_ms": 5258
+        },
+        "cancelled_http": {
+          "count": 40,
+          "min_ms": 735,
+          "mean_ms": 1408.33,
+          "max_ms": 2501,
+          "p50_ms": 1268,
+          "p95_ms": 2350,
+          "p99_ms": 2501
+        },
+        "realtime": {
+          "count": 34016,
+          "min_ms": 289,
+          "mean_ms": 713.15,
+          "max_ms": 10970,
+          "p50_ms": 601,
+          "p95_ms": 1275,
+          "p99_ms": 2304
+        },
+        "rtt": {
+          "count": 3639,
+          "min_ms": 297,
+          "mean_ms": 786.81,
+          "max_ms": 9787,
+          "p50_ms": 655,
+          "p95_ms": 1428,
+          "p99_ms": 3221
+        },
+        "phase_http": {
+          "initial": {
+            "count": 204,
+            "min_ms": 317,
+            "mean_ms": 999.15,
+            "max_ms": 2746,
+            "p50_ms": 869,
+            "p95_ms": 1786,
+            "p99_ms": 2041
+          },
+          "login": {
+            "count": 200,
+            "min_ms": 331,
+            "mean_ms": 991.38,
+            "max_ms": 2500,
+            "p50_ms": 890,
+            "p95_ms": 1699,
+            "p99_ms": 2217
+          },
+          "matchmaking": {
+            "count": 373,
+            "min_ms": 323,
+            "mean_ms": 715.98,
+            "max_ms": 3470,
+            "p50_ms": 616,
+            "p95_ms": 1242,
+            "p99_ms": 1813
+          },
+          "playing": {
+            "count": 102,
+            "min_ms": 470,
+            "mean_ms": 2279.99,
+            "max_ms": 5372,
+            "p50_ms": 1448,
+            "p95_ms": 5261,
+            "p99_ms": 5332
+          },
+          "settlement": {
+            "count": 54,
+            "min_ms": 319,
+            "mean_ms": 814.46,
+            "max_ms": 1551,
+            "p50_ms": 828,
+            "p95_ms": 1291,
+            "p99_ms": 1551
+          }
+        },
+        "route_http": {
+          "/api/v1/client-info": {
+            "count": 40,
+            "min_ms": 733,
+            "mean_ms": 1404.9,
+            "max_ms": 2500,
+            "p50_ms": 1266,
+            "p95_ms": 2217,
+            "p99_ms": 2500,
+            "logical_request_count": 80,
+            "error_count": 0,
+            "cancelled_count": 40,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/auth/local": {
+            "count": 40,
+            "min_ms": 469,
+            "mean_ms": 999.58,
+            "max_ms": 1786,
+            "p50_ms": 861,
+            "p95_ms": 1517,
+            "p99_ms": 1786,
+            "logical_request_count": 40,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/bootstrap": {
+            "count": 94,
+            "min_ms": 470,
+            "mean_ms": 1010.82,
+            "max_ms": 2427,
+            "p50_ms": 897,
+            "p95_ms": 1506,
+            "p99_ms": 2427,
+            "logical_request_count": 94,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/realtime/ticket": {
+            "count": 89,
+            "min_ms": 392,
+            "mean_ms": 2223.35,
+            "max_ms": 5372,
+            "p50_ms": 1374,
+            "p95_ms": 5263,
+            "p99_ms": 5372,
+            "logical_request_count": 89,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/players/me": {
+            "count": 40,
+            "min_ms": 331,
+            "mean_ms": 830.65,
+            "max_ms": 1560,
+            "p50_ms": 774,
+            "p95_ms": 1470,
+            "p99_ms": 1560,
+            "logical_request_count": 40,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/preparations": {
+            "count": 67,
+            "min_ms": 317,
+            "mean_ms": 764.78,
+            "max_ms": 1442,
+            "p50_ms": 745,
+            "p95_ms": 1366,
+            "p99_ms": 1442,
+            "logical_request_count": 67,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/inventory": {
+            "count": 67,
+            "min_ms": 373,
+            "mean_ms": 798.09,
+            "max_ms": 1690,
+            "p50_ms": 832,
+            "p95_ms": 1264,
+            "p99_ms": 1690,
+            "logical_request_count": 67,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/matches/enqueue": {
+            "count": 67,
+            "min_ms": 810,
+            "mean_ms": 1445.96,
+            "max_ms": 2746,
+            "p50_ms": 1435,
+            "p95_ms": 1994,
+            "p99_ms": 2746,
+            "logical_request_count": 67,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/matches/tickets/{ticketId:guid}": {
+            "count": 376,
+            "min_ms": 323,
+            "mean_ms": 716.21,
+            "max_ms": 3470,
+            "p50_ms": 616,
+            "p95_ms": 1242,
+            "p99_ms": 1813,
+            "logical_request_count": 376,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/settlements/{settlementId:guid}": {
+            "count": 26,
+            "min_ms": 815,
+            "mean_ms": 1287.19,
+            "max_ms": 3857,
+            "p50_ms": 1158,
+            "p95_ms": 1965,
+            "p99_ms": 3857,
+            "logical_request_count": 26,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/settlements/{settlementId:guid}/acknowledge": {
+            "count": 27,
+            "min_ms": 319,
+            "mean_ms": 705.48,
+            "max_ms": 1551,
+            "p50_ms": 669,
+            "p95_ms": 1172,
+            "p99_ms": 1551,
+            "logical_request_count": 27,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          }
+        },
+        "observed_window_seconds": 960.2565161132812,
+        "logical_requests_per_second": 1.0132709163362923,
+        "completed_requests_per_second": 0.9716153802073593,
+        "throughput_missing_reason": null,
+        "logical_result_counts": {
+          "cancelled": 40,
+          "success": 933
+        },
+        "error_count": 0,
+        "sample_count": 933,
+        "logical_request_count": 973,
+        "cancelled_count": 40,
+        "all_attempt_count": 974,
+        "attempt_coverage": "measured",
+        "attempt_result_counts": {
+          "cancelled": 40,
+          "success": 933,
+          "transport_error": 1
+        },
+        "valid_attempt_latency_count": 974,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "valid_latency_count": 933,
+        "latency_sample_quality": {
+          "http": "sufficient_for_diagnostic_rule",
+          "realtime": "sufficient_for_diagnostic_rule"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 799,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      },
+      "cloud": {
+        "http": {
+          "count": 556,
+          "min_ms": 7,
+          "mean_ms": 42.75,
+          "max_ms": 650,
+          "p50_ms": 25,
+          "p95_ms": 161,
+          "p99_ms": 241
+        },
+        "steady_http": {
+          "count": 475,
+          "min_ms": 7,
+          "mean_ms": 27.58,
+          "max_ms": 139,
+          "p50_ms": 22,
+          "p95_ms": 45,
+          "p99_ms": 99
+        },
+        "cancelled_http": {
+          "count": 20,
+          "min_ms": 22,
+          "mean_ms": 34.45,
+          "max_ms": 39,
+          "p50_ms": 36,
+          "p95_ms": 39,
+          "p99_ms": 39
+        },
+        "realtime": {
+          "count": 19179,
+          "min_ms": 0,
+          "mean_ms": 8.76,
+          "max_ms": 143,
+          "p50_ms": 7,
+          "p95_ms": 19,
+          "p99_ms": 37
+        },
+        "rtt": {
+          "count": 1887,
+          "min_ms": 0,
+          "mean_ms": 8.06,
+          "max_ms": 72,
+          "p50_ms": 7,
+          "p95_ms": 14,
+          "p99_ms": 26
+        },
+        "phase_http": {
+          "initial": {
+            "count": 117,
+            "min_ms": 18,
+            "mean_ms": 34.35,
+            "max_ms": 103,
+            "p50_ms": 33,
+            "p95_ms": 68,
+            "p99_ms": 99
+          },
+          "login": {
+            "count": 100,
+            "min_ms": 10,
+            "mean_ms": 84.43,
+            "max_ms": 650,
+            "p50_ms": 36,
+            "p95_ms": 241,
+            "p99_ms": 392
+          },
+          "matchmaking": {
+            "count": 276,
+            "min_ms": 7,
+            "mean_ms": 24.39,
+            "max_ms": 139,
+            "p50_ms": 21,
+            "p95_ms": 39,
+            "p99_ms": 87
+          },
+          "playing": {
+            "count": 25,
+            "min_ms": 15,
+            "mean_ms": 25.08,
+            "max_ms": 39,
+            "p50_ms": 26,
+            "p95_ms": 32,
+            "p99_ms": 39
+          },
+          "settlement": {
+            "count": 38,
+            "min_ms": 14,
+            "mean_ms": 103.82,
+            "max_ms": 227,
+            "p50_ms": 45,
+            "p95_ms": 223,
+            "p99_ms": 227
+          }
+        },
+        "route_http": {
+          "/api/v1/client-info": {
+            "count": 20,
+            "min_ms": 22,
+            "mean_ms": 34.85,
+            "max_ms": 39,
+            "p50_ms": 36,
+            "p95_ms": 39,
+            "p99_ms": 39,
+            "logical_request_count": 40,
+            "error_count": 0,
+            "cancelled_count": 20,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/auth/local": {
+            "count": 20,
+            "min_ms": 116,
+            "mean_ms": 177.85,
+            "max_ms": 392,
+            "p50_ms": 151,
+            "p95_ms": 312,
+            "p99_ms": 392,
+            "logical_request_count": 20,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/bootstrap": {
+            "count": 61,
+            "min_ms": 15,
+            "mean_ms": 116.52,
+            "max_ms": 650,
+            "p50_ms": 90,
+            "p95_ms": 240,
+            "p99_ms": 650,
+            "logical_request_count": 61,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/realtime/ticket": {
+            "count": 20,
+            "min_ms": 10,
+            "mean_ms": 18.05,
+            "max_ms": 49,
+            "p50_ms": 16,
+            "p95_ms": 26,
+            "p99_ms": 49,
+            "logical_request_count": 20,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/players/me": {
+            "count": 20,
+            "min_ms": 20,
+            "mean_ms": 34.2,
+            "max_ms": 109,
+            "p50_ms": 28,
+            "p95_ms": 39,
+            "p99_ms": 109,
+            "logical_request_count": 20,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/preparations": {
+            "count": 39,
+            "min_ms": 26,
+            "mean_ms": 38.82,
+            "max_ms": 103,
+            "p50_ms": 34,
+            "p95_ms": 99,
+            "p99_ms": 103,
+            "logical_request_count": 39,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/inventory": {
+            "count": 39,
+            "min_ms": 18,
+            "mean_ms": 25.82,
+            "max_ms": 50,
+            "p50_ms": 22,
+            "p95_ms": 44,
+            "p99_ms": 50,
+            "logical_request_count": 39,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/matches/enqueue": {
+            "count": 39,
+            "min_ms": 19,
+            "mean_ms": 38.41,
+            "max_ms": 86,
+            "p50_ms": 34,
+            "p95_ms": 73,
+            "p99_ms": 86,
+            "logical_request_count": 39,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/matches/tickets/{ticketId:guid}": {
+            "count": 276,
+            "min_ms": 7,
+            "mean_ms": 24.39,
+            "max_ms": 139,
+            "p50_ms": 21,
+            "p95_ms": 39,
+            "p99_ms": 87,
+            "logical_request_count": 276,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "sufficient_for_diagnostic_rule"
+          },
+          "/api/v1/settlements/{settlementId:guid}/acknowledge": {
+            "count": 19,
+            "min_ms": 14,
+            "mean_ms": 28.74,
+            "max_ms": 45,
+            "p50_ms": 28,
+            "p95_ms": 45,
+            "p99_ms": 45,
+            "logical_request_count": 19,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "insufficient"
+          },
+          "/api/v1/settlements/{settlementId:guid}": {
+            "count": 3,
+            "min_ms": 20,
+            "mean_ms": 20.67,
+            "max_ms": 22,
+            "p50_ms": 20,
+            "p95_ms": 22,
+            "p99_ms": 22,
+            "logical_request_count": 3,
+            "error_count": 0,
+            "cancelled_count": 0,
+            "latency_sample_quality": "insufficient"
+          }
+        },
+        "observed_window_seconds": 960.2215056152344,
+        "logical_requests_per_second": 0.5998615909262983,
+        "completed_requests_per_second": 0.5790330634635796,
+        "throughput_missing_reason": null,
+        "logical_result_counts": {
+          "cancelled": 20,
+          "success": 556
+        },
+        "error_count": 0,
+        "sample_count": 556,
+        "logical_request_count": 576,
+        "cancelled_count": 20,
+        "all_attempt_count": 576,
+        "attempt_coverage": "measured",
+        "attempt_result_counts": {
+          "cancelled": 20,
+          "success": 556
+        },
+        "valid_attempt_latency_count": 576,
+        "transport_phase_timings": {
+          "dns_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tcp_connect_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          },
+          "tls_handshake_ms": {
+            "count": 0,
+            "p95_ms": null,
+            "quality": "unavailable",
+            "missing_reason": "No attributable local request phase hook in supplied audit"
+          }
+        },
+        "valid_latency_count": 556,
+        "latency_sample_quality": {
+          "http": "sufficient_for_diagnostic_rule",
+          "realtime": "sufficient_for_diagnostic_rule"
+        },
+        "error_rate": 0.0,
+        "steady_error_count": 0,
+        "steady_sample_count": 475,
+        "steady_error_rate": 0.0,
+        "invalid_metric_count": 0,
+        "invalid_duration_count": 0,
+        "invalid_schema_count": 0,
+        "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+      }
+    },
+    "pooled_running_latency": {
+      "http": {
+        "count": 1489,
+        "min_ms": 7,
+        "mean_ms": 651.09,
+        "max_ms": 5372,
+        "p50_ms": 574,
+        "p95_ms": 1745,
+        "p99_ms": 4537
+      },
+      "realtime": {
+        "count": 53195,
+        "min_ms": 0,
+        "mean_ms": 459.19,
+        "max_ms": 10970,
+        "p50_ms": 481,
+        "p95_ms": 1143,
+        "p99_ms": 1873
+      }
+    },
+    "original_single_generator_failure_not_reclassified": true,
+    "authority_transition_policy": "capacity-budgeted-authority-recovery-v2",
+    "authority_transition_reviews": {
+      "windows": {
+        "policy": "capacity-budgeted-authority-recovery-v2",
+        "passed": true,
+        "expected_requests": [
+          {
+            "client_id": "g001c01e0aef0",
+            "request_id": "b61dd6fe1f89801f9d3ef99ed43aa20a",
+            "detail": "A stunned player cannot play cards.",
+            "cycle_id": "g001c01e0aef0:1",
+            "basis": "observed_new_stun_and_release",
+            "inferred_short_stun": false,
+            "contains_inferred_recovery_hop": false,
+            "authority_owner_basis": "dispatch_origin",
+            "server_execution_state": "NotObserved",
+            "fresh_authority_ms": -202,
+            "authority_after_send_ms": 526,
+            "recovery_success_ms": 1438,
+            "recovery_success_monotonic_ms": 571897,
+            "recovery_request_id": "7a561a0dffec0b033afc674da9a872c8",
+            "recovery_path": [
+              "b61dd6fe1f89801f9d3ef99ed43aa20a",
+              "7a561a0dffec0b033afc674da9a872c8"
+            ]
+          },
+          {
+            "client_id": "g001c01e0aef0",
+            "request_id": "f6fbd377a77282d1ffc7a0791d437312",
+            "detail": "Duel is not active in this room.",
+            "cycle_id": "g001c01e0aef0:1",
+            "basis": "observed_Pve_to_Pvp",
+            "inferred_short_stun": false,
+            "contains_inferred_recovery_hop": false,
+            "authority_owner_basis": "dispatch_origin",
+            "server_execution_state": "NotObserved",
+            "fresh_authority_ms": 561,
+            "authority_after_send_ms": 1174,
+            "recovery_success_ms": 1471,
+            "recovery_success_monotonic_ms": 491251,
+            "recovery_request_id": "df38ce7f82405fefd30cc353ddc1ff3c",
+            "recovery_path": [
+              "f6fbd377a77282d1ffc7a0791d437312",
+              "df38ce7f82405fefd30cc353ddc1ff3c"
+            ]
+          },
+          {
+            "client_id": "g001c06a51670",
+            "request_id": "616ec808073ecd5195e3931a4398b9c9",
+            "detail": "Duel is not active in this room.",
+            "cycle_id": "g001c06a51670:1",
+            "basis": "observed_Pve_to_Pvp",
+            "inferred_short_stun": false,
+            "contains_inferred_recovery_hop": false,
+            "authority_owner_basis": "dispatch_origin",
+            "server_execution_state": "NotObserved",
+            "fresh_authority_ms": -297,
+            "authority_after_send_ms": 196,
+            "recovery_success_ms": 2044,
+            "recovery_success_monotonic_ms": 718144,
+            "recovery_request_id": "186ee9d18fdc723ed3de83af150e367f",
+            "recovery_path": [
+              "616ec808073ecd5195e3931a4398b9c9",
+              "186ee9d18fdc723ed3de83af150e367f"
+            ]
+          },
+          {
+            "client_id": "g001c08335a74",
+            "request_id": "8c2de93e22734a35e240836a1f219429",
+            "detail": "A stunned player cannot play cards.",
+            "cycle_id": "g001c08335a74:1",
+            "basis": "observed_new_stun_and_release",
+            "inferred_short_stun": false,
+            "contains_inferred_recovery_hop": false,
+            "authority_owner_basis": "dispatch_origin",
+            "server_execution_state": "NotObserved",
+            "fresh_authority_ms": 9,
+            "authority_after_send_ms": 793,
+            "recovery_success_ms": 1139,
+            "recovery_success_monotonic_ms": 425102,
+            "recovery_request_id": "961e68b52b7a95f3f80d78ac73c24cef",
+            "recovery_path": [
+              "8c2de93e22734a35e240836a1f219429",
+              "961e68b52b7a95f3f80d78ac73c24cef"
+            ]
+          }
+        ],
+        "unclassified_errors": [],
+        "evidence_errors": [],
+        "algorithm_version": "capacity-budgeted-authority-recovery-v2",
+        "original_errors_unchanged": true,
+        "capacity_acceptance": false,
+        "server_execution_state": "NotObserved",
+        "original_error_count": 12,
+        "verified_completed_play_requests": 8668,
+        "inferred_short_stun_requests": [],
+        "structured_stun_refusals": 2,
+        "positive_stun_observed_for_all_stun_refusals": true,
+        "capacity_budget_only": true
+      },
+      "cloud": {
+        "policy": "capacity-budgeted-authority-recovery-v2",
+        "passed": true,
+        "expected_requests": [],
+        "unclassified_errors": [],
+        "evidence_errors": [],
+        "algorithm_version": "capacity-budgeted-authority-recovery-v2",
+        "original_errors_unchanged": true,
+        "capacity_acceptance": false,
+        "server_execution_state": "NotObserved",
+        "original_error_count": 0,
+        "verified_completed_play_requests": 4611,
+        "inferred_short_stun_requests": [],
+        "structured_stun_refusals": 0,
+        "positive_stun_observed_for_all_stun_refusals": false,
+        "capacity_budget_only": true
+      }
+    },
+    "conditional_revised_capacity_scope": true,
+    "original_strict_profile_accepted": false,
+    "inferred_short_stun_requests": {
+      "windows": [],
+      "cloud": []
+    },
+    "algorithm_version": "distributed-capacity-v5-identity-input-repair-review",
+    "source_head": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "reviewer_revision": "34f1d55dd022a806edb642339872292616a29b34",
+    "reviewer_files": {
+      "tools/pr13_distributed_capacity.py": "405223aa6115d9f73b780fc4557d8d2beb22638730c783d43a2df72336bce0de",
+      "tools/pr13_workload_identity_review.py": "799930e292403c6ed5e7d6b04e592a43802c9864f3d536a8c0d837a5c07d50c3"
+    },
+    "captured_input_sha256": "6db87c73f8972fcb273063351dabe54f7ee605be51604a242038655d302cf5ff",
+    "original_failed_verdict_sha256": "fd7f1bff13dd435c5466b1695eac036eb96502d9a14ee2fcac9670da5f588433",
+    "original_failed_verdict_retained": true,
+    "identity_input_repair_only": true,
+    "all_original_acceptance_criteria_projection_sha256": "c5a7b1c2c570131ad4e403edb76c6d55aea04059188e6b49270b0a3991ab220a",
+    "producer_identity_definitions": [
+      {
+        "host": "windows",
+        "original_id": "workload:05195f31dfd8b355d0f21113fed372a746e61e422375cd3c26d0424b31fa16d1",
+        "complete_source_hash_count": 2172,
+        "producer_definition_exactly_equal": true
+      },
+      {
+        "host": "cloud",
+        "original_id": "workload:7b01d6b69b05a39880792ba2936a297ade5111e7fdb2a9a4df3b15eba1e4415d",
+        "complete_source_hash_count": 2172,
+        "producer_definition_exactly_equal": true
+      }
+    ],
+    "new_live_worlds": 0
+  },
+  "formal_review_terminal": {
+    "ok": true,
+    "reviewer_revision": "34f1d55dd022a806edb642339872292616a29b34",
+    "collector_revision": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "capacity_accepted": true,
+    "whole_project_accepted": false,
+    "new_live_worlds": 0,
+    "original_failure_retained": true,
+    "all_exact_CI_artifacts_verified": true,
+    "actual_restore_and_cleanup_verified": true,
+    "result_sha256": "b08d17864e46ef48395d3ecc9051fa1d3ee37e8c3e68d4ca419a8523eef2a56c",
+    "at_ns": 1793011545890947500
+  },
+  "exact_reviewer_CI": {
+    "ok": true,
+    "source": "34f1d55dd022a806edb642339872292616a29b34",
+    "run": 40307384474,
+    "workflow_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40307384474",
+    "four_jobs_passed": true,
+    "all_four_official_artifacts_and_members_G_verified": true,
+    "artifacts": [
+      {
+        "id": 12644146691,
+        "name": "gameplay-load-postgres-34f1d55dd022a806edb642339872292616a29b34",
+        "bytes": 3609573,
+        "sha256": "fce4b0344bfdcc48890dd77830a79df9e0ba8e8ed35b3f8444dc832de11b48f7",
+        "all_members_verified": true,
+        "members": 1125
+      },
+      {
+        "id": 12643665343,
+        "name": "gameplay-load-client-34f1d55dd022a806edb642339872292616a29b34",
+        "bytes": 3590548,
+        "sha256": "b887f5bf36485d291d86a93a796849e86e6bc1d3ca271632fc7bb7c328ee28b5",
+        "all_members_verified": true,
+        "members": 175
+      },
+      {
+        "id": 12642598005,
+        "name": "gameplay-load-server-34f1d55dd022a806edb642339872292616a29b34",
+        "bytes": 120610,
+        "sha256": "fc83d10ab96a8f0375ef9e564b8e7d6a5702f6798d4b5b0a6dd219a3c64483f1",
+        "all_members_verified": true,
+        "members": 1
+      },
+      {
+        "id": 12642024963,
+        "name": "gameplay-load-accounting-34f1d55dd022a806edb642339872292616a29b34",
+        "bytes": 555363,
+        "sha256": "2edc8eaaa334c6423c71858f5df3d57c7e96d2cf696bb7dac162c5541a85fbe3",
+        "all_members_verified": true,
+        "members": 166
+      }
+    ],
+    "PG_rows": {
+      "Passed": 418
+    },
+    "PG_skipped": 0,
+    "strict_missing_assertions": {},
+    "CI_Linux_native_suites": 29,
+    "CI_Linux_native_named_checks": 436,
+    "offline_server_rows": {
+      "Passed": 288,
+      "NotExecuted": 130
+    },
+    "tool_tests_passed": 605,
+    "cloud_ownership_tests_passed": 8,
+    "old_source_CI_and_local_failures_retained": true,
+    "new_live_capacity_worlds": 0,
+    "capacity50_or100_accepted": false,
+    "whole_project_accepted": false,
+    "at_ns": 1793011463810923300
+  },
+  "actual_DB_restore": {
+    "ok": true,
+    "restored_matches": 31,
+    "restored_settlements": 107,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 64,
+    "all_participants_equal_original_backend_snapshot": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "original_failed_capacity_and_evidence_outcomes_retained": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "owned_cleanup": {
+    "ok": true,
+    "at_ns": 1793008957394134371,
+    "all_G_originals_and_actual_restore_verified": true,
+    "late_restore_originals_G_preserved": true,
+    "own_stopped_containers_removed": 6,
+    "owned_empty_network_removed": true,
+    "only_restored_owned_PG_and_hash_verified_result_duplicates_removed": true,
+    "temporary_owned_environment_files_removed": true,
+    "shared_source_and_import_cache_retained": true,
+    "G_originals_cloud_archive_and_source_metadata_retained": true,
+    "actual_freed_bytes": 462184448,
+    "cloud_available_bytes": 3684048896,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "all_actual60_native_exit0": true,
+  "new_live_worlds_for_review": 0,
+  "original_R34_joint_failure_retained": true,
+  "original_strict_or_default_latency_acceptance_claimed": false,
+  "capacity100_accepted": false,
+  "whole_project_accepted": false,
+  "user_requested_additional50_round_pending": true,
+  "at_ns": 1793012108152633500
+}

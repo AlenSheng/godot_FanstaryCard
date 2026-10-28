@@ -24,8 +24,8 @@ services:
 
   server:
     build:
-      context: .
-      dockerfile: src/FantasyCard.Server/Dockerfile
+      context: ..
+      dockerfile: server/src/FantasyCard.Server/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_HTTP_PORTS: 8080
@@ -33,6 +33,20 @@ services:
       AllowedHosts: "localhost;127.0.0.1;relicbound.cn;www.relicbound.cn;43.172.70.182"
       Identity__EnableLocalAuth: "false"
       Identity__AllowManagedLocalAuth: "true"
+      Identity__Google__Enabled: "${GOOGLE_AUTH_ENABLED:-false}"
+      Identity__Google__WebClientId: "${GOOGLE_WEB_CLIENT_ID:-}"
+      Identity__Google__RequireEmailVerified: "true"
+      OTEL_EXPORTER_OTLP_ENDPOINT: "${OTEL_EXPORTER_OTLP_ENDPOINT:-}"
+      OTEL_EXPORTER_OTLP_METRICS_ENDPOINT: "${OTEL_EXPORTER_OTLP_METRICS_ENDPOINT:-}"
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "${OTEL_EXPORTER_OTLP_TRACES_ENDPOINT:-}"
+      Persistence__MaxPoolSize: "${FANTASYCARD_DB_MAX_POOL_SIZE:-16}"
+      Persistence__MinPoolSize: "${FANTASYCARD_DB_MIN_POOL_SIZE:-1}"
+      Persistence__ConnectionTimeoutSeconds: "${FANTASYCARD_DB_CONNECTION_TIMEOUT_SECONDS:-5}"
+      Persistence__CommandTimeoutSeconds: "${FANTASYCARD_DB_COMMAND_TIMEOUT_SECONDS:-10}"
+      Persistence__KeepAliveSeconds: "${FANTASYCARD_DB_KEEPALIVE_SECONDS:-30}"
+      RequestLimits__AuthPermitLimit: "${FANTASYCARD_AUTH_LIMIT:-10}"
+      RequestLimits__MarketReadPermitLimit: "${FANTASYCARD_MARKET_READ_LIMIT:-120}"
+      RequestLimits__EconomyWritePermitLimit: "${FANTASYCARD_ECONOMY_WRITE_LIMIT:-30}"
       Admin__ApiKey: ${FANTASYCARD_ADMIN_KEY:?set a random FANTASYCARD_ADMIN_KEY of at least 32 characters in .env}
       ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=fantasycard;Username=fantasycard;Password=${FANTASYCARD_DB_PASSWORD}
     ports:
@@ -40,12 +54,120 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      otel-collector:
+        condition: service_started
     init: true
     read_only: true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=64m
     cap_drop:
       - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.128.0
+    command:
+      - --config=/etc/otelcol-contrib/config.yaml
+    volumes:
+      - ./monitoring/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    expose:
+      - "4317"
+      - "9464"
+    mem_limit: 128m
+    cpus: 0.20
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  node-exporter:
+    image: prom/node-exporter:v1.9.1
+    command:
+      - --path.rootfs=/host
+      - --path.procfs=/host/proc
+      - --path.sysfs=/host/sys
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|host|etc)($$|/)
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/host:ro,rslave
+    expose:
+      - "9100"
+    mem_limit: 64m
+    cpus: 0.10
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  prometheus:
+    image: prom/prometheus:v3.4.2
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.retention.size=384MB
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
+      - fantasycard-prometheus:/prometheus
+    ports:
+      - "127.0.0.1:9090:9090"
+    expose:
+      - "9090"
+    depends_on:
+      otel-collector:
+        condition: service_started
+      node-exporter:
+        condition: service_started
+    mem_limit: 384m
+    cpus: 0.25
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    logging:
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  grafana:
+    image: grafana/grafana:12.0.2
+    environment:
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
+      GF_SECURITY_ADMIN_PASSWORD: ${FANTASYCARD_GRAFANA_ADMIN_PASSWORD:?set a random FANTASYCARD_GRAFANA_ADMIN_PASSWORD in .env}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_PATHS_PROVISIONING: /etc/grafana/provisioning
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - fantasycard-grafana:/var/lib/grafana
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      prometheus:
+        condition: service_started
+    mem_limit: 192m
+    cpus: 0.20
     security_opt:
       - no-new-privileges:true
     restart: unless-stopped
@@ -81,3 +203,5 @@ volumes:
   fantasycard-postgres:
   caddy-data:
   caddy-config:
+  fantasycard-prometheus:
+  fantasycard-grafana:

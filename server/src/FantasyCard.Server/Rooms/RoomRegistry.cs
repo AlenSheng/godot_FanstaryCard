@@ -19,6 +19,7 @@ public sealed partial class RoomRegistry(
     private readonly object _gate = new();
     private readonly Dictionary<Guid, RoomActor> _rooms = [];
     private readonly Dictionary<Guid, Guid> _playerRooms = [];
+    private readonly HashSet<Guid> _humanPlayerRoutes = [];
     private readonly Dictionary<Guid, Guid?> _roomMatches = [];
     private readonly Dictionary<Guid, RoomLifecycleMetricsTracker> _lifecycleTrackers = [];
 
@@ -33,7 +34,10 @@ public sealed partial class RoomRegistry(
             {
                 throw new InvalidOperationException($"Room '{room.RoomId}' is already registered.");
             }
-            var conflictingPlayer = players.FirstOrDefault(player => _playerRooms.ContainsKey(player.PlayerId));
+            // A settled player may start another match while their former room
+            // remains alive for teammates. Only active players own the route.
+            var activePlayers = players.Where(player => !IsTerminal(player.Phase)).ToArray();
+            var conflictingPlayer = activePlayers.FirstOrDefault(player => _playerRooms.ContainsKey(player.PlayerId));
             if (conflictingPlayer is not null)
             {
                 throw new InvalidOperationException($"Player '{conflictingPlayer.PlayerId}' is already assigned to a room.");
@@ -46,7 +50,7 @@ public sealed partial class RoomRegistry(
                 : new RoomLifecycleMetricsTracker(initialSnapshot, metrics, timeProvider);
             var transitionPublisher = eventStore is null
                 ? null
-                : new RoomTransitionEventPublisher(initialSnapshot, eventStore, connections);
+                : new RoomTransitionEventPublisher(initialSnapshot, eventStore, connections, matchId);
             var observer = snapshotRepository is null &&
                 (settlementCoordinator is null || matchId is not { }) &&
                 lifecycleTracker is null && transitionPublisher is null
@@ -74,6 +78,10 @@ public sealed partial class RoomRegistry(
                                 if (logger is not null)
                                     SnapshotPersistenceFailed(logger, snapshot.RoomId, snapshot.Revision, exception);
                             }
+                            // Settlement may release this player's route and
+                            // assets. Its terminal checkpoint must be durable
+                            // before that player can start a subsequent match.
+                            return;
                         }
                     }
                     if (settlementCoordinator is not null && matchId is { } id)
@@ -81,6 +89,7 @@ public sealed partial class RoomRegistry(
                         try
                         {
                             await settlementCoordinator.ObserveAsync(id, snapshot);
+                            ReleaseTerminalPlayers(snapshot);
                         }
                         catch (Exception exception)
                         {
@@ -101,14 +110,34 @@ public sealed partial class RoomRegistry(
             _roomMatches.Add(room.RoomId, matchId);
             if (lifecycleTracker is not null)
                 _lifecycleTrackers.Add(room.RoomId, lifecycleTracker);
-            foreach (var player in players)
+            foreach (var player in activePlayers)
             {
                 _playerRooms.Add(player.PlayerId, room.RoomId);
+                if (!player.IsBot) _humanPlayerRoutes.Add(player.PlayerId);
             }
+            metrics?.RoomHumanPlayersChanged(activePlayers.Count(player => !player.IsBot));
             metrics?.RoomOpened(players.Count);
             return actor;
         }
     }
+
+    internal void ReleaseTerminalPlayers(BattleRoomSnapshot snapshot)
+    {
+        lock (_gate)
+        {
+            foreach (var player in snapshot.Players.Where(player => IsTerminal(player.Phase)))
+            {
+                if (_playerRooms.TryGetValue(player.PlayerId, out var roomId) && roomId == snapshot.RoomId)
+                {
+                    _playerRooms.Remove(player.PlayerId);
+                    if (_humanPlayerRoutes.Remove(player.PlayerId)) metrics?.RoomHumanPlayersChanged(-1);
+                }
+            }
+        }
+    }
+
+    private static bool IsTerminal(RoomPlayerPhase phase) =>
+        phase is RoomPlayerPhase.Extracted or RoomPlayerPhase.Dead;
 
     public bool TryGetForPlayer(Guid playerId, out RoomActor? actor)
     {
@@ -180,6 +209,7 @@ public sealed partial class RoomRegistry(
                 .ToArray())
             {
                 _playerRooms.Remove(playerId);
+                if (_humanPlayerRoutes.Remove(playerId)) metrics?.RoomHumanPlayersChanged(-1);
             }
         }
 

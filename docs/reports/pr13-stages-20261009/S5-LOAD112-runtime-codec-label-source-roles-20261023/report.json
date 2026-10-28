@@ -1,0 +1,1093 @@
+{
+  "kind": "RuntimeReceiverCodecLabelSourceRoles_NotRuntimeValuesOrPublicExport",
+  "generated_at": "2026-10-23T17:21:15.093884+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "original_Python_objects_reviewed": 114,
+  "archive_Python_objects_reviewed": 301,
+  "original_objects_classified": 2,
+  "archive_objects_classified": 16,
+  "selected_exact_source_bytes_reopened": 213565,
+  "codec_source_sites": 29,
+  "encode_sites": 24,
+  "decode_sites": 5,
+  "original_AST_site_flags_preserved": 29,
+  "remaining_unexplained_AST_sites_after_narrow_codec_review": 0,
+  "codec_labels_are_explicit_known_encodings_and_error_handling_names_not_credential_literal_values": true,
+  "receiver_must_be_symbolic_Name_or_Attribute_reference_and_not_known_literal_backed_name_or_attribute_alias": true,
+  "direct_literal_receivers_literal_alias_chains_unknown_factory_receivers_unknown_codec_or_errors_arguments_remain_blocked": true,
+  "unqualified_other_AST_sites_original_other_patterns_and_sensitive_greedy_tails_still_block": true,
+  "source_role_classification_not_full_constant_flow_runtime_type_or_credential_freedom_attestation": true,
+  "original_AST_rejections_are_retained_with_separate_role_annotations_not_rewritten_as_old_guard_passes": true,
+  "boundary_controls_passed": 143,
+  "old119_control_expectations_unchanged": true,
+  "new_codec_boundary_controls": 24,
+  "controls": [
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:typed-parameter",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:empty-default",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:null-default",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:symbolic-assignment",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:environment-input",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:literal-env-fallback",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:literal-assignment",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:string-containing-source",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:dictionary-runtime",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:same-line-additional-literal",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:comment-not-code",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:other-bearer-pattern",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:numeric-password",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:actual-source-not-executed",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:syntax-error",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior:utf8-byte-offset",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:fixed-field",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:nested-fixed-fields",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:get-fixed-field",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:get-null-fallback",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:get-empty-fallback",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-get-fallback",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-dictionary-base",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-string-base",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:factory-base-needs-consumer",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:nonidentifier-index",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:nonidentifier-get",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-labelled-index",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-labelled-get",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:boolean-references",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:boolean-fixed-field",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:boolean-literal-fallback",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:boolean-literal-first",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:conditional-references",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:conditional-literal-branch",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:constant-condition-unqualified",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:literal-default-keyword",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:opaque-get-function",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:other-original-pattern",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "prior-field:positive-source-never-executed",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-name",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-module-alias",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-parent-chain",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-nested-module-roots",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-dynamic-part",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-import-missing",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-factory-shadowed",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "path-factory-parameter-shadow",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "root-string-not-path",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "root-reassigned-not-proven",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "literal-credential-remains",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "unknown-factory-remains",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "cyclic-path-reference-deferred",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "literal-path-component-with-other-secret",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-label",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-short-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-module-alias",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-function-alias",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-no-import",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-module-shadow",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-parameter-shadow",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-empty-slice",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-dynamic-slice",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-other-factory",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-literal-replacement",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "UUID4-source-is-not-run",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-field-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-attribute-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-fixed-field-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-fixed-literal-value",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-repr-conversion",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-format-spec",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-fixed-value-suffix",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-other-static-field",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "plain-string-placeholder-not-evaluated",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-unknown-call",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-other-literal-not-hidden",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fstring-source-never-run",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-field-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-attribute-reference",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-multiple-fields",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-fixed-literal-value",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-unknown-value-call",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-fixed-suffix",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-other-static-field",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-greedy-tail-hides-literal",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-other-literal-not-hidden",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-call-value-not-reference-root",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-safe-closing-call-tail",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "concat-source-never-executed",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-membership",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-null-placeholder",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-env-placeholder",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "fixed-credential-comparison",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "plain-marker-no-comparison",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-comment-not-code",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "comparison-greedy-tail-hides-literal",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "comparison-other-actual-literal",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-unknown-consumer",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-equality",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-equality-no-retained-original-match",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-not-membership",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Original103Unchanged",
+      "name": "marker-source-never-run",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "symbolic tuple unpack",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "list unpack remains deferred by original AST guard",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "symbolic tuple method call",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "UTF8 positions before unpack",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "truth condition comment",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "negated truth comment",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "None comparison",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "empty comparison",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "unpacked literal password remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "unpack call with literal remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "default literal remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "named expression literal remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "compared credential literal remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "truth followed by unsafe tail remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "literal credential elsewhere remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Prior16Unchanged",
+      "name": "annotation literal remains unsafe",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "runtime UTF8 encode",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "runtime UTF8 decode",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "runtime attribute receiver",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "runtime default codec",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "codec with explicit errors",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "codec in dictionary value",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "Unicode source columns",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "codec and existing truth role",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal receiver still rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "known literal alias still rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "transitive literal alias rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal alias in function rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "receiver call not assumed",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "unknown encoding not hidden",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "unknown errors not hidden",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "extra keyword rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal credential elsewhere preserved",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal default preserved",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal dictionary base rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "codec does not override other patterns",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "literal attribute receiver rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "attribute alias chain rejected",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "Unicode dictionary key coordinates",
+      "expected": true,
+      "actual": true,
+      "passed": true
+    },
+    {
+      "group": "Codec24Boundaries",
+      "name": "second codec argument not a secret channel",
+      "expected": false,
+      "actual": false,
+      "passed": true
+    }
+  ],
+  "preflight_dictionary_key_coordinate_failure_preserved_with_original_source_and_transcribed_tool_summary": true,
+  "dictionary_positive_expectation_not_changed_and_old_failed_result_not_relabelled_passed": true,
+  "fixed_alignment_requires_original_site_inside_exact_typed_AST_key_span_with_same_normalized_name_and_role": true,
+  "strict_public_export_guard_unchanged_original_source_refusals_preserved": true,
+  "subject_sources_not_imported_or_executed": true,
+  "archive_outer_payloads_not_reparsed": true,
+  "original_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-20261023-r106-originals\\original-exact-runtime-codec-proofs.private.original.jsonl",
+    "bytes": 16839,
+    "sha256": "acc8add01b52428de01c61f6c56c3d6ddf1d7d4db2848db48582bfe195581edd",
+    "records": 2
+  },
+  "archive_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-20261023-r106-originals\\archive-exact-runtime-codec-proofs.private.original.jsonl",
+    "bytes": 131415,
+    "sha256": "660a3d168e4c2673e028c1c8296bf5a040e1afea2ee1cdc0f8003de9e2b21bba",
+    "records": 16
+  },
+  "all_private_reviews": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-20261023-r106-originals\\all-runtime-codec-source-reviews.private.original.jsonl",
+    "bytes": 2400157,
+    "sha256": "6f0c934d1b0c5190064e84ac5576c01db208629592fd17a47fa543e4274604f8",
+    "records": 415
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-publication-20261023-r107-originals\\verified-runtime-codec-custody.original.json",
+    "bytes": 20683,
+    "sha256": "833590ecf9693b5828e28b62e1eb686d5ccdc4d62adceb4d9710af799769a83a"
+  },
+  "original_content_objects_before": 170,
+  "original_content_objects_after": 168,
+  "remaining_original_content_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-20261023-r106-originals\\remaining-original-content-review.private.original.jsonl",
+    "bytes": 325454,
+    "sha256": "7cba3bf244c39dd51d0bcbf10684356f9895d4cd00e980482decb54b0722d576",
+    "records": 168,
+    "remaining_objects": 168,
+    "remaining_aliases": 1041
+  },
+  "archive_content_objects_before": 489,
+  "archive_content_objects_after": 473,
+  "remaining_archive_content_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-runtime-codec-source-roles-20261023-r106-originals\\remaining-archive-content-review.private.original.jsonl",
+    "bytes": 432167,
+    "sha256": "dc6daa0288491396e7ed16d0b4129d74b0a809985027a5608541558e42fcc5fe",
+    "records": 473,
+    "remaining_objects": 473,
+    "finding_observations": 535
+  },
+  "size_omitting_reference_records_unchanged": 8,
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_engine_or_cloud_operation": false
+}

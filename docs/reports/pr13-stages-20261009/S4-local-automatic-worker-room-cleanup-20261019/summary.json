@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified LOCAL automatic actor/observer/settlement/background-worker/registry cleanup supplement",
+  "base_release": "9c89120bfd8429132b7abf4353764b97558cfc1b",
+  "formal_source_fix_commit": "7a81274a8a6ad633e97362300232d0e33f720879",
+  "new_product_source_changes_or_rebuilds": 0,
+  "prior_tests_reexecuted": 0,
+  "new_probe_executions": 1,
+  "new_private_harness_builds": 1,
+  "new_assertion_checks": 37,
+  "new_checks_passed": 37,
+  "new_checks_failed": 0,
+  "source_qualification": {
+    "current_input_texts_equal": 328,
+    "current_input_raw_bytes_equal": 328,
+    "current_product_CSharp_source_paths_equal": 130,
+    "all12_reference_DLLs_byte_exact": true,
+    "Server_DLL_SHA256": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+    "actual_runtime_Domain_Server_Npgsql_identity_checks_passed": true
+  },
+  "cases": [
+    {
+      "id": "AUTOMATIC_BOT_ROOM_CLOSEOUT",
+      "actual": "RoomActor real100ms ticker -> durable terminal snapshot -> two botmembers Settled/match Completed -> actual SettlementWorker.StartAsync removes registryroom",
+      "manual_actor_Advance_or_worker_ProcessNext_or_registry_Remove_used_for_pass": false,
+      "passed": true
+    },
+    {
+      "id": "ACTIVE_HUMAN_ROOM_PROTECTION",
+      "actual": "One synthetic nonbot member and bot;room/routing/membership/Running DBstatus survive three observed background terminal-room scans",
+      "passed": true
+    },
+    {
+      "id": "FRESH_WORKER_INSTANCE_REPLAY",
+      "actual": "Same completed checkpoint re-registered without new match;freshWorker instance removes it across two scans;first botsettled timestamps and terminalcheckpoint unchanged",
+      "passed": true
+    }
+  ],
+  "actual_DB_terminal_room_scan_counts": {
+    "first_worker": 3,
+    "fresh_worker": 2
+  },
+  "actual_PG_version": "18.6",
+  "migration_current_version": "V029",
+  "migration_record_rows": 26,
+  "final_database_counts": {
+    "matches": 2,
+    "members": 4,
+    "completed": 1,
+    "running": 1,
+    "settled_bots": 2,
+    "players": 0
+  },
+  "active_control_Running_row_expected_not_actual_player_leak": true,
+  "zero_row_tables": [
+    "players",
+    "match_settlements",
+    "settlement_asset_holds",
+    "economy_ledger",
+    "inventory_movements",
+    "equipments",
+    "player_wallets",
+    "player_cards",
+    "player_materials",
+    "relic_piles",
+    "relic_items"
+  ],
+  "two_worker_tasks_stopped_successfully": true,
+  "owned_actor_registry_disposed_after_assertions": true,
+  "owned_PG_cleanly_stopped": true,
+  "new_local_fixture_matches": 2,
+  "domain_room_instances": 3,
+  "new_real_player_accounts": 0,
+  "new_live_gameplay_cycles_HTTP_cloud_calls_uploads_deployments": 0,
+  "owned_fixture_Npgsql_pool_max": 8,
+  "owned_PG_max_connections": 32,
+  "capacity_or_default_pool_performance_claim": false,
+  "minimum5percent_disk_memory_headroom_preserved": true,
+  "original716_status_and_SHA_preserved": true,
+  "GDD_v070_priority_and_legal_Priest80over70_raw_display_preserved": true,
+  "canonical132tasks396cases_unchanged": true,
+  "canonical_remaining_unaccepted": 77,
+  "register_gate_MAIN_changed": false,
+  "evidence_SHA256": {
+    "probe_result": "574dd3ee6a465464d924b8b059404df9c6346966e822b72ab8875ba7a0441ace",
+    "driver_result": "ddd0e2f66637ba373d97c75b1a4b038d62c5f3eeb12b4737b00f60d35116c37c",
+    "source_runtime_identity": "dd4a31077caf59a69a3166178523d564dd9bab04356a04d02f2fdda45f2ac050",
+    "PG_original_log": "d3ea8307ea175019d66cfce4f67ad411c8ba7999dd15419b66bea86d65b8cf70",
+    "G_original_manifest": "4beef1762357385c8bc098e71fec867919847d60bbeea3a1efa935cef97da280",
+    "final_database_dump": "ed9f6c5cb5028cf8fe1733cc539579ec5d191103b7f58345320420bbaaa0885c"
+  },
+  "limits": [
+    "Real current binary classes plus isolatedPG;not full Program HTTP/API/client or serverprocessrestart",
+    "Fresh background-worker object restart only;other applicationservices/registry instance remain in the same process",
+    "Two registered synthetic fixtures;nonbotDomainflag is not a human participant or authenticated account",
+    "Zero rewards checked for declared initialfixture;not a new nonempty botloot experiment",
+    "One control match intentionally staysRunning in retainedDBdump;all test processes/actors stopped during final ownedresource disposal",
+    "Prior capacity failure/Web CRC failure/historicalAUDIT gaps unchanged;not wholePGmatrix or finalPR13acceptance"
+  ],
+  "whole_goal_complete": false
+}

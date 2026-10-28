@@ -1,0 +1,365 @@
+{
+  "source_sha": "89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+  "actual_same_source_runs": [
+    {
+      "source_sha": "89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+      "run": {
+        "id": 38015705200,
+        "name": "Numerical regression",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/38015705200",
+        "event": "workflow_dispatch"
+      },
+      "jobs": [
+        {
+          "name": "domain",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "artifacts": [
+        {
+          "artifact_id": 11656585601,
+          "name": "numerical-domain-89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+          "archive": "ci-89-38015705200-11656585601.private.zip",
+          "bytes": 86748,
+          "sha256": "20e30919d63a85f993ae452b48f5c1211a5ed440809b8a5ab9322c7cbf66998e",
+          "github_digest_verified": true,
+          "files": 1,
+          "file_manifest_sha256": "8f958cbe9d205fd9f55946fd2e93219d8063cb6f56e734527027b8c014809865",
+          "trx": [
+            {
+              "entry": "domain.trx",
+              "total_rows": 338,
+              "passed_rows": 338,
+              "failed_rows": 0,
+              "not_executed_rows": [],
+              "native_counters": {
+                "total": "338",
+                "executed": "338",
+                "passed": "338",
+                "failed": "0",
+                "error": "0",
+                "timeout": "0",
+                "aborted": "0",
+                "inconclusive": "0",
+                "passedButRunAborted": "0",
+                "notRunnable": "0",
+                "notExecuted": "0",
+                "disconnected": "0",
+                "warning": "0",
+                "completed": "0",
+                "inProgress": "0",
+                "pending": "0"
+              },
+              "other_outcomes": []
+            }
+          ],
+          "callbacks": []
+        }
+      ],
+      "whole_scope_accepted": false
+    },
+    {
+      "source_sha": "89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+      "run": {
+        "id": 38015707263,
+        "name": "Gameplay load offline checks",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/38015707263",
+        "event": "workflow_dispatch"
+      },
+      "jobs": [
+        {
+          "name": "accounting",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "client",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "server-contract",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "server-postgres",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ],
+      "artifacts": [
+        {
+          "artifact_id": 11656585526,
+          "name": "gameplay-load-accounting-89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+          "archive": "ci-89-38015707263-11656585526.private.zip",
+          "bytes": 534107,
+          "sha256": "cc0f0ddeaf65023e843c7f7ebb93a029f5cc097b08b5c14fdaaf6b264527f6f4",
+          "github_digest_verified": true,
+          "files": 166,
+          "file_manifest_sha256": "841a81ea062cf707aeb5f1c95460f4189477f01276c12b6a524c6f852a933812",
+          "trx": [],
+          "callbacks": []
+        },
+        {
+          "artifact_id": 11656377814,
+          "name": "gameplay-load-postgres-89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+          "archive": "ci-89-38015707263-11656377814.private.zip",
+          "bytes": 3343045,
+          "sha256": "76e2d55eb050934378b6969f364a6151d8888afa66a5a797d4fe47280992e5eb",
+          "github_digest_verified": true,
+          "files": 1115,
+          "file_manifest_sha256": "ed2f7c5b7f535e3a66feebbd8e2073b64d5eaefc29e36f821621a0e9df357ee5",
+          "trx": [
+            {
+              "entry": "postgres-full.trx",
+              "total_rows": 353,
+              "passed_rows": 352,
+              "failed_rows": 0,
+              "not_executed_rows": [
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets"
+              ],
+              "native_counters": {
+                "total": "353",
+                "executed": "352",
+                "passed": "352",
+                "failed": "0",
+                "error": "0",
+                "timeout": "0",
+                "aborted": "0",
+                "inconclusive": "0",
+                "passedButRunAborted": "0",
+                "notRunnable": "0",
+                "notExecuted": "0",
+                "disconnected": "0",
+                "warning": "0",
+                "completed": "0",
+                "inProgress": "0",
+                "pending": "0"
+              },
+              "other_outcomes": []
+            }
+          ],
+          "callbacks": []
+        },
+        {
+          "artifact_id": 11656276305,
+          "name": "gameplay-load-server-89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+          "archive": "ci-89-38015707263-11656276305.private.zip",
+          "bytes": 100197,
+          "sha256": "63e72e12861b6171e001298b649c0f3122b0153bf7383903f075e57d58efa839",
+          "github_digest_verified": true,
+          "files": 1,
+          "file_manifest_sha256": "f038818f49112c97cf9b73579423b2aebc8c63359d79014812cd89a8d4751e73",
+          "trx": [
+            {
+              "entry": "server-offline.trx",
+              "total_rows": 353,
+              "passed_rows": 242,
+              "failed_rows": 0,
+              "not_executed_rows": [
+                "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"player-route\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_reuse_profile_can_hold_more_than_the_original_16_connections",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+                "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material",
+                "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True)",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches",
+                "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Queued_STOP_cancellation_releases_assets_once_and_allows_next_preparation",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_default_single_IP_auth_limit_is_separate_from_capacity",
+                "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players",
+                "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"registry\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Extracted)",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+                "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_profile_reuses_actual_backend_only_when_explicitly_enabled(reuse: False, expectedBackends: 8)",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Guardian, prefix: \"GUA\")",
+                "FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"room-id\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+                "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Owned_terminal_fallback_reads_old_match_and_cancels_without_mutating_new_room_or_assets(phase: Dead)",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response",
+                "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Mage, prefix: \"MAG\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)",
+                "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+                "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False)",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping",
+                "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"snapshot\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_prelogged_account_still_observes_default_economy_write_limit",
+                "FantasyCard.Server.Tests.Persistence.PostgresTerminalContextTests.Membership_match_pair_bot_and_durable_phase_are_all_required",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption",
+                "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Priest, prefix: \"PRI\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots",
+                "FantasyCard.Server.Tests.Persistence.PostgresOwnedPoolReuseTests.Owned_profile_reuses_actual_backend_only_when_explicitly_enabled(reuse: True, expectedBackends: 1)",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room",
+                "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+                "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic",
+                "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry",
+                "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+                "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades",
+                "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity",
+                "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+                "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once",
+                "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes",
+                "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality",
+                "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets"
+              ],
+              "native_counters": {
+                "total": "353",
+                "executed": "242",
+                "passed": "242",
+                "failed": "0",
+                "error": "0",
+                "timeout": "0",
+                "aborted": "0",
+                "inconclusive": "0",
+                "passedButRunAborted": "0",
+                "notRunnable": "0",
+                "notExecuted": "0",
+                "disconnected": "0",
+                "warning": "0",
+                "completed": "0",
+                "inProgress": "0",
+                "pending": "0"
+              },
+              "other_outcomes": []
+            }
+          ],
+          "callbacks": []
+        },
+        {
+          "artifact_id": 11656271490,
+          "name": "gameplay-load-client-89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+          "archive": "ci-89-38015707263-11656271490.private.zip",
+          "bytes": 3489508,
+          "sha256": "7e9aed2a65f11d82b31ea970f407cd181fbe9e4d4b27413cdf59358e7860ed57",
+          "github_digest_verified": true,
+          "files": 149,
+          "file_manifest_sha256": "47769816cdafc2abce43e1e72658c5c50457184e7538c92f80a35ded3e8bc378",
+          "trx": [],
+          "callbacks": [
+            {
+              "case_id": "PR13-A03.1-T01",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            },
+            {
+              "case_id": "PR13-A03.1-T02",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            },
+            {
+              "case_id": "PR13-A03.1-T03",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            },
+            {
+              "case_id": "PR13-A03.2-T01",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            },
+            {
+              "case_id": "PR13-A03.2-T02",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            },
+            {
+              "case_id": "PR13-A03.2-T03",
+              "status": "Passed",
+              "native_executed_field": null,
+              "all_checks_passed": true
+            }
+          ]
+        }
+      ],
+      "whole_scope_accepted": false
+    }
+  ],
+  "all_five_jobs_success": true,
+  "domain_actual_passed": 338,
+  "domain_actual_skipped": 0,
+  "postgres_actual_passed": 352,
+  "postgres_actual_not_executed": 1,
+  "postgres_zero_skip": false,
+  "older_Tencent_zero_skip_evidence_separate": true,
+  "artifact_files_verified": 1432,
+  "natural_live_cycles_not_inferred_from_ci": true,
+  "capacity_accepted": false,
+  "whole_scope_accepted": false
+}

@@ -1,0 +1,437 @@
+{
+  "ok": true,
+  "source_register": {
+    "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+    "bytes": 17458066,
+    "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8"
+  },
+  "task_states_unchanged": {
+    "Accepted": 111,
+    "Partial": 20,
+    "ReadyForAcceptance": 1,
+    "Failed": 0
+  },
+  "remaining_tasks": 21,
+  "tasks": [
+    {
+      "task_id": "LOAD-10.1",
+      "title": "独立离线/协议套件",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "LOAD-10.1-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "title": "真实同账号三局",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "LOAD-10.2-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "LOAD-10.3",
+      "title": "全链路故障用例",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "LOAD-10.3-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "LOAD-10.1",
+        "LOAD-10.2"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "title": "同负载性能与保持",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "LOAD-10.4-T01": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T02": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "LOAD-10.3"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "SourceManifestAndPurposeIncomplete",
+      "reason": "Byte-provider queue refined3568→3005:563new exact contents captured, including47derived text representations.1610already-searched Sept29 identities excluded from further recovery;1395other declarations still unobserved in bounded corpora, positiveA05DLL/PDB not recovered, one tracked proxy-template purpose remains awaiting user clarification.",
+      "current_next_action": "Keep Partial; preserve original raw and strict public guard. Do not infer runtime/causal execution from byte copies. Resolve the requested template-purpose information before any dependent sanitization; absence is bounded, not global.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A01.3-T02": [
+          "AUDIT"
+        ]
+      },
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "OriginalHistoricalReportsUnavailable",
+      "reason": "Two original Sept29 raw reports required for86/90 and130/139 event explanations are not available; exact SHA inputs10524360B/19743677B were not found in G or earlier backed raw searches.",
+      "current_next_action": "Keep T02 AUDIT unpassed; do not regenerate historical events or infer exact STOP cause.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "title": "负载模型预登记",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A02.1-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "title": "时间覆盖验收函数",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A02.2-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A02.1"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A02.3",
+      "title": "STOP尾部证据",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A02.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A02.2"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A02.4",
+      "title": "服务端后置清理",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A02.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A02.3"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A07.3-T02": [
+          "POSTGRES"
+        ]
+      },
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "ForkEnvironment_UserKeepsUnpassed",
+      "reason": "User directly confirmed no second account/org environment and keeps actual fork PR unpassed.",
+      "current_next_action": "Retain T02 POSTGRES missing. Do not reask extra account/org or create/substitute fork/identity/same-repo PR.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "state_retained": "ReadyForAcceptance",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [],
+      "blocker_kind": "WholeHistoricalRuntimeProvenanceIncomplete",
+      "reason": "Own cases/profile layers are covered, bounded42 startup file-digest parents are joined; historical actual per-run image/config/overlay and old engine facts remain incomplete. Found DB/env/image snapshots do not restore that run association.",
+      "current_next_action": "Retain whole-task unaccepted. Preserve explicit Missing/NotApplicable distinctions and blocked historical comparisons; do not repeat42 joins or old13 backup search without new evidence.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [
+        "PR13-B12.4"
+      ],
+      "blocker_kind": "UnacceptedWholeTaskPrerequisites",
+      "reason": "Own explicit case/profile layers are covered; whole-task prerequisites still unaccepted: PR13-B12.4.",
+      "current_next_action": "Wait for listed whole-task prerequisite evidence; do not repeat passed cases or auto-accept from empty gap lists.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "title": "三组成对A/B预登记",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A10.1-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A02.4"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A10.2",
+      "title": "默认限流建立负载",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A10.2-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A10.1"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "title": "长期资源回收",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A10.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A10.2"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "title": "性能收益和容量裁决",
+      "state_retained": "Partial",
+      "missing_case_profiles": {
+        "PR13-A10.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "current_unaccepted_dependencies": [
+        "PR13-A10.3"
+      ],
+      "blocker_kind": "CapacityResources_CurrentHostOnly",
+      "reason": "Original50/100 capacity layers and coupled same-load PG/LIVE evidence unavailable under current-host resource constraint; user retains unpassed.",
+      "current_next_action": "Retain missing profiles. Do not repeat already closed functional matrices or substitute smaller/lighter clients for original capacity. Reconsider only after relevant resources change.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [
+        "PR13-A08.1"
+      ],
+      "blocker_kind": "UnacceptedWholeTaskPrerequisites",
+      "reason": "Own explicit case/profile layers are covered; whole-task prerequisites still unaccepted: PR13-A08.1.",
+      "current_next_action": "Wait for listed whole-task prerequisite evidence; do not repeat passed cases or auto-accept from empty gap lists.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [
+        "PR13-B12.1"
+      ],
+      "blocker_kind": "UnacceptedWholeTaskPrerequisites",
+      "reason": "Own explicit case/profile layers are covered; whole-task prerequisites still unaccepted: PR13-B12.1.",
+      "current_next_action": "Wait for listed whole-task prerequisite evidence; do not repeat passed cases or auto-accept from empty gap lists.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [
+        "PR13-B12.1"
+      ],
+      "blocker_kind": "UnacceptedWholeTaskPrerequisites",
+      "reason": "Own explicit case/profile layers are covered; whole-task prerequisites still unaccepted: PR13-B12.1.",
+      "current_next_action": "Wait for listed whole-task prerequisite evidence; do not repeat passed cases or auto-accept from empty gap lists.",
+      "no_new_case_or_task_accepted": true
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "state_retained": "Partial",
+      "missing_case_profiles": {},
+      "current_unaccepted_dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-A10.4"
+      ],
+      "blocker_kind": "UnacceptedWholeTaskPrerequisites",
+      "reason": "Own explicit case/profile layers are covered; whole-task prerequisites still unaccepted: PR13-B12.2,PR13-B12.3,PR13-A10.4.",
+      "current_next_action": "Wait for listed whole-task prerequisite evidence; do not repeat passed cases or auto-accept from empty gap lists.",
+      "no_new_case_or_task_accepted": true
+    }
+  ],
+  "missing_profile_pairs": {
+    "CAPACITY": 36,
+    "LIVE": 2,
+    "POSTGRES": 7,
+    "AUDIT": 1
+  },
+  "capacity_and_coupled_profile_pairs44": 44,
+  "actual_fork_profile_missing1": 1,
+  "historical_AUDIT_profile_missing1": 1,
+  "whole_scope_only_open_tasks": 7,
+  "current_feasible_missing_functional_profile_execution_identified": false,
+  "source_review_not_whole_A081_or_LOAD112_acceptance": true,
+  "important_state_updates_vs_old_next_action_notes": [
+    "A074 and all A09 tasks are already Accepted; dependency checks use current register states rather than old prose.",
+    "A073 question resolved by direct user answer.",
+    "A08142field worklist is closed, old backup search completed with partial DB/env snapshots but no old13run payload.",
+    "LOAD112 bounded byte queue updated by563exact content observations, source purpose question still pending."
+  ],
+  "all6gates": "NotAccepted",
+  "overall_acceptance": "NotAccepted",
+  "no_runtime_or_original_historical_results_reclassified": true,
+  "no_new_gameplay_engine_cloud_PG_or_production_operation": true
+}

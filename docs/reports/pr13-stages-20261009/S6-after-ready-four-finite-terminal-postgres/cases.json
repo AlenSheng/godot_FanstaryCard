@@ -1,0 +1,1149 @@
+[
+  {
+    "case_id": "LOAD-04.2-T01",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "三次均send=false",
+    "expected": "有限失败终态",
+    "source_sha": "09e675d237e6c83d0ab9bbdfeaf7547d8a8563f1",
+    "actual": {
+      "original_finish_ok": false,
+      "checks": [
+        {
+          "at_unix_ms": 1791979019205,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979019305,
+          "name": "owned_equipment_fixture_seeded",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979019444,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979019539,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979019689,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979019772,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979052320,
+          "name": "ready_send_exhausted",
+          "passed": false
+        }
+      ],
+      "actual_load_ready_attempts": 3,
+      "actual_load_ready_successful_sends": 0,
+      "ready_send_count": 3,
+      "ready_send_after_stop": 0,
+      "observed_room_id": "",
+      "active_match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "actual_failed_business_terminal_not_gameplay_success": true,
+      "trace": [
+        {
+          "at_ms": 2143,
+          "event": "ticket_response",
+          "read_no": 1,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 4310,
+          "event": "ticket_response",
+          "read_no": 2,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 6477,
+          "event": "ticket_response",
+          "read_no": 3,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 8643,
+          "event": "ticket_response",
+          "read_no": 4,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 10810,
+          "event": "ticket_response",
+          "read_no": 5,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 12976,
+          "event": "ticket_response",
+          "read_no": 6,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 15143,
+          "event": "ticket_response",
+          "read_no": 7,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 17309,
+          "event": "ticket_response",
+          "read_no": 8,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 19476,
+          "event": "ticket_response",
+          "read_no": 9,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 21643,
+          "event": "ticket_response",
+          "read_no": 10,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 23809,
+          "event": "ticket_response",
+          "read_no": 11,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 25976,
+          "event": "ticket_response",
+          "read_no": 12,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 28142,
+          "event": "ticket_response",
+          "read_no": 13,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 30309,
+          "event": "ticket_response",
+          "read_no": 14,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32259,
+          "event": "actual_server_envelope",
+          "kind": "match.found",
+          "match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+          "room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+          "sequence": 5,
+          "sequence_before": 4
+        },
+        {
+          "at_ms": 32259,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_required",
+          "match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+          "room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+          "sequence": 6,
+          "sequence_before": 5
+        },
+        {
+          "at_ms": 32259,
+          "event": "required_transport_boundary",
+          "ticket_inflight": true
+        },
+        {
+          "at_ms": 32309,
+          "event": "ticket_response",
+          "read_no": 15,
+          "status": "Matched"
+        },
+        {
+          "at_ms": 32476,
+          "event": "ticket_response",
+          "read_no": 16,
+          "status": "Matched"
+        },
+        {
+          "after_stop": false,
+          "at_ms": 32476,
+          "event": "room.ready.attempt",
+          "online": true
+        },
+        {
+          "at_ms": 32476,
+          "attempt": 1,
+          "event": "controlled_all_send_false",
+          "socket_write_performed": false
+        },
+        {
+          "after_stop": false,
+          "at_ms": 33525,
+          "event": "room.ready.attempt",
+          "online": true
+        },
+        {
+          "at_ms": 33525,
+          "attempt": 2,
+          "event": "controlled_all_send_false",
+          "socket_write_performed": false
+        },
+        {
+          "at_ms": 34642,
+          "event": "ticket_response",
+          "read_no": 17,
+          "status": "Matched"
+        },
+        {
+          "after_stop": false,
+          "at_ms": 34642,
+          "event": "room.ready.attempt",
+          "online": true
+        },
+        {
+          "at_ms": 34642,
+          "attempt": 3,
+          "event": "controlled_all_send_false",
+          "socket_write_performed": false
+        },
+        {
+          "at_ms": 34692,
+          "event": "ticket_response",
+          "read_no": 18,
+          "status": "Matched"
+        }
+      ],
+      "postgres_postconditions": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "matches": 1,
+        "match_rows": [
+          {
+            "match_id": "01a13a46-53b9-7e94-af8a-d2a69a783c04",
+            "room_id": "01a13a46-53b9-729a-8659-232acb827d46",
+            "status": "Running",
+            "created_at_unix_ms": 1791979049911.348,
+            "ready_deadline_unix_ms": 1791979064911.348,
+            "observed_at_unix_ms": 1791979066673.959
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "stored_ticket_status_not_fabricated_expired": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/independent-G-check.original.json",
+        "scope": "Actual attempts, all real delayed matched replies, actual SQL deadline/removal/asset release and real route probe"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/all_three_sends_false.client.original.json",
+        "scope": "Original production Godot explicit failure and original trace"
+      }
+    ],
+    "scope": "Real Godot/Program/isolated PG, controlled send=false or delayed original matched replies. Expected bounded failures remain failures at gameplay level; case verifies correct terminal handling. One expiry run aliases three canonical contracts, not three independent runs. LIVE retained."
+  },
+  {
+    "case_id": "LOAD-04.2-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "deadline已过",
+    "expected": "不发送并恢复权威终态",
+    "source_sha": "09e675d237e6c83d0ab9bbdfeaf7547d8a8563f1",
+    "actual": {
+      "original_finish_ok": false,
+      "checks": [
+        {
+          "at_unix_ms": 1791979070055,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070138,
+          "name": "owned_equipment_fixture_seeded",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070310,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070405,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070589,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070673,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979118402,
+          "name": "ready_ticket_missing",
+          "passed": false
+        }
+      ],
+      "actual_load_ready_attempts": 0,
+      "actual_load_ready_successful_sends": 0,
+      "ready_send_count": 0,
+      "ready_send_after_stop": 0,
+      "observed_room_id": "",
+      "active_match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "actual_failed_business_terminal_not_gameplay_success": true,
+      "trace": [
+        {
+          "at_ms": 2142,
+          "event": "ticket_response",
+          "read_no": 1,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 4309,
+          "event": "ticket_response",
+          "read_no": 2,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 6475,
+          "event": "ticket_response",
+          "read_no": 3,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 8641,
+          "event": "ticket_response",
+          "read_no": 4,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 10808,
+          "event": "ticket_response",
+          "read_no": 5,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 12975,
+          "event": "ticket_response",
+          "read_no": 6,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 15141,
+          "event": "ticket_response",
+          "read_no": 7,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 17308,
+          "event": "ticket_response",
+          "read_no": 8,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 19474,
+          "event": "ticket_response",
+          "read_no": 9,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 21641,
+          "event": "ticket_response",
+          "read_no": 10,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 23807,
+          "event": "ticket_response",
+          "read_no": 11,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 25974,
+          "event": "ticket_response",
+          "read_no": 12,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 28141,
+          "event": "ticket_response",
+          "read_no": 13,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 30307,
+          "event": "ticket_response",
+          "read_no": 14,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32474,
+          "event": "ticket_response",
+          "read_no": 15,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32490,
+          "event": "actual_server_envelope",
+          "kind": "match.found",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 5,
+          "sequence_before": 4
+        },
+        {
+          "at_ms": 32491,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_required",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 6,
+          "sequence_before": 5
+        },
+        {
+          "at_ms": 32491,
+          "event": "required_transport_boundary",
+          "ticket_inflight": true
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 32541,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979101120,
+          "ready_sends": 0,
+          "request_read_no": 16
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 34640,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979103220,
+          "ready_sends": 0,
+          "request_read_no": 17
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 16,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 16,
+          "status": "Matched"
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 17,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 17,
+          "status": "Matched"
+        },
+        {
+          "at_ms": 47806,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_removed",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "",
+          "sequence": 8,
+          "sequence_before": 7
+        }
+      ],
+      "postgres_postconditions": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "matches": 1,
+        "match_rows": [
+          {
+            "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+            "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+            "status": "Running",
+            "created_at_unix_ms": 1791979101039.461,
+            "ready_deadline_unix_ms": 1791979116039.461,
+            "observed_at_unix_ms": 1791979119650.87
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "stored_ticket_status_not_fabricated_expired": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/independent-G-check.original.json",
+        "scope": "Actual attempts, all real delayed matched replies, actual SQL deadline/removal/asset release and real route probe"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/matched_reply_after_actual_deadline.client.original.json",
+        "scope": "Original production Godot explicit failure and original trace"
+      }
+    ],
+    "scope": "Real Godot/Program/isolated PG, controlled send=false or delayed original matched replies. Expected bounded failures remain failures at gameplay level; case verifies correct terminal handling. One expiry run aliases three canonical contracts, not three independent runs. LIVE retained."
+  },
+  {
+    "case_id": "PR13-A04.1-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "ticket暂未found",
+    "expected": "有限查询后明确终态",
+    "source_sha": "09e675d237e6c83d0ab9bbdfeaf7547d8a8563f1",
+    "actual": {
+      "original_finish_ok": false,
+      "checks": [
+        {
+          "at_unix_ms": 1791979070055,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070138,
+          "name": "owned_equipment_fixture_seeded",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070310,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070405,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070589,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070673,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979118402,
+          "name": "ready_ticket_missing",
+          "passed": false
+        }
+      ],
+      "actual_load_ready_attempts": 0,
+      "actual_load_ready_successful_sends": 0,
+      "ready_send_count": 0,
+      "ready_send_after_stop": 0,
+      "observed_room_id": "",
+      "active_match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "actual_failed_business_terminal_not_gameplay_success": true,
+      "trace": [
+        {
+          "at_ms": 2142,
+          "event": "ticket_response",
+          "read_no": 1,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 4309,
+          "event": "ticket_response",
+          "read_no": 2,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 6475,
+          "event": "ticket_response",
+          "read_no": 3,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 8641,
+          "event": "ticket_response",
+          "read_no": 4,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 10808,
+          "event": "ticket_response",
+          "read_no": 5,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 12975,
+          "event": "ticket_response",
+          "read_no": 6,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 15141,
+          "event": "ticket_response",
+          "read_no": 7,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 17308,
+          "event": "ticket_response",
+          "read_no": 8,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 19474,
+          "event": "ticket_response",
+          "read_no": 9,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 21641,
+          "event": "ticket_response",
+          "read_no": 10,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 23807,
+          "event": "ticket_response",
+          "read_no": 11,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 25974,
+          "event": "ticket_response",
+          "read_no": 12,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 28141,
+          "event": "ticket_response",
+          "read_no": 13,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 30307,
+          "event": "ticket_response",
+          "read_no": 14,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32474,
+          "event": "ticket_response",
+          "read_no": 15,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32490,
+          "event": "actual_server_envelope",
+          "kind": "match.found",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 5,
+          "sequence_before": 4
+        },
+        {
+          "at_ms": 32491,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_required",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 6,
+          "sequence_before": 5
+        },
+        {
+          "at_ms": 32491,
+          "event": "required_transport_boundary",
+          "ticket_inflight": true
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 32541,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979101120,
+          "ready_sends": 0,
+          "request_read_no": 16
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 34640,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979103220,
+          "ready_sends": 0,
+          "request_read_no": 17
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 16,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 16,
+          "status": "Matched"
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 17,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 17,
+          "status": "Matched"
+        },
+        {
+          "at_ms": 47806,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_removed",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "",
+          "sequence": 8,
+          "sequence_before": 7
+        }
+      ],
+      "postgres_postconditions": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "matches": 1,
+        "match_rows": [
+          {
+            "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+            "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+            "status": "Running",
+            "created_at_unix_ms": 1791979101039.461,
+            "ready_deadline_unix_ms": 1791979116039.461,
+            "observed_at_unix_ms": 1791979119650.87
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "stored_ticket_status_not_fabricated_expired": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/independent-G-check.original.json",
+        "scope": "Actual attempts, all real delayed matched replies, actual SQL deadline/removal/asset release and real route probe"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/matched_reply_after_actual_deadline.client.original.json",
+        "scope": "Original production Godot explicit failure and original trace"
+      }
+    ],
+    "scope": "Real Godot/Program/isolated PG, controlled send=false or delayed original matched replies. Expected bounded failures remain failures at gameplay level; case verifies correct terminal handling. One expiry run aliases three canonical contracts, not three independent runs. LIVE retained."
+  },
+  {
+    "case_id": "PR13-A04.1-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "deadline过期",
+    "expected": "不无限等待/发送",
+    "source_sha": "09e675d237e6c83d0ab9bbdfeaf7547d8a8563f1",
+    "actual": {
+      "original_finish_ok": false,
+      "checks": [
+        {
+          "at_unix_ms": 1791979070055,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070138,
+          "name": "owned_equipment_fixture_seeded",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070310,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070405,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070589,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979070673,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791979118402,
+          "name": "ready_ticket_missing",
+          "passed": false
+        }
+      ],
+      "actual_load_ready_attempts": 0,
+      "actual_load_ready_successful_sends": 0,
+      "ready_send_count": 0,
+      "ready_send_after_stop": 0,
+      "observed_room_id": "",
+      "active_match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "actual_failed_business_terminal_not_gameplay_success": true,
+      "trace": [
+        {
+          "at_ms": 2142,
+          "event": "ticket_response",
+          "read_no": 1,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 4309,
+          "event": "ticket_response",
+          "read_no": 2,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 6475,
+          "event": "ticket_response",
+          "read_no": 3,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 8641,
+          "event": "ticket_response",
+          "read_no": 4,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 10808,
+          "event": "ticket_response",
+          "read_no": 5,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 12975,
+          "event": "ticket_response",
+          "read_no": 6,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 15141,
+          "event": "ticket_response",
+          "read_no": 7,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 17308,
+          "event": "ticket_response",
+          "read_no": 8,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 19474,
+          "event": "ticket_response",
+          "read_no": 9,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 21641,
+          "event": "ticket_response",
+          "read_no": 10,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 23807,
+          "event": "ticket_response",
+          "read_no": 11,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 25974,
+          "event": "ticket_response",
+          "read_no": 12,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 28141,
+          "event": "ticket_response",
+          "read_no": 13,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 30307,
+          "event": "ticket_response",
+          "read_no": 14,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32474,
+          "event": "ticket_response",
+          "read_no": 15,
+          "status": "Queued"
+        },
+        {
+          "at_ms": 32490,
+          "event": "actual_server_envelope",
+          "kind": "match.found",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 5,
+          "sequence_before": 4
+        },
+        {
+          "at_ms": 32491,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_required",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+          "sequence": 6,
+          "sequence_before": 5
+        },
+        {
+          "at_ms": 32491,
+          "event": "required_transport_boundary",
+          "ticket_inflight": true
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 32541,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979101120,
+          "ready_sends": 0,
+          "request_read_no": 16
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 34640,
+          "event": "real_matched_response_held",
+          "observed_unix_ms": 1791979103220,
+          "ready_sends": 0,
+          "request_read_no": 17
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 16,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 16,
+          "status": "Matched"
+        },
+        {
+          "actual_deadline_unix_ms": 1791979116039,
+          "at_ms": 47690,
+          "event": "real_matched_response_delivered_after_deadline",
+          "observed_unix_ms": 1791979116269,
+          "ready_sends": 0,
+          "request_read_no": 17,
+          "returned_status": "Matched"
+        },
+        {
+          "at_ms": 47690,
+          "event": "ticket_response",
+          "read_no": 17,
+          "status": "Matched"
+        },
+        {
+          "at_ms": 47806,
+          "event": "actual_server_envelope",
+          "kind": "room.ready_removed",
+          "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+          "room_id": "",
+          "sequence": 8,
+          "sequence_before": 7
+        }
+      ],
+      "postgres_postconditions": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "matches": 1,
+        "match_rows": [
+          {
+            "match_id": "01a13a47-1b74-780c-b14f-b1f7adc0325f",
+            "room_id": "01a13a47-1b74-7d6a-9d15-18ad5c91d033",
+            "status": "Running",
+            "created_at_unix_ms": 1791979101039.461,
+            "ready_deadline_unix_ms": 1791979116039.461,
+            "observed_at_unix_ms": 1791979119650.87
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "stored_ticket_status_not_fabricated_expired": true
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/independent-G-check.original.json",
+        "scope": "Actual attempts, all real delayed matched replies, actual SQL deadline/removal/asset release and real route probe"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-ready-finite-failure-and-real-expiry-PG/matched_reply_after_actual_deadline.client.original.json",
+        "scope": "Original production Godot explicit failure and original trace"
+      }
+    ],
+    "scope": "Real Godot/Program/isolated PG, controlled send=false or delayed original matched replies. Expected bounded failures remain failures at gameplay level; case verifies correct terminal handling. One expiry run aliases three canonical contracts, not three independent runs. LIVE retained."
+  }
+]

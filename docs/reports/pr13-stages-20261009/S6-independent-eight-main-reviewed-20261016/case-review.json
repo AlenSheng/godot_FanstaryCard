@@ -1,0 +1,1421 @@
+{
+  "kind": "IndependentEightTasksExistingOriginalCaseReview",
+  "authority": "MAIN",
+  "at_local": "2026-10-16T17:55:57.598207+08:00",
+  "review_head": "e18c21d05183ef51d857cd938e9b117fcc01f931",
+  "original_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-after-empty-ready-wire-three-old-cycle-postgres/register.json",
+    "bytes": 14810491,
+    "sha256": "37a8ca2b8994bab75ba5169ba10ded4b0bc5cd9d34a16e5b2dbbf92254d9fa70"
+  },
+  "eligible_task_ids": [
+    "LOAD-11.1",
+    "LOAD-02.1",
+    "LOAD-02.3",
+    "LOAD-02.4",
+    "PR13-B02.1",
+    "PR13-B02.2",
+    "PR13-B02.3",
+    "PR13-B02.4"
+  ],
+  "task_reviews": [
+    {
+      "task_id": "LOAD-11.1",
+      "title": "基线来源冻结",
+      "pass_criteria": "baseline可追溯到实际运行内容，缺证据及范围在开工前可见。",
+      "dependencies": [],
+      "case_review": [
+        {
+          "case_id": "LOAD-11.1-T01",
+          "expected": "分别记录不等同",
+          "base_profiles": [
+            "OFFLINE",
+            "AUDIT"
+          ],
+          "base_source_sha": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-25/cases.jsonl",
+          "supplements": [],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-11.1-T02",
+          "expected": "历史归因Blocked而非重跑代替",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "AUDIT"
+              ],
+              "source_sha": "3e45dd495215c3a0a5eda53a20449d9ad1e0d00d",
+              "scope": "Tencent process audits actual frozen Git inventory and current acceptance/delivery records. No database, historical recovery, capacity, or whole MAIN claim.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/result.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/input-ledger.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/independent-verification.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-11.1-T03",
+          "expected": "阻塞不降target",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-25/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "AUDIT"
+              ],
+              "source_sha": "1c3bc86ca748b32d567d9d045295ddc2f4e1d36f",
+              "scope": "Actual current Git workflow/source/SDK declarations evaluated on Tencent; declared controlled old-run success flag and missing executable only. No remote workflow dispatch/pass, real old CI success, build, DB, or whole MAIN claim.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/result.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/input-ledger.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/independent-verification.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "LOAD-11.1-T01": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+        "LOAD-11.1-T02": "3e45dd495215c3a0a5eda53a20449d9ad1e0d00d",
+        "LOAD-11.1-T03": "1c3bc86ca748b32d567d9d045295ddc2f4e1d36f"
+      }
+    },
+    {
+      "task_id": "LOAD-02.1",
+      "title": "多维结果模型",
+      "pass_criteria": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+      "dependencies": [
+        "LOAD-01.2"
+      ],
+      "case_review": [
+        {
+          "case_id": "LOAD-02.1-T01",
+          "expected": "execution结束、load失败",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T01.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.1-T02",
+          "expected": "保留业务失败",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "304e5be939d0c3259a453ee800a8fcef47f3bb37",
+              "scope": "Same actual original timeout-before-stop variant of LOAD-02.2-T01; maps the earlier business-failure preservation invariant only. Underlying scenario failed as injected; native assertion passed. No new run or samples, capacity, LIVE or whole task acceptance.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S6-after-load02-prior-business-failure-postgres/independent-G-audit.original.json",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/native-process29.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/independent-verification.json",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/complete-original-G-receipt.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.1-T03",
+          "expected": "记录两原因且证据无效优先退出码3",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "LOAD-02.1-T01": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.1-T02": "304e5be939d0c3259a453ee800a8fcef47f3bb37",
+        "LOAD-02.1-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      }
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "title": "有界清理和应急报告",
+      "pass_criteria": "进程清理与业务清理分列，所有强退和报告失败可见，非本轮进程不被操作。",
+      "dependencies": [
+        "LOAD-02.2"
+      ],
+      "case_review": [
+        {
+          "case_id": "LOAD-02.3-T01",
+          "expected": "grace内退出且服务后置状态可恢复",
+          "base_profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "base_source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-32/cases.jsonl",
+          "supplements": [],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.3-T02",
+          "expected": "仅终止本轮PID并记录forced",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T02.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.3-T03",
+          "expected": "应急报告存在且不可Pass",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "LOAD-02.3-T01": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+        "LOAD-02.3-T02": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.3-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      }
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "title": "退出码兼容",
+      "pass_criteria": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+      "dependencies": [
+        "LOAD-02.3"
+      ],
+      "case_review": [
+        {
+          "case_id": "LOAD-02.4-T01",
+          "expected": "标仅准备不算压测成功",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T01.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.4-T02",
+          "expected": "exit2且记录全部触发",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T02.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.4-T03",
+          "expected": "分别3/130",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "LOAD-02.4-T01": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.4-T02": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.4-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      }
+    },
+    {
+      "task_id": "PR13-B02.1",
+      "title": "过期测试API迁移",
+      "pass_criteria": "保留原测试意图与数量变动说明，不复活废弃生产成员、不改默认来迎合断言。",
+      "dependencies": [
+        "LOAD-11.1"
+      ],
+      "case_review": [
+        {
+          "case_id": "PR13-B02.1-T01",
+          "expected": "编译失败证据",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "e9d2a78464fef06f57c2e82124ddff81ad651ce6",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-22/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.1-T02",
+          "expected": "仍CurrentRhythm/CurrentSteps",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.1-T03",
+          "expected": "候选断言独立",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "PR13-B02.1-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.1-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.1-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      }
+    },
+    {
+      "task_id": "PR13-B02.2",
+      "title": "真实Resolver规则向量",
+      "pass_criteria": "金标准向量有完整配置上下文；数值不能推广为任意三张火牌伤害。",
+      "dependencies": [
+        "PR13-B02.1"
+      ],
+      "case_review": [
+        {
+          "case_id": "PR13-B02.2-T01",
+          "expected": "按首核合同可不同",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.2-T02",
+          "expected": "46/72/113",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.2-T03",
+          "expected": "分别计算不共套牧师倍率",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "PR13-B02.2-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.2-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.2-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      }
+    },
+    {
+      "task_id": "PR13-B02.3",
+      "title": "预览/协议/权威一致",
+      "pass_criteria": "确定性字段零差异；随机结果用受控种子/规则校验，不能要求未公开未来伤害精确展示。",
+      "dependencies": [
+        "PR13-B02.2"
+      ],
+      "case_review": [
+        {
+          "case_id": "PR13-B02.3-T01",
+          "expected": "不抽牌不进RNG不提交盾余量",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.3-T02",
+          "expected": "顺序保持",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "b62484c535f01d5034c0fb93add116842c24b0a6",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-5/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.3-T03",
+          "expected": "预览弃置不覆盖当前",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "7b9359306f5769588429e2a7962817204021f2f2",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-16/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "PR13-B02.3-T01": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+        "PR13-B02.3-T02": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+        "PR13-B02.3-T03": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f"
+      }
+    },
+    {
+      "task_id": "PR13-B02.4",
+      "title": "房间策略和恢复",
+      "pass_criteria": "同SHA客户端/server/proto/Domain/PG适用测试真实执行，新旧room来源可查。",
+      "dependencies": [
+        "PR13-B02.3"
+      ],
+      "case_review": [
+        {
+          "case_id": "PR13-B02.4-T01",
+          "expected": "policy不静默换",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.4-T02",
+          "expected": "恢复PVE原state",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.4-T03",
+          "expected": "兼容默认或明确拒绝不半恢复",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "case_source_shas_unchanged": {
+        "PR13-B02.4-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.4-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.4-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      }
+    }
+  ],
+  "case_count": 24,
+  "no_new_test_statistics_or_samples": true,
+  "source_review": {
+    "current_load_and_dependencies": [
+      {
+        "path": "tools/gameplay_load_test.py",
+        "executed_git_sha256": "d2c91947f73c01c8296e472af7f8e659f838878eb8ac57007fedcad5c11141e1",
+        "current_raw_sha256": "d2c91947f73c01c8296e472af7f8e659f838878eb8ac57007fedcad5c11141e1",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/cloud_load_test.py",
+        "executed_git_sha256": "6d165686f2f31bc16ba8305a95c31fa1176611acad29e71dd1c2d7173de1293f",
+        "current_raw_sha256": "08042e6f1e72fc730ed92feca3f8a2bca2b09959ec200c8ce42284c6367018af",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/gameplay_load_validation.py",
+        "executed_git_sha256": "1c72ba52b16954b32c29bb6f19fc76c613c74a6cb7f025a60b2f764bfaa8dbc9",
+        "current_raw_sha256": "41a83f43cbd905383835f6dc328fc3271a295a07c6c80e451b157710c5c48e81",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_runtime_evidence.py",
+        "executed_git_sha256": "971dedc310e2a8311b938a544a9895935e39c63a62acd8658c9da97d15d14a09",
+        "current_raw_sha256": "6a0a7683fadd2d0927e21d9e77f55895fd35042b3bf42c32421493784a69c60d",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_local_network.py",
+        "executed_git_sha256": "c13da909fb4d946457e18745fa2881d65133cdb4dbb15fbbbd728bee5580727e",
+        "current_raw_sha256": "c13da909fb4d946457e18745fa2881d65133cdb4dbb15fbbbd728bee5580727e",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_server_diagnostics.py",
+        "executed_git_sha256": "971d4daac07fa5e595fa96c4dde12038e628c27a1e1adf1e2df44f1fca6a97b1",
+        "current_raw_sha256": "971d4daac07fa5e595fa96c4dde12038e628c27a1e1adf1e2df44f1fca6a97b1",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_resource_policy.py",
+        "executed_git_sha256": "26524ebc065db6578c5e655d69588a4d0d0c74cd16e9c10d6f19fd0f535f4041",
+        "current_raw_sha256": "26524ebc065db6578c5e655d69588a4d0d0c74cd16e9c10d6f19fd0f535f4041",
+        "canonical_lines_equal": true
+      }
+    ],
+    "prior_business_failure_current_load": [
+      {
+        "path": "tools/gameplay_load_test.py",
+        "executed_git_sha256": "d2c91947f73c01c8296e472af7f8e659f838878eb8ac57007fedcad5c11141e1",
+        "current_raw_sha256": "d2c91947f73c01c8296e472af7f8e659f838878eb8ac57007fedcad5c11141e1",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/cloud_load_test.py",
+        "executed_git_sha256": "6d165686f2f31bc16ba8305a95c31fa1176611acad29e71dd1c2d7173de1293f",
+        "current_raw_sha256": "08042e6f1e72fc730ed92feca3f8a2bca2b09959ec200c8ce42284c6367018af",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/gameplay_load_validation.py",
+        "executed_git_sha256": "1c72ba52b16954b32c29bb6f19fc76c613c74a6cb7f025a60b2f764bfaa8dbc9",
+        "current_raw_sha256": "41a83f43cbd905383835f6dc328fc3271a295a07c6c80e451b157710c5c48e81",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_runtime_evidence.py",
+        "executed_git_sha256": "971dedc310e2a8311b938a544a9895935e39c63a62acd8658c9da97d15d14a09",
+        "current_raw_sha256": "6a0a7683fadd2d0927e21d9e77f55895fd35042b3bf42c32421493784a69c60d",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_local_network.py",
+        "executed_git_sha256": "c13da909fb4d946457e18745fa2881d65133cdb4dbb15fbbbd728bee5580727e",
+        "current_raw_sha256": "c13da909fb4d946457e18745fa2881d65133cdb4dbb15fbbbd728bee5580727e",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_server_diagnostics.py",
+        "executed_git_sha256": "971d4daac07fa5e595fa96c4dde12038e628c27a1e1adf1e2df44f1fca6a97b1",
+        "current_raw_sha256": "971d4daac07fa5e595fa96c4dde12038e628c27a1e1adf1e2df44f1fca6a97b1",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_resource_policy.py",
+        "executed_git_sha256": "26524ebc065db6578c5e655d69588a4d0d0c74cd16e9c10d6f19fd0f535f4041",
+        "current_raw_sha256": "26524ebc065db6578c5e655d69588a4d0d0c74cd16e9c10d6f19fd0f535f4041",
+        "canonical_lines_equal": true
+      }
+    ],
+    "baseline_reference_function": [
+      {
+        "path": "tools/pr13_source_cases.py",
+        "executed_git_sha256": "5e2aba42fb5946af0fb0438c10482b131a2212c2fdcc174b34beb207f0bc91cc",
+        "current_raw_sha256": "5e2aba42fb5946af0fb0438c10482b131a2212c2fdcc174b34beb207f0bc91cc",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "tools/pr13_stages.py",
+        "executed_git_sha256": "1b84f4bf3d155c63f1707218f432b9dfa31ede87b72e6f5fc964717e819a1cef",
+        "current_raw_sha256": "1b84f4bf3d155c63f1707218f432b9dfa31ede87b72e6f5fc964717e819a1cef",
+        "canonical_lines_equal": true
+      }
+    ],
+    "SDK_rejection_declarations": [
+      {
+        "path": "tools/pr13_current_public_audit_cases.py",
+        "executed_git_sha256": "dc62280297b5615123ccefc9025eddb9737e1f5c401b79efe35b5c3c4713c312",
+        "current_raw_sha256": "dc62280297b5615123ccefc9025eddb9737e1f5c401b79efe35b5c3c4713c312",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "server/global.json",
+        "executed_git_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01",
+        "current_raw_sha256": "31d8611777f9a9d3702923837ff98bc529abe6131298b04d4f5c5f3f0247dd36",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "server/Directory.Build.props",
+        "executed_git_sha256": "02f7d1a231e5a2e265602e1cc802dea004d99c8c7f81ac63f21b093df895e1fe",
+        "current_raw_sha256": "80df0bed8c2cc6515fc16d23f02bd6b8e01a9dbe3f6d02b06d2fabfb0884330a",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "server/src/FantasyCard.Server/FantasyCard.Server.csproj",
+        "executed_git_sha256": "810e5e1056076545efea03f9e4ddbd24f5d29bb12c108a750776e4c073811b96",
+        "current_raw_sha256": "85a8262dd70bdf11405e1e3ce0b1002942317dec54e3eef28d0dec1fd41c54b2",
+        "canonical_lines_equal": true
+      }
+    ],
+    "B02_native": [
+      {
+        "stage": "S3-b02-policy-postgres",
+        "executed_implementation_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "native_execution_base_sha": "5be22e2fe751ebaad818db003a09f4fb3371a87a",
+        "unchanged_native_source_inputs": 299,
+        "comment_only_file": "server/src/FantasyCard.Domain/Combat/CombatResolver.cs",
+        "reviewed_comment_delta": [
+          "// The first ordinary elemental card establishes the core. Direct",
+          "// damage cards do not consume this position.",
+          "// The first eligible single-element card, including a tuning card,",
+          "// establishes the core. Direct and dual-element cards do not."
+        ],
+        "runtime_sources_not_relabelled": true
+      },
+      {
+        "stage": "S3-b02-preview-postgres",
+        "executed_implementation_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+        "native_execution_base_sha": "3830f305339f61c7d97fc72444d4c6d1716497f2",
+        "unchanged_native_source_inputs": 298,
+        "comment_only_file": "server/src/FantasyCard.Domain/Combat/CombatResolver.cs",
+        "reviewed_comment_delta": [
+          "// The first ordinary elemental card establishes the core. Direct",
+          "// damage cards do not consume this position.",
+          "// The first eligible single-element card, including a tuning card,",
+          "// establishes the core. Direct and dual-element cards do not."
+        ],
+        "runtime_sources_not_relabelled": true
+      }
+    ],
+    "B02_direct_client_contracts": [
+      {
+        "path": "client/state/game_store.gd",
+        "executed_git_sha256": "2fb6ac0d40e70e89817821c606d1a93cabb62cd36a797e797eda02899192cbb9",
+        "current_raw_sha256": "2ef385d6512ce27bfef5839abc161f1bef1152b043b4c5a8a3c4955d4edbdd03",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/network/protobuf.gd",
+        "executed_git_sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3",
+        "current_raw_sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/tests/test_protobuf.gd",
+        "executed_git_sha256": "5aa0420c2b25220b78e71298d628c013a2b3625b0ac2f3f2c9e2685cd815ac0c",
+        "current_raw_sha256": "5aa0420c2b25220b78e71298d628c013a2b3625b0ac2f3f2c9e2685cd815ac0c",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/tests/test_combat_preview_state.gd",
+        "executed_git_sha256": "ffabb7c0e077cc9fadb22692773d21c655b8cc9d0dac3bf0413198b75dde7f4d",
+        "current_raw_sha256": "fa43695e4bec69149922b2fb0e8fae97df10df976526b6199e8b55ac4815a817",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/tests/pr13_b02_policy_regression.gd",
+        "executed_git_sha256": "0f00df8883b579f19a150650c8eef1ed24361bb22354c464d0045853c1f22873",
+        "current_raw_sha256": "0f00df8883b579f19a150650c8eef1ed24361bb22354c464d0045853c1f22873",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/data/catalog.json",
+        "executed_git_sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d",
+        "current_raw_sha256": "ab752f4098aa33bab5fadd62fad341d78b24b21b8b6d0253b0b42628ff035bbf",
+        "canonical_lines_equal": true
+      }
+    ],
+    "B02_preview_direct_client_contracts": [
+      {
+        "path": "client/state/game_store.gd",
+        "executed_git_sha256": "2fb6ac0d40e70e89817821c606d1a93cabb62cd36a797e797eda02899192cbb9",
+        "current_raw_sha256": "2ef385d6512ce27bfef5839abc161f1bef1152b043b4c5a8a3c4955d4edbdd03",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/network/protobuf.gd",
+        "executed_git_sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3",
+        "current_raw_sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67",
+        "canonical_lines_equal": true
+      },
+      {
+        "path": "client/tests/pr13_postgres_preview_wire.gd",
+        "executed_git_sha256": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+        "current_raw_sha256": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+        "canonical_lines_equal": true
+      }
+    ],
+    "LOAD023_current_graceful_cleanup_delta": "One call now resolves authoritative ticket before cancellation; all other original graceful-cleanup statements unchanged. New exact-gateway candidate LIVE cancelled-ticket case independently passes cleanup. Existing four original STOP-await modes remain identified as original c1f4212 execution; no new execution/source claim."
+  },
+  "native_checks": [
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/independent-verification.json",
+      "ok": true,
+      "native_clean": true,
+      "frozen_inputs_verified": true
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/independent-verification.json",
+      "ok": true,
+      "native_clean": true,
+      "frozen_inputs_verified": true
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+      "ok": true,
+      "native_clean": true,
+      "frozen_inputs_verified": true
+    }
+  ],
+  "reviewed_coordinator_modes": [
+    {
+      "case": "LOAD-02.1-T01",
+      "mode": "duration-short",
+      "actual_exit": 1,
+      "outcome": {
+        "classification": "incomplete_or_failed",
+        "passed": false,
+        "exit_code": 1
+      },
+      "forced": [],
+      "process_cleanup": true,
+      "business_cleanup": true
+    },
+    {
+      "case": "LOAD-02.1-T03",
+      "mode": "redline-and-invalid",
+      "actual_exit": 3,
+      "outcome": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "forced": [],
+      "process_cleanup": true,
+      "business_cleanup": true
+    },
+    {
+      "case": "LOAD-02.3-T02",
+      "mode": "hang",
+      "actual_exit": 3,
+      "outcome": null,
+      "forced": [
+        217
+      ],
+      "process_cleanup": null,
+      "business_cleanup": null
+    },
+    {
+      "case": "LOAD-02.3-T03",
+      "mode": "write-failure",
+      "actual_exit": 3,
+      "outcome": null,
+      "forced": null,
+      "process_cleanup": null,
+      "business_cleanup": null
+    },
+    {
+      "case": "LOAD-02.4-T01",
+      "mode": "prepare-only",
+      "actual_exit": 0,
+      "outcome": null,
+      "forced": null,
+      "process_cleanup": null,
+      "business_cleanup": null
+    },
+    {
+      "case": "LOAD-02.4-T02",
+      "mode": "redline",
+      "actual_exit": 2,
+      "outcome": {
+        "classification": "performance_redline",
+        "passed": false,
+        "exit_code": 2
+      },
+      "forced": [],
+      "process_cleanup": true,
+      "business_cleanup": true
+    },
+    {
+      "case": "LOAD-02.4-T03",
+      "mode": "invalid",
+      "actual_exit": 3,
+      "outcome": {
+        "classification": "invalid_workload_or_evidence",
+        "passed": false,
+        "exit_code": 3
+      },
+      "forced": [],
+      "process_cleanup": true,
+      "business_cleanup": true
+    },
+    {
+      "case": "LOAD-02.4-T03",
+      "mode": "operator",
+      "actual_exit": 130,
+      "outcome": {
+        "classification": "operator_stopped",
+        "passed": false,
+        "exit_code": 130
+      },
+      "forced": [],
+      "process_cleanup": true,
+      "business_cleanup": true
+    }
+  ],
+  "native_trx_checks": [
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+      "rows": 9,
+      "all_passed": true,
+      "no_skipped_rows": true
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+      "rows": 338,
+      "all_passed": true,
+      "no_skipped_rows": true
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+      "rows": 6,
+      "all_passed": true,
+      "no_skipped_rows": true
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/native-process29.original.trx",
+      "rows": 29,
+      "all_passed": true,
+      "no_skipped_rows": true
+    }
+  ],
+  "evidence_identities": [
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-25/cases.jsonl",
+      "bytes": 5026,
+      "sha256": "9b2c47a7158630ddca5666625291416524f4f77d826480d727bf6cec66df4ae1"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+      "bytes": 78139,
+      "sha256": "062c9601c733c5919e3c0ed42c9d39e6b426b1522f1f9f7876915c0947dcaa98"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/result.original.json",
+      "bytes": 681,
+      "sha256": "00acfa674eb813bbb4090a37dd0df94737b6a9eae62b2367a3fc017e1650e515"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/input-ledger.original.json",
+      "bytes": 2531,
+      "sha256": "94f38db592c9557dbf0500e550360145756fc85b928faf9dc6499f8e5e692fae"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/independent-verification.json",
+      "bytes": 1053,
+      "sha256": "540bdcf4035a66bdf7cc687afa7f65d5545de9fc7d5c04ec8e842b8994640a86"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/result.original.json",
+      "bytes": 599,
+      "sha256": "6b7128bfef1d8e3dbd930ae9bf48ec7b06c67c3b695c8bc071ba19b081ef029c"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/input-ledger.original.json",
+      "bytes": 1973,
+      "sha256": "4761a269aca514e720efc885833a1f6c786a37bdf7b920574711fcb55516bd52"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/independent-verification.json",
+      "bytes": 995,
+      "sha256": "7fd542d31d09eafe01d441dd625ed1fb04d4e31f894d23006f3d9d6411e3f3d8"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+      "bytes": 66601,
+      "sha256": "51c2a231600eba4affdca46c0c3d07b1b5bf736ed7a8bdb724582a6fe5f91da6"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+      "bytes": 865155,
+      "sha256": "fae861c477739e9dfd9812f6ef1bee38b14edbaab7212fbbe9f3244c939cd80f"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T01.json",
+      "bytes": 33270,
+      "sha256": "41a1b55d32629f406d2441eff50b71859726aec9f0a46468cbfb94efea98d9f0"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+      "bytes": 16239,
+      "sha256": "9e60685c5d380c7f700d29b8a2b7d7ab183bab0a81f219185aed395a93a90239"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+      "bytes": 23288,
+      "sha256": "578da1d6a3fa897c9b21bb22c75e47d194c85e096d7a0137be8cf96a4874f7ae"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+      "bytes": 874,
+      "sha256": "bebe35c02431897fb6b9355536929f62d19b8fe42f98a9da8dbe2a6a82f6c746"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json",
+      "bytes": 807,
+      "sha256": "592ced63424c01e49ab851140a5fef70de436fdb14a5afa49d0bfda08843f75f"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-after-load02-prior-business-failure-postgres/independent-G-audit.original.json",
+      "bytes": 11040,
+      "sha256": "c54731c75a378a07f519649a6dd223badc5e7e8a0a47289372802bc16051849d"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/native-process29.original.trx",
+      "bytes": 642674,
+      "sha256": "c3cf42327d609bc1b2b3b8e4f77e0be13d55dea2fe1e2f40fc94d58a63dd7132"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/independent-verification.json",
+      "bytes": 24195,
+      "sha256": "beeec37db434447521dd10e9699bbb2ce701d7344e9a21ea1edca6aa991f9b7a"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/complete-original-G-receipt.json",
+      "bytes": 734,
+      "sha256": "770ffbad84bb368f3f6b9aa4bc48a13895dc312c1f37696a66e5b4149aee309f"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T03.json",
+      "bytes": 50714,
+      "sha256": "60b71375ecc7896fb80be0e35ccd4e756de3613b95479df945084406c358da53"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-32/cases.jsonl",
+      "bytes": 21320,
+      "sha256": "39c015a440db472707ab4f303223d372ee58840035f141769b83df548dc9b193"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T02.json",
+      "bytes": 1623,
+      "sha256": "b6ca67f5eaa22eefa4115b9e79fc90d8615583bd8675dfda6ed1471fd9931580"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T03.json",
+      "bytes": 1511,
+      "sha256": "4c15d6d0f0f078be8dac3d93bbfa15085518de3fe020bf2f1c79873b55fe6713"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T01.json",
+      "bytes": 1668,
+      "sha256": "99a271117b72bde00fca6c173a4649496668608d4c9d8afe472c4b91a92ddb58"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T02.json",
+      "bytes": 50632,
+      "sha256": "67ac7c2a33040a18a6b0b59d3712dd3e73b3e584516da1ab00a2180c99732a10"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T03.json",
+      "bytes": 276173,
+      "sha256": "64306a6cb041cb4ec1fb272becae7e394f4d84fde8883be4cd8efab1dd8e7e3d"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-22/cases.jsonl",
+      "bytes": 680,
+      "sha256": "7a7ec7dae5c72dd3c01b485f1fa5a231d20173bb1169e56f7211bf3a1da53d62"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+      "bytes": 70430,
+      "sha256": "7c4b4a081184e6a0fac1a23f1dd5baae28ae7532437e01ba146466a7dc0fd57a"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+      "bytes": 303386,
+      "sha256": "fa77370592d2ed80044aebd54481b8db7bb88f04ab5086a7a7f60d3c1dcbb505"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+      "bytes": 14853,
+      "sha256": "d62795ba997e4cb0845c4616d1b52108beaa6d93c37746e4f357ba765444af18"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+      "bytes": 501132,
+      "sha256": "dade2ddc76c9614c642a3ef117bdac25c57252daa632e39cccb2578861c6ac34"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json",
+      "bytes": 340,
+      "sha256": "1aad927a2e9f4658bac3bbf8713905fbe21919fa5f23911a2b7b91e056309985"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+      "bytes": 81862,
+      "sha256": "e690aa0614b5ac787c9d0fcf18c19cff52169646ba9c75e38ec4b7ea99c859d3"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+      "bytes": 4470,
+      "sha256": "f978d6a5d224b70554cdf47f7ae0844864da523cdb057d33c8a3c10e86e24a71"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+      "bytes": 51128,
+      "sha256": "2b7a52ca558f70e50881266a61e56f953e15b7da7e60667fec287f27e338635b"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+      "bytes": 10571,
+      "sha256": "b572341bb4bb03f76173650c7557058e306e6858a16f7e586f6c0c9ede5a4989"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json",
+      "bytes": 888,
+      "sha256": "644074b7eb6e79315ab2f9f790ced699dbf2172a947b30e2c1ffa9b7945e0482"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-5/cases.jsonl",
+      "bytes": 17867,
+      "sha256": "11028f1bf8ce0c154004765bb9376278d981cd1c4c287896a247ec50edfb04e7"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-16/cases.jsonl",
+      "bytes": 2159,
+      "sha256": "07df02ba4f42fcc6a8b9ea93e69016eab920c4039d2ddc7c576613bb7f2bda60"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/LIVE-A041-queued-terminal-native204-candidate-r1-local-20261016/review/report.original.json",
+      "bytes": 10423,
+      "sha256": "6c851f4cf1f4ad8d5f1b78d67926a90e0aa30efed3158f3f5a525eb36e15a6a0"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/build-products.json",
+      "bytes": 2748,
+      "sha256": "2816848d65dd1b2eafc69ba1c16fd85bf13df74dfda58c817e4f44a0ba6f1f0c"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/build-recovery-summary.json",
+      "bytes": 1185,
+      "sha256": "4ddb13ae8ec22e24a8fe731d24c513f9cf09144f8f363122ce5358c50bb96a45"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/cases.jsonl",
+      "bytes": 53473,
+      "sha256": "5d138dec9539f766908b3aced1dcced3c379059bc27a7ce1413bbbab9fb3bd55"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/commands.json",
+      "bytes": 4531,
+      "sha256": "9e3340497b553ded3564545df1f761f7032870bb2aff54cf39b53aafe572d461"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/github-ci-failures.json",
+      "bytes": 7038,
+      "sha256": "4d79085baacb602d3cd3d5fe416b5f3e1b9a0c6639148e65ba69cb725764ebf6"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/github-ci.json",
+      "bytes": 1469,
+      "sha256": "bd4484665d42f2f35721ed0b4abb69dc00361427a8001dbf6d7ef0c90d526cc5"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/postgres-command.json",
+      "bytes": 3145,
+      "sha256": "37ef8305079ab602bd1598c7ccf19d6a4bd5bc946e85f7da32f3c34907a0063e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/prior-attempts.json",
+      "bytes": 4424,
+      "sha256": "853ac0fa2d424d0bbd9fbaaa8ee0152ff9f2e4a7572defb9b7dbd04191cf26bb"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/README.md",
+      "bytes": 2828,
+      "sha256": "9969045d4fe31d29c690bdb95b9fa5da67dcaac60434034454ec39e4f6311081"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-equivalence.json",
+      "bytes": 1299,
+      "sha256": "9cba72a7a9cbe29ef74173bbe5b70f7571e41776356a19940a242942a93720f0"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/summary.json",
+      "bytes": 1528,
+      "sha256": "d019d4b0b60d72cb4bf8f2d1148dd0aad1eb4d5baec358b35c3ec7b4c9ef975e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/build-products.json",
+      "bytes": 2338,
+      "sha256": "62a4c1e1cb708fd4f9c0b964c01e4608ccd4205e610b653e9add2344b66339fe"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/cases.jsonl",
+      "bytes": 15661,
+      "sha256": "d9d91d233e2cd0af9a151a0890ab139245a6d92885fc870cb4f6a5096956cfc9"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-command.json",
+      "bytes": 1103,
+      "sha256": "7698d84861902acc617f30d6d30d90ae0ebb12cc7adfdfda689c2fbd2adb7140"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/commands.json",
+      "bytes": 2235,
+      "sha256": "2143daea9e1cf98f5d0f34372c93f75db2150fa44d283aba636a98f6e2882a3e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/prior-attempts.json",
+      "bytes": 5306,
+      "sha256": "1a826b426986e75dfebb0950797801c9cc91938a7e9c60955a65beff6db568be"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/README.md",
+      "bytes": 2213,
+      "sha256": "371fb30bd94262433476fcb642684c27f01d96429bade3097c9f4eece69b3ea8"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-equivalence.json",
+      "bytes": 1663,
+      "sha256": "86547392cddc2a58d6ba9f14558fbc93a0c6f4e1bc438708a8829d5442f80e07"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/summary.json",
+      "bytes": 1512,
+      "sha256": "9e6994ba57116bcd68fe9c1c09eca91b2952707c4fe42af63ac864223f581751"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/cases.jsonl",
+      "bytes": 3341540,
+      "sha256": "8c15356d51796a2958e7c3d7f8eb002a6213c9ce331900762266bbcbbc4b11ff"
+    }
+  ],
+  "CI_review": {
+    "state": "BlockedBeforeStart",
+    "actual_remote_CI_pass_claimed": false,
+    "evidence": "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/github-ci-failures.json",
+    "subtask_scope": "Actual native/offline contract checks only; G5 CI and whole MAIN gate remain NotAccepted. No billing or CI requirement waived."
+  },
+  "whole_scope_accepted": false,
+  "failed_and_censored_originals_preserved": true
+}

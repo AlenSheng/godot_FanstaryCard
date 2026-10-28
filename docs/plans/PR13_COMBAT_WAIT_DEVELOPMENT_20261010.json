@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-10",
+  "kind": "bounded_combat_wait_feedback_development",
+  "task_ids": ["PR13-B04.3", "PR13-B10.4", "PR13-B11.1"],
+  "source_base_sha": "a38d76a21107a089a1a5e1999098de6e05c46ec0",
+  "execution_priority": "development_first",
+  "scope": "区分手动目标确认与存活目标自动同步；等待提示和可操作机会与现有出牌权限一致。",
+  "ownership": ["client/state/game_store.gd", "client/data/localization_battle.json", "client/tests/test_combat_wait_state.gd", "client/tests/run_combat_wait_state.gd", "client/tests/run_play_retry.gd"],
+  "compatibility": "仅完善客户端等待反馈；协议、服务器规则、GDD死亡后从左到右选择存活目标、默认数值策略保持原合同。",
+  "profiles_this_stage": ["OFFLINE"],
+  "validation_host": "Tencent cloud native Godot 4.7.2 with network disabled",
+  "before_expected_failed_checks": [
+    "manual_target_debounce_has_specific_reason",
+    "manual_target_inflight_blocks_old_target_play",
+    "death_fallback_sync_keeps_legal_opportunity",
+    "death_fallback_inflight_keeps_legal_opportunity",
+    "unrelated_read_does_not_hide_legal_play"
+  ],
+  "after_required_checks": 15,
+  "regression_requirement": "实际客户端回归入口与目标/预览反例；所有运行保留完整分母、退出码、日志、源文件 hash；关键跳过为未通过。",
+  "runtime_budget_seconds": 300,
+  "container_memory_bytes": 536870912,
+  "container_cpu_cores": 0.5,
+  "cleanup": "只回收本阶段精确容器 ID 且匹配所属标签的测试容器；不创建玩家账号或访问正式业务接口。",
+  "acceptance_limits": "此阶段功能开发与原生组件验证不替代完整 LIVE/RENDER/容量验收；不升级整项状态。",
+  "rollback": "独立阶段提交可回退等待原因分类和两种语言文案，保留修前、修后证据。",
+  "delivery": "本地阶段总结后直接上传 release"
+}

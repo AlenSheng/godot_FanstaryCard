@@ -1,0 +1,74 @@
+{
+  "status": "ReleasePublished_HostRebootVerified",
+  "at": "2026-10-28T00:19:04.438826+08:00",
+  "ui_commit": "81445f5ab2e137000cd94d4692e7f6964ea11a6b",
+  "ui_files": 42,
+  "remote_branch": "origin/release",
+  "remote_ui_push_verified": true,
+  "cloud_checkout_at_reboot": "81445f5ab2e137000cd94d4692e7f6964ea11a6b",
+  "host_reboot": {
+    "boot_id_before": "4eab2634-08f1-4535-96d6-6ad1a54b1b3d",
+    "boot_id_after": "1b19e1b0-8d64-404f-9596-fb484f8417be",
+    "verified": true,
+    "all_eight_prior_containers_restored": true,
+    "postgres_healthy": true,
+    "health": {
+      "http://127.0.0.1:8080/health/live": 200,
+      "http://127.0.0.1:8080/health/ready": 200,
+      "https://www.relicbound.cn/health/live": 200,
+      "https://www.relicbound.cn/health/ready": 200
+    }
+  },
+  "runtime": {
+    "image_rebuilt": false,
+    "oci_revision": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "server_image_id": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "server_source_tree": "0583991bf18ef2d135b09b2d8a0ff91188fc8801",
+    "production_source_equal_before_after": true,
+    "test_source_changes_do_not_require_runtime_image_change": true
+  },
+  "resource_protection": {
+    "available_ram_bytes_after": 2964553728,
+    "disk_after": {
+      "free": 3603636224,
+      "total": 63290032128
+    },
+    "memory_floor_bytes": 500000000,
+    "disk_floor_bytes": 3000000000,
+    "disk_floor_percent": 5
+  },
+  "scope": {
+    "committed_paths_exactly_allowlist": true,
+    "unrelated_status_records_before": 2974,
+    "unrelated_status_records_after": 2974,
+    "unrelated_status_changes": [],
+    "note": "Corrected grouped untracked report-directory handling from the first status-only receipt."
+  },
+  "original_ui_summary_sha256_unchanged": "13f7cc3c9846ebd2205f36ac3ee4d5cf3aa204f15d6981cf065e981867785f9f",
+  "original_evidence_retained": true,
+  "capacity_tests_started": 0,
+  "transport_history": [
+    {
+      "step": "initial preflight",
+      "result": "Marker permissions required a scoped sudo read;first failed read retained."
+    },
+    {
+      "step": "first sync session",
+      "result": "SSH wait timed out after fast-forward;independent inspection verified clean target,free lock and no reboot job;no reboot falsely claimed."
+    },
+    {
+      "step": "reboot-only command",
+      "result": "SSH returned0 with reboot-issued receipt;new boot_id and recovered services verified."
+    }
+  ],
+  "evidence_root": "G:\\PR13Evidence\\ui-release-restart-20261027-r1",
+  "original_receipts": {
+    "publication-scope.original.json": "a18b3011cfcd56e24170a20b72f1c79d00bd74734180eddacebebd9c07922903",
+    "ui-commit.original.json": "270af914d2fbcfd1490e59801ae2b1d99f3a820d19dc38a7dc720ca9fab0db16",
+    "cloud-preflight2.stdout.original.json": "bcc85e7a3c6e810ed44105a45c91f2eb6b910ce2e9cd9810fe9c247bea8e22ea",
+    "cloud-services-before.original.json": "6e958872aa6d69eadc224c45a8bf99317043d78937ac3c33626b41f977579f29",
+    "reboot-only.stdout.original.jsonl": "7f28a6f448746438694041a093b2d6d6d3797adbca23bc47d28682141d22448f",
+    "post-reboot-success.original.json": "7173a3d9ec298f1e3922d20bb2bcc3b70e260713689d8c7dc49b9432dc8d7ff1",
+    "scope-after-push-v2.original.json": "b1fb6e777fc25ad5828ea4752b69cbc46f2ed720f00ef1ec422266dc8124d476"
+  }
+}

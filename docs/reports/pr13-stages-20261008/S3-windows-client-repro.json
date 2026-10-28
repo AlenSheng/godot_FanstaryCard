@@ -1,0 +1,13 @@
+{
+  "stage": "S3",
+  "status": "Failed",
+  "source_sha": "70b0e62",
+  "finding": "Full host now initializes correctly; cleared Godot child environment still lacks Windows SystemRoot, so the real client reports an empty room and database fault injection never reaches settlement",
+  "evidence": {
+    "path": "outputs/pr13-local-20261008/S3/server-after.log",
+    "bytes": 11592,
+    "sha256": "d042eff3776b8cf4b42b45d7797880ef731cfdfac2437eea516cad9f79704ed7"
+  },
+  "full_suite_attempt": "Stopped after capturing the reproduced additional Windows fixture fault; rerun full unfiltered suite after common environment fix",
+  "accepted": false
+}

@@ -1,0 +1,93 @@
+{
+  "ok": true,
+  "case_id": "LOAD-06.4-T03",
+  "profile": "POSTGRES",
+  "actual_native_PG_rows": 10,
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "original_nine_regression_rows": 9,
+  "new_sensitive_boundary_methods": 1,
+  "native_skipped": 0,
+  "all_original_G_members_rehashed": 672,
+  "archive_SHA_and_CRC_rechecked": true,
+  "current_source_members": 328,
+  "implementation_source_sha": "73108e966f5fa2debabf925def1ef80e3f9c0f60",
+  "actual_private_schema_session_and_actual_issued_ticket_verified": true,
+  "both_current_public_inspect_and_manifest_entries_rejected": true,
+  "raw_values_absent_from_all_public_evidence_and_receipts": true,
+  "private_G_contains_generated_ephemeral_test_credentials": true,
+  "production_credentials_used": false,
+  "production_domain_assembly_unchanged": true,
+  "actual": {
+    "roomId": "6e961b62-5b70-4527-a739-acc4d06d621d",
+    "actualConfigVersion": "gdd-0.70-numerical-1",
+    "cards": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "GUA-01",
+      "GUA-02",
+      "GUA-03",
+      "GUA-04",
+      "GUA-05",
+      "GUA-06",
+      "GUA-07"
+    ],
+    "actualOwnedPlayerId": "01a13982-0edb-73cf-a517-d03a9600b6ca",
+    "actualDatabaseSessionLookupBeforeAndAfter": true,
+    "actualIssuedTicketConsumedOnce": true,
+    "generatedEphemeralTestCredentialsOnly": true,
+    "tokenSha256": "0404d517737f763b87d5a4bce3462f9752b0bb6c53fb589ea9b69fe0181faccc",
+    "ticketSha256": "673d3771f84a2e0e812350ed4e592aa27180541ac81c1679417478bab4395e5a",
+    "privateCandidateSessionFileSha256": "6167e35cad95d155584b53f8dfd782889020354493401e4f00b678433c3c4960",
+    "privateCandidateTicketFileSha256": "22dda796ce2702169c5d04efbd74994a9e5b7a96d2ac49f76a3f42203cae2042",
+    "actualPublicReview": {
+      "ok": true,
+      "actual_sensitive_candidates_rejected": [
+        {
+          "path": "actual-session-token.json",
+          "bytes": 55,
+          "sha256": "6167e35cad95d155584b53f8dfd782889020354493401e4f00b678433c3c4960",
+          "actual_rejection_messages": [
+            "Sensitive field in public evidence: token",
+            "Sensitive field in public evidence: token"
+          ],
+          "original_sensitive_candidate_preserved": true
+        },
+        {
+          "path": "actual-realtime-ticket.json",
+          "bytes": 60,
+          "sha256": "22dda796ce2702169c5d04efbd74994a9e5b7a96d2ac49f76a3f42203cae2042",
+          "actual_rejection_messages": [
+            "Sensitive field in public evidence: ticketbody",
+            "Sensitive field in public evidence: ticketbody"
+          ],
+          "original_sensitive_candidate_preserved": true
+        }
+      ],
+      "sanitized_metadata_public_review_passed": true,
+      "raw_values_written_to_public_report": false,
+      "raw_private_candidates_unchanged": true
+    },
+    "sensitiveValuesNeverWrittenToPublicReceipt": true,
+    "snapshotBeforeHash": "0b865627b5ac84a038f019cfd42147e86e25d903d4d2fac3e163fe7db9290d21",
+    "snapshotAfterHash": "0b865627b5ac84a038f019cfd42147e86e25d903d4d2fac3e163fe7db9290d21",
+    "databaseBeforeHash": "fe5b29eada553ba53b9640e8ac82e5c5b8a270eeae79176cef11a10a1553284a",
+    "databaseAfterHash": "fe5b29eada553ba53b9640e8ac82e5c5b8a270eeae79176cef11a10a1553284a",
+    "productionSourceModified": false,
+    "productionCredentialsUsed": false
+  },
+  "all_other_canonical_profiles_retained": true,
+  "MAIN_accepted": false
+}

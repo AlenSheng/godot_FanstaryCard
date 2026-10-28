@@ -1,0 +1,115 @@
+{
+  "kind": "R22 retained O6 candidate data reviewed; no new gameplay or simulation",
+  "at_ns": 1792940488993522800,
+  "original_frozen_source": "33b8a3202260268e1c908f42b0a78f07f7a2a3f8",
+  "Domain_numerics_config_GDD_source_currently_unchanged": true,
+  "official_CI_artifact_SHA256": "44f2e521a88932df33b1e63c8487d2b22cfa04085a7df927e2b5e87d7a89cacc",
+  "original_files_reverified": 67,
+  "original_encounter_rows_reviewed": 2592,
+  "new_encounters": 0,
+  "new_live_worlds": 0,
+  "new_Godot_processes": 0,
+  "all_originals_unchanged": true,
+  "input_rows_per_original_run": 216,
+  "rows_in_three_original_runs_per_factor": 648,
+  "rows_are_not_2592_independent_seeds_or_new_capacity_matches": true,
+  "factors": [
+    {
+      "factor": "outer-o6-hp095",
+      "O6_paired_encounters": 81,
+      "independent_seed_clusters": 9,
+      "baseline_victories": 81,
+      "candidate_victories": 81,
+      "observed_victory_rate_difference": 0,
+      "exploratory_victory_signflip_Holm_adjusted_p": 1.0,
+      "mean_fractional_TTK_improvement": 0.07973589731368061,
+      "descriptive_seed_cluster_bootstrap95": [
+        0.053811902967025364,
+        0.11423140433367128
+      ],
+      "strata_empirical_P95_improvement_at_least15percent": 0,
+      "total_hero_strategy_strata": 9,
+      "population_tail_precision_guaranteed": false,
+      "benefit_acceptance": "Inconclusive",
+      "candidate_activation": false
+    },
+    {
+      "factor": "outer-o6-hp090",
+      "O6_paired_encounters": 81,
+      "independent_seed_clusters": 9,
+      "baseline_victories": 81,
+      "candidate_victories": 81,
+      "observed_victory_rate_difference": 0,
+      "exploratory_victory_signflip_Holm_adjusted_p": 1.0,
+      "mean_fractional_TTK_improvement": 0.12491692239230422,
+      "descriptive_seed_cluster_bootstrap95": [
+        0.10017250280202437,
+        0.15905753299531047
+      ],
+      "strata_empirical_P95_improvement_at_least15percent": 1,
+      "total_hero_strategy_strata": 9,
+      "population_tail_precision_guaranteed": false,
+      "benefit_acceptance": "Inconclusive",
+      "candidate_activation": false
+    },
+    {
+      "factor": "outer-o6-windup025",
+      "O6_paired_encounters": 81,
+      "independent_seed_clusters": 9,
+      "baseline_victories": 81,
+      "candidate_victories": 81,
+      "observed_victory_rate_difference": 0,
+      "exploratory_victory_signflip_Holm_adjusted_p": 1.0,
+      "mean_fractional_TTK_improvement": 0.0,
+      "descriptive_seed_cluster_bootstrap95": [
+        0.0,
+        0.0
+      ],
+      "strata_empirical_P95_improvement_at_least15percent": 0,
+      "total_hero_strategy_strata": 9,
+      "population_tail_precision_guaranteed": false,
+      "benefit_acceptance": "Inconclusive",
+      "candidate_activation": false
+    },
+    {
+      "factor": "outer-o6-windup050",
+      "O6_paired_encounters": 81,
+      "independent_seed_clusters": 9,
+      "baseline_victories": 81,
+      "candidate_victories": 81,
+      "observed_victory_rate_difference": 0,
+      "exploratory_victory_signflip_Holm_adjusted_p": 1.0,
+      "mean_fractional_TTK_improvement": 0.0,
+      "descriptive_seed_cluster_bootstrap95": [
+        0.0,
+        0.0
+      ],
+      "strata_empirical_P95_improvement_at_least15percent": 0,
+      "total_hero_strategy_strata": 9,
+      "population_tail_precision_guaranteed": false,
+      "benefit_acceptance": "Inconclusive",
+      "candidate_activation": false
+    }
+  ],
+  "interpretation": [
+    "All81pairedO6 starts in each arm were victories. Observed winrate is at a ceiling, not evidence of equivalence or production balance.",
+    "The5percent and10percent HP reductions show descriptive mean time improvements of7.97percent and12.49percent. This is not the original15percent tail-improvement acceptance endpoint.",
+    "First-windup250ms and500ms adjustments show zero time-to-victory difference in this cohort; this does not exclude effects on incoming damage or other scenarios.",
+    "Same9seeds are shared across heroes,strategies and factors;81pairs or2592rows are not independent largeN.",
+    "Observed all-startedP95 is identifiable here because all starts won, but per-stratum9seed nearest-rankP95 is the sample maximum, not a precise population tail estimate.",
+    "The timing supplement was declared after observing the all-victory ceiling and remains explicitly retrospective and exploratory."
+  ],
+  "remaining_evidence_gaps": [
+    "Original main sample floor not met under the reduced budget",
+    "Exploratory endpoints and family were declared after these data existed; not confirmatory",
+    "Direct O6 encounter comparisons do not observe legal routes, prepared Boss difficulty, economy drift or class passive full matrices",
+    "A no-change implementation decision does not prove statistical equivalence"
+  ],
+  "sample_or_strength_or_economy_thresholds_relaxed": false,
+  "candidate_benefit_acceptance": "Inconclusive",
+  "production_defaults_retained": true,
+  "human_experience_excluded": true,
+  "capacity50_or100_accepted": false,
+  "whole_project_accepted": false,
+  "detailed_private_evidence": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\candidate-evidence-review-20261025-r22"
+}

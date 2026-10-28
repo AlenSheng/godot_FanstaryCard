@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="d7a28a39-80ba-4b1d-a846-1990877c1642" name="@c2d7a4ca306e 2026-09-30 18:13:16" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T18:13:16.7053572+00:00" queuing="2026-09-30T18:13:16.7053573+00:00" start="2026-09-30T18:13:10.9947116+00:00" finish="2026-09-30T18:13:25.2056904+00:00" />
+  <TestSettings name="default" id="cf625fa3-7c1f-4113-a8af-34d8a42ca549">
+    <Deployment runDeploymentRoot="_c2d7a4ca306e_2026-09-30_18_13_16" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d7b6e897-0d22-4b02-9793-9b7f11a1f35b" testId="7cd5ac43-5f11-47e0-c4b5-92363f89dd49" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" computerName="c2d7a4ca306e" duration="00:00:03.6993746" startTime="2026-09-30T18:13:12.9489690+00:00" endTime="2026-09-30T18:13:16.6616626+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7b6e897-0d22-4b02-9793-9b7f11a1f35b">
+      <Output>
+        <StdOut>PB ready begin: POST /api/v1/auth/local, players=0
+PB ready headers: POST /api/v1/auth/local, elapsedMs=346.00, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=350.34, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=1
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=205.22, status=200, length=36083
+PB ready body: GET /api/v1/bootstrap, elapsedMs=205.53, bytes=36083
+PB ready begin: GET /api/v1/loadouts/Priest, players=1
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=11.27, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=11.40, bytes=20
+PB ready begin: POST /api/v1/preparations, players=1
+PB ready headers: POST /api/v1/preparations, elapsedMs=117.69, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=117.98, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=1
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=18.62, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=18.89, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=1
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=28.25, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=28.43, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=1
+PB ready headers: POST /api/v1/auth/local, elapsedMs=94.79, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=94.96, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=2
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=32.56, status=200, length=36083
+PB ready body: GET /api/v1/bootstrap, elapsedMs=32.76, bytes=36083
+PB ready begin: GET /api/v1/loadouts/Priest, players=2
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=2.83, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=2.92, bytes=20
+PB ready begin: POST /api/v1/preparations, players=2
+PB ready headers: POST /api/v1/preparations, elapsedMs=16.47, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=16.61, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=2
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=3.16, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=3.43, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=2
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=11.47, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=11.75, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=2
+PB ready headers: POST /api/v1/auth/local, elapsedMs=98.04, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=98.15, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=3
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=19.41, status=200, length=36083
+PB ready body: GET /api/v1/bootstrap, elapsedMs=19.87, bytes=36083
+PB ready begin: GET /api/v1/loadouts/Priest, players=3
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=3.13, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=3.21, bytes=20
+PB ready begin: POST /api/v1/preparations, players=3
+PB ready headers: POST /api/v1/preparations, elapsedMs=33.88, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=34.01, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=3
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=5.22, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=5.29, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=3
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=9.40, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=9.69, bytes=119
+PB ready begin: POST /api/v1/auth/local, players=3
+PB ready headers: POST /api/v1/auth/local, elapsedMs=104.51, status=200, length=201
+PB ready body: POST /api/v1/auth/local, elapsedMs=104.61, bytes=201
+PB ready begin: GET /api/v1/bootstrap, players=4
+PB ready headers: GET /api/v1/bootstrap, elapsedMs=23.25, status=200, length=36083
+PB ready body: GET /api/v1/bootstrap, elapsedMs=23.77, bytes=36083
+PB ready begin: GET /api/v1/loadouts/Priest, players=4
+PB ready headers: GET /api/v1/loadouts/Priest, elapsedMs=4.37, status=200, length=20
+PB ready body: GET /api/v1/loadouts/Priest, elapsedMs=4.61, bytes=20
+PB ready begin: POST /api/v1/preparations, players=4
+PB ready headers: POST /api/v1/preparations, elapsedMs=6.96, status=201, length=322
+PB ready body: POST /api/v1/preparations, elapsedMs=7.19, bytes=322
+PB ready begin: POST /api/v1/realtime/ticket, players=4
+PB ready headers: POST /api/v1/realtime/ticket, elapsedMs=2.27, status=200, length=80
+PB ready body: POST /api/v1/realtime/ticket, elapsedMs=2.42, bytes=80
+PB ready begin: POST /api/v1/matches/enqueue, players=4
+PB ready headers: POST /api/v1/matches/enqueue, elapsedMs=4.80, status=202, length=119
+PB ready body: POST /api/v1/matches/enqueue, elapsedMs=4.91, bytes=119</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c1a19a26-2766-457a-ac82-c30115450e1f" testId="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" computerName="c2d7a4ca306e" duration="00:00:08.4188246" startTime="2026-09-30T18:13:16.6741602+00:00" endTime="2026-09-30T18:13:25.0934214+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c1a19a26-2766-457a-ac82-c30115450e1f" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8">
+      <Execution id="c1a19a26-2766-457a-ac82-c30115450e1f" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="7cd5ac43-5f11-47e0-c4b5-92363f89dd49">
+      <Execution id="d7b6e897-0d22-4b02-9793-9b7f11a1f35b" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_default_protobuf_preparation_ready_and_room_entry" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7cd5ac43-5f11-47e0-c4b5-92363f89dd49" executionId="d7b6e897-0d22-4b02-9793-9b7f11a1f35b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8" executionId="c1a19a26-2766-457a-ac82-c30115450e1f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.31]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.84]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.14]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:13.40]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

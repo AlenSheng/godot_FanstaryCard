@@ -1,0 +1,66 @@
+{
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "profile_hash": "4b0339400f4e581b7e8bc44b3d92d4fa866dc442a361af3d95f665e65f25bd71",
+  "algorithm_version": "f812-coordinator-schema5/runtime-evidence-62d05cb4270174aa/receipt-harness-37303db722961352",
+  "canonical_cases": 12,
+  "passed_cases": 11,
+  "partial_cases": 1,
+  "assertions_passed": 12,
+  "tasks": [
+    {
+      "task_id": "LOAD-02.1",
+      "status": "ReadyForIndependentAcceptance",
+      "canonical_cases": 3,
+      "passed_cases": 3,
+      "partial_cases": 0,
+      "remaining_blockers": []
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "status": "Partial",
+      "canonical_cases": 3,
+      "passed_cases": 2,
+      "partial_cases": 1,
+      "remaining_blockers": [
+        "Real Gateway timeout before STOP and preserved errors are proven; a real PG gameplay timeout followed by STOP, with authoritative per-cycle failed/cancelled/incomplete terminal partition, is not present. The microfixture has no PG account. Existing production runner reports overall outcome cancelled while preserving errors; do not infer a mutually exclusive failed cycle from it."
+      ]
+    },
+    {
+      "task_id": "LOAD-02.3",
+      "status": "ReadyForIndependentAcceptance",
+      "canonical_cases": 3,
+      "passed_cases": 3,
+      "partial_cases": 0,
+      "remaining_blockers": []
+    },
+    {
+      "task_id": "LOAD-02.4",
+      "status": "ReadyForIndependentAcceptance",
+      "canonical_cases": 3,
+      "passed_cases": 3,
+      "partial_cases": 0,
+      "remaining_blockers": []
+    }
+  ],
+  "MAIN_S6": "Pending",
+  "critical_skips": 0,
+  "production_unchanged": true,
+  "C_PY": {
+    "tests": 42,
+    "exit": 0,
+    "critical_skip": 0
+  },
+  "C_SERVER_REUSED": {
+    "tests": 291,
+    "passed": 291,
+    "critical_skip": 0
+  },
+  "C_DOMAIN_REUSED": {
+    "tests": 317,
+    "passed": 317,
+    "critical_skip": 0
+  },
+  "fullProgram_DLL": "/workspace/pr13-takeover/b02-acceptance-f812/source/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+  "fullProgram_sha256": "99a0c2c5e16ba3f2f60eba0f8736640a9bd77369a3dabbeb61dfbcfc16c3f9e0",
+  "no_live_CI_upload_push": true
+}

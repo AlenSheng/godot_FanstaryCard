@@ -1,0 +1,183 @@
+{
+  "ok": true,
+  "case_id": "PR13-A09.1-T03",
+  "actual": {
+    "actual_successful_business_ACK_original": {
+      "actual_business_ack_returned_true": true,
+      "at_unix_ms": 1792623300850,
+      "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+      "completed_cycle_not_claimed": true,
+      "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "event_seq": 1,
+      "event_type": "settlement.acknowledged",
+      "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "process_epoch": "245-11488",
+      "run_id": "owned-a05-runtime"
+    },
+    "actual_PG_matching_ACK_verified": true,
+    "missing_run_id_copy": {
+      "actual_business_ack_returned_true": true,
+      "at_unix_ms": 1792623300850,
+      "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+      "completed_cycle_not_claimed": true,
+      "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "event_seq": 1,
+      "event_type": "settlement.acknowledged",
+      "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "process_epoch": "245-11488",
+      "agent_id": "declared-agent-sentinel-must-not-substitute-run"
+    },
+    "positive_derivation": {
+      "running": {
+        "acknowledgements": 1,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {
+          "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1
+        },
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "drain": {
+        "acknowledgements": 0,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {},
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "final": {
+        "acknowledgements": 1,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {
+          "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1
+        },
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "completion_classification_algorithm": "owned-cycle-origins-v1",
+      "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+      "zero_cycle_clients": null,
+      "zero_cycle_reason": "requires_launch_manifest",
+      "evidence_errors": [],
+      "stop_ms": 1792623305850,
+      "final_ms": 1792623305850
+    },
+    "missing_derivation": {
+      "running": {
+        "acknowledgements": 0,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {},
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "drain": {
+        "acknowledgements": 0,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {},
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "final": {
+        "acknowledgements": 0,
+        "completed_cycles": 0,
+        "cycles_by_client": {},
+        "acknowledgements_by_client": {},
+        "distribution": {},
+        "fallback_cycles": 0,
+        "normal_completed_cycles": 0,
+        "fallback_completed_cycles": 0,
+        "scenario_completed_cycles": 0,
+        "drain_only_completed_cycles": 0,
+        "unclassified_completed_cycles": 0,
+        "normal_cycles_by_client": {},
+        "fallback_cycles_by_client": {},
+        "scenario_cycles_by_client": {},
+        "drain_only_cycles_by_client": {},
+        "unclassified_cycles_by_client": {}
+      },
+      "completion_classification_algorithm": "owned-cycle-origins-v1",
+      "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+      "zero_cycle_clients": null,
+      "zero_cycle_reason": "requires_launch_manifest",
+      "evidence_errors": [
+        "missing_context"
+      ],
+      "stop_ms": 1792623305850,
+      "final_ms": 1792623305850
+    },
+    "agent_id_not_substituted": true,
+    "actual_completed_cycle_not_invented": true
+  },
+  "actual_host_liveness": {
+    "PID": 132,
+    "start_ticks": "5367786",
+    "expected_argument": "/runtime/FantasyCard.Server.dll"
+  },
+  "actual_Godot_liveness": {
+    "PID": 245,
+    "start_ticks": "5369012",
+    "expected_argument": "res://tests/A091_live_source_attribution.gd"
+  },
+  "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+  "actual_SQL_before": "SQL-T03-before.original.json",
+  "actual_SQL_after": "SQL-T03-after.original.json",
+  "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+  "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+  "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+  "source_boundary_not_runtime_acceptance": true
+}

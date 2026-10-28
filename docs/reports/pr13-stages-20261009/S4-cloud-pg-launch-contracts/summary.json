@@ -1,0 +1,247 @@
+{
+  "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+  "execution_host": "Tencent cloud",
+  "canonical": {
+    "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+    "executed": 4,
+    "passed": 4,
+    "profiles_executed": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "accepted": false,
+    "scope": "Actual native three-point PostgreSQL launch fault matrix; full Program/player LIVE and EXPERIMENT gates remain separate"
+  },
+  "report": {
+    "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+    "execution_host": "Tencent cloud",
+    "ok": true,
+    "scope": "Owned native PG launch fault class and receipt exporter, not real player LIVE",
+    "started_at": 1791536635.1356878,
+    "limits": {
+      "cpus": 0.5,
+      "memory_mib": 1024,
+      "postgres_memory_mib": 192,
+      "cpu_redline_percent": 85,
+      "memory_available_redline_percent": 15,
+      "disk_available_redline_percent": 15,
+      "overall_seconds": 1080
+    },
+    "container_ids": {
+      "pr13-tencent-pg-launch-retry1-pg": "67e17947ec0bb3edccb5eed5e7a31c1f3a0f7737b98e58bc7d477332de717879",
+      "pr13-tencent-pg-launch-retry1": "99cd3340001e4734ce356e19307af236eb5ff7d0b899ff278302c0dbdbad3aab"
+    },
+    "owned_database_name": "pr13_pg_launch_aefa105e7cda9fdc4203ec818694c19a",
+    "exit_code": 0,
+    "native": {
+      "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+      "ok": true,
+      "checks": [
+        {
+          "name": "export-guards",
+          "exit_code": 0,
+          "elapsed_seconds": 0.24308671290054917
+        },
+        {
+          "name": "native-pg",
+          "exit_code": 0,
+          "elapsed_seconds": 170.6992452989798
+        }
+      ],
+      "state": "Completed",
+      "counters": {
+        "total": "8",
+        "executed": "8",
+        "passed": "8",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "named_outcomes": [
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"snapshot\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"registry\")",
+          "outcome": "Passed"
+        },
+        {
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+          "outcome": "Passed"
+        }
+      ],
+      "trx_sha256": "935c75ef53a15d13f8b8ae0eb1bf4fbca521727777ef1eb4a967dc16a8ea6cfb",
+      "input_bytes_unchanged": true,
+      "source_dirty": ""
+    },
+    "remaining_fixture_schemas": 0,
+    "cleanup": {
+      "pr13-tencent-pg-launch-retry1": true,
+      "pr13-tencent-pg-launch-retry1-pg": true
+    },
+    "owned_databases_removed": true,
+    "elapsed_seconds": 186.74514436721802
+  },
+  "original_setup_failure": {
+    "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+    "execution_host": "Tencent cloud",
+    "ok": false,
+    "scope": "Owned native PG launch fault class and receipt exporter, not real player LIVE",
+    "started_at": 1791535908.5153363,
+    "limits": {
+      "cpus": 0.5,
+      "memory_mib": 1024,
+      "postgres_memory_mib": 192,
+      "cpu_redline_percent": 85,
+      "memory_available_redline_percent": 15,
+      "disk_available_redline_percent": 15,
+      "overall_seconds": 1080
+    },
+    "container_ids": {
+      "pr13-tencent-pg-launch-pg": "71c510ad434ca17723542a07823b7171174706a90f19b1304cf33d4ded004951",
+      "pr13-tencent-pg-launch": "ce9fc52ed4e968ad6aec70acd76819b01b84399e0ff3dfbfe928f022a8ece309"
+    },
+    "owned_database_name": "pr13_pg_launch_f0c237ac45b06ee74e2f58b50e7935eb",
+    "exit_code": 1,
+    "remaining_fixture_schemas": 0,
+    "cleanup": {
+      "pr13-tencent-pg-launch": true,
+      "pr13-tencent-pg-launch-pg": true
+    },
+    "owned_databases_removed": true,
+    "elapsed_seconds": 16.809061765670776
+  },
+  "checkout_repair": {
+    "source_sha": "21684e77c00e679a170158b0f4a9eba098cc7f37",
+    "exact_git_blobs_restored": {
+      "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs": {
+        "bytes": 31788,
+        "sha256": "23836e9e8c5b8d8f6ce3672da3534b51e1581aa3769f0495c63b03ac2675b31f",
+        "git_blob": "bb593d3c1a6e8656ea373e44c661f13db59f1c59"
+      },
+      "tools/pr13_pg_launch_cases.py": {
+        "bytes": 5600,
+        "sha256": "ea396e69c8873721d7b031fed7754ca99c3134ecff83ca2aeaaa81f6df1cabad",
+        "git_blob": "82265b58451f97476a389586a89b3a0896ff7655"
+      },
+      "tools/tests/test_pr13_pg_launch_cases.py": {
+        "bytes": 4497,
+        "sha256": "981148ca4f75ae1cc6912c2af320a42c280da45893fc406ebaf929d27f1eb1bf",
+        "git_blob": "cdbf169fc1c249cdf291474fa1025f286a88c930"
+      }
+    },
+    "placeholder_inputs_used": false
+  },
+  "assembly_hashes": {
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server/release/FantasyCard.Contracts.dll": "347917a1b3518656cc2b063349fdcc043f512fa5001755fc0ef800340163c7a2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server/release/FantasyCard.Domain.dll": "c859aaf7b4e439299bea0b5d8cb69e3425ee8ef5797232102ebc9dacd775d6e2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server/release/FantasyCard.Server.dll": "0fa5c207cf17148ab3d933b8f80d3f637c7169012d7da15bb3ec816dd7a53e5e",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Domain/release/FantasyCard.Domain.dll": "c859aaf7b4e439299bea0b5d8cb69e3425ee8ef5797232102ebc9dacd775d6e2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Contracts/release/FantasyCard.Contracts.dll": "347917a1b3518656cc2b063349fdcc043f512fa5001755fc0ef800340163c7a2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.Tests.dll": "26d7c36a35c8f175b44dcdd7cad7c632a46c6dd2a8a6b74f532a75fc1e1104eb",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server.Tests/release/FantasyCard.Contracts.dll": "347917a1b3518656cc2b063349fdcc043f512fa5001755fc0ef800340163c7a2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server.Tests/release/FantasyCard.Domain.dll": "c859aaf7b4e439299bea0b5d8cb69e3425ee8ef5797232102ebc9dacd775d6e2",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server.Tests/release/FantasyCard.ConfigExporter.dll": "81eeb64031c7bfcf6d628f43c2adbdf65958823de2849d4f0650c589e91c0fe5",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.Server.Tests/release/FantasyCard.Server.dll": "0fa5c207cf17148ab3d933b8f80d3f637c7169012d7da15bb3ec816dd7a53e5e",
+    "server/.artifacts/pr13-pg-launch/bin/FantasyCard.ConfigExporter/release/FantasyCard.ConfigExporter.dll": "81eeb64031c7bfcf6d628f43c2adbdf65958823de2849d4f0650c589e91c0fe5"
+  },
+  "private_archive_sha256": "fb4769f85bd92b36ff40853795a441e6dcefc09adb294cc98f877c9377912634",
+  "private_archive_bytes": 98003,
+  "candidate_activation": false,
+  "whole_scope_accepted": false,
+  "exporter_guards_passed": 4,
+  "raw_files": {
+    "result.json": {
+      "bytes": 2540,
+      "sha256": "de3b272aa39028e9e7e3ab24a6ce8ba6b8065c3843d3b85d294bee42675e8e14"
+    },
+    "native-pg.private.log": {
+      "bytes": 1549,
+      "sha256": "cd5fb50c71509b5e0c5bcfdceab8801447a8cce981d7cbc137eb89558d3680cb"
+    },
+    "export-guards.private.log": {
+      "bytes": 102,
+      "sha256": "9d654695c0a90577e252109954dd749137ace81d33f39cf1a31990e7f48cf31d"
+    },
+    "preregistration.json": {
+      "bytes": 365306,
+      "sha256": "2113f898f0f2bdc15007d87b7698b68a4d13962d9960597348ac3c7af0adc958"
+    },
+    "trx/launch.trx": {
+      "bytes": 13918,
+      "sha256": "935c75ef53a15d13f8b8ae0eb1bf4fbca521727777ef1eb4a967dc16a8ea6cfb"
+    },
+    "native-receipts/launch-receipts.jsonl": {
+      "bytes": 1226,
+      "sha256": "f85cba09ccc05eadd86d53e19d5303059a6fd9ae06b0ef3edda5ab7943b0093a"
+    },
+    "canonical/report.json": {
+      "bytes": 310,
+      "sha256": "3504cf2034dda4d17234af9d1be28567bdf07549810a367f4c0e1a99e91e71c7"
+    },
+    "canonical/artifact-index.json": {
+      "bytes": 661,
+      "sha256": "32b39fca0cec042f01c1d112638ac593a59951ea1087fc907618ed051f49b4c3"
+    },
+    "canonical/manifest.json": {
+      "bytes": 464,
+      "sha256": "e6df115d8decf63991724905247a57a2ea4359abcc1fcf36fb1284d9a00784a4"
+    },
+    "canonical/cases.jsonl": {
+      "bytes": 3736,
+      "sha256": "28aa202a1fbeea905a2dd92e95701ab461015f5d72a56ef7ce3cd712040365b4"
+    },
+    "cloud/pg-launch-retry1-complete.json": {
+      "bytes": 3724,
+      "sha256": "a2538b3ae99ff3cebf08c487d44fde4452f5c488f4e88e4275785dd34aedccf0"
+    },
+    "cloud/pg-launch-complete.json": {
+      "bytes": 1002,
+      "sha256": "0271e25b123931fd9564007b1e20f87ea22fe190ab57480d48fabcc5a67ab955"
+    },
+    "cloud/pg-launch-native.private.log": {
+      "bytes": 987,
+      "sha256": "c07dcfa64df5463459e2a2760eece16e2fbe9dafade253161c427ba1eb411376"
+    },
+    "cloud/pg-launch-checkout-repair.json": {
+      "bytes": 837,
+      "sha256": "43a7600a7e7cdaf1a01809ef9d261ae8fadffe5b90248eaf41fb55d1434136e3"
+    },
+    "cloud/pg-launch-retry1-resources.jsonl": {
+      "bytes": 2765,
+      "sha256": "c444f71d3fccbb2ef2bb3681775963086981ce86a7935390a730a4eff5f600ce"
+    }
+  },
+  "remaining": "LIVE layer of PR13-A04.3, EXPERIMENT/full recovery layer of LOAD-09.2, other explicit task cases, Guardian natural cycles, rendering, capacity and final MAIN audit remain separate"
+}

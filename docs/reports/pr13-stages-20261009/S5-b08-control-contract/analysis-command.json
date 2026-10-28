@@ -1,0 +1,33 @@
+{
+  "container_id": "926ccbc56d0e23d990dd960f7c4274c52f708d3515da9726be631cec6b052063",
+  "command": [
+    "create",
+    "--name",
+    "pr13-control-contract-analysis",
+    "--label",
+    "codex.owner=pr13-control-contract-20261010",
+    "--memory",
+    "650m",
+    "--cpus",
+    "1",
+    "--user",
+    "1000:1000",
+    "--network",
+    "none",
+    "-v",
+    "/home/ubuntu/pr13-acceptance-20261009/evidence/control-contract-matrix:/analysis",
+    "-v",
+    "/dev/shm/pr13-control-contract-90713f2f-20261010:/raw:ro",
+    "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+    "python3",
+    "/analysis/pr13_control_contract.py",
+    "--input",
+    "/raw/300001",
+    "--input",
+    "/raw/301001",
+    "--input",
+    "/raw/302001",
+    "--output",
+    "/analysis/report.json"
+  ]
+}

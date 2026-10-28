@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="94f1e44c-bace-4407-a60f-d63ec3d90ded" name="@c2d7a4ca306e 2026-09-30 18:13:00" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T18:13:00.0346979+00:00" queuing="2026-09-30T18:13:00.0346979+00:00" start="2026-09-30T18:12:58.4250071+00:00" finish="2026-09-30T18:13:00.0413046+00:00" />
+  <TestSettings name="default" id="52959e4b-be71-45e2-b11b-0b4f78bbc9b0">
+    <Deployment runDeploymentRoot="_c2d7a4ca306e_2026-09-30_18_13_00" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="3b2e699e-3bd7-452a-848b-e0071be73e9a" testId="7cd5ac43-5f11-47e0-c4b5-92363f89dd49" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" computerName="c2d7a4ca306e" duration="00:00:00.0010000" startTime="2026-09-30T18:12:59.8741422+00:00" endTime="2026-09-30T18:12:59.8781745+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b2e699e-3bd7-452a-848b-e0071be73e9a">
+      <Output>
+        <ErrorInfo>
+          <Message>Set isolated PostgreSQL database.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e49fdded-0ac2-4e7b-8ec6-fd647f0e033d" testId="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" computerName="c2d7a4ca306e" duration="00:00:00.0010000" startTime="2026-09-30T18:12:59.8850703+00:00" endTime="2026-09-30T18:12:59.8852473+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e49fdded-0ac2-4e7b-8ec6-fd647f0e033d">
+      <Output>
+        <ErrorInfo>
+          <Message>Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8">
+      <Execution id="e49fdded-0ac2-4e7b-8ec6-fd647f0e033d" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_process_pvp_relic_replay_and_extraction_survive_forced_restart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="7cd5ac43-5f11-47e0-c4b5-92363f89dd49">
+      <Execution id="3b2e699e-3bd7-452a-848b-e0071be73e9a" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="Real_default_protobuf_preparation_ready_and_room_entry" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7cd5ac43-5f11-47e0-c4b5-92363f89dd49" executionId="3b2e699e-3bd7-452a-848b-e0071be73e9a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1cc62f1d-8b87-e7d7-98f3-e400976ddcb8" executionId="e49fdded-0ac2-4e7b-8ec6-fd647f0e033d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="0" passed="0" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.22]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.62]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:00.86]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:00.96]       Set isolated PostgreSQL database.
+[xUnit.net 00:00:00.97]       Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.
+[xUnit.net 00:00:00.98]   Finished:    FantasyCard.Server.Tests
+Test 'FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry' was skipped in the test run.
+Test 'FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart' was skipped in the test run.
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="c2d7a4ca306e" outcome="Warning" timestamp="2026-09-30T18:12:59.8830352+00:00">
+        <Text>[xUnit.net 00:00:00.96]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry [SKIP]</Text>
+      </RunInfo>
+      <RunInfo computerName="c2d7a4ca306e" outcome="Warning" timestamp="2026-09-30T18:12:59.8944123+00:00">
+        <Text>[xUnit.net 00:00:00.97]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

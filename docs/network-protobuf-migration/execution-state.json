@@ -1,0 +1,217 @@
+{
+  "repository": "AlenSheng/godot_FanstaryCard",
+  "reviewed_commit": "80148675dfbb974a4b0bdc79a9234c67a75bba49",
+  "prepared_on": "2026-09-28",
+  "status": "local_validation_complete_external_gates_remaining",
+  "agents": [
+    {
+      "role": "fc_protocol",
+      "task": "A",
+      "status": "contract_frozen",
+      "agent_id": "/root/fc_protocol",
+      "evidence": [
+        "protocol-report.md",
+        "protocol-compatibility.md",
+        "Contracts build PASS 0 warnings/errors",
+        "21 protocol assertions PASS; 8 vectors; generator check PASS",
+        "Mapper cache:22 protocol assertions +10 boundary tests PASS"
+      ],
+      "started_at": "2026-09-28T03:23:14.3030713Z"
+    },
+    {
+      "role": "fc_server_api",
+      "task": "B",
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_server_api",
+      "evidence": [
+        "server-api-report.md",
+        "11 HTTP boundary/database tests PASS",
+        "Mail budget preflight: three PostgreSQL overflow cases reject before grants"
+      ],
+      "started_at": "2026-09-28T03:34:16.4196244Z"
+    },
+    {
+      "role": "fc_client",
+      "task": "C",
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_client",
+      "evidence": [
+        "client-report.md",
+        "Godot codec103 + transport18 PASS",
+        "Real Godot-.NET-PostgreSQL:20checks PASS, including ticket WS resume and replacement",
+        "Final codec103+transport19+real-server20 PASS; large decode runs off main thread"
+      ],
+      "started_at": "2026-09-28T03:34:16.4393624Z"
+    },
+    {
+      "role": "fc_realtime",
+      "task": "D",
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_realtime",
+      "evidence": [
+        "realtime-report.md",
+        "60 passed /0failed /0skipped; malformed-frame flood limited before decoding; real domain snapshot5313bytes"
+      ],
+      "started_at": "2026-09-28T03:35:23.0341931Z"
+    },
+    {
+      "role": "fc_perimeter",
+      "task": "E",
+      "status": "implementation_complete",
+      "agent_id": "/root/fc_perimeter",
+      "evidence": [
+        "perimeter-report.md",
+        "20 Admin/Deploy tests PASS;14 real local proxy checks PASS"
+      ],
+      "started_at": "2026-09-28T03:45:08.674055Z"
+    },
+    {
+      "role": "fc_qa",
+      "task": "F",
+      "status": "validation_complete_with_existing_failures",
+      "agent_id": "/root/fc_qa",
+      "evidence": [
+        "qa-baseline.md",
+        "DB baseline Domain207pass1fail; Server205pass2fail;0skip; original HEAD isolated",
+        "qa-report.md",
+        "Final solution:439pass3fail0skip;failures match baseline",
+        "Final targeted business1pass; archived baseline resale23505 defect confirmed"
+      ],
+      "started_at": "2026-09-28T03:23:14.3109213Z"
+    }
+  ],
+  "project_build": "PASS strict Release solution build/publish/Obfuscar and full Godot import",
+  "project_tests": "Ordinary466/466 and protected466/466,0skip; actual Godot20/20; protected TLS21/21 including200/200 concurrent Bootstrap",
+  "local_worktree_verified": true,
+  "execution": {
+    "worktree": "F:\\GitHubFiles\\godot_FanstaryCard-protobuf",
+    "branch": "codex/protobuf-migration-20260928-local",
+    "head": "6fe4ae404915d8b5140fa9b9da45a546992278d6",
+    "original_worktree": "F:\\GitHubFiles\\godot_FanstaryCard",
+    "original_branch": "release",
+    "source_saved_commit": "e3fed8e",
+    "source_push": "origin/release succeeded",
+    "uncommitted_generated_outputs": "Preserved in original worktree; not pushed",
+    "missing_skill": ".agents/skills/server_create/SKILL.md",
+    "runtime_agent_tool": "collaboration.spawn_agent",
+    "id_format": "Tool returns canonical task name as agent ID; no UUID/thread ID exposed",
+    "max_runtime_slots_including_parent": 4,
+    "effective_max_parallel_subagents": 3,
+    "user_authorization": "Existing local source push authorized; migration push/deploy/merge remains prohibited",
+    "head_meaning": "HEAD before final QA/evidence commit; deliverable records final HEAD"
+  },
+  "toolchain": {
+    "godot": "4.7.2",
+    "postgres": "18.6 isolated loopback 127.0.0.1:54329",
+    "production_access": false,
+    "sdk": "10.0.400 task-local"
+  },
+  "remaining": [
+    "Live Steam environment unavailable",
+    "Docker/Podman/WSL unavailable; production TLS/CDN/cloud ACL not verified"
+  ],
+  "remediation": {
+    "base_head": "411ce667568649dadb0cdff884fc9caf53c71025",
+    "user_request": "Fix remaining issues and optimizations; strict QA",
+    "agents": [
+      "/root/fc_server_api",
+      "/root/fc_realtime",
+      "/root/fc_protocol",
+      "/root/fc_client"
+    ],
+    "source_policy": "Existing design-authorized bug corrections, not arbitrary frozen-rule changes",
+    "started_at": "2026-09-28T04:21:52.5170994Z",
+    "combat_rule_decision": "User explicitly confirmed: preserve current 54cab7f algorithm; align GDD and old tests",
+    "qa_assignment": {
+      "requested": "/root/fc_qa",
+      "tool_result": "agent thread limit reached",
+      "actual_agent_id": "/root/fc_realtime",
+      "role": "independent integration QA after gameplay changes frozen"
+    },
+    "strict_source_tests": "461 passed, 0 failed, 0 skipped; subsequent strengthened PB resale probe 1/1 passed",
+    "protected_package": "Final server-av91ig_u:461/461 passed,0failed0skipped; exact protected assembly hashes verified",
+    "local_tls": "Final protected package20/20; prior package6coldstarts20/20 each; historical timeout unresolved",
+    "client_tests": "173 codec +19 HTTP transport +20 real Godot/.NET/PG checks passed; full Godot import exit0",
+    "qa_role_completed": true,
+    "previous_remaining": [
+      "Three original failing regression tests",
+      "Existing market resale500 reproduced on original HEAD",
+      "Full PVP/relic/extraction/restart gate not reached",
+      "Live Steam, Docker image, production TLS/CDN/ACL not verified",
+      "One earlier Bootstrap timeout unreproduced; no stable performance advantage established",
+      "HTTP compression-on latency and Godot per-operation allocations not measured"
+    ],
+    "fixed_issues": [
+      "market resale uniqueness and history audit",
+      "combat GDD/current-code drift",
+      "refund transaction fixture",
+      "PVP event replay reader",
+      "four-human ready flow and matching fixture race",
+      "asynchronous settlement persistence assertion race",
+      "Godot decode and server PB encode allocation optimization"
+    ],
+    "release_deployment_authorized": false,
+    "completed_local_validation_at": "2026-09-28T12:53:44.190065+08:00",
+    "cleanup": "All owned services/schemas stopped or dropped; shared task-local PG54329 stopped after finalTLS; original user workspace outputs preserved"
+  },
+  "bootstrap_timeout_followup": {
+    "agents": [
+      "/root/fc_protocol",
+      "/root/fc_realtime"
+    ],
+    "root_cause": "Mail.GetAsync manually disposes a pooled cached reader before scope exit; implicit second disposal can close another borrowers reused reader",
+    "fix": "Single lexical disposal before unread-count query",
+    "merge": "Six independent core reads -> one NpgsqlBatch on one connection; top-level13->8 tasks; Shop transaction unchanged",
+    "evidence": "bootstrap-timeout-report.md",
+    "ordinary_release_before": {
+      "total": 40,
+      "ok": 29,
+      "http500": 4,
+      "timeout": 7
+    },
+    "mail_only_after": {
+      "total": 40,
+      "ok": 40
+    },
+    "protected_after": {
+      "total": 200,
+      "ok": 200
+    },
+    "tests": "466/466 ordinary and protected;0skip",
+    "historical_limit": "Earlier60/100s events lack simultaneous traces; cannot individually attribute every historical timeout",
+    "package": "builds/server-protected/server-lgiop4qw",
+    "cleanup": "Owned services/schema cleaned; task-local PG stopped",
+    "finished_at": "2026-09-28T13:14:29.62676+08:00"
+  },
+  "release_publication": {
+    "authorized_by": "User: 本地改动全部合到release远端分支并发布",
+    "authorized": true,
+    "actors": [
+      "/root",
+      "/root/fc_protocol",
+      "/root/fc_realtime"
+    ],
+    "source_commit": "fbc22e3cc2a0c447bf3875651befe29c98a29233",
+    "status": "published",
+    "initial_linux_tests": "464/466; 2 WebSocket close handshake failures fixed",
+    "final_linux_tests": "468/468, zero failures or skips",
+    "image": "sha256:d8a704452faef9a5b4fa974b74d976c439c7084c0d9ed2d7bf2b12df24a4883a",
+    "docker_acceptance": "ok:true; 28 HTTP/WSS/restart checks; DB readiness503/live200/recovery200; Production local-auth404",
+    "vulnerabilities": "Trivy0.69.3 HIGH/CRITICAL:0",
+    "evidence": "/home/ubuntu/fc-release-qa-609e13e/tools/engine-local/protected/docker-acceptance-wd2plh5l/verification.json",
+    "preserved": "Original workspace generated outputs; no reset/clean/stash",
+    "completed_at": "2026-09-28T13:43:16.716807+08:00",
+    "deployment": {
+      "application_commit": "d99ec27ff3d6eb93cdea6b792c8fa2a4d1fbbb43",
+      "completed_at": "2026-09-28T05:47:37.106056+00:00",
+      "backup": "/opt/fantasycard-app/backups/fantasycard-20260928T054623Z-before-d99ec27ff3d6eb93cdea6b792c8fa2a4d1fbbb43.dump",
+      "backup_sha256": "b7bd51ba2af647611686d6ec3dd2c51a5e928606e69a2a11b430276e830bf8cc",
+      "schema_version": 29,
+      "exact_image_and_assemblies_verified": true,
+      "public_health": "live/ready200 Healthy; TLS valid; public admin404; anonymous bootstrap401 application/protobuf",
+      "sparse_checkout": "Added protocol to existing server-only checkout before service replacement",
+      "preserved_outputs": true,
+      "remaining": "Real Steam/Google platform login and Steam-store client distribution not executed"
+    }
+  }
+}

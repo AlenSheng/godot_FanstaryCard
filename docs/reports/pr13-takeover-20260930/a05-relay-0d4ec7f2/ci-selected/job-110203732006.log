@@ -1,0 +1,27 @@
+2026-10-01T03:26:00.0818822Z Results File: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/acceptance/domain.trx
+2026-10-01T03:26:00.0835175Z
+2026-10-01T03:26:00.0879585Z Passed!  - Failed:     0, Passed:   317, Skipped:     0, Total:   317, Duration: 2 s - FantasyCard.Domain.Tests.dll (net10.0)
+2026-10-01T03:26:00.1480998Z ##[group]Run set -euo pipefail
+2026-10-01T03:26:00.1481498Z [36;1mset -euo pipefail[0m
+2026-10-01T03:26:00.1483023Z [36;1mdotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server.trx' --results-directory ../test-results/acceptance 2>&1 | tee ../test-results/acceptance/server.log[0m
+2026-10-01T03:26:00.1583420Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-01T03:41:49.6943533Z Results File: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/acceptance/server.trx
+2026-10-01T03:41:49.6946956Z
+2026-10-01T03:41:49.6991588Z Passed!  - Failed:     0, Passed:   302, Skipped:     0, Total:   302, Duration: 15 m 38 s - FantasyCard.Server.Tests.dll (net10.0)
+2026-10-01T03:41:49.7527753Z ##[group]Run set -euo pipefail
+2026-10-01T03:41:49.7528077Z [36;1mset -euo pipefail[0m
+2026-10-01T03:41:49.7528331Z [36;1mfor players in 1 2 4; do[0m
+2026-10-01T03:41:49.7529044Z [36;1m  dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples 10000 --players "$players" --seed-start 0 > "../test-results/acceptance/routes-${players}.json"[0m
+2026-10-01T03:42:37.5411322Z  	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-10-01T03:42:37.5411678Z  2026-10-01 03:41:25.658 UTC [2415] ERROR:  injected launch checkpoint failure
+2026-10-01T03:42:37.5412214Z  2026-10-01 03:41:25.658 UTC [2415] CONTEXT:  PL/pgSQL function fail_launch_checkpoint() line 2 at RAISE
+2026-10-01T03:42:37.5413691Z  2026-10-01 03:41:25.658 UTC [2415] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:37.5415340Z  2026-10-01 03:41:25.936 UTC [2417] ERROR:  injected terminal checkpoint failure
+2026-10-01T03:42:37.5416041Z  2026-10-01 03:41:25.936 UTC [2417] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-10-01T03:42:37.5417449Z  2026-10-01 03:41:25.936 UTC [2417] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:37.5418782Z  2026-10-01 03:41:25.937 UTC [2417] ERROR:  injected terminal checkpoint failure
+2026-10-01T03:42:37.5419290Z  2026-10-01 03:41:25.937 UTC [2417] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-10-01T03:42:37.5420685Z  2026-10-01 03:41:25.937 UTC [2417] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:37.5422178Z  2026-10-01 03:41:32.999 UTC [2446] ERROR:  duplicate key value violates unique constraint "ux_players_display_name_key"
+2026-10-01T03:42:37.5422783Z  2026-10-01 03:41:32.999 UTC [2446] DETAIL:  Key (display_name_key)=(alice) already exists.
+2026-10-01T03:42:37.5423238Z  2026-10-01 03:41:32.999 UTC [2446] STATEMENT:  UPDATE players

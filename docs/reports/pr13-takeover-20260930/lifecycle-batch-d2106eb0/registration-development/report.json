@@ -1,0 +1,93 @@
+{
+  "canonical": "LOAD-04.4-T02",
+  "status": "Partial",
+  "accepted_by": null,
+  "base_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "source_sha": "49448fe151eb5c2b4d48b7442bc1f376df25256b",
+  "source_dirty": false,
+  "commits": [
+    "8e2bb665e6c8c045101aa276d6a496fed9f62a95",
+    "49448fe151eb5c2b4d48b7442bc1f376df25256b"
+  ],
+  "cherry_pick_order": [
+    "8e2bb665e6c8c045101aa276d6a496fed9f62a95",
+    "49448fe151eb5c2b4d48b7442bc1f376df25256b"
+  ],
+  "changed_files": [
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs"
+  ],
+  "ownership": {
+    "single_writer": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs",
+    "production_files_changed": false,
+    "other_worktrees_changed": false,
+    "Recovery_and_ACK_helpers": "read-only unchanged from base",
+    "UI": "untouched",
+    "historical_raw": "read-only untouched"
+  },
+  "profile_sha256": "dbfa4592eef08611099fef7d35c1206ab39fe73407ac5a42a98054bf9f7f572b",
+  "results": {
+    "fixed_targeted": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "external_server_regression": {
+      "passed": 203,
+      "failed": 3,
+      "skipped": 0
+    },
+    "supplemental_mapped_caddy": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "formal": false
+    }
+  },
+  "current_behavior": "No production change required by these bounded observations. Real committed MarkRunning response loss recovered through UPDATE 0 and Running reread; four ticket-backed PB WS routes and once-only reservations survived actual process restart. Actual Register conflict cases retained original actor/route, then recovered one actor and one reservation.",
+  "classification": {
+    "first_runtime_failure": "FixtureFailure: PG pool reset response misassociation, not production defect",
+    "external_regression_failure": "FixtureSetupFailure: outside-source build broke file discovery",
+    "Register_conflicts": "SupportOnly component + true PostgreSQL; no full Program Register injection",
+    "MarkRunning": "Actual production Program OS processes + actual PB/ticket-WS protocol clients + PG; bounded OFFLINE/POSTGRES evidence only"
+  },
+  "remaining_gaps": [
+    "ROOT internal actual-source freshbuild and selected registration/Caddy retest pending",
+    "Real production Godot client/runner integration not executed by this registration fixture",
+    "Register failure injection through full Program/real Godot still not executed; component proof is SupportOnly",
+    "No LIVE/RENDER, complete gameplay, or same-account three gameplay cycles",
+    "No internal full-host actor gauge available; full-host external DB/routes checked, component actor count exact",
+    "S6 independent ROOT judgment pending"
+  ],
+  "cleanup": {
+    "owned_schema_count": 0,
+    "pg_stopped": true,
+    "pg_status_exit_code": 3,
+    "pg_status": "pg_ctl: no server running",
+    "processes": [
+      {
+        "pid": 49752,
+        "alive": false
+      },
+      {
+        "pid": 52152,
+        "alive": false
+      },
+      {
+        "pid": 52264,
+        "alive": false
+      },
+      {
+        "pid": 45643,
+        "alive": false,
+        "state": "Z",
+        "note": "Stopped process is a zombie awaiting host parent reaping; it owns no sockets or child processes."
+      }
+    ],
+    "source_mapping_symlink_removed": true,
+    "local_connection": "Unix socket only, listen_addresses empty; no cloud or credentials read",
+    "historical_raw": "untouched"
+  },
+  "network": "owned local only",
+  "push_or_ci": "none",
+  "evidence_directory": "/workspace/pr13-takeover/register-evidence-20260930"
+}

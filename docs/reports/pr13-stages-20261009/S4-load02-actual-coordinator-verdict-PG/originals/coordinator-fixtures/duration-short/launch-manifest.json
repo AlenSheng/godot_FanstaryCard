@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "run_id": "d050239e64eb45af93c97a9dcbc29b6d",
+  "source": {
+    "offline_fixture": true
+  },
+  "launches": [
+    {
+      "client_id": "g001c01dc1b71",
+      "group": 1,
+      "run_id": "d050239e64eb45af93c97a9dcbc29b6d",
+      "process_epoch": "a23e0cfeaab94afea4b64c3a559886e3",
+      "started_at_ms": 100000000,
+      "started_at_monotonic_ms": 0.0,
+      "pid": 4242,
+      "report_file": "g001c01dc1b71.json",
+      "server_origin": {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 5000
+      },
+      "hero_class": "Mage",
+      "strategy": "baseline_all_hand",
+      "strategy_seed": 20260930,
+      "cycle_limit_seconds": 240,
+      "client_max_fps": null,
+      "command": [
+        "/opt/pr13-venv/bin/python3",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/control/context/client",
+        "res://tests/gameplay_load_client.tscn"
+      ]
+    }
+  ]
+}

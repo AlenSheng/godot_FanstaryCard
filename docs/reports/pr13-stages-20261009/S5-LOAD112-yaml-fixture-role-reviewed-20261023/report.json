@@ -1,0 +1,546 @@
+{
+  "kind": "StaticYAMLServiceFixtureRoles_NotCIOrDeploymentAcceptance",
+  "generated_at": "2026-10-23T04:04:21.758910+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "yaml_fixture_review": {
+    "kind": "TenYAMLSourceFixtureAndControlledNegativeRoles",
+    "ok": true,
+    "objects_reviewed": 10,
+    "actual_context_controls": 10,
+    "counts": {
+      "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass": 10,
+      "intent_bound_observation_aliases": 51
+    },
+    "results": [
+      {
+        "sha256": "f79571ef00acb8d25a3e39c26d06cde99b3ca468f7c1951ed25dc4610c3ec727",
+        "bytes": 6855,
+        "frozen_observation_aliases": 20,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": ".github/workflows/numerical-acceptance.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "acceptance",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 30,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "c64aa308910a97ad2bb8d4aebcda126ab3fa5aac656f39ea3c9533bd3bf7de25",
+        "bytes": 7179,
+        "frozen_observation_aliases": 8,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "A073-current-CI-PG-20261021-r1-originals/preupload-r2/workflow-before.original.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "acceptance",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 30,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "86ac08fc8845aa8236cb8853581b9a0f5a2c88ec988a0cb0c7079c108c2bc7a9",
+        "bytes": 10438,
+        "frozen_observation_aliases": 7,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": ".github/workflows/test-server-deploy.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "build",
+              "steps",
+              "4",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 116,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "952f8eb92d17a6d505835f63cea9f8ea26c177a513624b4755bae2b2940a1363",
+        "bytes": 943,
+        "frozen_observation_aliases": 4,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-verified-server-source-20261022-r3/server/compose.yaml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "services",
+              "server",
+              "environment",
+              "ConnectionStrings__Postgres"
+            ],
+            "source_line": 27,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "LocalDevelopmentComposePostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "0061adf600e0629191a3aedacadc18fd20b7fa6a21bfdddc6315dd89fe6a77b9",
+        "bytes": 10225,
+        "frozen_observation_aliases": 3,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-all-verified-20261022-r1/.github/workflows/test-server-deploy.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "build",
+              "steps",
+              "4",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 116,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "26437157a595059e3d43e84c32af99792cef1674d72d4debb5a8611e02c230fa",
+        "bytes": 5957,
+        "frozen_observation_aliases": 3,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-all-verified-20261022-r1/.github/workflows/numerical-acceptance.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "acceptance",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 30,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "1367b8ada7feae914fc80373592df10d7e4af424c7af5224a7f8fcd157df0e4c",
+        "bytes": 6072,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "A073-current-CI-PG-20261021-r1-originals/local-originals/workflow-before.original.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "acceptance",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 30,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "510ba493782f7ab13b61fd32cf7bfc5d4746a1e0cdd1013134c60ac2e9e68406",
+        "bytes": 7304,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "A073-current-CI-PG-20261021-r1-originals/local-originals/workflow-after.original.yml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "jobs",
+              "acceptance",
+              "env",
+              "FANTASYCARD_TEST_POSTGRES"
+            ],
+            "source_line": 30,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "CIJobLocalPostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "1266e10543d2682276587a05a937560d9f52c31fcbe487af52fa99994f3d7912",
+        "bytes": 36,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "load112-full-current-inventory-20261017-r1/controlled-private-boundary-cases/YAML_literal_API_key/settings.yaml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "api_key"
+            ],
+            "source_line": 1,
+            "role": "ExactControlledLiteralYAMLSecretNegativeInput",
+            "context_bound": true,
+            "original_expected_public_acceptance": false,
+            "actual_producer_writer_newline": "ExplicitLF",
+            "actual_36byte_fixture_sha256": "1266e10543d2682276587a05a937560d9f52c31fcbe487af52fa99994f3d7912",
+            "actual_baseline_receipt_sha256": "89ee775df27676f1b55e634d35fef3c9ce8f4a016717a070a13038278474b5e0",
+            "old_baseline_acceptance_or_failure_not_rewritten": true,
+            "values_or_value_fingerprints_not_emitted": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      },
+      {
+        "sha256": "c3ce35a1536beaa88c209bb3334799526e1f3e48dbc90312e2a0890eb3b904a5",
+        "bytes": 978,
+        "frozen_observation_aliases": 1,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "server/compose.yaml",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "state": "ExactYAMLFixtureOrNegativeInputIntentBound_NotWorkflowOrRuntimePass",
+        "match_contexts": [
+          {
+            "scalar_path": [
+              "services",
+              "server",
+              "environment",
+              "ConnectionStrings__Postgres"
+            ],
+            "source_line": 27,
+            "values_or_value_hashes_not_emitted": true,
+            "role": "LocalDevelopmentComposePostgresFixture",
+            "context_bound": true,
+            "credential_field_matches_same_document_fixture_declaration": true,
+            "service_image_is_postgres": true,
+            "runtime_or_production_equivalence_not_claimed": true
+          }
+        ],
+        "original_strict_rejection_retained": "Credential-like value in public evidence",
+        "no_actual_values_or_fingerprints_emitted": true
+      }
+    ],
+    "pinned_parser": "PyYAML==6.0.3",
+    "syntax_nodes_not_arbitrary_object_construction": true,
+    "actual_workflow_compose_database_or_auth_execution": false,
+    "CI_provider_trigger_billing_or_fork_acceptance_not_inferred": true,
+    "production_config_or_credential_freedom_not_inferred": true,
+    "source_or_original_guard_rules_changed": false,
+    "original_raw_rejections_retained": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false,
+    "original_R1_writer_assumption_retained": "R1 reproduced a default Windows newline instead of the producer explicit LF. That variant did not match the frozen fixture and stayed unqualified. Actual explicit writer and original baseline receipt now bind the36-byte negative input; original validation criteria unchanged."
+  },
+  "additional_nonempty_on_key_control": {
+    "ok": true,
+    "nonempty_source_on_key_preserved_as_lexical_key": true,
+    "scalar_tag_may_be_yaml11_bool_but_no_object_conversion_occurs": true,
+    "nested_push_branch_mapping_preserved": true,
+    "root_constructor_or_workflow_executed": false,
+    "supplements_initial_empty_mapping_control_with_nonempty_semantic_check": true
+  },
+  "consumer_context_counts": {
+    "workflow_local_Postgres_fixture": 7,
+    "local_development_Compose_fixture": 2,
+    "controlled_negative_YAML_redaction_input": 1
+  },
+  "pinned_parser": "PyYAML==6.0.3",
+  "primary_parser_source": "https://pypi.org/project/PyYAML/6.0.3/",
+  "syntax_node_tree_only_no_arbitrary_object_constructor_or_workflow_execution": true,
+  "same_document_fixture_password_user_database_and_local_host_equality_checked_without_values": true,
+  "production_or_hosted_CI_success_not_inferred": true,
+  "wrong_default_newline_reproduction_R1_retained_and_explicit_LF_producer_bound_with_original_baseline_receipt": true,
+  "original_raw_guards_rejections_and_old_baseline_outcomes_retained": true,
+  "combined_existing_intent_or_private_format_objects": 209,
+  "combined_existing_observation_aliases": 3039,
+  "original_frozen_content_objects": 679,
+  "original_frozen_path_observations": 8200,
+  "remaining_content_objects": 470,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "SourceLanguageExpressionIntent": 375,
+    "PrivateStructuredOrRuntimeContent": 75
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-yaml-fixture-role-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/actual-nonempty-on-node-control-qualified.original.json",
+        "bytes": 335,
+        "sha256": "cd7ffcb959031094566f51a65e7faa757a84f2b20fbb235354ceea09d729b349"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/actual-yaml-context-controls-qualified.original.json",
+        "bytes": 1416,
+        "sha256": "328b938c3bdfdc80aba900e5fc38fa206de0765e33074b7f0d5877704d2befe0"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/executed-negative-binding-completion.original.py",
+        "bytes": 3677,
+        "sha256": "864224bdd9bd74a8c87d9cea54faef687c979d7463e9abaea0de2fb6a2358594"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/executed-on-node-control.original.py",
+        "bytes": 1372,
+        "sha256": "b620946550f071cc75832b469c8d15bbe99108f5fb64b9a5e01ef8c63a1c5758"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/executed-yaml-fixture-review-source.original.py",
+        "bytes": 10252,
+        "sha256": "911bcbf0b15b089781ba5d0f92856a1c2f11ae85a218510dad5305d1597d1890"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/negative-fixture-baseline-receipt.exact-copy.json",
+        "bytes": 5382,
+        "sha256": "89ee775df27676f1b55e634d35fef3c9ce8f4a016717a070a13038278474b5e0"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/result-r2-explicit-writer-corrected.original.json",
+        "bytes": 13714,
+        "sha256": "a349e0cfa7114542429cf1cea9e2f528f6579127ff28a2ed99b3e04160c30901"
+      },
+      {
+        "path": "native-review/yaml-fixture-role-review-20261023-r1/result.original.json",
+        "bytes": 13017,
+        "sha256": "cb7443710a9846a61e8fa90dcaa2fb9232544f2b4abde151e304e7b19786230c"
+      },
+      {
+        "path": "native-review/yaml-parser-runtime-20261023-r1/executed-runtime-bootstrap.original.py",
+        "bytes": 2118,
+        "sha256": "9ba5b306d6070e80d1e72cea1096fdd06f08089fc715230d1f83e9906e6cad44"
+      },
+      {
+        "path": "native-review/yaml-parser-runtime-20261023-r1/PyPI-metadata.original.json",
+        "bytes": 66402,
+        "sha256": "c3f35597bc2f08cc990c2a5fe57bef6687b3a3d7c61d8b0ba4cc067777eb1def"
+      },
+      {
+        "path": "native-review/yaml-parser-runtime-20261023-r1/pyyaml-6.0.3-cp310-cp310-win_amd64.whl",
+        "bytes": 158561,
+        "sha256": "bdb2c67c6c1390b63c6ff89f210c8fd09d9a1217a465701eac7316313c915e4c"
+      },
+      {
+        "path": "native-review/yaml-parser-runtime-20261023-r1/result.original.json",
+        "bytes": 606,
+        "sha256": "7fc5e20cc0feaa7cc7ed39decbaae186b9087bc66ec8a62e8dc2220678bfd2e3"
+      },
+      {
+        "path": "native-review/yaml-source-match-paths-20261023-r1/executed-node-probe.original.py",
+        "bytes": 2532,
+        "sha256": "82aaab0fce39dfc6ec156d88073c97575b7dc09fc6be54f3729937e2758c4e64"
+      },
+      {
+        "path": "native-review/yaml-source-match-paths-20261023-r1/result.original.json",
+        "bytes": 8864,
+        "sha256": "4824d5bd60813a1d407c5a570fdb685bfa6244c568f1ac1cbd424cf467c07750"
+      },
+      {
+        "path": "isolated-parser-runtime-custody.original.json",
+        "bytes": 3881,
+        "sha256": "9c534be04abb53c438541f3ab5e0c489f9de2473383043ad44d5e9f0b1375c52"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/f79571ef00acb8d25a3e39c26d06cde99b3ca468f7c1951ed25dc4610c3ec727.private-original.bin",
+        "bytes": 6855,
+        "sha256": "f79571ef00acb8d25a3e39c26d06cde99b3ca468f7c1951ed25dc4610c3ec727"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/c64aa308910a97ad2bb8d4aebcda126ab3fa5aac656f39ea3c9533bd3bf7de25.private-original.bin",
+        "bytes": 7179,
+        "sha256": "c64aa308910a97ad2bb8d4aebcda126ab3fa5aac656f39ea3c9533bd3bf7de25"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/86ac08fc8845aa8236cb8853581b9a0f5a2c88ec988a0cb0c7079c108c2bc7a9.private-original.bin",
+        "bytes": 10438,
+        "sha256": "86ac08fc8845aa8236cb8853581b9a0f5a2c88ec988a0cb0c7079c108c2bc7a9"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/952f8eb92d17a6d505835f63cea9f8ea26c177a513624b4755bae2b2940a1363.private-original.bin",
+        "bytes": 943,
+        "sha256": "952f8eb92d17a6d505835f63cea9f8ea26c177a513624b4755bae2b2940a1363"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/0061adf600e0629191a3aedacadc18fd20b7fa6a21bfdddc6315dd89fe6a77b9.private-original.bin",
+        "bytes": 10225,
+        "sha256": "0061adf600e0629191a3aedacadc18fd20b7fa6a21bfdddc6315dd89fe6a77b9"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/26437157a595059e3d43e84c32af99792cef1674d72d4debb5a8611e02c230fa.private-original.bin",
+        "bytes": 5957,
+        "sha256": "26437157a595059e3d43e84c32af99792cef1674d72d4debb5a8611e02c230fa"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/1367b8ada7feae914fc80373592df10d7e4af424c7af5224a7f8fcd157df0e4c.private-original.bin",
+        "bytes": 6072,
+        "sha256": "1367b8ada7feae914fc80373592df10d7e4af424c7af5224a7f8fcd157df0e4c"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/510ba493782f7ab13b61fd32cf7bfc5d4746a1e0cdd1013134c60ac2e9e68406.private-original.bin",
+        "bytes": 7304,
+        "sha256": "510ba493782f7ab13b61fd32cf7bfc5d4746a1e0cdd1013134c60ac2e9e68406"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/1266e10543d2682276587a05a937560d9f52c31fcbe487af52fa99994f3d7912.private-original.bin",
+        "bytes": 36,
+        "sha256": "1266e10543d2682276587a05a937560d9f52c31fcbe487af52fa99994f3d7912"
+      },
+      {
+        "path": "exact-yaml-source-objects.private/c3ce35a1536beaa88c209bb3334799526e1f3e48dbc90312e2a0890eb3b904a5.private-original.bin",
+        "bytes": 978,
+        "sha256": "c3ce35a1536beaa88c209bb3334799526e1f3e48dbc90312e2a0890eb3b904a5"
+      },
+      {
+        "path": "actual-negative-fixture-default-write.yaml",
+        "bytes": 37,
+        "sha256": "31d360784bddceb9577671ada7db872df31bac9ed2e1ea1f497e3556596cf498"
+      },
+      {
+        "path": "actual-negative-fixture-explicit-LF-write.yaml",
+        "bytes": 36,
+        "sha256": "1266e10543d2682276587a05a937560d9f52c31fcbe487af52fa99994f3d7912"
+      },
+      {
+        "path": "original-negative-fixture-producer.private.py",
+        "bytes": 3405,
+        "sha256": "cd5703050009b02575870c9e58cf32524df8a7a7f55b8924343d820740d01725"
+      },
+      {
+        "path": "remaining470-content-review-queue.private.original.jsonl",
+        "bytes": 1413957,
+        "sha256": "b2d826ad306dbd612b4893f37d277039892fb6f5eb11eb846795407e47a56ab5"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 8708,
+        "sha256": "09424480bd79684cf607c83e92c3c980fcdefcab7d3cdb735ad6875b24a47921"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 98582,
+        "sha256": "b42f4b2907b8779297ddd0c39300e9c0dacd5542d1945ea73615a44634527fc6"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

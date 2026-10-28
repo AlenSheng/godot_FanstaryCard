@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "attempt": "current-missing-db-ci-audit-r1-20261012",
+  "case_id": "LOAD-11.3-T02",
+  "target_profile": "AUDIT",
+  "implementation_source_sha": "0e1763e21ede5eebd211a0019debca4e096419a9",
+  "report_parent_sha": "000cdc4473766b2cc89025c7a1620f81eb03421d",
+  "native_test_project": "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+  "original_methods_required": {
+    "Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response": 1,
+    "Preparation_create_replay_conflict_and_cancel_release_are_atomic": 1
+  },
+  "database_environment_key_deliberately_absent": "FANTASYCARD_TEST_POSTGRES",
+  "expected_actual_native_test_counters": {
+    "total": 2,
+    "notExecuted": 2,
+    "executed": 0,
+    "passed": 0,
+    "failed": 0
+  },
+  "expected_current_caller_state": "Blocked",
+  "expected_native_exit_code": 0,
+  "skipped_original_database_cases_not_claimed_passed": true,
+  "native_execution_location": "Tencent cloud",
+  "native_runner_deadline_seconds": 1500,
+  "systemd_deadline_seconds": 1800,
+  "container_memory_bytes": 1073741824,
+  "container_CPUs": 1,
+  "cloud_memory_floor_bytes": 500000000,
+  "cloud_disk_free_floor_fraction": 0.15,
+  "no_automatic_native_retry": true,
+  "source_and_package_mounts_readonly": true,
+  "other_original_native_jobs_preserved": true,
+  "runner_source_SHA256": {
+    "native-inner.original.py": "155156f7143b84a409c0e1caff060ca9c180b3c77c7a15564b61bbb6e2690949",
+    "native-runner.original.py": "ce4fa2c6c2aa692224bfe4ea474071a5ce050bf52a82278c14004d0e3c7725a3",
+    "admission-controller.original.py": "658199e37b094fced5474d1195f2c5283bf86f334028f84eaa383cfbc1e8fafe",
+    "G-original-backup-controller.original.py": "6128ac5596ae5af645d18a03657f9b29dcec83df0f12668b0655ebf1a5f59c90"
+  },
+  "original_primary_storage": "G:/PR13Evidence/current-missing-DB-CI-AUDIT-r1-complete-originals",
+  "production_changes": false,
+  "formal_AUDIT_profiles_closed": 0,
+  "MAIN_accepted": false
+}

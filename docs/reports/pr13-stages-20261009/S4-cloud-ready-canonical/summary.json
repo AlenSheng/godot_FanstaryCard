@@ -1,0 +1,49 @@
+{
+  "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+  "execution_host": "Tencent cloud",
+  "scope": "Actual Linux Godot component/fault fixtures on full Program and owned PostgreSQL, distinct from local-player LIVE and capacity tests",
+  "command_deadlines": "Unchanged runner: 95 seconds/case, actual READY 15 seconds, bot fill 30 seconds",
+  "exit_code": 0,
+  "case_count": 17,
+  "passed_case_count": 17,
+  "owned_fixture_databases_removed": true,
+  "owned_server_stopped": true,
+  "source_dirty": [],
+  "cleanup": {
+    "pr13-tencent-ready-c1": true,
+    "pr13-tencent-ready-c1-pg": true
+  },
+  "elapsed_seconds": 658.2312219142914,
+  "ok": true,
+  "canonical_case_reports": [
+    {
+      "part": "postgres",
+      "executed": 21,
+      "passed": 21,
+      "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132"
+    },
+    {
+      "part": "server-phases/runtime-phases",
+      "executed": 4,
+      "passed": 4,
+      "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132"
+    },
+    {
+      "part": "server-phases/replay-stop-isolation",
+      "executed": 9,
+      "passed": 9,
+      "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132"
+    },
+    {
+      "part": "server-phases/outbound-guards",
+      "executed": 1,
+      "passed": 1,
+      "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132"
+    }
+  ],
+  "canonical_rows": 35,
+  "suite_alias_policy": "native/lifecycle/outbound TRX aliases refer to one actual 337-row suite, not three independent executions",
+  "accepted": false,
+  "human_experience": "Pending",
+  "capacity_50_100": "Deferred"
+}

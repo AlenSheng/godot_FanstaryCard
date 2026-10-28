@@ -1,0 +1,28 @@
+2026-09-30 18:12:33.599 UTC [15979] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30 18:12:33.599 UTC [15979] LOG:  listening on Unix socket "/tmp/pr13-process-recovery-socket/.s.PGSQL.55437"
+2026-09-30 18:12:33.600 UTC [15985] LOG:  database system was shut down at 2026-09-30 18:12:33 UTC
+2026-09-30 18:12:33.603 UTC [15979] LOG:  database system is ready to accept connections
+2026-09-30 18:17:33.603 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:19:17.123 UTC [15983] LOG:  checkpoint complete: wrote 1033 buffers (6.3%), wrote 3 SLRU buffers; 1 WAL file(s) added, 0 removed, 0 recycled; write=103.470 s, sync=0.002 s, total=103.521 s; sync files=622, longest=0.001 s, average=0.001 s; distance=8381 kB, estimate=8381 kB; lsn=0/1F35318, redo lsn=0/1F35288
+2026-09-30 18:27:33.335 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:28:05.851 UTC [15983] LOG:  checkpoint complete: wrote 324 buffers (2.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=32.512 s, sync=0.002 s, total=32.517 s; sync files=828, longest=0.001 s, average=0.001 s; distance=9700 kB, estimate=9700 kB; lsn=0/28AE608, redo lsn=0/28AE578
+2026-09-30 18:32:33.861 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:33:07.571 UTC [15983] LOG:  checkpoint complete: wrote 337 buffers (2.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=33.706 s, sync=0.002 s, total=33.710 s; sync files=835, longest=0.001 s, average=0.001 s; distance=10506 kB, estimate=10506 kB; lsn=0/32F1120, redo lsn=0/32F1090
+2026-09-30 18:35:24.855 UTC [18708] ERROR:  operator does not exist: uuid = text at character 55
+2026-09-30 18:35:24.855 UTC [18708] HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+2026-09-30 18:35:24.855 UTC [18708] STATEMENT:  SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='settlement.extract'
+2026-09-30 18:37:33.670 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:38:14.930 UTC [15983] LOG:  checkpoint complete: wrote 381 buffers (2.3%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=41.252 s, sync=0.004 s, total=41.260 s; sync files=988, longest=0.001 s, average=0.001 s; distance=11567 kB, estimate=11567 kB; lsn=0/3FB6360, redo lsn=0/3E3CDF8
+2026-09-30 18:42:33.968 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:42:44.809 UTC [15983] LOG:  checkpoint complete: wrote 108 buffers (0.7%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=10.839 s, sync=0.001 s, total=10.842 s; sync files=39, longest=0.001 s, average=0.000 s; distance=1512 kB, estimate=10561 kB; lsn=0/3FB6EF0, redo lsn=0/3FB6E60
+2026-09-30 18:57:34.101 UTC [15983] LOG:  checkpoint starting: time
+2026-09-30 18:57:52.518 UTC [15983] LOG:  checkpoint complete: wrote 183 buffers (1.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=18.413 s, sync=0.002 s, total=18.418 s; sync files=208, longest=0.001 s, average=0.001 s; distance=2097 kB, estimate=9715 kB; lsn=0/41C34C0, redo lsn=0/41C3430
+2026-09-30 18:59:43.788 UTC [21774] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 18:59:43.788 UTC [21774] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 19:02:07.725 UTC [15979] LOG:  received fast shutdown request
+2026-09-30 19:02:07.725 UTC [15979] LOG:  aborting any active transactions
+2026-09-30 19:02:07.727 UTC [15979] LOG:  background worker "logical replication launcher" (PID 15988) exited with exit code 1
+2026-09-30 19:02:07.729 UTC [15983] LOG:  shutting down
+2026-09-30 19:02:07.730 UTC [15983] LOG:  checkpoint starting: shutdown immediate
+2026-09-30 19:02:07.741 UTC [15983] LOG:  checkpoint complete: wrote 329 buffers (2.0%), wrote 2 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.009 s, sync=0.003 s, total=0.012 s; sync files=835, longest=0.001 s, average=0.001 s; distance=11004 kB, estimate=11004 kB; lsn=0/4C82528, redo lsn=0/4C82528
+2026-09-30 19:02:07.750 UTC [15979] LOG:  database system is shut down

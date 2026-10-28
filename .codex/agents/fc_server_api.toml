@@ -1,0 +1,6 @@
+name = "fc_server_api"
+description = "First-party login and non-realtime game API Protobuf migration."
+developer_instructions = """
+Read docs/network-protobuf-migration/PLAN.md and every applicable AGENTS.md. Execute task B in section 5, following the coordinator's phase and exact file ownership. Own the assigned HTTP adapters only. Reuse application services, authorization and idempotent transactions; do not modify shared Contracts, Realtime or game rules.
+Do not discard user changes, commit to release/main, push, deploy, bypass approvals, or change unrelated behavior. Request coordinator integration for shared files. Return changed paths, actual test commands and outcomes, blockers and compatibility risks. Do not claim another agent or test ran without tool evidence.
+"""

@@ -1,0 +1,25 @@
+"""Cloud-only independent full-original aggregation/bootstrap and exact native audit."""
+import base64,hashlib,json,zlib
+from pathlib import Path
+PAYLOAD='eNqdVkuP2zYQvhvof1BPlBBZ63VeiA0d0gBFemh3kRTIQRUIWqRtxpQokJR33cX+985Qoix799SLZQ5nOK9vPlLWrTYuqrRSonJSNzbd/SvbdM/sXslNKv0+/Ms6J1X60+omrZnbp4Y1XNepdcxJ62RlU3uys63RddTCPlhEvW10D8sZbGZcN44+GOkE3ZycqDQX+d+mE+v7HHViciObtnOWJOsfQfKgzQHWd2GtOwcqILGtqPLL6DKUUQyBbqUSVOmKYUox0YpTbeRONkzRI1OSM6cNSX/ckCCet0b/7EswHzWy9gSu6ms/teYdnO89oc8Yf/qQMqUZFyYTjxBKrxfXcERWKd1xuuuY4bF1Jr5PknWrWJNjSb2VjWOIx0JdGs7MCQISRuyguMZnkYVIM7QgSWYE476QNoazaNo10tmU5nU2xC/oOafBZ4ouizFpyuDnZKWlV86o3bPl+w+kvDbYalPDB6WjTrKuVGedMDaf4CjjYss65bisXIw/yRqaV+laXKp90V0DtnGyxgTGNtm8KGfgLUJpJBv/tatZZPSDhRwhUsFqiqsYt5K15KJx0p1yXBYkLEm53jDnlMjJDcl+atnXImwXhzKJ0M8BnRRkL4wmKdkZ3bXwFUrUoAj/lDgKBcnOvLYVgqMBjMFOnA8jKKcwFMZB7a7EouGkfHObQBIRyzHyAuUp+Y1ZoWQj7jvTKoEBT3e/y2anxJ339BV6DvvMWgGT1ecVNdoXKDTBm5Xry2XR65b5piB3G7A+Cv7dQ82Scs5eEY7dyroWwRQXqNXLILfNZIFFuWxextoW0o2fCMrJ6lwJvy5TwirXAZBGYImm6oFgyWq5WCzSM+aQkALYVnXG5U5YF/ddRq6BYAsysS+T52Q2lEiJxmvaJM/fflhEwFpeFqqDYvDm5Va4GPcee0A8TouKM9X5Scvzp9vl4rm36Op4LNNE4yNmsJj1krw4k2S2rQVr4g3C7ow6C+QiOEiTZARXujlNtsYwgDxr9FGuTbPLexLOvvlPvFwsPyw+vV0AE7EagGTzwfqFf7DNqr2WFcTbB5kefB2GAOgZ2rdeupYNF9hRaGP+BFWXBgDdYwoaBpX1LZtoUQ/5EDeoeAX0TrlQjpHVi6j6SJI0HD89gW60dshO7af3ZFUMCRbLd2Ua/n/6+K4EYI2K3h7B1FclJUYMqmR166MB0qukRbpDXmaAHjT4HfArUlKxllUAWcqqSrSONZUY94BXeef5C3adPHrOHHaf1y0zWACEZri2epG92XZKzccrBwOcDwnOa+H2ml+z/HDY9JaYHH91BwyY7xWAtA+k9DANgmHmhvKGykJZgKZJmeeT9l3YvTakZUD5ax4GYNAWjh+NfTvADKbnNZtRLwwU6vrLIwiScXqDqZ9smPfzbDOlYlNAq/HeQ39eaiY5ILNSoEy8neVWeh3EvEHMh4OBA53BS4pTCTkjavA6hcLRai+qAzqdHWESoMYrfMOkBFv7Op31dbrW+N8zNJ4wrXKPdSjt5QFs6vHFKFF4yUE6lopHaII6hVQurDyxewr+8u0L/f71MzwaOMxwo2vYh0cSACg8OHg4ATbkUdAe03RA7AsKnyAZph6GE95UFzWyujOV8A6rzvSHBNbAhLBLEHnwOtpxYSsjWx+DdR0/QRZju0OImjbigQ6RjszQb8LJWwkvHUjvRPGp0ezcHqCwhVfSlAj+/PzHXwNBTKjj8i4kq8v18zq+u5l2aX7JCoEQWMelC4+987MZnomeDHhXt8DeqexJeZm8If+gJiKPC6SD1sjGTZWfDqvH/tZJ/eV2DNdJJLfR4df8OvDnJPll9h/m7260'
+B=Path('/home/ubuntu/pr13-acceptance-20261009');E=B/'evidence/B03-full-original-seed-cluster-r1-20261013';W=B/'work/B03-full-original-seed-cluster-r1-20261013';result=json.loads((E/'result.original.json').read_bytes());assert result['ok'] and result['exit_code']==0 and not result['oom_killed'] and result['owned_container_removed'] and result['original_inputs_unchanged'];data=zlib.decompress(base64.b64decode(PAYLOAD));p=W/'work/independent-full-original-audit.executed.py';assert not p.exists();p.write_bytes(data)
+import subprocess,fcntl,os,time
+owner='pr13-cap-b03-full-original-seed-cluster-r1-20261013-independent';image='sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520';out=E/'independent-output';assert not out.exists();out.mkdir(mode=0o777);out.chmod(0o777);c=None
+deadline=time.monotonic()+300
+while True:
+ lock=(B/'evidence/shared-resource-coordination.lock').open('a');fcntl.flock(lock,fcntl.LOCK_EX)
+ busy=subprocess.check_output(['systemctl','list-units','--state=running','--no-legend','pr13-cap-*','pr13-pool-segment-*']).strip();active=subprocess.check_output(['docker','ps','--format','{{.Names}}'],text=True).splitlines()
+ if not busy and not any(n.startswith(('pr13-cap-','pr13-pool-segment-')) for n in active):break
+ lock.close();assert time.monotonic()<deadline,'No eligible actual native boundary; no independent native dispatched';time.sleep(5)
+s=os.statvfs('/');mem=int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024
+assert mem>=500000000+1024*1024**2+64*1024**2 and (s.f_bavail-.15*s.f_blocks)*s.f_frsize>32*1024**2
+try:
+ try:
+  c=subprocess.check_output(['docker','create','--name',owner,'--label','codex.owner='+owner,'--network','none','--memory','1024m','--memory-swap','1024m','--cpus','1','--read-only','--user','1000:1000','--tmpfs','/tmp:rw,nosuid,nodev,size=67108864','-e','PR13_CAP_STATISTICS_CLOUD=tencent-readonly-v1','-v',str(W/'projection')+':/inputs:ro','-v',str(W/'work')+':/work:ro','-v',str(E/'persistent-output')+':/parents:ro','-v',str(out)+':/output',image,'python3','/work/independent-full-original-audit.executed.py'],text=True).strip();subprocess.run(['docker','start','-a',c],check=True,timeout=300,stdout=(E/'independent-container.stdout.original.log').open('xb'),stderr=(E/'independent-container.stderr.original.log').open('xb'));info=json.loads(subprocess.check_output(['docker','inspect',c]))[0];assert info['State']['ExitCode']==0 and not info['State']['OOMKilled']
+ finally:
+  if c:
+   info=json.loads(subprocess.check_output(['docker','inspect',c]))[0];assert info['Id']==c and info['Name']=='/'+owner and info['Config']['Labels']['codex.owner']==owner
+   if info['State']['Running']:subprocess.run(['docker','stop','--time','5',c],check=True)
+   subprocess.run(['docker','rm',c],check=True,stdout=subprocess.DEVNULL)
+finally:lock.close()
+r=json.loads((out/'independent-full-original-cluster-audit.json').read_bytes());assert r['ok'];print(json.dumps({k:v for k,v in r.items() if k!='unit_originals'}))

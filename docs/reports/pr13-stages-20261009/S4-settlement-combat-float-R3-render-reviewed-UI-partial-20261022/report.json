@@ -1,0 +1,29 @@
+{
+  "kind": "R3ActualRenderVisualReviewFloatFixedToastTransitionStillUnaccepted",
+  "at_utc": "2026-10-22T06:58:24.683335+00:00",
+  "reviewed_all36_via_2_contact_sheets": true,
+  "full_resolution_inspected": [
+    "en-960-candidate-r2-settlement-first-frame.webp",
+    "zh-CN-1920-candidate-r2-settlement-first-frame.webp"
+  ],
+  "float_cleanup_visual_passed_6resolution_locale_pairs": true,
+  "ordinary_battle_floating_effect_retained": true,
+  "new_finding": "Existing battle toast is retained at battle placement when settlement UI is rendered. EN960 candidate first/late frames show Unable to connect to server over Expedition Failed title. Notice comes from deferred offline client-info request against loopback1; not a live or permanent-server outage. Existing _toast selects settlement0.09 only for newly arriving notices; an already visible battle0.28 tip is not moved.",
+  "overall_visual_accepted": false,
+  "RENDER_profile_still_missing": true,
+  "root_product_source_not_modified": true,
+  "candidate_main_SHA": "426257e57e714b2edd22811b206606cef8405fca424a4130cc5d0728868c9fe8",
+  "root_original_main_SHA": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002",
+  "next_fix_scope": "Extend private candidate: preserve important existing notice text and relocate it when visual context enters settlement. Avoid hiding network errors or suppressing real data; same-context renders must not restart tip indefinitely. Use direct controlled preexisting-toast negative/positive tests, then cloud replay. Do not diagnose deliberate offline notification as production connection bug.",
+  "no_ImageGen_needed_existing_blue_gold_assets_consistent": true,
+  "R1_disk_admission_failure_original6hostfiles_kept": true,
+  "R2_512MiB_native_minus9_OOM1_frames15_raw28_host14_G_verified": true,
+  "R3_1664MiB_native0_noOOM_frames36_raw49_host13_G_verified": true,
+  "R3_resource_samples": 346,
+  "R3_minimum_MemAvailable": 2278346752,
+  "R3_minimum_disk_fraction": 0.04912900018302231,
+  "R3_minimum_disk_free_bytes": 3109376000,
+  "all_functional_host_resource_floors_unchanged": true,
+  "all_owned_renderer_units_terminal_containers_removed_after_GACK": true,
+  "no_new_natural_games_or_human_capacity_balance_acceptance": true
+}

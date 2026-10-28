@@ -1,0 +1,116 @@
+{
+  "source_sha": "89f43ba8361ded9dc8b29d68b91442eefc49f7b1",
+  "runtime_revision": "bf516e07a01ad4dc03320155396a152fae46e1ea",
+  "runtime_image": "sha256:246bab3c3368e431db09f5e2565d8d35b03c7bf9cf04b0b64001821aed6b8bd6",
+  "classification": "InterruptedByForwardingTimeout",
+  "accepted": false,
+  "natural_cycles": 16,
+  "natural_cycle_target": 30,
+  "original_exit_code": 3,
+  "original_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Failed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "original_triggers": [
+    "health_failed_or_over_10000ms",
+    "operator_stop_file",
+    "post_stop_process_failure"
+  ],
+  "forwarding_attempts": [
+    {
+      "pid": 114648,
+      "at": 1791597929.7294188,
+      "cleanup_only": false
+    },
+    {
+      "pid": 111412,
+      "at": 1791598571.0932384,
+      "cleanup_only": true
+    }
+  ],
+  "cleanup_forwarding_ready": true,
+  "ssh_log": "Timeout, server 43.172.70.182 not responding.",
+  "network_stability_mitigation_proven": false,
+  "original_client_cleanup_counts": {
+    "Passed": 4,
+    "Unknown": 6
+  },
+  "original_process_cleanup_complete": false,
+  "original_business_cleanup_verified": false,
+  "forced_player_pids": [
+    84688,
+    117324,
+    111540,
+    105976,
+    116752
+  ],
+  "physical_owned_processes_observed_gone_after_exit": true,
+  "final_client_error_count": 0,
+  "raw_rejections": [
+    {
+      "action": "room.snapshot.read",
+      "phase": "matchmaking",
+      "count": 13
+    }
+  ],
+  "cloud_followup": {
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 22,
+        "ledger_rows": 12
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "services_removed": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "known_currency_reconciliation_passed": true,
+    "original_cleanup_failure_not_relabelled": true,
+    "service_settlements_not_natural_cycles": true
+  },
+  "frozen_policy": {
+    "memory_floor_bytes": 500000000,
+    "per_launch_reserve_bytes": 67108864,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 10,
+    "missing_monitoring_stops_test": true
+  },
+  "cloud_archive": {
+    "bytes": 144569,
+    "sha256": "b18a38b9ecd417abb6b4c1d7bea782c5f9ff20ff46ab57317574506f6e1242e9",
+    "files_verified": 15
+  },
+  "local_archive": {
+    "bytes": 1395008,
+    "sha256": "ed3683ef1d68fc3d275956222d2ab78dbd174631fd49fc5137d7bb3e78a625b7",
+    "files_verified": 50
+  },
+  "capacity_accepted": false,
+  "whole_scope_accepted": false
+}

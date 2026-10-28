@@ -1,0 +1,133 @@
+[
+  {
+    "task_id": "PR13-A05.3",
+    "case_id": "PR13-A05.3-T01",
+    "setup_and_injection": "同ack三次",
+    "expected": "一条业务结果",
+    "actual": "After real production ACK, same idempotency key and empty request body are posted three times to actual Program; identical response hashes and the same receipt/assets. Baseline production Godot drop-all-committed also executes three same logical ACK retries with one business result.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 105,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 106,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 107,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 121,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 122,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 123,
+        "record_id": "A05-same-ACK"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 53,
+        "record_id": "ACK-FAULT-drop-all-committed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.3",
+    "case_id": "PR13-A05.3-T02",
+    "setup_and_injection": "重启在holds完成前",
+    "expected": "恢复同一资产转移",
+    "actual": "Four actual Pending holds survive SIGKILL while the unchanged owned wallet-row lock remains. Cold host reuses same receipt, then commits exactly Gold23/Potions2/same equipment transfer. Read-only final audit reports all eight residue/chain checks zero.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 83,
+        "record_id": "A05-runtime-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.3",
+    "case_id": "PR13-A05.3-T03",
+    "setup_and_injection": "重复ready通知",
+    "expected": "不重复领奖",
+    "actual": "Deliver the exact authority ready frame three times during A new N/B old M. Assets after M remain Gold23/Potions2/the same equipped item with one settlement credit. Allowed later N disconnect transfers the item to RelicPile; no duplicate payout. All owned rows remain until normal schema disposal.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 133,
+        "record_id": "A05-original-ready"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 135,
+        "record_id": "A05-duplicate-ready-delivery"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 136,
+        "record_id": "A05-duplicate-ready-delivery"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 137,
+        "record_id": "A05-duplicate-ready-delivery"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 144,
+        "record_id": "A05-healthy-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  }
+]

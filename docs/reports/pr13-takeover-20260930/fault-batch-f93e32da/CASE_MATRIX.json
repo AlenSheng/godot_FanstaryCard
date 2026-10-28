@@ -1,0 +1,479 @@
+{
+  "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "case_counts": {
+    "PartialEvidence": 16,
+    "NotExercisedInThisBatch": 5
+  },
+  "case_slots": 21,
+  "Accepted": 0,
+  "cases": [
+    {
+      "case_id": "LOAD-04.4-T01",
+      "task_id": "LOAD-04.4",
+      "canonical_setup": "required丢失再重连",
+      "canonical_expected": "权威恢复",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "ready-stop/cases.jsonl",
+        "ready-stop/report.json"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain."
+    },
+    {
+      "case_id": "LOAD-04.4-T02",
+      "task_id": "LOAD-04.4",
+      "canonical_setup": "注册失败再恢复",
+      "canonical_expected": "至多一个room",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [],
+      "case_state": "NotExercisedInThisBatch",
+      "SupportOnly": false,
+      "evidence": [],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "This exact injection was not completed in this batch; preserve earlier supporting receipts and execute frozen requirements."
+    },
+    {
+      "case_id": "LOAD-04.4-T03",
+      "task_id": "LOAD-04.4",
+      "canonical_setup": "STOP排队/ready",
+      "canonical_expected": "取消或明确超时回收",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "ready-stop/cases.jsonl",
+        "ready-stop/report.json"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain."
+    },
+    {
+      "case_id": "LOAD-05.4-T01",
+      "task_id": "LOAD-05.4",
+      "canonical_setup": "ack提交后响应丢失再重试",
+      "canonical_expected": "同一receipt/资产只一次",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "full-regression/process/receipts.jsonl",
+        "full-regression/server.trx"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain. Actual seeded extraction and client ACK verified; not full exploration/Boss or load-runner successful-cycle accounting."
+    },
+    {
+      "case_id": "LOAD-05.4-T02",
+      "task_id": "LOAD-05.4",
+      "canonical_setup": "pending holds",
+      "canonical_expected": "不对外ready",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [],
+      "case_state": "NotExercisedInThisBatch",
+      "SupportOnly": false,
+      "evidence": [],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "This exact injection was not completed in this batch; preserve earlier supporting receipts and execute frozen requirements."
+    },
+    {
+      "case_id": "LOAD-05.4-T03",
+      "task_id": "LOAD-05.4",
+      "canonical_setup": "三局夹一失败重试",
+      "canonical_expected": "仅真实成功计一次",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [],
+      "case_state": "NotExercisedInThisBatch",
+      "SupportOnly": false,
+      "evidence": [],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "This exact injection was not completed in this batch; preserve earlier supporting receipts and execute frozen requirements."
+    },
+    {
+      "case_id": "PR13-A03.1-T01",
+      "task_id": "PR13-A03.1",
+      "canonical_setup": "重复同错误",
+      "canonical_expected": "恢复ID始终M",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.1-T02",
+      "task_id": "PR13-A03.1",
+      "canonical_setup": "Bootstrap晚返回",
+      "canonical_expected": "继续按M恢复",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.1-T03",
+      "task_id": "PR13-A03.1",
+      "canonical_setup": "错误无可验证match",
+      "canonical_expected": "不能清有效M",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.2-T01",
+      "task_id": "PR13-A03.2",
+      "canonical_setup": "M错误在新N房到达",
+      "canonical_expected": "N不被清",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.2-T02",
+      "task_id": "PR13-A03.2",
+      "canonical_setup": "M的Bootstrap在N到达",
+      "canonical_expected": "不覆盖N",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.2-T03",
+      "task_id": "PR13-A03.2",
+      "canonical_setup": "session切换",
+      "canonical_expected": "不恢复旧账号状态",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "callback-combined/cases.jsonl",
+        "../callback-isolation-v1/red/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "Controlled component HTTP/WS responses; no full-host PG for these delayed error/Bootstrap cases. POSTGRES, LIVE, independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A03.3-T01",
+      "task_id": "PR13-A03.3",
+      "canonical_setup": "已提交响应丢失",
+      "canonical_expected": "一次资产且一次完成",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "full-regression/process/receipts.jsonl",
+        "full-regression/server.trx"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain. Actual seeded extraction and client ACK verified; not full exploration/Boss or load-runner successful-cycle accounting."
+    },
+    {
+      "case_id": "PR13-A03.3-T02",
+      "task_id": "PR13-A03.3",
+      "canonical_setup": "未提交超时",
+      "canonical_expected": "可安全重试",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "full-regression/process/receipts.jsonl",
+        "full-regression/server.trx"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain. Actual seeded extraction and client ACK verified; not full exploration/Boss or load-runner successful-cycle accounting."
+    },
+    {
+      "case_id": "PR13-A03.3-T03",
+      "task_id": "PR13-A03.3",
+      "canonical_setup": "busy/旧receipt",
+      "canonical_expected": "不计完成",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [],
+      "case_state": "NotExercisedInThisBatch",
+      "SupportOnly": false,
+      "evidence": [],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "This exact injection was not completed in this batch; preserve earlier supporting receipts and execute frozen requirements."
+    },
+    {
+      "case_id": "PR13-A04.4-T01",
+      "task_id": "PR13-A04.4",
+      "canonical_setup": "ready阶段STOP",
+      "canonical_expected": "取消或明确deadline回收",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "ready-stop/cases.jsonl",
+        "ready-stop/report.json"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-A04.4-T02",
+      "task_id": "PR13-A04.4",
+      "canonical_setup": "reconnect收到重放",
+      "canonical_expected": "序号与room正确",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": false,
+      "evidence": [
+        "ready-stop/cases.jsonl",
+        "ready-stop/report.json"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "LIVE and MAIN independent adjudication remain. Replay room and decoder behavior observed; complete frozen sequence corpus not signed off."
+    },
+    {
+      "case_id": "PR13-A04.4-T03",
+      "task_id": "PR13-A04.4",
+      "canonical_setup": "多局迟到事件",
+      "canonical_expected": "只影响原cycle",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE"
+      ],
+      "evidence_profiles": [
+        "OFFLINE",
+        "POSTGRES"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": true,
+      "evidence": [
+        "ready-before-fix/report.json",
+        "ready-stop/late_accepted_before_ticket/client.json"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "One controlled valid-GUID stale accepted event; not the real multicycle delayed-event corpus. LIVE and independent adjudication remain."
+    },
+    {
+      "case_id": "PR13-B11.2-T01",
+      "task_id": "PR13-B11.2",
+      "canonical_setup": "重复错误",
+      "canonical_expected": "保原match",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": true,
+      "evidence": [
+        "callback-combined/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "GameStore state only; no rendered UI, full-host PG, LIVE or independent adjudication."
+    },
+    {
+      "case_id": "PR13-B11.2-T02",
+      "task_id": "PR13-B11.2",
+      "canonical_setup": "旧callback在新局",
+      "canonical_expected": "不清新UI",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "evidence_profiles": [
+        "OFFLINE"
+      ],
+      "case_state": "PartialEvidence",
+      "SupportOnly": true,
+      "evidence": [
+        "callback-combined/cases.jsonl"
+      ],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "GameStore state only; no rendered UI, full-host PG, LIVE or independent adjudication."
+    },
+    {
+      "case_id": "PR13-B11.2-T03",
+      "task_id": "PR13-B11.2",
+      "canonical_setup": "回大厅时ackUnknown",
+      "canonical_expected": "可恢复receipt/明确状态",
+      "required_profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "LIVE",
+        "RENDER"
+      ],
+      "evidence_profiles": [],
+      "case_state": "NotExercisedInThisBatch",
+      "SupportOnly": false,
+      "evidence": [],
+      "full_canonical_acceptance_satisfied": false,
+      "Accepted": false,
+      "remaining": "This exact injection was not completed in this batch; preserve earlier supporting receipts and execute frozen requirements."
+    }
+  ],
+  "historical_runner_count_note": "27 Passed / 369 NotExecuted is the original explicit offline runner partition, not the total current evidence coverage. New partial-profile receipts remain separate."
+}

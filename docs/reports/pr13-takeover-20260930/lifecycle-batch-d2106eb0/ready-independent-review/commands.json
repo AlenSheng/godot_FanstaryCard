@@ -1,0 +1,71 @@
+[
+  {
+    "command": [
+      "python3",
+      "client/tests/run_ready_stop_faults.py",
+      "--work-dir",
+      "/workspace/pr13-takeover/ready-response-loss-red-01",
+      "--case",
+      "ready_accepted_lost_resume",
+      "--case",
+      "ready_started_lost_reconnect",
+      "--case",
+      "ready_replies_lost_reconnect",
+      "--case",
+      "ready_send_lost_reconnect",
+      "--case",
+      "ready_send_all_lost_stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "environment_activation": "source /workspace/relicround-env/activate.sh",
+    "exit_code": 1
+  },
+  {
+    "command": [
+      "python3",
+      "client/tests/run_ready_stop_faults.py",
+      "--work-dir",
+      "/workspace/pr13-takeover/ready-response-loss-green-01",
+      "--case",
+      "ready_accepted_lost_resume",
+      "--case",
+      "ready_started_lost_reconnect",
+      "--case",
+      "ready_replies_lost_reconnect",
+      "--case",
+      "ready_send_lost_reconnect",
+      "--case",
+      "ready_send_all_lost_stop",
+      "--case",
+      "normal_ready",
+      "--case",
+      "required_lost_reconnect",
+      "--case",
+      "late_required_duplicate"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "environment_activation": "source /workspace/relicround-env/activate.sh",
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "python3",
+      "client/tests/run_ready_stop_faults.py",
+      "--work-dir",
+      "/workspace/pr13-takeover/ready-response-loss-54e7452f-clean",
+      "--case",
+      "ready_accepted_lost_resume",
+      "--case",
+      "ready_started_lost_reconnect",
+      "--case",
+      "ready_replies_lost_reconnect",
+      "--case",
+      "ready_send_lost_reconnect",
+      "--case",
+      "ready_send_all_lost_stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "environment_activation": "source /workspace/relicround-env/activate.sh",
+    "exit_code": 0
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "kind": "Current source full mixed normal-cycle regression running, not acceptance",
+  "plan": {
+    "kind": "Prospective current-source normal three-cycle regression",
+    "source": "2eecaf49c1b081bcba5fb5d95d2c620df7e1f9d9",
+    "accounts": 10,
+    "class_distribution": {
+      "Mage": 4,
+      "Priest": 3,
+      "Guardian": 3
+    },
+    "normal_receipt_ACK_cycles_each": 3,
+    "profile": "cyclic-gameplay",
+    "strategy": "baseline_all_hand",
+    "seed": 20260930,
+    "observation_seconds_per_cycle": 2400,
+    "original1200_duration_not_promoted": true,
+    "previous2400_relaxation_explicitly_retained": true,
+    "max_driver_seconds": 7500,
+    "max_controller_seconds": 7680,
+    "world_budget": 30,
+    "default_server_quotas": {
+      "auth": 10,
+      "write": 30,
+      "read": 120,
+      "realtime": 30
+    },
+    "audit_spool_tmpfs_MiB": 1024,
+    "native_container_upper_MiB": 1536,
+    "host_memory_floor_bytes": 500000000,
+    "disk_floor_bytes": 3000000000,
+    "disk_floor_percent": 5,
+    "same_original_audit2GiB_2million_rows_and5percent_plus16MiB_bounds": true,
+    "cloud_only_no_local_gameplay_window_or_process": true,
+    "capacity_and_original_duration_and_historical_failures_not_waived": true,
+    "no_game_balance_or_GDD_change": true,
+    "at_ns": 1792918539944768500
+  },
+  "actual_observation": {
+    "actual_state": {
+      "Running": true,
+      "ExitCode": 0,
+      "OOMKilled": false
+    },
+    "sample": {
+      "at": 1792919159.188,
+      "alive_processes": 10,
+      "online": 10,
+      "in_room": 10,
+      "completed_cycles": 4,
+      "reasons": []
+    },
+    "actual_classes": {
+      "Guardian": 3,
+      "Priest": 3,
+      "Mage": 4
+    }
+  },
+  "new_default_rate_backend": true,
+  "no_local_gameplay_process_started": true,
+  "original1200_duration_not_promoted": true,
+  "functional_acceptance_pending": true,
+  "whole_project_accepted": false
+}

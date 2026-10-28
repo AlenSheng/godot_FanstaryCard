@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Server.Identity;
 using FantasyCard.Server.Common;
@@ -18,7 +19,7 @@ public static class MatchmakingEndpoints
 
     public static IEndpointRouteBuilder MapMatchmakingEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/v1/matches").WithTags("Matchmaking");
+        var group = endpoints.MapGroup("/api/v1/matches").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Matchmaking");
         group.MapPost("/enqueue", EnqueueAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<MatchTicketResponse>(202).ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
         group.MapGet("/tickets/{ticketId:guid}", GetTicketAsync).Produces<MatchTicketResponse>().ProducesProblem(401).ProducesProblem(404);
         group.MapDelete("/tickets/{ticketId:guid}", CancelAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces(204).ProducesProblem(401).ProducesProblem(409);
@@ -32,7 +33,7 @@ public static class MatchmakingEndpoints
         catch (InvalidOperationException ex) { return Problem(context, 404, "Match ticket not found", ex.Message); }
     }
 
-    private static async Task<IResult> EnqueueAsync(EnqueueMatchRequest request, HttpContext context, IdentityService identity, MatchmakingRepository repository, CancellationToken ct)
+    private static async Task<IResult> EnqueueAsync(GameBody<EnqueueMatchRequest> request, HttpContext context, IdentityService identity, MatchmakingRepository repository, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);

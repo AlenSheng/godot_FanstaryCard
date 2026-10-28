@@ -1,0 +1,37 @@
+{
+  "authority": "MAIN",
+  "task_decisions": [
+    {
+      "task_id": "LOAD-06.1",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "at_local": "2026-10-16T23:25:43.439044+08:00",
+      "human_authorization": "本goal继续剩余自动测试并最终验收；真人排除。",
+      "reason": "T01两次真实POST重试及同键同body、原上下文和终态在当前双传输OFFLINE、真实完整Program一次性PG及真实LIVE分别核验；SQL单次购买扣款。T02/T03当前OFFLINE与LIVE通过，原真实PG reusable路径/原件及当前源码等价复核。旧GET一次重试映射不再算T01覆盖。",
+      "source_review": "docs/reports/pr13-stages-20261009/S4-load061-two-write-retry-PG-and-clean-offline-20261016/case-review.json",
+      "source_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+      "explicit_working_input_hashes": {
+        "client/data/http_endpoints.json": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8",
+        "client/data/http_schema.json": "75bbfee7ed51c19a14d17bd009866ff1c706bf3e0e255a9f4e46d13673b25f1d",
+        "client/data/realtime_schema.json": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd",
+        "client/network/gateway.gd": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+        "client/network/gateway.gd.uid": "d3a4b8e279a09c9ab0e0bd17b3d8c03e04366149ca52991dbde9e21820306af2",
+        "client/network/http_protocol.gd": "9c10ce36d3f38566b68a8ad922a61cbe74b56065ba100b0ce436d989d546d733",
+        "client/network/http_protocol.gd.uid": "b2bc61821829e8ab8d43b90c47d3be31e6b4a8abaf5aed18372ce303cf162ec8",
+        "client/network/protobuf.gd": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67",
+        "client/network/protobuf.gd.uid": "d8ebc4da9c3b5e8af5670643e8ffc521c691d9797d1240dee130dbdf5e016548",
+        "client/network/reusable_http_client.gd": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1",
+        "client/network/reusable_http_client.gd.uid": "8b48ab7c415aa84bc50829092258e55f0b3727572ad699c2c05d623947c28b6c",
+        "client/tests/fixture_runtime.py": "7aaa48a741706e81d908a14d9d101fa970de7febb671a58f7c86a198ac7d2db7",
+        "client/tests/http_protobuf_fixture.py": "fb0b7a941cebc495a4b59d3494999826a8ebb72c6b30355aaf9bf3e846722f86",
+        "client/tests/pr13_http_context_cases.gd": "b8835d17ea2e8d0ec9645b17c32ca778d3ee219deba2f5f3ebede6af1a611438",
+        "tools/pr13_http_cases.py": "d6b756e341e0cbe1e6fabe4660ea9bc6c27ba3c6b507a9c671109d7004f6cf39"
+      },
+      "failed_originals_and_original_threshold_difference_preserved": true,
+      "business_criteria_relaxed": false,
+      "scope": "HTTP不可变上下文、重试与终态，不等于容量/自然多局/UI/真人或全局门禁通过。",
+      "rollback": "切回父register撤销该单项验收；保留全部原件和测试修正，正式环境无变更。"
+    }
+  ],
+  "all_other_tasks_and_gates_unchanged": true
+}

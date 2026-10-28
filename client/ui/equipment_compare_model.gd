@@ -1,6 +1,6 @@
 extends RefCounted
 
-const CATALOG = preload("res://data/catalog.json")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 
 const AFFIXES := ["Bulwark", "Piercing", "Vitality"]
@@ -22,10 +22,7 @@ static func gear(item: Dictionary) -> Dictionary:
 	return EquipmentDetails.equipment(item)
 
 static func quality_row(item: Dictionary) -> Dictionary:
-	var quality := str(gear(item).get("quality", "")).capitalize()
-	for row in CATALOG.data.tables.EquipmentQuality:
-		if str(row.id) == quality: return row
-	return {}
+	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize())
 
 static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
 	var equipment := gear(item)
@@ -33,15 +30,18 @@ static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
 	if equipment.is_empty() or quality.is_empty(): return []
 	var level := int(equipment.get("level", 0))
 	var element := str(equipment.get("element", "None"))
-	var rows: Array[Dictionary] = [
-		{"key": "damage_" + element, "kind": "damage", "element": element, "value": float(quality.damage_percent) + level * float(quality.damage_per_level)},
-		{"key": "resistance_" + element, "kind": "resistance", "element": element, "value": float(quality.resistance_percent) + level * float(quality.resistance_per_level)},
-	]
+	var rows: Array[Dictionary] = []
+	var damage: float = float(quality.damage_percent) + level * float(quality.damage_per_level)
+	var resistance: float = float(quality.resistance_percent) + level * float(quality.resistance_per_level)
+	if not is_zero_approx(damage): rows.append({"key": "damage_" + element, "kind": "damage", "element": element, "value": damage})
+	if not is_zero_approx(resistance): rows.append({"key": "resistance_" + element, "kind": "resistance", "element": element, "value": resistance})
 	var secondary := str(equipment.get("secondary_trait", equipment.get("secondaryTrait", "")))
 	if secondary == "DrawInterval":
-		rows.append({"key": "draw_interval", "kind": "draw_interval", "element": "None", "value": float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)})
+		var interval: float = float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)
+		if not is_zero_approx(interval): rows.append({"key": "draw_interval", "kind": "draw_interval", "element": "None", "value": interval})
 	elif secondary == "ForcedEscape":
-		rows.append({"key": "forced_escape", "kind": "forced_escape", "element": "None", "value": float(quality.forced_escape_percent)})
+		var escape: float = float(quality.forced_escape_percent)
+		if not is_zero_approx(escape): rows.append({"key": "forced_escape", "kind": "forced_escape", "element": "None", "value": escape})
 	return rows
 
 static func aggregate_attributes(loadout: Array) -> Dictionary:

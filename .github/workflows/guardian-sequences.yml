@@ -1,0 +1,78 @@
+name: Guardian authoritative sequence controls
+
+on:
+  pull_request:
+    paths:
+      - 'tools/FantasyCard.GuardianProbe/**'
+      - 'tools/pr13_guardian_sequences.py'
+      - 'tools/pr13_raw_storage.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'server/src/FantasyCard.Domain/**'
+      - 'server/Directory.Build.props'
+      - 'server/global.json'
+      - 'config/**'
+      - '.github/workflows/guardian-sequences.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'tools/FantasyCard.GuardianProbe/**'
+      - 'tools/pr13_guardian_sequences.py'
+      - 'tools/pr13_raw_storage.py'
+      - 'tools/pr13_candidate_review.py'
+      - 'server/src/FantasyCard.Domain/**'
+      - 'server/Directory.Build.props'
+      - 'server/global.json'
+      - 'config/**'
+      - '.github/workflows/guardian-sequences.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: guardian-sequences-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native-controls:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Compile and execute actual boundary controls
+        working-directory: server
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet --info
+          dotnet run --project ../tools/FantasyCard.GuardianProbe/FantasyCard.GuardianProbe.csproj -c Release -- --output ../test-results/guardian-sequences/smoke --source-sha "$GITHUB_SHA" --seed-start 200001 --samples 3
+      - name: Verify original states and paired smoke coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools')
+          from pr13_guardian_sequences import validate_block
+          result = validate_block('test-results/guardian-sequences/smoke', expected_source=os.environ['GITHUB_SHA'])
+          assert result['rows'] == 36
+          result.pop('values')
+          result['canonical_experiment_acceptance'] = False
+          Path('test-results/guardian-sequences/smoke-validation.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: guardian-sequence-controls-${{ github.sha }}
+          path: test-results/guardian-sequences
+          if-no-files-found: warn
+          retention-days: 14

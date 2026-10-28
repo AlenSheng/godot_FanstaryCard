@@ -1,0 +1,13 @@
+2026-09-30 21:21:46.208 UTC [54588] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30 21:21:46.208 UTC [54588] LOG:  listening on Unix socket "/tmp/pr13-ready-stop-gtwwreiw/.s.PGSQL.5432"
+2026-09-30 21:21:46.210 UTC [54594] LOG:  database system was shut down at 2026-09-30 21:21:45 UTC
+2026-09-30 21:21:46.212 UTC [54588] LOG:  database system is ready to accept connections
+2026-09-30 21:26:46.307 UTC [54592] LOG:  checkpoint starting: time
+2026-09-30 21:27:41.446 UTC [54588] LOG:  received fast shutdown request
+2026-09-30 21:27:41.446 UTC [54588] LOG:  aborting any active transactions
+2026-09-30 21:27:41.448 UTC [54588] LOG:  background worker "logical replication launcher" (PID 54597) exited with exit code 1
+2026-09-30 21:27:42.573 UTC [54592] LOG:  checkpoint complete: wrote 9145 buffers (55.8%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 3 recycled; write=55.255 s, sync=1.006 s, total=56.266 s; sync files=3655, longest=0.004 s, average=0.001 s; distance=45847 kB, estimate=45847 kB; lsn=0/44512B0, redo lsn=0/43CB9E8
+2026-09-30 21:27:42.575 UTC [54592] LOG:  shutting down
+2026-09-30 21:27:42.576 UTC [54592] LOG:  checkpoint starting: shutdown immediate
+2026-09-30 21:27:42.585 UTC [54592] LOG:  checkpoint complete: wrote 81 buffers (0.5%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.001 s, sync=0.007 s, total=0.011 s; sync files=25, longest=0.001 s, average=0.001 s; distance=534 kB, estimate=41315 kB; lsn=0/4451328, redo lsn=0/4451328
+2026-09-30 21:27:42.597 UTC [54588] LOG:  database system is shut down

@@ -1,0 +1,89 @@
+{
+  "cases": [
+    {
+      "case_id": "LOAD-10.1-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "setup": "CurrentcriticalxUnitDLL/PDB-whole-sourceverified,actualnewnative-suiteCLIlaunchesthatmethodwithPGenvpresentthenonlytestPGenvremoved. ActualcurrentProgramandisolatedPGhealthy/clientinfoversionmatchedbeforeandafterboth. Existingassess_trx/assess_gatefunctionbodiesunchanged.",
+      "expected": "NativecriticalenvironmentSkip remainsNotExecuted/native0;completeexecution/coveragepipelineBlocked/nonzero,neverPass. PositiveactualPGcontrolReadyForMainReviewonly.",
+      "actual": {
+        "actual_native_exits": [
+          0,
+          0
+        ],
+        "actual_pipeline_exits": [
+          0,
+          3
+        ],
+        "actual_native_outcomes": [
+          "Passed",
+          "NotExecuted"
+        ],
+        "actual_gate_states": [
+          "ReadyForMainReview",
+          "Blocked"
+        ],
+        "positive_actual_schema_created_dropped1_host_DDLverified": true,
+        "missing_env_actualexecuted0_passed0_NotExecuted1": true,
+        "PGpublic_state0_no_schema_residue": true,
+        "independent_checks": 31,
+        "acceptance_flag_false_even_positive": true
+      },
+      "source": {
+        "base_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+        "base_reference_notcleanbuild_claim": true,
+        "native_critical_sourceSHA": "8ee16458c4702f3b146f93e80635015d3ee515c8e013c928174233577276a4e5",
+        "nativeDLL_SHA": "b78e9cacf9c0fab51e03e4163c732fca617744683d411e803af22facea4dfe51",
+        "new_gate_sourceSHA": "61555a200ce9cc79d76dd2d2c210f86e1eaf6d133ae841e4d32c88782776772b",
+        "native_assertions_SkipUnless_and_current_productDLLs_unmodified": true,
+        "new_code_scope": "ThinCLIactualPopen/realTRX/finalgate/exitmetadata,existingassessfunctionsunchanged;local5actualPythonchildCLIfixtures onlyunitcontrolsnotLIVE"
+      },
+      "scope": "SelectedactualcriticalPGmethodanditsnativeexecution->coveragegatepipeline,healthyrealProgram/read-onlyHTTP/PGcontext. Notfullsuite/CI/protocolmatrix/capacity. UnderlyingmissingmethodnotexecutedandnotpromotedPassed;negativeexpectedBlockedobserved.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load101-native-critical-skip-gate-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD101-T03-native-gate-two-profiles-20261021/scoped-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load101-native-suite-gate-cli-20261021-r1-originals",
+      "whole_task_accepted": false
+    }
+  ],
+  "decision": {
+    "task_id": "LOAD-10.1",
+    "case_id": "LOAD-10.1-T03",
+    "state": "Partial",
+    "new_case_profiles_closed": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "actual_native0_0_pipeline0_3_Ready_Blocked": true,
+    "underlying_skipped_critical_NotExecuted_neverPass": true,
+    "remaining_missing_case_profiles": {
+      "LOAD-10.1-T01": [
+        "CAPACITY"
+      ],
+      "LOAD-10.1-T02": [
+        "CAPACITY"
+      ],
+      "LOAD-10.1-T03": [
+        "CAPACITY"
+      ]
+    },
+    "capacity_fullsuite_CI_wholeTask_notaccepted": true,
+    "source_change_thinCLIonly_assessmentfunctions_andnativeassertions_unchanged": true,
+    "G": "G:\\PR13Evidence\\load101-native-suite-gate-cli-20261021-r1-originals",
+    "Gmembers": 438,
+    "archiveSHA": "cba321a0ba91426fc18e865ca62b72004e2f69a255455a24ecaff485c4637b0d",
+    "all175_inputs_verified_thenexactownedcleanup": true,
+    "production_unchanged": true,
+    "new_budget": "2Native invocations,oneactualSQLfixturematch/twofixtureidentitiesinownremovedschema;0onlinegameplayaccounts/cycles. Prior1013gameworld12cycles/protocol0world4UIDand10238world72cyclesunchanged",
+    "whole_project_accepted": false
+  }
+}

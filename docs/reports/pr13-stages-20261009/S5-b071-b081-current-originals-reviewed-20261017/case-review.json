@@ -1,0 +1,509 @@
+{
+  "kind": "CurrentSourceAndOriginalGuardianControlFullScopeReview",
+  "tasks": [
+    "PR13-B07.1",
+    "PR13-B08.1"
+  ],
+  "pointer_sha256": "387fb0b07964d18582417eecaaad1d30912f5a9ad8c797961396994ba3e506ce",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-load072-generator-resources-main-reviewed-20261017/register.json",
+    "sha256": "8434c608045a6f4d75b66ab24e7048c3c32ff9a21460ab6b1e9743bd2f3d6cb7"
+  },
+  "head": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+  "source_hashes": {
+    "GDD.md": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+    "GDD_BASE_v0.69.md": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1",
+    "client/data/localization_battle.json": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a",
+    "client/ui/exploration_view.gd": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd",
+    "client/ui/numerical_details.gd": "a90039ca227b0e870e0ce5438311075170f59684c34863079a7950237cd3750d",
+    "protocol/config/v1/config_bundle.proto": "07aad79d62134058c4c8870ac5101b3c622205dd424d28970a21c1f25add4a7d",
+    "protocol/golden-vectors.json": "3a66d808e65f307e504606386925a0eff23656d504a9551ce038743095fcac66",
+    "protocol/http/v1/endpoints.json": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8",
+    "protocol/http/v1/game.proto": "db047f2eeff847ccb0bb504c5363fc019754d5a6efe7e0270554c5f84df9a1c4",
+    "protocol/realtime/v1/realtime.proto": "e2290a53ab16084e89a1c87da03a6780912aabee201d5ee3b03af8ceabadd196",
+    "protocol/tests/Program.cs": "70fc101ca5a2a9a07aa8b067930d893a28fee0e5cb5746da9778b15ee73c7230",
+    "protocol/tests/ProtocolVectors.csproj": "65cc9c55d76e487b1de964debd06765a64f4297a9adef38cc8c44e6ff6d4f572",
+    "server/config/generated/fantasycard.config.bytes": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+    "server/config/generated/fantasycard.config.sha256": "5d665e29c93e2d6e06e2eed40e1e1d1565ecf33a734e9b9b3192cd3e65925a78",
+    "server/config/generated/fantasycard.config.version.txt": "896d79fb27a92aa8a47bdaa1584491ceba7576ad859dd2553a4f8ddb2ed467bd",
+    "server/src/FantasyCard.Domain/Bots/BotDirector.cs": "120a56d2a1b9b87c2cd45b0d352a69c5ae99365c2a6b0b45bf5a0aa867d468aa",
+    "server/src/FantasyCard.Domain/Bots/BotLootRules.cs": "a7af19e737ef07038959c61c6ee20407b65cfc6ebacc252fb0f9c3585407ea8b",
+    "server/src/FantasyCard.Domain/Bots/BotRules.cs": "e74259aeb5d4e95458f59414a8108ae3a0816cb559e886c564eafb3b4c4a6aca",
+    "server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs": "911c033d412595f362b437c5081b489aae5d2cda845ee7a2c1c293ce79ef1cbe",
+    "server/src/FantasyCard.Domain/Cards/DeckRules.cs": "b1096eaaf7773734b9e310145d3a994d43389626f36329f9063ab2340cf4a34b",
+    "server/src/FantasyCard.Domain/Cards/PairedDeckBudget.cs": "de6c00ba746d9bc9625077cc4a67f39ced2ecea73c7d51c3b2cb2fb05f2d8805",
+    "server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs": "5b80f7dceae6f55648ee736286b90291d1543caca513f6c0dc5f5e229e83b15b",
+    "server/src/FantasyCard.Domain/Combat/CombatDeck.cs": "7d72864d40d5c0457ecd82670ac793daa1501b00089c25c75c086d4e115a09de",
+    "server/src/FantasyCard.Domain/Combat/CombatRandom.cs": "4b8702ec8149b9a853f789cb151a173c75f4a304110bd7cdecdb0ee5fdcfde4f",
+    "server/src/FantasyCard.Domain/Combat/CombatResolver.cs": "5ef28fe291c64168d45b5e1747e2ea1b7538c6ad96f9dfdc065782d462e459b9",
+    "server/src/FantasyCard.Domain/Combat/CombatTypes.cs": "12812442ebff9879e4976c62f3b142c9a8522c299a49adda0c6a22d83e7ea4fc",
+    "server/src/FantasyCard.Domain/Combat/EquipmentCombatRules.cs": "9d086f527ad249b8e40c88da8afb613ade2e789feffc32841ce85e8260e7e515",
+    "server/src/FantasyCard.Domain/Combat/MonsterCombatState.cs": "d9007c5d6cd6959f64bd558cd275c49ab5c0c534b302b2f660d05a7d0cb01a09",
+    "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs": "630eb65b8c92d63f51eb2a762080d256f096552e3e0e564f4d15657919f12c15",
+    "server/src/FantasyCard.Domain/Combat/PveBattleFactory.cs": "deedd4d57bcef75dee499c0bab1e2e7572c0a386e91421f9f0d34435b3ce7476",
+    "server/src/FantasyCard.Domain/Combat/PveBattleState.cs": "061f28a54e657fd1b131b4eb260322fdc134ac35af9454680e104805c92766f8",
+    "server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs": "6ca893ca00ad8de7393beb2bc7ef487626d3552ad365666882fd998d236e5e2d",
+    "server/src/FantasyCard.Domain/Configuration/NumericalRules.cs": "c10c95e558dbaa4a91d9546887d2d3a8a1474dde9876581c0dd983f0c00d4dc9",
+    "server/src/FantasyCard.Domain/FantasyCard.Domain.csproj": "d04588189bb3162198b47df24a67282fdc4dd61a033bbbe060902d10ddb96055",
+    "server/src/FantasyCard.Domain/Matches/PreparationRules.cs": "4dac83eeb493bfb7d9a858a6bcca3df2f4282d7e1b7eeab886eb42b0f8d0e981",
+    "server/src/FantasyCard.Domain/Players/DomainValidationException.cs": "ac0d17a8292abb34328c5c9a6e4370cf29c7a0fa7ca78bdbd7e7150c244458cf",
+    "server/src/FantasyCard.Domain/Players/HeroClass.cs": "2f463b40dc52e10a028ce5c7ed257296e056152ede2d2be09a9611c5b9eebdf8",
+    "server/src/FantasyCard.Domain/Players/PlayerProfile.cs": "d4f969ada9b92c59522967bc4fa5241d56818033c718998aaee8f2dcb6e4c751",
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs": "9b35019f582690618cdf77014ba688115cca99174954036352d9d3938e2ca347",
+    "server/src/FantasyCard.Domain/Rooms/BattleRoomCombatPreview.cs": "808b8c59a901b45e3044e45f4186f7ae6f2ddf831ab6ced673ce9d48b64b09f4",
+    "server/src/FantasyCard.Domain/Rooms/BattleRoomInventory.cs": "d0807f19fcae223e24f48fce089723c0ad27f857914c22a858fdb8249107fadb",
+    "server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs": "16e03e2952b6dd968bc8b0c0634482c7237d125a14d6ef657530d4b516761ad5",
+    "server/src/FantasyCard.Domain/Rooms/ChaosMap.cs": "3009c046dbb657a916326b61474be59433458e9f7bbce53580de948bc4b42061",
+    "server/src/FantasyCard.Domain/Rooms/DuelRules.cs": "c2dc138c321d192105544b34fe47181f7468ad458118f94559a650811cb39af4",
+    "server/src/FantasyCard.Domain/Rooms/ExplorationInventory.cs": "7edca9f83f81cfd91261b8395fa8d94c5e7961a25aa8bba669d590ce5f502214",
+    "server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs": "94d177e7d0df18cc6053a738c580a8fb89318be4557f9c013af52d31f56e3a32",
+    "server/src/FantasyCard.Domain/Rooms/RelicPile.cs": "0b84a60ea05fee8fd65cb6c65a7514fa7588a26eee7f0d0f2803525cc9ec4c9b",
+    "server/src/FantasyCard.Domain/Rooms/RewardChoice.cs": "0500f986ed752211d5a4418419b06170f00a73cf419cfd577df0d4f8f5cafaa3",
+    "server/src/FantasyCard.Domain/Rooms/SettlementAssetClassifier.cs": "07c659a51032b7f9ad91c72ebacea04f80c26f6fde921ebbd4a5258d63415715",
+    "server/src/FantasyCard.Domain/artifacts/validation-bin/Debug/net10.0/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/artifacts/validation-bin/Debug/net10.0/FantasyCard.Domain.dll": "70f911ada262b2fdc341a217ce673f3fd63359d1f4978ce3190b3b0fe80bf3e8",
+    "server/src/FantasyCard.Domain/artifacts/validation-bin/Debug/net10.0/FantasyCard.Domain.pdb": "5381ebcc4d49b91ba4f5eb85b031d86cf8de3863dd42df3d2db46285aaa50082",
+    "server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll": "53684152c434292cf7d300609b6aff5931adf52540f4b3f5e378412edb18aba6",
+    "server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.pdb": "5d19f4aa51305304892a4e3344a6d56eaa89ce9b00d089e3c032ad66afb37a71",
+    "server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.dll": "9eb82d2270fe7f105ca30890869d451bca4f97729dd5cb310fc0b174e5594706",
+    "server/src/FantasyCard.Domain/bin/Release/net10.0/FantasyCard.Domain.pdb": "6429098adcaac3ec2708bae3cf22c7fece9416653a09ee1a714eee7df3becbd7",
+    "server/src/FantasyCard.Domain/bin/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.dll": "5ef836ea4188649a9901dfc48898e9525f5fc002da98ba06b6dc8cd0254c4412",
+    "server/src/FantasyCard.Domain/bin/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.dll": "e8730ebc1b9af9a1e178f85fd65e8b17d03787175f4c26496a38ab83932b19dc",
+    "server/src/FantasyCard.Domain/bin/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.dll": "a7b1674e6614b98e36ce11dc92f4583808b1f5443e1a5d1777d9843532e1f670",
+    "server/src/FantasyCard.Domain/bin/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.dll": "937d0b984697a481d882372809ab82cd7c753d9d524b3b566c09e8b626ea73d0",
+    "server/src/FantasyCard.Domain/bin/map-group-final-1/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/map-group-final-1/FantasyCard.Domain.dll": "3d1f0579916a7986f6261b13c1574e4ed44f34aae74da822cef91300a733d685",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-1/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-1/FantasyCard.Domain.dll": "408b97ffbc9ce31b2658944fa8c922986d8e98aa80e227c73378e1074336a3c1",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-2/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-2/FantasyCard.Domain.dll": "1da6f69a63b3ea2e3c270c7e0bd580961b4f54ab6dcd1904932e8f008aa1fc1c",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-3/FantasyCard.Domain.deps.json": "11b0046564738707ec15a618310d3851933022abe6b12fcee06e01660786dc6f",
+    "server/src/FantasyCard.Domain/bin/treasure-domain-3/FantasyCard.Domain.dll": "21f08fe76ba8e9ef2207b852df1217c6be15a7df238cf932eac9fe732c5c30cb",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.AssemblyInfo.cs": "a12c5a8a6b3e3aa04a60d402fbd9b8850141690eb3fd49604814a7fbf28a9110",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.AssemblyInfoInputs.cache": "1b4856c3f05f67a76f48cd5618136ec5fa86cc060bc14f2e57af15318811fa27",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.assets.cache": "5cb72bfb6d676901d4e8995e7409201b520d557139570b7146672e0b4938f724",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "f89f53df75c6b8c5d1f656f32266d10959434cf2c8b25820f66aa8863fc8af17",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.csproj.FileListAbsolute.txt": "79fa511294b1d6e99619836d194b44ccccf2e07df55f41919011c5d6bf4b0283",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.dll": "53684152c434292cf7d300609b6aff5931adf52540f4b3f5e378412edb18aba6",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.pdb": "5d19f4aa51305304892a4e3344a6d56eaa89ce9b00d089e3c032ad66afb37a71",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/FantasyCard.Domain.sourcelink.json": "e987bfc7aef7dc0b65cd503eac3a81aa25d4f23fa8929b81a797b092b9de7c19",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/ref/FantasyCard.Domain.dll": "8ed7e71fa89daf928114053db4f9ebddffc465431678ba0d16277cf3d054e431",
+    "server/src/FantasyCard.Domain/obj/Debug/net10.0/refint/FantasyCard.Domain.dll": "8ed7e71fa89daf928114053db4f9ebddffc465431678ba0d16277cf3d054e431",
+    "server/src/FantasyCard.Domain/obj/FantasyCard.Domain.csproj.nuget.dgspec.json": "514da9bb5f9c25c3ee387abf6da09b5def7f824d0a1d768250598d92cc1dd627",
+    "server/src/FantasyCard.Domain/obj/FantasyCard.Domain.csproj.nuget.g.props": "06bd21693974ee64f79e82fe458ec790dfa2016f2212714a49855c8f1ce7b9ee",
+    "server/src/FantasyCard.Domain/obj/FantasyCard.Domain.csproj.nuget.g.targets": "971cc9b535384849b5c661d776cd7a80833a416265e32e8968e06c367368b8b5",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.AssemblyInfo.cs": "dd92704736446b83a2e0100195bd6724ab252694387bbcc944cb8a825a3f2d66",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.AssemblyInfoInputs.cache": "24ca7cfd4ae7fcb8449533ad3421397ac57d22d4358691337cd4ade65e4b964e",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.assets.cache": "3a57c03b68f97557ea10d245eb5270be028448ee78f34b7d175ca9b6501f4fd7",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "747f86e64770193ac8aacf12a21205646b839fe40a1dd16dda4fb544667bca9b",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.csproj.FileListAbsolute.txt": "798a90e44af7d56a13042ae4730f2f534d4e0fc219204889683a55e6ea104e05",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.dll": "9eb82d2270fe7f105ca30890869d451bca4f97729dd5cb310fc0b174e5594706",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.pdb": "6429098adcaac3ec2708bae3cf22c7fece9416653a09ee1a714eee7df3becbd7",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/FantasyCard.Domain.sourcelink.json": "376c11c6eca0b0af7206ea3ee4a61a8405c175da9bfe81be2d5780974cd682df",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/ref/FantasyCard.Domain.dll": "e5733a6cafb7d9e5d998fca84ceac6b5643c097dc0e0cd92a3c261bd7899a342",
+    "server/src/FantasyCard.Domain/obj/Release/net10.0/refint/FantasyCard.Domain.dll": "e5733a6cafb7d9e5d998fca84ceac6b5643c097dc0e0cd92a3c261bd7899a342",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.assets.cache": "0ef10ef72fe3ef9e7c442f2d57b5a41cbf644bf994cbf443c3720f007f83e3ed",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "3c719100fc46200ec4c984a9ce4c5fc189e9c6f5ee378b5484bb15f424dfa56e",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.csproj.FileListAbsolute.txt": "a80a619ee36e1cb380abcbbeff5427171f3e134d3c9142822b6a037876a2b61c",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.dll": "5ef836ea4188649a9901dfc48898e9525f5fc002da98ba06b6dc8cd0254c4412",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/ref/FantasyCard.Domain.dll": "8dc71b4245a562bd47437218d83ae85ec4ee3457d5f74db11d9fb5cdbcbcd3b8",
+    "server/src/FantasyCard.Domain/obj/gameplay-994c4957e1624d08a77e24f3bc44439e/refint/FantasyCard.Domain.dll": "8dc71b4245a562bd47437218d83ae85ec4ee3457d5f74db11d9fb5cdbcbcd3b8",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.assets.cache": "ddadb054416bf0c6825a5e38c74cce58c97f1e732f7de9c069778d06d065d655",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "462ac6cb224bf62b374e98f793ce41a4ad8a1e8febd190f1191ef13754abe267",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.csproj.FileListAbsolute.txt": "eb027d89e4ce8a2d5f20ff4f80fc080c8e705727bb2b69c7db73ad8ef43f9011",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.dll": "e8730ebc1b9af9a1e178f85fd65e8b17d03787175f4c26496a38ab83932b19dc",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/ref/FantasyCard.Domain.dll": "2a44656c1410b5cc66884dde2fc49c49799aefd5ad9191915ea13044e2d1e0e8",
+    "server/src/FantasyCard.Domain/obj/gameplay-a3031dafc9614ea68e35cb253806e4f6/refint/FantasyCard.Domain.dll": "2a44656c1410b5cc66884dde2fc49c49799aefd5ad9191915ea13044e2d1e0e8",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.assets.cache": "29715ab4185a07637435310e8ebb4f910f9b186ca655b21fdcb2b3ec361ea991",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "d856f5583128c7428262254bb91cf9de83ac0ef3bf9dd6def79f725708fb2002",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.csproj.FileListAbsolute.txt": "cb9b4b3eb7e39f64b93d4e9964efc6b8e2da90efef68d270051639e9ed32f3da",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.dll": "a7b1674e6614b98e36ce11dc92f4583808b1f5443e1a5d1777d9843532e1f670",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/ref/FantasyCard.Domain.dll": "2a44656c1410b5cc66884dde2fc49c49799aefd5ad9191915ea13044e2d1e0e8",
+    "server/src/FantasyCard.Domain/obj/gameplay-f64a94f1015142708d6eecd9e0becad5/refint/FantasyCard.Domain.dll": "2a44656c1410b5cc66884dde2fc49c49799aefd5ad9191915ea13044e2d1e0e8",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.assets.cache": "37d80da73cc5e9ca72c5c93ae8bd3fcab86a416fed1bad46920f073ff9bb85a5",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "5727ab7a14b6a82273adad840d425d39082b3ddfbd90bc9f85263a7b9ee313f3",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.csproj.FileListAbsolute.txt": "584aa838058782ec1b963c45803975af2653dd3156bd542f7367f131d53c05dc",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.dll": "937d0b984697a481d882372809ab82cd7c753d9d524b3b566c09e8b626ea73d0",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/ref/FantasyCard.Domain.dll": "9b134ed1c314b89bf91630443a01955eb541fd5e3f25504f93419ace1467209a",
+    "server/src/FantasyCard.Domain/obj/gameplay-f7c461de53d54310923ecf6d9bbb23c1/refint/FantasyCard.Domain.dll": "9b134ed1c314b89bf91630443a01955eb541fd5e3f25504f93419ace1467209a",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.assets.cache": "ef23685ef00ecc75d08e948df30b8f5b3b90841ea0089e8d0ca0fc1f451616db",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "6ed0bcb01e324c5ed088f0f94fcfcd89de5a6dc092d125258d009424ef900ff1",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.csproj.FileListAbsolute.txt": "1e324baad192ff449781ea7fe679dcde131fb1918ed4ee66ebe28e3b83fa4d10",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.dll": "3d1f0579916a7986f6261b13c1574e4ed44f34aae74da822cef91300a733d685",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/ref/FantasyCard.Domain.dll": "8dc71b4245a562bd47437218d83ae85ec4ee3457d5f74db11d9fb5cdbcbcd3b8",
+    "server/src/FantasyCard.Domain/obj/map-group-final-1/refint/FantasyCard.Domain.dll": "8dc71b4245a562bd47437218d83ae85ec4ee3457d5f74db11d9fb5cdbcbcd3b8",
+    "server/src/FantasyCard.Domain/obj/project.assets.json": "1e4bb6fcf88aa5ac8fd756c9a64f8738cb61e540dcbe90955bff321d460d912a",
+    "server/src/FantasyCard.Domain/obj/project.nuget.cache": "1fc3f0a3b6c550326e2998fb833f8bfaabc111868a7dc8b25b37a73876e4802f",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.assets.cache": "01468494ec9e362c4a2f20a66f80d70b14c71604aa8749f3ccf12e7822149c5f",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "1002d5a923fc4cf5d3ea197e1e0af66182986db1e7fa0dfdfe2f66be1df66a0a",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.csproj.FileListAbsolute.txt": "a547aebebe8390c30a7347672bac3ad19cea7f4e9bf8a78189ea0e016bb9ecb3",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.dll": "408b97ffbc9ce31b2658944fa8c922986d8e98aa80e227c73378e1074336a3c1",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/ref/FantasyCard.Domain.dll": "c3e331596961aa719cbad00aea362a37a14328b7fc10eaeea83d43b6d66c74a6",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-1/refint/FantasyCard.Domain.dll": "c3e331596961aa719cbad00aea362a37a14328b7fc10eaeea83d43b6d66c74a6",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.assets.cache": "d3a320daa6e3004a7b2397da9b4f002443cf0ca5864c62a4975f440a6da39093",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "375531cfb9c703d2b48ff8880a44fbecebfd7c8f676ad17989dfd4ac09a1423d",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.csproj.FileListAbsolute.txt": "5b2e901fbde272ff698d3c353c883f637329099db5a115f1886e7a7e1600c4a4",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.dll": "1da6f69a63b3ea2e3c270c7e0bd580961b4f54ab6dcd1904932e8f008aa1fc1c",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/ref/FantasyCard.Domain.dll": "c3e331596961aa719cbad00aea362a37a14328b7fc10eaeea83d43b6d66c74a6",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-2/refint/FantasyCard.Domain.dll": "c3e331596961aa719cbad00aea362a37a14328b7fc10eaeea83d43b6d66c74a6",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/.NETCoreApp,Version=v10.0.AssemblyAttributes.cs": "93d67476196ebfc80d1d7d8844b91146cfd678d105f5ce635eb900ca40610c9b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.AssemblyInfo.cs": "5f465a70f424c12b262a6e366c6f00c38ca99719d01156e1ad77e6356fe2015f",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.AssemblyInfoInputs.cache": "263112c44437a4464c588b504d12618ffec757ba6496c36b8ef88ec9eb8e867b",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.GeneratedMSBuildEditorConfig.editorconfig": "347904c7848d170d912a1e6ff1d4a5a3cd9caa1cb4566b2a746334232bc53c00",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.GlobalUsings.g.cs": "a3c6048bb4d922b1799a9977f84362a3787b68810cac67aa86ac3aa23295f227",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.assets.cache": "c8d2ee38f9db8f64c9abcadab9f60a47add5a4c1112dc6a58b3eb223217e1c02",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.csproj.CoreCompileInputs.cache": "59787a697589f9db4e1fa6f2130244e3879f3d3730072881693598f2759efbaf",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.csproj.FileListAbsolute.txt": "bfe3245e0b893c95ed2c5b860d218ebeaeb6266a68da8a57b58fee8fbd5b5af7",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.dll": "21f08fe76ba8e9ef2207b852df1217c6be15a7df238cf932eac9fe732c5c30cb",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/FantasyCard.Domain.sourcelink.json": "fbcbdbf8713d5bca77f011ba12f901e5b164f38025da96aa93ec64b8901fccf0",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/ref/FantasyCard.Domain.dll": "9b134ed1c314b89bf91630443a01955eb541fd5e3f25504f93419ace1467209a",
+    "server/src/FantasyCard.Domain/obj/treasure-domain-3/refint/FantasyCard.Domain.dll": "9b134ed1c314b89bf91630443a01955eb541fd5e3f25504f93419ace1467209a",
+    "tools/pr13_guardian_sequences.py": "f1775243ff015f6b27dcbe9970fe7b2bed79650428b86cfee77468b6b3ab9cfd"
+  },
+  "stage_manifests": [
+    {
+      "stage": "S5-b07-current-full36000-table",
+      "files_SHA_verified": 19,
+      "manifest_sha256": "ed78603562df6649c041f0820edaddb8d43c40e5e0c4953e2b2048bc1d62d1ce"
+    },
+    {
+      "stage": "S3-b07-current-table-full162-RENDER",
+      "files_SHA_verified": 37,
+      "manifest_sha256": "5e8734668048374d53b7c58405b856144875146fc13dbfe8e79bac51c3cb4f4e"
+    },
+    {
+      "stage": "S5-b08-control-contract",
+      "files_SHA_verified": 24,
+      "manifest_sha256": "0f8c4e3448a5c5a14a03d9d696dddb86ad9f41dde274d88b2f09cd8ddc85ba24"
+    },
+    {
+      "stage": "S3-b08-control-render",
+      "files_SHA_verified": 83,
+      "manifest_sha256": "6ec26d6434d3cb04b66d2bc8f7b3c76c4fe067d8c566e29a56e2a04ff0e6bd12"
+    }
+  ],
+  "G_originals": [
+    {
+      "path": "G:\\PR13Evidence\\B07-current-table-sequences-r1-20261013",
+      "manifest_sha256": "a34095b6f4642ae906cc5724649476592035c55a6408df9a1ebc1a147bb917cc",
+      "files_SHA_verified": 142,
+      "shared_originals_resolved": 2,
+      "shared_reference_receipt_sha256": "de05578fadaa6122045fff6f08a4caf937d9c3b99107588b07bb9e78fb09ceb5",
+      "archive": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\B07-current-table-sequences-r1-20261013-complete-G\\complete-originals.private.tar.gz",
+      "archive_sha256": "c123b9812491afc75bbb46bb61b9a38ee85c7092013302cf14989448be361790",
+      "archive_bytes": 380838874,
+      "archive_previously_CRC_verified": true
+    },
+    {
+      "path": "G:\\PR13Evidence\\B07-current-table-render-r1-20261013",
+      "manifest_sha256": "5d1dbc4d567f7c15c16f41ad6dd6b412d84bba354a1169ed47a0818674a5c57b",
+      "files_SHA_verified": 3415,
+      "shared_originals_resolved": 3374,
+      "shared_reference_receipt_sha256": "1e9e64f83277a01644ff35ad9ffe578966f48b313ded10f51154fb88f86e725c",
+      "archive": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\B07-current-table-render-r1-20261013-complete-G\\complete-originals.private.tar.gz",
+      "archive_sha256": "d2f44600a2bf1b7225f7de8519c796a3c4fc7c7000aac0049382e99c6a4a48f2",
+      "archive_bytes": 25320951,
+      "archive_previously_CRC_verified": true
+    }
+  ],
+  "shared_source_runtime_members_SHA_verified": 474,
+  "current_domain_B07_byte_equivalent": true,
+  "current_domain_B08_only_two_comment_lines_changed": true,
+  "production_config_unchanged": true,
+  "B07": {
+    "all_raw_rows_revalidated": 36000,
+    "physical_parts": 15,
+    "boundaries": 324000,
+    "tables": [
+      {
+        "level": 0,
+        "baseline_per_play": 1.0,
+        "candidate_per_play": 1.0,
+        "paired_seeds": 3000
+      },
+      {
+        "level": 1,
+        "baseline_per_play": 1.0,
+        "candidate_per_play": 1.4,
+        "paired_seeds": 3000
+      },
+      {
+        "level": 2,
+        "baseline_per_play": 2.0,
+        "candidate_per_play": 1.8,
+        "paired_seeds": 3000
+      },
+      {
+        "level": 3,
+        "baseline_per_play": 2.0,
+        "candidate_per_play": 2.2,
+        "paired_seeds": 3000
+      },
+      {
+        "level": 4,
+        "baseline_per_play": 3.0,
+        "candidate_per_play": 2.6,
+        "paired_seeds": 3000
+      },
+      {
+        "level": 5,
+        "baseline_per_play": 3.0,
+        "candidate_per_play": 3.0,
+        "paired_seeds": 3000
+      }
+    ],
+    "full_native_state_hashes_and_9_boundaries_validated": true,
+    "no_new_sampling": true,
+    "old_older_runtime_attempt_retained_not_accepted": true,
+    "candidate_activated": false,
+    "render_rows": 162,
+    "render_PNGs": 18
+  },
+  "B08": {
+    "all_raw_rows_revalidated": 54000,
+    "all_actual_events_revalidated": 486000,
+    "raw_bytes": 221244000,
+    "files_SHA_verified": 12,
+    "event_counts": {
+      "first": 54000,
+      "second": 54000,
+      "third": 54000,
+      "window-start": 54000,
+      "at-7999ms": 54000,
+      "at-8000ms": 54000,
+      "target-a-first": 54000,
+      "target-b-first": 54000,
+      "pvp-new-window": 54000
+    },
+    "gzip_CRC_passed": true,
+    "full_half_zero_and_7999_8000ms_exact": true,
+    "target_and_PVP_restore_hashes_equal": true,
+    "union_not_naive_duration_sum": true,
+    "second_algorithm_added": false,
+    "render_observations": 54,
+    "render_PNGs": 3
+  },
+  "current_UI": {
+    "formal_files": [
+      {
+        "path": "client/ui/exploration_view.gd",
+        "bytes": 44587,
+        "sha256": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd"
+      },
+      {
+        "path": "client/data/localization_battle.json",
+        "bytes": 5015,
+        "sha256": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a"
+      }
+    ],
+    "original_review": {
+      "path": "outputs/pr13-tencent-20261009/PR13_UI_FINAL_DISJOINT36_AND_CAPTION12_REVIEW_20261016_R3.json",
+      "bytes": 27100,
+      "sha256": "7f1c7b28ccb2490fc1a7326192868303c1b30442870daab1ddf58bcceef52e95"
+    },
+    "layout_frames_SHA_verified": 36,
+    "caption_frames_SHA_verified": 12,
+    "adoption": "R1 unchanged18+R2 affected18; R3 only changes passive-description font/wrapping within unchanged rectangles. R3 captions supersede only that component in those36 layout frames. Per-frame source revisions are retained.",
+    "B07_numerical_details_byte_unchanged_since_RENDER": true,
+    "B08_status_labels_unchanged": true,
+    "old_pixels_source_revisions_retained": true,
+    "original_Priest80_over_70_valid": true,
+    "personally_viewed_this_continuation": [
+      "B07 EN960 numerical table",
+      "B08 T01 source-era control label",
+      "current shield49 EN960 layout",
+      "current Guardian PVE EN960 caption"
+    ]
+  },
+  "evidence_refs": [
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-contract-expansion/report.json",
+      "sha256": "3ab8d38462672fe27cb50516322a28ebef1f472e836227755ad9fd0a60ed8d4e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S4-contract-followup/report.json",
+      "sha256": "c8c5e7a915caafd743cd51ed7dd78a027644e99df0ad0b954c245100eaf0ada8"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S5-wait-shield-route/public-manifest.json",
+      "sha256": "e16f486ad6eb21fc0858f15ce19982dd209e3adc4b61d03e9f646e7a7df04c18"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S5-wait-shield-route/runtime-observations.json",
+      "sha256": "0c5c4febd3bc9b1090be19d25197e6c2d1c8eeeb1e60eeb278e7b7c694c7afd6"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/public-manifest.json",
+      "sha256": "9d63bddf44461f553bae0f528a066a1c4f95a99160e37beb9504200c8439d878"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json",
+      "sha256": "ad2fa2b68800b1217770cfb8df09ec9869c6b3325a7f5fdabdc9e42f68a6d980"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S5-budget-restart-current/summary.json",
+      "sha256": "51843f0cfc1ccc709e10dfdd3fceb8e2a9c93c9c5b8f84a5a53cac9dca54b53e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261008/S3-S5-complete-case-contracts-current/summary.json",
+      "sha256": "d6c2488997eb912a91269451205a286ab6e8b8ada2765590c5e71591b63bd6ed"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-cloud-ready-canonical/summary.json",
+      "sha256": "dabca385cb6b762024ab343ef42177bf2b7dd8c0676e12950a36ace1f72c9fae"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-cloud-server-c1-complete/summary.json",
+      "sha256": "69a527b75cc4a42d8072d5ff57d386d86490637f79898de794f629a00bf2d86d"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S4-cloud-domain-and-cases-current/summary.json",
+      "sha256": "99bf92b31673772be938b2b7886b09b88dd7075d461bcd7a2247613bce3076f4"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b07-current-table-full162-RENDER/native-result.original.json",
+      "sha256": "c266a75860416042cfc691d8843a4aba964b1d4ff96c7b2200d38f193e67ea15"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b07-current-table-full162-RENDER/native-rows.original.jsonl",
+      "sha256": "b3b477e1bc1ed69ac62a3ebf813269f8a068d057dd1cdbeda35a33bd029d22dc"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b07-current-table-full162-RENDER/independent-validation.original.json",
+      "sha256": "db7803806467f95001718d41493ee724259095134d54325c1a3e911eea9f6e42"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b07-current-table-full162-RENDER/original18-visual-review.json",
+      "sha256": "7668f1066c13bbe09b73cb90bd438b11de06eb89214318e04c14361e2bd37020"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b07-current-table-full162-RENDER/complete-original-G-receipt.json",
+      "sha256": "74ff04e3dad605374aa4c062662279086ab33b519193ca990ed819aa09fd2bc3"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/report.original.json",
+      "sha256": "e3c306937ac6b3bd916310829447caca9d078d24f4e7459208c8a3fd62b88bd7"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/execution.original.json",
+      "sha256": "d2fa4f629f79356b4e1775e830b2445ce756a3647e086fb29d028894d03659d5"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/result.original.json",
+      "sha256": "565bcdf118dc1d7954ccd673f66e8244a2148716042d7e442ff21f6579463f06"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/independent-terminal-source-validation.original.json",
+      "sha256": "ffdb77f98966dc50080b4c82c28509f3d5da554176f2bbc73730ac29549a17b3"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/complete-original-G-receipt.json",
+      "sha256": "6ee0d91168a80e31dae5bee952b824f00ce19c3bbe81daa101204c4a4c5ee1de"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b07-current-full36000-table/shared-current-source-and-runtime-G-proof.json",
+      "sha256": "274dfd166f6f9b4e21d5d5527a1d61a2c5925e9e15f99e1e939345266925dae0"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/report.json",
+      "sha256": "d74f6771fb480b0289a696517326fdcc4ed7be45a13c635b54a6f996e272c46f"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/source-equivalence.json",
+      "sha256": "48109b1b48a8350566768dab9b20da93654bc0e75e4dc16c7173e84bc686ed46"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-b08-control-contract/raw-backup-manifest.json",
+      "sha256": "ab11abef00a598c166ca6541070d233df9191ff13f200c7fa0f895465dc44b5c"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T01/native-result.json",
+      "sha256": "cfbb073a1d4bcacc98cfeba7e86df072891de0df079815ed49f367d826c68b8c"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T01/result.json",
+      "sha256": "1aacfe0d36c9d555a478a7fae27a401fd85ff46be3d0eadc41350e46246aa59a"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/source-equivalence.json",
+      "sha256": "1ca0753755c18e7692df226414d9ab956daa46bfb6c723587c43713afc4bcb78"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T02/native-result.json",
+      "sha256": "89efa6f23139d8d1c2feae5047cf9df3321eaae5331356a036fca03316c82908"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T02/result.json",
+      "sha256": "db1b82ebe52c30905f05549d2fd493d39a9f41e208d874911f334eddeb2238fb"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T03/native-result.json",
+      "sha256": "31287e2c57956a714b745945dbfb56bc9722fe9d88f050b3f8f46fd10349298e"
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S3-b08-control-render/PR13-B08.1-T03/result.json",
+      "sha256": "1df8783838079b4418c20a7d568c06cefebb43763b13c45346c94b8b81720377"
+    }
+  ],
+  "new_native_or_cloud_runs": 0,
+  "new_encounters": 0,
+  "new_RENDER": 0,
+  "human_experience": false,
+  "natural_battle_strength_or_candidate_benefit": false,
+  "capacity_success": false,
+  "all_required_profiles_and_dependencies_reviewed": true
+}

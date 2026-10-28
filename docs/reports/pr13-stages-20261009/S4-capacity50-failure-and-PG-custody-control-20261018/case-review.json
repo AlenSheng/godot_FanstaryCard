@@ -1,0 +1,151 @@
+{
+  "kind": "ReviewedFailureAndAuxiliaryCustodyControl",
+  "source_release": "8dc3a100123606de7d2898190f9c19b39070dc7a",
+  "authoritative_task_counts": {
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "Failed": 0
+  },
+  "original_tasks": 132,
+  "original_cases": 396,
+  "unaccepted_tasks": 77,
+  "register_gate_MAIN_changed": false,
+  "whole_acceptance": false,
+  "original50": {
+    "status": "Failed",
+    "native_clients": 50,
+    "exit": 1,
+    "stop": "duration_limit",
+    "load_coverage": {
+      "passed": false,
+      "window_seconds": 600.0,
+      "observed_seconds": 590.324000120163,
+      "compliant_seconds": 10.065999984741211,
+      "coverage": 0.016776666641235352,
+      "longest_continuous_seconds": 10.065999984741211,
+      "target_online": 50,
+      "target_active": 50,
+      "minimum_command_rate": 1,
+      "maximum_gap": 20.0,
+      "minimum_window": 600,
+      "minimum_continuous": 120,
+      "minimum_coverage": 0.95,
+      "evidence_errors": []
+    },
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Failed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Unknown"
+    },
+    "running_player_cycles": 109,
+    "running_ACKs": 109,
+    "drain_ACKs": 0,
+    "PG_OOMKilled": true,
+    "private_PG_memory_MiB": 384,
+    "PG_tmpfs_MiB": 256,
+    "final_logical_or_physical_DB_snapshot_available": false,
+    "old_controller_removed_PG_after_dump_error_before_G_barrier": true,
+    "world_match_count": "Unknown; no final PG snapshot",
+    "budget_reservation_world_matches": 120,
+    "previous_confirmed_capacity_world_matches": 18,
+    "combined_capacity_budget_reservation": 138,
+    "combined_capacity_match_ceiling": 300,
+    "new_matches_this_control": 0,
+    "available_cloud_originals_G_SHA_verified": 16,
+    "snapshot_recovered_by_new_control": false
+  },
+  "auxiliary_controls": [
+    {
+      "control": "PG-custody-R1",
+      "status": "Failed",
+      "failure": "root-owned0700 bind top blocked image reexec uid70 traversal",
+      "synthetic_rows_created": 0,
+      "originals_kept": true
+    },
+    {
+      "control": "PG-custody-R2",
+      "status": "Failed",
+      "failure": "systemd0077 narrowed mkdir0711 to0700; explicit chmod was missing",
+      "synthetic_rows_created": 0,
+      "originals_kept": true
+    },
+    {
+      "control": "PG-custody-R3",
+      "status": "PassedBounded",
+      "synthetic_rows": 128,
+      "private_PG_memory_MiB": 768,
+      "network": "none",
+      "explicit_chmod_bind_top": "0711",
+      "private_host_parent_mode": "0700",
+      "expected_pg_dump_invalid_option_failure": true,
+      "stopped_container_and_bind_preserved_until_G": true,
+      "actual_restart_rows_and_digest_equal": true,
+      "physical_archive_members_SHA_verified": 1278,
+      "G_before_container_or_data_removal": true,
+      "archive_restore_to_a_new_container_executed": false,
+      "new_game_accounts": 0,
+      "new_matches": 0,
+      "new_native_clients": 0
+    }
+  ],
+  "prospective_capacity_controller": {
+    "local_only": true,
+    "uploaded_or_gameplay_executed": false,
+    "PG_memory_MiB": 768,
+    "storage": "owned disk bind retained on failure and until G confirmation",
+    "explicit_chmod_required_under0077": true,
+    "retain_PG_even_if_other_service_cleanup_throws": true,
+    "capture_PG_logs_before_cleanup": true,
+    "exact_finally_controls_passed": 7,
+    "source_sha256": "0c95132d9b8eb194086ad3b8cdba2a0bd47c05f84db3ac2e784890219d24f07e",
+    "physical_bind_data_never_deleted_by_this_controller": true
+  },
+  "local_probe_controls": {
+    "checks": 11,
+    "full_workflow_cases": 8,
+    "actual_function_POSIX_umask_models": 3,
+    "fake_Docker_only": true
+  },
+  "postconditions": {
+    "cloud_code_and_metadata_copies_deleted_after_G": 30,
+    "local_test_code_kept": true,
+    "all_four_cloud_raw_evidence_roots_kept": true,
+    "three_probe_containers_removed_after_G": true,
+    "production_unchanged": true,
+    "production_health": 200,
+    "RAM_floor_max_5percent_500MB": true,
+    "cloud_disk_minimum_percent": 5,
+    "old_disk15percent_met": false,
+    "candidate_defaults_activated": false,
+    "GDD_Priest_80_over70_legal_rule_unchanged": true,
+    "UI_or_bitmap_changed": false,
+    "human_experience_excluded": true
+  },
+  "case_reviews": [
+    {
+      "case_id": "PR13-A10.2-T03",
+      "decision": "Partial",
+      "current50_load": "Failed",
+      "100clients": "NotExecuted",
+      "canonical_promoted": false
+    },
+    {
+      "case_id": "LOAD-10.4-T01",
+      "decision": "Partial",
+      "current50_final_PG_durability_and_cleanup": "Unknown",
+      "three_paired_rounds": "StillMissing",
+      "canonical_promoted": false
+    }
+  ],
+  "remaining": [
+    "Original50 and100 capacity qualifications",
+    "Default quota profiles and paired rounds",
+    "Thirty-minute stability and other canonical pending profiles",
+    "Manual MAIN/register/gate review"
+  ],
+  "no_new_CI_or_deployment_claim": true
+}

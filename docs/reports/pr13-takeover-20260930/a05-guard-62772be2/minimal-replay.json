@@ -1,0 +1,71 @@
+{
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "source_manifest": "source-green2-fixed.json",
+  "profile": "profile-green2.json",
+  "algorithm_version": "A05GuardProcess/1",
+  "replay_scope": "One serial unfiltered Server suite, private Unix PG, production Program/Godot, original assertions unchanged. Do not run against an existing or remote database. No upload/CI/deploy required.",
+  "preparation": [
+    {
+      "operation": "Create new minimal source directory; for every source manifest path read exact integration_sha:path from authorized local Git repository using git show into that same relative path; verify Git blob/bytes/SHA256. Do not use current working-tree bytes or newer documentation HEAD.",
+      "excluded": "normal bin/obj, .git, .packages, .godot; tracked historical artifacts/validation-bin are in original copied source manifest but are never executed."
+    },
+    {
+      "operation": "Remove all source-internal bin/obj before fresh build; outputs remain source-internal Release."
+    },
+    {
+      "operation": "Create unique owned PG data/socket directories mode700; initdb UTF8 trust local only, own user; pg_ctl start listen_addresses empty, socket private path, unique port, max_connections64/shared_buffers32MB. Preserve PG log."
+    }
+  ],
+  "toolchain_activation": "source /workspace/relicround-env/activate.sh",
+  "environment": {
+    "FANTASYCARD_TEST_POSTGRES": "Host=<owned_private_socket>;Port=<owned_port>;Username=<owned_user>;Database=postgres;Pooling=true;Maximum Pool Size=8",
+    "FANTASYCARD_PROCESS_SERVER_DLL": "<source_root>/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+    "FANTASYCARD_PROCESS_EVIDENCE": "<new_owned_evidence>/green",
+    "FANTASYCARD_PROCESS_SOURCE_SHA": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+    "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+    "NUGET_PACKAGES": "/workspace/relicround-env/nuget"
+  },
+  "commands": [
+    {
+      "cwd": "<source_root>/server",
+      "argv": [
+        "dotnet",
+        "restore",
+        "FantasyCard.Server.slnx",
+        "-p:NuGetAudit=false",
+        "--source",
+        "/workspace/relicround-env/nuget"
+      ]
+    },
+    {
+      "cwd": "<source_root>/server",
+      "argv": [
+        "dotnet",
+        "build",
+        "FantasyCard.Server.slnx",
+        "-c",
+        "Release",
+        "--no-restore"
+      ]
+    },
+    {
+      "cwd": "<source_root>/server",
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--logger",
+        "trx;LogFileName=server.trx",
+        "--results-directory",
+        "<new_owned_evidence>/green"
+      ]
+    }
+  ],
+  "audit": "C-AUDIT is the frozen runtime-owned per-schema READ ONLY + ROLLBACK procedure in ProcessLifecycleA05AssetAudit.cs, actual SQL/raw preserved under green2; before/after audits execute during suite before owned schema disposal. Do not insert/delete ledger data to satisfy audit.",
+  "expected": "299Passed/0Failed/0Skipped; original recovery-M stale_during=false/stale_after=false; three guard contexts complete real prepare/cancel204 and eight final asset/route audit counters zero; canonical T01/T02/T03 pass; healthy B oldM and A newN remain independent.",
+  "cleanup": "Wait for test exit; verify recorded host start/stop PID sets, all stop137 and Godot stop receipts; read-only private PG check0schemas/0otherconnections; pg_ctl -m fast stop only own data; remove own PG/socket after stop; preserve logs/raw/source hashes.",
+  "scope_limits": "Native local OFFLINE/POSTGRES/AUDIT. Historical entry/disconnect PROC cycles do not claim full Boss gameplay, LIVE, capacity, CI, human review or Accepted. S6 MAIN remains pending."
+}

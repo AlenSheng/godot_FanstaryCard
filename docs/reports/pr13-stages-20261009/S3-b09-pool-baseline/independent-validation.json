@@ -1,0 +1,170 @@
+{
+  "ok": true,
+  "source_sha": "26aa9cd31fe8fa5fd016cb6efc8972039cd5f30d",
+  "case_rows": {
+    "PR13-B09.1-T01": 234,
+    "PR13-B09.1-T02": 315,
+    "PR13-B09.1-T03": 27000
+  },
+  "original_files": [
+    {
+      "path": "PR13-B09.1-T01-Guardian.jsonl.gz",
+      "rows": 78,
+      "raw_bytes": 1210150,
+      "raw_sha256": "a859202c5bea8d7a1a6c5bc7ca7beeb6a702fb25e0a8ad306a44d11cf5237a17",
+      "stored_bytes": 144949,
+      "stored_sha256": "d9930d51b502fadddd0ce74e7e569297fe536df19a998ef1c2fa240cc65f67c3"
+    },
+    {
+      "path": "PR13-B09.1-T01-Mage.jsonl.gz",
+      "rows": 78,
+      "raw_bytes": 1209451,
+      "raw_sha256": "6c461d754be5deca347fcade098e349790f4d323e9446ae1383de181381a9a33",
+      "stored_bytes": 145349,
+      "stored_sha256": "98c2521dfc942248af76157b02200861b29c461f96a9abcbafbcb7c9b11800e6"
+    },
+    {
+      "path": "PR13-B09.1-T01-Priest.jsonl.gz",
+      "rows": 78,
+      "raw_bytes": 1209665,
+      "raw_sha256": "08f1d78a4b87a5bbdb2bb6299b95fba1639767731857e2b7c586fbc9faa82d8a",
+      "stored_bytes": 145444,
+      "stored_sha256": "0fdde2ea0da74e12fab113829194821f6c680ff89501fe66fc3c20ba78effb95"
+    },
+    {
+      "path": "PR13-B09.1-T02-Guardian.jsonl.gz",
+      "rows": 105,
+      "raw_bytes": 153584,
+      "raw_sha256": "26cf6a136a0c43d34d99879d53100b8ddbe75873a4c28a7b9774831e4cb487bd",
+      "stored_bytes": 19285,
+      "stored_sha256": "86a7e9845a8c0b70c8a7b764c7abd3079d69134b5e639ff1c3223912d0041f7a"
+    },
+    {
+      "path": "PR13-B09.1-T02-Mage.jsonl.gz",
+      "rows": 105,
+      "raw_bytes": 153479,
+      "raw_sha256": "216df17a09b90983206f294801b33e81b6d0f5da4381d43ffb67bbe5a7ab1daa",
+      "stored_bytes": 19520,
+      "stored_sha256": "464692c8fc60c00f7882408a178635800893baf1bdfc2cbeb4c1baa277a0b2db"
+    },
+    {
+      "path": "PR13-B09.1-T02-Priest.jsonl.gz",
+      "rows": 105,
+      "raw_bytes": 153144,
+      "raw_sha256": "be9b41014a3e63ebaf0e09dce702fef7baa9cf047d2e5cfd58078425063bec65",
+      "stored_bytes": 19536,
+      "stored_sha256": "972ca0d223ae6847bcd0633b56fbd2623805572b698518d7c6fcfb55dc23e580"
+    },
+    {
+      "path": "PR13-B09.1-T03-Guardian.jsonl.gz",
+      "rows": 9000,
+      "raw_bytes": 28617224,
+      "raw_sha256": "20092f5eac20b48f2137433dc24b5c31dbc18219dae0010572424c09766f06ef",
+      "stored_bytes": 960046,
+      "stored_sha256": "bce647adf3f7f24cd7439ec56034f5d266c0c632a093048895056495f9544f57"
+    },
+    {
+      "path": "PR13-B09.1-T03-Mage.jsonl.gz",
+      "rows": 9000,
+      "raw_bytes": 28652842,
+      "raw_sha256": "e5e5cc058e0c6f2904dc2f6023c6832659bcc7e2a491503c2397cd328d43cc9b",
+      "stored_bytes": 933195,
+      "stored_sha256": "f24dae511887ef043a89e3e6a42ef4806b1d68ef328536d25da2b878bdbb93c9"
+    },
+    {
+      "path": "PR13-B09.1-T03-Priest.jsonl.gz",
+      "rows": 9000,
+      "raw_bytes": 28581187,
+      "raw_sha256": "4accd20a79e7890eff31a8e3f14e9a199589b4e05b98c26e3e867619b564db5f",
+      "stored_bytes": 954469,
+      "stored_sha256": "01c4690ec6a8a908846408df0ec35b1abbe94f249b681d516d9828a20f8f31f2"
+    }
+  ],
+  "controls": [
+    {
+      "name": "enabled-default-policy",
+      "rejected": true
+    },
+    {
+      "name": "wrong-source",
+      "rejected": true
+    },
+    {
+      "name": "foreign-kill-actor",
+      "rejected": true
+    },
+    {
+      "name": "invalid-key-ordinal",
+      "rejected": true
+    }
+  ],
+  "controlled_recycle_summary": [
+    {
+      "hero": "Guardian",
+      "room_seed": 450001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.615333333333334,
+      "expanded_mean_key_ordinal": 11.604333333333333
+    },
+    {
+      "hero": "Guardian",
+      "room_seed": 451001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.516666666666667,
+      "expanded_mean_key_ordinal": 11.478666666666667
+    },
+    {
+      "hero": "Guardian",
+      "room_seed": 452001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.417333333333334,
+      "expanded_mean_key_ordinal": 11.566
+    },
+    {
+      "hero": "Mage",
+      "room_seed": 450001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.615333333333334,
+      "expanded_mean_key_ordinal": 11.604333333333333
+    },
+    {
+      "hero": "Mage",
+      "room_seed": 451001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.516666666666667,
+      "expanded_mean_key_ordinal": 11.478666666666667
+    },
+    {
+      "hero": "Mage",
+      "room_seed": 452001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.417333333333334,
+      "expanded_mean_key_ordinal": 11.566
+    },
+    {
+      "hero": "Priest",
+      "room_seed": 450001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.615333333333334,
+      "expanded_mean_key_ordinal": 11.604333333333333
+    },
+    {
+      "hero": "Priest",
+      "room_seed": 451001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.516666666666667,
+      "expanded_mean_key_ordinal": 11.401
+    },
+    {
+      "hero": "Priest",
+      "room_seed": 452001,
+      "rows": 3000,
+      "baseline_mean_key_ordinal": 10.417333333333334,
+      "expanded_mean_key_ordinal": 11.566
+    }
+  ],
+  "scope": "OFFLINE finishing/recycle boundaries; no natural encounter, LIVE, route benefit or RENDER acceptance",
+  "full_experiment_pending": true,
+  "canonical_render_pending": true,
+  "main_acceptance_granted": false
+}

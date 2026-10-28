@@ -1,0 +1,38 @@
+{
+  "stages": [
+    "S3",
+    "S4-AUDIT"
+  ],
+  "status": "Partial",
+  "source_sha": "dc4f68117671cce5877ea383da4d50c47f399f37",
+  "new_explicit_cases": 9,
+  "passed": 9,
+  "total_explicit_passed": 62,
+  "required": 396,
+  "tool_tests": 168,
+  "actual_archive_audits": [
+    {
+      "run": "retest-50-owned-receipts",
+      "exit_code": 0,
+      "original_totals_match": true,
+      "event_differences": 40,
+      "raw_files": 45
+    },
+    {
+      "run": "retest-100-owned-receipts",
+      "exit_code": 0,
+      "original_totals_match": true,
+      "event_differences": 32,
+      "raw_files": 37
+    }
+  ],
+  "implementation": [
+    "Read-only source validation blocks missing/mismatched originals without repairing them.",
+    "Deterministic three-cutoff replay and event-level differences; independent client/check denominators.",
+    "Actual legacy HTTP aggregator can use a frozen observation time; original filters/redlines retained separately.",
+    "Execution register now preserves explicit Partial observations rather than silently reverting them to Queued."
+  ],
+  "runtime_accepted": 0,
+  "historical_recovery": false,
+  "remaining": "Other mandatory cases, actual integration layers, failed mixed-class baseline, formal capacity and human/render gates remain separate."
+}

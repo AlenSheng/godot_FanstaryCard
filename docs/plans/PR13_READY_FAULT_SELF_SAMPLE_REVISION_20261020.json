@@ -1,0 +1,25 @@
+{
+  "kind": "ReadyFaultMatrixSelfSamplingRevision",
+  "at_local": "2026-10-20T02:14:41.407948+08:00",
+  "affected_tasks": [
+    "LOAD-04.3",
+    "LOAD-04.4"
+  ],
+  "original_self_new_world_cap": 1,
+  "revised_self_new_world_cap": 2,
+  "actual_R1_new_worlds": 1,
+  "R1_all_failed_originals_preserved": true,
+  "R2_new_world_cap": 1,
+  "maximum_player_starts_old4_revised8": true,
+  "user_task_default_max300_unchanged": true,
+  "reason": "Controller parsedJSONloggertextasplain,soescapedapostrophespreventedownedconflictrelease;actual15sReadycorrectlyexpired. DecodeactualJSONrecordsbycategory/event3011/exactroommessage before releasing after2realRegisterfailures.",
+  "no_criteria_deadline_or_production_relaxation": true,
+  "other_task_budgets_not_reset": {
+    "LOAD053": 10,
+    "LOAD054": 3,
+    "LOAD084": 21,
+    "B111": 21,
+    "B112": 27
+  },
+  "must_frozen_before_R2_cloudstart": true
+}

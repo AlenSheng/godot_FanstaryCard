@@ -1,0 +1,6 @@
+{
+  "ok": false,
+  "error": "Traceback (most recent call last):\n  File \"G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\WAN_Mage_natural3_R2_local_driver.original.py\", line 64, in <module>\n    try:main()\n  File \"G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-tencent-20261009\\WAN_Mage_natural3_R2_local_driver.original.py\", line 35, in main\n    before=cloud('assets');write(OUT/'before-cloud.original.json',before);res=before['resources'];assert all(res.get(k) is not None for k in ['cpu','memory_available_bytes','disk_available']);assert res['cpu']<85 and res['memory_available_bytes']>=500000000 and res['disk_available']>=15 and before['health_status']==200;assert res['actor_wait'] is not None and res['server_humans_in_room'] is not None and res['actor_wait']<100,'Actual actor monitoring readiness required before starting a new player';assert memory()>=500000000+64*1024**2\nAssertionError: Actual actor monitoring readiness required before starting a new player\n",
+  "originals_retained": true,
+  "automatic_client_restart": false
+}

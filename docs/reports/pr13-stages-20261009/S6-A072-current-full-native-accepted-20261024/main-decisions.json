@@ -1,0 +1,42 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "integration_source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "task_decisions": [
+    {
+      "task_id": "PR13-A07.2",
+      "state": "Accepted",
+      "runtime_review_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "reason": "MAIN verified current unfiltered Server418/418,zero skips/failures,actual PG18.6 and applied migration rows from the preserved native backup. The three mandatory coverage-guard cases execute against the same current assembly: a single real pass still lacks417 required rows; an actual critical native skip and an invalid production-like host each produce native0 but coverage exit3/Blocked before DB-body execution. Three additional ownership refusals preserve the owned DB/schema set. Actual current-to-0cf code rollback plus native backup/restore preserve once-only assets; original failures, old skips, and the corrected observer label remain distinct. Dependency A07.1 is MAIN Accepted. Hosted CI and all capacity/global gates remain separate.",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/report.json",
+          "bytes": 22063,
+          "sha256": "2514ceea64c2bb1ae61c94b6fb1e0b0dde2534e8515d953943b1ebf6c0d44afa"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/cases.jsonl",
+          "bytes": 6380,
+          "sha256": "f5f984263b6c891a479265d251b6f6be0b58b2f699344c66dae788006111bb6e"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/commands.json",
+          "bytes": 17332,
+          "sha256": "1d86f682e7113b9b3f757027458f1caf3d44a6c17c87b27dfc8306c0a02205e5"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/native-version-migration-observations.json",
+          "bytes": 19587,
+          "sha256": "c13a611cca41685b707580eeec5053d13a42b0b3c6b037069fa7078088b95b1f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/manifest.json",
+          "bytes": 1044,
+          "sha256": "787cf9cb9217b578bcf66f6ee0e9a2b4bbbfa0874f2f9a06bdb66ec0ca5d5370"
+        }
+      ],
+      "rollback": "Only native test transport and ownership verification changed. Retain exact before source and all native results/backups; revert these test-only changes if necessary. Production code/config/ledger/assets were not modified.",
+      "scope_limit": "A07.2 OFFLINE+POSTGRES only. Native Windows PG replaces the owned-container test environment with explicit equivalent process/directory/tool identity checks; Docker path retained. No hosted CI/production/capacity approval; source4a plus explicit test deltas, not a clean test-tree claim."
+    }
+  ]
+}

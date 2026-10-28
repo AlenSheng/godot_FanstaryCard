@@ -4,7 +4,7 @@
 | --- | --- |
 | 目标 | 从登录/档案/WebSocket 骨架发展为支持完整在线原型的权威模块化单体 |
 | 技术 | ASP.NET Core / .NET 10 LTS、.NET SDK 10.0.400、PostgreSQL、Redis 按需 |
-| 通信 | HTTPS REST 使用 JSON；WebSocket 使用 Protobuf v1 二进制帧 |
+| 通信 | 第一方登录/玩法 HTTPS REST 使用 Protobuf，外围 JSON；WebSocket 使用 Protobuf v1 二进制帧。旧游戏 JSON 由显式兼容开关控制，迁移验收见 network-protobuf-migration/PLAN.md |
 | 部署 | Linux + Docker |
 | 数据原则 | PostgreSQL 是永久资产唯一权威；Redis 不保存唯一业务数据 |
 
@@ -309,7 +309,7 @@ GDD 要求部分公式两端各实现一份，PVP 服务端为准。做法：
 - 服务端在 `FantasyCard.Domain.Combat` 实现权威算法。
 - 客户端保留 Game.Domain 做预览。
 - 两端共同消费同一版本化配置。
-- 维护同一份 JSON 黄金用例：A0=44、A=51、A2=36、A4=25/51、燃料 12/14/16、A5 47/35、载壁等。
+- 维护同一份 JSON 黄金用例：A0=41、A=46、A2=32、A4=23/46、燃料 12/14/16；A5 装备对位和载壁按 GDD §3.6 现行逐牌取整向量。
 - CI 分别跑两端，任一不一致阻止合并。
 
 ## 8. REST 模块

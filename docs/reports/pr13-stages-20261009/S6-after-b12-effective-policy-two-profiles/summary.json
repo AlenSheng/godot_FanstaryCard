@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "canonical_profiles_closed": [
+    "PR13-B12.1-T03 POSTGRES",
+    "PR13-B12.1-T03 AUDIT"
+  ],
+  "missing_profiles_before": {
+    "POSTGRES": 110,
+    "LIVE": 106,
+    "EXPERIMENT": 123,
+    "CAPACITY": 36,
+    "AUDIT": 6,
+    "RENDER": 44
+  },
+  "missing_profiles_after": {
+    "POSTGRES": 109,
+    "LIVE": 106,
+    "EXPERIMENT": 123,
+    "CAPACITY": 36,
+    "AUDIT": 5,
+    "RENDER": 44
+  },
+  "task_states": {
+    "Accepted": 14,
+    "Partial": 95,
+    "Failed": 2,
+    "ReadyForAcceptance": 21
+  },
+  "B12_1_state": "Partial",
+  "B12_1_T03_remaining_profiles": [
+    "EXPERIMENT",
+    "RENDER"
+  ],
+  "all_other_missing_profiles_and_failed_tasks_retained": true,
+  "MAIN_accepted": false
+}

@@ -1,0 +1,58 @@
+{
+  "source_sha": "1c18d89ce4fdb074e6851d8b04312984bcd8a76a",
+  "execution_host": "Tencent cloud",
+  "plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "executed": 3,
+  "passed": 3,
+  "profiles_executed": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "accepted": false,
+  "source": {
+    "scope": "Actual single-method PostgreSQL run, actual missing-PG native skip, and actual production-container ownership denial before SQL; original full healthy matrix remains separate",
+    "input_hashes": {
+      "tools/pr13_suite_coverage.py": "dd1f5c35a9aae110d3bec40d49fc413bad43e3de010b275a6fef38a44f5919de",
+      "tools/pr13_local_runtime.py": "f426ddafc0f90d04e9e362c5d580d5558fcd5339fa3752675fdc0cfe50301ccc"
+    },
+    "execution_helper_sha256": "6f820ea76e83d5a67fddd0ec47ae2a308dbcbb73ec63627f5a89dc8f06fceba1",
+    "full_unfiltered_healthy_matrix_sha256": "86221ebb02331e09145fd2b0a3a01d008e325853f85385fc84fddea4801ea294"
+  },
+  "full_matrix_assessment": {
+    "state": "CoveredForMainReview",
+    "missing_assertion_rows": {},
+    "failed_cases": [],
+    "skipped_cases": [],
+    "counters": {
+      "total": 342,
+      "executed": 342,
+      "passed": 342,
+      "failed": 0,
+      "error": 0,
+      "timeout": 0,
+      "aborted": 0,
+      "inconclusive": 0,
+      "passedButRunAborted": 0,
+      "notRunnable": 0,
+      "notExecuted": 0,
+      "disconnected": 0,
+      "warning": 0,
+      "completed": 0,
+      "inProgress": 0,
+      "pending": 0
+    },
+    "acceptance": false
+  },
+  "postgres_version": "PostgreSQL 18.6 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+  "remaining_fixture_schemas": "0",
+  "cleanup": {
+    "pr13-tencent-pg-matrix-guards-r3-pg": true
+  },
+  "private_archive_bytes": 20535,
+  "private_archive_sha256": "7ea05d97134508c0e8e370fd81d156ab719b343c32bf497b1cad820b7df4d264",
+  "raw_private_files_verified": 30,
+  "prior_assertion_and_startup_failures_retained": true,
+  "whole_scope_accepted": false,
+  "real_player_live_acceptance": false,
+  "capacity_accepted": false
+}

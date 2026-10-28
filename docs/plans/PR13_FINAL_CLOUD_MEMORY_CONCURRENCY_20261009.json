@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "human_instruction": "内存安全线改为500MB，另外开放云服务器并发限制做最终检测",
+  "scope": "Owned Tencent disposable test instance and actual local Windows Godot player generator",
+  "memory_policy": {
+    "unit": "decimal MB",
+    "minimum_generator_available_bytes": 500000000,
+    "minimum_cloud_available_bytes": 500000000,
+    "legacy_generator_2_gib_and_cloud_15_percent_superseded_for_this_profile_only": true,
+    "historical_raw_results_retained": true,
+    "per_client_launch_reserve_mib": 64,
+    "reserve_basis": "Observed actual headless Godot private memory about 56-62 MiB in prior ten-client run; additional reserve is checked before every launch",
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "sampling_seconds": 10
+  },
+  "cloud_concurrency": {
+    "owned_test_bypass": true,
+    "ip_quotas_enabled": false,
+    "realtime_quotas_enabled": false,
+    "application_pool_enabled": false,
+    "postgres_max_connections": 256,
+    "postgres_memory_budget_mib": 384,
+    "physical_connection_budget_measured_after_start": true,
+    "room_message_body_ownership_and_integrity_guards_retained": true,
+    "production_limits_unchanged": true,
+    "temporary_services_removed_after_trial": true
+  },
+  "capacity": {
+    "online_targets": [
+      50,
+      100
+    ],
+    "active_targets": [
+      50,
+      100
+    ],
+    "warmup_seconds": 180,
+    "hold_seconds": 600,
+    "minimum_continuous_seconds": 120,
+    "minimum_coverage": 0.95,
+    "sample_interval_seconds": 10,
+    "maximum_sample_gap_seconds": 20,
+    "overall_deadline_seconds": 2400,
+    "cleanup_seconds": 120,
+    "soak_seconds": 1800,
+    "drain_seconds": 60,
+    "ab_pairs": 3,
+    "ab_order": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "load_profile": "active-hold",
+    "strategy": "baseline_all_hand",
+    "hero_class": "mixed",
+    "launch_interval_seconds": 1,
+    "starter_decks_and_gameplay_numbers_unchanged": true,
+    "real_godot_processes_required": true,
+    "limitation": "Bypass capacity results cannot establish default-quota capacity; original targets/timings and AB/soak obligations remain separate"
+  },
+  "human_experience_in_scope": false,
+  "accepted": false
+}

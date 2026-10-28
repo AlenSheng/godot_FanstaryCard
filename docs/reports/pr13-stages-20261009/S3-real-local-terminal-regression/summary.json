@@ -1,0 +1,80 @@
+{
+  "source_sha": "9b385171143fca4e05ac632e5ddd761df4413a44",
+  "runtime_revision": "bf516e07a01ad4dc03320155396a152fae46e1ea",
+  "focused_accepted": true,
+  "natural_cycles": 6,
+  "cycles_per_client": [
+    3,
+    3
+  ],
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Passed",
+      "evidence": "Passed",
+      "load": "Passed",
+      "gameplay": "Passed",
+      "performance": "NotApplicable",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": true,
+    "full_acceptance_passed": false
+  },
+  "invalid_status_files": 0,
+  "command_rejections": 0,
+  "final_business_errors": [
+    0,
+    0
+  ],
+  "cloud": {
+    "archive": "/home/ubuntu/pr13-acceptance-20261009/evidence/external-stop-focused-complete-attempt1.private.tar.gz",
+    "bytes": 120251,
+    "sha256": "62b998a2dfbc30ad623cf4cfd7535fee96189b2255a824be96e258d0400bbc69",
+    "files": 14,
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 6,
+        "ledger_rows": 8
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "cleanup": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "financial_classification": "NoAlertInObservedScope",
+    "known_currency_reconciliation_passed": true
+  },
+  "local_archive": {
+    "bytes": 545828,
+    "sha256": "b42c3f37c285a31020b1977fc88ec2cc3cede389d340a5b100679f9c55b96644",
+    "files": 20
+  },
+  "latency_and_memory_policy": {
+    "memory_floor_bytes": 500000000,
+    "per_launch_reserve_bytes": 67108864,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 10,
+    "missing_monitoring_stops_test": true
+  },
+  "capacity_accepted": false,
+  "whole_scope_accepted": false,
+  "ci_client_callback_isolation_failed": true,
+  "next_required": "Fix/verify CI fixture authoritative handoffs, then actual larger-client and remaining profiles"
+}

@@ -1,0 +1,167 @@
+{
+  "cases": [
+    {
+      "case": "original100-full-period",
+      "verdict": "Failed",
+      "actual_clients": 100,
+      "source_inputs": 2138,
+      "actual_seconds": 693.6137230396271,
+      "required_seconds": 2400,
+      "stop": "generator_memory_low",
+      "primary_exit": 3
+    },
+    {
+      "case": "original100-room-occupancy",
+      "verdict": "Failed",
+      "assessment": {
+        "passed": false,
+        "window_seconds": 600.0,
+        "observed_seconds": 597.2460000514984,
+        "compliant_seconds": 0.0,
+        "coverage": 0.0,
+        "longest_continuous_seconds": 0.0,
+        "target_online": 100,
+        "target_active": 100,
+        "minimum_command_rate": 1.0,
+        "maximum_gap": 20.0,
+        "minimum_window": 600.0,
+        "minimum_continuous": 120.0,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      }
+    },
+    {
+      "case": "preregistered90-client-and-server-occupancy",
+      "verdict": "Failed",
+      "assessment": {
+        "passed": false,
+        "window_seconds": 600.0,
+        "observed_seconds": 597.2460000514984,
+        "compliant_seconds": 350.2279999256134,
+        "coverage": 0.5837133332093557,
+        "longest_continuous_seconds": 350.2279999256134,
+        "target_online": 100,
+        "target_active": 90,
+        "minimum_command_rate": 1.0,
+        "maximum_gap": 20.0,
+        "minimum_window": 600.0,
+        "minimum_continuous": 120.0,
+        "minimum_coverage": 0.95,
+        "evidence_errors": []
+      },
+      "original100_retained": true
+    },
+    {
+      "case": "original1800-second-stability",
+      "verdict": "NotCompleted",
+      "sampling_does_not_replace_period": true
+    },
+    {
+      "case": "evidence-global-dimension",
+      "verdict": "Failed",
+      "internal_sampling_interval_check": "Passed",
+      "does_not_override_guard": true
+    },
+    {
+      "case": "Native-cleanup",
+      "verdict": "Unknown",
+      "Passed": 79,
+      "Unknown": 21
+    },
+    {
+      "case": "PG-holds-and-equipment-lock-postconditions",
+      "verdict": "PassedForTheseCountsOnly",
+      "pending_holds": 0,
+      "locked_equipment": 0,
+      "not_an_assets_once_gate": true
+    },
+    {
+      "case": "PG-all-worlds-terminal",
+      "verdict": "Failed",
+      "Completed": 54,
+      "Running": 1,
+      "only_bot_active_members": 4,
+      "human_removed_in_that_match": 1,
+      "GDD": "GDD_BASE_v0.69 §5.14"
+    },
+    {
+      "case": "PG-all-settlements-ACK",
+      "verdict": "Unknown",
+      "settlements": 216,
+      "ACK": 199,
+      "not_acknowledged": 17
+    },
+    {
+      "case": "specific-ACK-HTTP500-and-later-durable-success",
+      "verdict": "OriginalHTTP500RetainedWithRecovery",
+      "later_HTTP200": true,
+      "durable_ACK_after_notice_ms": 3909.832,
+      "no_missing_commit_misreport": true
+    },
+    {
+      "case": "duplicate-reward-claim",
+      "verdict": "OriginalFailureRetained;SubsequentLocalClientFixPassed",
+      "success_to_second_send_ms": 193,
+      "fix_release": "a65dbe746fef106adeced979371b8bfe0946a847",
+      "local_suites": 14,
+      "local_checks": 223,
+      "fixed100_LIVE": "NotExecuted"
+    },
+    {
+      "case": "original-controller-archive-wait",
+      "verdict": "Failed",
+      "preregistered_wait_seconds": 3600,
+      "original_result_SHA256": "884a05e5acef5b4cddffd3b78f515006606d02cc4aa114f5fab71607dc044284",
+      "not_rewritten": true
+    },
+    {
+      "case": "targeted-G-custody-and-exact-copy-cleanup",
+      "verdict": "Passed",
+      "physical_members": 1473,
+      "final_cloud_originals": 32,
+      "cloud_code_copies_deleted": 22,
+      "failed_bind_retained": true,
+      "does_not_promote_capacity": true
+    },
+    {
+      "case": "capacity-world-budget",
+      "verdict": "PassedForConservativeBudgetOnly",
+      "used": 233,
+      "ceiling": 600,
+      "unknown_prior_reservation_retained": 120
+    },
+    {
+      "case": "production-unchanged-and-user-resource-floor",
+      "verdict": "PassedForScopedFinalObservation",
+      "observation": {
+        "at_ns": 1792316483175429742,
+        "production_unchanged": true,
+        "production_health": 200,
+        "all_four_owned_containers_absent": true,
+        "unit_terminal": {
+          "MainPID": "0",
+          "ActiveState": "inactive"
+        },
+        "both_test_code_roots_absent": true,
+        "PG_bind_failed_originals_retained": true,
+        "memory_available": 2526380032,
+        "memory_total": 3837677568,
+        "disk_free_fraction": 0.12758033631061708,
+        "goal5percent_and500MBfloor_met": true,
+        "old15percent_disk_met": false,
+        "new_worlds": 0,
+        "read_only": true
+      },
+      "old15percent_disk_met": false
+    },
+    {
+      "case": "default-quotas-publicTLS-paired-performance-and-full30min",
+      "verdict": "NotQualifiedByThisRun",
+      "no_gate_or_register_change": true
+    }
+  ],
+  "canonical_states_changed": false,
+  "full_scope_tasks": 132,
+  "full_scope_cases": 396,
+  "formal_unaccepted": 77
+}

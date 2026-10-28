@@ -1,0 +1,41 @@
+{
+  "review_scope": "MAIN_whole_task",
+  "task_id": "LOAD-06.3",
+  "state": "Accepted",
+  "accepted_by": "MAIN",
+  "case_profiles_closed": {
+    "LOAD-06.3-T03": [
+      "LIVE"
+    ]
+  },
+  "all9_case_profile_supports": {
+    "LOAD-06.3-T01": {
+      "OFFLINE": "historical exact-native unchanged source",
+      "POSTGRES": "historical actual native PG plus current fullProgram actualDIpool",
+      "LIVE": "current failed realHTTP409 actualtrace"
+    },
+    "LOAD-06.3-T02": {
+      "OFFLINE": "historical exact GateSocket native; narrowcomponent only",
+      "POSTGRES": "current fullProgram PGbackedroom actualactor/send",
+      "LIVE": "current realTCP slowreader actualSocketSend"
+    },
+    "LOAD-06.3-T03": {
+      "OFFLINE": "historical completed6000 Meter native, unchanged source and not rerun",
+      "POSTGRES": "current100 actual persisted identityfixtures + actualnegativeWScontexts",
+      "LIVE": "current actual nativeOTLP wire -> realPrometheus ingester -> actualAPI complete36series and count+100"
+    }
+  },
+  "dependency_LOAD064_accepted": true,
+  "whole_task_accepted": true,
+  "whole_project_accepted": false,
+  "native_current_binary21_and_historical_methods_separate": true,
+  "checks": {
+    "currenttrace": 48,
+    "actualexportboundary": 78,
+    "wholeMAIN": 36
+  },
+  "budget_world104of200_commands292of300": true,
+  "original_failures_kept": true,
+  "business_acceptance_threshold_relaxed": false,
+  "criteria_qualification_disclosed": "Fixed per-process SDK instance identifier retained as infrastructure. It is not a dynamic business identity label; all36 complete series keys equal within the actual process."
+}

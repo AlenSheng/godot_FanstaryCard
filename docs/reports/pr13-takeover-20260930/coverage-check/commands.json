@@ -1,0 +1,374 @@
+[
+  {
+    "id": 1,
+    "argv": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790786882.7074592,
+    "duration_seconds": 0.029,
+    "exit_code": 0,
+    "log": "logs/01.log",
+    "network": false
+  },
+  {
+    "id": 2,
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790786882.73711,
+    "duration_seconds": 0.003,
+    "exit_code": 0,
+    "log": "logs/02.log",
+    "network": false
+  },
+  {
+    "id": 3,
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "tools.tests.test_pr13_runtime_evidence",
+      "tools.tests.test_gameplay_load_validation",
+      "tools.tests.test_gameplay_load_stop"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790786882.7404268,
+    "duration_seconds": 0.31,
+    "exit_code": 0,
+    "log": "logs/03.log",
+    "network": false
+  },
+  {
+    "id": 4,
+    "argv": [
+      "rg",
+      "-n",
+      "58\\.3|598\\.2|monitoring_unavailable",
+      "docs/reports",
+      "outputs"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790786883.0507398,
+    "duration_seconds": 0.018,
+    "exit_code": 0,
+    "log": "logs/04.log",
+    "network": false
+  },
+  {
+    "id": 5,
+    "name": "baseline-counterexample-tests",
+    "argv": [
+      "python3",
+      "-c",
+      "import importlib.util,sys,unittest; p='/workspace/pr13-takeover/coverage-check/evidence/pr13_runtime_evidence_before.py'; s=importlib.util.spec_from_file_location('tools.pr13_runtime_evidence',p); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); sys.modules['tools.pr13_runtime_evidence']=m; suite=unittest.defaultTestLoader.loadTestsFromName('tools.tests.test_gameplay_load_sampling_contract'); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787313.9040976,
+    "duration_seconds": 0.153,
+    "exit_code": 1,
+    "log": "logs/baseline-counterexample-tests.log",
+    "network": false
+  },
+  {
+    "id": 6,
+    "name": "fixed-targeted-tests",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "-v",
+      "tools.tests.test_gameplay_load_sampling_contract",
+      "tools.tests.test_pr13_runtime_evidence",
+      "tools.tests.test_gameplay_load_validation",
+      "tools.tests.test_gameplay_load_stop"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787314.057225,
+    "duration_seconds": 0.309,
+    "exit_code": 0,
+    "log": "logs/fixed-targeted-tests.log",
+    "network": false
+  },
+  {
+    "id": 7,
+    "name": "compile",
+    "argv": [
+      "python3",
+      "-m",
+      "py_compile",
+      "tools/pr13_runtime_evidence.py",
+      "tools/gameplay_load_validation.py",
+      "tools/tests/test_gameplay_load_sampling_contract.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787314.3660295,
+    "duration_seconds": 0.063,
+    "exit_code": 0,
+    "log": "logs/compile.log",
+    "network": false
+  },
+  {
+    "id": 8,
+    "name": "diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787314.4289582,
+    "duration_seconds": 0.017,
+    "exit_code": 0,
+    "log": "logs/diff-check.log",
+    "network": false
+  },
+  {
+    "id": 9,
+    "name": "applicable-caller-audit",
+    "argv": [
+      "rg",
+      "-n",
+      "coverage\\(|sampling_integrity\\(",
+      "tools"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787401.7768285,
+    "duration_seconds": 0.01,
+    "exit_code": 0,
+    "log": "logs/applicable-caller-audit.log",
+    "network": false
+  },
+  {
+    "id": 10,
+    "name": "owned-source-diff",
+    "argv": [
+      "git",
+      "diff",
+      "--",
+      "tools/pr13_runtime_evidence.py",
+      "tools/gameplay_load_validation.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787401.7870429,
+    "duration_seconds": 0.012,
+    "exit_code": 0,
+    "log": "logs/owned-source-diff.log",
+    "network": false
+  },
+  {
+    "id": 11,
+    "name": "final-state",
+    "argv": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787401.7992687,
+    "duration_seconds": 0.022,
+    "exit_code": 0,
+    "log": "logs/final-state.log",
+    "network": false
+  },
+  {
+    "id": 12,
+    "name": "coordinator-overlap-before",
+    "argv": [
+      "python3",
+      "/workspace/pr13-takeover/coverage-check/evidence/coordinator_overlap_fixture.py",
+      "/workspace/pr13-takeover/coverage-check/evidence/pr13_runtime_evidence_before.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787592.2555728,
+    "duration_seconds": 0.348,
+    "exit_code": 0,
+    "log": "logs/coordinator-overlap-before.log",
+    "network": false,
+    "fixture_source_snapshot": "evidence/coordinator_overlap_fixture_rate1.py",
+    "note": "Exploratory rate=1 fixture; later rate=2 fixture increases observed commands without changing acceptance thresholds."
+  },
+  {
+    "id": 13,
+    "name": "coordinator-overlap-after",
+    "argv": [
+      "python3",
+      "/workspace/pr13-takeover/coverage-check/evidence/coordinator_overlap_fixture.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787592.6037605,
+    "duration_seconds": 0.377,
+    "exit_code": 0,
+    "log": "logs/coordinator-overlap-after.log",
+    "network": false,
+    "fixture_source_snapshot": "evidence/coordinator_overlap_fixture_rate1.py",
+    "note": "Exploratory rate=1 fixture; later rate=2 fixture increases observed commands without changing acceptance thresholds."
+  },
+  {
+    "id": 14,
+    "name": "coordinator-overlap-before-rate2",
+    "argv": [
+      "python3",
+      "/workspace/pr13-takeover/coverage-check/evidence/coordinator_overlap_fixture.py",
+      "/workspace/pr13-takeover/coverage-check/evidence/pr13_runtime_evidence_before.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787640.311068,
+    "duration_seconds": 0.449,
+    "exit_code": 0,
+    "log": "logs/coordinator-overlap-before-rate2.log",
+    "network": false
+  },
+  {
+    "id": 15,
+    "name": "coordinator-overlap-after-rate2",
+    "argv": [
+      "python3",
+      "/workspace/pr13-takeover/coverage-check/evidence/coordinator_overlap_fixture.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787640.760061,
+    "duration_seconds": 0.432,
+    "exit_code": 0,
+    "log": "logs/coordinator-overlap-after-rate2.log",
+    "network": false
+  },
+  {
+    "id": 16,
+    "name": "integrated-targeted-tests",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "-v",
+      "tools.tests.test_gameplay_load_sampling_contract",
+      "tools.tests.test_pr13_runtime_evidence",
+      "tools.tests.test_gameplay_load_validation",
+      "tools.tests.test_gameplay_load_stop",
+      "tools.tests.test_gameplay_load_finalization"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787904.322526,
+    "duration_seconds": 2.132,
+    "exit_code": 0,
+    "log": "logs/integrated-targeted-tests.log",
+    "network": false
+  },
+  {
+    "id": 17,
+    "name": "integrated-full-tools-tests",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/tests",
+      "-v"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787906.4549022,
+    "duration_seconds": 3.39,
+    "exit_code": 0,
+    "log": "logs/integrated-full-tools-tests.log",
+    "network": false
+  },
+  {
+    "id": 18,
+    "name": "integrated-compile",
+    "argv": [
+      "python3",
+      "-m",
+      "py_compile",
+      "tools/gameplay_load_test.py",
+      "tools/pr13_runtime_evidence.py",
+      "tools/gameplay_load_validation.py",
+      "tools/tests/test_gameplay_load_sampling_contract.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787909.8448458,
+    "duration_seconds": 0.062,
+    "exit_code": 0,
+    "log": "logs/integrated-compile.log",
+    "network": false
+  },
+  {
+    "id": 19,
+    "name": "integrated-diff-check",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787909.9065788,
+    "duration_seconds": 0.015,
+    "exit_code": 0,
+    "log": "logs/integrated-diff-check.log",
+    "network": false
+  },
+  {
+    "id": 20,
+    "name": "coordinator-overlap-integrated",
+    "argv": [
+      "python3",
+      "/workspace/pr13-takeover/coverage-check/evidence/coordinator_overlap_fixture.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787909.9214594,
+    "duration_seconds": 0.379,
+    "exit_code": 0,
+    "log": "logs/coordinator-overlap-integrated.log",
+    "network": false
+  },
+  {
+    "id": 21,
+    "name": "baseline-thirteen-contract-cases",
+    "argv": [
+      "python3",
+      "-c",
+      "import importlib.util,sys,unittest; p='/workspace/pr13-takeover/coverage-check/evidence/pr13_runtime_evidence_before.py'; s=importlib.util.spec_from_file_location('tools.pr13_runtime_evidence',p); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); sys.modules['tools.pr13_runtime_evidence']=m; suite=unittest.defaultTestLoader.loadTestsFromNames(['tools.tests.test_gameplay_load_sampling_contract.SamplingContractTests','tools.tests.test_gameplay_load_sampling_contract.RequestAccountingContractTests']); result=unittest.TextTestRunner(verbosity=2).run(suite); sys.exit(not result.wasSuccessful())"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787974.660762,
+    "duration_seconds": 0.28,
+    "exit_code": 1,
+    "log": "logs/baseline-thirteen-contract-cases.log",
+    "network": false
+  },
+  {
+    "id": 22,
+    "name": "final-source-head",
+    "argv": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787974.9408822,
+    "duration_seconds": 0.005,
+    "exit_code": 0,
+    "log": "logs/final-source-head.log",
+    "network": false
+  },
+  {
+    "id": 23,
+    "name": "final-source-dirty",
+    "argv": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "started_unix": 1790787974.9466114,
+    "duration_seconds": 0.038,
+    "exit_code": 0,
+    "log": "logs/final-source-dirty.log",
+    "network": false
+  }
+]

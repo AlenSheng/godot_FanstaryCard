@@ -1,0 +1,109 @@
+{
+  "kind": "Guardian notice obstruction fixed with full animation and actual Button text checks",
+  "base_source": "8c8d72fa2e765561277f606af4703676a3d0d843",
+  "product_change_only": "client/ui/main.gd",
+  "product_SHA256": "a26b8648b0cd79bd27e862a5e2a21c5ac5fb9e2c0f31608b90e4a0e438a8effb",
+  "problem": "Room top-center notices overlapped the actual GuardianRemainder Button in PVE and PVP. R16 checked Labels only and did not cover the Button or entire rise path.",
+  "correction": "Combat uses its original notice band; action and settlement retain the top band so HP remains readable. No header, numerical control, text, duration or artwork changed.",
+  "controlled_native_geometry": {
+    "cases": 12,
+    "checks": 48,
+    "old_failed": 8,
+    "fixed_passed": 48,
+    "full_rise_animation_sweep_checked": true,
+    "visible_Label_and_Button_text_checked": true,
+    "headless_no_rendered_frame_claim": true
+  },
+  "actual_cloud_renderer": {
+    "resolutions": [
+      "1920x1080",
+      "1280x720"
+    ],
+    "hero": "Guardian",
+    "phases": [
+      "ActionBar",
+      "Pve",
+      "Pvp"
+    ],
+    "states": [
+      "rejected_wait",
+      "fresh_state_restored"
+    ],
+    "fixed_frames": 12,
+    "same_checks_passed": 48,
+    "baseline_frames_retained": 12,
+    "baseline_failed_geometry": 8,
+    "actual_fixed_frames_all_visually_reviewed": true,
+    "style": "Existing dark teal and gold retained; no new image required",
+    "scope_limit": "Focused notice placement. Controlled PVP omitted opponent_class, so the documented unknown-class frame is expected and is not treated as a missing art defect.",
+    "all54_original_members_G_verified": true,
+    "archive_SHA256": "ba52521b47c9e6ef3852508c1d0bd42d82912d162161c6dfe21317abe08189e3",
+    "no_actual_accounts_or_worlds": true
+  },
+  "local_native_regressions": {
+    "runs": [
+      {
+        "label": "final-common",
+        "suites": 26,
+        "named_checks": 382,
+        "minimum_available_bytes": 8606818304
+      },
+      {
+        "label": "final-extended",
+        "suites": 26,
+        "named_checks": 487,
+        "minimum_available_bytes": 9313574912
+      }
+    ],
+    "overlap_not_unique_sum": true,
+    "headless_Dummy_CNO_BelowNormal_last4": true,
+    "memory_floor_bytes": 6442450944,
+    "unexpected_script_or_resource_errors": 0
+  },
+  "capacity_source_preflight": {
+    "original_terminal_failure_before_any_native_client": true,
+    "cause": "Six source files differed only by CRLF versus the frozen Git LF bytes",
+    "raw_bytes_and_failure_retained": true,
+    "normalization_only_after_semantic_byte_equivalence_proven": true,
+    "Windows_and_cloud_source_controls_and_all_client_inputs_now_match_frozen8c8d72f": true,
+    "source_guard_not_weakened": true
+  },
+  "backup_before_cleanup": {
+    "ok": true,
+    "G_original_files_verified": 54,
+    "owned_stopped_containers_removed": 2,
+    "actual_freed_bytes": 101388288,
+    "cloud_available_bytes": 3750629376,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "independent_capacity": {
+    "source": "8c8d72fa2e765561277f606af4703676a3d0d843",
+    "clients": [
+      32,
+      28
+    ],
+    "minimum_active": 50,
+    "world_budget": 300,
+    "observed_stage": "Completed_NotPassed_original_Windows1_cloud3",
+    "not_accepted": true,
+    "UI_candidate_not_mixed_into_frozen_measurement": true,
+    "report": "rejected-state60-r16-notpassed.json"
+  },
+  "GDD_numbers_server_protocol_config_assets_unchanged": true,
+  "legal80_70_100_and_80over70_preserved": true,
+  "no_latency_coverage_business_failure_or_resource_gate_relaxed": true,
+  "fresh_UI_source_CI": {
+    "state": "Completed_success_all4_jobs",
+    "source": "a3331bc3a83c2bbb1197f68fbdc0bb537f4f5050",
+    "workflow": 40165787222,
+    "actual_PG_passed": 418,
+    "PG_skipped": 0,
+    "all4_actual_ACK_STOP_rows_passed": true,
+    "all4_official_artifacts_G_verified": true
+  },
+  "whole_UI_accepted": false,
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792906175980.4673
+}

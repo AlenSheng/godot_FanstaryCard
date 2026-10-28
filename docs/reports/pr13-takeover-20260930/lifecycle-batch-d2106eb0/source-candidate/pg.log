@@ -1,0 +1,18 @@
+2026-09-30 21:25:51.561 UTC [57293] LOG:  starting PostgreSQL 18.6 on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+2026-09-30 21:25:51.561 UTC [57293] LOG:  listening on Unix socket "/tmp/pr13-ack-cycles-1rsaobs8/.s.PGSQL.5432"
+2026-09-30 21:25:51.565 UTC [57299] LOG:  database system was shut down at 2026-09-30 21:25:51 UTC
+2026-09-30 21:25:51.567 UTC [57293] LOG:  database system is ready to accept connections
+2026-09-30 21:26:49.660 UTC [58687] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 21:30:51.664 UTC [57297] LOG:  checkpoint starting: time
+2026-09-30 21:31:11.884 UTC [64153] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 21:31:11.884 UTC [64153] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 21:31:28.624 UTC [64546] LOG:  could not receive data from client: Connection reset by peer
+2026-09-30 21:31:28.624 UTC [64546] LOG:  unexpected EOF on client connection with an open transaction
+2026-09-30 21:32:02.235 UTC [57293] LOG:  received fast shutdown request
+2026-09-30 21:32:02.236 UTC [57293] LOG:  aborting any active transactions
+2026-09-30 21:32:02.238 UTC [57293] LOG:  background worker "logical replication launcher" (PID 57302) exited with exit code 1
+2026-09-30 21:32:03.032 UTC [57297] LOG:  checkpoint complete: wrote 1287 buffers (7.9%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 1 recycled; write=70.585 s, sync=0.765 s, total=71.368 s; sync files=1857, longest=0.024 s, average=0.001 s; distance=17114 kB, estimate=17114 kB; lsn=0/2DE79C0, redo lsn=0/27BC8E8
+2026-09-30 21:32:03.033 UTC [57297] LOG:  shutting down
+2026-09-30 21:32:03.033 UTC [57297] LOG:  checkpoint starting: shutdown immediate
+2026-09-30 21:32:03.063 UTC [57297] LOG:  checkpoint complete: wrote 216 buffers (1.3%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.014 s, sync=0.008 s, total=0.031 s; sync files=24, longest=0.002 s, average=0.001 s; distance=6316 kB, estimate=16035 kB; lsn=0/2DE7A38, redo lsn=0/2DE7A38
+2026-09-30 21:32:03.073 UTC [57293] LOG:  database system is shut down

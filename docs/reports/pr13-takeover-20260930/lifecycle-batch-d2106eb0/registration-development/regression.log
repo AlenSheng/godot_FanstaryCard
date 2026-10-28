@@ -1,0 +1,32 @@
+Test run for /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:03.42]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate [FAIL]
+[xUnit.net 00:00:03.43]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production [FAIL]
+[xUnit.net 00:00:03.43]     FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate [FAIL]
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate [1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/Caddyfile.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 8
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production [1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/compose.cloud.yaml.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 36
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate [< 1 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate server/deploy/fantasycard-update.sh.
+  Stack Trace:
+     at FantasyCard.Server.Tests.Deploy.CaddyfileTests.FindServerFile(String relativePath) in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 76
+   at FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs:line 51
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /workspace/pr13-takeover/register-evidence-20260930/regression/server-regression.trx
+
+Failed!  - Failed:     3, Passed:   203, Skipped:     0, Total:   206, Duration: 5 s - FantasyCard.Server.Tests.dll (net10.0)

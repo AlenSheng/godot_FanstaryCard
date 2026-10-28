@@ -1,0 +1,121 @@
+{
+  "kind": "Final notice effect acceptance across three classes and two locales",
+  "base_release": "5659a5015b3d3bc2dc5bee9124636f125269f4c4",
+  "base_product_source": "a3331bc3a83c2bbb1197f68fbdc0bb537f4f5050",
+  "problem": "English Duel-is-not-active notices exceeded the gap between PVP HP panels. Initial panel-only checks also missed label text outside the backing after consecutive wrapped notices.",
+  "behavior": [
+    "Combat notices wrap within the existing central clear band; other screens retain natural widths",
+    "Measure labels at the intended width and invalidate minimum-size caches before sizing the backing",
+    "Reset existing wrapping before measuring another notice so text cannot keep an old tall layout",
+    "Moving between action and combat adjusts width without replacing the current tween or extending its original lifetime",
+    "Original notice text, font size, colors,2second duration,fade and rise distance retained"
+  ],
+  "source_SHA256": {
+    "client/ui/main.gd": "54ed7975e40396929aba9e38c25367c7dae52ead00297744289ed56c778131a6",
+    "client/ui/tips_overlay.gd": "4b8bbaba0a5cb47a204a5ef16eb4b00e0d8be11ee32a60ab14a93dcc597be849"
+  },
+  "old_a333_discovery": {
+    "geometry_states": 72,
+    "checks": 288,
+    "failed": 12,
+    "actual_baseline_English_PVP_frames": 12,
+    "actual_baseline_failed_overlap_checks": 12
+  },
+  "intermediate_failed_candidate": {
+    "all84_original_frames_and122files_G_verified_and_retained": true,
+    "automated_panel_only288_pass_did_not_establish_visual_acceptance": true,
+    "visual_review_detected_text_outside_backing": true,
+    "failed_candidate_never_published": true,
+    "cloud_duplicates_reclaimed_after_backup_bytes": 346349568
+  },
+  "final_actual_UI": {
+    "classes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "locales": [
+      "zh-CN",
+      "en"
+    ],
+    "resolutions": [
+      "1920x1080",
+      "1280x720"
+    ],
+    "phases": [
+      "ActionBar",
+      "Pve",
+      "Pvp"
+    ],
+    "states": [
+      "rejected_wait",
+      "fresh_state_restored"
+    ],
+    "actual_frames": 72,
+    "checks": 360,
+    "text_inside_backing_checked": true,
+    "full_notice_rise_sweep_avoids_visible_Label_and_Button_text": true,
+    "layout_errors": 0,
+    "native_renderer_exit": 0,
+    "OOMKilled": false,
+    "resource_guard_stop": null,
+    "offline_network_none_no_real_accounts_or_worlds": true,
+    "all72_visual_reviewed_via6_sheets_and2_full_resolution_originals": true,
+    "full_G_original_files": 89,
+    "full_G_archive_bytes": 144682500,
+    "full_G_archive_SHA256": "cb9554a0fbde2c4babc21fe1b90661051958dfe918e6b1c30c51a8be69f89891"
+  },
+  "native_animation_and_reflow": {
+    "actual_checks_passed": 11,
+    "original_two_second_lifetime_not_restarted": true,
+    "repeated_wrapped_text_inside_backing": true,
+    "same_message_and_serial_and_tween_on_context_change": true
+  },
+  "final_local_native": {
+    "runs": [
+      {
+        "label": "final-common-r2",
+        "suites": 26,
+        "named_checks": 382,
+        "minimum_available_bytes": 7561404416
+      },
+      {
+        "label": "final-extended-r2",
+        "suites": 26,
+        "named_checks": 487,
+        "minimum_available_bytes": 8321269760
+      }
+    ],
+    "overlap_not_unique_sum": true,
+    "CNO_headless_Dummy_BelowNormal_last4": true,
+    "memory_floor_bytes": 6442450944,
+    "unexpected_script_resource_or_object_leak_diagnostics": 0
+  },
+  "scope": "Notice presentation and affected UI acceptance; prior68art34gameplay baseline evidence is retained separately. Human experience excluded. Does not promote capacity, historical missing evidence or real fork.",
+  "GDD_numbers_and_server_protocol_config_assets_data_unchanged": true,
+  "legal_base_HP80_70_100_and_80over70_sentinel_preserved": true,
+  "no_ImageGen_needed_existing_style_consistent": true,
+  "notice_UI_accepted": true,
+  "new_source_CI": {
+    "state": "Completed_success_all4_jobs",
+    "source": "2eecaf49c1b081bcba5fb5d95d2c620df7e1f9d9",
+    "workflow": 40177987986,
+    "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/40177987986",
+    "actual_PG_passed": 418,
+    "PG_skipped": 0,
+    "all4_official_artifacts_G_verified": true
+  },
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792917931260.3044,
+  "verified_cloud_duplicate_cleanup": {
+    "ok": true,
+    "all72_final_original_frames_and89_files_G_preserved": true,
+    "final_visual_acceptance_and_all_originals_retained": true,
+    "own_stopped_UI_containers_removed": 1,
+    "verified_duplicate_chunk_directories_removed": 5,
+    "actual_freed_bytes": 293183488,
+    "cloud_available_bytes": 3684098048,
+    "formal_identity_unchanged_ready200": true,
+    "formal_DB_not_cleared": true
+  }
+}

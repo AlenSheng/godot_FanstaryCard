@@ -1,0 +1,187 @@
+{
+  "kind": "SealedBlobFrontierRead_ExactSourcePathContentVersions_NotRuntimeOrOriginalRootPass",
+  "generated_at": "2026-10-23T14:53:03.926938+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "stage": "R81/R82",
+  "source_refs_considered": 974,
+  "source_refs_bound": 179,
+  "full_path_digest_versions_bound": 179,
+  "unique_source_body_objects": 152,
+  "candidate_integrity_and_resource_boundary_controls_passed": 15,
+  "boundary_controls": [
+    {
+      "name": "sealed exact candidate",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "different requested path",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "different requested object",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "symlink not accepted",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "Git link not a blob",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "same bytes wrong leaf name",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "missing tree chain",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "wrong full directory prefix",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "wrong carrier root tree",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "outside source namespace",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "exact remaining budget",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "one byte over read budget",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "member cap retained",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "disk reserve retained",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "boolean size rejected",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    }
+  ],
+  "live_commit_or_directory_queries": 0,
+  "frozen_commit_or_directory_replay": 0,
+  "source_objects_considered": 215,
+  "prior_objects_with_no_remaining_path_not_read": 55,
+  "actual_blob_objects_read": 193,
+  "actual_blob_bytes_read": 533972994,
+  "configured_decoded_blob_cap_bytes": 536870912,
+  "native_source_reader_exits": [
+    0,
+    0
+  ],
+  "captured_source_errors": [],
+  "immutable_deferred_object_metadata_checked_before_source_body_reads": true,
+  "full_path_tree_mode_root_chain_and_declared_SHA256_not_replaced_with_similar_names_or_images": true,
+  "carrier_is_a_witness_not_original_caller_root_revision_runtime_or_representation": true,
+  "source_parent_inputs_and_original_test_execution_not_revalidated_by_blob_recovery": true,
+  "version_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-20261023-r81-originals\\exact-sealed-frontier-version-bindings.private.original.jsonl",
+    "bytes": 926527,
+    "sha256": "eef9cd4170ac3f568dc2509b598e5328121c1e56027e14c954d517c02a04e663",
+    "records": 179
+  },
+  "declaration_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-20261023-r81-originals\\source-declaration-to-frontier-version-bindings.private.original.jsonl",
+    "bytes": 122270,
+    "sha256": "77586738c21373a6d151ee2ff4f456dd3601e0eeae9c0fd751d2d7cf440556c4",
+    "records": 179
+  },
+  "candidate_catalog_reused_unchanged": {
+    "path": "G:\\PR13Evidence\\LOAD112-frozen-Git-body-resume-20261023-r79-originals\\frozen-full-path-blob-candidates.private.original.jsonl",
+    "bytes": 9293498,
+    "sha256": "997881838de5c93af52e6396701c8111595dbfa6914c8b791b3a00ebea7f5f0c",
+    "records": 2283
+  },
+  "combined_actual_blob_metadata": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-20261023-r81-originals\\combined-actual-native-blob-metadata.private.original.jsonl",
+    "bytes": 371047,
+    "sha256": "36d8e93ee7f98078e1c89e6d86c55ab7933bcf634be70bcef87744300160dde8",
+    "records": 2006
+  },
+  "remaining_read_deferrals": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-20261023-r81-originals\\source-object-read-deferrals.private.original.jsonl",
+    "bytes": 4797,
+    "sha256": "52ea61bf6d12355b2a490b9981518e26745d0097cdf610d5f533855fd983c487",
+    "records": 22
+  },
+  "remaining_unread_objects": 22,
+  "pass_artifact_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-publication-20261023-r82-originals\\complete-frontier-artifact-custody.private.original.jsonl",
+    "bytes": 33913,
+    "sha256": "69ea3a27c65f80d15057ff733d0e84856e99990f7717900767f856e9b6738aaf"
+  },
+  "private_source_copies_rehashed": 152,
+  "external_snapshot_files_reverified": 47,
+  "original_null_sizes_hashes_and_failed_cases_not_rewritten": true,
+  "budget_deferred_or_unobserved_not_marked_missing_corrupt_or_passed": true,
+  "size_omitting_reference_records_before": 1352,
+  "size_omitting_reference_records_after": 1173,
+  "remaining_size_omitting_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-sealed-blob-frontier-20261023-r81-originals\\remaining-size-omitting-declaration-review.private.original.jsonl",
+    "bytes": 550141,
+    "sha256": "409f83033fa98ef48a77644dca158f8fedeeb7aaca5342fe3a5b05fbd42d0cb0",
+    "records": 1173,
+    "unique_declared_digests": 562
+  },
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "original_content_review_queue_unchanged": 187,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "private_source_bodies_not_executed_exported_or_restored_to_worktree": true,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_engine_or_cloud_operation": false
+}

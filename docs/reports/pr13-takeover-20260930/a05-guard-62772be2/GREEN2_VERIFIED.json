@@ -1,0 +1,4431 @@
+{
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "full_suite": {
+    "path": "green2/server.trx",
+    "sha256": "f89e44032a8de348c70809bd0c2cf3eb2b854b2113d2d9776ae10e103c0f8b96",
+    "counters": {
+      "total": "299",
+      "executed": "299",
+      "passed": "299",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "results": [
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+        "outcome": "Passed",
+        "duration": "00:00:14.7092190",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Red\", element: \"Fire\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001791",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Mage, column: \"mage_soul\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0020568",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Slow_observers_do_not_block_authoritative_commands_and_snapshots_coalesce",
+        "outcome": "Passed",
+        "duration": "00:00:00.0146715",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Production\", configured: False, managed: False, expected: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000112",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.ReadAfter_ReportsGapWhenBufferRolledOver",
+        "outcome": "Passed",
+        "duration": "00:00:00.0013150",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Gold\", amount: 0, itemId: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008613",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.FragmentedReceiveKeepsTheCumulativeLimit",
+        "outcome": "Passed",
+        "duration": "00:00:00.0068993",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ZZ\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002398",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic",
+        "outcome": "Passed",
+        "duration": "00:00:00.4677983",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout",
+        "outcome": "Passed",
+        "duration": "00:00:00.4157340",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"Unknown\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038360",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001859",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RoomReadyReturnsPersistedLobbyProgress",
+        "outcome": "Passed",
+        "duration": "00:00:00.0043673",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.2443293",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Hands\", quality: \"Blue\", element: \"Earth\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001577",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Development\", configured: True, expected: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0037469",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004441",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction",
+        "outcome": "Passed",
+        "duration": "00:00:00.1866539",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.PendingSendLimitAbortsSlowPeer",
+        "outcome": "Passed",
+        "duration": "00:00:00.0047103",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"snapshot\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.2128926",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.ExpiredReissuedAndMalformedTicketsAreRejected",
+        "outcome": "Passed",
+        "duration": "00:00:00.0047695",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase",
+        "outcome": "Passed",
+        "duration": "00:00:02.3712065",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.2035853",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.InventoryAndPreviewCommandsPreserveIdentityRevisionAndReplacementSemantics",
+        "outcome": "Passed",
+        "duration": "00:00:00.0025858",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.Server_close_preserves_receive_until_ack_or_bounded_deadline(acknowledge: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0079488",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"feet\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002903",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection",
+        "outcome": "Passed",
+        "duration": "00:00:14.4673847",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomSnapshot_RoundTripsTypedPayloadWithinMessageLimit(bossPhase: 1)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0419030",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Admin_page_is_embedded_in_server_assembly",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001918",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+        "outcome": "Passed",
+        "duration": "00:00:00.1367819",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.1844866",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomCheckpointPolicyTests.Reward_relic_extraction_and_disconnect_markers_are_critical",
+        "outcome": "Passed",
+        "duration": "00:00:00.0049340",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.Server_close_preserves_receive_until_ack_or_bounded_deadline(acknowledge: False)",
+        "outcome": "Passed",
+        "duration": "00:00:02.0090397",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+        "outcome": "Passed",
+        "duration": "00:00:13.1574775",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Matchmaking.PreparationContractTests.Equipment_snapshot_round_trips_as_an_additive_optional_field",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014015",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.Monster_decision_roundtrips_identity_choice_and_replacement(accept: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011855",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Development\", configured: False, expected: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000905",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.RemoveInactive_DropsOnlyStreamsOlderThanCutoff",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008074",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.Create_AssignsMonotonicSequenceAndSupportsReplay",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008117",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Legs\", quality: \"Purple\", element: \"Metal\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001940",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+        "outcome": "Passed",
+        "duration": "00:00:20.9564635",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption",
+        "outcome": "Passed",
+        "duration": "00:00:00.1939545",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_replaces_existing_files_on_both_sides",
+        "outcome": "Passed",
+        "duration": "00:00:00.0057444",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"player-route\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.2016538",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000206",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomSnapshot_RoundTripsTypedPayloadWithinMessageLimit(bossPhase: 2)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008611",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players",
+        "outcome": "Passed",
+        "duration": "00:00:00.3478104",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.SlowPresentationConnectionTests.StalledFeedbackSendAbortsOnlyItsConnectionAndReleasesTheCaller(replaceWhileSending: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.2536073",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+        "outcome": "Passed",
+        "duration": "00:00:09.1731722",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap",
+        "outcome": "Passed",
+        "duration": "00:00:00.4696993",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Real_http_binds_binary_and_preserves_int64_errors_and_empty_responses",
+        "outcome": "Passed",
+        "duration": "00:00:00.1756189",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.Create_RemembersResponseByRequestId",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006099",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T20:00:00Z\", expected: \"2026-09-05\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001499",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets",
+        "outcome": "Passed",
+        "duration": "00:00:00.1962698",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"98bd25c14eb0a9e8576f036f87e1fb1c872d9b53c4b4890f7c\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000330",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0, */*;q=1\", legacy: False, expected: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000433",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.ServerMetricsTests.Core_operational_measurements_are_published",
+        "outcome": "Passed",
+        "duration": "00:00:00.0049882",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"combat.previewed\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010508",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Recovery_downtime_replays_the_same_authoritative_ticks",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038891",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRegistryLifecycleTests.RecoveredTerminalPlayerDoesNotReserveAnActiveRoomRoute",
+        "outcome": "Passed",
+        "duration": "00:00:00.0019878",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate",
+        "outcome": "Passed",
+        "duration": "00:00:00.0018453",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomPersistenceHealthTests.Failed_snapshot_is_unhealthy_until_a_later_success",
+        "outcome": "Passed",
+        "duration": "00:00:00.0021344",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Escape_attempt_transition_publishes_failed_to_both_players",
+        "outcome": "Passed",
+        "duration": "00:00:00.0075893",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+        "outcome": "Passed",
+        "duration": "00:00:15.9157128",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf\", legacy: False, expected: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008478",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T20:00:00Z\", expected: \"2027-01-01\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000153",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Concurrent_commands_are_serialized_by_single_reader",
+        "outcome": "Passed",
+        "duration": "00:00:00.0031752",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomLifecycleMetricsTrackerTests.Pve_duration_counts_active_time_but_excludes_pvp_freeze",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011235",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.HumanRoomMetricsTests.Human_routes_exclude_bots_and_ignore_old_terminal_snapshot_after_rejoin",
+        "outcome": "Passed",
+        "duration": "00:00:00.0037132",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays",
+        "outcome": "Passed",
+        "duration": "00:00:00.6019871",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"http\", supplied: \"\", expected: 403)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0037974",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000066",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.PersistentIdempotencyTests.Hash_ChangesWhenTargetChanges",
+        "outcome": "Passed",
+        "duration": "00:00:00.0053018",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BossPhaseChangesOnlyAfterTheAuthoritativeStepCompletes",
+        "outcome": "Passed",
+        "duration": "00:00:00.0052146",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ServerPong_RoundTripsTypedPayload",
+        "outcome": "Passed",
+        "duration": "00:00:00.0030610",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"registry\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.2069709",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.MarketDelta_RoundTripsWithoutChangingLegacyInventoryEvent",
+        "outcome": "Passed",
+        "duration": "00:00:00.0049918",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity",
+        "outcome": "Passed",
+        "duration": "00:00:00.2448118",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate",
+        "outcome": "Passed",
+        "duration": "00:00:00.2951134",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+        "outcome": "Passed",
+        "duration": "00:00:14.2241886",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007329",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Valid_ticket_uses_official_parameters_and_returns_verified_steam_id",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008493",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000363",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots",
+        "outcome": "Passed",
+        "duration": "00:00:00.3677095",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002460",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\r    id integer PRIMARY KEY\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000277",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Chest\", quality: \"Green\", element: \"Wood\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002581",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+        "outcome": "Passed",
+        "duration": "00:00:20.2401584",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.DecodeClient_RejectsWrongProtocolVersion",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012080",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+        "outcome": "Passed",
+        "duration": "00:00:15.4089674",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Equipment\", amount: 2, itemId: \"White|Fire|Head\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0075696",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-20T00:00:00Z\", expected: \"2026-09-20\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001362",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Equipment\", amount: 1, itemId: \"invalid|Fire|Head\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000563",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Json_requires_explicit_compatibility_and_never_replays_a_bad_body",
+        "outcome": "Passed",
+        "duration": "00:00:00.3413558",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_rejects_overflow_within_one_second",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010723",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Mail.MailClaimContractTests.Claim_all_reports_exact_grants_and_accepts_legacy_replays",
+        "outcome": "Passed",
+        "duration": "00:00:00.0175080",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Completed_scan_without_failures_is_healthy",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005759",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T19:59:59Z\", expected: \"2026-12-31\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000146",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic",
+        "outcome": "Passed",
+        "duration": "00:00:00.2764656",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.BattleComboResolved_RoundTripsTypedPayload",
+        "outcome": "Passed",
+        "duration": "00:00:00.0041076",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Guardian, column: \"guardian_soul\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007399",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000094",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Failed_settlements_are_deduplicated_without_exposing_exception_messages",
+        "outcome": "Passed",
+        "duration": "00:00:00.0067560",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Scan_failure_keeps_readiness_unhealthy_without_exposing_message",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005513",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification",
+        "outcome": "Passed",
+        "duration": "00:00:00.2167259",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Development\", configured: True, managed: False, expected: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003361",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:42.9561799",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches",
+        "outcome": "Passed",
+        "duration": "00:00:00.5154023",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently",
+        "outcome": "Passed",
+        "duration": "00:00:00.3045044",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomAndRewardCommands_RoundTripTypedPayloads",
+        "outcome": "Passed",
+        "duration": "00:00:00.0050755",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+        "outcome": "Passed",
+        "duration": "00:01:55.9506957",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000176",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_value_over_maximum_length",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001364",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"short\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002787",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five",
+        "outcome": "Passed",
+        "duration": "00:00:00.1997568",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.LegacyRoomMonsterWithoutBossPhaseDefaultsToFirstStage",
+        "outcome": "Passed",
+        "duration": "00:00:00.0043455",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Staging\", configured: True, expected: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004296",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"room-id\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.4089235",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_trims_valid_value",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001171",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry",
+        "outcome": "Passed",
+        "duration": "00:00:00.2366695",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets",
+        "outcome": "Passed",
+        "duration": "00:00:00.1954902",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping",
+        "outcome": "Passed",
+        "duration": "00:00:01.5806331",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"stalled-send\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.5031205",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room",
+        "outcome": "Passed",
+        "duration": "00:00:00.2263518",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"https\", supplied: \"wrong-key\", expected: 401)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001763",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+        "outcome": "Passed",
+        "duration": "00:00:06.1350575",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+        "outcome": "Passed",
+        "duration": "00:00:07.2936150",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ReadyCommandAndEvents_RoundTripTypedPayloads",
+        "outcome": "Passed",
+        "duration": "00:00:00.0061062",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality",
+        "outcome": "Passed",
+        "duration": "00:00:00.2274165",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.Monster_decision_roundtrips_identity_choice_and_replacement(accept: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001934",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001778",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.2384788",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomEvents_PreservePayloadAndEnvelope",
+        "outcome": "Passed",
+        "duration": "00:00:00.0160419",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader",
+        "outcome": "Passed",
+        "duration": "00:00:00.0263659",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T19:59:59Z\", expected: \"2026-08-31\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001487",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"https\", key: \"abcdefghijklmnopqrstuvwxyz0123456789\", expected: 200)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010693",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.New_snapshot_fields_roundtrip_and_do_not_replace_existing_tags",
+        "outcome": "Passed",
+        "duration": "00:00:00.0033863",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_restores_server_bundle_when_client_commit_fails",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015604",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T20:00:00Z\", expected: \"2026-09-07\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003181",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again",
+        "outcome": "Passed",
+        "duration": "00:00:00.2232237",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+        "outcome": "Passed",
+        "duration": "00:00:02.6677399",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"Equipment\", amount: 1, itemId: \"Purple|Water|Feet\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003626",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"contains\\ncontrol\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0010235",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Unsupported\", amount: 1, itemId: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000223",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Extracted\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004604",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"HealthPotion\", amount: 3, itemId: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002433",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006508",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.2732385",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Disabled_verifier_never_calls_external_service",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006558",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes",
+        "outcome": "Passed",
+        "duration": "00:00:00.1790461",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"disposed\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0053374",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"Gold\", amount: 100, itemId: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000113",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id bigint PRIMARY KEY\\\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001427",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000231",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+        "outcome": "Passed",
+        "duration": "00:00:06.1434062",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+        "outcome": "Passed",
+        "duration": "00:00:06.5988227",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week",
+        "outcome": "Passed",
+        "duration": "00:00:00.1415221",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T20:00:00Z\", expected: \"2026-09-14\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001287",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.2149826",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Recovery_is_unhealthy_until_first_scan_completes",
+        "outcome": "Passed",
+        "duration": "00:00:00.0126000",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomCheckpointPolicyTests.Ordinary_combat_is_throttled_but_critical_state_changes_save_immediately",
+        "outcome": "Passed",
+        "duration": "00:00:00.0032380",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ConcurrentDuplicateExecutesRoomMutationOnceAndReplaysFullResponse",
+        "outcome": "Passed",
+        "duration": "00:00:00.0070771",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response",
+        "outcome": "Passed",
+        "duration": "00:00:00.2080975",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"http\", key: null, expected: 403)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0006980",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.LocalizedContentContractTests.MailResponseIncludesBothLanguagesAndMigration",
+        "outcome": "Passed",
+        "duration": "00:00:00.0053371",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.FullBackpackAndOnDemandRelicStayWithinBinaryMessageLimit",
+        "outcome": "Passed",
+        "duration": "00:00:00.0101992",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate",
+        "outcome": "Passed",
+        "duration": "00:00:00.0043629",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ActionSpringStartsAuthoritativeReadBar",
+        "outcome": "Passed",
+        "duration": "00:00:00.0040757",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Priest, column: \"priest_soul\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002273",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+        "outcome": "Passed",
+        "duration": "00:01:50.6734576",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Production\", configured: False, managed: True, expected: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001168",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_SelectTargetUpdatesAuthoritativePveTarget",
+        "outcome": "Passed",
+        "duration": "00:00:00.0046873",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Matchmaking.PreparationContractTests.Legacy_snapshot_without_equipment_details_remains_readable",
+        "outcome": "Passed",
+        "duration": "00:00:00.0171520",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000445",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_SnapshotAllowsSelectingLastSurvivorAfterTargetDies",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038585",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_IsDeterministicAndEmbedsHash",
+        "outcome": "Passed",
+        "duration": "00:00:00.0050577",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Empty_contract_validates_supplied_body_before_mutation",
+        "outcome": "Passed",
+        "duration": "00:00:00.0246322",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Recovery_is_unhealthy_until_scan_completes",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011813",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material",
+        "outcome": "Passed",
+        "duration": "00:00:00.1799893",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply",
+        "outcome": "Passed",
+        "duration": "00:00:00.2533901",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades",
+        "outcome": "Passed",
+        "duration": "00:00:00.2229241",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"https\", key: null, expected: 503)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005875",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RejectsRequestIdReusedForDifferentCommand",
+        "outcome": "Passed",
+        "duration": "00:00:00.0030697",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementNotificationBatchProcessorTests.Offline_notifications_remain_pending_and_online_success_is_marked",
+        "outcome": "Passed",
+        "duration": "00:00:00.0042471",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection",
+        "outcome": "Passed",
+        "duration": "00:00:00.1613522",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Head\", quality: \"White\", element: \"Fire\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0094123",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+        "outcome": "Passed",
+        "duration": "00:01:19.8438287",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+        "outcome": "Passed",
+        "duration": "00:00:01.6447217",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_ReplacesEveryMissingSeatAndPreservesReadyHumans",
+        "outcome": "Passed",
+        "duration": "00:00:00.0043543",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot",
+        "outcome": "Passed",
+        "duration": "00:00:00.1516050",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+        "outcome": "Passed",
+        "duration": "00:00:01.5715079",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+        "outcome": "Passed",
+        "duration": "00:00:32.4571052",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_requires_a_positive_limit",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003457",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ResumeUsesRoomRevisionToAvoidUnnecessarySnapshot",
+        "outcome": "Passed",
+        "duration": "00:00:00.0043556",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+        "outcome": "Passed",
+        "duration": "00:00:47.5197252",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000167",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ClientResume_RoundTripsTypedPayload",
+        "outcome": "Passed",
+        "duration": "00:00:00.0074704",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"None\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000425",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room",
+        "outcome": "Passed",
+        "duration": "00:00:00.4063792",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"broken\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0004640",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Revision_check_rejects_future_versions_after_prior_writes",
+        "outcome": "Passed",
+        "duration": "00:00:00.0025457",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity",
+        "outcome": "Passed",
+        "duration": "00:00:00.2647452",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_CanLaunchFourBotRoomWhenNobodyReadies",
+        "outcome": "Passed",
+        "duration": "00:00:00.0050860",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Historical_numeric_strings_keep_the_original_numeric_tags",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002118",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ActionPotionConsumesAndHealsImmediately",
+        "outcome": "Passed",
+        "duration": "00:00:00.0042709",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.Route_PingReturnsPongWithSequence",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002104",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"Black\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000434",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RewardRefreshReceiptPreventsDuplicateSpendAfterRouterRestart",
+        "outcome": "Passed",
+        "duration": "00:00:00.0087981",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+        "outcome": "Passed",
+        "duration": "00:00:01.9696288",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.PersistentIdempotencyTests.Hash_IsStableForSameRequest",
+        "outcome": "Passed",
+        "duration": "00:00:00.0012743",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Steam_error_payload_is_not_accepted",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038407",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material",
+        "outcome": "Passed",
+        "duration": "00:00:00.3266061",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Duel_death_publishes_ended_to_both_and_died_to_loser_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.0130591",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Read_only_commands_do_not_enqueue_persistence_snapshots",
+        "outcome": "Passed",
+        "duration": "00:00:00.0028839",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000165",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.2420396",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.LocalizedContentContractTests.PublicClientInfoIncludesBothAnnouncementLanguages",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038806",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.1771407",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Extraction_transition_publishes_completion_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014411",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BattlePlayCardsExecutesInsideRegisteredRoom",
+        "outcome": "Passed",
+        "duration": "00:00:00.0023048",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits",
+        "outcome": "Passed",
+        "duration": "00:00:00.2744575",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000159",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+        "outcome": "Passed",
+        "duration": "00:02:10.6454172",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Unknown_class_assets_do_not_guess_an_account",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001041",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Typed_equipment_names_use_the_same_wire_adapter",
+        "outcome": "Passed",
+        "duration": "00:00:00.0020770",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+        "outcome": "Passed",
+        "duration": "00:00:03.0142068",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account",
+        "outcome": "Passed",
+        "duration": "00:00:00.2295790",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"https\", supplied: \"abcdefghijklmnopqrstuvwxyz0123456789\", expected: 200)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008074",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-19T23:59:59Z\", expected: \"2026-09-19\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001605",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer",
+        "outcome": "Passed",
+        "duration": "00:00:00.2761571",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Dead\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0020715",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.PreviewIsPureAndMatchesTheFollowingAuthoritativePlay",
+        "outcome": "Passed",
+        "duration": "00:00:00.0783811",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+        "outcome": "Passed",
+        "duration": "00:00:14.8174249",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Failed_rooms_keep_readiness_unhealthy",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009043",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_releases_only_expired_entries",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005255",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Actor_round_trips_complete_duel_snapshot",
+        "outcome": "Passed",
+        "duration": "00:00:00.0039482",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity",
+        "outcome": "Passed",
+        "duration": "00:00:00.1868488",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE different (\\n    id integer PRIMARY K\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000186",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Gold\", amount: 1, itemId: \"ignored\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000257",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_DuelLeaveRequiresBothParticipants",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038741",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Validate_RejectsDuplicatePrimaryKey",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007602",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+        "outcome": "Passed",
+        "duration": "00:00:02.9024945",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 409)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0213932",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001316",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomLifecycleMetricsTrackerTests.Pvp_duration_uses_authoritative_duel_start_time",
+        "outcome": "Passed",
+        "duration": "00:00:00.0148923",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"Weapon\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000349",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0008298",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.2206796",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T19:59:59Z\", expected: \"2026-09-07\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000300",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"stalled-close\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.5111045",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials",
+        "outcome": "Passed",
+        "duration": "00:00:00.1911750",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 403)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0321065",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/json\", legacy: False, expected: null)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001218",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds",
+        "outcome": "Passed",
+        "duration": "00:00:00.1769295",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.TicketConsumptionIsAtomicAndBoundToSession",
+        "outcome": "Passed",
+        "duration": "00:00:00.0037455",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.ReadAfter_RefreshesStreamActivity",
+        "outcome": "Passed",
+        "duration": "00:00:00.0015712",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 401)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0226125",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ResumeGapReturnsSessionAndRoomSnapshots",
+        "outcome": "Passed",
+        "duration": "00:00:00.0032935",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Orange\", element: \"Water\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003590",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"development\", configured: True, expected: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000172",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomRegistryLifecycleTests.SettledPlayerCanJoinNextRoomWhileTeammatesRemainInFormerRoom",
+        "outcome": "Passed",
+        "duration": "00:00:00.0039366",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"combat.hit\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003174",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Successful_scan_restores_readiness",
+        "outcome": "Passed",
+        "duration": "00:00:00.0028462",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T19:59:59Z\", expected: \"2026-09-04\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0003847",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.SlowPresentationConnectionTests.StalledFeedbackSendAbortsOnlyItsConnectionAndReleasesTheCaller(replaceWhileSending: True)",
+        "outcome": "Passed",
+        "duration": "00:00:00.2636935",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.MalformedFrameFloodConsumesBudgetAndBoundsErrorResponses",
+        "outcome": "Passed",
+        "duration": "00:00:00.0033772",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"healthy\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000892",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets",
+        "outcome": "Passed",
+        "duration": "00:00:00.2608837",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Mutual_leave_publishes_a_non_death_duel_end",
+        "outcome": "Passed",
+        "duration": "00:00:00.0014221",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.BattlePlayCards_RoundTripsAllCardInstanceIds",
+        "outcome": "Passed",
+        "duration": "00:00:00.0357438",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Dispose_drains_commands_that_were_already_accepted",
+        "outcome": "Passed",
+        "duration": "00:00:00.0128530",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BattleAbandonSettles_the_active_battle_as_dead",
+        "outcome": "Passed",
+        "duration": "00:00:00.0038090",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementBatchProcessorTests.Cancellation_stops_the_batch_instead_of_being_reported_as_failure",
+        "outcome": "Passed",
+        "duration": "00:00:00.0040143",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Production\", configured: True, expected: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002145",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level",
+        "outcome": "Passed",
+        "duration": "00:00:00.3817160",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity",
+        "outcome": "Passed",
+        "duration": "00:00:00.1022116",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ABC\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000054",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.Route_StateCommandWithoutRequestIdIsRejected",
+        "outcome": "Passed",
+        "duration": "00:00:00.0002692",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0.1, application/json;q=0.9\", legacy: True, expected: False)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0064001",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000788",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RoomSnapshotReturnsOnlyPlayerProjectionAndAllowedActions",
+        "outcome": "Passed",
+        "duration": "00:00:00.0077941",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···)",
+        "outcome": "Passed",
+        "duration": "00:00:00.0000183",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies",
+        "outcome": "Passed",
+        "duration": "00:00:00.1999183",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+        "outcome": "Passed",
+        "duration": "00:00:00.2231907",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+        "outcome": "Passed",
+        "duration": "00:00:17.2121816",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Rooms.RoomPersistenceHealthTests.Failure_snapshot_is_sorted_and_deduplicated",
+        "outcome": "Passed",
+        "duration": "00:00:00.0011370",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+        "outcome": "Passed",
+        "duration": "00:00:02.7222241",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementBatchProcessorTests.Failed_settlement_does_not_starve_later_settlements",
+        "outcome": "Passed",
+        "duration": "00:00:00.0009419",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Settlement.SettlementNotificationBatchProcessorTests.Failed_delivery_is_not_marked_published",
+        "outcome": "Passed",
+        "duration": "00:00:00.0007509",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification",
+        "outcome": "Passed",
+        "duration": "00:00:00.2342279",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_writes_identical_bundle_to_server_and_client",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005718",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+        "outcome": "Passed",
+        "duration": "00:00:41.8441811",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.3022172",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+        "outcome": "Passed",
+        "duration": "00:00:00.2502996",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"battle.combo_resolved\")",
+        "outcome": "Passed",
+        "duration": "00:00:00.0001867",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_PreservesFalseLogicalValueAsPresentEmptyMessage",
+        "outcome": "Passed",
+        "duration": "00:00:00.0005125",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.AuthoritativeSnapshotAndRelicBudgetMeasured",
+        "outcome": "Passed",
+        "duration": "00:00:00.0084594",
+        "error": null
+      },
+      {
+        "test_name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots",
+        "outcome": "Passed",
+        "duration": "00:00:00.2294912",
+        "error": null
+      }
+    ]
+  },
+  "readonly_audits": [
+    {
+      "path": "green2/a05-audit-causal-after.json",
+      "sha256": "04742b3a1492e153e26acb63aaad94fcda6ad80f5db10aa95d3a7dba1559237b",
+      "label": "causal-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_6ec25cf075c64c98a806a96b6af21e3f",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-causal-before.json",
+      "sha256": "863fba93fcd82e78f12d2d10252b7f3e656c98efe8e9f4f19aff1b921606e0b9",
+      "label": "causal-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_6ec25cf075c64c98a806a96b6af21e3f",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-committed-response-loss-after.json",
+      "sha256": "ce5a4fcd17a3151e389e4e31646f9ea0bca692dc18dcb2110f01f42d1de6cb69",
+      "label": "db-committed-response-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e003cf59376941249c56121351d294a5",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-committed-response-loss-before.json",
+      "sha256": "0c8159334cf68a31008c59ed0f83ec97a63466ff48813f9a9592e6495587ff52",
+      "label": "db-committed-response-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e003cf59376941249c56121351d294a5",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-precommit-after.json",
+      "sha256": "5cdb4a62fdbac3cd39c3b27f9278cc7b40dcaa576c8fbd5a04c1f2ddcc0657a7",
+      "label": "db-precommit-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_1146e07ef3574ded95fe902a8d287a32",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-db-precommit-before.json",
+      "sha256": "8d5d980013b913ee7ba4e7d9d27817dd71cb920991c594496dbb1c0bffb066a6",
+      "label": "db-precommit-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_1146e07ef3574ded95fe902a8d287a32",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-ordinary-success-after.json",
+      "sha256": "fc7f0a0704c2045c14448efc00053f50bde8241a2923f0721367435682c27b61",
+      "label": "guard-ordinary-success-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ba651cb7d32443249ec17d4f167621a3",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-ordinary-success-before.json",
+      "sha256": "ae75f86a0e9a8ca20a55dc1f9a7d341bc155d615adcb4c13ccd81da58b8ad82c",
+      "label": "guard-ordinary-success-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ba651cb7d32443249ec17d4f167621a3",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-committed-loss-after.json",
+      "sha256": "1f14a03e45f1c9e258a23a3e0941d9402df134c8fd206ead5946c398be470c5d",
+      "label": "guard-recovered-committed-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e83281b36aea4397a8ae11508941417d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-committed-loss-before.json",
+      "sha256": "3fd0c2f88e2f776242be7f9fb65b7da3908ce2e370aaadc8ab0acf5d62efe09e",
+      "label": "guard-recovered-committed-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_e83281b36aea4397a8ae11508941417d",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "sha256": "9aa07fd13acb49e6d066b11026542b017d7e8ac0f7a55e3b605ce4e240edb3a0",
+      "label": "guard-recovered-uncommitted-loss-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ebbb65d73dd2422bb203df10bc09534b",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "sha256": "cbff59810c2419718ceb591b5b133f6c25f50963119d14cafb1c731c49ff1bb9",
+      "label": "guard-recovered-uncommitted-loss-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_ebbb65d73dd2422bb203df10bc09534b",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-healthy-after.json",
+      "sha256": "61a4f49c5d898f4cf5f4914e1be7092c804e050a7ac0d2a6ee92e409af1369cb",
+      "label": "healthy-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_5d1171fe0f1e4fa99947acfe2f297dfb",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-healthy-before.json",
+      "sha256": "7bba1cfd6c20467b5dffc7ed42def6e8537e3bb75002b0506de23c5f5b4e8d33",
+      "label": "healthy-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_5d1171fe0f1e4fa99947acfe2f297dfb",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-pending-after.json",
+      "sha256": "6728cf25ed08b9b30e3dfb0d1ad71cc4cb689743b7aa3131ca11ea815c4b36e9",
+      "label": "pending-after",
+      "require_clear": true,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_c85d0f7509904991ae6dd5026cc70657",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 0,
+        "unfinished_matches": 0,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    },
+    {
+      "path": "green2/a05-audit-pending-before.json",
+      "sha256": "f70c1fbe08b557f6b855f93acd6f3b4456673a4a5875d51d90396401fbfa7ab8",
+      "label": "pending-before",
+      "require_clear": false,
+      "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+      "transaction": "READ ONLY; rollback; no mutation",
+      "owned_schema": "fc_runtime_test_c85d0f7509904991ae6dd5026cc70657",
+      "counts": {
+        "pending_holds": 0,
+        "queued_tickets": 0,
+        "locked_equipment": 1,
+        "unfinished_matches": 1,
+        "active_preparations": 0,
+        "wallet_gold_mismatches": 0,
+        "ledger_chain_mismatches": 0,
+        "unacknowledged_settlements": 0
+      }
+    }
+  ],
+  "actual_forwarded_204": [
+    {
+      "label": "guard-recovered-uncommitted-loss",
+      "path": "/api/v1/preparations/01a0f513-1761-7984-8e79-d9e7b9694d40",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    },
+    {
+      "label": "guard-ordinary-success",
+      "path": "/api/v1/preparations/01a0f513-5181-79e8-94f9-eef69a567a09",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    },
+    {
+      "label": "guard-recovered-committed-loss",
+      "path": "/api/v1/preparations/01a0f513-a059-7770-ad74-a4596d2573d4",
+      "method": "DELETE",
+      "status": 204,
+      "backendBytes": 0
+    }
+  ],
+  "causal": {
+    "matchId": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+    "RoomId": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+    "playerId": "sha256-guid:5eadaa666122128c03dd5731f7316421cae4409af13a8b81c2c737939e43f087",
+    "equipmentId": "sha256-guid:23ef0ca00a11a60b6b6726eb281a7b3dfd0e9979bc640fdea518d88d32589b26",
+    "ProcessId": 111021,
+    "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-causal-dd1fd5a12121493cb00084db0d4b4084",
+    "actual": {
+      "counterexample_confirmed": false,
+      "failures": [],
+      "http_observations": [
+        {
+          "attempt_no": 1,
+          "body_bytes": 149,
+          "connection_reused": false,
+          "decode_ms": 0.0,
+          "duration_ms": 68,
+          "logical_request_id": "godot-5fc55a2fdd38796ccd37edaf9b31bea3",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/client-info",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-5fc55a2fdd38796ccd37edaf9b31bea3",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 149,
+          "decode_ms": 0.0,
+          "duration_ms": 69,
+          "logical_request_id": "godot-5fc55a2fdd38796ccd37edaf9b31bea3",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/client-info",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/client-info",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-5fc55a2fdd38796ccd37edaf9b31bea3",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 204,
+          "connection_reused": true,
+          "decode_ms": 0.229,
+          "duration_ms": 183,
+          "logical_request_id": "godot-6ba72483c12eaaeec01eb5f45c5a7691",
+          "match_id": "",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/auth/local",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-6ba72483c12eaaeec01eb5f45c5a7691",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 204,
+          "decode_ms": 0.229,
+          "duration_ms": 183,
+          "logical_request_id": "godot-6ba72483c12eaaeec01eb5f45c5a7691",
+          "match_id": "",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/auth/local",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/auth/local",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-6ba72483c12eaaeec01eb5f45c5a7691",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36226,
+          "connection_reused": true,
+          "decode_ms": 33.328,
+          "duration_ms": 200,
+          "logical_request_id": "godot-3f0c4b34c8cbe798b076d94e32d801e6",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-3f0c4b34c8cbe798b076d94e32d801e6",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36226,
+          "decode_ms": 33.328,
+          "duration_ms": 200,
+          "logical_request_id": "godot-3f0c4b34c8cbe798b076d94e32d801e6",
+          "match_id": "",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/bootstrap",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-3f0c4b34c8cbe798b076d94e32d801e6",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 80,
+          "connection_reused": true,
+          "decode_ms": 0.085,
+          "duration_ms": 62,
+          "logical_request_id": "godot-2c3222956f6f5e44522db8d55ee28ad0",
+          "match_id": "",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/realtime/ticket",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-2c3222956f6f5e44522db8d55ee28ad0",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 80,
+          "decode_ms": 0.085,
+          "duration_ms": 62,
+          "logical_request_id": "godot-2c3222956f6f5e44522db8d55ee28ad0",
+          "match_id": "",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/realtime/ticket",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/realtime/ticket",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-2c3222956f6f5e44522db8d55ee28ad0",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36226,
+          "connection_reused": true,
+          "decode_ms": 32.995,
+          "duration_ms": 248,
+          "logical_request_id": "godot-717833fdab2bac9466c0880f603f3ca9",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-717833fdab2bac9466c0880f603f3ca9",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36226,
+          "decode_ms": 32.995,
+          "duration_ms": 248,
+          "logical_request_id": "godot-717833fdab2bac9466c0880f603f3ca9",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/bootstrap",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-717833fdab2bac9466c0880f603f3ca9",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 80,
+          "connection_reused": true,
+          "decode_ms": 0.083,
+          "duration_ms": 245,
+          "logical_request_id": "godot-d9969e172a1ccafbfcabccd02a6e495d",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/realtime/ticket",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-d9969e172a1ccafbfcabccd02a6e495d",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 80,
+          "decode_ms": 0.083,
+          "duration_ms": 247,
+          "logical_request_id": "godot-d9969e172a1ccafbfcabccd02a6e495d",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/realtime/ticket",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "sha256-guid:0f0ed204d0d461f14ac8af61365f16a73ee5f90a76c87a56d9e4995d043158d6",
+          "route": "/api/v1/realtime/ticket",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-d9969e172a1ccafbfcabccd02a6e495d",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36115,
+          "connection_reused": true,
+          "decode_ms": 33.162,
+          "duration_ms": 233,
+          "logical_request_id": "godot-4acd580b246ddabfdba379b54d564d8d",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-4acd580b246ddabfdba379b54d564d8d",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36115,
+          "decode_ms": 33.162,
+          "duration_ms": 233,
+          "logical_request_id": "godot-4acd580b246ddabfdba379b54d564d8d",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/bootstrap",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-4acd580b246ddabfdba379b54d564d8d",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 411,
+          "connection_reused": false,
+          "decode_ms": 0.513,
+          "duration_ms": 2547,
+          "logical_request_id": "godot-1365a68f5bde9365594ae86faaaf6799",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/settlements/{settlementId:guid}",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-1365a68f5bde9365594ae86faaaf6799",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 411,
+          "decode_ms": 0.513,
+          "duration_ms": 2547,
+          "logical_request_id": "godot-1365a68f5bde9365594ae86faaaf6799",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/settlements/01a0f515-cae8-7a7e-b216-a46f8cfa3abc",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/settlements/{settlementId:guid}",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-1365a68f5bde9365594ae86faaaf6799",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36618,
+          "connection_reused": true,
+          "decode_ms": 28.055,
+          "duration_ms": 271,
+          "logical_request_id": "godot-d12e36a21ab538e3bca52a55f09b3d2a",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-d12e36a21ab538e3bca52a55f09b3d2a",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36618,
+          "decode_ms": 28.055,
+          "duration_ms": 315,
+          "logical_request_id": "godot-d12e36a21ab538e3bca52a55f09b3d2a",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/bootstrap",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-d12e36a21ab538e3bca52a55f09b3d2a",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 73,
+          "connection_reused": false,
+          "decode_ms": 0.491,
+          "duration_ms": 369,
+          "logical_request_id": "godot-3a340715bcb9fd3999a63287d5a0ba1c",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/settlements/{settlementId:guid}/acknowledge",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-3a340715bcb9fd3999a63287d5a0ba1c",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 73,
+          "decode_ms": 0.491,
+          "duration_ms": 369,
+          "logical_request_id": "godot-3a340715bcb9fd3999a63287d5a0ba1c",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/settlements/01a0f515-cae8-7a7e-b216-a46f8cfa3abc/acknowledge",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/settlements/{settlementId:guid}/acknowledge",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-3a340715bcb9fd3999a63287d5a0ba1c",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36204,
+          "connection_reused": true,
+          "decode_ms": 33.5,
+          "duration_ms": 99,
+          "logical_request_id": "godot-1a06197aaaede5f2b8556f2771e75f24",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-1a06197aaaede5f2b8556f2771e75f24",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 36204,
+          "decode_ms": 33.5,
+          "duration_ms": 99,
+          "logical_request_id": "godot-1a06197aaaede5f2b8556f2771e75f24",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/bootstrap",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/bootstrap",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-1a06197aaaede5f2b8556f2771e75f24",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 429,
+          "connection_reused": true,
+          "decode_ms": 0.303,
+          "duration_ms": 133,
+          "logical_request_id": "godot-14f48f52cf93d7057607bd368ff68598",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/preparations",
+          "session_generation": 1,
+          "status": 201,
+          "trace_id": "godot-14f48f52cf93d7057607bd368ff68598",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 429,
+          "decode_ms": 0.303,
+          "duration_ms": 133,
+          "logical_request_id": "godot-14f48f52cf93d7057607bd368ff68598",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 2,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/preparations",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/preparations",
+          "session_generation": 1,
+          "status": 201,
+          "trace_id": "godot-14f48f52cf93d7057607bd368ff68598",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 10,
+          "connection_reused": true,
+          "decode_ms": 0.105,
+          "duration_ms": 49,
+          "logical_request_id": "godot-9b59d972a6639fde59cf3127e09b7f2f",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/inventory",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-9b59d972a6639fde59cf3127e09b7f2f",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 10,
+          "decode_ms": 0.105,
+          "duration_ms": 49,
+          "logical_request_id": "godot-9b59d972a6639fde59cf3127e09b7f2f",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 0,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/inventory/",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/inventory",
+          "session_generation": 1,
+          "status": 200,
+          "trace_id": "godot-9b59d972a6639fde59cf3127e09b7f2f",
+          "type": "http"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 0,
+          "connection_reused": false,
+          "decode_ms": 0.009,
+          "duration_ms": 84,
+          "logical_request_id": "godot-defee36d3f157a46d06506d40039eb9b",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 4,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/preparations/{preparationId:guid}",
+          "session_generation": 1,
+          "status": 204,
+          "trace_id": "godot-defee36d3f157a46d06506d40039eb9b",
+          "type": "http_attempt"
+        },
+        {
+          "attempt_no": 1,
+          "body_bytes": 0,
+          "decode_ms": 0.009,
+          "duration_ms": 84,
+          "logical_request_id": "godot-defee36d3f157a46d06506d40039eb9b",
+          "match_id": "sha256-guid:8eb17c09893420ea878580c1a20268c4c09ed7dcc5bf721c598bf39bc8b58fc0",
+          "method": 4,
+          "ok": true,
+          "origin": "http://127.0.0.1:35307",
+          "path": "/api/v1/preparations/01a0f515-dd78-7505-ac28-2f4994f6651d",
+          "result": "success",
+          "retry_backoff_ms": 0.0,
+          "room_context_epoch": 2,
+          "room_id": "",
+          "route": "/api/v1/preparations/{preparationId:guid}",
+          "session_generation": 1,
+          "status": 204,
+          "trace_id": "godot-defee36d3f157a46d06506d40039eb9b",
+          "type": "http"
+        }
+      ],
+      "observations": [
+        {
+          "check": "actual Running M entry",
+          "monotonic_ms": 1011,
+          "passed": true
+        },
+        {
+          "check": "owned control extract",
+          "monotonic_ms": 1027,
+          "passed": true
+        },
+        {
+          "check": "actual legal extraction",
+          "monotonic_ms": 1028,
+          "passed": true
+        },
+        {
+          "check": "owned control restarted",
+          "monotonic_ms": 5294,
+          "passed": true
+        },
+        {
+          "check": "actual Pending OS restart/NOT_IN_ROOM retains recovery M",
+          "monotonic_ms": 5560,
+          "passed": true
+        },
+        {
+          "check": "owned control get-released",
+          "monotonic_ms": 8174,
+          "passed": true
+        },
+        {
+          "check": "actual GET loaded M with recovery M while production poll remains awaited",
+          "monotonic_ms": 8207,
+          "passed": true
+        },
+        {
+          "check": "owned control ack-held",
+          "monotonic_ms": 8257,
+          "passed": true
+        },
+        {
+          "check": "real ACK await performs optimistic clear",
+          "monotonic_ms": 8258,
+          "passed": true
+        },
+        {
+          "check": "owned control poll-released",
+          "monotonic_ms": 8291,
+          "passed": true
+        },
+        {
+          "monotonic_ms": 8509,
+          "stale_during_ack": false
+        },
+        {
+          "check": "owned control ack-released",
+          "monotonic_ms": 8527,
+          "passed": true
+        },
+        {
+          "check": "actual production ACK returns success",
+          "monotonic_ms": 8693,
+          "passed": true
+        },
+        {
+          "check": "actual post-ACK Bootstrap confirms completion",
+          "monotonic_ms": 8693,
+          "passed": true
+        },
+        {
+          "monotonic_ms": 8693,
+          "stale_after_ack": false
+        },
+        {
+          "check": "actual next preparation allowed while stale receipt remains",
+          "monotonic_ms": 8827,
+          "passed": true
+        }
+      ],
+      "ok": true,
+      "stale_after_ack": false,
+      "stale_during_ack": false
+    },
+    "expected": "ACK success and post-ACK Bootstrap exclude M; production settlement must remain empty",
+    "productionSha": "62772be2a1bc28affffc3d057f259c8c5ded8e37"
+  },
+  "guard_windows": [
+    {
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "sourceSha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "matchId": "sha256-guid:ed4e37cff89534fb436feeb4af6328e702aaa83c2ee9e770d5b189d5f338f5b9",
+      "RoomId": "sha256-guid:367667cc146e5ff73406613d80c3da3f3dfcbaeff0ead232c5dc6d4efe6d4433",
+      "playerId": "sha256-guid:29a2d293eb97bd8efffdc3c59130b9400ffeda01135ce7ccfd62708d19a40330",
+      "equipmentId": "sha256-guid:235de21236fea16067add6615a848fcb1515e70cee21d686e1190e9269c096b4",
+      "before": {
+        "Gold": 0,
+        "Potions": 0,
+        "Owner": "sha256-guid:29a2d293eb97bd8efffdc3c59130b9400ffeda01135ce7ccfd62708d19a40330",
+        "Location": "InMatchEquipped",
+        "GoldLedger": 0,
+        "Movements": 0
+      },
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Owner": "sha256-guid:29a2d293eb97bd8efffdc3c59130b9400ffeda01135ce7ccfd62708d19a40330",
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "attempts": [
+        {
+          "Index": 1,
+          "KeySha256": "acc3eb68e83be8257ae1c3cc4a4e06fc8de043adfb9bbd39b72b102b1b96dbfc",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": false,
+          "Dropped": true,
+          "BackendStatus": null,
+          "ResponseSha256": null
+        },
+        {
+          "Index": 2,
+          "KeySha256": "acc3eb68e83be8257ae1c3cc4a4e06fc8de043adfb9bbd39b72b102b1b96dbfc",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": false,
+          "Dropped": true,
+          "BackendStatus": null,
+          "ResponseSha256": null
+        },
+        {
+          "Index": 3,
+          "KeySha256": "acc3eb68e83be8257ae1c3cc4a4e06fc8de043adfb9bbd39b72b102b1b96dbfc",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": false,
+          "Dropped": true,
+          "BackendStatus": null,
+          "ResponseSha256": null
+        },
+        {
+          "Index": 4,
+          "KeySha256": "2dea1092a9eaf5adca58f5f435de6c278940054d9eb15f4f3bb47fccd6a7a3b6",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": true,
+          "Dropped": false,
+          "BackendStatus": 200,
+          "ResponseSha256": "faeb86ce8f7e2c520a8fe12ec2e36d5a18c7b6cbf64a19c8fafebcc3fde74d8e"
+        }
+      ],
+      "bootstraps": [
+        {
+          "Index": 1,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "b58c89b79b8c59f975bb1f0638a5e91e6e39788d4251118fe1fa55400d5327e4"
+        },
+        {
+          "Index": 2,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "ca463049245f123e6c45d6c144736f0e4fb6b09d2786932a743a27a98ee21674"
+        },
+        {
+          "Index": 3,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "9a4d9e06b28511ae55349f63352248fcdf5f950ed05153d925199f8da4428a84"
+        },
+        {
+          "Index": 4,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": "sha256-guid:c9ffb8e97f8d5cf9aa844431422631b28a068e2ea2f74a892f330a90c4406b9b",
+          "BodySha256": "cdf932dff418ac4e4233be6442b14ec9c7c7b441d8d2a1e6194c759870441713"
+        },
+        {
+          "Index": 5,
+          "AfterAckAttempts": 3,
+          "UnfinishedSettlementId": "sha256-guid:c9ffb8e97f8d5cf9aa844431422631b28a068e2ea2f74a892f330a90c4406b9b",
+          "BodySha256": "9ecfa8487f55a9d339abd8f30e3db53443e6144df7083f62078219d7955016f4"
+        },
+        {
+          "Index": 6,
+          "AfterAckAttempts": 4,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "b26a776f4aee02d0cee8d159171af1b318ada7e616bf43a0d4a2bb55e04ce51f"
+        }
+      ],
+      "pids": [
+        110030,
+        110095
+      ],
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "acceptedBy": null,
+      "scope": "actual Program, production Game, unchanged real PB response gates; owned audit"
+    },
+    {
+      "context": "ordinary",
+      "outcome": "success",
+      "sourceSha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "matchId": "sha256-guid:37031e4e4bfc7292db6e4bfeb05379b3eec2942f8bdf933a7404595c4413aa88",
+      "RoomId": "sha256-guid:939a78230e40c5e7f6dd0056b44751d95161ae5146e8c0bc3961a6e3d0d095e9",
+      "playerId": "sha256-guid:784976ffb0abefe61f69a196972473da56fe79b30998bc62cc1eac4cbc47fd48",
+      "equipmentId": "sha256-guid:8143988889a496eaaef1f38d032044b21c2eba5b3fe7194148bc6b198e8ff878",
+      "before": {
+        "Gold": 0,
+        "Potions": 0,
+        "Owner": "sha256-guid:784976ffb0abefe61f69a196972473da56fe79b30998bc62cc1eac4cbc47fd48",
+        "Location": "InMatchEquipped",
+        "GoldLedger": 0,
+        "Movements": 0
+      },
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Owner": "sha256-guid:784976ffb0abefe61f69a196972473da56fe79b30998bc62cc1eac4cbc47fd48",
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "attempts": [
+        {
+          "Index": 1,
+          "KeySha256": "c90b8fc1cbc699403ee5bec6ee0cb8529e55d73b84c862432f9f0148a22aaf51",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": true,
+          "Dropped": false,
+          "BackendStatus": 200,
+          "ResponseSha256": "b635240227013a3d01189ab5dc925c58618e5e9d42cb97c6ca0c564f53caa167"
+        }
+      ],
+      "bootstraps": [
+        {
+          "Index": 1,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "9d18e30bf5b54f9ba8029d5f887da9d9610390fe66792a388b323d4f15c50dc7"
+        },
+        {
+          "Index": 2,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "58dde836c7b361dbe869592dd02eba5889b597d26c7ad4447b29f5d17cce9b36"
+        },
+        {
+          "Index": 3,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": "sha256-guid:6db1a4755f9ce0974f713de484aec763d61ac826d4705871550c22aab28365a4",
+          "BodySha256": "3d2d4c3158a2d441afb8958338a04fa0678cc2cd0a32531849d425aa34eea68f"
+        },
+        {
+          "Index": 4,
+          "AfterAckAttempts": 1,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "fd40991a29cb9957ffa097b13bfe454307625348a986aaac0e058bcf825d6709"
+        }
+      ],
+      "pids": [
+        110133
+      ],
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "acceptedBy": null,
+      "scope": "actual Program, production Game, unchanged real PB response gates; owned audit"
+    },
+    {
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "sourceSha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+      "matchId": "sha256-guid:ccb5472fd8807cba575dd6ce134ee9524e253ab1676c97ecc01fe5d0e87da1c2",
+      "RoomId": "sha256-guid:2c6db14f2fd365f78e942d06958f1153314e8580dd68fe162400026c9f3f4662",
+      "playerId": "sha256-guid:f37dfb3bef047ac28756a7e912c6ae9dc77acff9fef49dd66804ac079df70d89",
+      "equipmentId": "sha256-guid:6826c5689bbb2e36828b48232847a5bbcfb6493439c7f9464505901ae706a0b5",
+      "before": {
+        "Gold": 0,
+        "Potions": 0,
+        "Owner": "sha256-guid:f37dfb3bef047ac28756a7e912c6ae9dc77acff9fef49dd66804ac079df70d89",
+        "Location": "InMatchEquipped",
+        "GoldLedger": 0,
+        "Movements": 0
+      },
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Owner": "sha256-guid:f37dfb3bef047ac28756a7e912c6ae9dc77acff9fef49dd66804ac079df70d89",
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "attempts": [
+        {
+          "Index": 1,
+          "KeySha256": "d40368a243c29ace323fd243a70adf8f50f63fa5ae6fdbaed09f23d6cf95c162",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": true,
+          "Dropped": true,
+          "BackendStatus": 200,
+          "ResponseSha256": "8954bc04751765289e6148121537fb4faf346803b35620a6062e94a00f5c2dbe"
+        },
+        {
+          "Index": 2,
+          "KeySha256": "d40368a243c29ace323fd243a70adf8f50f63fa5ae6fdbaed09f23d6cf95c162",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": true,
+          "Dropped": true,
+          "BackendStatus": 200,
+          "ResponseSha256": "8954bc04751765289e6148121537fb4faf346803b35620a6062e94a00f5c2dbe"
+        },
+        {
+          "Index": 3,
+          "KeySha256": "d40368a243c29ace323fd243a70adf8f50f63fa5ae6fdbaed09f23d6cf95c162",
+          "BodySha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "Forwarded": true,
+          "Dropped": true,
+          "BackendStatus": 200,
+          "ResponseSha256": "8954bc04751765289e6148121537fb4faf346803b35620a6062e94a00f5c2dbe"
+        }
+      ],
+      "bootstraps": [
+        {
+          "Index": 1,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "7a7cbc6a45c63e1eab9efef5b5ba83d08aa34cc870d9e1005919fc3c342408be"
+        },
+        {
+          "Index": 2,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "1f44ff02be3406359c94dd0079314ff5249733b8b1c4f7d182663eb9dc330174"
+        },
+        {
+          "Index": 3,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "f3c0ceb405fcc9e843cea321df58e9a612f046652cfe263daf1d31bfc1ae4c8c"
+        },
+        {
+          "Index": 4,
+          "AfterAckAttempts": 0,
+          "UnfinishedSettlementId": "sha256-guid:102f0abeb67af8380e594d6f90a7664586e623afd8073bf0ce09d640df9e7681",
+          "BodySha256": "da0fa76093caf66f184610a4215069dc3984ddddb4ab35ad4511fd14ebf3f37f"
+        },
+        {
+          "Index": 5,
+          "AfterAckAttempts": 3,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "3bedb4f45c9be93d9548fe635e7c0886159583fac377419046ed40ec6d4ff13f"
+        },
+        {
+          "Index": 6,
+          "AfterAckAttempts": 3,
+          "UnfinishedSettlementId": null,
+          "BodySha256": "50676da18137d96860aad3cb7abc05a8c5eb340472ab5434b43f8eb7e813c158"
+        }
+      ],
+      "pids": [
+        110211,
+        110283
+      ],
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "acceptedBy": null,
+      "scope": "actual Program, production Game, unchanged real PB response gates; owned audit"
+    }
+  ],
+  "healthy_new_N": {
+    "canonical": [
+      "PR13-A05.2-T01",
+      "PR13-A05.2-T02",
+      "PR13-A05.2-T03",
+      "PR13-A05.3-T03"
+    ],
+    "formerMatch": "sha256-guid:88107b1741f7aac7ee3afc8e4b74b754e9bacb6dbcfcfe7804d3526422892e8f",
+    "nextMatch": "sha256-guid:9b544a10efca383816f1e16d16aaf702e646ea6b9a60f1f8a63e02d7321a3836",
+    "formerRoom": "sha256-guid:0f999d1aaf2094278e5c504cff6b548545bccae72a2122c9bc9e4cc94426d101",
+    "nextRoom": "sha256-guid:636d35376a0f4c2e8fc4dc807d67ddb4875e240323ad9208204d7983bb93fe19",
+    "playerId": "sha256-guid:005e4630bec3879b85fc08088fcad981cf3c955efeabdb25aa1113c43ead22c5",
+    "teammateId": "sha256-guid:da20ddee5333daf42eac27dc9df09e8db0c87fb74ce44292ab9e35ee23645868",
+    "equipmentId": "sha256-guid:5f0de4af440576a68af13974eead03aaa22a6f8b363fea4140bdb3758537dbb1",
+    "pids": [
+      108945,
+      109049
+    ],
+    "finalAssets": {
+      "Gold": 23,
+      "Potions": 2,
+      "Owner": "sha256-guid:005e4630bec3879b85fc08088fcad981cf3c955efeabdb25aa1113c43ead22c5",
+      "Location": "RelicPile",
+      "GoldLedger": 1,
+      "Movements": 1
+    },
+    "bResult": "Extracted",
+    "bCredit": 23,
+    "acknowledged": 6,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "acceptedBy": null,
+    "scope": "healthy saved M; A actual PB preparation/enqueue/READY enters N; unchanged real M response/frame delayed and replayed; real OS restart while B healthy; B normal extraction; N cleanup is disconnect terminal"
+  },
+  "canonical_receipts": [
+    {
+      "caseId": "A05-runtime-passed",
+      "recordedAt": "2026-10-01T01:27:21.9694887+00:00",
+      "evidence": {
+        "canonical": [
+          "PR13-A05.1-T03",
+          "PR13-A05.3-T02"
+        ],
+        "matchId": "sha256-guid:d5e6a08d470c9e3c58fcfea4910cce6a229b1f0c5fe6a0201487d94571538245",
+        "RoomId": "sha256-guid:718c2b53b29515e897d246eab3f943b3823bcdb147539ad6fa033cb34c2a5cc3",
+        "receiptId": "sha256-guid:e2bb63470b4719b8e8d1ecb66ce43be31b91961c56cbae7149be9766a49d8855",
+        "playerId": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+        "equipmentId": "sha256-guid:ff4de95e66b652643d97ab4f9dad228c507dbdf8b5226a016660ffb512955672",
+        "pids": [
+          109862,
+          109949
+        ],
+        "before": {
+          "Gold": 0,
+          "Potions": 0,
+          "Owner": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+          "Location": "InMatchEquipped",
+          "GoldLedger": 0,
+          "Movements": 0
+        },
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Owner": "sha256-guid:b13fbc1ae8c624d147b6d9677e0e5c441070afc39d3ffd82e30e3047931247e9",
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "pendingBefore": 4,
+        "committedAfter": 4,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "scope": "owned saved Running input, actual Program and production Godot legal extraction; live Pending interval and actual SIGKILL restart",
+        "acceptedBy": null
+      }
+    },
+    {
+      "caseId": "A05-transaction-fault-passed",
+      "recordedAt": "2026-10-01T01:28:34.31018+00:00",
+      "evidence": {
+        "canonical": "PR13-A05.1-T02",
+        "also": "PR13-A05.3-T01",
+        "mode": "committed-response-loss",
+        "matchId": "sha256-guid:855935d668e9f0203b61b3b7c15321bc6c4c57aa4ade194aba2a62bfb400fc3a",
+        "RoomId": "sha256-guid:f928449cde5945620652b5671e8eae3b2241b96e7d44d10cb947be6c34152c9b",
+        "receiptId": "sha256-guid:5d0e0a1ed0766267b86e93494c8021b6d62c5aeaa119a0960f83065ca507cb73",
+        "playerId": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+        "equipmentId": "sha256-guid:37e165dbdaf1afdb7b1adc9ce152124a73d0e697a89fb06901ae2a35f72dc161",
+        "before": {
+          "Gold": 0,
+          "Potions": 0,
+          "Owner": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+          "Location": "InMatchEquipped",
+          "GoldLedger": 0,
+          "Movements": 0
+        },
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Owner": "sha256-guid:461fbafdf54200ea72cf5b2647c26b18fc1375095ad60a6ab93bd3cee9682b69",
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "pids": [
+          110327,
+          110400
+        ],
+        "Dropped": 1,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "acceptedBy": null
+      }
+    },
+    {
+      "caseId": "A05-transaction-fault-passed",
+      "recordedAt": "2026-10-01T01:28:47.4784256+00:00",
+      "evidence": {
+        "canonical": "PR13-A05.1-T01",
+        "also": "PR13-A05.3-T01",
+        "mode": "precommit",
+        "matchId": "sha256-guid:80681fee62d594fae274f939d7929705932777531eaa7a70b3fe1cf69c80352e",
+        "RoomId": "sha256-guid:b1b173f5e9bbcce9fc03d8f76aab898b778dc0965e537e5c1cf41df292eaf9aa",
+        "receiptId": "sha256-guid:ff39db75d5ac05d6e83d6624aebe1ec430a8b01e522f2f6fb1d54c5d3dadb6c7",
+        "playerId": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+        "equipmentId": "sha256-guid:fa4b6eb46bdbd0865cf447f54c3e59aa549da8d08c60b5f25aa74db4f4883459",
+        "before": {
+          "Gold": 0,
+          "Potions": 0,
+          "Owner": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+          "Location": "InMatchEquipped",
+          "GoldLedger": 0,
+          "Movements": 0
+        },
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Owner": "sha256-guid:7d4eb378ac088532b88b1a324e62a9881092226dc53e9f06e72dce27b6422740",
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "pids": [
+          110433
+        ],
+        "Dropped": 2,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "acceptedBy": null
+      }
+    }
+  ],
+  "relay_cleanup": [
+    {
+      "Port": 40133,
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "context": "ordinary",
+      "outcome": "success",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "errors": [],
+      "expectedRestartTransportFailures": []
+    },
+    {
+      "_mode": "committed-response-loss",
+      "DirectoryPath": "/tmp/fc-a05-relay-97e71e634a774b9f9d3e9f9bad98ad98",
+      "Dropped": 1,
+      "removed": true
+    },
+    {
+      "_mode": "precommit",
+      "DirectoryPath": "/tmp/fc-a05-relay-d4287303db694620a94966ec47fd3dea",
+      "Dropped": 2,
+      "removed": true
+    }
+  ],
+  "processes": {
+    "red": {
+      "host_start_count": 2,
+      "host_stop_count": 2,
+      "host_pid_sets_equal": true,
+      "host_duplicate_starts": false,
+      "host_stops": [
+        {
+          "label": "a05-causal-after",
+          "ProcessId": 102683,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/a05-causal-after-102683.log"
+        },
+        {
+          "label": "a05-causal-before",
+          "ProcessId": 102599,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/a05-causal-before-102599.log"
+        }
+      ],
+      "client_stops": [
+        {
+          "import": true,
+          "Id": 102630,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        },
+        {
+          "import": false,
+          "Id": 102650,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        }
+      ],
+      "host_pids_alive": [],
+      "client_pids_alive": []
+    },
+    "green": {
+      "host_start_count": 33,
+      "host_stop_count": 33,
+      "host_pid_sets_equal": true,
+      "host_duplicate_starts": false,
+      "host_stops": [
+        {
+          "label": "ack-drop-first-committed",
+          "ProcessId": 104474,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-first-committed-104474.log"
+        },
+        {
+          "label": "ack-drop-all-committed",
+          "ProcessId": 104537,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-all-committed-104537.log"
+        },
+        {
+          "label": "ack-drop-all-uncommitted",
+          "ProcessId": 104604,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-drop-all-uncommitted-104604.log"
+        },
+        {
+          "label": "a05-healthy-before",
+          "ProcessId": 104669,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-healthy-before-104669.log"
+        },
+        {
+          "label": "a05-healthy-after",
+          "ProcessId": 104746,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-healthy-after-104746.log"
+        },
+        {
+          "label": "ack-cycle-cycles-middle-uncommitted-loss",
+          "ProcessId": 104873,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-cycles-middle-uncommitted-loss-104873.log"
+        },
+        {
+          "label": "ack-cycle-stop-before-commit",
+          "ProcessId": 105021,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-stop-before-commit-105021.log"
+        },
+        {
+          "label": "ack-cycle-stop-after-commit",
+          "ProcessId": 105107,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-stop-after-commit-105107.log"
+        },
+        {
+          "label": "ack-cycle-cycles-middle-response-loss",
+          "ProcessId": 105213,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-cycle-cycles-middle-response-loss-105213.log"
+        },
+        {
+          "label": "a05-pending-before",
+          "ProcessId": 105312,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-pending-before-105312.log"
+        },
+        {
+          "label": "a05-pending-after",
+          "ProcessId": 105378,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-pending-after-105378.log"
+        },
+        {
+          "label": "quarantine",
+          "ProcessId": 105421,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/quarantine-105421.log"
+        },
+        {
+          "label": "guard-recovered-uncommitted-loss-after",
+          "ProcessId": 105516,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-uncommitted-loss-after-105516.log"
+        },
+        {
+          "label": "guard-recovered-uncommitted-loss-before",
+          "ProcessId": 105452,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-uncommitted-loss-before-105452.log"
+        },
+        {
+          "label": "guard-ordinary-success-before",
+          "ProcessId": 105552,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-ordinary-success-before-105552.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-after",
+          "ProcessId": 105712,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-committed-loss-after-105712.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-before",
+          "ProcessId": 105620,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/guard-recovered-committed-loss-before-105620.log"
+        },
+        {
+          "label": "a05-db-committed-response-loss",
+          "ProcessId": 105749,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-committed-response-loss-105749.log"
+        },
+        {
+          "label": "a05-db-committed-restart",
+          "ProcessId": 105814,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-committed-restart-105814.log"
+        },
+        {
+          "label": "a05-db-precommit",
+          "ProcessId": 105848,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-db-precommit-105848.log"
+        },
+        {
+          "label": "extraction-0",
+          "ProcessId": 105941,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-0-105941.log"
+        },
+        {
+          "label": "extraction-1",
+          "ProcessId": 105970,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-1-105970.log"
+        },
+        {
+          "label": "extraction-2",
+          "ProcessId": 106002,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/extraction-2-106002.log"
+        },
+        {
+          "label": "entry-three",
+          "ProcessId": 106039,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/entry-three-106039.log"
+        },
+        {
+          "label": "entry-three-restart",
+          "ProcessId": 106105,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/entry-three-restart-106105.log"
+        },
+        {
+          "label": "register-committed-loss",
+          "ProcessId": 106138,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/register-committed-loss-106138.log"
+        },
+        {
+          "label": "register-committed-loss-restart",
+          "ProcessId": 106176,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/register-committed-loss-restart-106176.log"
+        },
+        {
+          "label": "running-1",
+          "ProcessId": 106207,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/running-1-106207.log"
+        },
+        {
+          "label": "running-2",
+          "ProcessId": 106236,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/running-2-106236.log"
+        },
+        {
+          "label": "pending-0",
+          "ProcessId": 106268,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/pending-0-106268.log"
+        },
+        {
+          "label": "pending-1",
+          "ProcessId": 106296,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/pending-1-106296.log"
+        },
+        {
+          "label": "a05-causal-after",
+          "ProcessId": 106390,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-causal-after-106390.log"
+        },
+        {
+          "label": "a05-causal-before",
+          "ProcessId": 106327,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/a05-causal-before-106327.log"
+        }
+      ],
+      "client_stops": [
+        {
+          "mode": "drop-first-committed",
+          "import": true,
+          "Id": 104504,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-first-committed-b8019d370f9b462d921ff8369cb649ab"
+        },
+        {
+          "mode": "drop-first-committed",
+          "import": false,
+          "Id": 104524,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-first-committed-b8019d370f9b462d921ff8369cb649ab"
+        },
+        {
+          "mode": "drop-all-committed",
+          "import": true,
+          "Id": 104568,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-committed-19b8074e0a8d4593b7c466df18c3bcd9"
+        },
+        {
+          "mode": "drop-all-committed",
+          "import": false,
+          "Id": 104588,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-committed-19b8074e0a8d4593b7c466df18c3bcd9"
+        },
+        {
+          "mode": "drop-all-uncommitted",
+          "import": true,
+          "Id": 104634,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-uncommitted-e9538dde72954ee9bf8540c2513ec744"
+        },
+        {
+          "mode": "drop-all-uncommitted",
+          "import": false,
+          "Id": 104653,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-drop-all-uncommitted-e9538dde72954ee9bf8540c2513ec744"
+        },
+        {
+          "import": true,
+          "Id": 104702,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-healthy-78df11e4c78043f9819056feb6d51c7d",
+          "script": "pr13_a05_healthy_old_room.gd"
+        },
+        {
+          "import": false,
+          "Id": 104733,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-healthy-78df11e4c78043f9819056feb6d51c7d",
+          "script": "pr13_a05_healthy_old_room.gd"
+        },
+        {
+          "mode": "cycles-middle-uncommitted-loss",
+          "import": true,
+          "Id": 104904,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-uncommitted-loss-4f339c4c33234c90a4c4f467d8305cfc"
+        },
+        {
+          "mode": "cycles-middle-uncommitted-loss",
+          "import": false,
+          "Id": 104932,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-uncommitted-loss-4f339c4c33234c90a4c4f467d8305cfc"
+        },
+        {
+          "mode": "stop-before-commit",
+          "import": true,
+          "Id": 105059,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-before-commit-9e36b539851c4f21a7c3c7af95eebe4e"
+        },
+        {
+          "mode": "stop-before-commit",
+          "import": false,
+          "Id": 105078,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-before-commit-9e36b539851c4f21a7c3c7af95eebe4e"
+        },
+        {
+          "mode": "stop-after-commit",
+          "import": true,
+          "Id": 105137,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-after-commit-86535a7fc9ff4dea8310cba0f4275166"
+        },
+        {
+          "mode": "stop-after-commit",
+          "import": false,
+          "Id": 105158,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-stop-after-commit-86535a7fc9ff4dea8310cba0f4275166"
+        },
+        {
+          "mode": "cycles-middle-response-loss",
+          "import": true,
+          "Id": 105243,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-response-loss-d4ecda11ea8f4b7e800a805b8f6975aa"
+        },
+        {
+          "mode": "cycles-middle-response-loss",
+          "import": false,
+          "Id": 105263,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-runner-cycles-middle-response-loss-d4ecda11ea8f4b7e800a805b8f6975aa"
+        },
+        {
+          "import": true,
+          "Id": 105342,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-pending-02833287e98247fe8188e737685635e5",
+          "script": "pr13_a05_pending_runtime.gd"
+        },
+        {
+          "import": false,
+          "Id": 105361,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-pending-02833287e98247fe8188e737685635e5",
+          "script": "pr13_a05_pending_runtime.gd"
+        },
+        {
+          "import": true,
+          "Id": 105482,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-uncommitted-loss-322e45aa1aa14d0191bef1cefd02d39f",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 105500,
+          "ExitCode": 1,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-uncommitted-loss-322e45aa1aa14d0191bef1cefd02d39f",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 105582,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-ordinary-success-2f6af3e305ad439aae5991661107e620",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 105601,
+          "ExitCode": 1,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-ordinary-success-2f6af3e305ad439aae5991661107e620",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 105648,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-committed-loss-7f395bfe3abd48c68296133afee87abd",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 105677,
+          "ExitCode": 1,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-guard-recovered-committed-loss-7f395bfe3abd48c68296133afee87abd",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 105778,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-committed-response-loss-cbc04774ede14069ab6f6b90bfeba84e",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": false,
+          "Id": 105796,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-committed-response-loss-cbc04774ede14069ab6f6b90bfeba84e",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": true,
+          "Id": 105877,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-precommit-364b6b09bc25477fb75f842e442237ec",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": false,
+          "Id": 105899,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-db-precommit-364b6b09bc25477fb75f842e442237ec",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": true,
+          "Id": 106357,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-causal-d4f3bdd5c8fd4cc1a21cb24d4b3db759",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        },
+        {
+          "import": false,
+          "Id": 106376,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green/ack-client-a05-causal-d4f3bdd5c8fd4cc1a21cb24d4b3db759",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        }
+      ],
+      "host_pids_alive": [],
+      "client_pids_alive": []
+    },
+    "green2-focused": {
+      "host_start_count": 5,
+      "host_stop_count": 5,
+      "host_pid_sets_equal": true,
+      "host_duplicate_starts": false,
+      "host_stops": [
+        {
+          "label": "guard-recovered-uncommitted-loss-after",
+          "ProcessId": 107735,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-uncommitted-loss-after-107735.log"
+        },
+        {
+          "label": "guard-recovered-uncommitted-loss-before",
+          "ProcessId": 107669,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-uncommitted-loss-before-107669.log"
+        },
+        {
+          "label": "guard-ordinary-success-before",
+          "ProcessId": 107781,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-ordinary-success-before-107781.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-after",
+          "ProcessId": 107949,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-committed-loss-after-107949.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-before",
+          "ProcessId": 107866,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/guard-recovered-committed-loss-before-107866.log"
+        }
+      ],
+      "client_stops": [
+        {
+          "import": true,
+          "Id": 107700,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-uncommitted-loss-4ae40c554ab64bd38ddaf7af157548a9",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 107719,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-uncommitted-loss-4ae40c554ab64bd38ddaf7af157548a9",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 107813,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-ordinary-success-e874998fe9324bc3a793edcde445e7a0",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 107834,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-ordinary-success-e874998fe9324bc3a793edcde445e7a0",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 107896,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-committed-loss-a333de6bbc6c4d6aae12f4a0fdb02362",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 107915,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2-focused/ack-client-guard-recovered-committed-loss-a333de6bbc6c4d6aae12f4a0fdb02362",
+          "script": "pr13_a05_guard_windows.gd"
+        }
+      ],
+      "host_pids_alive": [],
+      "client_pids_alive": []
+    },
+    "green2": {
+      "host_start_count": 33,
+      "host_stop_count": 33,
+      "host_pid_sets_equal": true,
+      "host_duplicate_starts": false,
+      "host_stops": [
+        {
+          "label": "ack-drop-first-committed",
+          "ProcessId": 108707,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-first-committed-108707.log"
+        },
+        {
+          "label": "ack-drop-all-committed",
+          "ProcessId": 108790,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-all-committed-108790.log"
+        },
+        {
+          "label": "ack-drop-all-uncommitted",
+          "ProcessId": 108868,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-drop-all-uncommitted-108868.log"
+        },
+        {
+          "label": "a05-healthy-before",
+          "ProcessId": 108945,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-healthy-before-108945.log"
+        },
+        {
+          "label": "a05-healthy-after",
+          "ProcessId": 109049,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-healthy-after-109049.log"
+        },
+        {
+          "label": "ack-cycle-cycles-middle-uncommitted-loss",
+          "ProcessId": 109254,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-cycles-middle-uncommitted-loss-109254.log"
+        },
+        {
+          "label": "ack-cycle-stop-before-commit",
+          "ProcessId": 109427,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-stop-before-commit-109427.log"
+        },
+        {
+          "label": "ack-cycle-stop-after-commit",
+          "ProcessId": 109543,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-stop-after-commit-109543.log"
+        },
+        {
+          "label": "ack-cycle-cycles-middle-response-loss",
+          "ProcessId": 109628,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-cycle-cycles-middle-response-loss-109628.log"
+        },
+        {
+          "label": "a05-pending-before",
+          "ProcessId": 109862,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-pending-before-109862.log"
+        },
+        {
+          "label": "a05-pending-after",
+          "ProcessId": 109949,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-pending-after-109949.log"
+        },
+        {
+          "label": "quarantine",
+          "ProcessId": 110000,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/quarantine-110000.log"
+        },
+        {
+          "label": "guard-recovered-uncommitted-loss-after",
+          "ProcessId": 110095,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-uncommitted-loss-after-110095.log"
+        },
+        {
+          "label": "guard-recovered-uncommitted-loss-before",
+          "ProcessId": 110030,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-uncommitted-loss-before-110030.log"
+        },
+        {
+          "label": "guard-ordinary-success-before",
+          "ProcessId": 110133,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-ordinary-success-before-110133.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-after",
+          "ProcessId": 110283,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-committed-loss-after-110283.log"
+        },
+        {
+          "label": "guard-recovered-committed-loss-before",
+          "ProcessId": 110211,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/guard-recovered-committed-loss-before-110211.log"
+        },
+        {
+          "label": "a05-db-committed-response-loss",
+          "ProcessId": 110327,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-committed-response-loss-110327.log"
+        },
+        {
+          "label": "a05-db-committed-restart",
+          "ProcessId": 110400,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-committed-restart-110400.log"
+        },
+        {
+          "label": "a05-db-precommit",
+          "ProcessId": 110433,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-db-precommit-110433.log"
+        },
+        {
+          "label": "extraction-0",
+          "ProcessId": 110516,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-0-110516.log"
+        },
+        {
+          "label": "extraction-1",
+          "ProcessId": 110545,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-1-110545.log"
+        },
+        {
+          "label": "extraction-2",
+          "ProcessId": 110576,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/extraction-2-110576.log"
+        },
+        {
+          "label": "entry-three",
+          "ProcessId": 110606,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/entry-three-110606.log"
+        },
+        {
+          "label": "entry-three-restart",
+          "ProcessId": 110716,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/entry-three-restart-110716.log"
+        },
+        {
+          "label": "register-committed-loss",
+          "ProcessId": 110747,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/register-committed-loss-110747.log"
+        },
+        {
+          "label": "register-committed-loss-restart",
+          "ProcessId": 110782,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/register-committed-loss-restart-110782.log"
+        },
+        {
+          "label": "running-1",
+          "ProcessId": 110815,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/running-1-110815.log"
+        },
+        {
+          "label": "running-2",
+          "ProcessId": 110845,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/running-2-110845.log"
+        },
+        {
+          "label": "pending-0",
+          "ProcessId": 110892,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/pending-0-110892.log"
+        },
+        {
+          "label": "pending-1",
+          "ProcessId": 110924,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/pending-1-110924.log"
+        },
+        {
+          "label": "a05-causal-after",
+          "ProcessId": 111021,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-causal-after-111021.log"
+        },
+        {
+          "label": "a05-causal-before",
+          "ProcessId": 110956,
+          "ExitCode": 137,
+          "termination": "Process.Kill(entireProcessTree:true)",
+          "logPath": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/a05-causal-before-110956.log"
+        }
+      ],
+      "client_stops": [
+        {
+          "mode": "drop-first-committed",
+          "import": true,
+          "Id": 108737,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-first-committed-fe135c49d41543018eeeeb2103253bb9"
+        },
+        {
+          "mode": "drop-first-committed",
+          "import": false,
+          "Id": 108775,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-first-committed-fe135c49d41543018eeeeb2103253bb9"
+        },
+        {
+          "mode": "drop-all-committed",
+          "import": true,
+          "Id": 108832,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-committed-e8646db54db34232b1480a3df5da8633"
+        },
+        {
+          "mode": "drop-all-committed",
+          "import": false,
+          "Id": 108852,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-committed-e8646db54db34232b1480a3df5da8633"
+        },
+        {
+          "mode": "drop-all-uncommitted",
+          "import": true,
+          "Id": 108900,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-uncommitted-6c3c215e7080484dacbc7365073ffe7c"
+        },
+        {
+          "mode": "drop-all-uncommitted",
+          "import": false,
+          "Id": 108927,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-drop-all-uncommitted-6c3c215e7080484dacbc7365073ffe7c"
+        },
+        {
+          "import": true,
+          "Id": 108976,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-healthy-b34bb1cc11f64de5ad37cea63bd11a78",
+          "script": "pr13_a05_healthy_old_room.gd"
+        },
+        {
+          "import": false,
+          "Id": 109018,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-healthy-b34bb1cc11f64de5ad37cea63bd11a78",
+          "script": "pr13_a05_healthy_old_room.gd"
+        },
+        {
+          "mode": "cycles-middle-uncommitted-loss",
+          "import": true,
+          "Id": 109285,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-uncommitted-loss-4d70ef1212944758ab5d1c7f73a142b4"
+        },
+        {
+          "mode": "cycles-middle-uncommitted-loss",
+          "import": false,
+          "Id": 109304,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-uncommitted-loss-4d70ef1212944758ab5d1c7f73a142b4"
+        },
+        {
+          "mode": "stop-before-commit",
+          "import": true,
+          "Id": 109458,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-before-commit-7af2d1a0298a483c99df5f7bc03f1b5c"
+        },
+        {
+          "mode": "stop-before-commit",
+          "import": false,
+          "Id": 109478,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-before-commit-7af2d1a0298a483c99df5f7bc03f1b5c"
+        },
+        {
+          "mode": "stop-after-commit",
+          "import": true,
+          "Id": 109574,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-after-commit-f4661b1ecebf463f898fb291b6893346"
+        },
+        {
+          "mode": "stop-after-commit",
+          "import": false,
+          "Id": 109606,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-stop-after-commit-f4661b1ecebf463f898fb291b6893346"
+        },
+        {
+          "mode": "cycles-middle-response-loss",
+          "import": true,
+          "Id": 109659,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-response-loss-955036fdd5254071a65eae2a4080a3e2"
+        },
+        {
+          "mode": "cycles-middle-response-loss",
+          "import": false,
+          "Id": 109679,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-runner-cycles-middle-response-loss-955036fdd5254071a65eae2a4080a3e2"
+        },
+        {
+          "import": true,
+          "Id": 109898,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-pending-49043610ab534e569e5e506924adae0e",
+          "script": "pr13_a05_pending_runtime.gd"
+        },
+        {
+          "import": false,
+          "Id": 109919,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-pending-49043610ab534e569e5e506924adae0e",
+          "script": "pr13_a05_pending_runtime.gd"
+        },
+        {
+          "import": true,
+          "Id": 110061,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-uncommitted-loss-e0d6e57ae1d748b48fc37f48f2d4dfd8",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 110079,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-uncommitted-loss-e0d6e57ae1d748b48fc37f48f2d4dfd8",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 110172,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-ordinary-success-da965a71ba5841859cc7e1d7e567af10",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 110194,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-ordinary-success-da965a71ba5841859cc7e1d7e567af10",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 110241,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-committed-loss-6148f34d720f4b54b6da63f57cbf8e7b",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": false,
+          "Id": 110259,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-guard-recovered-committed-loss-6148f34d720f4b54b6da63f57cbf8e7b",
+          "script": "pr13_a05_guard_windows.gd"
+        },
+        {
+          "import": true,
+          "Id": 110355,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-committed-response-loss-7e90a3da66e44819a89ce0c4d6e0cab6",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": false,
+          "Id": 110375,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-committed-response-loss-7e90a3da66e44819a89ce0c4d6e0cab6",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": true,
+          "Id": 110461,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-precommit-c344f6a818614c7aa4ce528bc2ddbbe7",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": false,
+          "Id": 110479,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-db-precommit-c344f6a818614c7aa4ce528bc2ddbbe7",
+          "script": "pr13_a05_persistence_fault.gd"
+        },
+        {
+          "import": true,
+          "Id": 110987,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-causal-dd1fd5a12121493cb00084db0d4b4084",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        },
+        {
+          "import": false,
+          "Id": 111006,
+          "ExitCode": 0,
+          "fixture": "/workspace/pr13-takeover/a05-guard-2dda/evidence/a05-guard-20261001/green2/ack-client-a05-causal-dd1fd5a12121493cb00084db0d4b4084",
+          "script": "pr13_a05_ack_poll_causal.gd"
+        }
+      ],
+      "host_pids_alive": [],
+      "client_pids_alive": []
+    }
+  },
+  "source_mismatches": [],
+  "build_mismatches": [],
+  "raw_receipt_count": 251,
+  "raw_case_counts": {
+    "process-start": 33,
+    "ack-client-process-stop": 6,
+    "ACK-FAULT-attempts-drop-first-committed": 1,
+    "ACK-FAULT-drop-first-committed": 1,
+    "process-stop": 33,
+    "ACK-FAULT-attempts-drop-all-committed": 1,
+    "ACK-FAULT-drop-all-committed": 1,
+    "ACK-FAULT-attempts-drop-all-uncommitted": 1,
+    "ACK-FAULT-drop-all-uncommitted": 1,
+    "A05-readonly-audit": 16,
+    "A05-client-start": 16,
+    "A05-client-stop": 16,
+    "A05-original-ready": 1,
+    "A05-old-callback-held": 1,
+    "A05-duplicate-ready-delivery": 3,
+    "A05-old-callback-released": 1,
+    "A05-healthy-M-and-N": 1,
+    "A05-healthy-passed": 1,
+    "A05-callback-relay-cleanup": 1,
+    "ack-runner-process-stop": 8,
+    "ACK-CYCLE-attempts-cycles-middle-uncommitted-loss": 1,
+    "ACK-CYCLE-cycles-middle-uncommitted-loss": 1,
+    "ACK-STOP-observed": 2,
+    "ACK-CYCLE-attempts-stop-before-commit": 1,
+    "ACK-CYCLE-stop-before-commit": 1,
+    "ACK-CYCLE-attempts-stop-after-commit": 1,
+    "ACK-CYCLE-stop-after-commit": 1,
+    "ACK-CYCLE-attempts-cycles-middle-response-loss": 1,
+    "ACK-CYCLE-cycles-middle-response-loss": 1,
+    "A05-runtime-before": 1,
+    "A05-runtime-pending-before": 1,
+    "A05-runtime-passed": 1,
+    "PROC-04": 1,
+    "A05-guard-bootstrap-authority": 16,
+    "A05-guard-GET-held": 3,
+    "A05-guard-ACK-held": 3,
+    "A05-guard-ACK-unforwarded": 3,
+    "A05-guard-ACK-backend": 5,
+    "A05-guard-no-content-forwarded": 3,
+    "A05-guard-window-passed": 3,
+    "A05-guard-relay-cleanup": 3,
+    "A05-db-committed-response-drop": 1,
+    "A05-transaction-fault-observed": 2,
+    "A05-same-ACK": 6,
+    "A05-transaction-fault-passed": 2,
+    "A05-db-relay-cleanup": 2,
+    "A05-db-precommit-drop": 2,
+    "LOAD-04.4-T02-Register-failure-room-id": 2,
+    "LOAD-04.4-T02-Register-recovered-room-id": 1,
+    "LOAD-04.4-T02-Register-failure-player-route": 2,
+    "LOAD-04.4-T02-Register-recovered-player-route": 1,
+    "PROC-02-assets-before-wire": 3,
+    "PROC-02": 1,
+    "PROC-05-cycle-1": 1,
+    "PROC-05-cycle-2": 1,
+    "entry-window-pacing": 1,
+    "PROC-05-cycle-3": 1,
+    "PROC-05": 1,
+    "LOAD-04.4-T02-MarkRunning-committed-response-lost": 1,
+    "LOAD-04.4-T02-MarkRunning-observed-operations": 1,
+    "LOAD-04.4-T02-MarkRunning-recovered": 1,
+    "LOAD-04.4-T02-MarkRunning-process-restart": 1,
+    "PROC-01": 1,
+    "PROC-03": 1,
+    "A05-causal-http-forwarded": 14,
+    "A05-causal-actual-host-killed": 1,
+    "A05-causal-settlement-get-held": 1,
+    "A05-causal-ready-poll-held": 1,
+    "A05-causal-ack-held-before-backend": 1,
+    "A05-causal-counterexample": 1
+  }
+}

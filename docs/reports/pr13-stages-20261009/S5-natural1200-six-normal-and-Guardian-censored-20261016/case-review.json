@@ -1,0 +1,224 @@
+{
+  "kind": "CurrentNatural1200ClosedOriginalReview",
+  "execution_and_review_ok": true,
+  "profile": "current-three-heroes-natural3-concurrency2-budget1200-r1",
+  "planned_normal_cycles": 9,
+  "normal_cycles_verified": 6,
+  "accounts_three_cycles_verified": 2,
+  "clients": [
+    {
+      "client": "PR13NFG01",
+      "hero": "Guardian",
+      "native_PID": 120632,
+      "original_report_ok": false,
+      "normal_cycles_verified": 0,
+      "cycles": [],
+      "full_three_normal_cycles_pass": false,
+      "raw_events": 4602,
+      "raw_SHA256": "58671f667f9664d6815887da7e24570d3d53b3a97c268b0d77d486d5916ae31e",
+      "report_SHA256": "b88d9ad48ef941be3b7a32e951f5f2e96ba2791fb9ac559213a5e82ec29c232c",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 1,
+      "cleanup_abandon_count": 1,
+      "asset_once_review": null,
+      "battle_summary_outcomes": {
+        "Victory": 16,
+        "Censored": 1
+      }
+    },
+    {
+      "client": "PR13NFP01",
+      "hero": "Priest",
+      "native_PID": 99772,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFP01:1",
+          "match_id": "01a14486-603f-7edd-ad09-b5a3b989044d",
+          "SQL_result": "Dead",
+          "settlement_id": "01a1448c-daf4-74d9-9299-1f79789e8e1c",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 1007,
+          "actual_realtime_rows": 430
+        },
+        {
+          "cycle_id": "PR13NFP01:2",
+          "match_id": "01a1448d-6a0d-7222-82c9-53c86fcf0811",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a14493-46f6-7822-b7ba-5044a3bc87da",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 889,
+          "actual_realtime_rows": 397
+        },
+        {
+          "cycle_id": "PR13NFP01:3",
+          "match_id": "01a14493-d89e-7615-9198-8add103de0d2",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a14499-2fa8-7961-8ca2-f3eba791c637",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 817,
+          "actual_realtime_rows": 359
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 4518,
+      "raw_SHA256": "a18c03aa8ef729879d682ee6cad4dca88f35a4e21c64994bbc7a9f5611b5c841",
+      "report_SHA256": "40adfe41806b9daa282fec56958d7be93e2ed1730b265e020f6852f7b1680d5c",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 8,
+        "ledger_rows": 8,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "PriestSoul": 10,
+          "EquipmentFragments": 16,
+          "Gold": 100,
+          "WarriorSoul": 20
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 100,
+          "WarriorSoul": 20,
+          "PriestSoul": 10,
+          "MageSoul": 0,
+          "GuardianSoul": 0,
+          "EquipmentFragments": 16
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 15,
+        "Terminal": 1
+      }
+    },
+    {
+      "client": "PR13NFM01",
+      "hero": "Mage",
+      "native_PID": 76700,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFM01:1",
+          "match_id": "01a14499-5bc4-7d1d-a8b2-30a9eab70ec6",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a1449a-dab5-7422-9aee-8893578620a6",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 218,
+          "actual_realtime_rows": 112
+        },
+        {
+          "cycle_id": "PR13NFM01:2",
+          "match_id": "01a1449b-680d-7a1e-9008-bbe4032ba416",
+          "SQL_result": "Dead",
+          "settlement_id": "01a1449e-2327-7042-9dee-254d048c46d4",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 418,
+          "actual_realtime_rows": 205
+        },
+        {
+          "cycle_id": "PR13NFM01:3",
+          "match_id": "01a1449e-b00f-7bbf-8d74-9a7edb9cde77",
+          "SQL_result": "Dead",
+          "settlement_id": "01a144a1-4e14-7574-a331-a4e8166094ed",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 398,
+          "actual_realtime_rows": 202
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 1935,
+      "raw_SHA256": "b464ec98544f3bcbbf75f5db8fceccb6417d3e0f0eddd8ba7b605deeb55f1689",
+      "report_SHA256": "6be8a5de91f8c3164cfd77cc83b63aaa3522e7f161a2f4a7db814ef50e33180d",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 4,
+        "ledger_rows": 4,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "MageSoul": 2,
+          "EquipmentFragments": 4,
+          "Gold": 20,
+          "WarriorSoul": 4
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 20,
+          "WarriorSoul": 4,
+          "PriestSoul": 0,
+          "MageSoul": 2,
+          "GuardianSoul": 0,
+          "EquipmentFragments": 4
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 8,
+        "Terminal": 2
+      }
+    }
+  ],
+  "all9_revised_profile_pass": false,
+  "original30_strict_pass": false,
+  "original_manifest_files_verified": 32,
+  "raw_events_verified": 11055,
+  "config_package_hashes_observed": {
+    "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87": 4051
+  },
+  "source_gateway_sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+  "source_manifest_sha256": "ce44df08b94e5e054b45df7c2f2ed2c0b2fdf2c407c5c6be48c6ad8bd651d420",
+  "positive_asset_ledger_rows_verified": 12,
+  "monitor": {
+    "samples": 180,
+    "max_gap_seconds": 10.203999999910593,
+    "CPU_max_percent": 12.222222222222234,
+    "global_active_account_limit": 2,
+    "all_5pct_resource_floors_passed": true
+  },
+  "root_study_accounts_no_longer_active": true,
+  "different_owned_Guardian2400_account_still_active": true,
+  "active_different_account_ids_explained": [
+    "01a1449f-738a-7e26-938c-15a367c70e81"
+  ],
+  "cloud_environment_changed": false,
+  "natural_gameplay_failures_retained": true,
+  "negative_case_profiles": [
+    {
+      "case_id": "PR13-A09.2-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "expected": "兜底/收尾弃战单列，不归正常击杀或完成局",
+      "actual": {
+        "actual_public_cleanup_action": "battle.abandon",
+        "drain_ACK_count": 1,
+        "normal_cycles": 0,
+        "original_native_gameplay_pass": false,
+        "cleanup_and_asset_release_verified": true
+      },
+      "scope": "Actual failed1200second public Guardian run and real legal cleanup; negative classification contract passes while gameplay remains failed. No POSTGRES/CAPACITY/RENDER closure."
+    }
+  ],
+  "LOAD102_T03_specific_stagnation_fallback_not_exercised": true,
+  "LOAD102_T03_LIVE_not_closed_by_cleanup_abandon": true,
+  "scope_correction": "Generic automated cleanup-abandon is actual A09.2-T03 evidence. The narrower60second battle.abandon.fallback producer was disabled in cleared-extraction and is not claimed for LOAD-10.2-T03.",
+  "MAIN_or_whole_scope_accepted": false,
+  "old9_study_exec_session_terminal": 90516,
+  "active_Guardian2400_session": 1321
+}

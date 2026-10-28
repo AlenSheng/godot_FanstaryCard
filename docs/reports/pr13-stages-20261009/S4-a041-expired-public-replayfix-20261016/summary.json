@@ -1,0 +1,114 @@
+{
+  "kind": "CurrentAppliedA041ExpiredPublicReplayFixReviewed",
+  "at_local": "2026-10-16T19:36:56.380359+08:00",
+  "base_source_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+  "case_id": "PR13-A04.1-T03",
+  "profile": "LIVE",
+  "case_pass": true,
+  "new_cases_executed": 1,
+  "natural_gameplay_cycles_claimed": 0,
+  "native_case_checks_passed": 14,
+  "independent_checks_passed": 16,
+  "original_protobuf_frames_verified": 30,
+  "identical_marker_replay_check": {
+    "duplicates": [
+      {
+        "connection": 3,
+        "sequence": 8,
+        "identical_deliveries": 2,
+        "resumes_on_connection": 1
+      },
+      {
+        "connection": 4,
+        "sequence": 12,
+        "identical_deliveries": 2,
+        "resumes_on_connection": 1
+      }
+    ],
+    "resume_commands_by_connection": {
+      "3": 1,
+      "4": 1
+    }
+  },
+  "offline_replay_checks_passed": 11,
+  "existing_sequence_suite_passed": true,
+  "CI_entry_exit_code": 0,
+  "source_bytes_match_live_candidate_and_verified_CI_copy": true,
+  "source_files": [
+    {
+      "path": "client/network/gateway.gd",
+      "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+    },
+    {
+      "path": "client/tests/test_session_sequence.gd",
+      "sha256": "946b26b4e721ee9d47060b11b9822259ded010b98b65efc94b693665d574998a"
+    },
+    {
+      "path": "client/tests/run_gateway_origin.gd",
+      "sha256": "51d6f5eaf755172f951bd1c4a994c81265a045761dd715018ce039bce4cdc4a5"
+    },
+    {
+      "path": "client/tests/test_gateway_replay.gd",
+      "sha256": "600d30bd336628bd73d5b7174e4ce517ed7ea8cc7b4db83584432b72a7d007c3"
+    }
+  ],
+  "GDD_context": {
+    "path": "docs\\plans\\PR13_AUTOMATED_ACCEPTANCE_CONTEXT_20261016.md",
+    "sha256": "99af466852e637014b6163317c5fa8291eeb64c3a214a0542338c30cdfa73c94",
+    "full_snapshot_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\context-manifest.json"
+  },
+  "new_sampling_policy": {
+    "original_over_1000_reduce_once_by": 10,
+    "max_encounters_per_new_task": 300,
+    "human_experience_excluded": true
+  },
+  "criteria_relaxed": false,
+  "preserved_failures": [
+    {
+      "kind": "Previous real replay-feedback failure",
+      "path": "outputs/pr13-tencent-20261009/PR13_A041_T03_ORIGINAL_SCOPE_AND_REPLAY_FEEDBACK_DIAGNOSTIC_20261016_R1.json",
+      "original_resume_commands": 37
+    },
+    {
+      "kind": "Current preflight SSH ConnectionResetError10054; no account or native workload started",
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\live-controls\\LIVE-A041-deadline-replayfix-r2\\run\\driver-result.original.json"
+    },
+    {
+      "kind": "Offline actual failing reproduction",
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\offline-regression-r1-results.json",
+      "before_repeat_markers": 40,
+      "before_resume_commands": 41,
+      "after_resume_commands": 1
+    }
+  ],
+  "transport_adjustment": "Task-local persistent SSH, at most one reconnect for read-only observation. Original workload, deadline, sampling cadence, CPU and resource limits unchanged.",
+  "server_limits_changed": false,
+  "server_deployed": false,
+  "source_committed_or_pushed": false,
+  "cloud_original_environment_after": true,
+  "account_assets_and_holds_clear": true,
+  "UI_existing_evidence": {
+    "path": "docs\\reports\\pr13-stages-20261009\\S7-final-UI-effects-reviewed-20261016\\summary.json",
+    "source_file_hashes_match_current": true,
+    "existing_layout_matrix": 36,
+    "existing_caption_frames": 12,
+    "current_turn_original_frames_reinspected": 2,
+    "new_UI_edit_or_render": false,
+    "valid_Priest80_over_70_preserved": true,
+    "ImageGen_needed_for_this_network_fix": false
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-b10-final-UI-main-reviewed-20261016/register.json",
+  "register_sha256_unchanged": "5a814cc537acdf9eabcd89ecd3585e15cfcceaee7dd4c24812682cc10c22ce70",
+  "task_counts_unchanged": {
+    "Accepted": 25,
+    "Partial": 88,
+    "Failed": 2,
+    "ReadyForAcceptance": 17
+  },
+  "remaining_unaccepted": 107,
+  "acceptance_note": "One LIVE case verified. PR13-A04.1 remains Partial in the canonical register; dependencies LOAD-04.4 and LOAD-09.2 remain Partial. No automatic MAIN or gate promotion.",
+  "whole_scope_accepted": false,
+  "goal_status": "active",
+  "evidence_root": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation",
+  "independent_review_sha256": "21fff863fd3894a97299a2fddc08f69c2fca7a7b3e7a34d69a893aaca4fe7c0e"
+}

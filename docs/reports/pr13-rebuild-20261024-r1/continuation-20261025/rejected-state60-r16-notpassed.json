@@ -1,0 +1,192 @@
+{
+  "kind": "Independent60 native producers for minimum50active completed but NotPassed",
+  "actual_source": "8c8d72fa2e765561277f606af4703676a3d0d843",
+  "latest_UI_source_measured_separately": "a3331bc3a83c2bbb1197f68fbdc0bb537f4f5050",
+  "actual_clients": {
+    "windows": 32,
+    "cloud": 28
+  },
+  "maximum_worlds": 300,
+  "original_duration_seconds": 960,
+  "per_host_hold_seconds": 720,
+  "shared_window_seconds": 600,
+  "all60_observed_online_and_in_room_not_a_pass": true,
+  "original_joint_adjudication": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "original_cohort_did_not_pass"
+    ],
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "source_head": "8c8d72fa2e765561277f606af4703676a3d0d843",
+    "frozen_client_tree": "2cfc267775fb79bb5da44c1166f528d8d9ae0ee9",
+    "algorithm_version": "distributed-full-native-capacity-v3-registered50or100-latency-profile",
+    "adjudicator_source_sha256": "8143c5f7b8736282264cde6cf88f259e400ff5271ee40b60246b5d2e658dacc7",
+    "captured_input_sha256": "b41be1eb99ea6cecb9875cdf9d2ea41e1aaebcef6a38ae2f1c09ba4bc81064b9"
+  },
+  "hosts": {
+    "windows": {
+      "original_exit": 1,
+      "original_dimensions": {
+        "execution": "Failed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "active_coverage": 0.7504972222778532,
+      "longest_continuous_seconds": 229.8400001525879,
+      "minimum_coverage": 0.95,
+      "original_error_actors": [
+        {
+          "raw_notice_count": 3,
+          "client_id": "g001c01bfd44b",
+          "cycle_id": "g001c01bfd44b:1",
+          "actual_unique_rejected_requests": 1
+        },
+        {
+          "raw_notice_count": 3,
+          "client_id": "g001c0344605e",
+          "cycle_id": "g001c0344605e:2",
+          "actual_unique_rejected_requests": 1
+        },
+        {
+          "raw_notice_count": 3,
+          "client_id": "g001c27b7da0f",
+          "cycle_id": "g001c27b7da0f:2",
+          "actual_unique_rejected_requests": 1
+        }
+      ],
+      "original_audit_error_count": 0,
+      "cleanup_passed": true,
+      "forced_termination_count": 0
+    },
+    "cloud": {
+      "original_exit": 3,
+      "original_dimensions": {
+        "execution": "Failed",
+        "evidence": "Failed",
+        "load": "Passed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      },
+      "active_coverage": 0.9876458333598243,
+      "longest_continuous_seconds": 711.1050000190735,
+      "minimum_coverage": 0.95,
+      "original_error_actors": [
+        {
+          "raw_notice_count": 3,
+          "client_id": "g001c07a1d207",
+          "cycle_id": "g001c07a1d207:2",
+          "actual_unique_rejected_requests": 1
+        }
+      ],
+      "original_audit_error_count": 19,
+      "cleanup_passed": true,
+      "forced_termination_count": 0
+    }
+  },
+  "protocol_rejection_observation": {
+    "unique_rejected_RPCs": 4,
+    "per_host": {
+      "windows": 3,
+      "cloud": 1
+    },
+    "raw_notices_each_RPC": 3,
+    "same_detail": "Duel is not active in this room.",
+    "Windows_actual_dispatch_phase": "Pve",
+    "Windows_dispatch_revision": 3767,
+    "Windows_fresh_current_route_revision": 3793,
+    "Windows_next_authoritative_phase": "Pvp",
+    "Windows_fresh_state_after_rejection_ms": 920,
+    "Windows_new_duel_positive_combo_after_rejection_ms": 1666,
+    "server_execution_state": "NotObserved",
+    "interpretation": "Authoritative PVE-to-PVP transition inferred from actual dispatch and newer snapshot. It does not prove a server rule defect. The three notice callbacks are not three RPCs.",
+    "same-cycle_second_rejected_old_view_write_not_seen": true,
+    "old_A092_revision_not_automatically_applied_to_capacity": true,
+    "original_strict_failed_outcomes_retained": true
+  },
+  "cloud_evidence_failure": {
+    "first_cause": "audit_spool_disk_floor",
+    "affected_actor_archives": 9,
+    "root_guard": "Free disk below5percent plus16MiB next-segment reserve",
+    "source_segments_not_damaged_or_deleted_by_archive_reader": true,
+    "original_downstream_failures": [
+      "final_audit_watermark_mismatch",
+      "audit_storage_totals_mismatch",
+      "final_cycle_count_disagreement",
+      "audit_archive_invalid"
+    ],
+    "not_claimed_as_actual_game_cycle_or_receipt_error": true
+  },
+  "offline_G_recovery": {
+    "same_original_reader_and_all_bounds": true,
+    "actors": 28,
+    "raw_events": 116538,
+    "raw_bytes": 191413340,
+    "reader_errors": 0,
+    "cycle_evidence_errors": 0,
+    "request_evidence_errors": 0,
+    "native_and_audited_cycle_disagreements": 0,
+    "no_new_worlds_or_edited_native_results": true,
+    "not_a_retroactive_original_pass": true
+  },
+  "terminal_metadata_transport": {
+    "first_Paramiko_EOF_failed_attempt_retained": true,
+    "destination_absence_verified_before_retry": true,
+    "native_strict_SSH_verified_metadata_transport_completed": true,
+    "no_runtime_relaunch_or_new_gameplay": true
+  },
+  "actual_backup_and_restore": {
+    "G_original_files": 476,
+    "archive_bytes": 7676220,
+    "archive_SHA256": "06426fca979b38feda8d2141b4f774f6262ce3315082a268174405e714045080",
+    "restored_matches": 31,
+    "restored_settlements": 115,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "distinct_actual_participants": 68,
+    "all_participants_match_original_backend_snapshot": true,
+    "scratch_database_dropped": true,
+    "all4_owned_services_stopped": true,
+    "source_and_original_DB_retained_until_next_verified_transition": true
+  },
+  "local_imperceptible_verification": {
+    "actual_processes": 32,
+    "visible_owned_windows": 0,
+    "all_headless_Dummy_BelowNormal_last4": true,
+    "observed_free_memory_bytes": 7811682304,
+    "reserve_bytes": 6442450944
+  },
+  "GDD_numbers_and_server_business_unchanged": true,
+  "no_resource_latency_coverage_or_business_failure_gate_relaxed": true,
+  "actual100": "NotExecuted_wait_for_scoped50_and_actual_resource_admission",
+  "capacity_accepted": false,
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792909246061.71,
+  "owned_cleanup_after_verified_restore": {
+    "ok": true,
+    "new_source_head": "a3331bc3a83c2bbb1197f68fbdc0bb537f4f5050",
+    "removed_owned_stopped_containers": 7,
+    "old_network_and_temporary_root_removed": true,
+    "old_cloud_archives_removed_after_G_verification": 2,
+    "late_original_metadata_G_preserved": true,
+    "nonGit_source_inputs_verified": 78,
+    "source_and_import_cache_moved_intact": true,
+    "actual_freed_bytes": 574070784,
+    "cloud_available_bytes": 3837272064,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true,
+    "new_resource_probe_not_started": true
+  }
+}

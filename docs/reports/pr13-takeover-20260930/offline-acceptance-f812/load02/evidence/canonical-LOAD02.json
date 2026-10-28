@@ -1,0 +1,283 @@
+[
+  {
+    "id": "LOAD-02.1",
+    "title": "多维结果模型",
+    "source_instruction": "多原因结果与验收模型",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-01.2"
+    ],
+    "inputs": "证据/负载/流程/性能/清理合同",
+    "implementation_steps": "独立生成六维判定，保存首个和全部触发；exit0只由适用合同全满足推出",
+    "test_cases": [
+      {
+        "id": "LOAD-02.1-T01",
+        "setup_and_injection": "时限到但负载未达",
+        "expected": "execution结束、load失败",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.1-T02",
+        "setup_and_injection": "先业务失败后人工STOP",
+        "expected": "保留业务失败",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.1-T03",
+        "setup_and_injection": "性能超线且证据损坏",
+        "expected": "记录两原因且证据无效优先退出码3",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "不把一个stop_reason等同所有验收通过；允许Unknown但不能升Pass。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-PY",
+      "C-SERVER"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-02.1/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G2"
+    ],
+    "historical_execution_state": "Planned"
+  },
+  {
+    "id": "LOAD-02.2",
+    "title": "STOP前后边界",
+    "source_instruction": "STOP前后失败取消归类",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-02.1",
+      "LOAD-06.2"
+    ],
+    "inputs": "STOP monotonic时点及发起上下文",
+    "implementation_steps": "区分停止前业务失败、正常取消、停止后真实错误和结果未知写入；迟到事件按原上下文归档",
+    "test_cases": [
+      {
+        "id": "LOAD-02.2-T01",
+        "setup_and_injection": "STOP前超时",
+        "expected": "业务失败不变取消",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.2-T02",
+        "setup_and_injection": "STOP后正常等待取消",
+        "expected": "不计服务错误或完成",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.2-T03",
+        "setup_and_injection": "ack已提交结果未知",
+        "expected": "pending直到权威核实",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "每cycle一个终态，取消不抹去先前失败，未知资产写入不猜成功/失败。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-PY",
+      "C-SERVER"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-02.2/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G2"
+    ],
+    "historical_execution_state": "InProgress"
+  },
+  {
+    "id": "LOAD-02.3",
+    "title": "有界清理和应急报告",
+    "source_instruction": "有界清理及应急报告",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-02.2"
+    ],
+    "inputs": "拥有进程清单、grace与服务端回收时限",
+    "implementation_steps": "排队取消/结算保留/关闭连接/回收进程分步；最终报告写失败产出独立应急摘要",
+    "test_cases": [
+      {
+        "id": "LOAD-02.3-T01",
+        "setup_and_injection": "正常响应STOP",
+        "expected": "grace内退出且服务后置状态可恢复",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.3-T02",
+        "setup_and_injection": "子进程hang",
+        "expected": "仅终止本轮PID并记录forced",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.3-T03",
+        "setup_and_injection": "最终文件写失败",
+        "expected": "应急报告存在且不可Pass",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "进程清理与业务清理分列，所有强退和报告失败可见，非本轮进程不被操作。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-PY",
+      "C-SERVER"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-02.3/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G2"
+    ],
+    "historical_execution_state": "InProgress"
+  },
+  {
+    "id": "LOAD-02.4",
+    "title": "退出码兼容",
+    "source_instruction": "退出码与调用者兼容",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-02.3"
+    ],
+    "inputs": "当前调用者和旧报告算法版本",
+    "implementation_steps": "固定0/1/2/3/130及preparation-only语义，调用者读取六维结果而非只读0",
+    "test_cases": [
+      {
+        "id": "LOAD-02.4-T01",
+        "setup_and_injection": "preparation-only exit0",
+        "expected": "标仅准备不算压测成功",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.4-T02",
+        "setup_and_injection": "redline",
+        "expected": "exit2且记录全部触发",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-02.4-T03",
+        "setup_and_injection": "invalid/人工STOP",
+        "expected": "分别3/130",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "新旧调用者有子进程集成用例，任何未完成/无证据运行不能冒充Passed。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-PY",
+      "C-SERVER"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-02.4/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "按任务独立提交回退统计/runner；保留原raw及算法版本，不覆盖已归档报告。",
+    "gate_refs": [
+      "G1",
+      "G2"
+    ],
+    "historical_execution_state": "Planned"
+  }
+]

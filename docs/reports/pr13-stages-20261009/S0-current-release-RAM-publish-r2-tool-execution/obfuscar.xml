@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Obfuscator>
+  <Var name="InPath" value="/input" />
+  <Var name="OutPath" value="/output" />
+  <Var name="LogFile" value="/private/mapping.xml" />
+  <Var name="KeepPublicApi" value="true" />
+  <Var name="HidePrivateApi" value="true" />
+  <Var name="HideStrings" value="true" />
+  <Var name="RenameProperties" value="false" />
+  <Var name="KeepProperties" value="true" />
+  <Var name="RenameFields" value="false" />
+  <Var name="RenameEvents" value="false" />
+  <Var name="UseUnicodeNames" value="true" />
+  <Var name="OptimizeMethods" value="false" />
+  <Var name="SuppressIldasm" value="true" />
+  <Var name="RegenerateDebugInfo" value="false" />
+  <Var name="XmlMapping" value="true" />
+  <AssemblySearchPath path="/framework" />
+  <Module file="$(InPath)/FantasyCard.Contracts.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+  </Module>
+  <Module file="$(InPath)/FantasyCard.Domain.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+  </Module>
+  <Module file="$(InPath)/FantasyCard.Server.dll">
+    <SkipMethod name=".ctor" />
+    <SkipType name="*AnonymousType*" skipMethods="true" />
+    <!-- Minimal API reflects parameter names when first building its routes. -->
+    <SkipType name="FantasyCard.Server.*Endpoints*" skipMethods="true" />
+    <SkipType name="Program*" skipMethods="true" />
+  </Module>
+</Obfuscator>

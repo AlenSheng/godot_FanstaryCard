@@ -3,12 +3,13 @@ set -euo pipefail
 
 # Run as the ubuntu user; only Docker commands use sudo.
 repo=/opt/fantasycard-github
-branch=release
+branch=${FANTASYCARD_DEPLOY_BRANCH:-release}
 app_dir="$repo/server"
 compose="$app_dir/compose.cloud.yaml"
 env_file="$app_dir/.env"
 backup_dir=/opt/fantasycard-app/backups
 deployed_marker=/opt/fantasycard-app/deployed-git-commit
+runtime_marker=/opt/fantasycard-app/deployed-runtime-commit
 manifest_dir=/opt/fantasycard-app/version-manifests
 manifest="$manifest_dir/release.md5"
 manifest_version="$manifest_dir/release.version"
@@ -20,7 +21,8 @@ write_manifest() {
   (
     cd "$repo"
     git ls-files -z -- \
-      server/src server/config server/protection server/deploy \
+      server/src server/config server/protection server/deploy server/monitoring \
+      protocol/http protocol/realtime .dockerignore \
       server/Directory.Build.props server/Directory.Packages.props \
       server/global.json server/NuGet.Config server/.dockerignore \
       server/compose.cloud.yaml server/Caddyfile server/site \
@@ -56,7 +58,26 @@ health_check() {
     [[ "$(curl --fail --silent --show-error --max-time 5 \
       --resolve www.relicbound.cn:443:127.0.0.1 \
       https://www.relicbound.cn/health/ready)" == Healthy ]] &&
-    domain_certificate_ok
+    domain_certificate_ok &&
+    [[ "$(curl --silent --show-error --max-time 5 --output /dev/null --write-out '%{http_code}' \
+      --resolve www.relicbound.cn:443:127.0.0.1 \
+      https://www.relicbound.cn/admin)" == 404 ]] &&
+    [[ "$(curl --silent --show-error --max-time 5 --output /dev/null --write-out '%{http_code}' \
+      --resolve www.relicbound.cn:443:127.0.0.1 \
+      https://www.relicbound.cn/api/admin/client-settings)" == 404 ]] &&
+    curl --fail --silent --show-error --max-time 5 --output /dev/null \
+      --resolve www.relicbound.cn:20000:127.0.0.1 \
+      https://www.relicbound.cn:20000/admin
+}
+
+normalize_monitoring_permissions() {
+  # The deployment uses a restrictive umask. Compose services run as
+  # unprivileged users, so bind-mounted monitoring configuration must remain
+  # readable without making the repository or secrets world-readable.
+  if [[ -d "$app_dir/monitoring" ]]; then
+    find "$app_dir/monitoring" -type d -exec chmod 755 {} +
+    find "$app_dir/monitoring" -type f -exec chmod 644 {} +
+  fi
 }
 
 if [[ "$(id -un)" != ubuntu ]]; then
@@ -132,6 +153,8 @@ if [[ "$current" != "$target" ]]; then
   git -C "$repo" merge --ff-only "$target"
 fi
 
+normalize_monitoring_permissions
+
 write_manifest "$manifest.new"
 runtime_changed=false
 proxy_changed=false
@@ -144,7 +167,7 @@ if [[ "$baseline_valid" == true ]]; then
       server/Caddyfile|server/site/*) proxy_changed=true ;;
       server/compose.cloud.yaml) runtime_changed=true; proxy_changed=true ;;
       server/deploy/*) ;;
-      server/*) runtime_changed=true ;;
+      server/*|protocol/*|.dockerignore) runtime_changed=true ;;
     esac
   done < "$changes"
 else
@@ -164,8 +187,11 @@ if [[ "$runtime_changed" == true ]]; then
   sudo docker compose -f "$compose" --env-file "$env_file" exec -T postgres \
     pg_restore --list < "$backup" >/dev/null
   echo "正在构建服务端版本：$target"
-  sudo docker compose -f "$compose" --env-file "$env_file" build server
+  sudo docker compose -f "$compose" --env-file "$env_file" build \
+    --build-arg "FANTASYCARD_SOURCE_COMMIT=$target" server
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps server
+  sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps \
+    otel-collector node-exporter prometheus grafana
 fi
 if [[ "$proxy_changed" == true ]]; then
   sudo docker compose -f "$compose" --env-file "$env_file" up -d --no-deps --force-recreate caddy
@@ -176,10 +202,21 @@ fi
 
 for attempt in {1..24}; do
   if health_check >/dev/null 2>&1; then
+    # A checkout/manifest can advance after client-only changes. The running
+    # image revision is separate evidence and must never be inferred from it.
+    container_id=$(sudo docker compose -f "$compose" --env-file "$env_file" ps -q server)
+    image_revision=$(sudo docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revision"}}' "$container_id")
+    if [[ "$runtime_changed" == true && "$image_revision" != "$target" ]]; then
+      echo '运行镜像的源码标记与构建目标不一致，保留旧部署标记。' >&2
+      exit 1
+    fi
+    if [[ "$image_revision" =~ ^[0-9a-f]{40}$ ]]; then
+      printf '%s\n' "$image_revision" > "$runtime_marker"
+    fi
     mv "$manifest.new" "$manifest"
     printf '%s\n' "$target" > "$manifest_version"
     printf '%s\n' "$target" > "$deployed_marker"
-    if [[ -f "$self_source" ]]; then
+    if [[ -f "$self_source" ]] && ! cmp -s "$self_source" "$0"; then
       install -m 700 "$self_source" "$0"
     fi
     echo "更新成功：$target"

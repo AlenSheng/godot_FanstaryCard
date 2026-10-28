@@ -1,0 +1,82 @@
+{
+  "task_id": "LOAD-10.3",
+  "case_id": "LOAD-10.3-T03",
+  "state": "Partial",
+  "actual_stage_subset": {
+    "new_successful_stage_boundaries": [
+      "Pending-long-drain-with-owned-lock",
+      "between-matches-original-two-second-wait"
+    ],
+    "between_R1_main130_Native0_cancelled_cycles1_cleanupPassed": true,
+    "between_STOP_issued_ms_after_wait_entry": 46,
+    "between_STOP_observed_ms_after_wait_entry": 58,
+    "between_no_second_preparation": true,
+    "R3_original_main_exits": [
+      130,
+      0,
+      0,
+      0
+    ],
+    "R3_Native_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "Pending_original_state": "cancelled/cleanupUnknown/cycles0/ACK0 whileownedPending",
+    "Pending_same_effective_match_retained": true,
+    "Native_STOP_to_parent_finish_ms": 34534,
+    "coordinator_STOP_to_Native_end_ms": 34496,
+    "Pending_audio_drain_ms": 163,
+    "root0644_STOP_reason_and_permissions_preserved": true,
+    "R3_no_forced_kill_permission_error_or_missing_report": true,
+    "manual_recovery_after_all_original_mains_terminal": true,
+    "actual_manual_protocol": "legacyGETdetail200/ready-onlynull/ACK409 whilePending;ownedunlock/ready-onlysameMready/ACK200",
+    "actual_final_asset_destination": "RelicPile",
+    "actual_item_movements": 3,
+    "R3_worlds_UIDs_receipts_ACKs": [
+      1,
+      4,
+      4,
+      4
+    ],
+    "R3_original_completed_workflows": 3,
+    "manual_recovery_not_original_cycle_credit": true,
+    "independent_R3_checks": 49,
+    "independent_between_checks": 13,
+    "unit_cases4_real_children3_and_directory_negative1": true,
+    "old_R1_R2_wholeFailed_retained": true
+  },
+  "finding": {
+    "id": "LOAD103-STOP-ExistingReadOnlyMarker",
+    "state": "ClosedCurrentBoundedScope",
+    "actual_R2": "Root0644STOP was readable and actually consumed byNative, but stop_all.write_text asuser1000 failed before waiting; fallbackkilledNative-9 in42ms, no finalreport. Not35s timeout/Pending contract/70HP defect.",
+    "fix": "Create missing marker viaexclusiveopen;existingregularmarker preservedwithout write requirement;directory marker rejected. Onlysignalcreation changed,deadline/wait/kill/report suffix byteequal/default35unchanged.",
+    "sourceSHA": "9a1f51571c62c1cbe8c1be39c5b15c855ce1c13ca364eb18237cf276ab30e9dd",
+    "validation": "Old4caseunitrun1failure1error,afterfix4pass(3realownedchildren+directorynegative);sameactualroot0644cloudsignal leftunchanged,main130/Native0/Unknown/rawcomplete/no kill;separatepublicrecoveryonce.",
+    "scope": "Readable existing regular stop marker, original Pending shutdown;not arbitrary permission or all lifecycle/capacity acceptance"
+  },
+  "new_case_profiles_closed": [],
+  "remaining_missing_case_profiles": {
+    "LOAD-10.3-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T02": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T03": [
+      "CAPACITY",
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "whole_case_profile_or_task_notaccepted": true,
+  "G": "G:\\PR13Evidence\\load103-pending-only-20261021-r3-originals",
+  "Gmembers": 746,
+  "archiveSHA": "7808ef746d06136b6aeb6168e3eaf094585fa6ba0f4d0642457a7a971d70456c",
+  "all106_package_and2149_inputs_verified_thenexactownedcloudcleanup": true,
+  "production_unchanged": true,
+  "local_unexecuted_engine_cache_copy": "Retained/excluded fromruntime,automaticdeletionreviewblocked;no retry",
+  "budget_revision": "docs/plans/PR13_LOAD103_PENDING_MARKER_FIX_BUDGET_REVISION_20261021.json",
+  "whole_project_accepted": false
+}

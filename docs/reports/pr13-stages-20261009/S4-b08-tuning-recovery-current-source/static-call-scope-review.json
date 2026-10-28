@@ -1,0 +1,99 @@
+{
+  "state": "Partial static source review; actual current execution equivalence pending",
+  "original_experiment_source_sha": "3a984bc64f5346b7f1d134926deec54be928a060",
+  "current_source_sha": "18ae9d4e949cbdb4882b6469aff016f6568fb0fd",
+  "exact_whole_file_hashes": [
+    {
+      "path": "server/tools/FantasyCard.Numerics/Program.cs",
+      "actual_execution_sha256": "f4c2eaf54090f1a6020573caa31dd1f41f1286ad396340cfe6a75ad64b374e3a",
+      "original_git_blob_sha1": "b3dc07d7a86bf664d8720c69f66945747616fc22",
+      "original_git_sha256": "f4c2eaf54090f1a6020573caa31dd1f41f1286ad396340cfe6a75ad64b374e3a",
+      "current_git_blob_sha1": "c1747f2a7ae32de336342caed5c5be3aecc249d5",
+      "current_git_sha256": "0bf48fc52118c8e582a832f4aaf8054cfab57f230502b1443c152e9ff74315b7",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": false,
+      "original_equals_current_git_bytes": false,
+      "mode_unchanged": true
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/CombatExperience.cs",
+      "actual_execution_sha256": "640f771167a8ead74c151b3346dc7a372a3e828f6ab89645306ddda126bde05c",
+      "original_git_blob_sha1": "2198ab264d963abebfa9e01ab0171851aea07742",
+      "original_git_sha256": "640f771167a8ead74c151b3346dc7a372a3e828f6ab89645306ddda126bde05c",
+      "current_git_blob_sha1": "03300b521b6377f590916ad42f6b767029b9ae12",
+      "current_git_sha256": "4cae647a26bef082b321bf416105dd942520a7231ae6480c864b30e10811879e",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": false,
+      "original_equals_current_git_bytes": false,
+      "mode_unchanged": true
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryExperiment.cs",
+      "actual_execution_sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43",
+      "original_git_blob_sha1": "50e03902a54c374cbe78fe3e12298a7fe3dd5c5a",
+      "original_git_sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43",
+      "current_git_blob_sha1": "50e03902a54c374cbe78fe3e12298a7fe3dd5c5a",
+      "current_git_sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": true,
+      "original_equals_current_git_bytes": true,
+      "mode_unchanged": true
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryOracle.cs",
+      "actual_execution_sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791",
+      "original_git_blob_sha1": "e71880291f45b1769adaab1f4289e0ea970df737",
+      "original_git_sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791",
+      "current_git_blob_sha1": "e71880291f45b1769adaab1f4289e0ea970df737",
+      "current_git_sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": true,
+      "original_equals_current_git_bytes": true,
+      "mode_unchanged": true
+    }
+  ],
+  "Program_changed_branch": "A leading --cap-effective-experiment branch calls CapEffectiveExperiment.Run. Original --tuning-recovery-experiment dispatch branch is unchanged by the inspected diff.",
+  "CombatExperience_changed_function": "Simulate gains the optional trailing capAudit=null observer. Equipment:capAudit?.Equipment and conditional before/after PlayCards / Advance capture plus optional Cast / Tick callbacks are new.",
+  "TuningRecoveryExperiment_call_scope": "Unchanged source calls Simulate(marginalAudit:true,tuningObserver:...) without capAudit; source inspection points to the null default. This is not a substitute for actual current-runtime equivalence.",
+  "changed_shared_UI_files": [
+    {
+      "path": "client/ui/numerical_details.gd",
+      "actual_execution_sha256": "32fd8a8b350302aa85a50edc2158958146480a0606d3fc724b13b6e4ef922127",
+      "original_git_blob_sha1": "fc93dddb307fb0e5cbf48520c5af74b236efab9f",
+      "original_git_sha256": "32fd8a8b350302aa85a50edc2158958146480a0606d3fc724b13b6e4ef922127",
+      "current_git_blob_sha1": "b834b70053899e598f50a4b6c7d6c37a67ae7ae8",
+      "current_git_sha256": "adebe56f73e6e9ae7f3d8f42450080ca4dee14e97a6f1265afd0cb2ff7e26a21",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": false,
+      "original_equals_current_git_bytes": false,
+      "mode_unchanged": true
+    },
+    {
+      "path": "client/ui/monster_pool_view.gd",
+      "actual_execution_sha256": "b65155d03c130364f18678dafa475926d0d628b1069169ef71a78558d9315438",
+      "original_git_blob_sha1": "245d1a5e4a07e1f1e6edf2bd4441b5be27271e1c",
+      "original_git_sha256": "b65155d03c130364f18678dafa475926d0d628b1069169ef71a78558d9315438",
+      "current_git_blob_sha1": "e5e32b8e3bbaf43efcef3393b7c40ee1ebae0254",
+      "current_git_sha256": "41e1a89379d1ccebfb07449647de88220f868953c98580ac87a7b5659331977c",
+      "actual_matches_original_git_bytes": true,
+      "actual_matches_current_git_bytes": false,
+      "original_equals_current_git_bytes": false,
+      "mode_unchanged": true
+    }
+  ],
+  "monster_pool_view_changed_scope": "Pool open width/wrapping and CatalogIndex localized card names.",
+  "numerical_details_changed_scope": "CAP/STAT_TEXT mapping, stat_name/text fallback, active/not-applicable inspection classification, comparison explanations and labels.",
+  "direct_probe_limit": "The original tuning probe has no direct call to these two shared components. Shared equipment comparison wiring can still load numerical details; absence of a direct call is not a semantic waiver.",
+  "additional_source_or_test_files": "Every added selected file is separately listed in audit.json; additions do not overwrite old source provenance.",
+  "semantic_source_equivalence_verified": false,
+  "S4_review_passed": false,
+  "source_inputs_match_git": false,
+  "next_focused_cloud_evidence": [
+    "Freeze exact current selected source hashes against the mixed compiled runtime, and restore original runtime only after all eight original file SHAs match.",
+    "Run the original and current B08.3 implementations for 36 families × 3 paired seeds × 2 arms = 216 encounters each; compare complete cast/encounter values and ordering, with only a proven stable selected-card UUID bijection and the original four independent controls.",
+    "Rerun current rendered B08.3 probes using the actual original native fixture SHA f384facee3a0907075672bd91b566e07bc5e48e17ace772cf6cbe2c6b192b84c, explicitly cover changed shared UI and review actual final PNGs.",
+    "Record the new focused execution separately before considering EXPERIMENT/RENDER profile supplementation; retain all original 216000 encounters and their original source label."
+  ],
+  "cloud_evidence_executed_by_this_static_review": false,
+  "MAIN_accepted": false
+}

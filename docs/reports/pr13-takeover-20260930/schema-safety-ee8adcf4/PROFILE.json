@@ -1,0 +1,27 @@
+{
+  "kind": "OFFLINE_fixed_case_profile",
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "canonical_plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "tasks": [
+    "LOAD-01.1",
+    "LOAD-01.2",
+    "LOAD-01.3",
+    "LOAD-01.4"
+  ],
+  "canonical_cases": 12,
+  "supplemental_schema_fixtures": [
+    "type-list",
+    "type-dict",
+    "huge-duration",
+    "huge-timestamp",
+    "huge-event-time"
+  ],
+  "child_status_deadline_seconds": 5,
+  "child_lifetime_seconds": 15,
+  "child_cleanup_wait_seconds": 5,
+  "production_stale_ms": 30000,
+  "public_network": false,
+  "database_access": false,
+  "population": "Deterministic JSON/event fixtures and actual owned OS children; no capacity or probabilistic inference.",
+  "registration_basis": "Budgets appear in source harness before execution. Profile packages those fixed inputs; no retrospective sample selection."
+}

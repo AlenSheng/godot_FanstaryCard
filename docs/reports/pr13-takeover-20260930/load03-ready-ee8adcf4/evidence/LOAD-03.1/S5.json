@@ -1,0 +1,2084 @@
+{
+  "task_id": "LOAD-03.1",
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "business_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "config_source_hash": null,
+  "config_bytes_hash": null,
+  "effective_room_policy": null,
+  "runtime_image_digest": null,
+  "profile_hash": "82635905ccdd05e8a06666471a98564ee8177c04e67096e22f27d57d2292fa7b",
+  "algorithm_version": "ee8-validator-83a6d45a4938b09b/f812-Gateway-964bd3e0eea3ff00/receipt-harness-ea77e98f35da5e43",
+  "case_ids": [
+    "LOAD-03.1-T01",
+    "LOAD-03.1-T02",
+    "LOAD-03.1-T03"
+  ],
+  "expected": [
+    {
+      "LOAD-03.1-T01": "均消费且仅一次"
+    },
+    {
+      "LOAD-03.1-T02": "lost_count=1证据无效"
+    },
+    {
+      "LOAD-03.1-T03": "各自水位不混用"
+    }
+  ],
+  "actual": [
+    {
+      "case_id": "LOAD-03.1-T01",
+      "task_id": "LOAD-03.1",
+      "original_setup_and_injection": "同毫秒两事件",
+      "original_expected": "均消费且仅一次",
+      "status": "Passed",
+      "actual": {
+        "case_id": "LOAD-03.1-T01",
+        "passed": true,
+        "actual_write_ack": {
+          "pid": 97469,
+          "status_path": "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/evidence/sequence/same-ms/status.json",
+          "status_seq": 1
+        },
+        "first": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334767,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97469,
+              "_received_at_monotonic_ms": 28674305.397326
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334767,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97469,
+              "_received_at_monotonic_ms": 28674305.397326
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334767,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 2,
+              "at_unix_ms": 1790809334767,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "same",
+                "e1"
+              ],
+              2
+            ]
+          ]
+        },
+        "second": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334767,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "same",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334767,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97469,
+              "_received_at_monotonic_ms": 28674305.898771
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334767,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [],
+              "operations": [],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97469,
+              "_received_at_monotonic_ms": 28674305.898771
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 0
+            },
+            "steady_http": {
+              "count": 0
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {},
+            "error_count": 0,
+            "sample_count": 0,
+            "logical_request_count": 0,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 0,
+            "latency_sample_quality": {
+              "http": "unavailable",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 0,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334767,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "same",
+              "process_epoch": "e1",
+              "event_seq": 2,
+              "at_unix_ms": 1790809334767,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "same",
+                "e1"
+              ],
+              2
+            ]
+          ]
+        }
+      },
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "business_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "evidence": "evidence/sequence/receipts.json",
+      "remaining_blockers": []
+    },
+    {
+      "case_id": "LOAD-03.1-T02",
+      "task_id": "LOAD-03.1",
+      "original_setup_and_injection": "seq1/3缺2",
+      "original_expected": "lost_count=1证据无效",
+      "status": "Passed",
+      "actual": {
+        "case_id": "LOAD-03.1-T02",
+        "passed": true,
+        "first": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334805,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 3,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97476,
+              "_received_at_monotonic_ms": 28674336.558744
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334805,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 3,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334805,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97476,
+              "_received_at_monotonic_ms": 28674336.558744
+            }
+          ],
+          "lost_count": 1,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334805,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 3,
+              "at_unix_ms": 1790809334805,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:3",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [
+            {
+              "client_id": "gap",
+              "line": 2,
+              "error": "event_sequence_gap_or_reorder",
+              "expected": 2,
+              "actual": 3
+            }
+          ],
+          "watermarks": [
+            [
+              [
+                "gap",
+                "e1"
+              ],
+              3
+            ]
+          ]
+        },
+        "next_snapshot": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 2,
+              "now_unix_ms": 1790809334835,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 4,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 3,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:3",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97476,
+              "_received_at_monotonic_ms": 28674337.832872
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "status_seq": 2,
+              "now_unix_ms": 1790809334835,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 4,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "gap",
+                  "process_epoch": "e1",
+                  "event_seq": 4,
+                  "at_unix_ms": 1790809334835,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:e1",
+                  "match_id": "",
+                  "logical_request_id": "e1:4",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97476,
+              "_received_at_monotonic_ms": 28674337.832872
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 1,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 1,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 1,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 1,
+            "logical_request_count": 1,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 1,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 1,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334805,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 3,
+              "at_unix_ms": 1790809334805,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:3",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "gap",
+              "process_epoch": "e1",
+              "event_seq": 4,
+              "at_unix_ms": 1790809334835,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:e1",
+              "match_id": "",
+              "logical_request_id": "e1:4",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [
+            {
+              "client_id": "gap",
+              "line": 2,
+              "error": "event_sequence_gap_or_reorder",
+              "expected": 2,
+              "actual": 3
+            }
+          ],
+          "watermarks": [
+            [
+              [
+                "gap",
+                "e1"
+              ],
+              4
+            ]
+          ]
+        },
+        "meaning": "Incremental lost_count is per-window; archived first loss plus audit gap persist. Coordinator sticky verdict executed separately.",
+        "sticky_actual_main_report": {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+            "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/harness/coordinator_gap.py",
+            "gap_sticky",
+            "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/evidence/coordinator-sticky-verified"
+          ],
+          "caller_exit": 3,
+          "expected_exit": 3,
+          "elapsed_real_seconds": 1.3333557019977889,
+          "first_window_lost": 1,
+          "final_snapshot_sequences": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "tail_lost": 0,
+          "evidence_dimension": "Failed",
+          "audit_errors": [
+            {
+              "client_id": "g001c01093f7f",
+              "line": 2,
+              "error": "event_sequence_gap_or_reorder",
+              "expected": 2,
+              "actual": 3
+            }
+          ],
+          "model_inputs": [
+            "clock",
+            "metrics",
+            "telemetry"
+          ],
+          "real_paths": [
+            "coordinator.main/report/exit",
+            "owned child",
+            "STOP grace35"
+          ],
+          "capacity_claim": false
+        }
+      },
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "business_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "evidence": "evidence/sequence/receipts.json",
+      "remaining_blockers": []
+    },
+    {
+      "case_id": "LOAD-03.1-T03",
+      "task_id": "LOAD-03.1",
+      "original_setup_and_injection": "轮转/重启换epoch",
+      "original_expected": "各自水位不混用",
+      "status": "Passed",
+      "actual": {
+        "case_id": "LOAD-03.1-T03",
+        "passed": true,
+        "old_pid": 97477,
+        "new_pid": 97479,
+        "old": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334841,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97477,
+              "_received_at_monotonic_ms": 28674383.424755
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334841,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "old-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334841,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:old-epoch",
+                  "match_id": "",
+                  "logical_request_id": "old-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97477,
+              "_received_at_monotonic_ms": 28674383.424755
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334841,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:old-epoch",
+              "match_id": "",
+              "logical_request_id": "old-epoch:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "old-epoch",
+              "event_seq": 2,
+              "at_unix_ms": 1790809334841,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:old-epoch",
+              "match_id": "",
+              "logical_request_id": "old-epoch:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "restart",
+                "old-epoch"
+              ],
+              2
+            ]
+          ]
+        },
+        "new": {
+          "owned": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334890,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97479,
+              "_received_at_monotonic_ms": 28674418.480435
+            }
+          ],
+          "invalid_files": 0,
+          "fresh": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "status_seq": 1,
+              "now_unix_ms": 1790809334890,
+              "online": false,
+              "room": false,
+              "last_progress_age_ms": 0,
+              "cycles_completed": 0,
+              "event_seq_max": 2,
+              "telemetry": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "operations": [
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 1,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:1",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                },
+                {
+                  "run_id": "owned-sequence-run",
+                  "client_id": "restart",
+                  "process_epoch": "new-epoch",
+                  "event_seq": 2,
+                  "at_unix_ms": 1790809334890,
+                  "type": "http",
+                  "event_type": "http",
+                  "phase": "playing",
+                  "path": "/fixture/file",
+                  "route": "/fixture/file",
+                  "cycle_id": "cycle:new-epoch",
+                  "match_id": "",
+                  "logical_request_id": "new-epoch:2",
+                  "ok": true,
+                  "status": 200,
+                  "result": "success",
+                  "duration_ms": 1
+                }
+              ],
+              "audit_lost_count": 0,
+              "errors": [],
+              "cleanup": {
+                "state": "Passed"
+              },
+              "pid": 97479,
+              "_received_at_monotonic_ms": 28674418.480435
+            }
+          ],
+          "lost_count": 0,
+          "aggregate": {
+            "http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "steady_http": {
+              "count": 2,
+              "min_ms": 1,
+              "mean_ms": 1.0,
+              "max_ms": 1,
+              "p50_ms": 1,
+              "p95_ms": 1,
+              "p99_ms": 1
+            },
+            "cancelled_http": {
+              "count": 0
+            },
+            "realtime": {
+              "count": 0
+            },
+            "rtt": {
+              "count": 0
+            },
+            "phase_http": {
+              "playing": {
+                "count": 2,
+                "min_ms": 1,
+                "mean_ms": 1.0,
+                "max_ms": 1,
+                "p50_ms": 1,
+                "p95_ms": 1,
+                "p99_ms": 1
+              }
+            },
+            "error_count": 0,
+            "sample_count": 2,
+            "logical_request_count": 2,
+            "cancelled_count": 0,
+            "all_attempt_count": null,
+            "attempt_coverage": "unavailable",
+            "attempt_result_counts": {},
+            "valid_attempt_latency_count": 0,
+            "valid_latency_count": 2,
+            "latency_sample_quality": {
+              "http": "insufficient",
+              "realtime": "unavailable"
+            },
+            "error_rate": 0.0,
+            "steady_error_count": 0,
+            "steady_sample_count": 2,
+            "steady_error_rate": 0.0,
+            "invalid_metric_count": 0,
+            "invalid_duration_count": 0,
+            "invalid_schema_count": 0,
+            "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+          },
+          "audit": [
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "event_seq": 1,
+              "at_unix_ms": 1790809334890,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:new-epoch",
+              "match_id": "",
+              "logical_request_id": "new-epoch:1",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            },
+            {
+              "run_id": "owned-sequence-run",
+              "client_id": "restart",
+              "process_epoch": "new-epoch",
+              "event_seq": 2,
+              "at_unix_ms": 1790809334890,
+              "type": "http",
+              "event_type": "http",
+              "phase": "playing",
+              "path": "/fixture/file",
+              "route": "/fixture/file",
+              "cycle_id": "cycle:new-epoch",
+              "match_id": "",
+              "logical_request_id": "new-epoch:2",
+              "ok": true,
+              "status": 200,
+              "result": "success",
+              "duration_ms": 1
+            }
+          ],
+          "audit_errors": [],
+          "watermarks": [
+            [
+              [
+                "restart",
+                "old-epoch"
+              ],
+              2
+            ],
+            [
+              [
+                "restart",
+                "new-epoch"
+              ],
+              2
+            ]
+          ]
+        },
+        "launch_cache_policy": "New launch starts a new status receipt cache; shared event-watermark map retains both epochs."
+      },
+      "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+      "business_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "evidence": "evidence/sequence/receipts.json",
+      "remaining_blockers": []
+    }
+  ],
+  "status": "NotApplicableWithReason",
+  "sample_population": {
+    "canonical_cases": 3,
+    "additional_criteria": 4,
+    "human_capacity_population": null,
+    "actual_owned_writers": 8,
+    "actual_Gateway_requests": null
+  },
+  "cutoff_monotonic": {
+    "main_model_stop_monotonic_ns": 10000000000,
+    "main_clock_scope": "model",
+    "actual_owned_writer_start_monotonic_ns": [
+      28674268914481,
+      28674307052999,
+      28674343241480,
+      28674392049835,
+      28674419675119,
+      28674466958454,
+      28674508723090,
+      28674561540595
+    ]
+  },
+  "window_or_drain_or_final": [
+    "incremental_file_read",
+    "final_audit",
+    "final_main_report"
+  ],
+  "commands": "../commands.json",
+  "tool_versions": {
+    "python": "3.12.14",
+    "Godot": "4.7.2.stable.official.ed1daf0bf",
+    "Godot_executable_sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+    "C-PY_tools_SHA": "ee8adcf40be9aebb1330156a3524910c08225ebc"
+  },
+  "exit_codes": {
+    "case_harness": 0,
+    "expected_sticky_coordinator": 3,
+    "C-PY-reused": 0,
+    "all_Godot": null
+  },
+  "skip_reasons": [],
+  "asset_and_route_postconditions": null,
+  "artifact_manifest": "../manifest.json",
+  "reviewer": null,
+  "rollback": "No production/UI/business modifications; isolated harness may be discarded while retaining raw. No push/upload/ledger deletion/DB restore.",
+  "remaining_blockers": [],
+  "missing_reasons": {
+    "config_source_hash": "OFFLINE sequence and transport fixtures do not load the business config workbook.",
+    "config_bytes_hash": "Business config bytes not consumed; actual HTTP_SCHEMA hash provided separately.",
+    "effective_room_policy": "No room policy or battle room is instantiated in these OFFLINE contracts.",
+    "runtime_image_digest": "Local source files and installed Godot executable; no container image used.",
+    "asset_and_route_postconditions": "No accounts/assets/PG writes or room routes created. These canonical profiles are OFFLINE only.",
+    "reviewer": "Reserved for MAIN S6 independent adjudication.",
+    "sample_population.human_capacity_population": "No human/service-capacity population claim.",
+    "accepted_by": "MAIN adjudication pending; agent does not sign Accepted.",
+    "sample_population.actual_Gateway_requests": "Gateway only exercised by separate LOAD-03.2",
+    "exit_codes.all_Godot": "No Godot subprocess required for sequence file cases.",
+    "source_git_dirty": "No .git in archive; 64 tool files byte-matched ee8 and seven runtime/schema files byte-matched f812 and ee8."
+  },
+  "http_schema_hash": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff",
+  "source_proof": "../SOURCE_PROOF.json",
+  "source_git_dirty": null,
+  "source_git_dirty_reason": "No .git in archive; 64 tool files byte-matched ee8 and seven runtime/schema files byte-matched f812 and ee8.",
+  "original_implementation_steps": "用run/client/epoch/event_seq增量消费；检测重复/乱序/缺口/截断/尾部未flush",
+  "original_pass_criteria": "JSONL原样本与汇总逐事件可对账；缺失不能因下次快照到达静默消失。",
+  "all_pass_criteria_evidence": {
+    "same_ms_two_events_consumed_once": true,
+    "gap_detected_lost1": true,
+    "next_snapshot_does_not_clear_archived_gap": true,
+    "actual_main_sticky_evidenceFailed_exit3": true,
+    "real_new_PID_new_epoch_independent_watermarks": true,
+    "JSONL_raw_vs_aggregate_event_reconciliation": true,
+    "duplicate_outoforder_truncated_unflushed_detected": true,
+    "receipt_cache_restart_boundary": "Each new owned launch receives a fresh status-receipt cache; event watermark map persists across both epochs."
+  },
+  "implementation_disposition": "NoChangeWithEvidence",
+  "accepted_by": null,
+  "stage": "S5",
+  "reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。"
+}

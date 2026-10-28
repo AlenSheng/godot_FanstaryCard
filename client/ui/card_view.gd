@@ -3,9 +3,14 @@ extends Button
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
+const ElementRules = preload("res://state/element_rules.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
+static var _materials: Dictionary = {}
+
+static func clear_material_cache() -> void:
+	_materials.clear()
 
 func configure(id: String, info: Dictionary, description: String, selected: bool, options: Dictionary = {}) -> void:
 	for child in get_children(): child.free()
@@ -24,13 +29,13 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	if monster:
 		var backdrop := Art.image(self, Art.texture("Cards/Art/monster_card_backdrop.png"), Vector2.ZERO)
 		backdrop.name = "MonsterBackdrop"
-		backdrop.position = Vector2(14, 58)
-		backdrop.size = Vector2(190, 177)
+		backdrop.position = Vector2(14, 14)
+		backdrop.size = Vector2(190, 285)
 		backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	var illustration := Art.image(self, Art.card(id), Vector2.ZERO)
 	illustration.name = "Illustration"
-	illustration.position = Vector2(14, 58) if monster else Vector2(14, 14)
-	illustration.size = Vector2(190, 177) if monster else Vector2(190, 285)
+	illustration.position = Vector2(14, 14)
+	illustration.size = Vector2(190, 285)
 	if illustration.texture == null:
 		_text("插画待补", Rect2(14, 112, 190, 60), 22, P.MUTED)
 	if selected and options.get("selected_overlay", false):
@@ -48,28 +53,31 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	frame.name = "CardFrame"
 	frame.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	frame.stretch_mode = TextureRect.STRETCH_SCALE
+	if monster: frame.material = _monster_frame_material()
 	if not monster:
 		if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
 		if selected: frame.texture = Art.texture("UI/Codex/qframe_selected.png")
 		frame.material = _card_material(unowned, true)
 	var lines := description.split("\n\n", true, 1)
 	var passed_effect: String = lines[1] if lines.size() > 1 else description
-	# The card face is configuration-owned. Do not trust a caller-provided summary:
-	# older call sites used generated strings such as `火 8.0`, which caused the
-	# collection to keep showing stale text even after the table was updated.
-	var effect := _face_description(id, passed_effect)
+	# Build compact summaries from the catalog's effects and level growth so
+	# upgraded cards cannot reuse the base-level numbers from the text table.
+	var effect := _face_description(id, passed_effect) if monster else CardDetails.face_description(id, int(options.get("level", 0)), info)
+	if effect.is_empty(): effect = _face_description(id, passed_effect)
 	if monster:
 		_monster_text(id, info, effect, selected, int(options.get("level", 0)))
 	else:
 		var level := int(options.get("level", 0))
-		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 294, 170, 35), 20, P.GOLD)
-		title.add_theme_font_override("font", P.font("title"))
+		# card_view.gdshader moves the frame's text panel below the portrait:
+		# its usable interior is y=303..357, not the source texture's y=256..348.
+		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.PAPER if unowned else P.GOLD, true, P.scaled_font("title"))
 		title.name = "CardName"
-		var effect_label := _text(effect, Rect2(24, 330, 170, 28), 16, P.PAPER)
+		var effect_label := _text(effect.replace("\n", " "), Rect2(24, 331, 170, 24), 16, P.PAPER, false)
 		effect_label.name = "CardEffect"
 		effect_label.max_lines_visible = 1
 		effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+		_fit_card_effect_font(effect_label, 16)
 		var hero_class: String = P.word(info.get("hero_class", ""))
 		if not hero_class.is_empty(): _class_badge(str(info.get("hero_class")), hero_class)
 		var battle_element_hint := _battle_element_hint(str(info.get("element", "None")), str(options.get("battle_target_element", "None")))
@@ -82,7 +90,10 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 			for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]: selection_style.set_content_margin(side, 0)
 			selection.add_theme_stylebox_override("normal", selection_style)
 	for child in get_children():
-		if child is CanvasItem and child.material == null: child.use_parent_material = true
+		# Ownership remains visible in the illustration/frame. Keep readable text
+		# on the standard font path rather than dimming glyphs with that shader.
+		if child is Label: child.use_parent_material = false
+		elif child is CanvasItem and child.material == null: child.use_parent_material = true
 
 func _face_description(id: String, fallback: String) -> String:
 	var locale := P.language()
@@ -92,11 +103,22 @@ func _face_description(id: String, fallback: String) -> String:
 	return configured if not configured.is_empty() else fallback
 
 func _card_material(grayscale: bool, reframe: bool = false) -> ShaderMaterial:
-	var result := ShaderMaterial.new()
-	result.shader = CARD_SHADER
-	result.set_shader_parameter("grayscale", grayscale)
-	result.set_shader_parameter("reframe", reframe)
-	return result
+	var key := ("gray" if grayscale else "color") + ("_frame" if reframe else "_body")
+	if not _materials.has(key):
+		var result := ShaderMaterial.new()
+		result.shader = CARD_SHADER
+		result.set_shader_parameter("grayscale", grayscale)
+		result.set_shader_parameter("reframe", reframe)
+		_materials[key] = result
+	return _materials[key]
+
+func _monster_frame_material() -> ShaderMaterial:
+	if not _materials.has("monster_frame"):
+		var result := ShaderMaterial.new()
+		result.shader = CARD_SHADER
+		result.set_shader_parameter("monster_reframe", true)
+		_materials["monster_frame"] = result
+	return _materials["monster_frame"]
 
 func _level_badge(level: int) -> void:
 	var badge := Art.image(self, Art.texture("UI/Codex/mana_cost_badge.png"), Vector2.ZERO)
@@ -109,10 +131,8 @@ func _level_badge(level: int) -> void:
 func _battle_element_hint(card_element: String, target_element: String) -> String:
 	if card_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
 	if target_element not in ["Fire", "Wood", "Water", "Metal", "Earth"]: return ""
-	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == card_element and pair[1] == target_element):
-		return "recommended"
-	if [["Water", "Fire"], ["Fire", "Metal"], ["Metal", "Wood"], ["Wood", "Earth"], ["Earth", "Water"]].any(func(pair): return pair[0] == target_element and pair[1] == card_element):
-		return "countered"
+	if ElementRules.counters(card_element, target_element): return "recommended"
+	if ElementRules.counters(target_element, card_element): return "countered"
 	return ""
 
 func _battle_element_badge(kind: String) -> void:
@@ -162,16 +182,25 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
 	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
-	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER)
+	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, true, P.scaled_font("title"))
 	title.name = "MonsterName"
-	title.add_theme_font_override("font", P.font("title"))
-	_text(effect, Rect2(21, 258, 176, 82), 17, P.PAPER)
+	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
 	if id == "M-BOXSPIRIT":
 		var element: String = info.get("element", "None")
-		_text(P.word(element), Rect2(135, 216, 61, 35), 23, P.ELEMENT.get(element, Color.WHITE)).name = "MonsterElement"
-	_text("已选 · 本局怪物卡" if selected else "本局怪物卡", Rect2(24, 345, 170, 27), 14, P.GOLD if selected else Color("d3b6ab")).name = "MonsterFooter"
+		_text(P.word(element), Rect2(135, 258, 61, 35), 23, P.ELEMENT.get(element, Color.WHITE)).name = "MonsterElement"
+	_text("已选 · 本局怪物卡" if selected else "本局怪物卡", Rect2(24, 344, 170, 19), 13, P.GOLD if selected else Color("d3b6ab")).name = "MonsterFooter"
 
-func _text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
+func _fit_card_effect_font(label: Label, requested_size: int) -> void:
+	var typeface: Font = P.font_for_text(label.text, requested_size, true)
+	var fitted_size: int = requested_size
+	while fitted_size > 12:
+		var text_size := typeface.get_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, -1.0, fitted_size)
+		if text_size.x <= label.size.x and typeface.get_height(fitted_size) <= label.size.y:
+			break
+		fitted_size -= 1
+	label.add_theme_font_size_override("font_size", fitted_size)
+
+func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect: bool = true, typeface_override: Font = null) -> Label:
 	var label := Label.new()
 	var display_text := P.localized_text(value)
 	label.text = display_text
@@ -180,12 +209,12 @@ func _text(value: String, rect: Rect2, font_size: int, color: Color) -> Label:
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var typeface := P.font_for_text(display_text, font_size)
+	var typeface: Font = typeface_override if typeface_override != null else P.font_for_text(display_text, font_size, true)
 	label.add_theme_font_override("font", typeface)
-	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text))
+	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)
 	label.add_theme_color_override("font_color", color)
 	add_child(label)
 	label.position = rect.position
 	label.size = rect.size
-	P.fit_control_font(label, typeface, font_size, 8.0)
+	if fit_to_rect: P.fit_control_font(label, typeface, font_size, 8.0)
 	return label

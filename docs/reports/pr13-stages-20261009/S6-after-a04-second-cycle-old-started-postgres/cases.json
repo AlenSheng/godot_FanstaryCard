@@ -1,0 +1,176 @@
+[
+  {
+    "case_id": "PR13-A04.2-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "POSTGRES"
+    ],
+    "setup": "第二局旧started",
+    "expected": "不应用",
+    "source_sha": "0c2a7deff941970fd207a41ae03c3575f8ffcfef",
+    "actual": {
+      "actual_completed_cycles": 1,
+      "actual_load_ready_attempts": 1,
+      "actual_load_ready_successful_sends": 1,
+      "ready_send_count": 2,
+      "ready_send_after_stop": 0,
+      "observed_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "observed_room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+      "active_match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+      "own_user_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      },
+      "local_terminal": true,
+      "route_probe_clear": true,
+      "observations": [
+        {
+          "at_ms": 32916,
+          "bytes": 1222,
+          "event": "first_original_started_captured",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+          "sequence": 9
+        },
+        {
+          "action": "battle.abandon",
+          "at_ms": 32917,
+          "event": "first_cycle_legal_exit_sent",
+          "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3"
+        },
+        {
+          "at_ms": 66664,
+          "event": "real_second_started_seen",
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "sequence": 20
+        },
+        {
+          "at_ms": 67863,
+          "cycles_completed": 1,
+          "event": "old_started_before",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 67864,
+          "cycles_completed": 1,
+          "event": "old_started_immediate_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        },
+        {
+          "at_ms": 69079,
+          "cycles_completed": 1,
+          "event": "old_started_stable_after",
+          "gateway_last_sequence": 23,
+          "gateway_ready_sends": 2,
+          "load_active_match": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "load_ready_accepted": true,
+          "load_ready_attempts": 1,
+          "load_successful_sends": 1,
+          "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+          "ready_prompt": {},
+          "room_id": "01a13a26-2ff4-7049-8115-157a2aede156"
+        }
+      ],
+      "original_captured_and_delivered_started_sha256": "a58989928a96f87752870a290cdac6424291eba0fa8321dd6014457f4d44fec9",
+      "postgres_postconditions": {
+        "equipment_states": [
+          {
+            "instance_id": "9df80dba-f7d2-4f8a-9fa7-42a04fe13b8e",
+            "owner_id": "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+            "location": "RelicPile"
+          }
+        ],
+        "non_bot_player_ids": [
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466",
+          "01a13a25-2fce-71e2-bf46-22d2b0a8f466"
+        ],
+        "death_equipment_movements": 1,
+        "preparations": [
+          {
+            "status": "Settled"
+          },
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          },
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          },
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 2,
+        "rooms": 2,
+        "matches": 2,
+        "match_rows": [
+          {
+            "match_id": "01a13a25-abf3-7dcb-8605-32a6a48232f3",
+            "room_id": "01a13a25-abf3-7db5-b902-2fc9f0a06823",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976909805.996,
+            "ready_deadline_unix_ms": 1791976924805.996,
+            "observed_at_unix_ms": 1791976948266.226
+          },
+          {
+            "match_id": "01a13a26-2ff4-7af7-a37d-e1941cbfdf8a",
+            "room_id": "01a13a26-2ff4-7049-8115-157a2aede156",
+            "status": "Completed",
+            "created_at_unix_ms": 1791976943601.934,
+            "ready_deadline_unix_ms": 1791976958601.934,
+            "observed_at_unix_ms": 1791976948266.226
+          }
+        ],
+        "ready_deadline_seconds": [
+          15.0,
+          15.0
+        ]
+      }
+    },
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/independent-G-check.original.json",
+        "scope": "Original old packet identity, actual first ACK, real second room and stable second-cycle state/counters plus SQL"
+      },
+      {
+        "path": "docs/reports/pr13-stages-20261009/S4-a04-real-second-cycle-old-started-PG/target-client.original.json",
+        "scope": "Original decoder and production load observations"
+      }
+    ],
+    "scope": "Tencent actual Godot load/Gateway decoder/full Program/Postgres. First real cycle legally abandoned and ACKed, second same-player room receives original first started frame twice. No reencoding or business-state assignment; only first cycle counted complete, second drains after assertions. LIVE retained."
+  }
+]

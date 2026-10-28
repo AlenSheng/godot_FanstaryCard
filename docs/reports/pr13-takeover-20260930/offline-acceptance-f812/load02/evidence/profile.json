@@ -1,0 +1,22 @@
+{
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "production_grace_seconds": 35,
+  "fixture_command_budget_seconds": 60,
+  "real_Godot_import_or_timeout_budget_seconds": 90,
+  "real_gateway_attempt_timeout_ms": 10000,
+  "real_gateway_logical_deadline_ms": 30000,
+  "model_clock_and_metrics_scope": "coordinator verdict negative fixtures only; no capacity claim",
+  "reused_PG_full_suite": "317 Domain + 291 Server actual no critical skip; no full rerun",
+  "canonical_cases": 12,
+  "additional_coordinator_modes": [
+    "exit7",
+    "smoke_complete",
+    "cleanup_unknown",
+    "late_business_error"
+  ],
+  "LIVE_CI": "Not required for these canonical profiles; neither accessed nor retried"
+}

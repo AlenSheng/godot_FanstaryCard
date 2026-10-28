@@ -1,0 +1,182 @@
+{
+  "full_or_failed_load_native_starts": [
+    {
+      "directory": "after-per-request-r1",
+      "PID": 105600,
+      "arguments": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--path",
+        "G:\\PR13Evidence\\working-projects\\a063-context-current-after-r2",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--log-file",
+        "G:\\PR13Evidence\\a063-current-request-context-20261018-r1-originals\\native-arms\\after-per-request-r1\\engine.original.log",
+        "res://tests/a063_native_context_probe.tscn"
+      ],
+      "exit": 0,
+      "forced": false,
+      "driver_ok": true,
+      "passed": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03",
+        "frozen-identity-control",
+        "missing-context-control",
+        "local-event-control",
+        "null-origin-metadata-control",
+        "audit-file-roundtrip"
+      ],
+      "failed": [],
+      "HTTP_requests": 9,
+      "engine_error_lines_both_logs": []
+    },
+    {
+      "directory": "after-reusable-r1",
+      "PID": 57380,
+      "arguments": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--path",
+        "G:\\PR13Evidence\\working-projects\\a063-context-current-after-r1",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--log-file",
+        "G:\\PR13Evidence\\a063-current-request-context-20261018-r1-originals\\native-arms\\after-reusable-r1\\engine.original.log",
+        "res://tests/a063_native_context_probe.tscn"
+      ],
+      "exit": 1,
+      "forced": true,
+      "driver_ok": false,
+      "passed": [],
+      "failed": [],
+      "HTTP_requests": 0,
+      "engine_error_lines_both_logs": [
+        "SCRIPT ERROR: Parse Error: Could not resolve class \"res://tests/gameplay_load_client.gd\".",
+        "ERROR: Failed to load script \"res://tests/a063_native_context_probe.gd\" with error \"Parse error\".",
+        "SCRIPT ERROR: Parse Error: Could not resolve class \"res://tests/gameplay_load_client.gd\".",
+        "ERROR: Failed to load script \"res://tests/a063_native_context_probe.gd\" with error \"Parse error\"."
+      ]
+    },
+    {
+      "directory": "after-reusable-r2",
+      "PID": 128732,
+      "arguments": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--path",
+        "G:\\PR13Evidence\\working-projects\\a063-context-current-after-r2",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--log-file",
+        "G:\\PR13Evidence\\a063-current-request-context-20261018-r1-originals\\native-arms\\after-reusable-r2\\engine.original.log",
+        "res://tests/a063_native_context_probe.tscn"
+      ],
+      "exit": 0,
+      "forced": false,
+      "driver_ok": true,
+      "passed": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03",
+        "frozen-identity-control",
+        "missing-context-control",
+        "local-event-control",
+        "null-origin-metadata-control",
+        "audit-file-roundtrip"
+      ],
+      "failed": [],
+      "HTTP_requests": 9,
+      "engine_error_lines_both_logs": []
+    },
+    {
+      "directory": "before-per-request-r1",
+      "PID": 34524,
+      "arguments": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--path",
+        "G:\\PR13Evidence\\working-projects\\a063-context-current-before-r1",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--log-file",
+        "G:\\PR13Evidence\\a063-current-request-context-20261018-r1-originals\\native-arms\\before-per-request-r1\\engine.original.log",
+        "res://tests/a063_native_context_probe.tscn"
+      ],
+      "exit": 1,
+      "forced": false,
+      "driver_ok": false,
+      "passed": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03",
+        "local-event-control",
+        "audit-file-roundtrip"
+      ],
+      "failed": [
+        "frozen-identity-control",
+        "missing-context-control"
+      ],
+      "HTTP_requests": 9,
+      "engine_error_lines_both_logs": []
+    },
+    {
+      "directory": "before-reusable-r1",
+      "PID": 65116,
+      "arguments": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--path",
+        "G:\\PR13Evidence\\working-projects\\a063-context-current-before-r1",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--max-fps",
+        "120",
+        "--log-file",
+        "G:\\PR13Evidence\\a063-current-request-context-20261018-r1-originals\\native-arms\\before-reusable-r1\\engine.original.log",
+        "res://tests/a063_native_context_probe.tscn"
+      ],
+      "exit": 1,
+      "forced": false,
+      "driver_ok": false,
+      "passed": [
+        "PR13-A06.3-T01",
+        "PR13-A06.3-T02",
+        "PR13-A06.3-T03",
+        "local-event-control",
+        "audit-file-roundtrip"
+      ],
+      "failed": [
+        "frozen-identity-control",
+        "missing-context-control"
+      ],
+      "HTTP_requests": 9,
+      "engine_error_lines_both_logs": []
+    }
+  ],
+  "compile_only_diagnostics": {
+    "process_count": 3,
+    "scope": "Compile-only diagnostics,not business executions",
+    "direct_PowerShell_parent_check_exit_not_authoritative": true,
+    "captured_probe_check_exit": 1,
+    "captured_parent_check_exit": 1,
+    "actual_error": "Cannot infer type of absent variable",
+    "CIM_process_query_denied_and_not_retried": true,
+    "CIM_empty_result_was_not_absence_evidence": true,
+    "basic_Get_Process_lookup_Godot_count_after_checks": 0,
+    "all_diagnostic_processes_now_terminal_or_missing": true,
+    "native_business_and_compile_starts_so_far": 6,
+    "unchanged_start_cap": 8
+  },
+  "total_native_process_starts": 8,
+  "C_SERVER_C_PROTO_generation_CI_not_executed": true,
+  "no_new_CI_pass_claim": true
+}

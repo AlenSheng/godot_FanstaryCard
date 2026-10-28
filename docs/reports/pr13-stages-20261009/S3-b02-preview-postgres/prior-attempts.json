@@ -1,0 +1,145 @@
+[
+  {
+    "ok": false,
+    "execution_host": "Tencent cloud",
+    "source_base_sha": "4317fafefa8bfaba1ed53357196f6683bdf6c3b9",
+    "layers": [
+      "POSTGRES",
+      "OFFLINE"
+    ],
+    "whole_scope_accepted": false,
+    "overlay_hashes": {
+      "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs": "6737534894b3e272b9d7e16a4de8246c0bc5c7e980ba9a3c8087101eaf0e30da",
+      "client/tests/pr13_postgres_preview_wire.gd": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+      "client/tests/pr13_postgres_preview_wire.tscn": "eee519f8ceeea60b33944342d6580b7906eac53c25a98f9f7cf4fb0102fc54ad"
+    },
+    "server": {
+      "exit_code": 1,
+      "oom_killed": false
+    },
+    "error": "RuntimeError",
+    "detail": "Native preview tests failed; see retained private log",
+    "remaining_schemas": "0",
+    "inputs_unchanged": true,
+    "cleanup": {
+      "pr13-b02-preview-pg-attempt1": true,
+      "pr13-b02-preview-pg-attempt1-database": true
+    },
+    "elapsed_seconds": 85.50441551208496,
+    "resources_after": {
+      "memory_available": 2934849536,
+      "disk_free": 9842077696,
+      "disk_fraction": 0.15550754779354564
+    }
+  },
+  {
+    "ok": false,
+    "execution_host": "Tencent cloud",
+    "source_base_sha": "3830f305339f61c7d97fc72444d4c6d1716497f2",
+    "layers": [
+      "POSTGRES",
+      "OFFLINE"
+    ],
+    "whole_scope_accepted": false,
+    "overlay_hashes": {
+      "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs": "36d490fe67633df991babef5a2f66fcf8db7317903923fb9e180cad2b42ff4a5",
+      "client/tests/pr13_postgres_preview_wire.gd": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+      "client/tests/pr13_postgres_preview_wire.tscn": "eee519f8ceeea60b33944342d6580b7906eac53c25a98f9f7cf4fb0102fc54ad"
+    },
+    "server": {
+      "exit_code": 1,
+      "oom_killed": false
+    },
+    "error": "RuntimeError",
+    "detail": "Native preview tests failed; see retained private log",
+    "remaining_schemas": "0",
+    "inputs_unchanged": true,
+    "cleanup": {
+      "pr13-b02-preview-pg-attempt2": true,
+      "pr13-b02-preview-pg-attempt2-database": true
+    },
+    "elapsed_seconds": 103.65863394737244,
+    "resources_after": {
+      "memory_available": 2952994816,
+      "disk_free": 9724719104,
+      "disk_fraction": 0.15365324960386154
+    }
+  },
+  {
+    "ok": false,
+    "execution_host": "Tencent cloud",
+    "source_base_sha": "3830f305339f61c7d97fc72444d4c6d1716497f2",
+    "layers": [
+      "POSTGRES",
+      "OFFLINE"
+    ],
+    "whole_scope_accepted": false,
+    "overlay_hashes": {
+      "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs": "a36a2748bb76fbbe207903b5a15a848f5b59d997114b3422ce2ffbd6630117fd",
+      "client/tests/pr13_postgres_preview_wire.gd": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+      "client/tests/pr13_postgres_preview_wire.tscn": "eee519f8ceeea60b33944342d6580b7906eac53c25a98f9f7cf4fb0102fc54ad"
+    },
+    "server": {
+      "exit_code": 0,
+      "oom_killed": false
+    },
+    "counters": {
+      "total": "6",
+      "executed": "6",
+      "passed": "6",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "rows": [
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Stale_preview_after_committed_checkpoint_is_rejected_without_overwriting_current_state",
+        "outcome": "Passed"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Protocol_roundtrip_preserves_order_and_authoritative_core_after_database_restore",
+        "outcome": "Passed"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Mage, fractional: False)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: True)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: False)",
+        "outcome": "Passed"
+      },
+      {
+        "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Priest, fractional: False)",
+        "outcome": "Passed"
+      }
+    ],
+    "error": "RuntimeError",
+    "detail": "Owned command failed: sudo",
+    "remaining_schemas": "0",
+    "inputs_unchanged": true,
+    "cleanup": {
+      "pr13-b02-preview-pg-attempt3": true,
+      "pr13-b02-preview-pg-attempt3-database": true
+    },
+    "elapsed_seconds": 100.728191614151,
+    "resources_after": {
+      "memory_available": 2957598720,
+      "disk_free": 9606643712,
+      "disk_fraction": 0.15178762577606508
+    }
+  }
+]

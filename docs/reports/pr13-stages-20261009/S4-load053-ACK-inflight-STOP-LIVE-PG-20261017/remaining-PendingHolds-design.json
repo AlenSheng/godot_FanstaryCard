@@ -1,0 +1,34 @@
+{
+  "task": "LOAD-05.3-T03",
+  "status": "design_only_not_frozen_not_prepared_or_dispatched",
+  "prior_actual_LOAD053_matches": 2,
+  "whole_task_current_self_cap": 8,
+  "remaining_self_cap_matches": 6,
+  "goal_cap": 300,
+  "must_read_current_sources": [
+    "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs",
+    "server/src/FantasyCard.Server/Settlement/SettlementCoordinator.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AcceptanceTests.cs:260",
+    "client/tests/pr13_a05_pending_runtime.gd",
+    "client/tests/gameplay_load_client.gd:_graceful_cleanup",
+    "client/state/game_store.gd:_settlement_recovery_match_id"
+  ],
+  "source_findings_verified": {
+    "SettleAsync": "locks match_players, inserts actual Pending holds and durable settlement, updates terminal rows then commits; does not lock equipment row",
+    "TransitionHoldsAsync": "separately locks Pending holds then player; Equipment apply SELECT owner_id/location/... FOR UPDATE, then movement and Committed; owned equipment row lock can hold actual Pending interval without synthetic settlement",
+    "DeadAssets": "actual worn item drops to RelicPile and becomes equipment hold; initial WhiteFeet fixture qualifies via real prepare/room, so no synthetic gold/loot needed",
+    "old_canonical_PG": "PR13-A05.1-T03 uses seeded saved Running room and4holds with actual OS restart. That historical seeded context is OFFLINE/POSTGRES support, cannot claim current LIVE or require exactly4 when current real room legitimately has1 equipment hold."
+  },
+  "proposed_current_LIVE_sequence": [
+    "Freeze one real fresh account/one actual match with explicit owned initial WhiteFeet fixture and real Bootstrap/preparation/room qualification",
+    "Wait actual room and InMatchEquipped, then separately owned read-only PG transaction SELECT equipment FOR UPDATE; record exact owned backend PID/application name/lock and hard maximum lifetime; no updates and no artificial holds",
+    "Send exactly one allowed public battle.abandon, observe actual durable Pending equipment hold/settlement ID and asset movement still uncommitted",
+    "Restart only actual owned full Program process, same private PG and still held row. Test-control service needs explicit one-shot restart support; record old/new actual OS PIDs and original21runtime SHA, no production restart or source change",
+    "Wait actual reconnect/NOT_IN_ROOM establishes correct GameStore recovery match M and no ready receipt while Pending; no Game recovery-state assignment",
+    "Write real STOP and inspect original full runner/cleanup. Preserve recovery match M while unresolved; cleanup must remain Unknown if business remains. Existing current cleanup checks only room/settlement when Bootstrap empty, so lost-room/recovery-M case is suspected but unproven: capture real counterexample before any fix",
+    "Release only owned DB row lock/connection (no row mutation), wait actual commit, then public refresh/recovery/ACK once. Preserve earlier Unknown/failed result rather than overwrite; separately record eventual recovery and unchanged IDs/once-only movement",
+    "If counterexample confirms cleanup clears falsely, minimal source fix plus meaningful negative/positive offline fixture and new independent LIVE candidate; keep original round and report all deltas"
+  ],
+  "remaining_all_await_scope": "Entering/READY, playing and settlement-wait cancellation still need per-boundary/source review before whole LOAD-05.3 MAIN. No blanket reuse of global process STOP, no canonical register or gate updates by this design.",
+  "limits": "Do not relax READY15s, botfill30s, HTTP10/30s, asset identity or ACK exactly-once. Cloud/local5percent reserve; old15percent disk capacity stays unpassed. No human/natural/capacity/RENDER claim."
+}

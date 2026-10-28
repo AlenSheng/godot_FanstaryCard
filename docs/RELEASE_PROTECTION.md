@@ -114,8 +114,8 @@ does not obfuscate by itself; use the protected script or the Dockerfile.
 From the repository root, build both targets from the same source checkout:
 
 ```powershell
-docker build -t fantasycard-protected:acceptance -f server/src/FantasyCard.Server/Dockerfile server
-docker build --target build -t fantasycard-protected-private:acceptance -f server/src/FantasyCard.Server/Dockerfile server
+docker build -t fantasycard-protected:acceptance -f server/src/FantasyCard.Server/Dockerfile .
+docker build --target build -t fantasycard-protected-private:acceptance -f server/src/FantasyCard.Server/Dockerfile .
 python tools/validate_docker_server.py --image fantasycard-protected:acceptance --builder-image fantasycard-protected-private:acceptance
 ```
 

@@ -13,6 +13,8 @@ def fields(data):
         nonlocal position
         value = 0
         for shift in range(0, 70, 7):
+            if position >= len(data):
+                raise ValueError("Truncated varint")
             byte = data[position]
             position += 1
             value |= (byte & 127) << shift
@@ -31,6 +33,8 @@ def fields(data):
             position += 8
         elif wire == 2:
             size = varint()
+            if position + size > len(data):
+                raise ValueError("Truncated field")
             value = data[position:position + size]
             position += size
         else:
@@ -39,39 +43,56 @@ def fields(data):
     return result
 
 
-bundle = fields((ROOT / "server/config/generated/fantasycard.config.bytes").read_bytes())
-output = {"version": bundle[1][0].decode(), "tables": {}}
-for encoded in bundle[3]:
-    table = fields(encoded)
-    columns = [fields(item) for item in table[2]]
-    names = [item[1][0].decode() for item in columns]
-    permitted = [item.get(4, [0])[0] in (1, 3) for item in columns]
-    rows = []
-    for encoded_row in table.get(3, []):
-        values = []
-        for encoded_value in fields(encoded_row).get(1, []):
-            value = fields(encoded_value)
-            if 1 in value: parsed = value[1][0].decode()
-            elif 2 in value:
-                parsed = value[2][0]
-                if parsed >= 2**63: parsed -= 2**64
-            elif 3 in value: parsed = value[3][0]
-            elif 4 in value: parsed = bool(value[4][0])
-            else: parsed = None
-            values.append(parsed)
-        rows.append({name: value for name, value, allowed in zip(names, values, permitted) if allowed})
-    if any(permitted): output["tables"][table[1][0].decode()] = rows
-target = ROOT / "client/data/catalog.json"
-target.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
-descriptions = json.loads((ROOT / "config/card_descriptions.json").read_text(encoding="utf-8"))
-(ROOT / "client/data/card_descriptions.json").write_text(json.dumps(descriptions, ensure_ascii=False), encoding="utf-8")
-print({name: len(rows) for name, rows in output["tables"].items()})
+def typed_value(encoded, value_type):
+    """Null has explicit tag 5; omitted scalar values retain the column's type."""
+    value = fields(encoded)
+    if value.get(5, [0])[0]:
+        return None
+    if value_type == 1:
+        return value.get(1, [b""])[0].decode()
+    if value_type == 2:
+        number = value.get(2, [0])[0]
+        return number - 2**64 if number >= 2**63 else number
+    if value_type == 3:
+        return float(value.get(3, [0.0])[0])
+    if value_type == 4:
+        return bool(value.get(4, [0])[0])
+    raise ValueError(f"Unknown column type {value_type}")
 
 
-ui_text = ROOT / "config/ui_text.json"
-if ui_text.exists():
-    (ROOT / "client/data/ui_text.json").write_text(ui_text.read_text(encoding="utf-8"), encoding="utf-8")
-for season_file in ["season_templates.json", "season_transition_rules.json"]:
-    source = ROOT / "config" / season_file
-    if source.exists():
-        (ROOT / "client/data" / season_file).write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+def copy_branch_documents():
+    """Retain branch-owned localization and future-season static documents."""
+    for name in ("ui_text.json", "season_templates.json", "season_transition_rules.json"):
+        source = ROOT / "config" / name
+        if source.exists():
+            (ROOT / "client/data" / name).write_bytes(source.read_bytes())
+
+
+def main():
+    bundle = fields((ROOT / "server/config/generated/fantasycard.config.bytes").read_bytes())
+    output = {"version": bundle[1][0].decode(), "tables": {}}
+    for encoded in bundle[3]:
+        table = fields(encoded)
+        columns = [fields(item) for item in table[2]]
+        names = [item[1][0].decode() for item in columns]
+        types = [item[2][0] for item in columns]
+        permitted = [item.get(4, [0])[0] in (1, 3) for item in columns]
+        rows = []
+        for encoded_row in table.get(3, []):
+            encoded_values = fields(encoded_row).get(1, [])
+            if len(encoded_values) != len(columns):
+                raise ValueError("Config row width differs from its columns")
+            values = [typed_value(value, kind) for value, kind in zip(encoded_values, types)]
+            rows.append({name: value for name, value, allowed in zip(names, values, permitted) if allowed})
+        if any(permitted):
+            output["tables"][table[1][0].decode()] = rows
+    target = ROOT / "client/data/catalog.json"
+    target.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
+    descriptions = json.loads((ROOT / "config/card_descriptions.json").read_text(encoding="utf-8"))
+    (ROOT / "client/data/card_descriptions.json").write_text(json.dumps(descriptions, ensure_ascii=False), encoding="utf-8")
+    copy_branch_documents()
+    print({name: len(rows) for name, rows in output["tables"].items()})
+
+
+if __name__ == "__main__":
+    main()

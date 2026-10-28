@@ -1,0 +1,42 @@
+{
+  "stage": "S2",
+  "status": "Partial",
+  "implementation_sha": "0d295263f19670cd5c28ea49e6ce15aeb92d074a",
+  "changed_files": [
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AcceptanceTests.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05DatabaseRelay.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+    "tools/gameplay_load_test.py",
+    "tools/gameplay_load_validation.py",
+    "tools/pr13_callback_isolation.py",
+    "tools/tests/test_pr13_request_cutoffs.py",
+    "tools/tests/test_pr13_simulation_contracts.py"
+  ],
+  "resolved_reproductions": [
+    "UTF-8 report/catalog reading fails on Windows GBK",
+    "Cleared Windows child environment prevents Winsock initialization",
+    "Database relay Unix path is not a local Windows Npgsql endpoint",
+    "Missing actual route and running/drain/final request distributions"
+  ],
+  "validation": {
+    "python_tests": 139,
+    "python_exit_code": 0,
+    "callback_cases": 6,
+    "callback_exit_code": 0,
+    "build_errors": 0,
+    "build_warnings": 0,
+    "build_exit_code": 0,
+    "new_request_contract_tests": 7,
+    "new_request_contract_exit_code": 0
+  },
+  "compatibility": "Additive request report fields; loopback Windows fixture transport; existing Unix path retained",
+  "defaults": "Existing numerical policy and production rate limits unchanged",
+  "rollback": "Revert implementation_sha; retain raw and separate original S1 failures",
+  "remaining": [
+    "Full PostgreSQL and real-host rerun",
+    "Full 396-case correspondence and remaining implementations",
+    "Fresh original-gameplay 50/100 baseline runs",
+    "Human render acceptance pending; simulations supplemental"
+  ],
+  "runtime_accepted": 0
+}

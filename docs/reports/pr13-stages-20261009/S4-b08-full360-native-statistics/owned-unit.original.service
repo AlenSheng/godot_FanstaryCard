@@ -1,0 +1,12 @@
+[Unit]
+Description=PR13 owned full 360 unit statistics
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+Environment=GIT_CONFIG_COUNT=1
+Environment=GIT_CONFIG_KEY_0=safe.directory
+Environment=GIT_CONFIG_VALUE_0=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/cache/cap-full-statistics-frozen-r1-20261011/runner.py run --attempt cap-full-statistics-r1-20261011 --systemd-unit pr13-cap-full-statistics-r1-20261011
+RuntimeMaxSec=2100
+Restart=no

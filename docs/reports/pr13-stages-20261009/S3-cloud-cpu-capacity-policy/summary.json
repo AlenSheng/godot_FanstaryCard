@@ -1,0 +1,115 @@
+{
+  "exit_code": 0,
+  "execution_host": "Tencent cloud",
+  "hashes": {
+    "tools/cloud/pr13/isolated_runtime.py": "8e4dbd452e1c89d6dc4c90460cde0c1709f86511fc9dc19247818a1a593ee018",
+    "tools/cloud/pr13/test_isolated_runtime.py": "f86611c653dbca18ebd9e58a575a394ef7bf1585cfd0a6eee949c85e20c85a85"
+  },
+  "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.003s\n\nOK\n",
+  "unchanged_71_regressions_receipt_retained": true,
+  "passed": 5,
+  "failed": 0,
+  "actual_capacity_accepted": false,
+  "whole_scope_accepted": false,
+  "private_receipt": {
+    "path": "outputs/pr13-tencent-20261009/north-america-cpu-policy-checks.json",
+    "bytes": 498,
+    "sha256": "2ef983b3f1aadd85331d87d7825307bc37efdfbb0af204d130401ce90630da7c"
+  },
+  "runtime_diagnostic": {
+    "observed_at": 1791542552.005946,
+    "services": {
+      "server": {
+        "Running": true,
+        "OOMKilled": false,
+        "ExitCode": 0,
+        "limits": {
+          "NanoCpus": 800000000,
+          "Memory": 536870912
+        },
+        "cpu.stat": "usage_usec 45766368\nuser_usec 35071230\nsystem_usec 10695138\ncore_sched.force_idle_usec 0\nnr_periods 3867\nnr_throttled 117\nthrottled_usec 2326693\nnr_bursts 0\nburst_usec 0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.current": "145113088",
+        "memory.peak": "146612224"
+      },
+      "postgres": {
+        "Running": true,
+        "OOMKilled": false,
+        "ExitCode": 0,
+        "limits": {
+          "NanoCpus": 300000000,
+          "Memory": 402653184
+        },
+        "cpu.stat": "usage_usec 75422186\nuser_usec 33239634\nsystem_usec 42182552\ncore_sched.force_idle_usec 0\nnr_periods 3912\nnr_throttled 1367\nthrottled_usec 182349971\nnr_bursts 0\nburst_usec 0",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "memory.current": "117755904",
+        "memory.peak": "215040000"
+      }
+    },
+    "log_pattern_counts": {
+      "NpgsqlException": 24,
+      "TimeoutException": 24,
+      "OutOfMemory": 0,
+      "OperationCanceledException": 0,
+      "RESOURCE_EXHAUSTED": 0,
+      "READY_NOT_FOUND": 0,
+      "NOT_IN_ROOM": 0,
+      "OTLP": 0,
+      "failed to export": 0,
+      "too many clients": 0
+    },
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 12,
+        "ledger_rows": 0
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "native_diagnostic_exists": true,
+    "native_last_metric_keys": [
+      [
+        "durations",
+        "counters",
+        "dropped_observations",
+        "actor_wait_missing_reason",
+        "pid",
+        "process_started_at",
+        "server_assembly_sha256",
+        "sequence",
+        "observed_at_unix_ms",
+        "window_seconds",
+        "elapsed_seconds",
+        "rss_bytes",
+        "server_cpu_percent",
+        "managed_allocated_bytes_total",
+        "managed_heap_bytes",
+        "gc_collections"
+      ],
+      [
+        "durations",
+        "counters",
+        "dropped_observations",
+        "actor_wait_missing_reason",
+        "pid",
+        "process_started_at",
+        "server_assembly_sha256",
+        "sequence",
+        "observed_at_unix_ms",
+        "window_seconds",
+        "elapsed_seconds",
+        "rss_bytes",
+        "server_cpu_percent",
+        "managed_allocated_bytes_total",
+        "managed_heap_bytes",
+        "gc_collections"
+      ]
+    ]
+  },
+  "private_diagnostic": {
+    "bytes": 2540,
+    "sha256": "9e734ab6428b73b28b1b4eff76806fa312abcf1941935a9cce9000450c33f847"
+  }
+}

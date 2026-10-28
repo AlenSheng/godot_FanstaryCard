@@ -1,0 +1,17 @@
+{
+  "actual_R2_failure": "Real ready_removed at original15s; actual unchanged Matched HTTP results delivered199ms afterdeadline, then source client socket wrote2READY before ready_ticket_missing. Original rawtrace/SQL retained.",
+  "before": {
+    "client/tests/gameplay_load_client.gd": "412d3862db50db1dc58debcfe60b1922f80fa80a91f16c8d855470292a701e22",
+    "client/network/gateway.gd": "29f57994d646ac8473589880a196c86afefea4c7153a6a0448cda0199661974d"
+  },
+  "after": {
+    "client/tests/gameplay_load_client.gd": "f9073e62f463d143963f8f6b5ca076690b5cceb103ec372aaf73bdb1f646108a",
+    "client/network/gateway.gd": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637"
+  },
+  "fix": "Keep bounded8match immutable-earliest authority deadlines independently of UIhint and recheck on every Matched result; Gateway always requires current verified unexpired prelaunch for READY.",
+  "new_original_failure_code": "ready_deadline_expired",
+  "server_deadline_HTTP_timeout_or_protocol_fields_changed": false,
+  "no_HP_or_numeric_or_UI_or_backend_changes": true,
+  "all_original_failures_retained": true,
+  "new_LIVE_pending": true
+}

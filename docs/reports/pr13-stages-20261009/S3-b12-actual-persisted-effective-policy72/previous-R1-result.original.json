@@ -1,0 +1,31 @@
+{
+  "ok": false,
+  "implementation_source_sha": "a7688cdf56c671e6ef12579ae2b2fceb45a07824",
+  "MAIN_accepted": false,
+  "exit_code": 1,
+  "oom_killed": false,
+  "inner": {
+    "ok": false,
+    "MAIN_accepted": false,
+    "error": "AssertionError",
+    "detail": "build failed",
+    "phases": [
+      {
+        "name": "restore",
+        "exit_code": 0
+      },
+      {
+        "name": "build",
+        "exit_code": 1
+      }
+    ]
+  },
+  "remaining_owned_fixture_schemas": 0,
+  "owned_containers_removed": true,
+  "cleanup": {
+    "pr13-cap-B12-effective-policy-postgres-r1-20261013": true,
+    "pr13-cap-B12-effective-policy-postgres-r1-20261013-pg": true
+  },
+  "owned_secret_removed": true,
+  "source_runtime_and_fixture_unchanged": true
+}

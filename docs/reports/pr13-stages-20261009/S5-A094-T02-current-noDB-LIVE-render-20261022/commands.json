@@ -1,0 +1,49 @@
+{
+  "Program": {
+    "command": [
+      "dotnet",
+      "/runtime/FantasyCard.Server.dll"
+    ],
+    "cwd": "/runtime",
+    "actual_exit": -6,
+    "expected_nonzero": true,
+    "runtime": ".NET10.0.11 SDK10.0.400"
+  },
+  "UI": {
+    "PID": 28,
+    "args": [
+      "/usr/local/bin/godot",
+      "--windowed",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "gl_compatibility",
+      "--resolution",
+      "960x540",
+      "--path",
+      "/inputs/client",
+      "--log-file",
+      "/evidence/native.engine.original.log",
+      "res://tests/A094T02_good_UI_noDB.tscn"
+    ],
+    "at_ns": 1792630866644893313,
+    "actual_exit": 0,
+    "Godot": "4.7.2.stable Linux llvmpipe"
+  },
+  "gate": {
+    "actual_state": "Blocked",
+    "actual_pipeline_exit": 3,
+    "original_native_exit": 0,
+    "original_PG_executed": 0
+  },
+  "local_validation": {
+    "headless": true,
+    "audio": "Dummy",
+    "maxfps": 60,
+    "CREATE_NO_WINDOW": true,
+    "BELOW_NORMAL": true,
+    "new_auth_worlds_PG0": true
+  }
+}

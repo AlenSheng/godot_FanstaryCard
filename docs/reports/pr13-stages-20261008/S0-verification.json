@@ -1,0 +1,51 @@
+{
+  "stage": "S0",
+  "integration_sha": "04e874d65762c1df6bcf9b170fad702069c73b4a",
+  "stage_manifest_sha256": "b17f44b3e2aa9c936ca741d8e9dbb8b2e7c725f35b5a8c0ec8a357271ce71b06",
+  "summary": {
+    "packages": 33,
+    "tasks": 132,
+    "cases": 396,
+    "states": {
+      "ReadyForAcceptance": 130,
+      "Blocked": 2
+    },
+    "runtime_accepted": 0
+  },
+  "commands": [
+    {
+      "command": "python tools/pr13_plan.py --check",
+      "exit_code": 0
+    },
+    {
+      "command": "python -m unittest tools.tests.test_pr13_stages -v",
+      "exit_code": 0,
+      "passed": 9
+    },
+    {
+      "command": "dotnet run --project server/tools/FantasyCard.ConfigExporter -c Release -- --input config/FantasyCard_Config.xlsx --version gdd-0.70-numerical-1 --server-output <isolated>/server --client-output <isolated>/client",
+      "exit_code": 0,
+      "tables": 13,
+      "rows": 1599
+    },
+    {
+      "command": "python tools/pr13_stages.py freeze --output docs/reports/pr13-stages-20261008/S0 --handbook <user-attachment> --config-export <isolated-export>",
+      "exit_code": 0
+    },
+    {
+      "command": "python tools/pr13_stages.py check --input docs/reports/pr13-stages-20261008/S0",
+      "exit_code": 0
+    }
+  ],
+  "tool_versions": {
+    "python": "3.10.11",
+    "dotnet": "10.0.400",
+    "godot": "4.7.2.stable.official.ed1daf0bf"
+  },
+  "next_stage": "S1",
+  "runtime_accepted": 0,
+  "historical_blockers": [
+    "PR13-A01.1",
+    "PR13-A01.3"
+  ]
+}

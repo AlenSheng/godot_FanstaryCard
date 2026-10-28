@@ -1,0 +1,212 @@
+{
+  "ok": true,
+  "cases": [
+    {
+      "case_id": "PR13-A08.4-T01",
+      "status": "Passed",
+      "actual_claim": {
+        "code_review_closed": false,
+        "historical_environment_restoration_recorded": true,
+        "current_runtime_health": "Unknown",
+        "runtime_rollback_verified": false,
+        "reason": "Code review state and a historical file restoration do not verify a current deployed runtime."
+      },
+      "actual_original_and_restored_PG_records3_exact": true,
+      "actual_journal_SQL_roundtrip_exact": true,
+      "evidence_input": {
+        "case_id": "PR13-A08.4-T01",
+        "historical_env_restoration_record": {
+          "path": "docs/reports/pr13-stages-20261009/S3-a08-original-env-owned-copy-restoration-audit/result.original.json",
+          "sha256": "8e4fd6343200cd61052d40aed5edde40a0482a8b921a7c139e0ff184888f8e62",
+          "historical_only": true,
+          "original_env_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+          "restored_owned_copy_SHA256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987"
+        },
+        "current_runtime_health_observation": null,
+        "new_production_env_read_or_restore": false
+      },
+      "health_scope_excludes_application_probe": true
+    },
+    {
+      "case_id": "PR13-A08.4-T02",
+      "status": "Passed",
+      "actual_claim": {
+        "code_review_closed": false,
+        "historical_environment_restoration_recorded": false,
+        "current_runtime_health": "Unknown",
+        "runtime_rollback_verified": false,
+        "reason": "Code review state and a historical file restoration do not verify a current deployed runtime."
+      },
+      "actual_original_and_restored_PG_records3_exact": true,
+      "actual_journal_SQL_roundtrip_exact": true,
+      "evidence_input": {
+        "case_id": "PR13-A08.4-T02",
+        "current_runtime_health_observation": null,
+        "health_not_observed_for_this_delivery_scope": true,
+        "actual_owned_PG_restore_does_not_verify_deployed_application_health": true
+      },
+      "health_scope_excludes_application_probe": true
+    },
+    {
+      "case_id": "PR13-A08.4-T03",
+      "status": "Passed",
+      "actual_claim": {
+        "current_unaccepted32": true,
+        "runtime_acceptance": false,
+        "production_activation": false,
+        "explicit_user_direct_release_local_summary_override_not_fake_Draft": true
+      },
+      "actual_original_and_restored_PG_records3_exact": true,
+      "actual_journal_SQL_roundtrip_exact": true,
+      "evidence_input": {
+        "case_id": "PR13-A08.4-T03",
+        "runtime_acceptance": false,
+        "delivery_override_SHA": "eb8d253db4fccbf3aa1c2957656eb9580ce80b2f6dd415f01b873fdb51a0a7eb",
+        "production_activation": false,
+        "delivery_override_path": "docs/plans/PR13_DELIVERY_DECISION_20261008.json",
+        "local_summary_required": true,
+        "actual_unaccepted_tasks": [
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-10.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "LOAD-11.2"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "LOAD-11.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A01.3"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A01.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A02.4"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.1"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A07.3"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A07.4"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.1"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.2"
+          },
+          {
+            "state": "ReadyForAcceptance",
+            "task_id": "PR13-A08.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A08.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A09.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-A10.4"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.1"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.2"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.3"
+          },
+          {
+            "state": "Partial",
+            "task_id": "PR13-B12.4"
+          }
+        ],
+        "draft_PR_updates_required": false,
+        "actual_current_register_SHA": "b317d55d6e593d2413ed59d64afa4037b00a8990360d3b398f0447435af01416",
+        "actual_current_register_path": "docs/reports/pr13-stages-20261009/S6-current-B124-final-machine-layers-closed-20261022/register.json"
+      },
+      "health_scope_excludes_application_probe": true
+    }
+  ],
+  "current_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1",
+  "actual_dump_restore_other_database_room3_exact": true,
+  "historical_env_record_not_new_current_env_restore": true,
+  "production_health_checked_only_by_separate_safety_guard_not_delivery_claim": true,
+  "runtime_rollback_verified": false,
+  "whole_task_accepted": false,
+  "actual_human_accepted": false
+}

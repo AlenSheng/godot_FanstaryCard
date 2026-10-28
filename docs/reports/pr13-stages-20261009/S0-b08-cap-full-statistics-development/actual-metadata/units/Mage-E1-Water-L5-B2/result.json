@@ -1,0 +1,88 @@
+{
+  "ok": true,
+  "attempt": "pr13-cap-experiment-full-r2",
+  "unit": "Mage-E1-Water-L5-B2",
+  "source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "image_sha": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "samples_per_arm": 1000,
+  "expected_encounters": 2000,
+  "seed_start": 442001,
+  "seed_end": 443000,
+  "persistent_output_budget_bytes": 100663296,
+  "native_raw_part_bytes": 134217728,
+  "native_unit_raw_ceiling_bytes": 2147483648,
+  "source_subset_files": 372,
+  "original_2068_directory_restored": false,
+  "G_backup_verified": false,
+  "whole_task_accepted": false,
+  "main_acceptance_granted": false,
+  "full_formal_pending": true,
+  "owned_container_id": "72ed7fbf3b40b2cb93d0335d7cd0fc5cb88a37fc801462ba18b33c31a798054d",
+  "exit_code": 0,
+  "oom_killed": false,
+  "compiled_runtime_unchanged_and_identical_to_original": true,
+  "source_subset_inputs_unchanged": true,
+  "validation": {
+    "ok": true,
+    "source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+    "encounters": 2000,
+    "pairs": 1000,
+    "actual_casts": 76403,
+    "actual_ticks": 1058180,
+    "outcomes": {
+      "Victory": 2000
+    },
+    "case_denominators": {
+      "BaselinePurple/all_casts": 38226,
+      "BaselinePurple/T03_no_shield": 35967,
+      "BaselinePurple/all_ticks": 529396,
+      "BaselinePurple/T01_capped_ticks": 529396,
+      "BaselinePurple/T02_equipment_floor_ticks": 529396,
+      "BaselinePurple/T03_positive_shield": 2259,
+      "BaselinePurple/T02_card_speed_ticks": 287265,
+      "BaselinePurple/T02_PVE_conversion_ticks": 45854,
+      "BaselinePurple/T02_expiry_ticks": 4193,
+      "SingleOrangeHead/all_casts": 38177,
+      "SingleOrangeHead/T03_no_shield": 35921,
+      "SingleOrangeHead/all_ticks": 528784,
+      "SingleOrangeHead/T01_capped_ticks": 528784,
+      "SingleOrangeHead/T02_equipment_floor_ticks": 528784,
+      "SingleOrangeHead/T03_positive_shield": 2256,
+      "SingleOrangeHead/T02_card_speed_ticks": 286809,
+      "SingleOrangeHead/T02_PVE_conversion_ticks": 45790,
+      "SingleOrangeHead/T02_expiry_ticks": 4185
+    },
+    "negative_controls": [
+      {
+        "name": "wrong-resistance-cap",
+        "rejected": true
+      },
+      {
+        "name": "wrong-conversion-stage",
+        "rejected": true
+      },
+      {
+        "name": "wrong-shield-overflow",
+        "rejected": true
+      },
+      {
+        "name": "candidate-policy-enabled",
+        "rejected": true
+      }
+    ],
+    "full_unit": true,
+    "whole_experiment_complete": false,
+    "required_cases_accepted": false,
+    "main_acceptance_granted": false
+  },
+  "native_summary": {
+    "passed": true,
+    "rows": 2000,
+    "actual_casts": 76403,
+    "actual_ticks": 1058180,
+    "errors": 0
+  },
+  "owned_container_removed": true,
+  "persistent_output_bytes": 66603104,
+  "failed_raw_preserved": false
+}

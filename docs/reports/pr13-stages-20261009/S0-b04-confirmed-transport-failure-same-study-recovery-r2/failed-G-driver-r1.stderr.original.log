@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_resume_driver_R1.original.py", line 37, in <module>
+    try:main()
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_resume_driver_R1.original.py", line 28, in main
+    if cur['state']['MainPID']=='0' and cur['state']['ActiveState']=='inactive' and cur['state']['ExecMainStatus']=='0':d.backup(cur['spec']['unit']);last_reason=None;continue
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_driver.original.py", line 28, in backup
+    with archive.open('xb') as f:n,err=remote('stream',name,target=f);f.flush();os.fsync(f.fileno())
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\B04_full_R1_G_driver.original.py", line 22, in remote
+    ch.shutdown_write();raw,count,err=receiver.receive(ch,target)
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\b08_lifecycle_r4_G_transport_gc_r2.py", line 19, in receive
+    require(time.monotonic()<end,'Incomplete SSH stream retained, no retry')
+  File "G:\Program Files\GodotFiles\godot_FanstaryCard\outputs\pr13-tencent-20261009\b08_lifecycle_r4_G_transport_gc_r2.py", line 7, in require
+    if not v:raise ValueError(m)
+ValueError: Incomplete SSH stream retained, no retry

@@ -1,0 +1,96 @@
+{
+  "kind": "Actual LOCAL Godot Web browser branch boundary review;both original arms Failed",
+  "baseline": {
+    "executed": 24,
+    "passed": 20,
+    "failed": 4,
+    "failures": [
+      "deflate",
+      "gzip",
+      "gzip-corrupt-empty",
+      "unknown-encoding"
+    ]
+  },
+  "candidate": {
+    "executed": 24,
+    "passed": 22,
+    "failed": 2,
+    "failures": [
+      "gzip-bad-crc",
+      "gzip-corrupt-empty"
+    ]
+  },
+  "candidate_fixed_cases": [
+    "deflate",
+    "gzip",
+    "unknown-encoding"
+  ],
+  "candidate_regression_cases": [
+    "gzip-bad-crc"
+  ],
+  "candidate_is_not_release_qualified": true,
+  "candidate_source_SHA256": "2dc7ace13439cbeb67eeca90b060f6b7b5a2718b12b99c29f148a034c5e480cc",
+  "Root_source_left_unchanged": true,
+  "actual_original_HTTP_frames_rehashed": 48,
+  "actual_original_browser_response_bodies_rehashed": 48,
+  "wire_corrupt_CRC_independently_confirmed": true,
+  "wire_empty_gzip_missing_last_byte_independently_confirmed": true,
+  "original_expectations_unchanged": true,
+  "no_byte_limit_timeout_or_integrity_standard_relaxed": true,
+  "browser_Fetch_encoded_wire_bytes_not_exposed_to_Godot": true,
+  "no_length_or_empty_output_heuristic_used_to_claim_valid_gzip": true,
+  "failed_candidate_code_not_copied_to_Root_or_committed": true,
+  "new_accounts_worlds_cloud_calls": 0,
+  "full_profile_passed": false,
+  "whole_goal_complete": false,
+  "schema_version": 1,
+  "base_release": "19cb88cf2c5df744b55c83673bd4228c86d13a5d",
+  "actual_platform": "Real Godot4.7.2WebAssembly OS.has_feature(web)=true in Codex In-app Browser;not Native forced branch",
+  "actual_single_thread_template_SHA256": "08962aefef811b603541d7951ac67ef00413aad2d978855183c28adee98f626a",
+  "official_template_package_SHA256": "f298490b8d44d934be425a5a65a51bf15f422428b229a06a6e11d9ffea248011",
+  "new_browser_starts": 3,
+  "actual_WebAssembly_arms": 2,
+  "export_attempts": 2,
+  "export_processes_exit0": true,
+  "synthetic_transport_and_control_requests": 114,
+  "synthetic_request_cap": 200,
+  "export_asset_requests": 15,
+  "export_asset_cap": 100,
+  "extra_fixture_controls": {
+    "prior_worklet_HTTP_MIME": "text/plain",
+    "worklet_scripts_correct_MIME": "text/javascript",
+    "worklet_modules_loaded_after_correction": 2,
+    "AudioContext_closed": true,
+    "audio_played": false,
+    "extra_HTTP_requests": 5,
+    "Gateway_cases_rerun": 0,
+    "control_browser_console_errors": 0
+  },
+  "original_baseline_export_warning": "Missing explicit exclude_filter in private export preset logged2ERROR;completed export then actual24cases;original stderr retained,no rerun",
+  "candidate_export_stderr_empty": true,
+  "all_owned_browser_test_tabs_closed": true,
+  "all_owned_fixture_threads_sockets_closed": true,
+  "global_template_browser_TLS_CA_changes": false,
+  "original716_status_and_SHA_preserved": true,
+  "register_gate_MAIN_changed": false,
+  "canonical_tasks": 132,
+  "canonical_cases": 396,
+  "official_remaining_unaccepted": 77,
+  "original_capacity_failure_not_changed": true,
+  "new_render_UI_or_real_gameplay_acceptance": false,
+  "evidence_SHA256": {
+    "independent_byte_review": "2abb0087d1a8418faf52a38e21ed970d46afa502a73465b2869c01660bb1be3f",
+    "local_original_manifest": "29c5426f0481bb356cf53f8b5cbf69a98d2dd0a4ed5489eae108b1c0752a1214",
+    "baseline_result": "0e2bb136a4228bcb6091fed0a7c5f0c93939a887a092aa7beb3f181aca3fe098",
+    "candidate_result": "2ec194285e1dbf7e36e24c1022cdf7295e83c0ba4b1f76f1e913f2e77f2884c9",
+    "fixture_terminal": "219295cf1ef6aea4f73aa3e02087595a5c4e14a670717f201fb2b3b7f9aa54f0",
+    "fixture_MIME_control": "7e26678193b147d53e3f277e2af75057cad41f728a1d7ce707f3b05108f033ba"
+  },
+  "unresolved": [
+    "Candidate breaks valid gzip/deflate doubledecode failure and rejects unknowncoding,butintroduces corruptCRC acceptance;must not publish as a qualified fix",
+    "Truncated emptygzip accepted in both browser arms;browser-decoded payload alone cannot prove encoded-stream completion",
+    "No raw-length or empty-output heuristic added;no integrity or original expected result relaxed",
+    "No actual Web TLS/browser-CA matrix or full game/LIVE/PG/capacity/RENDER qualification",
+    "Use actual reported version and declared same-origin loopback;do not infer otherbrowser/cross-origin behavior"
+  ]
+}

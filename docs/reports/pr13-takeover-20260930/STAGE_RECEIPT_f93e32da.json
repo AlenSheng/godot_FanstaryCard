@@ -1,0 +1,162 @@
+{
+  "kind": "current_pr13_stage_receipt",
+  "stable_logic_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "prior_receipt": "STAGE_RECEIPT_de1157fd.json",
+  "batch": "fault-batch-f93e32da/REPORT.json",
+  "case_mapping": "fault-batch-f93e32da/CASE_MATRIX.json",
+  "changed_files": [
+    ".github/workflows/gameplay-load.yml",
+    ".github/workflows/numerical-acceptance.yml",
+    "client/network/gateway.gd",
+    "client/state/game_store.gd",
+    "client/tests/gameplay_load_client.gd",
+    "client/tests/pr13_ack_response_loss.gd",
+    "client/tests/pr13_callback_isolation.gd",
+    "client/tests/pr13_callback_isolation.gd.uid",
+    "client/tests/run_gateway_origin.gd",
+    "client/tests/run_ready_stop_faults.gd",
+    "client/tests/run_ready_stop_faults.py",
+    "client/tests/test_session_sequence.gd",
+    "client/tests/test_settlement_polling.gd",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+    "tools/pr13_callback_isolation.py"
+  ],
+  "task_states_current": {
+    "Partial": 53,
+    "NotRevalidated": 76,
+    "Blocked": 3
+  },
+  "Accepted": 0,
+  "canonical_total_cases": 396,
+  "historical_explicit_offline_runner_receipts": {
+    "Passed": 27,
+    "NotExecuted": 369,
+    "not_total_current_test_coverage": true
+  },
+  "current_batch_case_evidence": {
+    "PartialEvidence": 16,
+    "NotExercisedInThisBatch": 5,
+    "Accepted": 0
+  },
+  "local_validation": {
+    "kind": "bounded_offline_client_host_fault_batch",
+    "runtime_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+    "baseline_runtime_sha": "de1157fdf490a5bce3ba888c07519fc957c46782",
+    "source_proof": "source-proof.json",
+    "dotnet": {
+      "domain": {
+        "total": 317,
+        "executed": 317,
+        "passed": 317,
+        "failed": 0,
+        "notExecuted": 0
+      },
+      "server": {
+        "total": 284,
+        "executed": 284,
+        "passed": 284,
+        "failed": 0,
+        "notExecuted": 0
+      }
+    },
+    "ready_stop": {
+      "passed": 10,
+      "actual_full_program_cases": 9,
+      "support_only_cases": 1,
+      "run_started_git_clean": true
+    },
+    "callback": {
+      "passed_cases": 6,
+      "red_failed_cases": 4,
+      "profile": "OFFLINE component HTTP/WS",
+      "full_program": false
+    },
+    "other_checks": {
+      "python": 115,
+      "codec": 177,
+      "http_transport": 24,
+      "http_boundary": 13,
+      "original_offline_cases": 27,
+      "client_regression_groups": 17,
+      "gateway_origin_sequence": true,
+      "canonical_plan": true
+    },
+    "verified_defects": [
+      "Unverifiable/prior-session NOT_IN_ROOM could revoke valid state; stale callbacks and recovery ownership crossed room cycles.",
+      "Old READY accepted event suppressed current authoritative ticket reads.",
+      "Cleanup reported Passed while client preparation/ticket/READY state persisted."
+    ],
+    "ack_no_change_with_evidence": "Production ACK logic already passed true response-loss modes. First failed proxy emitted411 and font-import/compile setup errors; preserved as fixture failures, not a fabricated production ACK defect.",
+    "per_case": "CASE_MATRIX.json",
+    "task_states_before": {
+      "Partial": 48,
+      "NotRevalidated": 81,
+      "Blocked": 3
+    },
+    "task_states_after": {
+      "Partial": 53,
+      "NotRevalidated": 76,
+      "Blocked": 3
+    },
+    "task_state_transitions": [
+      {
+        "task_id": "PR13-A03.1",
+        "from": "NotRevalidated",
+        "to": "Partial",
+        "Accepted": false
+      },
+      {
+        "task_id": "PR13-A03.2",
+        "from": "NotRevalidated",
+        "to": "Partial",
+        "Accepted": false
+      },
+      {
+        "task_id": "PR13-A03.3",
+        "from": "NotRevalidated",
+        "to": "Partial",
+        "Accepted": false
+      },
+      {
+        "task_id": "PR13-A04.4",
+        "from": "NotRevalidated",
+        "to": "Partial",
+        "Accepted": false
+      },
+      {
+        "task_id": "PR13-B11.2",
+        "from": "NotRevalidated",
+        "to": "Partial",
+        "Accepted": false
+      }
+    ],
+    "Accepted_tasks": 0,
+    "Accepted_cases": 0,
+    "all_gates": "NotAccepted",
+    "ci": {
+      "state": "AccountBillingBlocked",
+      "exact_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "evidence": "ci-f93e32da.json",
+      "manual_reruns_requested": 0,
+      "account_changes": []
+    },
+    "cleanup": "cleanup-proof.json",
+    "raw_zip_delivery": "Four original raw ZIP retained locally with original hashes; upload paused pending explicit user authorization. No alternate destination.",
+    "ui_boundary": "No UI display/theme/art paths or PR14 deploy configuration touched. MAIN must update isolated integration from de1157 to f93e32da before attributing cross-regression.",
+    "limitations": [
+      "5 selected exact canonical injections not exercised this batch; 16 have partial profile/component evidence only.",
+      "Complete successful three-game/Boss gameplay, real load-runner cycle accounting, LIVE/RENDER/CAPACITY and G0-G5 adjudication remain.",
+      "Historical missing50/100 per-client raw/event diff and global ledger mismatch1 remain; new tests do not replace historical files.",
+      "Mandatory server_create SKILL.md remains absent; existing explicit user exception used. No remote actions or database recovery."
+    ]
+  },
+  "ci_all5_passed": false,
+  "ci_state": "AccountBillingBlocked",
+  "ci_evidence": "fault-batch-f93e32da/ci-f93e32da.json",
+  "published_report_sha": null,
+  "published_report_sha_note": "Exact report-only commit is in the final handoff; its code tree equals f93e32da.",
+  "all_accepted": false,
+  "raw_upload_state": "Four original raw ZIP retained locally with original hashes; upload paused pending explicit user authorization. No alternate destination.",
+  "current_running_work_at_receipt": []
+}

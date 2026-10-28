@@ -1,0 +1,59 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A04.3-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "实际Program8eb的SaveIfDue被自有PG触发器P0001拒绝；原进程两次失败、真实SIGKILL重启后再失败一次，始终同M/room/seed且Launching、snapshot0、实际DI Registry/route0。仅释放精确触发器后，原始协调器恢复同匹配、唯一snapshot/actor/ticker，原Godot完整入口自动重连，真实退出/结算ACK一次。一件声明初始装备两次预留移动在重启前后完全相同，最终只追加一次死亡移动至RelicPile。",
+      "physical_worlds": 1,
+      "real_UIDs": 1,
+      "declared_initial_items": 1,
+      "actual_completed_cycles": 1,
+      "actual_ACKs": 1,
+      "criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A043-current-save-failure-restart-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A043-current-save-failure-restart-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A043-current-save-failure-restart-20261021/commands.json"
+      ]
+    }
+  ],
+  "decision": {
+    "case_id": "PR13-A04.3-T01",
+    "profile": "LIVE",
+    "verdict": "Passed",
+    "authority": "MAIN independent source/raw/PG/actualDI/Native review",
+    "task_state": "Partial",
+    "remaining": "PR13-A04.3-T03 LIVE",
+    "business_criteria_relaxed": false
+  },
+  "summary": {
+    "counts": {
+      "Accepted": 94,
+      "Partial": 29,
+      "ReadyForAcceptance": 9,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 38,
+    "newly_accepted": [],
+    "missing_case_profile_pairs_before": 132,
+    "missing_case_profile_pairs_after": 131,
+    "new_case_profile_closures": 1,
+    "new_physical_worlds": 1,
+    "new_real_UIDs": 1,
+    "declared_initial_items": 1,
+    "actual_ACKs": 1,
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A043-save-LIVE-partial-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-A041-A042-accepted-20261021/register.json",
+      "sha256": "b96cf01df9809a8321d0054ad660d151a16cd6d7071c3905d4f98f43daf60462"
+    }
+  }
+}

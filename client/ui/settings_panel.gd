@@ -4,6 +4,8 @@ const P = preload("res://ui/palette.gd")
 const Art = preload("res://ui/art.gd")
 var _popup: PopupPanel
 var _language: OptionButton
+var _settings_button: Button
+var _column: VBoxContainer
 
 func _ready() -> void:
 	layer = 30
@@ -13,6 +15,7 @@ func _ready() -> void:
 	overlay.theme = P.theme()
 	add_child(overlay)
 	var toggle := Button.new()
+	_settings_button = toggle
 	toggle.name = "SettingsButton"
 	toggle.text = I18n.t("设置")
 	toggle.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -24,20 +27,43 @@ func _ready() -> void:
 	Art.button(toggle, "UI/CardCodex/card_codex_action_button_blue.png")
 	toggle.pressed.connect(show_settings)
 	overlay.add_child(toggle)
-	I18n.language_changed.connect(func(_locale): toggle.text = I18n.t("设置"))
+	I18n.language_changed.connect(_on_language_changed)
+
+func _on_language_changed(_locale: String) -> void:
+	_settings_button.text = I18n.t("设置")
+	if is_instance_valid(_popup):
+		_language.selected = 0 if I18n.locale == "zh" else 1
+		_refresh_text(_column)
+
+func _popup_size() -> Vector2i:
+	var available := Vector2i(get_viewport().get_visible_rect().size) - Vector2i(48, 48)
+	return Vector2i(mini(640, available.x), mini(720, available.y))
+
+func _on_popup_hidden(popup: PopupPanel) -> void:
+	Sound.save_settings()
+	if _popup == popup:
+		_popup = null
+		_column = null
+		_language = null
+	popup.queue_free()
 
 func show_settings() -> void:
 	if is_instance_valid(_popup):
-		_popup.popup_centered()
+		_popup.popup_centered(_popup_size())
 		return
 	_popup = PopupPanel.new()
 	_popup.name = "SettingsPopup"
 	_popup.theme = P.theme()
 	_popup.add_theme_stylebox_override("panel", P.box(P.INK, P.GOLD))
 	add_child(_popup)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size = Vector2(_popup_size() - Vector2i(24, 24))
+	_popup.add_child(scroll)
 	var column := VBoxContainer.new()
-	column.custom_minimum_size = Vector2(590, 450)
-	_popup.add_child(column)
+	_column = column
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(column)
 	var title := Label.new()
 	title.name = "SettingsTitle"
 	title.text = I18n.t("设置")
@@ -87,11 +113,8 @@ func show_settings() -> void:
 	Art.button(close, "UI/CardCodex/card_codex_action_button_blue.png")
 	close.pressed.connect(_popup.hide)
 	column.add_child(close)
-	_popup.popup_hide.connect(func():
-		Sound.save_settings()
-		_popup.queue_free()
-	)
-	_popup.popup_centered()
+	_popup.popup_hide.connect(_on_popup_hidden.bind(_popup))
+	_popup.popup_centered(_popup_size())
 
 func _refresh_text(column: VBoxContainer) -> void:
 	for child in column.get_children():

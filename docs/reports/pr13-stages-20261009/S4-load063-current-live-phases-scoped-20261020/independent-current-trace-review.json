@@ -1,0 +1,325 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "actual fullcontroller normal0 andPGstopped",
+      "passed": true
+    },
+    {
+      "name": "actual fullProgram graceful0 andactualHTTP_WSclient0",
+      "passed": true
+    },
+    {
+      "name": "no diagnostic callback errors",
+      "passed": true
+    },
+    {
+      "name": "allactual clientchecks passed",
+      "passed": true
+    },
+    {
+      "name": "actual intentionalfailedenqueuecycle notdeclaredcompleted",
+      "passed": true
+    },
+    {
+      "name": "one actualacquire andSQL phase sameHTTPtrace",
+      "passed": true
+    },
+    {
+      "name": "actualrequest correlation failedcycle toserver",
+      "passed": true
+    },
+    {
+      "name": "actual acquire slow andSQL nonoverlap at100ns ticks",
+      "passed": true
+    },
+    {
+      "name": "actual effectiveProgram DI poolall16held/released",
+      "passed": true
+    },
+    {
+      "name": "actualslowclient sendphase spans",
+      "passed": true
+    },
+    {
+      "name": "actual SendAsync slow fromrealTCPreceiver, notgatesocketmock",
+      "passed": true
+    },
+    {
+      "name": "actualsamecycle roomactor finishedbeforeslowSend",
+      "passed": true
+    },
+    {
+      "name": "nearest actualActor/Send orderedsameWSroomtrace withboundedgap",
+      "passed": true
+    },
+    {
+      "name": "three actualTCPserver sendbuffers set1024",
+      "passed": true
+    },
+    {
+      "name": "actual receiver kernelbuffer small",
+      "passed": true
+    },
+    {
+      "name": "all100 actualpersistedmatch context IDsused",
+      "passed": true
+    },
+    {
+      "name": "100ownership-negative controls remainrejections notnaturalroomcycles",
+      "passed": true
+    },
+    {
+      "name": "allattemptcommands192 prior0 within300",
+      "passed": true
+    },
+    {
+      "name": "actual producer metertags closedenumonly andunitms",
+      "passed": true
+    },
+    {
+      "name": "actualproducer series<=6 independent100businessids",
+      "passed": true
+    },
+    {
+      "name": "all100 context repliesactuallymeasured liveSocketSend",
+      "passed": true
+    },
+    {
+      "name": "actualdiagnostics no token/urlquerytagdump",
+      "passed": true
+    },
+    {
+      "name": "actual100fixture+4realworlds/7syntheticplayers/0holds",
+      "passed": true
+    },
+    {
+      "name": "allattemptworldbudget104 carriesr1/r2 andnoreset",
+      "passed": true
+    },
+    {
+      "name": "actualPGdumpreadonlyextraction",
+      "passed": true
+    },
+    {
+      "name": "all100fixtureIDs physicallypersisted actualPG104matches",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 appsettings.Development.json",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 appsettings.json",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Contracts.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Contracts.pdb",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Domain.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Domain.pdb",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.deps.json",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.exe",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.pdb",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.runtimeconfig.json",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 FantasyCard.Server.staticwebassets.endpoints.json",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 Google.Protobuf.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 Npgsql.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Api.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Api.ProviderBuilderExtensions.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Exporter.OpenTelemetryProtocol.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Extensions.Hosting.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Instrumentation.AspNetCore.dll",
+      "passed": true
+    },
+    {
+      "name": "actualunchangedSUT21 OpenTelemetry.Instrumentation.Runtime.dll",
+      "passed": true
+    },
+    {
+      "name": "no liveownedProgram/client/PG/controller",
+      "passed": true
+    }
+  ],
+  "independent_checks": 48,
+  "T01_LIVE": {
+    "actual_failed_cycle": {
+      "kind": "failed_client_cycle",
+      "cycleId": "load063-failed-enqueue-cycle",
+      "stage": "enqueue",
+      "httpStatus": 409,
+      "traceId": "fd28aab9471560182ad0dc5270338803",
+      "requestId": "load063-failed-enqueue",
+      "actualServerReplySha256": "27e231509e0a5739d5de5ef920877d25125026f56c9a3c4f1bbccb514a6a1c96",
+      "deliberateInvalidPreparation": true
+    },
+    "actual_acquire_ms": 473.5587,
+    "actual_SQL_ms": 1.4096,
+    "source": {
+      "source": "FantasyCard.Server",
+      "name": "runtime.DatabaseAcquire",
+      "traceId": "fd28aab9471560182ad0dc5270338803",
+      "spanId": "fb1f18f13e2777d9",
+      "parentSpanId": "bd9c8c4b31383e40",
+      "startUnixMs": 1792487536914,
+      "startUtcTicks": 639280843369148937,
+      "durationTicks": 4735587,
+      "durationMs": 473.5587,
+      "status": "Unset",
+      "tags": {
+        "runtime.phase": "DatabaseAcquire",
+        "player.id": "01a15895-35dd-77b6-b532-747d93b160e5",
+        "request.id": "load063-failed-enqueue"
+      }
+    },
+    "SQLsource": {
+      "source": "FantasyCard.Server",
+      "name": "runtime.SqlExecution",
+      "traceId": "fd28aab9471560182ad0dc5270338803",
+      "spanId": "82d44f4ccbf46447",
+      "parentSpanId": "bd9c8c4b31383e40",
+      "startUnixMs": 1792487537393,
+      "startUtcTicks": 639280843373933709,
+      "durationTicks": 14096,
+      "durationMs": 1.4096,
+      "status": "Unset",
+      "tags": {
+        "runtime.phase": "SqlExecution",
+        "player.id": "01a15895-35dd-77b6-b532-747d93b160e5",
+        "request.id": "load063-failed-enqueue"
+      }
+    },
+    "actual_pool16_hold": {
+      "traceId": "fd28aab9471560182ad0dc5270338803",
+      "backendPids": [
+        38260,
+        43912,
+        32956,
+        40780,
+        39976,
+        41816,
+        10144,
+        25412,
+        43856,
+        41336,
+        37352,
+        40140,
+        4580,
+        42316,
+        28636,
+        38284
+      ],
+      "actualEffectivePoolMaximum": 16,
+      "actualHeldCount": 16,
+      "releaseAfterMs": 200,
+      "poolObjectIsActualProgramDI": true
+    },
+    "db_internal_lock_wait_ms": null,
+    "reason": "Localwait andSQLseparate; serverinternallocktime notisolated."
+  },
+  "T02_LIVE_POSTGRES": {
+    "actualSocketSendMs": 1202.6988,
+    "actualActorMs": 0.1484,
+    "actualSendRequestId": "load063-slow-63",
+    "sameWSconnection_trace_andactualroom": {
+      "kind": "slow_reader_cycle",
+      "cycleId": "load063-slow-send-cycle",
+      "traceId": "f3e0642663536ed2c8031714d4fd3c62",
+      "roomId": "01a15895-3bde-7b91-aa72-6b6a0d34ec7f",
+      "matchId": "01a15895-3bde-716d-90bd-2a8a5b2d81e4",
+      "snapshotRequestsSent": 89,
+      "clientSendFailure": "ConnectionClosedPrematurely",
+      "actualReceiverStoppedReading": true,
+      "serverSendOutcomeRequiresSpanAudit": true
+    },
+    "actorCompletedBeforeSend": true,
+    "actor_requestid_notrecorded": "BoundbyWSsequentialroute/send source, sameconnectiontrace/room andnearestactor order; no fabricatedactorrequesttag."
+  },
+  "T03_POSTGRES_PRODUCER": {
+    "actualPersistedMatchIDs100": true,
+    "actualLiveNegativeContexts100": true,
+    "actualProducerPhaseSeries": 6,
+    "allActualPhaseTags": [
+      "ActorExecute",
+      "DatabaseAcquire",
+      "PlayerLockRoundTrip",
+      "SocketGateWait",
+      "SocketSend",
+      "SqlExecution"
+    ],
+    "Prometheus_query_orwire_notmeasured": true,
+    "no_backend_series_claim": true
+  },
+  "candidate_profile_closures": {
+    "LOAD-06.3-T01": [
+      "LIVE"
+    ],
+    "LOAD-06.3-T02": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "LOAD-06.3-T03": [
+      "POSTGRES"
+    ]
+  },
+  "remaining_T03LIVE_needs_actual_Prometheus_backend_boundary": true,
+  "whole_task_orprofile_notautomatically_accepted": true,
+  "actual_allattempt_worldbudget104of200_commands192of300": true,
+  "100controlledIDfixtures_not100naturalgames": true,
+  "all_old_protocol_readytiming_andunsaturatedpool_failures_kept": true,
+  "no_business_criteria_relaxation": true,
+  "no_GodotGUI_cloud_production_Gitchanges": true
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "release_formal_integration_publication",
+  "status": "published_and_cloud_checkout_verified",
+  "integration_commit": "34baa4632e43a50ad206517559f4c0d702e90cff",
+  "remote_release_verified": "34baa4632e43a50ad206517559f4c0d702e90cff",
+  "cloud_receipt": {
+    "phase": "complete",
+    "cloud_head": "34baa4632e43a50ad206517559f4c0d702e90cff",
+    "cloud_status": [],
+    "runtime_unchanged": true,
+    "runtime_image_rebuilt": false,
+    "rebooted": false,
+    "boot_id": "1b19e1b0-8d64-404f-9596-fb484f8417be",
+    "runtime_source": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "server_identity": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112|sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e|2026-10-27T16:15:39.294529489Z|true",
+    "container_count": 8,
+    "private_environment_unchanged": true,
+    "health": {
+      "http://127.0.0.1:8080/health/live": 200,
+      "http://127.0.0.1:8080/health/ready": 200
+    },
+    "resources": {
+      "memory_available_bytes": 2820091904,
+      "disk_free_bytes": 3652452352,
+      "disk_floor_bytes": 3164501606
+    }
+  },
+  "local_receipt": {
+    "local_head": "34baa4632e43a50ad206517559f4c0d702e90cff",
+    "tracked_and_untracked_status": [],
+    "client_changes": "81 .gd.uid only",
+    "server_and_protocol_changes": [],
+    "historical_register_files_remaining_locally": 135,
+    "ui_summary_sha256": "13f7cc3c9846ebd2205f36ac3ee4d5cf3aa204f15d6981cf065e981867785f9f"
+  },
+  "formal_integration_files": 1652,
+  "formal_manifest_subject_commit": "34baa4632e43a50ad206517559f4c0d702e90cff",
+  "formal_manifest_identity_note": "formal-files.json seals working bytes at integration commit; Git-normalized ordinary source text is explicit. The receipt follow-up changes README.md and summary.json in this report and adds publication.json only.",
+  "exact_preserved_stage_and_archive_blobs": 1470,
+  "exact_preserved_historical_plans": 82,
+  "tool_tests_passed": 22,
+  "callback_delayed_repeat_passes": 10,
+  "source_ui_pins_unchanged": 25,
+  "source_server_tree": "0583991bf18ef2d135b09b2d8a0ff91188fc8801",
+  "remaining_identified_unmerged_current_formal_files": 0,
+  "excluded_and_preserved": [
+    "private .env backups and credentials",
+    "build/runtime/editor outputs",
+    "historical candidate implementation versions remain in original worktrees/refs; selected public inputs archived",
+    "Google Play and other feature branches remain separate",
+    "historical source identity and real external fork gaps remain separately unpassed"
+  ],
+  "hundred_client_automatic_retest": false,
+  "capacity_or_ui_retest_started": false,
+  "new_branch_created": false,
+  "final_branch_base": "The final verified origin/release including this documentation receipt; no runtime inputs differ from integration_commit.",
+  "cloud_public_https_health": "Not re-probed as a passing check in this audit; receipt health covers actual cloud-local live/ready endpoints.",
+  "private_final_verification_file": "G:/PR13Evidence/release-formal-audit-20261028-r1/final-three-way-verification.original.json"
+}

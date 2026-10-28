@@ -1,0 +1,107 @@
+{
+  "ok": true,
+  "schema": "pr13_b124_27b5a83d217c407f8224a5948a1fd1ad",
+  "actual_PG_roomIDs3": true,
+  "actual_T01_controlled_favorable_review": {
+    "state": "EligibleForMainReview",
+    "reason": "isolated_candidate_threshold_and_risk_checks_met",
+    "point_improvement": 0.35,
+    "improvement_interval95": [
+      0.2,
+      0.5
+    ],
+    "holm_adjusted_p": {
+      "tail": 0.001
+    },
+    "drifts": {
+      "economy": 0,
+      "strength": 0
+    },
+    "risk_drift": {},
+    "production_defaults_retained": true,
+    "production_activation": false,
+    "capacity_acceptance": false,
+    "human_experience_acceptance": false
+  },
+  "actual_G4": {
+    "gate_id": "G4",
+    "name": "\u4F20\u8F93\u6536\u76CA\u3001\u539F\u5BB9\u91CF\u3001\u5019\u9009\u4F53\u9A8C",
+    "state": "NotAccepted",
+    "pass_criteria": "\u4E09\u5BF9\u540C\u8D1F\u8F7DA/B\u3001\u9ED8\u8BA4\u9650\u6D41\u6709\u6548\u8986\u76D6/\u957F\u7A33\u3001\u6570\u503C\u914D\u5BF9/\u98CE\u9669\u4E0E\u771F\u4EBA\u53CD\u9988\u5206\u522B\u88C1\u51B3\uFF1B\u4E0D\u8DB3Unknown\uFF0C\u4E0D\u62FF\u77ED\u6218\u66FF\u539F\u5BB9\u91CF\u3002",
+    "unfinished": [
+      "LOAD-10.4",
+      "PR13-A10.4"
+    ]
+  },
+  "actual_T02_declared_complete_request_rows": 1,
+  "actual_T02_executed_rows": 0,
+  "actual_ledger": {
+    "actor": "01a16063-8682-70c3-98ac-f29903bbca02",
+    "first": "b2ec186d-0ca1-4625-92f7-baef840731c3",
+    "second": "d2881938-0e8e-4e5f-b432-bb9680ac987d",
+    "initialGold": 0,
+    "healthy": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 0,
+      "TotalViolationCount": 0,
+      "IsHealthy": true
+    },
+    "broken": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 1,
+      "TotalViolationCount": 1,
+      "IsHealthy": false
+    },
+    "actual_rows": 2,
+    "firstBalance": 10,
+    "secondBalance": 22,
+    "unexplained_gap": 7,
+    "corrupt_evidence_kept": true
+  },
+  "actual_room_snapshots_unchanged3": true,
+  "projections": [
+    {
+      "hero": "Mage",
+      "room": "7600f037-3d4c-4e27-bca5-b159733c8be7",
+      "version": "gdd-0.70-numerical-1",
+      "pb": "Mage.server.pb",
+      "pbSHA": "ce41aa52329a6410d2dc5af983da790006aaae26d2c861be93694fd81fc558de",
+      "file": "Mage.wire.json",
+      "wireSHA": "c14f48d163f5466bde3588030ac9a123671e5f887e5b663b02271219cedfa745",
+      "actual_PG_restore_exact": true
+    },
+    {
+      "hero": "Priest",
+      "room": "d4e80c4c-0c03-460c-8331-d959deb25ece",
+      "version": "gdd-0.70-numerical-1",
+      "pb": "Priest.server.pb",
+      "pbSHA": "f86210d6e161227bff2bf472e9712ed0572af0dffa1957ecdcbf087e2e8426ad",
+      "file": "Priest.wire.json",
+      "wireSHA": "16115546684cc5009169118731494db1c71ff7c9a53cf7d49610ccf36f8b96ba",
+      "actual_PG_restore_exact": true
+    },
+    {
+      "hero": "Guardian",
+      "room": "f11ee9f4-d556-4d67-a931-c841967ef841",
+      "version": "gdd-0.70-numerical-1",
+      "pb": "Guardian.server.pb",
+      "pbSHA": "c9112096fa878007193f67510029d22422f1e1e03f84bc9d955b569d4895f8a2",
+      "file": "Guardian.wire.json",
+      "wireSHA": "d999dbeb806841302f28064eb69c170617d0c2df0f70064c73dd637bf831eaf6",
+      "actual_PG_restore_exact": true
+    }
+  ],
+  "actualDomainSHA": "f91d19f7d9aa1a381cfd2299261ce4687dc615e9961e91be272a49a7f9ce47ce",
+  "actualServerSHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "actualContractsSHA": "f532671ed9f83958385184001e7b592af21ecdcb8ed7cd4c096b4d1aa5edce33",
+  "no_production_assets_or_network_auth_touched": true,
+  "direct_owned_test_identity1_not_real_user": true
+}

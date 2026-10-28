@@ -1,0 +1,284 @@
+{
+  "date": "2026-10-27",
+  "state": "FiveAcceptedForCurrentVersion_ExplicitHistoricalA081DependencyException_FourRetainedUnaccepted",
+  "reviewed_at": "2026-10-27T12:26:37.955640+08:00",
+  "source_before_document_update": "ed16c40a53dcf5ed3adad33e05dd3581eb39d603",
+  "user_scope_decision": {
+    "id": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+    "authority": "Direct user instruction",
+    "text": "A08.1的历史来源缺口保留未通过，但不再阻塞其余5项的当前版本验收。按现有证据完成这5项验收，另外4项的具体缺口和原始失败继续保留，更新总报告、接续文档并推送release，不再补测100人。",
+    "scope": "Current version acceptance for A08.4 and B12.1-B12.4 only",
+    "historical_A081_status_not_changed": true,
+    "other_four_gaps_not_waived": true,
+    "other_own_business_criteria_not_waived": true,
+    "new_runtime_tests": 0
+  },
+  "new_current_version_acceptances": 5,
+  "accepted_task_ids": [
+    "PR13-B12.1",
+    "PR13-B12.2",
+    "PR13-B12.3",
+    "PR13-B12.4",
+    "PR13-A08.4"
+  ],
+  "accepted_tasks": [
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "original_state": "Partial",
+      "current_disposition": "Accepted",
+      "acceptance_scope": "CurrentVersion_ExistingEvidence_ExplicitUserHistoricalDependencyException",
+      "decision_authority": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+      "own_registered_case_counts": {
+        "Passed": 3
+      },
+      "own_missing_case_profiles": {
+        "PR13-B12.1-T01": [],
+        "PR13-B12.1-T02": [],
+        "PR13-B12.1-T03": []
+      },
+      "own_evidence_finding": "自身3例全部适用机器层已齐；源表变化、同版本异bytes、标签ON而实际OFF及反向对照已有实际导出/PG/渲染证据。",
+      "acceptance_reason": "自身3例全部适用机器层与来源/有效策略反例已通过；按用户明确指令，将A08.1历史来源依赖从当前版本有效前置中移出。",
+      "original_dependencies": [
+        "PR13-A08.1"
+      ],
+      "current_effective_dependencies": [],
+      "nonblocking_historical_dependency": [
+        "PR13-A08.1"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B121-current-source-policy-experiment-render-20261022/summary.json"
+      ],
+      "runtime_evidence_original_identities_retained": true,
+      "new_runtime_execution_claimed": false,
+      "candidate_benefit_or_activation_claimed": false
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "original_state": "Partial",
+      "current_disposition": "Accepted",
+      "acceptance_scope": "CurrentVersion_ExistingEvidence_ExplicitUserHistoricalDependencyException",
+      "decision_authority": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+      "own_registered_case_counts": {
+        "Passed": 3
+      },
+      "own_missing_case_profiles": {
+        "PR13-B12.2-T01": [],
+        "PR13-B12.2-T02": [],
+        "PR13-B12.2-T03": []
+      },
+      "own_evidence_finding": "自身3例机器层已齐，含独立off/on、PG和渲染反例分类；真人按用户要求排除，未称真人体验通过。",
+      "acceptance_reason": "自身off/on、PG和渲染机器层已通过；真人排除；B12.1当前版本已接受，其余声明前置均已Accepted。",
+      "original_dependencies": [
+        "PR13-B12.1",
+        "PR13-A07.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B09.4",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "current_effective_dependencies": [
+        "PR13-B12.1",
+        "PR13-A07.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B09.4",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "nonblocking_historical_dependency": [],
+      "effective_unaccepted_direct_dependencies": [],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B122-independent-machine-review-PG-render-20261022/summary.json"
+      ],
+      "runtime_evidence_original_identities_retained": true,
+      "new_runtime_execution_claimed": false,
+      "candidate_benefit_or_activation_claimed": false
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "original_state": "Partial",
+      "current_disposition": "Accepted",
+      "acceptance_scope": "CurrentVersion_ExistingEvidence_ExplicitUserHistoricalDependencyException",
+      "decision_authority": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+      "own_registered_case_counts": {
+        "Passed": 3
+      },
+      "own_missing_case_profiles": {
+        "PR13-B12.3-T01": [],
+        "PR13-B12.3-T02": [],
+        "PR13-B12.3-T03": []
+      },
+      "own_evidence_finding": "自身3例全部机器层已齐：相同源表双次导出、配置回滚/实际策略、正式候选guard；已有PG与原生/渲染证据。",
+      "acceptance_reason": "自身同源导出、配置/策略回滚及正式候选guard已通过；B12.1当前版本已接受，B02.4已Accepted。",
+      "original_dependencies": [
+        "PR13-B12.1",
+        "PR13-B02.4"
+      ],
+      "current_effective_dependencies": [
+        "PR13-B12.1",
+        "PR13-B02.4"
+      ],
+      "nonblocking_historical_dependency": [],
+      "effective_unaccepted_direct_dependencies": [],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B123-current-same-source-export-experiment-render-20261022/summary.json",
+        "docs/reports/pr13-stages-20261009/S5-B123-current-policy-rollback-experiment-render-20261022/summary.json",
+        "docs/reports/pr13-stages-20261009/S5-B123-T03-current-formal-guard-experiment-render-20261022/summary.json"
+      ],
+      "runtime_evidence_original_identities_retained": true,
+      "new_runtime_execution_claimed": false,
+      "candidate_benefit_or_activation_claimed": false
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "original_state": "Partial",
+      "current_disposition": "Accepted",
+      "acceptance_scope": "CurrentVersion_ExistingEvidence_ExplicitUserHistoricalDependencyException",
+      "decision_authority": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+      "own_registered_case_counts": {
+        "Passed": 3
+      },
+      "own_missing_case_profiles": {
+        "PR13-B12.4-T01": [],
+        "PR13-B12.4-T02": [],
+        "PR13-B12.4-T03": []
+      },
+      "own_evidence_finding": "自身3例全部机器层已齐，原G4未通过/未执行为Queued/账本异常为Blocked的裁决反例正确；原失败及账本异常均保留。",
+      "acceptance_reason": "自身最终裁决反例和132项状态/风险记录已通过；B12.2、B12.3当前版本接受，容量A10.4按约定收口，A05.4已Accepted。保留4项未通过符合当前范围裁决，不宣称全历史全部通过。",
+      "original_dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-A10.4",
+        "PR13-A05.4"
+      ],
+      "current_effective_dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-A10.4",
+        "PR13-A05.4"
+      ],
+      "nonblocking_historical_dependency": [],
+      "effective_unaccepted_direct_dependencies": [],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B124-current-final-decision-counterexamples-20261022/summary.json"
+      ],
+      "runtime_evidence_original_identities_retained": true,
+      "new_runtime_execution_claimed": false,
+      "candidate_benefit_or_activation_claimed": false
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "original_state": "Partial",
+      "current_disposition": "Accepted",
+      "acceptance_scope": "CurrentVersion_ExistingEvidence_ExplicitUserHistoricalDependencyException",
+      "decision_authority": "user-20261027-A081-historical-provenance-nonblocking-current-five",
+      "own_registered_case_counts": {
+        "Passed": 3
+      },
+      "own_missing_case_profiles": {
+        "PR13-A08.4-T01": [],
+        "PR13-A08.4-T02": [],
+        "PR13-A08.4-T03": []
+      },
+      "own_evidence_finding": "自身3个案例的OFFLINE/POSTGRES/AUDIT层已齐；实际PG custom dump另库恢复、3个房间快照一致及资产核对已有。当前Git release交付2076e7ee可核对，没有冒称部署或生产回滚。",
+      "acceptance_reason": "自身交付、PG备份恢复及来源说明机器层已通过；B12.4当前版本已接受，A08.3已Accepted。release已推送可核对，未宣称部署或生产回滚。",
+      "original_dependencies": [
+        "PR13-A08.3",
+        "PR13-B12.4"
+      ],
+      "current_effective_dependencies": [
+        "PR13-A08.3",
+        "PR13-B12.4"
+      ],
+      "nonblocking_historical_dependency": [],
+      "effective_unaccepted_direct_dependencies": [],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-A084-current-PG-backup-restore-delivery-20261022/summary.json"
+      ],
+      "runtime_evidence_original_identities_retained": true,
+      "new_runtime_execution_claimed": false,
+      "candidate_benefit_or_activation_claimed": false
+    }
+  ],
+  "capacity12_closeout": {
+    "state": "ClosedByUserAgreement",
+    "task_ids": [
+      "LOAD-10.1",
+      "LOAD-10.2",
+      "LOAD-10.3",
+      "LOAD-10.4",
+      "PR13-A02.1",
+      "PR13-A02.2",
+      "PR13-A02.3",
+      "PR13-A02.4",
+      "PR13-A10.1",
+      "PR13-A10.2",
+      "PR13-A10.3",
+      "PR13-A10.4"
+    ],
+    "count": 12,
+    "native100_retest": false,
+    "raw_failures_and_CPU4to24_records_retained": true,
+    "not_an_empirical100_or_default_strict_capacity_pass": true
+  },
+  "remaining_unaccepted_task_ids": [
+    "LOAD-11.2",
+    "PR13-A01.3",
+    "PR13-A07.3",
+    "PR13-A08.1"
+  ],
+  "remaining_unaccepted_task_count": 4,
+  "remaining_original_states": {
+    "Partial": 3,
+    "ReadyForAcceptance": 1
+  },
+  "current_effective132_counts": {
+    "Accepted": 116,
+    "ClosedByUserAgreement": 12,
+    "Partial": 3,
+    "ReadyForAcceptance": 1
+  },
+  "current_132_task_dispositions": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_FIVE_ACCEPTED_20261027.json",
+  "remaining_gaps_report": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/REMAINING_FOUR_GAPS_20261027.json",
+  "prior_nine_review_retained": "docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/NONCAPACITY_NINE_REVIEW_20261027.json",
+  "evidence_basis": {
+    "previous_readonly_reverification": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\noncapacity-nine-evidence-review-20261027-r1\\evidence-reopen-results.private.derived.json",
+    "previous_provider_copies_SHA_verified": 563,
+    "previous_raw_manifests": 16,
+    "previous_raw_member_rows_SHA_verified": 1447,
+    "previous_public_metadata_files_strict_guard_passed": 80,
+    "previous_checks_not_claimed_reexecuted": true,
+    "existing_original_case_sources_and_failures_retained": true
+  },
+  "current_version_acceptance_does_not_recover_historical_sources": true,
+  "original132_register": {
+    "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+    "bytes": 17458066,
+    "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8",
+    "unchanged": true,
+    "original_task_state_counts": {
+      "Accepted": 111,
+      "Partial": 20,
+      "ReadyForAcceptance": 1
+    }
+  },
+  "original_strict_all_scope_gates_not_promoted": true,
+  "no_new_gameplay_Godot_PG_workflow_or_unit_tests": true,
+  "automatic100_retest": false,
+  "no_production_deployment_or_candidate_activation": true
+}

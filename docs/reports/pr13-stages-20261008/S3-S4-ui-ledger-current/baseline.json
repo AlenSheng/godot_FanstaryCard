@@ -1,0 +1,100 @@
+{
+  "kind": "current natural-cycle diagnostic",
+  "scenario": "baseline",
+  "status": "Failed",
+  "source_sha": "981c65acb53e50894952e35066118c36dc2dfe8b",
+  "exit_code": 3,
+  "natural_cycles": 15,
+  "acknowledgements": 21,
+  "distribution": {
+    "0": 3,
+    "1": 3,
+    "3": 4
+  },
+  "clients": [
+    {
+      "class": "Mage",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 0,
+      "message": "Expedition did not reach acknowledged settlement",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 0,
+      "message": "Expedition did not reach acknowledged settlement",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Priest",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 1,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Guardian",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 0,
+      "message": "Coordinator cancelled current cycle",
+      "cleanup": "Passed"
+    },
+    {
+      "class": "Mage",
+      "strategy": "baseline_all_hand",
+      "natural_cycles": 3,
+      "message": "Requested smoke cycles completed",
+      "cleanup": "Passed"
+    }
+  ],
+  "business_cleanup": true,
+  "owned_runtime_cleanup": true,
+  "postconditions": {
+    "actual": {
+      "pending_holds": 0,
+      "active_match_players": 0,
+      "settlements": 21,
+      "ledger_rows": 12
+    },
+    "read_only": true
+  },
+  "primary_report_sha256": "a36b2a1da0b27f05412b5f746505a9bf0fd023014f4c3258f4cbb21d6924e2bb",
+  "profile": "original baseline",
+  "candidate_activation": false
+}

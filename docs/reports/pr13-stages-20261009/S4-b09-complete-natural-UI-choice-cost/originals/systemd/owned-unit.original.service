@@ -1,0 +1,8 @@
+[Unit]
+Description=PR13 complete natural UI descriptive choice cost
+[Service]
+Type=exec
+User=root
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/b09-natural-ui-choice-cost-r1-20261011/runner.py
+RuntimeMaxSec=300
+Restart=no

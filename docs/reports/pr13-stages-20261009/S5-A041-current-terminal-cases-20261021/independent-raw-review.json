@@ -1,0 +1,279 @@
+{
+  "ok": true,
+  "independent_checks": 75,
+  "checks": [
+    "missing-ticket_original_fullrunner_expectedOS1_zero_credit",
+    "missing-ticket_all_fixture_assertions_pass",
+    "missing-ticket_engineclean",
+    "missing-ticket_full_audit_consecutive_no_loss",
+    "missing-ticket_no_actual_READY_frame_or_proxyerror",
+    "missing-ticket_rawSHA_5",
+    "missing-ticket_rawSHA_6",
+    "missing-ticket_rawSHA_7",
+    "missing-ticket_rawSHA_8",
+    "missing-ticket_rawSHA_9",
+    "missing-ticket_rawSHA_10",
+    "missing-ticket_rawSHA_11",
+    "missing-ticket_rawSHA_12",
+    "missing-ticket_rawSHA_13",
+    "missing-ticket_rawSHA_14",
+    "missing-ticket_rawSHA_15",
+    "missing-ticket_rawSHA_16",
+    "missing-ticket_rawSHA_17",
+    "missing-ticket_rawSHA_18",
+    "missing-ticket_rawSHA_19",
+    "missing-ticket_after_cleanup_no_owned_business",
+    "missing-ticket_actualPG_handshake",
+    "T02_exact3matchmaking_plus1original_authority_cleanup",
+    "T02_two_wireURL_only_faults_then_correctowned_cancelled",
+    "expired_original_fullrunner_expectedOS1_zero_credit",
+    "expired_all_fixture_assertions_pass",
+    "expired_engineclean",
+    "expired_full_audit_consecutive_no_loss",
+    "expired_no_actual_READY_frame_or_proxyerror",
+    "expired_rawSHA_29",
+    "expired_rawSHA_30",
+    "expired_rawSHA_31",
+    "expired_rawSHA_32",
+    "expired_rawSHA_33",
+    "expired_rawSHA_34",
+    "expired_rawSHA_35",
+    "expired_rawSHA_36",
+    "expired_rawSHA_37",
+    "expired_rawSHA_38",
+    "expired_rawSHA_39",
+    "expired_rawSHA_40",
+    "expired_rawSHA_41",
+    "expired_rawSHA_42",
+    "expired_rawSHA_43",
+    "expired_rawSHA_44",
+    "expired_rawSHA_45",
+    "expired_rawSHA_46",
+    "expired_rawSHA_47",
+    "expired_rawSHA_48",
+    "expired_rawSHA_49",
+    "expired_rawSHA_50",
+    "expired_rawSHA_51",
+    "expired_rawSHA_52",
+    "expired_rawSHA_53",
+    "expired_rawSHA_54",
+    "expired_rawSHA_55",
+    "expired_rawSHA_56",
+    "expired_rawSHA_57",
+    "expired_after_cleanup_no_owned_business",
+    "expired_actualPG_handshake",
+    "T03_actual_removed_after_deadline_before_return",
+    "T03_original_deadline_retained_and_expired",
+    "final_one_bot_world_twoUIDs_zero_receiptACKassets",
+    "historical_Matched_ticket_legal_not_current_occupancy",
+    "actual_runtime8eb_unchanged",
+    "actualcloudproducer_pass_keeps_expected_originalfails",
+    "current_source_client/network/gateway.gd",
+    "current_source_client/state/game_store.gd",
+    "current_source_client/network/reusable_http_client.gd",
+    "current_source_client/tests/gameplay_load_client.gd",
+    "current_source_client/data/http_schema.json",
+    "T01_parent_original_archiveSHA",
+    "T01_no_required_reaches_original_receiver",
+    "T01_Gateway_originalbody_exact_except_unreachable_required_guard",
+    "T01_entire_READY_loop_still_exact_qualified"
+  ],
+  "cases": [
+    "PR13-A04.1-T02",
+    "PR13-A04.1-T03"
+  ],
+  "records": {
+    "missing-ticket": {
+      "actual_UID": "01a15d14-4f6e-74ad-8aa9-5e4d8a5054b3",
+      "actual_M": "",
+      "original_exit": 1,
+      "expected_failed_guard": "ready_ticket_terminal",
+      "elapsed_ms": 6454,
+      "audit_rows": 34,
+      "native_checks": 6,
+      "ticket_reads": [
+        {
+          "HTTP_status": 404,
+          "at_ms": 2364,
+          "path": "/api/v1/matches/tickets/01a15d14-54a4-73b1-920b-a076bf61ce8a",
+          "phase_at_dispatch": "matchmaking",
+          "status": "404"
+        },
+        {
+          "HTTP_status": 404,
+          "at_ms": 4547,
+          "path": "/api/v1/matches/tickets/01a15d14-54a4-73b1-920b-a076bf61ce8a",
+          "phase_at_dispatch": "matchmaking",
+          "status": "404"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 6714,
+          "path": "/api/v1/matches/tickets/01a15d14-54a4-73b1-920b-a076bf61ce8a",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Cancelled"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 6764,
+          "path": "/api/v1/matches/tickets/01a15d14-54a4-73b1-920b-a076bf61ce8a",
+          "phase_at_dispatch": "cleanup",
+          "status": "Cancelled"
+        }
+      ],
+      "held_returns": [],
+      "ready_attempts": 0,
+      "cleanup": "Passed"
+    },
+    "expired": {
+      "actual_UID": "01a15d14-7290-7c3a-907b-d18d96e1b322",
+      "actual_M": "01a15d14-ebfa-7ae4-8042-1f7e22fe4308",
+      "original_exit": 1,
+      "expected_failed_guard": "ready_deadline_expired",
+      "elapsed_ms": 46850,
+      "audit_rows": 65,
+      "native_checks": 7,
+      "ticket_reads": [
+        {
+          "HTTP_status": 200,
+          "at_ms": 1510,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 3676,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 5843,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 8009,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 10176,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 12343,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 14509,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 16676,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 18842,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 21009,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 23175,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 25342,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 27509,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 29675,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Queued"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 31759,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Matched"
+        },
+        {
+          "HTTP_status": 200,
+          "at_ms": 31842,
+          "path": "/api/v1/matches/tickets/01a15d14-75a1-784d-99d8-9672c675a01e",
+          "phase_at_dispatch": "matchmaking",
+          "status": "Matched"
+        }
+      ],
+      "held_returns": [
+        {
+          "HTTP_transport_timer_already_completed": true,
+          "actual_completed_HTTP_result_beforeSHA": "d0a4c03f4e960eae58b80de7e5d49597dcc752a68fbee11b356e8f6814e512af",
+          "at_return_ms": 47124,
+          "at_start_ms": 31759,
+          "match_id": "01a15d14-ebfa-7ae4-8042-1f7e22fe4308",
+          "released_after_actual_removed": true,
+          "unchanged_return_afterSHA": "d0a4c03f4e960eae58b80de7e5d49597dcc752a68fbee11b356e8f6814e512af"
+        },
+        {
+          "HTTP_transport_timer_already_completed": true,
+          "actual_completed_HTTP_result_beforeSHA": "4dcd099cba1013ab0f45eead062be249407be5d02fc26acfaab329671f822e3b",
+          "at_return_ms": 47124,
+          "at_start_ms": 31842,
+          "match_id": "01a15d14-ebfa-7ae4-8042-1f7e22fe4308",
+          "released_after_actual_removed": true,
+          "unchanged_return_afterSHA": "4dcd099cba1013ab0f45eead062be249407be5d02fc26acfaab329671f822e3b"
+        }
+      ],
+      "ready_attempts": 0,
+      "cleanup": "Passed"
+    }
+  },
+  "T01_current_source_qualification_only_new_required_branch_unreachable": true,
+  "new_physical_worlds1_UIDs2_no_ACK": true,
+  "original_two_failed_reports_and_actualOS1_expected_kept": true,
+  "criteria_relaxed": false,
+  "prelaunch_phase_correction_and_upload10054_prefix_resume_before_SUT_retained": true
+}

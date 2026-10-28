@@ -1,0 +1,35 @@
+{
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES"
+  ],
+  "case_deadline_seconds": 95,
+  "server_ready_deadline_seconds": 30,
+  "server_shutdown_grace_seconds": 10,
+  "botfill_seconds": 30,
+  "ready_deadline_seconds": 15,
+  "load_matchmaking_deadline_seconds": 60,
+  "load_cleanup_verification_deadline_seconds": 22,
+  "original_rate_limits": true,
+  "local_terminal_required": true,
+  "case_ids": {
+    "normal_ready": "LOAD-04.4-T01",
+    "required_lost_reconnect": "LOAD-04.4-T01",
+    "stop_prepare_await": "LOAD-04.4-T03",
+    "stop_enqueue_await": "LOAD-04.4-T03",
+    "stop_ticket_await": "LOAD-04.4-T03",
+    "stop_queue_wait": "LOAD-04.4-T03",
+    "stop_ready_enqueue_await": "PR13-A04.4-T01",
+    "stop_ready_before_send": "PR13-A04.4-T01",
+    "late_required_duplicate": "LOAD-04.4-T01",
+    "late_accepted_before_ticket": "LOAD-04.4-T01"
+  },
+  "Accepted": false,
+  "remaining_profiles": [
+    "LIVE",
+    "MAIN_INDEPENDENT_ADJUDICATION"
+  ],
+  "server_create_skill": "Missing; prior user exception applies; actual server/AGENTS.md and canonical docs read",
+  "synthetic_fixture": "late_accepted_before_ticket only; SupportOnly, actual decoder/event entry; no internal state prefills",
+  "owned_asset_fixture": "After actual login, seed one new White Fire Feet armor and initial Mage loadout; real bootstrap loads it before preparation. No history, balances or ledger repairs."
+}

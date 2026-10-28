@@ -1,0 +1,56 @@
+{
+  "kind": "LOAD041CurrentMatchLifecycleLIVEAndDisposablePG",
+  "previous_goal_turn_classification": "progress:MAINB084andthreecomparisonUIdefectsfixed",
+  "case_ids": [
+    "LOAD-04.1-T01",
+    "LOAD-04.1-T02",
+    "LOAD-04.1-T03"
+  ],
+  "profiles": [
+    "LIVE",
+    "POSTGRES"
+  ],
+  "planned_human_test_accounts_not_real_people": 4,
+  "planned_two_full_nonbot_matches": 2,
+  "planned_optional_loading_timeout_botonly_match": 1,
+  "maximum_rooms_including_diagnostics": 6,
+  "maximum_conservative_player_room_starts": 40,
+  "goal_task_cap": 300,
+  "new_natural_or_capacity_or_human_experience_claim": false,
+  "bot_fill_seconds_unchanged": 30,
+  "ready_deadline_seconds_unchanged": 15,
+  "current_config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "controls": {
+    "T01": "HoldonlyactualprimaryenqueueHTTP202reply;deliveractualWSfound/requiredhintsfirst;ticketempty/promptnonempty/prelaunchfalse/roomempty/READY0,realPGMatchedcorrelation;releaseexactreplythenactualticketGET/READY/start",
+    "T02": "CaptureactualfirstRoomStartedServerEnvelopeopaquePayload. AfteractualsecondRoom,injectexactoldpacketandheader-sequence-onlyliftedoldpayload;testGatewayconstructorseamdelegatesallproductionmethods;futureactualenvelopesequencesliftedsame1onlytosustainstream; no snapshot/roomassignment",
+    "T03": "Observeproduction-successfulroom.readyencodedpacketpayloadbytes/fields0andno inventedrouteheaders;correlateactualserveraccepted/startandPG;publicprotocolunchanged"
+  },
+  "terminal_scope": "RealQueuedcancelplusloadingready_removed/releaseifoptional3rdmatch; neverforcePGticketExpired. ActualPGschemahasQueued/Cancelled/Matchedonly; historicalMatched/runningbotsnotownedoccupancy",
+  "source_upload_bytes": 0,
+  "cloud_source_cache_manifest_sha256": "5f33cf5de3d994ecd946ac0b6e9fc4e5c31b521a3333f15da289e2ef3d0537bb",
+  "reused_compiled_server_DLL_sha256": "eaaa9c35c7c8e7b06760cc25fc6a68bc9c521752f3391295da3b5a3e2f62032e",
+  "production_before": {
+    "id": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+    "image": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+    "started_at": "2026-10-16T07:54:44.282671559Z",
+    "environment_sha256": "a50d16851ede044a93abd7df8e9ece899700292ba5c287a0433622dde6de20ec"
+  },
+  "private_pg_memory_MB": 384,
+  "private_backend_memory_MB": 512,
+  "private_request_headroom_only": {
+    "RequestLimits__AuthPermitLimit": 100,
+    "RequestLimits__EconomyWritePermitLimit": 200,
+    "RequestLimits__MarketReadPermitLimit": 500
+  },
+  "no_default_limit_capacity_acceptance": true,
+  "cloud_goal_resource_floors": {
+    "memory": 0.05,
+    "disk": 0.05
+  },
+  "old15percent_disk_unpassed": true,
+  "no_production_config_or_container_change_permitted": true,
+  "owned_internal_network_only_no_host_ports": true,
+  "original_case_and_test_failures_preserved": true,
+  "actual_state_transition_reasons_trace_only_not_metric_labels": true,
+  "ROOT_before_gateway_sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+}

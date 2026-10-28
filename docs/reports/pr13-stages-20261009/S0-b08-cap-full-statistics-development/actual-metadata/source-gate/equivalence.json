@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+  "mixed_input_manifest_sha256": "ab06c98792af1b3766dac9cde3668924529f07ee23a9eb10646e1b4367ca4716",
+  "collector_revision": "cap-effective-raw-budget-v2",
+  "comparisons": [
+    {
+      "ok": true,
+      "candidate_raw_unit_limit_bytes": 2147483648,
+      "encounters_exactly_joined": 6,
+      "paired_seeds_exactly_joined": 3,
+      "actual_casts_exactly_joined": 226,
+      "actual_ticks_exactly_joined": 3190,
+      "actual_events_exactly_joined": 3416,
+      "all_outcomes_retained": {
+        "Victory": 6
+      },
+      "stable_semantic_card_UUID_bijections": 120,
+      "ordered_card_UUID_uses_verified": 246,
+      "all_nonselected_UUID_fields_exact": true,
+      "numeric_tolerance_used": false,
+      "original_summary_sha256": "46fd64f1349397d625127fd148f5258944dff66c7214eacbd26bb96cb557ef97",
+      "candidate_summary_sha256": "f31661c899a01ee7e56e11985f30563904a1fa5ed6dafd69c7870fa3487f15a1",
+      "original_directory": "/pilot/original",
+      "candidate_directory": "/pilot/new-default"
+    },
+    {
+      "ok": true,
+      "candidate_raw_unit_limit_bytes": 17179869184,
+      "encounters_exactly_joined": 6,
+      "paired_seeds_exactly_joined": 3,
+      "actual_casts_exactly_joined": 226,
+      "actual_ticks_exactly_joined": 3190,
+      "actual_events_exactly_joined": 3416,
+      "all_outcomes_retained": {
+        "Victory": 6
+      },
+      "stable_semantic_card_UUID_bijections": 120,
+      "ordered_card_UUID_uses_verified": 246,
+      "all_nonselected_UUID_fields_exact": true,
+      "numeric_tolerance_used": false,
+      "original_summary_sha256": "46fd64f1349397d625127fd148f5258944dff66c7214eacbd26bb96cb557ef97",
+      "candidate_summary_sha256": "54bddf1f5b9a869ce0e2d67725d7eff9fbb6d1dabf3735668ca9d6578cafac8b",
+      "original_directory": "/pilot/original",
+      "candidate_directory": "/pilot/new-16g"
+    }
+  ],
+  "negative_controls": [
+    {
+      "name": "changed_scalar_state",
+      "rejected": true
+    },
+    {
+      "name": "changed_equipment_attribute",
+      "rejected": true
+    },
+    {
+      "name": "unstable_card_UUID_mapping",
+      "rejected": true
+    },
+    {
+      "name": "changed_card_semantics",
+      "rejected": true
+    }
+  ],
+  "three_complete_original_pilot_sets_retained": true,
+  "same_business_values_equipment_state_outcomes_and_order": true,
+  "GUID_exception_only_stable_selected_card_semantic_bijection": true,
+  "storage_provenance_whitelist_only": [
+    "business_source_sha",
+    "collection_complete",
+    "collector_revision",
+    "event_raw_bytes",
+    "instrumentation_source_sha",
+    "mixed_input_manifest_sha256",
+    "raw_sha256",
+    "raw_unit_limit_bytes",
+    "raw_unit_limit_explicit",
+    "schema",
+    "source_sha",
+    "stored_bytes",
+    "stored_sha256"
+  ],
+  "whole_experiment_complete": false,
+  "main_acceptance_granted": false,
+  "full_270_unit_dispatch_authorized_by_this_tool": false
+}

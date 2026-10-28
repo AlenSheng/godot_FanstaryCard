@@ -1,0 +1,187 @@
+{
+  "kind": "B091T03NaturalDrawTimelineExperimentPreregistered",
+  "at_local": "2026-10-20T05:13:52.333335+08:00",
+  "case": "PR13-B09.1-T03",
+  "current_source_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+  "source_not_full_HEAD_alone": true,
+  "new_game_route_cap": 60,
+  "smoke_routes": 3,
+  "formal_routes": 54,
+  "total_planned_routes": 57,
+  "formal_pairs": 18,
+  "formal_default_controls": 18,
+  "smoke_not_in_formal_denominator": true,
+  "rounds": 3,
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "selection": [
+    {
+      "round": 1,
+      "hero": "Mage",
+      "seed": 479694,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 197.6
+    },
+    {
+      "round": 1,
+      "hero": "Mage",
+      "seed": 479459,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 169.8
+    },
+    {
+      "round": 1,
+      "hero": "Priest",
+      "seed": 479700,
+      "prior_kills": 7,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 1213.4
+    },
+    {
+      "round": 1,
+      "hero": "Priest",
+      "seed": 479694,
+      "prior_kills": 7,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 611.7
+    },
+    {
+      "round": 1,
+      "hero": "Guardian",
+      "seed": 479738,
+      "prior_kills": 8,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1416.4
+    },
+    {
+      "round": 1,
+      "hero": "Guardian",
+      "seed": 479700,
+      "prior_kills": 8,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1332.4
+    },
+    {
+      "round": 2,
+      "hero": "Mage",
+      "seed": 480883,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 186.6
+    },
+    {
+      "round": 2,
+      "hero": "Mage",
+      "seed": 480598,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 185.8
+    },
+    {
+      "round": 2,
+      "hero": "Priest",
+      "seed": 480065,
+      "prior_kills": 7,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1324.8
+    },
+    {
+      "round": 2,
+      "hero": "Priest",
+      "seed": 480132,
+      "prior_kills": 7,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 477.9
+    },
+    {
+      "round": 2,
+      "hero": "Guardian",
+      "seed": 480502,
+      "prior_kills": 9,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1440.4
+    },
+    {
+      "round": 2,
+      "hero": "Guardian",
+      "seed": 480765,
+      "prior_kills": 9,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1324.4
+    },
+    {
+      "round": 3,
+      "hero": "Mage",
+      "seed": 481164,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 183.2
+    },
+    {
+      "round": 3,
+      "hero": "Mage",
+      "seed": 481212,
+      "prior_kills": 5,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 175.6
+    },
+    {
+      "round": 3,
+      "hero": "Priest",
+      "seed": 481327,
+      "prior_kills": 7,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 403.7
+    },
+    {
+      "round": 3,
+      "hero": "Priest",
+      "seed": 481892,
+      "prior_kills": 7,
+      "prior_outcome": "Dead",
+      "prior_observed_seconds": 344.6
+    },
+    {
+      "round": 3,
+      "hero": "Guardian",
+      "seed": 481630,
+      "prior_kills": 9,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1336.4
+    },
+    {
+      "round": 3,
+      "hero": "Guardian",
+      "seed": 481762,
+      "prior_kills": 9,
+      "prior_outcome": "Extracted",
+      "prior_observed_seconds": 1232.4
+    }
+  ],
+  "selection_is_purposeful_witness_not_population_sample": true,
+  "selection_rule": "Within each prior3hero/3seedblock default0, top2 actual kills, then longer observed time then smaller seed. Frozen before new execution; not independent generalization of policy benefit.",
+  "profiles": [
+    "default-automatic",
+    "optional8-skip-all",
+    "optional8-absorb-until-full-then-skip"
+  ],
+  "only_treatment_accept_skip_decision_differs_between_optional_pair": true,
+  "base20_level0_no_gear_no_HP_map_pile_Offer_or_resource_injection": true,
+  "strategy": "Existing public-hand focus policy and legal-map move/extract/reward policy,1800simulated-second horizon; both optional arms2s controlled wait per candidate. No hidden order into policy.",
+  "primary_measurement": "Original C01 instance first availability after first reward-claim boundary, time from boundary and actual new-card ordinal, with existing-at-boundary0 and all terminal/budget censored rows retained. Do not fill unavailable values or average complete-only as population result.",
+  "strength_separate": [
+    "printed damage sum is composition only",
+    "actual kills/casts/corecasts/terminal outcome/horizon remain distinct"
+  ],
+  "trace": "Record before/after actual draws and played IDs, actual original key identity, conservation, public typed snapshot at boundary and first new key, actual typed intents/responses. No manual DrawImmediate/Restore or shuffle injection.",
+  "pass_scope": "Actual current native natural controlled paired experiment; no live network/PG/account/human/capacity or full population superiority claim. RENDER remains pending until actual current renderer.",
+  "old_offline27000_and_natural36000_preserved": true,
+  "user300_game_default_and_other_budgets_not_reset": true,
+  "local_hidden_belowNormal_lowimpact_no_Godot_GUI": true,
+  "no_product_rebuild_mutation_commit_push_deploy": true
+}

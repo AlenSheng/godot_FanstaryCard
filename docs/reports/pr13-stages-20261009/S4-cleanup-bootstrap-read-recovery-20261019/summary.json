@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified OFFLINE cleanup verification read recovery;not capacity acceptance",
+  "base_release": "f7c701dd38cd1b91bdd1c1440de817d06f77ad8c",
+  "code_sha256": {
+    "client/tests/gameplay_load_client.gd": "62221396e854353e5cd9ec02cbf2fa9883b6a2c7399fc3c525832bfaaf6ee886",
+    "client/tests/test_cleanup_bootstrap_retry.gd": "0028c5d10227631bd5ea0309f7a6b425e5362eaf5f323866f4246ff8f51fe29a",
+    "client/tests/run_native_regressions.gd": "ed37632ce7f8a2f28f9828fe123b22eec2df21ddad181e4ad5cb5ed8189489ce"
+  },
+  "verification": {
+    "scope": "Actual Native cleanup coroutine/recorder with explicit synthetic Gateway and ACK responses",
+    "final_suites": [
+      {
+        "name": "test_cleanup_bootstrap_retry.gd",
+        "checks": 29,
+        "passed": true
+      },
+      {
+        "name": "test_load_control_flow.gd",
+        "checks": 13,
+        "passed": true
+      },
+      {
+        "name": "test_load_contexts.gd",
+        "checks": 6,
+        "passed": true
+      },
+      {
+        "name": "test_load_progress.gd",
+        "checks": 14,
+        "passed": true
+      }
+    ],
+    "final_checks": 62,
+    "final_failed_checks": 0,
+    "final_exit": 0,
+    "final_forced": false,
+    "final_engine_or_resource_errors": 0,
+    "unchanged_core_cleanup_checks_before_and_after": 23,
+    "original_core_failure_count": 15,
+    "new_counter_and_cancelled_success_controls": 6,
+    "same_33_related_checks_passed_before_and_after": true,
+    "baseline_native_report_sha256": "80311282567d01eb0c155c681ff22ad3843d28b6b8f3a79d919d2b344e138497",
+    "initial_candidate56_native_report_sha256": "91a467e50dcedbfee92da97aeb1da2e034453fb39f06cfb805319086299cdc1a",
+    "final_native_report_sha256": "f29d6ce68a1109832e03de9a0d0c62a12a1e327b85dbac13ffc23b5b98f8d766",
+    "all5_local_native_processes_terminal": true,
+    "new_worlds": 0,
+    "new_accounts": 0,
+    "cloud_calls": 0
+  },
+  "behavior": {
+    "existing_verification_window_ms": 22000,
+    "extra_high_level_bootstrap_GET_calls_at_most": 2,
+    "retry_statuses": [
+      500,
+      502,
+      503,
+      504
+    ],
+    "requires_decoded_error_dictionary_and_same_context": true,
+    "read_failure_and_retry_counters_retained": true,
+    "counters_describe_controller_gateway_request_calls_not_transport_attempts": true,
+    "no_auth_decode_or_write_retry_added": true,
+    "unresolved_stays_Unknown": true,
+    "no_new_cycle_credit": true
+  },
+  "limits": [
+    "OFFLINE control-flow evidence with synthetic responses;not real PostgreSQL asset ACK proof",
+    "Full17suite runner was registered and statically checked;only the named4suites were run",
+    "Historical2334.891second100client run remains BudgetLimited with9unacknowledged settlements;not reclassified",
+    "No original acceptance register gate or MAIN status changes;no default quota public TLS or production capacity claim"
+  ],
+  "historical_primary_report_sha256_unchanged": "8aba0923bdc04954b5f6bdb1ac258b7d465751781bbf01823490a019537fff56",
+  "full_acceptance_passed": false
+}

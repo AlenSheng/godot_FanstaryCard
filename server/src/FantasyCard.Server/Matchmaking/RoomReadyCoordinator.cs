@@ -1,7 +1,9 @@
+using System.Diagnostics;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Bootstrap;
+using FantasyCard.Server.Common;
 using FantasyCard.Server.Realtime;
 using FantasyCard.Server.Rooms;
 
@@ -20,8 +22,11 @@ public sealed partial class RoomReadyCoordinator(
     RealtimeEventStore eventStore,
     ConnectionRegistry connections,
     TimeProvider timeProvider,
-    ILogger<RoomReadyCoordinator> logger) : BackgroundService, IRoomReadyService
+    ILogger<RoomReadyCoordinator> logger,
+    ServerMetrics? metrics = null) : BackgroundService, IRoomReadyService
 {
+    private ReadyMatchLaunch? _pendingLaunch;
+
     public Task<ReadyLobbyView?> GetAsync(Guid playerId, CancellationToken cancellationToken) =>
         repository.GetReadyLobbyAsync(playerId, cancellationToken);
 
@@ -30,16 +35,24 @@ public sealed partial class RoomReadyCoordinator(
 
     public async Task NotifyRequiredAsync(PendingMatch match, CancellationToken cancellationToken)
     {
-        foreach (var playerId in match.PlayerIds)
+        // A room has four seats. Bound concurrent delivery across players,
+        // keeping each player's found/required pair awaited in order.
+        await Parallel.ForEachAsync(match.PlayerIds,
+            new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellationToken },
+            async (playerId, deliveryToken) =>
         {
             var found = eventStore.Create(playerId, "match.found", "matchmaker",
                 new MatchFoundEventPayload(match.MatchId, match.RoomId, match.ReadyDeadline.ToUnixTimeMilliseconds()));
-            await connections.SendIfConnectedAsync(playerId, found, cancellationToken);
+            var startedAt = Stopwatch.GetTimestamp();
+            await connections.SendIfConnectedAsync(playerId, found, deliveryToken);
+            metrics?.ObserveMatchLaunchPhase("found_send", Stopwatch.GetElapsedTime(startedAt));
             var message = eventStore.Create(playerId, "room.ready_required", "matchmaker",
                 new RoomReadyRequiredEventPayload(match.MatchId, match.RoomId,
                     match.ReadyDeadline.ToUnixTimeMilliseconds(), 0, match.PlayerIds.Count));
-            await connections.SendIfConnectedAsync(playerId, message, cancellationToken);
-        }
+            startedAt = Stopwatch.GetTimestamp();
+            await connections.SendIfConnectedAsync(playerId, message, deliveryToken);
+            metrics?.ObserveMatchLaunchPhase("required_send", Stopwatch.GetElapsedTime(startedAt));
+        });
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -68,8 +81,13 @@ public sealed partial class RoomReadyCoordinator(
 
     internal async Task<bool> ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken)
     {
-        var launch = await repository.ClaimReadyMatchAsync(now, cancellationToken);
+        var startedAt = Stopwatch.GetTimestamp();
+        // Keep the assignment until MarkRunning is confirmed. A committed
+        // Running match is absent from ClaimReadyMatch after a lost response.
+        var launch = _pendingLaunch ?? await repository.ClaimReadyMatchAsync(now, cancellationToken);
+        metrics?.ObserveMatchLaunchPhase("claim", Stopwatch.GetElapsedTime(startedAt));
         if (launch is null) return false;
+        _pendingLaunch = launch;
         await LaunchAsync(launch, cancellationToken);
         return true;
     }
@@ -77,31 +95,49 @@ public sealed partial class RoomReadyCoordinator(
     private async Task LaunchAsync(ReadyMatchLaunch launch, CancellationToken cancellationToken)
     {
         var assignment = launch.Assignment;
-        var room = CreateRoom(assignment);
+        var startedAt = Stopwatch.GetTimestamp();
+        var persisted = await snapshots.GetAsync(assignment.RoomId, cancellationToken);
+        var room = persisted is null
+            ? CreateRoom(assignment)
+            : BattleRoom.Restore(persisted, CombatCardCatalog.CreatePrototype(), assignment.Seed);
+        metrics?.ObserveMatchLaunchPhase("build", Stopwatch.GetElapsedTime(startedAt));
+        startedAt = Stopwatch.GetTimestamp();
         await snapshots.SaveIfDueAsync(room.Capture(), cancellationToken);
+        metrics?.ObserveMatchLaunchPhase("snapshot", Stopwatch.GetElapsedTime(startedAt));
         RoomActor actor;
         var registered = false;
         try
         {
-            actor = roomRegistry.Register(room, assignment.MatchId);
+            startedAt = Stopwatch.GetTimestamp();
+            actor = roomRegistry.Register(room, assignment.MatchId, startTicker: false);
+            metrics?.ObserveMatchLaunchPhase("register", Stopwatch.GetElapsedTime(startedAt));
             registered = true;
+            startedAt = Stopwatch.GetTimestamp();
             await repository.MarkRunningAsync(assignment.MatchId, cancellationToken);
+            metrics?.ObserveMatchLaunchPhase("mark_running", Stopwatch.GetElapsedTime(startedAt));
+            _pendingLaunch = null;
+            actor.StartTicker();
         }
         catch
         {
+            metrics?.MatchLaunchFailed(registered ? "mark_running" : "register");
             if (registered) await roomRegistry.RemoveAsync(assignment.RoomId);
             throw;
         }
 
-        foreach (var playerId in launch.HumanPlayerIds)
+        await Parallel.ForEachAsync(launch.HumanPlayerIds,
+            new ParallelOptions { MaxDegreeOfParallelism = 4, CancellationToken = cancellationToken },
+            async (playerId, deliveryToken) =>
         {
-            var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(playerId), cancellationToken);
+            var deliveryStartedAt = Stopwatch.GetTimestamp();
+            var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(playerId), deliveryToken);
             var snapshot = RoomSnapshotProjection.Build(state, playerId, assignment.MatchId, timeProvider.GetUtcNow());
             var started = eventStore.Create(playerId, "room.started", "ready-complete",
                 new RoomStartedEventPayload(assignment.MatchId, assignment.RoomId, assignment.Players.Count, snapshot),
                 roomRevision: state.Snapshot.Revision);
-            await connections.SendIfConnectedAsync(playerId, started, cancellationToken);
-        }
+            await connections.SendIfConnectedAsync(playerId, started, deliveryToken);
+            metrics?.ObserveMatchLaunchPhase("started_send", Stopwatch.GetElapsedTime(deliveryStartedAt));
+        });
 
         foreach (var playerId in launch.RemovedPlayerIds)
         {
@@ -114,7 +150,7 @@ public sealed partial class RoomReadyCoordinator(
     private static BattleRoom CreateRoom(MatchAssignment assignment)
     {
         var room = new BattleRoom(assignment.RoomId, BootstrapRepository.CurrentConfigVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed);
+            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics);
         foreach (var player in assignment.Players)
         {
             var wornArmor = (player.EquipmentIds ?? []).Select(id =>

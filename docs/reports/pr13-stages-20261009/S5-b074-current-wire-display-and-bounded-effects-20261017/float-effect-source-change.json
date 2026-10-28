@@ -1,0 +1,10 @@
+{
+  "file": "client/ui/main.gd",
+  "before_sha256": "bca3ef9b610484b2ee93ac3f1d1f13ec83c107230f2491cf278bc1e2d669bb85",
+  "after_sha256": "f1e50f0ceb76bbaf726ff3918e77e1b5226ff74cc208b8b856700716f6993a31",
+  "only_changed_method": "_float_number",
+  "actual_bug": "Ownrealauthoritygain+1 clippedatviewporttop, particularlynarrowScreens; mixedglobalpos/unscaledsize andunboundednegativeytrajectory",
+  "fix": "Actorcanvas->UIlocal affine transform, scale/font/offset/travel together, clamp wholetrajectory including1.08peak",
+  "replay_not_new_encounters": true,
+  "actual_gain_or_duration_or_rule_changed": false
+}

@@ -1,0 +1,293 @@
+{
+  "schema_version": 1,
+  "kind": "Current Pending-hold read safety and affected real UI review",
+  "base_release": "106e116b3f9b29249ff55af3529e1933b7a3fd6d",
+  "canonical_case": "PR13-B11.3-T03",
+  "recommendation": "Add scoped LOCAL full Program/API/PG and affected RENDER support for reviewed rows; task B11.3 and canonical state not promoted",
+  "source_binding": {
+    "Server_DLL": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+    "Domain_DLL": "57ba955abc21b45153349aa203193c3f185b089c392eacde150460b70e396e0c",
+    "current_client_text_inputs": 60,
+    "current_asset_sources": 637,
+    "server_source_inputs": 328,
+    "all_current_and_before_after_equal": true
+  },
+  "case_review": [
+    {
+      "source_round": "R2, original whole round failed",
+      "observations": "Actual Pending created with owned equipment row lock; owned receipt-ID200 and match-ID200; foreign receipt-ID404; co-participant match-ID200 returns that caller own different receipt",
+      "protocol_basis": "CLIENT_INTEGRATION lines257-280 and SettlementRepository WHERE callerplayer_id; detail200 not readiness or confidentiality defect",
+      "not_claimed": "R2 did not reach ACK409/affected render or second unchanged-assets snapshot; do not relabel whole failed round"
+    },
+    {
+      "source_round": "R3, original whole round passed",
+      "observations": "Actual Pending ACK409; BootstrapunfinishedSettlementnull; Game retains same real terminal context and empty receipt; physical Query click still waits;12business tables statement-snapshot rows exact before/after; release only owned lock, exact receipt ready, actual ACK, once-only equipment transfer",
+      "original_Native_checks": 58,
+      "actual_UI_images": 7,
+      "no_repeat_R2_qualified_detail_reads": true
+    }
+  ],
+  "rounds": [
+    {
+      "round": "r1",
+      "original_driver_ok": false,
+      "original_Native_ok": false,
+      "Native_checks_passed": 16,
+      "Native_checks_failed": 1,
+      "PNG_count": 0,
+      "Server_error_warning_count": 47,
+      "errors": [
+        {
+          "category": "FantasyCard.Server.Matchmaking.MatchmakerWorker",
+          "message": "Matchmaker iteration failed."
+        },
+        {
+          "category": "FantasyCard.Server.Matchmaking.MatchmakerWorker",
+          "message": "Matchmaker iteration failed."
+        },
+        {
+          "category": "FantasyCard.Server.Matchmaking.MatchmakerWorker",
+          "message": "Matchmaker iteration failed."
+        }
+      ],
+      "all_owned_processes_terminal": true,
+      "peak_Native_RSS": 393682944
+    },
+    {
+      "round": "r2",
+      "original_driver_ok": false,
+      "original_Native_ok": false,
+      "Native_checks_passed": 37,
+      "Native_checks_failed": 1,
+      "PNG_count": 0,
+      "Server_error_warning_count": 0,
+      "errors": [],
+      "all_owned_processes_terminal": true,
+      "peak_Native_RSS": 203100160
+    },
+    {
+      "round": "r3",
+      "original_driver_ok": true,
+      "original_Native_ok": true,
+      "Native_checks_passed": 58,
+      "Native_checks_failed": 0,
+      "PNG_count": 7,
+      "Server_error_warning_count": 0,
+      "errors": [],
+      "all_owned_processes_terminal": true,
+      "peak_Native_RSS": 554110976
+    }
+  ],
+  "budget_and_failed_rounds": {
+    "limits_before_R1": {
+      "worlds": 1,
+      "Native": 1,
+      "PG_API_boots": 1
+    },
+    "limits_before_R2": {
+      "cumulative_worlds": 2,
+      "Native": 2,
+      "PG_API_boots": 2
+    },
+    "limits_before_R3": {
+      "cumulative_worlds": 3,
+      "Native": 3,
+      "PG_API_boots": 3
+    },
+    "actual_new_worlds": 3,
+    "existing_source_worlds9_per_copy_not_new": true,
+    "new_accounts": 0,
+    "actual_synthetic_initial_WhiteFeet_items": 3,
+    "PNG_cap_and_actual": 7,
+    "R1_failure": "Development cached config BotFillDelaySeconds0 immediately fillsbots; serial admission split cohort. Private one-world guard prevented extra commits;47rolledback attempts are not47worlds. Controller PID sampling NoSuchProcess race separately retained. Target Pending branch not reached.",
+    "R2_revision": "Before run use only private App env Matchmaking__BotFillDelaySeconds30 = code standard default; authenticate and prepare all4before enqueues; no formal config edit; READY15 unchanged. PID monitor now respects terminal child handle.",
+    "R2_failure": "Fixture incorrectly demanded404 for same-match participant own receipt lookup. Actual200 is documented/owned response; original failed assertion unchanged. Correctly executed detail responses reused without rerun.",
+    "R3_revision": "Before run increase self-limit2to3 only to reach unexecuted ACK/UI boundaries. No product correctness, auth, ownership, assets or readiness criterion weakened.",
+    "pre_execution_tool_failures": "Three longpath editor-folding cache copies and inline stdin __file__ path error preserved; product starts0 during preparation. Reconstructable editor cache omitted; no original deleted.",
+    "all_failed_originals_retained": true
+  },
+  "R3_state_and_resources": {
+    "before": {
+      "players": 12,
+      "matches": 9,
+      "settlements": 36,
+      "acks": 36,
+      "pending": 0,
+      "locked": 0
+    },
+    "after": {
+      "players": 12,
+      "matches": 10,
+      "settlements": 40,
+      "acks": 40,
+      "pending": 0,
+      "locked": 0
+    },
+    "onceonly_terminal_movement": 1,
+    "committed_asset_holds": 1,
+    "equipment_final_location": "RelicPile",
+    "pending_business_table_row_counts": {
+      "equipments": 4,
+      "ack_records": 39,
+      "player_cards": 2640,
+      "economy_ledger": 0,
+      "player_wallets": 12,
+      "player_materials": 12,
+      "match_settlements": 40,
+      "player_deck_cards": 720,
+      "player_consumables": 12,
+      "inventory_movements": 11,
+      "settlement_asset_holds": 4,
+      "red_equipment_weekly_quotas": 0
+    },
+    "Native_exit": 0,
+    "API_exit": 0,
+    "PG_stopped": true,
+    "owned_lock_query_cancel_exit3_expected_rollback_not_failure": true,
+    "all16owned_PIDs_absent": true,
+    "forced_shutdown": false,
+    "Native_peak_RSS_bytes": 554110976,
+    "memory_disk5percent_checked": true,
+    "minimum_available_memory": 12810477568,
+    "HTTP_observations_R3": 54,
+    "no_cloud_calls": true
+  },
+  "affected_UI_review": {
+    "actual_images": [
+      {
+        "name": "pending-zh-CN-960.png",
+        "bytes": 719587,
+        "sha256": "0d664865374bb7e580ebbbd777c30e2b132854b92672404f76f628429f2f5639",
+        "window_pixels": [
+          960,
+          540
+        ],
+        "actual_pixels": [
+          960,
+          540
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "pending-zh-CN-1280.png",
+        "bytes": 1183593,
+        "sha256": "927b2d6482627fa5a5d9ebe3d36567cb97d31ddf4ec769193b42e0ade1993cca",
+        "window_pixels": [
+          1280,
+          720
+        ],
+        "actual_pixels": [
+          1280,
+          720
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "pending-zh-CN-1920.png",
+        "bytes": 2273658,
+        "sha256": "edf8d8e7597290dffbb083ac3558b412b7f0e6b0889838f84bda7812e1ab96c2",
+        "window_pixels": [
+          1920,
+          1080
+        ],
+        "actual_pixels": [
+          1920,
+          1080
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "pending-en-960.png",
+        "bytes": 719923,
+        "sha256": "e42fb3c9f913af470b8522e416a4344f520acd684cfc3a28f483d71c606a097f",
+        "window_pixels": [
+          960,
+          540
+        ],
+        "actual_pixels": [
+          960,
+          540
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "pending-en-1280.png",
+        "bytes": 1185743,
+        "sha256": "917f1368f0b740d939b46eceeccb48914f24e401bc30019821faf9ea7e6a3e43",
+        "window_pixels": [
+          1280,
+          720
+        ],
+        "actual_pixels": [
+          1280,
+          720
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "pending-en-1920.png",
+        "bytes": 2274302,
+        "sha256": "47b2f77b0ec7521aeafdd1d9378d772667a007641b4f340be11827c663c48a07",
+        "window_pixels": [
+          1920,
+          1080
+        ],
+        "actual_pixels": [
+          1920,
+          1080
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      },
+      {
+        "name": "same-receipt-ready-after-release.png",
+        "bytes": 2272329,
+        "sha256": "dee4cf0fc081079bd732e189bba946ec99dc3b6d701011808b861ef1e4f2198c",
+        "window_pixels": [
+          1920,
+          1080
+        ],
+        "actual_pixels": [
+          1920,
+          1080
+        ],
+        "visual_review": "Primary agent viewed actual PNG: title/message/action clear, no overlap or clipping; consistent dark teal/gold panel/blue action; ready view after controlled abandon says Expedition Failed as expected",
+        "qualified": true
+      }
+    ],
+    "resolution_locale_axes": "960x540/1280x720/1920x1080 x zh-CN/en pending plus1920en ready receipt",
+    "no_occlusion_clipping_or_style_issue_found": true,
+    "no_ImageGen_or_product_UI_edit_required": true,
+    "controlled_public_abandons_not_natural_losses_or_balance_data": true
+  },
+  "limits": [
+    "Functional LOCAL full-Program test with actual Windows render and four actors inside one Native; no WAN capacity/performance/normal-rate acceptance",
+    "R2 status/ownership evidence and R3 remaining branch are separate same-current-SUT runs, not one atomic combined execution",
+    "R3 exact unchanged12table proof applies to ACK409/Bootstrap/physicalretry phase; not a missing R2 after-read checkpoint",
+    "Only affected Pending/result UI;no full game UI or human-experience acceptance",
+    "No request-reduction candidate or three-round cost/poolwait claim;B11.3 wider performance scope still incomplete"
+  ],
+  "evidence_SHA256": {
+    "preregistered.original.json": "dff729b55ad20b41f454317a0638187848e7ff0f5167ff7f1cd1674061b3bde2",
+    "retained-R2-current-Pending-read-proof.original.json": "c550cc841b669339347cca89a950370c02af7893710d0fe88e9c0ee6756c7e28",
+    "driver-and-fixture-before-start.original.json": "13bfe8974ce0289e9db5e6cb946bacc84a657cf827adcf7b16d39b502a7eebea",
+    "driver-result.original.json": "50bf1c2ef4ef07383c7bd015078f435de686433392b52f5041b97e62476992f9",
+    "pending-before-readonly.private-original.json": "584051082f112c6cdd0af9dee7899fd695bfc624e7a0ef276b44644978fbf691",
+    "pending-after-readonly.private-original.json": "584051082f112c6cdd0af9dee7899fd695bfc624e7a0ef276b44644978fbf691",
+    "final-once-only-proof.original.json": "c36fd6f198c2613864ceaf95becd65faf554eda9ebb83ceb38a81fb97d115f6e",
+    "independent-case-and-visual-review.original.json": "ea87e7e9b49ad75b7fab307360071493225a0135f2a9992991c343b04ad31ecb"
+  },
+  "preservation": {
+    "all702status_SHA_preserved": true,
+    "register_gate_MAIN_changed": false,
+    "canonical132tasks396cases_unaccepted77_unchanged": true,
+    "old_capacity_failures_and_old41b_identity_retained": true,
+    "GDDv070_priority_Priest_artifact_raw80over70_legal": true,
+    "whole_goal_complete": false
+  }
+}
