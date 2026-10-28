@@ -19,7 +19,7 @@ p{line-height:1.9}
 .site-header{position:absolute;z-index:10;inset:0 0 auto;min-height:88px;display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:1.25rem var(--gutter);border-bottom:1px solid var(--line);background:rgba(5,12,23,.65)}
 .brand{display:flex;align-items:center;gap:.7rem;flex-shrink:0;font-family:Georgia,serif;font-size:.94rem;font-weight:700;letter-spacing:.15em}
 .brand img{width:32px;height:32px}
-.brand small{display:block;margin-top:.3rem;color:var(--muted);font-family:var(--serif);font-size:.64rem;font-weight:400;letter-spacing:.3em}
+.brand small{display:block;margin-top:.3rem;color:var(--muted);font-family:var(--serif);font-size:.6rem;font-weight:400;letter-spacing:.06em}
 .site-header nav{display:flex;margin-left:auto;gap:clamp(1rem,2.2vw,2rem);align-items:center;font-size:.86rem}
 .site-header nav a{position:relative;padding:.5rem 0;color:#c7ccd3;white-space:nowrap}
 .site-header nav a:hover,.site-header nav a[aria-current="page"]{color:var(--gold)}
@@ -38,6 +38,7 @@ p{line-height:1.9}
 .hero h1{margin-bottom:1.6rem;font-size:clamp(2.5rem,4.7vw,5.2rem);line-height:1.25;letter-spacing:.01em}
 .hero h1 span{display:block}
 .hero-copy{max-width:36rem;color:#c4ccd4;font-size:1rem}
+.brand-alias{max-width:36rem;color:var(--gold);font-size:.85rem;line-height:1.8}
 .season-badge{display:inline-block;margin-bottom:2.5rem;padding:.55rem .8rem;border:1px solid rgba(215,173,99,.35);color:#e8c78f;background:rgba(13,25,40,.7);font-size:.73rem;letter-spacing:.07em;line-height:1.7}
 a.season-badge:hover{border-color:var(--gold)}
 .button-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-top:1.75rem}
@@ -95,7 +96,8 @@ a.season-badge:hover{border-color:var(--gold)}
 .download-card button{margin-top:.5rem;min-height:2.8rem;border:1px solid var(--line);background:transparent;color:#959fae;cursor:not-allowed}
 .community-section{text-align:center;background:radial-gradient(ellipse at center,rgba(215,173,99,.07),transparent 60%),#0a1422}
 .community-section p{margin-inline:auto}
-.community-note{display:inline-block;margin-top:1rem;padding:.8rem 1.2rem;border:1px dashed rgba(215,173,99,.45);color:var(--gold);font-size:.85rem;line-height:1.7}
+.community-actions{justify-content:center}
+.community-section .community-handle{margin-top:1rem;margin-bottom:0;color:var(--gold);font-size:.85rem;overflow-wrap:anywhere}
 footer{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;padding:2rem var(--gutter);border-top:1px solid var(--line);color:#a3acb9;font-size:.75rem}
 .footer-brand{font-family:Georgia,serif;letter-spacing:.14em;color:var(--ink)}
 .footer-brand span{margin-left:.6rem;color:var(--muted);font-family:var(--serif);letter-spacing:.1em}
