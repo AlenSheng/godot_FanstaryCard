@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified LOCAL no-human bot room lifecycle fix;not whole PR13 acceptance",
+  "base_release": "dcc36945e544668bd63201e0aedfc351898e365c",
+  "rule_source": "docs/SERVER_SPEC.md section5.1: no real players -> immediate room end, bots destroyed without rewards",
+  "failure": "Zero-human room returned early before evaluating ShouldEndRoom;pure-bot and restored bot-only rooms kept running",
+  "fix": "Count active real players and use existing BotRules.ShouldEndRoom,including count0;retain existing bot teardown",
+  "baseline": {
+    "total": 5,
+    "passed": 2,
+    "failed": 3,
+    "skipped": 0,
+    "actual_assertion_failures": true
+  },
+  "candidate": {
+    "Domain_Bots": 40,
+    "Server_Actor_Registry_PG": 10,
+    "passed": 50,
+    "failed": 0,
+    "skipped": 0,
+    "timeouts": 0
+  },
+  "new_case_reviews": [
+    {
+      "test": "FantasyCard.Domain.Tests.Bots.BotOnlyRoomTerminationTests.Bot_only_room_ends_on_first_authoritative_tick",
+      "baseline": "Failed",
+      "candidate": "Passed"
+    },
+    {
+      "test": "FantasyCard.Domain.Tests.Bots.BotOnlyRoomTerminationTests.An_active_human_keeps_the_room_and_bot_simulation_running",
+      "baseline": "Passed",
+      "candidate": "Passed"
+    },
+    {
+      "test": "FantasyCard.Domain.Tests.Bots.BotOnlyRoomTerminationTests.Restored_snapshot_without_its_last_human_ends_remaining_bots",
+      "baseline": "Failed",
+      "candidate": "Passed"
+    },
+    {
+      "test": "FantasyCard.Domain.Tests.Bots.BotOnlyRoomTerminationTests.No_human_bot_duel_is_cleared_without_waiting_for_simulated_combat",
+      "baseline": "Failed",
+      "candidate": "Passed"
+    },
+    {
+      "test": "FantasyCard.Domain.Tests.Bots.BotOnlyRoomTerminationTests.Empty_room_tick_has_no_player_or_duel_side_effect",
+      "baseline": "Passed",
+      "candidate": "Passed"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresBotOnlyRoomTerminationTests.Bot_only_actor_tick_completes_match_without_creating_player_assets",
+      "baseline": "NotRun;Domain baseline independently reproduced the faulty guard",
+      "candidate": "Passed"
+    }
+  ],
+  "existing_bot_AI_assertions_preserved": 33,
+  "fixture_adjustment": "Bot AI timer fixtures add a noncombat active human after bot placement so independent AI assertions remain observable",
+  "real_local_PG": {
+    "fresh_matches": 1,
+    "bot_members": 2,
+    "new_real_human_accounts": 0,
+    "path": "RoomActor authoritative100ms tick -> SettlementCoordinator -> SettlementRepository -> PostgreSQL",
+    "match_status": "Completed",
+    "bot_member_state": "Settled",
+    "terminal_room_query_matches": true,
+    "fresh_coordinator_replay_preserves_first_settled_at": true,
+    "zero_row_tables": [
+      "players",
+      "match_settlements",
+      "settlement_asset_holds",
+      "economy_ledger",
+      "inventory_movements",
+      "equipments",
+      "player_wallets",
+      "player_cards",
+      "player_materials",
+      "relic_piles",
+      "relic_items"
+    ],
+    "test_schema_disposed": true,
+    "owned_postgres_cleanly_stopped": true
+  },
+  "execution": {
+    "SDK": "10.0.400",
+    "package_sources": "frozen local packages only;network sources cleared",
+    "managed_test_invocations": 3,
+    "builds": 3,
+    "offline_restore_preflight_setup_error": 1,
+    "preflight_error_detail": "Shared TEMP/TMP directory initialization failed before starting dotnet;fixed helper,original directory retained",
+    "tests_replayed_after_passing": 0,
+    "cloud_uploads": 0,
+    "cloud_tests": 0,
+    "deployments": 0
+  },
+  "source_file_SHA256": {
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs": "a0da40929c6cbd08df1e3f9e5621849e8b7daf474eef1a4755b4cd53bdabb2df",
+    "server/tests/FantasyCard.Domain.Tests/Bots/BotRoomRuntimeTests.cs": "e05cebc2ca00099f6eacda0bd2fccdd5fd8eae4c23c2c0b9340a10a33361b04b",
+    "server/tests/FantasyCard.Domain.Tests/Bots/BotOnlyRoomTerminationTests.cs": "f48e23965525ee68ab94bb1e2adc554f6e298bc63b2a122ea98fefd54dd50439",
+    "server/tests/FantasyCard.Server.Tests/Persistence/PostgresBotOnlyRoomTerminationTests.cs": "315451d63b9ec806c9e6b19723b1b4ea28c871fe2b742b6cb4ad1d9689c3fbb6"
+  },
+  "evidence_SHA256": {
+    "baseline_TRX": "31703d5363124b9479f091ed77db89d6804176395039197623a58c10046da877",
+    "Domain_candidate_TRX": "3a8b45850f96a1f730496bed0f6ccc54730760f80fca3f036c3d285443319543",
+    "Server_candidate_TRX": "5d5dc90ecc4be96f0e71276cd2cb48b36e8cb36d962b2e6fc25a4ea28cb84e55",
+    "Server_driver": "4c0ce55ceaf1d5e4e31eb9399c99da4f90d5ca4a4ee8bcb6d612a24a0ef133e6",
+    "local_review": "6387710af546535e48d01f00f346854583c22bf6961ef1c20711f65c64ad112d"
+  },
+  "constraints": {
+    "GDD_v070_priority_preserved": true,
+    "legal_Priest_80_over_70_display_preserved": true,
+    "no_deck_balance_or_numeric_rule_changes": true,
+    "independent_one_match_budget_preregistered": true,
+    "historical_capacity600_untouched": true,
+    "all716_existing_drafts_preserved": true,
+    "register_gate_MAIN_unchanged": true
+  },
+  "limits": [
+    "Local Domain/Server tests and one PG fixture;not an HTTP/client/concurrency or capacity qualification",
+    "Terminal room query verified;automatic background registry removal not asserted by the new PG test",
+    "Previous runtime DLL caches and Native PCK predate this source fix and must not be presented as its packaged build",
+    "Original failed100client run and original9unACK remain unchanged",
+    "132tasks396canonical cases retained;this supplement does not auto-promote any task/profile or gate"
+  ],
+  "full_acceptance_passed": false,
+  "whole_goal_complete": false
+}

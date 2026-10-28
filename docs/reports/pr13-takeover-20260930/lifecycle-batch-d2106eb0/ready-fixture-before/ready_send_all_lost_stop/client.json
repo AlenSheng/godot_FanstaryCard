@@ -1,0 +1,215 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a0f430-097b-7bb2-b7f6-fc398bbb7438",
+	"case": "ready_send_all_lost_stop",
+	"checks": [
+		{
+			"at_unix_ms": 1790803153248,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803153314,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803153404,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803153498,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803153648,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803153734,
+			"name": "enqueue_match",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [
+		{
+			"at_unix_ms": 1790803186746,
+			"message": "Match ticket is not queued or does not belong to the player."
+		},
+		{
+			"at_unix_ms": 1790803186746,
+			"message": "Match ticket is not queued or does not belong to the player."
+		}
+	],
+	"expected_match_id": "01a0f430-097b-7bb2-b7f6-fc398bbb7438",
+	"expected_room_id": "01a0f430-097b-7372-b62b-5f0f2ec8fa3e",
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "",
+	"observed_room_id": "",
+	"own_user_id": "01a0f42f-8f00-70cf-8a76-a1227f792568",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 3,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"resume_send_count": 0,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"pong"
+	],
+	"stop_boundary": "three_actual_ready_frames_dropped",
+	"ticket_reads": 16,
+	"trace": [
+		{
+			"at_ms": 2187,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4323,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6563,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8742,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10925,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 13119,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 15285,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17451,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19651,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21818,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23985,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 26153,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 28318,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30484,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32417,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a0f430-097b-7bb2-b7f6-fc398bbb7438",
+			"room_id": "01a0f430-097b-7372-b62b-5f0f2ec8fa3e",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32417,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 32651,
+			"event": "ticket_response",
+			"read_no": 15,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 32651,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"after_stop": false,
+			"at_ms": 33701,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 34817,
+			"event": "ticket_response",
+			"read_no": 16,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 34817,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 34834,
+			"boundary": "three_actual_ready_frames_dropped",
+			"event": "coordinator_stop"
+		}
+	]
+}

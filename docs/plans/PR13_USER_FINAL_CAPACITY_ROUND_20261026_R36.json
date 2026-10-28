@@ -1,0 +1,46 @@
+{
+  "state": "User_directed_registered_final_round_QA_pending_not_started",
+  "direct_user_instruction": "先按100人来测试，如果100人未通过则转向50人再测试一轮，超过300场则认为通过，本地和云端配置较差没必要死磕100人在线，但是允许尝试，合理分配本地和云端模拟登录人数情况",
+  "policy_id": "user-20261026-100-then50-over300",
+  "priority": ["Attempt full100 native queue within resource protection", "If not admitted or not passed,one final50-target round", "After actual cumulative worlds exceed300,accept under the user's revised stopping condition;no further rounds"],
+  "native100_preflight": {
+    "proposed_partition": {"Windows": 80, "Linux": 20},
+    "Windows_full_queue_required_bytes": 21474836480,
+    "actual_three_samples_bytes": [16643493888, 16641331200, 16644988928],
+    "state": "NotAdmitted_resource;0native_started;0new_worlds;not_a_server_capacity_failure",
+    "no_reduced_count_or_protocol_bots_claimed_as100": true
+  },
+  "final50_round": {
+    "actual_native_supply": {"Windows": 40, "Linux": 20},
+    "required_actual_global_online_and_active": 50,
+    "source_profile": "full-native60-global50-aggregate-v2",
+    "existing_600s_95percent_120s_and_native_identity_latency_and_cleanup_criteria_kept": true,
+    "prior_actual_worlds": 284,
+    "maximum_new_worlds_including_warmup": 40,
+    "absolute_cumulative_stop_cap": 324,
+    "only_one_additional_round": true,
+    "reason_for_round_cap": "Two recent full60-supply rounds each used31 worlds including warmup;40 bounds the requested one additional fixed-window round",
+    "no_additional_round_after_user_over300_condition": true
+  },
+  "user_acceptance": {
+    "condition": "Actual cumulative database world count strictly greater than300",
+    "300_exactly_does_not_satisfy_condition": true,
+    "applied_after_final_round_or_guarded_termination": true,
+    "technical_dimensions_and_observed_counts_preserved_even_if_user_condition_accepts": true,
+    "unobserved100native_capacity_never_labeled_empirically_passed": true,
+    "waiver_scope": "This final capacity acceptance decision only;not permission to falsify GDD,SQL,resource evidence or historical records"
+  },
+  "resource_protection_unchanged": {
+    "Windows_reserve_bytes": 6442450944,
+    "cloud_reserve_bytes": 500000000,
+    "next_process_startup_budget_bytes": 268435456,
+    "cloud_disk_floor_bytes": 3000000000,
+    "cloud_disk_floor_percent": 5,
+    "Windows40_whole_queue_required_bytes": 14092861440,
+    "cloud20_after_infra_warmup_required_bytes": 2446157056,
+    "headless_Dummy_CNO_BelowNormal_last4_and_no_other_process_changes": true
+  },
+  "historical_combined300_cap_and_original_R34_judgment_retained": true,
+  "new_live_worlds": 0,
+  "whole_project_accepted": false
+}

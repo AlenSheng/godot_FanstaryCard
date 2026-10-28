@@ -1,0 +1,2754 @@
+{
+  "kind": "AllCurrentRealNetworkPostgresNativeRegression",
+  "profile": "POSTGRES",
+  "source_base_sha": "44bfd731dbe4e4a3cb7a778e7c74762bd04acd29",
+  "compiled_source_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "source_root": "/home/ubuntu/pr13-acceptance-20261009/work/pg9-r10b-complete-inputs/source",
+  "source_files": [
+    {
+      "path": "protocol/config/v1/config_bundle.proto",
+      "bytes": 787,
+      "sha256": "07aad79d62134058c4c8870ac5101b3c622205dd424d28970a21c1f25add4a7d",
+      "mode": 436
+    },
+    {
+      "path": "protocol/golden-vectors.json",
+      "bytes": 1698,
+      "sha256": "97d128c4fb9dd8d74bc6b6f03d01e9d24aae6a8cce65733280541dbe34964669",
+      "mode": 436
+    },
+    {
+      "path": "protocol/http/v1/endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482",
+      "mode": 436
+    },
+    {
+      "path": "protocol/http/v1/game.proto",
+      "bytes": 11017,
+      "sha256": "a9a8cee46ac9fee57e6ba407a693927ee1c16b30b553b6a0fc8230d95ef8438c",
+      "mode": 436
+    },
+    {
+      "path": "protocol/realtime/v1/realtime.proto",
+      "bytes": 10886,
+      "sha256": "73f2c9b5e761a282604abe909324adfa72d6e037648c3aaa1bc3b6c05f8cd9f2",
+      "mode": 436
+    },
+    {
+      "path": "protocol/tests/Program.cs",
+      "bytes": 11364,
+      "sha256": "e32341ec690acd631d500d5a423497b280e943a1f82042ac50ee35a3ce1c9573",
+      "mode": 436
+    },
+    {
+      "path": "protocol/tests/ProtocolVectors.csproj",
+      "bytes": 339,
+      "sha256": "304489dec92647c94c131999f0e9d4a8d46566a00bacb23633390d0495b976a6",
+      "mode": 436
+    },
+    {
+      "path": "server/Directory.Build.props",
+      "bytes": 350,
+      "sha256": "02f7d1a231e5a2e265602e1cc802dea004d99c8c7f81ac63f21b093df895e1fe",
+      "mode": 436
+    },
+    {
+      "path": "server/Directory.Packages.props",
+      "bytes": 909,
+      "sha256": "ed1c9e646dbb44ca07ea9d83fd2aff1ab08008cadf8e19d163a1293bd4356233",
+      "mode": 436
+    },
+    {
+      "path": "server/NuGet.Config",
+      "bytes": 297,
+      "sha256": "a4ce71b36bc74e1b0dcd4f744b10cf739f1ab91ed8104cde7eb37c50d979acb8",
+      "mode": 436
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.bytes",
+      "bytes": 120495,
+      "sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "mode": 420
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.sha256",
+      "bytes": 65,
+      "sha256": "d32b4a4722dfbdcfcee1f5ef49f3642ff31eaf57f01ff6c536c6edd9bb6d034b",
+      "mode": 420
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.version.txt",
+      "bytes": 21,
+      "sha256": "ee9adb394d381fe0fada88f94dc2e91cc77059b608c6bf302acf2e64ebe79794",
+      "mode": 420
+    },
+    {
+      "path": "server/global.json",
+      "bytes": 111,
+      "sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Bootstrap/BootstrapContracts.cs",
+      "bytes": 1294,
+      "sha256": "b38fc8ebb4f2e8e085afc4e9cd75b7384e9b2683aecd3ac2094747493665c992",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj",
+      "bytes": 488,
+      "sha256": "beb5d029044a31dfd7645869f2c577369bb6b0d5928eeccd7fad9fa65fa9fdf9",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs",
+      "bytes": 16350,
+      "sha256": "a3ae396edfbceb5ce1c0c7e470e8ac08627300a20a1600d26369c8a834ac3177",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Http/HttpProtocolRegistry.cs",
+      "bytes": 2714,
+      "sha256": "dbbb0881558489f824a0232d6a438fce24bc9029919d9b7938b3a7345eb42752",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Identity/IdentityContracts.cs",
+      "bytes": 372,
+      "sha256": "52f94f3201cb2e3511595b394b9b6de4e51a8e9bf64f96a62d3e30511a2a2259",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Mail/MailContracts.cs",
+      "bytes": 1121,
+      "sha256": "c3d4cd91976f8b647bf7bfccaf7ca7055035833f73e84b0658a715816f0108db",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/MatchmakingContracts.cs",
+      "bytes": 262,
+      "sha256": "6263c261849ea369a51730547b6a61dc5d166051cb7085ad13a0bdd70f65b0c3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/PreparationContracts.cs",
+      "bytes": 1311,
+      "sha256": "e6759587f8926427c3b74f8b9dd3f8fe06790c260adb7802c9070e0664763e23",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/SettlementContracts.cs",
+      "bytes": 363,
+      "sha256": "f6f0b93118670fa157ea7c04696c3443a054a18c6d7d3b336bb78f2ae5a25aa4",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Players/PlayerContracts.cs",
+      "bytes": 451,
+      "sha256": "4df70bbf02fe24d6f3eee0395558d9e33c005c9fcd40fc0caff0d18b22f19ab7",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Progression/EconomyContracts.cs",
+      "bytes": 1453,
+      "sha256": "f82ff43d4ac03c84985f8df8b41d3c467ed685dcf42bfe3d21b3f2bfa743dc14",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Progression/ProgressionContracts.cs",
+      "bytes": 3487,
+      "sha256": "ea7061dc553aa58e03b8373dd29ef323af31df3ed82fa86cf962e428ea3a6c70",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs",
+      "bytes": 10278,
+      "sha256": "e5096ac5c9d95f4f89cbd94145b6f5122fcdd48a84dcf93c9e694cde4c79fa07",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs",
+      "bytes": 50822,
+      "sha256": "4e1063225b902effe9b7f8a8e0c8536e8b830884bfd817eeb028e31eb915615c",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotDirector.cs",
+      "bytes": 3950,
+      "sha256": "afb8cd36b36a09f6c7a4a9ead692b8400976e995fc4f6884eb46faa72d984db3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotLootRules.cs",
+      "bytes": 1884,
+      "sha256": "1268cbe6df869f03170343d9209525f663f7cc6b7a3a89b7119620daff5b8ea8",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotRules.cs",
+      "bytes": 12397,
+      "sha256": "69bea4559b116aece1bbdac4c9b34950e7ea2b3d8fdfe4213c91e8f615d3c136",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs",
+      "bytes": 3773,
+      "sha256": "379294a20bc039d0ca67c35f32571e033198991ea32b4c64c258e836aeccfa14",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/DeckRules.cs",
+      "bytes": 2464,
+      "sha256": "51996620b2b0ec669afa5ec8024faf9babd9293ec72c6ee836c317cacfa8e3d1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/PairedDeckBudget.cs",
+      "bytes": 2359,
+      "sha256": "de6c00ba746d9bc9625077cc4a67f39ced2ecea73c7d51c3b2cb2fb05f2d8805",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs",
+      "bytes": 6607,
+      "sha256": "c72dcd0365f27ffcd23fc763f7d1e817face54d9d1626e3fd2b6273b58630ef3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatDeck.cs",
+      "bytes": 7112,
+      "sha256": "1ae3456856eea239696f28b3616ee27cfb495f916bda260de717f46bed9fdd76",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatRandom.cs",
+      "bytes": 1702,
+      "sha256": "4b8702ec8149b9a853f789cb151a173c75f4a304110bd7cdecdb0ee5fdcfde4f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatResolver.cs",
+      "bytes": 10749,
+      "sha256": "177278bd4affd7228a37cdcf2858fa882fb246ae290262c92f288ff8d78cbdbb",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatTypes.cs",
+      "bytes": 8621,
+      "sha256": "842f198962410a4e6bc79cffb3217455008c67f2ac11a89e1e73d558aedae7e9",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/EquipmentCombatRules.cs",
+      "bytes": 7854,
+      "sha256": "bf6e163c47e821783e5d1158ea51dba5895b4426d325aba31497f71ea98a9240",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/MonsterCombatState.cs",
+      "bytes": 11365,
+      "sha256": "05814fb33976ec766c803d510c18d29a4b30d5670b0ba593176a84d11d32fc69",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs",
+      "bytes": 17868,
+      "sha256": "2a4abe0425b58cde5b193c793c65b098c769b2a250a1159a9e3d3197eceec4b8",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PveBattleFactory.cs",
+      "bytes": 5699,
+      "sha256": "2aec04f9dfdfd6b89e33855f4d2fa0b6c38676cab3da44da324b412208c5ecc0",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PveBattleState.cs",
+      "bytes": 3106,
+      "sha256": "6e47ed29ce19ac506127576eb0638dc98b3f613712dbe9d07ec5fff9880dc106",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs",
+      "bytes": 29049,
+      "sha256": "c635eb3ed891817f236f79b31d5e38d74a0ababbf8b7ec2f78a0798764df260e",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/NumericalRules.cs",
+      "bytes": 1103,
+      "sha256": "1bfb4b44f523e9f84959bc14aab410d91e6b4075008b6360fd0754dbb3a84c09",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/FantasyCard.Domain.csproj",
+      "bytes": 237,
+      "sha256": "32f3c3dc899ba156cd13a0bb8d55530f85fede7c20e4654d30fb1ae10ed24711",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Matches/PreparationRules.cs",
+      "bytes": 2055,
+      "sha256": "49162bc5de4b70569e9a40e70dcff420cc7e09c8e3a4c9898f71c5c915e574de",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/DomainValidationException.cs",
+      "bytes": 123,
+      "sha256": "d80a80417068eef59c8dab2c1a2d1f65e5f255759851e029bc8ffbf8d11af52d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/HeroClass.cs",
+      "bytes": 120,
+      "sha256": "512e27a1d19a9d8db6a4b0063abcbe573727b84dc091aacf0e854c659d34f1d7",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/PlayerProfile.cs",
+      "bytes": 2961,
+      "sha256": "ff723be88c71b845958302dfd14ec6d3ad0ff2ea73c8b804a7c82509ea434685",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+      "bytes": 71229,
+      "sha256": "f25b4f8961dda2afe08846304ed0d0d789796e3e3c34cae7cd8cb06befd92f63",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomCombatPreview.cs",
+      "bytes": 2173,
+      "sha256": "f590a11864c39da2c84cf6c63e2dbedb6f3d98508c449e6784161e066e73687c",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomInventory.cs",
+      "bytes": 6198,
+      "sha256": "d0807f19fcae223e24f48fce089723c0ad27f857914c22a858fdb8249107fadb",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs",
+      "bytes": 1679,
+      "sha256": "9bf7c17c25973dc70c2cb2e6f176a7c4c463561d713b8e596ad1aa3f573f58c8",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/ChaosMap.cs",
+      "bytes": 8003,
+      "sha256": "acdabe5e2c2a9390a3ccd75168e105f8b98dc5c64e8eadd6ba7fec18e17b8683",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/DuelRules.cs",
+      "bytes": 1384,
+      "sha256": "c8f1476c296ff30a43708f4dbbbb5484aead27d0f7481d1d4dcf7cab2697062d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/ExplorationInventory.cs",
+      "bytes": 8765,
+      "sha256": "aebf1f8969240e4019057518a34b740249706394e4eaefee467c64979a9051ff",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs",
+      "bytes": 5917,
+      "sha256": "d0acfc0ac5ce93d84ac20dd0b810a079e03fa997c5b0c0811150a29fb6374c53",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RelicPile.cs",
+      "bytes": 3480,
+      "sha256": "5afae63962b3cc0cf7c4eaa9fc27f93c5b811c0ef2815109b73ea1d85e4f91ab",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RewardChoice.cs",
+      "bytes": 6002,
+      "sha256": "d6b7cb482b34cacf48f0a88b651715504eee36222d5048495c86b8ab99d260a2",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/SettlementAssetClassifier.cs",
+      "bytes": 1552,
+      "sha256": "7452e9ae2f42df032498c38cf4e904f695ba52db6b51cfd2f6d8d93ae9ed5034",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminEndpoints.cs",
+      "bytes": 13214,
+      "sha256": "c1153bc9dff279d61dfa4a9f3cd11665f125e9c13e7f2905eb4dad2976d96d09",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminRepository.cs",
+      "bytes": 23896,
+      "sha256": "5a7ffbd4057e9bc4b8c5e0cdd5103cc282131b4b342bc0e08fcb4d14f605b3fa",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/ClientSettingsEndpoints.cs",
+      "bytes": 5558,
+      "sha256": "d240dd66a708beebb77be5849fc50041e832b2abdbc34ce35117d3a95305aa73",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/ClientSettingsRepository.cs",
+      "bytes": 3082,
+      "sha256": "f1667291454c89e6153340770496a598324d8fbd9db06ac55cb2c3a26920e99c",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/admin.html",
+      "bytes": 12074,
+      "sha256": "bffac8ffce6cb3fbad211dfe94374efe51b3eb45b4815117a2882d4aaf9d3073",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Bootstrap/BootstrapEndpoints.cs",
+      "bytes": 1194,
+      "sha256": "82cd58891237c1a83475c89008d13a28a85cb74411c0c100e2adc5107380b5de",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Bootstrap/BootstrapRepository.cs",
+      "bytes": 7257,
+      "sha256": "20a77fc4fa2045539d68d984ae05131b8769fb338f135e56cb8fe385561342e1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/IdempotencyKeys.cs",
+      "bytes": 969,
+      "sha256": "a838b80169c8f7e319bbef504a13e1c69b5da421a19df93e9b55963f524909a4",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/LocalRuntimeDiagnostics.cs",
+      "bytes": 7087,
+      "sha256": "af179aca402814fe2150800450f48be156eb061de72e101cfe80b1d985baf35f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/PersistentIdempotency.cs",
+      "bytes": 3000,
+      "sha256": "d9ee0625b281a26cb7f5e81b9be2b249e9397352d899a7b93e773dc53f2ba117",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RequestLimits.cs",
+      "bytes": 6597,
+      "sha256": "8fa6cbf4a56b87d3a332fb811b957dbb6284563d74c0589092fcbc3f82248cf8",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RequestTraceMiddleware.cs",
+      "bytes": 1045,
+      "sha256": "4ee80b7232c7b7166bd3edb433d9a09ca29dbab24952b808d8faa54349495d2d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RuntimeTiming.cs",
+      "bytes": 2498,
+      "sha256": "faf7bf328440a55c8c92c0f3d32b9eda01c4e2ae5845cab9b7bfebf95c216977",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/ServerMetrics.cs",
+      "bytes": 14299,
+      "sha256": "a6cb87152e4bae8fba1c836a4da611a010755badab8eb63f95a34cda0e22ff06",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Dockerfile",
+      "bytes": 2083,
+      "sha256": "a3f11021417ca47850cbc2620f0a0edf876b4ed0b0187960cd86ab82ddd2dfc1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/FantasyCard.Server.csproj",
+      "bytes": 1100,
+      "sha256": "810e5e1056076545efea03f9e4ddbd24f5d29bb12c108a750776e4c073811b96",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/HttpContextAuthenticationExtensions.cs",
+      "bytes": 1379,
+      "sha256": "c5bdf62a269cdb818c98cc922837f40212658c4064453c44de58f62afb18332a",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs",
+      "bytes": 7226,
+      "sha256": "c017a4877ef3364d9e9e089fdbd8d7bf724f4824e3a24419287d36baa5147d80",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityMaintenanceWorker.cs",
+      "bytes": 2346,
+      "sha256": "de0a1f59743b49cc51f7dd219251d857ed981513b86e2d3733b03dd66e9fc0e3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityOptions.cs",
+      "bytes": 530,
+      "sha256": "db76ae696eafbaedc283746b4f0fd399dc3bdafa5e36a2810adb63c73ae2c694",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityRepository.cs",
+      "bytes": 17978,
+      "sha256": "e2ca0e92d1e445265d2f970d817bcd7b89233bb4beae6d325a95f3846416d271",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityService.cs",
+      "bytes": 3792,
+      "sha256": "96f68b01bd48b49e70f601f147e36323cf7de274feed2cbeeabc5a1694926100",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/PlayerBannedException.cs",
+      "bytes": 171,
+      "sha256": "af316f001273e465d5902d2d27e0bb6246242b55376b29ef095e144434005f17",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/SessionToken.cs",
+      "bytes": 501,
+      "sha256": "1b89875f7dd6aec331cae1d125112fa6d062e2d36cd2a691d600d2ffa0efdadd",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/SteamTicketVerifier.cs",
+      "bytes": 2958,
+      "sha256": "62c1fa8501ca9985c97ee7676c1ce1b1af6066d0954d07c5310073a5d30b959f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs",
+      "bytes": 6896,
+      "sha256": "cce78fb22cb1929e06256f8f09b9216d49ee0029c167b1974d8bc3c2ec02be5d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Mail/MailRepository.cs",
+      "bytes": 17716,
+      "sha256": "97a7b68ac650485dd5d121ba22b5e28171aa3a8b3835ff16b754e686d2cce20e",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakerWorker.cs",
+      "bytes": 1375,
+      "sha256": "31778c84d8869b4abd4a9da5ee884e45ee7516edee0d66274f8307a4b4790cf2",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs",
+      "bytes": 4039,
+      "sha256": "b06b400c12274a2bc82b5c90e83f0fc9de8befd789906db4db8ba3dfd0e11485",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "bytes": 34000,
+      "sha256": "477f27434c94e40d0284c271dce2f7dd50790ee84a43e72c8d37b3bb772515af",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs",
+      "bytes": 5908,
+      "sha256": "0f6cbfcf24576c6aa9a0e6bdac30ecf79cd5915243c1bfb81bcb0b61c6c5d407",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs",
+      "bytes": 29908,
+      "sha256": "798cfd1959a3412c0cc5b8cc6e0ae9b1b32b612dd1e720e29607da8b37cc4cf9",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "bytes": 9297,
+      "sha256": "84e42f90264f4470934f2583b46da42840320c61f1873f31ac4547be8b214f4f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/DatabaseMigrator.cs",
+      "bytes": 8434,
+      "sha256": "01ef3a720f032d235576eaca22800e48b8afee63e65c2666528b852576e5def7",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/MigrationChecksum.cs",
+      "bytes": 1033,
+      "sha256": "9576dc5482aac19f1ead0b012eaafed1f7a9b76e5d1f5c7a238a86969df0c8a3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V001__identity.sql",
+      "bytes": 1082,
+      "sha256": "f6608279943f8fd223987858bd8371d3cd96c9f076edebc0a595a2574508132e",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V002__player_progression.sql",
+      "bytes": 2852,
+      "sha256": "8c3898c58bcb1ff20fe4ef076f6112916bf66febe5c9388cf4b6b2792005bb5a",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V003__inventory_preparation.sql",
+      "bytes": 2746,
+      "sha256": "c7407abc411b91561ee905655d47cb6473d94b1b163f9fca2e6b1f4598142a72",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V004__economy_audit.sql",
+      "bytes": 1045,
+      "sha256": "a57c1a480f20afb1703e4b64ce2ad9a959aa20c97d972d9e3ce60adb82eb2389",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V005__shop_market.sql",
+      "bytes": 2377,
+      "sha256": "6d9f272d041f11f11dd8b989ca3a6640efec9632f788ec642122243b9f1f4d9f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V006__matchmaking.sql",
+      "bytes": 1461,
+      "sha256": "723ca48afce9f0e4ebd1935df80a53ff6ee92542b393393e9cbba18deeb45355",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V007__rooms_relics_settlements.sql",
+      "bytes": 2698,
+      "sha256": "bd962cb5fa1fa38e4d4706836c947cfd5beccb8c8d6ad005f13c58803e2ca131",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V008__equipment_attributes.sql",
+      "bytes": 813,
+      "sha256": "8a1ac0da09dbb608be4583bf9a1c9fffa0016ce52fb27549ff296762d47d5b32",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V009__starter_equipment_combat_attributes.sql",
+      "bytes": 166,
+      "sha256": "5d537a2434f2fdbd24ac17a1905a46f7876c6ab2be258d3cfe5cae4fb90ed447",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V010__match_ready_phase.sql",
+      "bytes": 700,
+      "sha256": "03f083fc7576d53253ef9ce29967d3ae85033c98ec5025c24ea11462b07113bd",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V011__reward_refresh_saga.sql",
+      "bytes": 824,
+      "sha256": "ad7aeace3c607f67682d9a980d50d003ea536b1789fa96f1f49314a767c0cefc",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V012__settlement_notification_outbox.sql",
+      "bytes": 835,
+      "sha256": "70e11816bb43b16387060841c3dcd5845d49498b57c1080f9f71aabdcb09b1e4",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V013__canonical_card_catalog.sql",
+      "bytes": 1256,
+      "sha256": "b4087ac38befc0a53f61ea939f4a59f462f4f9c75183ed18c076f2a2a5bb3352",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V014__settlement_acknowledgement.sql",
+      "bytes": 427,
+      "sha256": "d006ed6ed3e441d8913dccc493605e877a3851b798ae075e1784d8eaa173c4c0",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V015__red_equipment_weekly_quota.sql",
+      "bytes": 670,
+      "sha256": "ee0b82d2ec3f7670d357c722901f85544c0d76c2838fa95ef20ce0996dcd2053",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V016__card_soul_currencies.sql",
+      "bytes": 307,
+      "sha256": "72a5f67eafc93ef09f797d78d2a0c52ec4c010fd771fe8ceb108f9e81fef846b",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V018__room_equipment_recycling.sql",
+      "bytes": 317,
+      "sha256": "01b6b4fc45c47454f489845a69b7794b32361e8b8dcc208ff991fddfd6e3d457",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V019__unique_player_names.sql",
+      "bytes": 552,
+      "sha256": "5820048312d7e860db96b6fbb787065b666980e48007d285fb3f47f6d48dd6d9",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V020__mail.sql",
+      "bytes": 775,
+      "sha256": "68b30eee3938e3b92c9bd6f947159430c6b9401217f706c25051f769d1f89f8d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V021__unique_owned_cards.sql",
+      "bytes": 362,
+      "sha256": "e31f7467ebcf8804bf1e7089a9f0c1f76cc284e519756fa39fb3c1b3225c5638",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V022__admin_operations.sql",
+      "bytes": 616,
+      "sha256": "5b0aff08991b67ec73bde94758ff4273d0421ff78b58dc86159e00365e0d5594",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V023__client_settings.sql",
+      "bytes": 408,
+      "sha256": "1a4ef1a16a76eaeb354e1aa03f5e7cd6744507b53b12a4bf541e022929f97b70",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V024__shop_refresh_state.sql",
+      "bytes": 274,
+      "sha256": "05c4e02fbdb40ce71837d4359c73c48bc7428b37feb103a05021c1d48a9bc6a5",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V027__economy_hot_path_indexes.sql",
+      "bytes": 372,
+      "sha256": "d3f67396b6608cde2d3bd09d88200869e3e6004305c087bfe25020ca3ececed4",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V028__localized_admin_content.sql",
+      "bytes": 2003,
+      "sha256": "447ca708d3dbc0152ba93827eaa9f011c55ee9231c73d2722fe911738b6c87fe",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V029__market_listing_history.sql",
+      "bytes": 365,
+      "sha256": "8b7392fb2d1c0823c0679a582f99fdbf6ed8bdfdfc666ed07e975df8061af4f8",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/PersistenceExtensions.cs",
+      "bytes": 3247,
+      "sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/PostgresHealthCheck.cs",
+      "bytes": 727,
+      "sha256": "cf01bc5a45b2abdeaf2816889523330e0c62e03e983ff95e0f1c2caaf77c8e3b",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs",
+      "bytes": 4445,
+      "sha256": "14821f4584e4c74874e78e24b72bfc38290208162bcb00c3fe34b3727af53fb1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerMappings.cs",
+      "bytes": 637,
+      "sha256": "a0727b850fcfd953264cec4517c3ecfc87f71412a9f1d13b5d6be3842bbc73ae",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerNameConflictException.cs",
+      "bytes": 257,
+      "sha256": "9bd1cc174ee49d886f44864722f4875a67ecb5d877e63a044fb907382d64ccae",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerRepository.cs",
+      "bytes": 5188,
+      "sha256": "df98d9f6decab70cceca0a3745e147d98201a5b917259cb07356c58b1c1cbede",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Program.cs",
+      "bytes": 7558,
+      "sha256": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/CardEconomyRepository.cs",
+      "bytes": 9964,
+      "sha256": "cf9e06d3b52489438c8d1f1f6ed15e257c1af684972cce689ec1f49d33f93aa3",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs",
+      "bytes": 13940,
+      "sha256": "2a9d56be22888a0a8f71b2ada8c95c1180fd329e3210e066710e7ef952ee7552",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyReconciliation.cs",
+      "bytes": 3636,
+      "sha256": "05ab117ec59386a86538290f5261fb5a2fee8e6c4062357dc81abc425c90bcc1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyRepository.cs",
+      "bytes": 63531,
+      "sha256": "ccd8cc97e41053714b78131f9a80f56bca362f4a67cb8c8fea4c9a46c8009154",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EnhancementQuoteRepository.cs",
+      "bytes": 3113,
+      "sha256": "1fe8a5fa5a7212770c92f85f67d0d3e13c6554c4265237daa125f264d0a817f7",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/PlayerProvisioningService.cs",
+      "bytes": 8987,
+      "sha256": "14b60f78cd0d96ef480b9f08aa4ee2c252cabe3044d768bc1439b2b160c4cb46",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs",
+      "bytes": 17550,
+      "sha256": "d9969eb79a22efc0c754e58c70f6516614599494fb21d9d278e26e32ff4280d2",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs",
+      "bytes": 33043,
+      "sha256": "c682e80f9ad75852fe8dfd3df6d2e7cf7e351985605c0d3192bdb7f6024f1b94",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/RedEquipmentQuotaRepository.cs",
+      "bytes": 3690,
+      "sha256": "0b74790aa81d9ae428b2f0b9df71136a8d456570dcde755b771c29555b7abe40",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/RewardRefreshRecoveryWorker.cs",
+      "bytes": 3425,
+      "sha256": "d461e943228ec35b4eadbe504f2e6964ababe3077d606276a8e4c0e821c8dada",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Properties/AssemblyInfo.cs",
+      "bytes": 99,
+      "sha256": "f206de280090e2fbdcf2fcbb5eedea9829370dfdc6f085fca2fcb68632be48f5",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GameBody.cs",
+      "bytes": 2973,
+      "sha256": "bcfe3c2a97d8bd0c03c0ebe40a57f5b7c9697241266cd876f1b63f330192b409",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GamePage.cs",
+      "bytes": 2212,
+      "sha256": "ab0297a5ec64a3d9df1eabfa21c8af80a010a77a73cac691d2854276dc99fe5e",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GameResponseBudget.cs",
+      "bytes": 902,
+      "sha256": "ef3e175845146f2736578f956edefa4fd8d64823e95d26773cb23de52c93057a",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/ProtobufHttpMiddleware.cs",
+      "bytes": 5644,
+      "sha256": "6dda524e350d35f16735d52c18ec066a5cf1faa5f73a4d82bd9c367dbd1c4484",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/ProtobufHttpResult.cs",
+      "bytes": 3490,
+      "sha256": "5496ac9db4110d3ee1c69e054f59b9c2045754bb7e9c2f5f95a815fc5e4fae6f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/ConnectionRegistry.cs",
+      "bytes": 2667,
+      "sha256": "866657fe10608859507c6686012b41ab7b959b10373718044c304632bd73cf9a",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs",
+      "bytes": 3597,
+      "sha256": "572ad8b6df85105d3751e053b7648f8a3426a2c15abeaa7eb4c23df50017182d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs",
+      "bytes": 53136,
+      "sha256": "3e9a1ef43b9bd82c17130d2ca572a07c7838c595d5d62a497a90b99006d4d525",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeConnection.cs",
+      "bytes": 5095,
+      "sha256": "229d9a5ce45a96bc9f7cc48faf250bcc90acd9aa672888da9d7a25a4c1eb8914",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeEndpoints.cs",
+      "bytes": 14819,
+      "sha256": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeEventStore.cs",
+      "bytes": 4877,
+      "sha256": "493b6f1427c7f726c6efcd96548b098942e937f1a4b7c1e6fe1b691735d3bbdd",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeFrameReader.cs",
+      "bytes": 1282,
+      "sha256": "87b93aceecc173e29e9c14667b078c262b2616fbb7cca5f0f01e290cdf7f3fe0",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeMaintenanceWorker.cs",
+      "bytes": 1273,
+      "sha256": "8a6a5922ccd5b2243d0a4e58828aaf5f7ec40a6c712fed43f2100797b87a57e1",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeOptions.cs",
+      "bytes": 318,
+      "sha256": "2ad87cfd8fce806f62f26bb122523ecc0a4a08be75f638be16a7a818513b8486",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeTicketStore.cs",
+      "bytes": 1731,
+      "sha256": "62f4cd739bc84b61a0fc04a7976e44c5f35b12e9ba6ddc4eb0297912b8a96b75",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs",
+      "bytes": 15106,
+      "sha256": "2eb9db6f4fc451a32fb88ae12f6089ee8537adf15883208b436bb6ae07955b50",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RoomTransitionEventPublisher.cs",
+      "bytes": 7159,
+      "sha256": "86041d3d8f4a5a7c77586df55fe805ef7cb2dac66abe2f99f9ceb8c621ba2e65",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomActor.cs",
+      "bytes": 11812,
+      "sha256": "5c9e998047bccdbadebce402a2b4911dc9e78aa810512e9d41b637e79b9aa78a",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomCommands.cs",
+      "bytes": 11458,
+      "sha256": "4176c7eaf08d57d16b169ceef0bae2527e9ffa2fd538ef0bcce0770f0c3cd2ea",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomLifecycleMetricsTracker.cs",
+      "bytes": 5388,
+      "sha256": "cc2b1725516f2b4b1bc4eba061514bcb36ce3985bddaec5245df8b79309e2bc6",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomModuleExtensions.cs",
+      "bytes": 687,
+      "sha256": "cb7707495407929b9f319f4498f995e93d3f49c7fe8eb747c686a6962722abca",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomPersistenceHealth.cs",
+      "bytes": 1403,
+      "sha256": "4bf004128b0a3f772627dd2e73b6093ed87aa025a826f1e33d80e6791abc712f",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRecoveryHealth.cs",
+      "bytes": 2147,
+      "sha256": "573afa1a515b840190e9f0898c680139d6af5e1e22d68231d2e1dafa941ce5fa",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRecoveryWorker.cs",
+      "bytes": 3363,
+      "sha256": "7afe8b96485e5c73dd8aa84dc96bb8dc642f50fdd992ac3e26b89fd55c9b6b3c",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRegistry.cs",
+      "bytes": 10177,
+      "sha256": "18ce62135a512269dde69d29edcf27c9fa03d4295f7d02b3973fea1c26eb1413",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs",
+      "bytes": 9087,
+      "sha256": "0a2133af12944fd223cfc93bedf4880afc7d40d8a04877838a906b272fb465cb",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementBatchProcessor.cs",
+      "bytes": 1121,
+      "sha256": "8ae3833770e3b62a9d79283be04ccf342ca127b82626b425cf59e981862c75ee",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementCoordinator.cs",
+      "bytes": 6169,
+      "sha256": "57e8cca560095f79a6fd53c195bc381583440cfad8787271fb1e1469f58a7791",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs",
+      "bytes": 3235,
+      "sha256": "110c29962309de0be1a4515cf7daa311d39fe9ee7b886852dabddd67961b8447",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementEventPublisher.cs",
+      "bytes": 1574,
+      "sha256": "7922535fa9e614bdd664f938a403c8797ca668b8ca14c94a26ff31ae350e046d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementMaterialMapping.cs",
+      "bytes": 709,
+      "sha256": "13035ba1365426e76c73f7af07e1bcb5291097de0b39b1cb81fe8445663416a9",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementNotificationBatchProcessor.cs",
+      "bytes": 1011,
+      "sha256": "aec1dedbf153302d046c7f10e7db0de857307ad171e839cdff84ada93bc92517",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRecoveryHealth.cs",
+      "bytes": 2260,
+      "sha256": "a551ad385836c7f9012c276ec8bc09d711005ad46d2fd7dc7e443bceefc9449d",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs",
+      "bytes": 39839,
+      "sha256": "c5a0ddb7e5602d0b4cb0c2eef94e26121fe81d3178008b67152c378bc0d132a0",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/appsettings.Development.json",
+      "bytes": 318,
+      "sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79",
+      "mode": 436
+    },
+    {
+      "path": "server/src/FantasyCard.Server/appsettings.json",
+      "bytes": 1058,
+      "sha256": "8e5e47e5b7dbc7dd05bcbfae8aada11d1eba2796b0839b9df64b12c9f6088e8f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotDirectorTests.cs",
+      "bytes": 3973,
+      "sha256": "e28375b3988aecf36a67963ad9397a9142cbffed521590f0ad6a4b9a59b7edb5",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotRoomRuntimeTests.cs",
+      "bytes": 8224,
+      "sha256": "e8d0acc23779ec03f11ff6e824e087568984583d6de4629e45b6c62afd774e50",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotRulesTests.cs",
+      "bytes": 5530,
+      "sha256": "08aed9131bcc2ed9587a6baec0a6396e603a31a099a8ff72d83ddb091fa498ab",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/NumericalBotLootTests.cs",
+      "bytes": 2830,
+      "sha256": "f680de5e65e022c6742be9b623b390d7ecfbe798e0b69610a17f6cfed247326b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/CardEconomyRulesTests.cs",
+      "bytes": 2810,
+      "sha256": "643630a7b9ad9e68fecee38535cde459976665d432fc96e3434a36ec64759248",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs",
+      "bytes": 5230,
+      "sha256": "b15c2a8b4785f0d4defff03516fb7f96b4969e996552305d36e700d05b39d83e",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/DeckRulesTests.cs",
+      "bytes": 2688,
+      "sha256": "15dc24cbb41a1ae4614be8757434e54c2d3917ee25c151bbcfb9434f987b7996",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CapEffectiveContractTests.cs",
+      "bytes": 10592,
+      "sha256": "4bb08b1c5c524c28b8493902ebc590beccc210a47acf649efba12d0e00011600",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs",
+      "bytes": 15637,
+      "sha256": "9354f97eaa5ebb7f98e97d31496db98f3e5e8e4874055224989f07e33ae14e21",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CombatRandomTests.cs",
+      "bytes": 667,
+      "sha256": "d9999130a5b6ce26a2ebd5abe6b0f17f5dc3f3e5634f2b329cbbfc099c4634ec",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CurrentNumericalBaselineTests.cs",
+      "bytes": 12085,
+      "sha256": "2d1ff53427139c35d23b4ce00e398181181f60098b6ee37ce9a7ce39ac02c81e",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/ElementMarginalAccountingTests.cs",
+      "bytes": 3677,
+      "sha256": "103e194c3b7587ffc414ac39df4641086a63448b36ae6ad5f3f0dac40c0a9a3c",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/EquipmentCombatRulesTests.cs",
+      "bytes": 8100,
+      "sha256": "3c87a89c347716824744156394e5ff0b82b4cb03e9de9d10180b2f4ba9e3f7cf",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/FenxianImmediateDrawPolicyTests.cs",
+      "bytes": 5031,
+      "sha256": "7db65dbb4f3482d72b5519130d9e66bd4c2c7a7dfc6fc0ff99b4f93d330f65a5",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/GuardianShieldBonusPolicyTests.cs",
+      "bytes": 6332,
+      "sha256": "003e685b1dc4ea0d6596fb452ed6d7c6b451fb6309193d7c4030ba106adfdd9d",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/MonsterCombatDamageTests.cs",
+      "bytes": 3943,
+      "sha256": "fcbd31f3f3b61fbfa799d94a896e48ac4f97448c47247c34a734d17f085fd4ab",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/PausedDrawLedgerTests.cs",
+      "bytes": 3812,
+      "sha256": "d99d3993246d8244b1e00dd8fbc19ae9b84d872370d1acc2c8e53d154443053b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/Pr13BoundaryContractTests.cs",
+      "bytes": 4162,
+      "sha256": "5cd7fd0d12e875f4ad17dfcdb0dc1e4bb21a59317fc52a5c4cbb4ea064d17567",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs",
+      "bytes": 7424,
+      "sha256": "b6e17a419e2ad8af190a2ee70cdd1353507792e6849f44dcb23ff1ded978a8cb",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+      "bytes": 671,
+      "sha256": "67d3f84262da6226516e694d465cad359af68e77e6464e857db8655b7d5ec853",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Matches/PreparationRulesTests.cs",
+      "bytes": 1075,
+      "sha256": "ab91a554773c0e752674a7850bda1d1a90f8851841573787e98438a2f4e26eb3",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Players/PlayerProfileTests.cs",
+      "bytes": 1143,
+      "sha256": "1460d574673524bd25cb36f058be82e6fb3b689de5b2531d573c1ce328b3661b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSnapshotTests.cs",
+      "bytes": 19408,
+      "sha256": "898f5608727012f8fb0159b44e8091d39f762885bf50570de1a7dfda0b4a2339",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/BattleTargetSelectionTests.cs",
+      "bytes": 2511,
+      "sha256": "2ca4f218ef5bf7cb1427f11cdef53dc93227486a81939715f8c8da9bbe475980",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/ChaosMapTests.cs",
+      "bytes": 3513,
+      "sha256": "9ad4eaf048ffee3b4d4bd41a96f08d9e0f5118a45865e588f18cd6852bf665f8",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/CombatPreviewAndFeedbackTests.cs",
+      "bytes": 14485,
+      "sha256": "f59931760cfd156cf7f58c43691628d8829fbedcab2e37fb9007ffd6270465b6",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/CombatSelectionOrderContractTests.cs",
+      "bytes": 2491,
+      "sha256": "15321b49e56bbfe87fdd28a4f8129994187619311e85a3b86dba4238ec509de7",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/DuelRulesTests.cs",
+      "bytes": 912,
+      "sha256": "c19224fb954a39f263f06a046d510ce0eeb7b25e2ab27ab23ee6eca8b5fee6d2",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/ExplorationInventoryTests.cs",
+      "bytes": 2162,
+      "sha256": "9d47d6ef84194583ee6458b673894a387393c8ada50244eb923c4cc7a204d4f0",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/HealthPotionTests.cs",
+      "bytes": 4024,
+      "sha256": "a939534bae8fc9100cb64ab5e70683f82f08805cd4d7af01791bb4c80ef5ed57",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/LifeSpringTests.cs",
+      "bytes": 6028,
+      "sha256": "abd6f2381bbce7f56c976fcd9a64c091d75164f5357249d11371e66f9e1c9391",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterCardPoolTests.cs",
+      "bytes": 8587,
+      "sha256": "1dd98af66ee10ffcc292153c5b44d3678c65b2548c534335826113bead37b136",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterPoolBaselineContractTests.cs",
+      "bytes": 12452,
+      "sha256": "dfce10e6290dd66f75d1ce196c97417f6c3dd6f72806729197d01a7b03cd15b0",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterPoolCapacityContractTests.cs",
+      "bytes": 13278,
+      "sha256": "062bc5fd9a295fe2c3ee3fd50eb6871195593563020308ad47ba69e3e3636508",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterPoolDilutionTests.cs",
+      "bytes": 4016,
+      "sha256": "2f561be814181ba3826f12ce421d093ffd03a0ad9f64cff9f65c4dd462377739",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/NumericalPolicySnapshotTests.cs",
+      "bytes": 11780,
+      "sha256": "37fc0f032d8046d83a40eca9e30802701b1d3cf695a4b1c9451f605d7c715712",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/PairedBuildBudgetTests.cs",
+      "bytes": 3889,
+      "sha256": "a9f319e9a10d04dbb85f90878ddb2c0d48bd499df420fdaf6380c7bb7e9fd20c",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RelicPileTests.cs",
+      "bytes": 1674,
+      "sha256": "62a634c796948dd9cbfe5c5a965a54260a36caf0163e3639a968611dda6c4fff",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RewardChoiceTests.cs",
+      "bytes": 9952,
+      "sha256": "8f21f1c08b00f2bd7b2e4797708892a5ed61eab550ebf367f70bf107c6eb86ad",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RoomInventoryMutationTests.cs",
+      "bytes": 10630,
+      "sha256": "1b34011dc79e4558bb1745aaa263423f99bc8981a2c33103f1fd2c4ccaea7b83",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RoomRandomStreamTests.cs",
+      "bytes": 2947,
+      "sha256": "4e716c952a3b01aa6381526b75837572f17f941867c0ba9dcf286488b6f1352f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RouteGeometryRegressionTests.cs",
+      "bytes": 3206,
+      "sha256": "14f61cbfdb73ef3e8ab98afc8800ec4eb8f0029173c44de15448557df3cb8919",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/SettlementAssetClassifierTests.cs",
+      "bytes": 1839,
+      "sha256": "670d594be976813d4a15972127399dea09e7fadb4b844c6279bd8ec858d8efc3",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/TreasureEncounterTests.cs",
+      "bytes": 14480,
+      "sha256": "400124e32cd06617bf74eedc018ef7d3c67a10195c6ca22d416fed2f38634498",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Usings.cs",
+      "bytes": 20,
+      "sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Admin/AdminValidationTests.cs",
+      "bytes": 1095,
+      "sha256": "4eb7c600e7a6ba2ba996fd663851e2c135a905a51c94851830969e775ade6fc8",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Admin/LocalizedContentContractTests.cs",
+      "bytes": 2435,
+      "sha256": "687c3a675e4d1fda61f1a25f56bef3dfc1b2c8cc7f9795a85ec082a073b5080e",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/HumanRoomMetricsTests.cs",
+      "bytes": 2431,
+      "sha256": "fb8235e7a486823b545bd561a4f849f30c9bfe9249784a6a50cb816a3bf52a66",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/IdempotencyKeysTests.cs",
+      "bytes": 1111,
+      "sha256": "7d28654865519874941aa7771498043bd20a6851fdec5075b19a3b74bd019b4a",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/LocalRuntimeDiagnosticsTests.cs",
+      "bytes": 3956,
+      "sha256": "8fbafb0128c5a60159132847b5e0da2fdff14723c9cd379d27a859660fd8bc2c",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/PersistentIdempotencyTests.cs",
+      "bytes": 669,
+      "sha256": "5dc02bda990df54d68d50b5b520646d98ea37868f66a9666a9c9aeee6f32f8ae",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/RequestLimitTests.cs",
+      "bytes": 8584,
+      "sha256": "44ce8a89ddc4e301b084f2298e85cc89fb1cc9ae5f0dfc2a50f3011c059b06af",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs",
+      "bytes": 9669,
+      "sha256": "10252c65cb9e0cdbb34d63da360cdd7c339f385d0ef5da2806c53acd446b3e8b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/ServerMetricsTests.cs",
+      "bytes": 6620,
+      "sha256": "33a6c4c0b4fde1f4d50ffae4fa4bdc35f0502ad6bfc541a8c2e07ff596fb7f21",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Config/ConfigBundlePublisherTests.cs",
+      "bytes": 3899,
+      "sha256": "09664247703f6797795c7037b08c1d774150c3ed73854940e9aae164ae2a0ef1",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Config/ConfigCompilerTests.cs",
+      "bytes": 2037,
+      "sha256": "e5441cbb89fc062b903bce7e9bd81574b07a6644da2e40f50d520b120468b32d",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs",
+      "bytes": 5450,
+      "sha256": "3b569f6fa0438c5481b7c96cc2a371355dccfe6378ebaa7b0a5e9e9266eb6cc5",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Deploy/ProtobufPerimeterTests.cs",
+      "bytes": 2831,
+      "sha256": "bb63281762d1e3354dba2817474388de80960e68d4bf5b96b0886e8e258571ae",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AcceptanceTests.cs",
+      "bytes": 32757,
+      "sha256": "82c656598f8676c5bfe479303dfe3434f5502bd97909f837bde6fb87c038520e",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs",
+      "bytes": 14754,
+      "sha256": "c081f251afd1b662bc1c2a7bae878aeef622434471c36144cb9515a7f388de28",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AssetAudit.cs",
+      "bytes": 4924,
+      "sha256": "34a3b1045a0240f59adbe7829543208989cfa54007526477796420dbb890cbf9",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05CallbackRelay.cs",
+      "bytes": 8600,
+      "sha256": "9375776d163d140cb356f87689c957b57a7874aec82aa51dc590e208d6e287f3",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05DatabaseRelay.cs",
+      "bytes": 7747,
+      "sha256": "45d93543f30ebe5be6da3903b71d757c304e02efb3a09d93129e0f622804491d",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs",
+      "bytes": 11039,
+      "sha256": "ef3759e57f564a5609e663efaf880346b5c35eb8b7d266e65ee2610152b940ea",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardWindowTests.cs",
+      "bytes": 9651,
+      "sha256": "c6ae1c93e68a343e13e6a42026171c898282426fbc9bed9619b8f170b24366cb",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+      "bytes": 23184,
+      "sha256": "e45e7bdd2341e20f0cda920c44f09a493ae95d7a475af5b652d50aa3804cecc9",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs",
+      "bytes": 10162,
+      "sha256": "fd1d154459ee107fa74ec89e086c2574cfb978417fd1346d369609804f4edd72",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLegacyRoomScopeRelay.cs",
+      "bytes": 1738,
+      "sha256": "509348acee59d313653f4fe6aa2f6f9e087af3adc7e5f1792c83a9826cfa6fad",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopRelay.cs",
+      "bytes": 9458,
+      "sha256": "7bace29a54e033233c35ce062e2bb25339538408c3235894413447f21fb465a0",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "bytes": 20250,
+      "sha256": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+      "bytes": 42973,
+      "sha256": "8aef712ef55e6956ad5c939f704f5f95e2bed21e2f6d9f55a3db797ed8bb7d28",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs",
+      "bytes": 26012,
+      "sha256": "c9d2084bddbb28387eced61a94ffa81b53ff4d96db6b2f269febbf8d22248aa0",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessRollbackBackupTests.cs",
+      "bytes": 11775,
+      "sha256": "af16ebce26d7e815630cb89b51f58ef49c567fa6dd24fddd76c0f8ff765902f1",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessRuntimeLimitTests.cs",
+      "bytes": 5080,
+      "sha256": "354aabf61eacbd92a4b44de3a45c429d25875029c619d9eeb6b15f848e2a268a",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs",
+      "bytes": 15459,
+      "sha256": "bbb6253cccb079c62e7e63af609ee2e440982a165fbaca1839e37975fcdfb12d",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs",
+      "bytes": 24480,
+      "sha256": "f17f112330e55916d198690368c3b565e97a416fb1bac1796d1315f1264a5b1b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkNameIdentityTests.cs",
+      "bytes": 4048,
+      "sha256": "5ffc32d2989de97740d929d779041ced0addb7b2ebcbe5970525cf51f960f99f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "bytes": 1051,
+      "sha256": "41702736ca6f40e1514d5035eccc991476d71be99c669b6076ba0b751ecd97e9",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Identity/LocalAuthPolicyTests.cs",
+      "bytes": 1040,
+      "sha256": "a8343a85c9ad392a431476f99c631f7ee0f979181d0b4ac3f5611fc1411d12ba",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Identity/SteamTicketVerifierTests.cs",
+      "bytes": 3435,
+      "sha256": "30ab87473c522f0b5584720eb9ee3f0b63172ae14f8b492410ef38b3727b8861",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Mail/MailClaimContractTests.cs",
+      "bytes": 1142,
+      "sha256": "683394e336102f2d9347cb3ce4b71a3dbd195d695b526f00863183e3ef5859f6",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/PreparationContractTests.cs",
+      "bytes": 2168,
+      "sha256": "c53295210b5551010d4b76b4137a278e53b7394582541b987811a352bb0363c6",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/ReadyLobbyRulesTests.cs",
+      "bytes": 1726,
+      "sha256": "bee9c04451c134c193333d244dcbda75b0bd2fb9252c15ceb8b6e58d733d9bcf",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/ReadySendIsolationTests.cs",
+      "bytes": 5122,
+      "sha256": "b1020cfc2dc2f88ea7aae60a61905d58a89101aa23312e192df652d923b4336c",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/MigrationChecksumTests.cs",
+      "bytes": 2252,
+      "sha256": "fade026cc8bf9d5c3cffbcfef786564496b7b112f909a9924f339a64fcb573c3",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresBootstrapBatchTests.cs",
+      "bytes": 9485,
+      "sha256": "a0a7760c9323e5fffd58a185e96fe28e961f09171696324c6a0e7737c3eb0a00",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCardEconomyTests.cs",
+      "bytes": 11456,
+      "sha256": "567bf15708072ecc650fbf760d8e0a860987e14d00c7a1bcbe21f0cdbaf474ad",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCardUpgradeTests.cs",
+      "bytes": 9700,
+      "sha256": "bea82ce711c0cf9538bcd2bcd23c1342ef1570de1dfbabab267a13e457a88dfc",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs",
+      "bytes": 13720,
+      "sha256": "87f6c9f97c1ecc9d1db91fec23852f08bcfb86a0ca42fcff07be7f2a2ce47b17",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresEnhancementQuoteTests.cs",
+      "bytes": 8589,
+      "sha256": "c067db1057ce97a2bf5cfa27435175597731d80cd5492bed67c457b4de0ae320",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs",
+      "bytes": 31788,
+      "sha256": "23836e9e8c5b8d8f6ce3672da3534b51e1581aa3769f0495c63b03ac2675b31f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMailReaderLifetimeTests.cs",
+      "bytes": 2785,
+      "sha256": "0470e5d8509c315d5b955036194f074c39a022f3ff9bebe9763acac261dd3781",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMarketRelistingTests.cs",
+      "bytes": 11989,
+      "sha256": "87f400eb99ed02b531a13f3c2b92f5f2d396e20702fd68c357268c9a98b1fd83",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMigrationTests.cs",
+      "bytes": 5481,
+      "sha256": "1f59ab97cf4d6853dce74f2df3b69ba47cbb1d34559a59baa33b3fc312e5e5f7",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNameIdentityTests.cs",
+      "bytes": 8340,
+      "sha256": "3cdf37fd4170b7ce297e99f73dc71dc82b04cd0b32f65b2915011dc6de183163",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs",
+      "bytes": 26907,
+      "sha256": "445eb56464e369fbcf1ce9ca57e89ba6e6d634753878e50f5877b11baf891543",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresOwnedPoolReuseTests.cs",
+      "bytes": 3042,
+      "sha256": "ed4e15399814a5f09cc3bbe1ff347778b8d4c4dbad71faed0d0459f7248a9203",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRedEquipmentQuotaTests.cs",
+      "bytes": 3520,
+      "sha256": "ef660ee61cf8be455a8b186bf047ef3826f7177d03876daee0610c9e2f9ee0ad",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRoomEquipmentTests.cs",
+      "bytes": 10983,
+      "sha256": "0480588517d990ddf1d31e65300c92859fa77a19a60a2b64d695e01442ff328a",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs",
+      "bytes": 122345,
+      "sha256": "080546b36f7b5b854e8ccf7ef729ae40678f519d70036e76e2ec7a95db046b17",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresTerminalContextTests.cs",
+      "bytes": 7052,
+      "sha256": "1bf163345418c96277e6e6d954ab3ed4a2cab496ac30b4dff6496558b7d72367",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/EconomyReconciliationReportTests.cs",
+      "bytes": 627,
+      "sha256": "a83cb65b86bf37963b5a2d837b445648a00a4ecc1fffe8bf7e825eaef24b15ee",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/EconomyScheduleTests.cs",
+      "bytes": 1602,
+      "sha256": "525d61e33dc11eb0dcb155e531e33bd2e69ccf224c1bf766b1a4c195d15f46d6",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/RewardRefreshRecoveryWorkerTests.cs",
+      "bytes": 1703,
+      "sha256": "44721efb9ae6d51eb86d2675d3a364218f192c57d7e21f06c1487a00aa764b92",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationBusinessTests.cs",
+      "bytes": 12983,
+      "sha256": "d0a3ea2c1605c0ef0202d2dacfc8cadd54ec7af3859117c9db06f9825416ea9b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs",
+      "bytes": 11308,
+      "sha256": "970943e1fb6f6a775c4de8afa5a6981e864f2ee262d9948386b01761160c6a70",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs",
+      "bytes": 3712,
+      "sha256": "3d1e7a2526b9c93ff2f752b8ef637aea1b5a9435dd8ca62fac1be03619be0c95",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiBoundaryTests.cs",
+      "bytes": 7466,
+      "sha256": "4deab4a7e8864da7d6646786dc74483e34454175eb9cd33a89b678a69d2688cd",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiDatabaseTests.cs",
+      "bytes": 12506,
+      "sha256": "df0eda39a91b31006a019b8d451bf9819a58f2195b46b7f1a17a7b74562eccd8",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/SettlementEncodingTests.cs",
+      "bytes": 6348,
+      "sha256": "18dc5eca53049e0d08e8dd35ad5e0af42435333c6c176f2a6d1df85a7cce8a90",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/ConnectionReplacementTests.cs",
+      "bytes": 6769,
+      "sha256": "94b4ab79b7b2e63862090a302a84b508f814d72560cc3199642ff972f80b43eb",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/GameplayProtocolTests.cs",
+      "bytes": 7376,
+      "sha256": "b3bd71819970b7ac16d6fce38fbe90a726adf89f56419ea1f69fc54132078f42",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolBaselineWireTests.cs",
+      "bytes": 5881,
+      "sha256": "71e3a95e733b58f1b888835205d6e6d76e0b51dfd9f52bdc89268e74babd9ee3",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolCapacityGodotWireTests.cs",
+      "bytes": 3825,
+      "sha256": "040d5701158f538895fbc47ba8fa2a2025ad66e003e27ff1553caadd1fe8dd55",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolCapacityWireTests.cs",
+      "bytes": 16174,
+      "sha256": "c0142dfc56a8a4c7087817840c9f8461557cbbce7395defdc5f0dfdb04f49924",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolLegalRouteWireTests.cs",
+      "bytes": 34996,
+      "sha256": "0fc1597bb19455642c2410331d655d071544329f16a2af47bae0d44ad09778a5",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/NumericalProtocolTests.cs",
+      "bytes": 1462,
+      "sha256": "4fd2a49f57083cd2b5eb4d2e59b9ea40cd937c5badc279ebb5e7e9c03c3d130f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/OutboundSizeBoundaryTests.cs",
+      "bytes": 2952,
+      "sha256": "dfd23cca8a94a8bc5d6b40678565f7c5f4f63c892d416b16720fc1b90b96901f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/ProtobufTicketTests.cs",
+      "bytes": 10330,
+      "sha256": "9953b160bc4abb6efc31da2ccd2c708796e86eb03d0681a8c6928fb848c43a82",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeCommandRouterTests.cs",
+      "bytes": 30833,
+      "sha256": "6c0b0537c2735ce56cc5846382b08d8db4140346a294210ff5dac14f15fa26b5",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeEventStoreTests.cs",
+      "bytes": 3217,
+      "sha256": "8b7b467b89a0d0647513cacff5d3a8711e3734c04433f72e2288c4a29a606fec",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeProtobufCodecTests.cs",
+      "bytes": 14310,
+      "sha256": "972616c8c3bc68423c8860a8729fd1e7bf273ff7e20f182712e0f16e116dfb57",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RoomTransitionEventPublisherTests.cs",
+      "bytes": 6028,
+      "sha256": "506b3f469eb34629c33fc02445795ba836a0c5a0566d07f04fcb003cca4cf187",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/SlowPresentationConnectionTests.cs",
+      "bytes": 2520,
+      "sha256": "5cd703d06fcad44fcb7f12b2c650ce644ac2f22acf432cb4ecc708e26f33087d",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/TerminalCommandContextTests.cs",
+      "bytes": 8566,
+      "sha256": "f6b7f58cf5a96eeb4a3791d70fdd48ef7dcb1a54e8780fddc2d70a97a20b033f",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/TuningRecoveryContractTests.cs",
+      "bytes": 16208,
+      "sha256": "e762ad38aca60802b16f177a8f7c28c9855afa339b8c6f669ffd063277335611",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomActorTests.cs",
+      "bytes": 10629,
+      "sha256": "62d206b89f03a35edb8e7fe692243b745e207172bea9bc453432a6d6a8ff9316",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomCheckpointPolicyTests.cs",
+      "bytes": 3768,
+      "sha256": "32e81d0a8ea72a7089ec5ef0ed4aa1e427e6faff861526ec27b8f37039de8398",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomLifecycleMetricsTrackerTests.cs",
+      "bytes": 4654,
+      "sha256": "ff5115a647408a57ec4fb3b2db38fafb259be485bc188eb13824b6f75a681952",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomPersistenceHealthTests.cs",
+      "bytes": 1337,
+      "sha256": "da18e36d36dde75159531716f67fcfb89410138988f5b8a08ce8606762cf1066",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomRecoveryHealthTests.cs",
+      "bytes": 2014,
+      "sha256": "501951d9abf2dc9594d61d1a9ae0eac91261f1a1197e85d8af355fdb6ff2fcec",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomRegistryLifecycleTests.cs",
+      "bytes": 2933,
+      "sha256": "c4371380351ff3c550bda5ef479efcc23b248273b46d1de54593ab49ab26d8eb",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementBatchProcessorTests.cs",
+      "bytes": 1541,
+      "sha256": "1736f416dbc976c412c52436e7379d43e427398539d112da4e91a742743867ea",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementMaterialMappingTests.cs",
+      "bytes": 1970,
+      "sha256": "c2df24662a5bc8ce22f1ced5a3f041cf4c302ed2867f12becd258f3b860ff98b",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementNotificationBatchProcessorTests.cs",
+      "bytes": 1785,
+      "sha256": "188f5fa3a42c228ad20b33425100ab06fa622b7262b4fed9d9bc5862a5b66866",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementRecoveryHealthTests.cs",
+      "bytes": 2098,
+      "sha256": "4382e1785d99807c9981508834ac1a3a8058889379409928faadbb273ef6aed0",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Usings.cs",
+      "bytes": 20,
+      "sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359",
+      "mode": 436
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/xunit.runner.json",
+      "bytes": 104,
+      "sha256": "c1b53e63135e7ea6b2d0fd5243eede1e1378d42292cd7c2317d63996983d98c8",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj",
+      "bytes": 176,
+      "sha256": "36e3ff082fde4da1451c41bfa876cd388e573b9ec3070c631bdd76145265a895",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.ConfigExporter/Program.cs",
+      "bytes": 17898,
+      "sha256": "b210e774c3ad3cd46424b6ef290c101c75cc8053af9710bf43d4bb8466158de5",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/CapEffectiveExperiment.cs",
+      "bytes": 18297,
+      "sha256": "14cd5f866d0f6e0db68f7ffa6d0f7fd370c8dd91009a8c48904f51f1c7eaed15",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/CombatExperience.cs",
+      "bytes": 35887,
+      "sha256": "4cae647a26bef082b321bf416105dd942520a7231ae6480c864b30e10811879e",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/ElementMarginalBoundaries.cs",
+      "bytes": 9165,
+      "sha256": "fa207e38f18683a69e7080cf19cbe176d727be48f1517b1f46393c54f3e98dca",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/ElementMarginals.cs",
+      "bytes": 6932,
+      "sha256": "99cea2edc886916611b26120a077224b697f4ae3b59654cb50dc5ed33136d34e",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/FantasyCard.Numerics.csproj",
+      "bytes": 290,
+      "sha256": "352d76d01d7620c40459fc5c0831d3d93521c12521a394fb34fba9da53f557d2",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/PreviewVectors.cs",
+      "bytes": 8176,
+      "sha256": "758ddd59cd1a1f78c99b9fffb40cefac7d1cf1283c2e3c772914c56e6c206bfc",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/Program.cs",
+      "bytes": 9928,
+      "sha256": "0bf48fc52118c8e582a832f4aaf8054cfab57f230502b1443c152e9ff74315b7",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/README.md",
+      "bytes": 1833,
+      "sha256": "4e58cb9809f94d940f956f973ae7815658c6086ba5cbb6590c74da3527666d61",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryExperiment.cs",
+      "bytes": 7649,
+      "sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryOracle.cs",
+      "bytes": 5770,
+      "sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791",
+      "mode": 436
+    },
+    {
+      "path": "server/tools/admin-smoke.sh",
+      "bytes": 4626,
+      "sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+      "mode": 436
+    }
+  ],
+  "runtime_root": "/home/ubuntu/pr13-acceptance-20261009/work/current-process27-r2-20261012/artifacts/bin/FantasyCard.Server.Tests/release",
+  "runtime_files": [
+    {
+      "path": ".msCoverageSourceRootsMapping_FantasyCard.Server.Tests",
+      "bytes": 722,
+      "sha256": "3177f69f64295f7a533c56aaab922cad531369e12114af695a30311515f0f06d"
+    },
+    {
+      "path": "appsettings.Development.json",
+      "bytes": 318,
+      "sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79"
+    },
+    {
+      "path": "appsettings.json",
+      "bytes": 1058,
+      "sha256": "8e5e47e5b7dbc7dd05bcbfae8aada11d1eba2796b0839b9df64b12c9f6088e8f"
+    },
+    {
+      "path": "cs/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15432,
+      "sha256": "18f5246c4d6d716fce025f8dda8e487a8cd977f0dee271e9d5dd2043518cc0cb"
+    },
+    {
+      "path": "cs/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43064,
+      "sha256": "77016186185af65dea6fc9d4af6d1a36d4ea5ebad62ed47dcf3214420a84da0b"
+    },
+    {
+      "path": "cs/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16440,
+      "sha256": "b983773dc5112854fe411fa22223e929c7fa230a1a843fcc58023237aca326f4"
+    },
+    {
+      "path": "cs/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16944,
+      "sha256": "26be9bb3a8932ba04014e4ae9b8f20a0222a3e2c1a1b41cec11d49bff609ce72"
+    },
+    {
+      "path": "cs/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21040,
+      "sha256": "2f776bf0e946ffcd3f8a38af2653137785eb55db3cdb0c5a392bbe07d2ccc082"
+    },
+    {
+      "path": "cs/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 20520,
+      "sha256": "cd637384e1b3973be3c18409ed886f8234e2e3c3a65edf7d721d154e26aa64f3"
+    },
+    {
+      "path": "cs/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 23624,
+      "sha256": "12b0829d24f6f53f0e22fcbe370d3f91b67bbcaca7f0d82323d08cd7752f4519"
+    },
+    {
+      "path": "de/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "bead618788c25b69e2b8192ed862db3ce532508859a1586909a529eac27a9bf4"
+    },
+    {
+      "path": "de/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43080,
+      "sha256": "a766170567bdf8b573067d0c71c67e8e089777f70d57ec0e15db8f681b02839e"
+    },
+    {
+      "path": "de/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "d11f2a5262947fc1b6d426a6e1828325cedf40fee28e29ed856804ec9ef3f15c"
+    },
+    {
+      "path": "de/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16952,
+      "sha256": "403e0eaf8528656c0b47c31cd5fe9a25b8fd733adccb8e6d47a09f28658b5283"
+    },
+    {
+      "path": "de/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21048,
+      "sha256": "7ad3c45f58aa4d030fd5d65d9d4ac9cabbc06d79d071c29727b5376cd3459d77"
+    },
+    {
+      "path": "de/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21064,
+      "sha256": "ca308a5d314fa7d7e9cae94083cc1f62375ac225094d289961d9bce49b564b65"
+    },
+    {
+      "path": "de/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24136,
+      "sha256": "e91489bb7ec3e2e97d19cf32bc5e3f7fc57e994e0315f0870fd2024ccb2cf337"
+    },
+    {
+      "path": "es/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15432,
+      "sha256": "6c6c90fe122cbbbc66193b549b685b0de2137c6ca232300436fb75cebd8d2cc2"
+    },
+    {
+      "path": "es/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43552,
+      "sha256": "fe8486218fb0316ec924d6dd32f76d2eb0506f5db53836c4c900880eb4ec252b"
+    },
+    {
+      "path": "es/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "ddbdd3bf9afe6ddd3babd4f0358ab2f4697fc5d5ec72b60cb772085af9bf9859"
+    },
+    {
+      "path": "es/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16952,
+      "sha256": "7ec8e83494a8a50f1158c85d29b98e87c85d74ad5c4d94e2e9656e1cf60b0dff"
+    },
+    {
+      "path": "es/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21032,
+      "sha256": "67063a36cfcae95b3ea4646b88c3cf3642f0914dfc06ecc5fc4d3f77e0e97e64"
+    },
+    {
+      "path": "es/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21040,
+      "sha256": "b5340851bd9cb979d497f67123d09f91ba20ac9d2b3e0e17076fd2abd615c933"
+    },
+    {
+      "path": "es/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24120,
+      "sha256": "f19c11474e9074d5407f9b5a78cfb0bc1b4aeb90ffec819a676f63509cec443a"
+    },
+    {
+      "path": "FantasyCard.ConfigExporter",
+      "bytes": 78256,
+      "sha256": "33bb0c3115949149646af0fa7056571ebc7685b2dbb7802d34b32d7bcb824614"
+    },
+    {
+      "path": "FantasyCard.ConfigExporter.deps.json",
+      "bytes": 450,
+      "sha256": "5b9564dd3b1d0da9f9e10f451fdf2262bd696b9b65f2afb19aa220a347ccdd51"
+    },
+    {
+      "path": "FantasyCard.ConfigExporter.dll",
+      "bytes": 29184,
+      "sha256": "234616393b55db5e42685a003f63f0150f5f870155b8099817f8ff23106d6443"
+    },
+    {
+      "path": "FantasyCard.ConfigExporter.pdb",
+      "bytes": 16276,
+      "sha256": "7aad59ca2d00f8906eeb6eafd04d5181c06a87b22daf292aadae52060f04ff92"
+    },
+    {
+      "path": "FantasyCard.ConfigExporter.runtimeconfig.json",
+      "bytes": 377,
+      "sha256": "6eaff27a497447817e02c096da9afb530324590c005c1c011cd87bf2669f9dfd"
+    },
+    {
+      "path": "FantasyCard.Contracts.dll",
+      "bytes": 780288,
+      "sha256": "a540545644b284926c125d1a3b2b5789c7fbc6a678a61345dabbcecfc649075b"
+    },
+    {
+      "path": "FantasyCard.Contracts.pdb",
+      "bytes": 252896,
+      "sha256": "7978ea3cf45b88d8e565853d297ba5306d47673048380ebe01eef511a025bfe9"
+    },
+    {
+      "path": "FantasyCard.Domain.dll",
+      "bytes": 522752,
+      "sha256": "844065af3158b40787699752915ed95befbd3c660c2b10dce501f9f4fc29e352"
+    },
+    {
+      "path": "FantasyCard.Domain.pdb",
+      "bytes": 89612,
+      "sha256": "540fc9ce0138c1096d120fb9c6b8d7a78060d6406f54cdb107a590ab54ecddbd"
+    },
+    {
+      "path": "FantasyCard.Server",
+      "bytes": 78256,
+      "sha256": "fa30372607f4460207f41bda1c462ef751b88aa5842bf44d2d6207317eaed8b6"
+    },
+    {
+      "path": "FantasyCard.Server.deps.json",
+      "bytes": 7277,
+      "sha256": "a29d67d91132143acee1f4c8199c78de3fb4643414f37898f4b5c0ba925820be"
+    },
+    {
+      "path": "FantasyCard.Server.dll",
+      "bytes": 1250304,
+      "sha256": "41bcae8847dce31a5fa92a2e1b4276690369441f8614bd57a056ca962a09ac7e"
+    },
+    {
+      "path": "FantasyCard.Server.pdb",
+      "bytes": 216328,
+      "sha256": "0615fac915c49b98ed229f1d8c563a574e79cca94dae633e68aa779b681890ad"
+    },
+    {
+      "path": "FantasyCard.Server.runtimeconfig.json",
+      "bytes": 519,
+      "sha256": "e5a3d8f32a21abb2229369e38e3588962a9eb0ae74115d607021c452a7076e8f"
+    },
+    {
+      "path": "FantasyCard.Server.staticwebassets.endpoints.json",
+      "bytes": 51,
+      "sha256": "eb6525c892afda953a2560f151f9c5e5bc6e79ef6741d886488ac450262c91e3"
+    },
+    {
+      "path": "FantasyCard.Server.Tests",
+      "bytes": 78256,
+      "sha256": "ba599dcc430382ba526df132fd666b9c8b31864db474e7d0f8b17b7c7ad5d3b0"
+    },
+    {
+      "path": "FantasyCard.Server.Tests.deps.json",
+      "bytes": 30447,
+      "sha256": "faaf9439cd7e3e361299a2cd8bda8414253117c6db3c64357080ab66173d6908"
+    },
+    {
+      "path": "FantasyCard.Server.Tests.dll",
+      "bytes": 1695744,
+      "sha256": "a3dfd6d69f0cf5feddfa20c05947b56ada1afb872aa1d6fafa42b75cba6946d0"
+    },
+    {
+      "path": "FantasyCard.Server.Tests.pdb",
+      "bytes": 246644,
+      "sha256": "ff1da04a510bfac74ad71e8881c3691d4be971ddfcab19e5ce52209651511406"
+    },
+    {
+      "path": "FantasyCard.Server.Tests.runtimeconfig.json",
+      "bytes": 534,
+      "sha256": "6de883dedefd830a8aa021471bcc1c544590ce43db8db9021e2d0433bbea4ca1"
+    },
+    {
+      "path": "fr/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15408,
+      "sha256": "0883fec6ced8a897178142137363f26798fc406e1fcf87f745db71328fb6c499"
+    },
+    {
+      "path": "fr/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 44616,
+      "sha256": "dd243112ee28768f3d92b2f4c86ad548af37ab9b88a65258f86b2646c9c933a5"
+    },
+    {
+      "path": "fr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16952,
+      "sha256": "044cf1373cc4527fff78adb5ad70489532303b58ba0de2c059c422926af46c4b"
+    },
+    {
+      "path": "fr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16944,
+      "sha256": "78d675cbab45a56cc8916466ba13f16fab18a44fd3ad4481c8f5f4e13b1f8b5d"
+    },
+    {
+      "path": "fr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21040,
+      "sha256": "3fe869c312793444f9509af17ca0b14f444cbddef60a47251f441a5d7859a05f"
+    },
+    {
+      "path": "fr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21048,
+      "sha256": "5a8f4f4ea8b5a332883a67202877bd19100b21d766bf0443ffec21610dfb2ecf"
+    },
+    {
+      "path": "fr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24096,
+      "sha256": "ba030af725dea6bceb72c4eb49ccc3520222a97ea0fae812e16b7ba78450b98a"
+    },
+    {
+      "path": "Google.Protobuf.dll",
+      "bytes": 497304,
+      "sha256": "d792b92533fec450d21b9ac9e28b337fe25ac4982380eb932027b5fcc2036bf3"
+    },
+    {
+      "path": "it/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "ff5938ac66d0f295426494a3c745cbca8017ebb6ecac001e37052ab7d9178403"
+    },
+    {
+      "path": "it/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43048,
+      "sha256": "51b3d78aae15b966c0f87b972ce36c97f203f9a3bd059a447f2c0dec91cd9238"
+    },
+    {
+      "path": "it/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "b023b85f510d1e5c6d5183ba51614ea1b6dee5c25ab287773bebc8cdb36e3168"
+    },
+    {
+      "path": "it/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "a1ac732615a7dc5c59e01a1570da23210ede65ef24d5bb101294cf68481fe984"
+    },
+    {
+      "path": "it/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21048,
+      "sha256": "b6b4b25e77f51f4ef5252512d1ea2cd8025ff388852ea93897b136bcc33bb5e0"
+    },
+    {
+      "path": "it/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21040,
+      "sha256": "b9f6be59cc1c05594f9b19db9e72add58d6b37661397f81a62d4fee37e7be621"
+    },
+    {
+      "path": "it/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24096,
+      "sha256": "93911f7a3c20cecd88ddb85dfdaaa9bf768e72a0fa5f745f3f3ae40dc78da66b"
+    },
+    {
+      "path": "ja/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "42234be6baae8524e36ee488191d344edcfea228c98fab6342736f65a97fc46d"
+    },
+    {
+      "path": "ja/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 45624,
+      "sha256": "5a4a69ddbc7340ad1c78dbda4c516e91547d93138faab0eb1d5c4fd75c477e90"
+    },
+    {
+      "path": "ja/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "5db61a11e8c40176f0293658e48bc955ebed6a3dd46d3808aacc762f71732544"
+    },
+    {
+      "path": "ja/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 17440,
+      "sha256": "1ded53cdfde469bbb90d12f371891d3789a835e976557541c43166f027f7f111"
+    },
+    {
+      "path": "ja/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 22088,
+      "sha256": "f6d2748ee250f131374c306d7dc8a905464dbda3f75e857d333946c7ff89494c"
+    },
+    {
+      "path": "ja/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21552,
+      "sha256": "c55083e71e3a5bb8dbe36e10eb12b301ccfd809e8fe1187350beb6774c7f794b"
+    },
+    {
+      "path": "ja/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24632,
+      "sha256": "c2c077136e3ccfd8a249758979c0f754fe3c8a35b0c6478aa7a87ea38a817690"
+    },
+    {
+      "path": "ko/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "04921a64588b0a1f4abaa61837048f80e9be7a5d20cf774e392793e00b9ecf31"
+    },
+    {
+      "path": "ko/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43592,
+      "sha256": "d94dd648ed248bfd08e38ddb20fe015cfe93a005950d84d8e6e452454bfa50e5"
+    },
+    {
+      "path": "ko/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16944,
+      "sha256": "7026d9d93b3fb7b521fc4a35fcb8348020fe466c054309e8ec0d27e84a555cb9"
+    },
+    {
+      "path": "ko/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16936,
+      "sha256": "fdc5422bb6f99cb357515ac6edd47c6f495da1da0eca43b7f85fdb7fd1c2492a"
+    },
+    {
+      "path": "ko/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21560,
+      "sha256": "e5231e879c215210cfe0b6d8f5740f8ecb2b08afa98ee4055fff6ba10ddac96c"
+    },
+    {
+      "path": "ko/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21048,
+      "sha256": "e90ac368f79ea0e99f44fe1133db10af08c3653749056362822b2c8f414ccd64"
+    },
+    {
+      "path": "ko/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24120,
+      "sha256": "4f427ed5c7c78043c7a9a7c9dc659133d96f6100ca9ba8719857709832e4bb58"
+    },
+    {
+      "path": "Microsoft.Bcl.AsyncInterfaces.dll",
+      "bytes": 16000,
+      "sha256": "5705d245072d3eb78400547b32147dbb6e2c8b02ba8bda76729798f5efdeaecb"
+    },
+    {
+      "path": "Microsoft.Testing.Extensions.MSBuild.dll",
+      "bytes": 60488,
+      "sha256": "a3fcb89e61a35b2c01685ecfc562b632a5b572d19969dc93b2c3325bc547252a"
+    },
+    {
+      "path": "Microsoft.Testing.Extensions.TrxReport.Abstractions.dll",
+      "bytes": 32840,
+      "sha256": "5d31439245f78d33c5de349bba7ad58c1f3566c04f32930d57d621d69eacd10f"
+    },
+    {
+      "path": "Microsoft.Testing.Platform.dll",
+      "bytes": 1143864,
+      "sha256": "2c282b710e831cddb0ee264c6da9ce932abd73fcb6483f0e1ba2dd0c3e274a88"
+    },
+    {
+      "path": "Microsoft.TestPlatform.CommunicationUtilities.dll",
+      "bytes": 137776,
+      "sha256": "e38a359aa502bb1867d6092dca9aba5c130dd6f9111decea8156aa746b2c69e6"
+    },
+    {
+      "path": "Microsoft.TestPlatform.CoreUtilities.dll",
+      "bytes": 98336,
+      "sha256": "f6e2495c44640d8915b2aefc938f391c970300266da014350ff35512a448ee84"
+    },
+    {
+      "path": "Microsoft.TestPlatform.CrossPlatEngine.dll",
+      "bytes": 316960,
+      "sha256": "d55399bc66dc5b451d60ad82662452ca4a5f735918135dfc91ca9b5e3e38a6ab"
+    },
+    {
+      "path": "Microsoft.TestPlatform.PlatformAbstractions.dll",
+      "bytes": 51232,
+      "sha256": "7b919ce4429c3b7b8fa2c36fd641b70b2f459a30ecb7c65fd80f437673cec930"
+    },
+    {
+      "path": "Microsoft.TestPlatform.Utilities.dll",
+      "bytes": 67104,
+      "sha256": "01ffd64d25a4bd905aef9594d2aa700e020273a90a77a8720af6bec8b4fd5444"
+    },
+    {
+      "path": "Microsoft.VisualStudio.CodeCoverage.Shim.dll",
+      "bytes": 17464,
+      "sha256": "a753bc15f23a957f4f91a059376e4472c6bacd1503622de4b9b2b079ad8ea289"
+    },
+    {
+      "path": "Microsoft.VisualStudio.TestPlatform.Common.dll",
+      "bytes": 248352,
+      "sha256": "059aa2f335c3f7b14ac3fb7caa1625bc2767581b9548e9ff53a246c7f2f94d6a"
+    },
+    {
+      "path": "Microsoft.VisualStudio.TestPlatform.ObjectModel.dll",
+      "bytes": 334392,
+      "sha256": "f83e38ee9020baa42e284e2299e233070ffa86ce4b10213583f9b7c8a521bcd0"
+    },
+    {
+      "path": "Newtonsoft.Json.dll",
+      "bytes": 712464,
+      "sha256": "22c649f75fce5be7c7ccda8880473b634ef69ecf33f5d1ab8ad892caf47d5a07"
+    },
+    {
+      "path": "Npgsql.dll",
+      "bytes": 1478656,
+      "sha256": "e2bcafe1660fe4543fe9dfcabed972ec8d32259e5ea8009462ce1de23c7034c2"
+    },
+    {
+      "path": "OpenTelemetry.Api.dll",
+      "bytes": 81408,
+      "sha256": "fb4853791d5052bdcced36355b513664c027cf7d5b4b18a8f98b9bee9adf1962"
+    },
+    {
+      "path": "OpenTelemetry.Api.ProviderBuilderExtensions.dll",
+      "bytes": 23552,
+      "sha256": "fc7d1f8703be185cf9f49b2da505876a63c09d401728725a1ffd333fc896f998"
+    },
+    {
+      "path": "OpenTelemetry.dll",
+      "bytes": 271360,
+      "sha256": "06f4ca5adbb36554a891aaa7c550c578988357c1588a87e8ce290dc19a4b0343"
+    },
+    {
+      "path": "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll",
+      "bytes": 185856,
+      "sha256": "04983880521bd94f83e476e0cd1379ebc659a27ccf5ab251746eb4262df666cc"
+    },
+    {
+      "path": "OpenTelemetry.Extensions.Hosting.dll",
+      "bytes": 10752,
+      "sha256": "275f3250071cddb952df7acd3d0330eb7766bc25766100c04a8f9e0cccc40922"
+    },
+    {
+      "path": "OpenTelemetry.Instrumentation.AspNetCore.dll",
+      "bytes": 64512,
+      "sha256": "a68e37e3682a33d0302b940c253acadfad62c7265b50e4e91b9fef7510409a9c"
+    },
+    {
+      "path": "OpenTelemetry.Instrumentation.Runtime.dll",
+      "bytes": 26624,
+      "sha256": "d5fe7298830a7bcb74d7b2c950974ed7ed22fd8e77905947fa08eb659ebee531"
+    },
+    {
+      "path": "pl/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15416,
+      "sha256": "f963734c6d8cac7ffb9bf280923fee2c9c2da77cf8e3c2d5fdf09a9b30d519df"
+    },
+    {
+      "path": "pl/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43592,
+      "sha256": "fbc6b5c8ed72ff7eba127c53c76b6cd26940f71ead31144a1802bf307b95bd6f"
+    },
+    {
+      "path": "pl/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "0d1c05f1c3dfa21fbaca7537910bea9a54a52a9a800caf1c7d46691fb3a41eaa"
+    },
+    {
+      "path": "pl/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16936,
+      "sha256": "4b7843359aea21962c73c7474d374410fe8d039a30ac7902f5f09a19a52c778a"
+    },
+    {
+      "path": "pl/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21536,
+      "sha256": "2f82d58fb67a8261ad060a2633b872c7867f48608368144db3a93bf4debe2444"
+    },
+    {
+      "path": "pl/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21048,
+      "sha256": "911ef37ee7d78eb7132581aeaeb7753e81589600535c3c2244b1c447b61e1a5a"
+    },
+    {
+      "path": "pl/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24136,
+      "sha256": "88993b0056f183385a9e9e67931932bce0e564d288164ad43b2cc1bf6cacfb1c"
+    },
+    {
+      "path": "pt-BR/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15416,
+      "sha256": "726cb2c305dad6fb25a482a1c211e416b37ec89911a2b9b68ed5a7b81c283227"
+    },
+    {
+      "path": "pt-BR/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 43040,
+      "sha256": "7c247eace59210dd338b170eb63e6b1087fff56f1efb36b1d8aa01687ffaa363"
+    },
+    {
+      "path": "pt-BR/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16416,
+      "sha256": "f2292ef0dd72f1a95892714f17e5d49259452e27332d54dbff308236a50d7d40"
+    },
+    {
+      "path": "pt-BR/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "119f896f964ce17da4558c72b728d832fa19abc2dcf12bbed7cc386b741edd6b"
+    },
+    {
+      "path": "pt-BR/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21048,
+      "sha256": "ea5d8ecffcb9371d3e559e1d477ebdf5e7c3bd0663746fdccebd9330df2b9008"
+    },
+    {
+      "path": "pt-BR/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 21048,
+      "sha256": "b33e6b979805fa9047ebfb7722c4c3b07b1d3706acc108883b8c30d77d10db72"
+    },
+    {
+      "path": "pt-BR/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 24120,
+      "sha256": "976fae7c172b9170340633a3fe1a3f0ec6fc0731f4bf089ddaf611d60d446f40"
+    },
+    {
+      "path": "ru/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "b7a8bc371f46377f83395e9c2b77be0a5dab2472f816f05c9caf4a0baa9d7932"
+    },
+    {
+      "path": "ru/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 49736,
+      "sha256": "306b07b7438e26d7d909edd031294ba5df47d7c1dab32fb3a9cc13ce55d9b0cd"
+    },
+    {
+      "path": "ru/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 17440,
+      "sha256": "4b29d6fadb5b709c5c90f25a8934e6c3c58027cf35aa28c6ef7100ab30f9cd39"
+    },
+    {
+      "path": "ru/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 17464,
+      "sha256": "67820043048cca339e29b563b1ed9da9f7d702b67c0cadd0b643f5781bc78789"
+    },
+    {
+      "path": "ru/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 23072,
+      "sha256": "4970c26bed952eccea42fbd3c7064bdd690eb5a7e538a77ce78ffed487877d9b"
+    },
+    {
+      "path": "ru/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 23096,
+      "sha256": "fcaedb770d94be752a6c9befe5d2b8219bb8d1bfce83f2dc9011fa4b7eebd00a"
+    },
+    {
+      "path": "ru/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 26168,
+      "sha256": "f7084df5889cd4a8d141f73be63b267519ae4daa75c6394cf39c4a96fba35d68"
+    },
+    {
+      "path": "testhost.dll",
+      "bytes": 49696,
+      "sha256": "92cbdf52db5249112f9f53f1fcdaf9f9aa3fce467141c688a31a7fe095e4d304"
+    },
+    {
+      "path": "tr/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "090e0d6f8e6531a4747832c993089e72d4439a4f4829d59a04a952e940726456"
+    },
+    {
+      "path": "tr/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 42552,
+      "sha256": "e6f9ea4af00179db6592b1400ecf5669f383376d5d61f72a95261e8723b63684"
+    },
+    {
+      "path": "tr/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16952,
+      "sha256": "ef6bf78a0fd4613b1ffe8dc560b0f2f5cf2c05724fc8aed314f9ced18a90cf03"
+    },
+    {
+      "path": "tr/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "a4d0c1d36f10425e39cdaade487220a9808e6f6954998644c57011fbeb3a33a0"
+    },
+    {
+      "path": "tr/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 21024,
+      "sha256": "6ad665b04f30253b05acdbcf02196af45332a95091e112e55d2f2379273d9cac"
+    },
+    {
+      "path": "tr/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 20536,
+      "sha256": "96efbcb535b02ad348598505210ae60b3d24ba7b8d364547ec89d353e891fae2"
+    },
+    {
+      "path": "tr/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 23608,
+      "sha256": "5a392fba8650b4b574e5e7c42615f5c6d2a879c3838cf5b5219856185b33c8f5"
+    },
+    {
+      "path": "xunit.abstractions.dll",
+      "bytes": 21928,
+      "sha256": "3166dc70323fb30ccf1cedb0fe86f2ad122c46d254542342d90386efc4c9285c"
+    },
+    {
+      "path": "xunit.runner.json",
+      "bytes": 104,
+      "sha256": "c1b53e63135e7ea6b2d0fd5243eede1e1378d42292cd7c2317d63996983d98c8"
+    },
+    {
+      "path": "xunit.runner.visualstudio.testadapter.dll",
+      "bytes": 1213136,
+      "sha256": "21916b70a45fa2f9a4ca145b14866846b0ca1f7e2578d744b22c2f76538076c6"
+    },
+    {
+      "path": "xunit.v3.assert.dll",
+      "bytes": 212232,
+      "sha256": "d14acfa39543b8cd978bbb29f3a79599cb9f89352618edbfe77e17cc798a8316"
+    },
+    {
+      "path": "xunit.v3.common.dll",
+      "bytes": 191240,
+      "sha256": "1cbab6b5e3d9ce0751e7ccdd4e291b1e689dba72f68db3d97ab8afbe6d2bb79a"
+    },
+    {
+      "path": "xunit.v3.core.dll",
+      "bytes": 495368,
+      "sha256": "bc0df861aea9c5efa1806aa0322aac12a25ed13dcd2e355c2f74f7a03ee273b8"
+    },
+    {
+      "path": "xunit.v3.runner.common.dll",
+      "bytes": 978696,
+      "sha256": "a3299dfa5a7acb0c3ecab1f16d2958e8caabd277395455366463cf500106493d"
+    },
+    {
+      "path": "xunit.v3.runner.inproc.console.dll",
+      "bytes": 159496,
+      "sha256": "8d617ffaa0d0541eeb90e689b2b22e92665a76e3e69f5898cf060154597faf45"
+    },
+    {
+      "path": "xunit.v3.runner.utility.netcore.dll",
+      "bytes": 160768,
+      "sha256": "78b8cf21a311e334bfb9f83e6ffdb647bad1de3f1648f864b7c6e9f924ad794c"
+    },
+    {
+      "path": "zh-Hans/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15392,
+      "sha256": "1c879d60e333f974d8214bbb3537686af531e4de11233e516063ac30072529c7"
+    },
+    {
+      "path": "zh-Hans/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 40504,
+      "sha256": "64110c9087f7ed072429e3d66ecab9d95ec828cc3c33f8878344acfb7eb12e25"
+    },
+    {
+      "path": "zh-Hans/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16416,
+      "sha256": "61e5b362940ca90e3b89a452218fb1d3882aea679a1b73e6ad868d0ac1bb88fc"
+    },
+    {
+      "path": "zh-Hans/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16928,
+      "sha256": "4a8c0ef1c60069942082fa7493dbe683033e14e15dff09c8ba8c230e2a4443c6"
+    },
+    {
+      "path": "zh-Hans/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 20008,
+      "sha256": "0b12a586cd3759757f641a6219f491aff7c5fbdf603a6339b98faa57ce6eb7c0"
+    },
+    {
+      "path": "zh-Hans/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 20040,
+      "sha256": "8fb34ecf4343a77647006f0ad1fb41e8c4dd48cf38fe97b93c345b743f538908"
+    },
+    {
+      "path": "zh-Hans/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 23072,
+      "sha256": "396cc3c959cfc9f24bbe7a2d38846dfb97b696a9610eb95234306cbcdebd4f06"
+    },
+    {
+      "path": "zh-Hant/Microsoft.Testing.Extensions.MSBuild.resources.dll",
+      "bytes": 15416,
+      "sha256": "d28ed9d8c97e2dc81147b804f81a90459c8b4ebf361e6aca03cb4f48e88ab422"
+    },
+    {
+      "path": "zh-Hant/Microsoft.Testing.Platform.resources.dll",
+      "bytes": 40504,
+      "sha256": "69d90aa28b4f9db162335c985744b34bfaf36a0fbda9169cae26a38086927001"
+    },
+    {
+      "path": "zh-Hant/Microsoft.TestPlatform.CommunicationUtilities.resources.dll",
+      "bytes": 16416,
+      "sha256": "b411fe26d281ec982d0432f1b0bce2c1c86f200d17e837bbbe91086f8e38270f"
+    },
+    {
+      "path": "zh-Hant/Microsoft.TestPlatform.CoreUtilities.resources.dll",
+      "bytes": 16952,
+      "sha256": "a9012f419d3b66a730d635760f63fea1721a63b2105a4146c2d1309bb6f31b14"
+    },
+    {
+      "path": "zh-Hant/Microsoft.TestPlatform.CrossPlatEngine.resources.dll",
+      "bytes": 20552,
+      "sha256": "540bee11c69534fc48bb4a9626683a6203e9f1f4bae15ff72069eaf9f65f5e81"
+    },
+    {
+      "path": "zh-Hant/Microsoft.VisualStudio.TestPlatform.Common.resources.dll",
+      "bytes": 20024,
+      "sha256": "d69e7127de46141b6406fd968d4a66271dda99271701f912d56ce6813af48cf2"
+    },
+    {
+      "path": "zh-Hant/Microsoft.VisualStudio.TestPlatform.ObjectModel.resources.dll",
+      "bytes": 23096,
+      "sha256": "b90f264a4d72987fd0aa0d11fc51dd248f831740bcd72d281045e16936fda16b"
+    }
+  ],
+  "SDK_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "postgres_image": "postgres@sha256:d3e1620b530c944afa6e887d22eb899824da68e19c52024bf98f5220c88a65b2",
+  "work_files": [
+    {
+      "path": "inner.original.py",
+      "bytes": 3044,
+      "sha256": "f1df6e14ca75494b5c838fcf6aa6c8e9a2c5f9d39871e42766fc807b13874754"
+    }
+  ],
+  "memory_floor_bytes": 500000000,
+  "disk_floor_fraction": 0.15,
+  "native_worker_count": 1,
+  "native_deadline_seconds": 2100,
+  "controller_deadline_seconds": 2300,
+  "original_output_quota_bytes": 67108864,
+  "native_strength_experiment_samples_added": 0,
+  "MAIN_accepted": false,
+  "selector": "Category=PostgresIntegration&FullyQualifiedName~FantasyCard.Server.Tests.EndToEnd.RealNetwork",
+  "scope": "All ten existing real-network PostgreSQL methods, including actual Program child processes, frozen source and discovery; no Godot/WAN/full solution or canonical-cell claim",
+  "SDK_memory_mib": 1400,
+  "PG_memory_mib": 512,
+  "PG_max_connections": 100,
+  "required_rows_source": "Actual immutable prebuilt assembly discovery before native execution",
+  "test_assembly_sha256": "a3dfd6d69f0cf5feddfa20c05947b56ada1afb872aa1d6fafa42b75cba6946d0",
+  "required_source_method_names": [
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase"
+  ],
+  "required_native_rows": 10,
+  "real_network": "HTTP and binary WebSocket through real loopback TCP sockets in Tencent-owned isolated network namespace",
+  "private_original_evidence": true,
+  "production_credentials_used": false,
+  "source_or_runtime_edits": 0,
+  "content_root_mount": "Original source/server mounted read-only at /server; prebuilt assembly at /runtime. Original project finder locates /server/src/FantasyCard.Server without descendant mounts or mkdir in read-only source.",
+  "prior_attempt": "R1 container startup failed; R2 actual discovery showed ten rows and assertion against incomplete five-row source map stopped before execution. Both failures preserved. No selector or actual test deadline/concurrency changed.",
+  "preregistration_name_source": "Actual immutable assembly full-selector R2 discovery before any actual test execution; all seven partial-class source files included"
+}

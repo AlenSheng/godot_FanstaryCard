@@ -1,0 +1,114 @@
+{
+  "ok": true,
+  "files": [
+    {
+      "path": "tools/pr13_cap_full_statistics.py",
+      "bytes": 50596,
+      "sha256": "9482825398f23f9a2961afb1090032b11ffaff5429cdd6acc7b9e0dda7ac4f5e"
+    },
+    {
+      "path": "tools/cloud/pr13/cap_full_statistics.py",
+      "bytes": 21908,
+      "sha256": "593eca991a24f9ec482d9b3f97fb39771e47bce620d77d65b0861eb223cdbbe0"
+    },
+    {
+      "path": "docs/plans/PR13_B08_CAP_FULL_STATISTICS_20261011.json",
+      "bytes": 7910,
+      "sha256": "42eea62ea9eb46242a51c4489c6d5ddad88fb4a20296356416dedc9196a64ae1"
+    }
+  ],
+  "metadata_negative_controls": {
+    "ok": true,
+    "scope": "synthetic metadata gates only",
+    "controls": [
+      {
+        "name": "missing_unit",
+        "rejected": true
+      },
+      {
+        "name": "duplicate_unit_index",
+        "rejected": true
+      },
+      {
+        "name": "adoption_recovery_double_counted",
+        "rejected": true
+      },
+      {
+        "name": "incomplete_pairs",
+        "rejected": true
+      },
+      {
+        "name": "old_unit_relabelled_v2",
+        "rejected": true
+      },
+      {
+        "name": "wrong_mixed_source",
+        "rejected": true
+      },
+      {
+        "name": "wrong_old_source",
+        "rejected": true
+      },
+      {
+        "name": "old_v1_larger_raw_budget",
+        "rejected": true
+      },
+      {
+        "name": "old_v1_relabelled_new_fields",
+        "rejected": true
+      },
+      {
+        "name": "new_declared_budget_changed",
+        "rejected": true
+      },
+      {
+        "name": "new_cumulative_raw_changed",
+        "rejected": true
+      },
+      {
+        "name": "new_collection_incomplete",
+        "rejected": true
+      },
+      {
+        "name": "original_event_part_missing",
+        "rejected": true
+      },
+      {
+        "name": "original_event_part_duplicate",
+        "rejected": true
+      },
+      {
+        "name": "hidden_Error",
+        "rejected": true
+      },
+      {
+        "name": "outcome_denominator_changed",
+        "rejected": true
+      },
+      {
+        "name": "unknown_outcome",
+        "rejected": true
+      },
+      {
+        "name": "retained_parsed_object_changed",
+        "rejected": true
+      },
+      {
+        "name": "retained_original_byte_SHA_changed",
+        "rejected": true
+      },
+      {
+        "name": "zero_actual_case_is_Gap",
+        "rejected": true
+      }
+    ],
+    "business_or_statistical_computation_executed": false,
+    "MAIN_accepted": false
+  },
+  "local_statistical_computation_guard_rejected": true,
+  "real_representative_metadata_receipt": "G:/PR13Evidence/cap-full-statistics-metadata-audit-r4/metadata-audit.json",
+  "storage_status_controls": "outputs/pr13-tencent-20261009/cap-statistics-storage-controls.json",
+  "native_or_statistical_computation_executed_locally": false,
+  "full_data_complete": false,
+  "MAIN_accepted": false
+}

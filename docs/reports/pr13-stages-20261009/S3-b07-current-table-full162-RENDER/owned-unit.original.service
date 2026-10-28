@@ -1,0 +1,10 @@
+[Unit]
+Description=Owned current Guardian table render162
+After=docker.service
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B07-current-table-render-r1-20261013/runner.original.py
+MemoryMax=160M
+TasksMax=96
+RuntimeMaxSec=5000
+KillMode=control-group

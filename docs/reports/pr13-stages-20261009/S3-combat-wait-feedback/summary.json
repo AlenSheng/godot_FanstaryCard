@@ -1,0 +1,50 @@
+{
+  "kind": "combat_wait_feedback_native_validation",
+  "date": "2026-10-10",
+  "implementation_source_sha": "c0a00533c20e79e9bfdf0d4a0414dbaab6438aed",
+  "execution_host": "Tencent cloud",
+  "profile": "OFFLINE",
+  "native_image": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "focused_checks": 15,
+  "focused_passed": 15,
+  "regression_suites": 21,
+  "regression_suites_passed": 21,
+  "ui_component_checks": 8,
+  "commands": [
+    {
+      "name": "focused",
+      "exit_code": 0,
+      "native_clean": true,
+      "log_sha256": "09fa1cb6c48684b80b553deddfc21d0abf96af46b4ccfdf30b48be806ce89456"
+    },
+    {
+      "name": "regressions",
+      "exit_code": 0,
+      "native_clean": true,
+      "log_sha256": "cfb7367ee20fb64b7d4266655c967883833a17cb608cf23a4c6982f5d88fe815"
+    }
+  ],
+  "source_input_hashes_verified_against_implementation_git": 2062,
+  "overlay_hashes": {
+    "client/state/game_store.gd": "2fb6ac0d40e70e89817821c606d1a93cabb62cd36a797e797eda02899192cbb9",
+    "client/data/localization_battle.json": "910a9637857b00e058c7b8abb24148a1082548e4e63654c2ce13c242680c85c8",
+    "client/tests/run_play_retry.gd": "3bf1a5cc0a26b50e0080beb9bc9bd9ea3278f346e99fa16c83d8e679685348ac",
+    "client/tests/test_combat_wait_ui.gd": "6c561b39dd69684648667be10a1c50282d02d28066b09409d1889845586b6228"
+  },
+  "source_inputs_unchanged": true,
+  "owned_container_removed": true,
+  "oom_killed": false,
+  "memory_limit_bytes": 1073741824,
+  "launch_memory_available": 2942558208,
+  "safety_floor_bytes": 500000000,
+  "production_health_after": true,
+  "original_import_timeout_and_oom_and_fixture_failure_retained": true,
+  "native_ui_scope": "Actual component text construction; rendered frames and full LIVE remain separate",
+  "whole_scope_accepted": false,
+  "strict_network_multicycle_and_capacity_tests_deferred": true,
+  "archive": {
+    "bytes": 427147,
+    "sha256": "eb69cc0034eab202a459588af211f39ec86e2119f6f5e51b7621ffb9bb6953e0",
+    "verified_files": 24
+  }
+}

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/pr13-acceptance-20261009/work/goal-A091-live-01a152f7-r3-20261022-inputs/control/controller.py", line 25, in <module>
+    assert time.monotonic()-start<1200;guard()
+                                       ^^^^^^^
+  File "/home/ubuntu/pr13-acceptance-20261009/work/goal-A091-live-01a152f7-r3-20261022-inputs/control/controller.py", line 12, in guard
+    s=os.statvfs('/');m=next(int(l.split()[1])*1024 for l in pathlib.Path('/proc/meminfo').read_text().splitlines() if l.startswith('MemAvailable:'));assert s.f_bavail/s.f_blocks>=.049 and s.f_bavail*s.f_frsize>3000000000 and m>500000000 and prod()==P['production_before']
+                                                                                                                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

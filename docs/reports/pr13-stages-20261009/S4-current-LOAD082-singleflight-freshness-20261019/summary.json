@@ -1,0 +1,62 @@
+{
+  "kind": "CurrentSingleflightFreshnessIsolationPassed_TaskReadyDependencyPending",
+  "case_reviews": [
+    {
+      "case": "LOAD-08.2-T01",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "actual": "Two simultaneoussameversionGETcalls,oneactualbackend200body,realresultssame",
+      "API_calls": 2,
+      "physical_backend_requests": 1,
+      "elapsed_ms": 284
+    },
+    {
+      "case": "LOAD-08.2-T02",
+      "profile": "EXPERIMENT",
+      "status": "Passed_after_real_SUTfix",
+      "actual": "HoldrealprewriteBootstrap,publicclasswriteandpostwritefreshGET,releaseoldconsumer;clientkeepssameversion/classasactualPG.",
+      "original_stale_failure_preserved": true,
+      "old_version": 2,
+      "new_version": 3
+    },
+    {
+      "case": "LOAD-08.2-T03",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "actual": "TwoactualUIDGETrequestsseparate,postwriteepochGETdoesnotjoinold,identicaloverlapPUTsecondcallergetsownexplicit0processingerror—notsamefake200;PGversionincrements1",
+      "two_player_backend_requests": 2,
+      "overlap_write_backend_requests": 1,
+      "overlap_write_true_successes": 1
+    }
+  ],
+  "actual_original_SUT_class_rollback_not_just_fixture": true,
+  "product_one_line_lobby_epoch_invalidation_after_committed_classwrite": true,
+  "old_unit_negative_newunit0_current22suites351checks": true,
+  "actual_fixedNative0_3cases_duallogs_clean": true,
+  "actual_two_currentUIDs_andcurrentServer8eb": true,
+  "postwrite_newGET_independent_while_oldheld": true,
+  "sameGET_callers2_backend1_realresultsequal": true,
+  "overlap_samePUT_one_backend_secondexplicitprocessingerror_notfake200": true,
+  "profile_database_version_increment_once": true,
+  "all8assetdigests_roster_worlds_ACKunchanged": true,
+  "new_worlds0_accounts0_currency0": true,
+  "no_cloud_production_UIart_or_newrender": true,
+  "local_hidden_headless_Dummy_belowNormal_windows0": true,
+  "all_owned_processes_stopped": true,
+  "original_SUTfailedround_kept": true,
+  "independent_invariants": 15,
+  "dependency_hold": "LOAD-08.1 TLSconnectionreuse/completebody/invalidTLSoversize EXPERIMENT3 missing;082/083/084notautoaccepted/integrated.",
+  "task_state": "ReadyForAcceptance",
+  "whole_task_accepted": false,
+  "counts": {
+    "Accepted": 60,
+    "Partial": 60,
+    "ReadyForAcceptance": 12,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 72,
+  "missing_profiles_before": 262,
+  "missing_profiles_after": 259,
+  "other131tasks_globalgates_unchanged": true,
+  "G": "G:\\PR13Evidence\\load082-current-singleflight-20261019-r2-originals"
+}

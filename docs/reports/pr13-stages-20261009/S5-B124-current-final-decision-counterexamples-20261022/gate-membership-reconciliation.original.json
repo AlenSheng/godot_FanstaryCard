@@ -1,0 +1,233 @@
+{
+  "ok": true,
+  "kind": "Current132TaskGateMembershipReconciliation",
+  "source_register": "docs/reports/pr13-stages-20261009/S6-current-B122-machine-layers-closed-20261022/register.json",
+  "source_register_SHA": "86e140e6f0b169d4d29463ec7b031bb5378847eef21f33c26c1dc270210a2a1a",
+  "actual_production_comprehension_source_SHA": "4b3f1325701ae4b3c32037759b1f921501878fb84e07054f62bd4a1ec925f0e6",
+  "original_gate_assignment_AST": "ListComp(elt=Call(func=Name(id='dict', ctx=Load()), args=[], keywords=[keyword(arg='gate_id', value=Subscript(value=Name(id='g', ctx=Load()), slice=Constant(value='id'), ctx=Load())), keyword(arg='name', value=Subscript(value=Name(id='g', ctx=Load()), slice=Constant(value='name'), ctx=Load())), keyword(arg='state', value=Constant(value='NotAccepted')), keyword(arg='pass_criteria', value=Subscript(value=Name(id='g', ctx=Load()), slice=Constant(value='pass'), ctx=Load())), keyword(arg='unfinished', value=ListComp(elt=Subscript(value=Name(id='t', ctx=Load()), slice=Constant(value='task_id'), ctx=Load()), generators=[comprehension(target=Name(id='t', ctx=Store()), iter=Name(id='tasks', ctx=Load()), ifs=[BoolOp(op=And(), values=[Compare(left=Subscript(value=Name(id='t', ctx=Load()), slice=Constant(value='task_id'), ctx=Load()), ops=[In()], comparators=[Subscript(value=Name(id='g', ctx=Load()), slice=Constant(value='tasks'), ctx=Load())]), Compare(left=Subscript(value=Name(id='t', ctx=Load()), slice=Constant(value='state'), ctx=Load()), ops=[NotIn()], comparators=[Tuple(elts=[Constant(value='Accepted'), Constant(value='NoChangeWithEvidence')], ctx=Load())])])], is_async=0)]))]), generators=[comprehension(target=Name(id='g', ctx=Store()), iter=Subscript(value=Name(id='plan', ctx=Load()), slice=Constant(value='gates'), ctx=Load()), ifs=[], is_async=0)])",
+  "gate_state_not_promoted": true,
+  "missing_case_profiles_unchanged": true,
+  "changes": [
+    {
+      "gate_id": "G0",
+      "old_unfinished": [
+        "LOAD-06.4",
+        "LOAD-11.1",
+        "PR13-A01.1",
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ],
+      "current_unfinished": [
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ],
+      "stale_removed": [
+        "LOAD-06.4",
+        "LOAD-11.1",
+        "PR13-A01.1"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    },
+    {
+      "gate_id": "G1",
+      "old_unfinished": [
+        "LOAD-02.4",
+        "LOAD-07.4",
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A06.4",
+        "PR13-A07.4",
+        "PR13-B02.4"
+      ],
+      "current_unfinished": [
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A07.4"
+      ],
+      "stale_removed": [
+        "LOAD-02.4",
+        "LOAD-07.4",
+        "PR13-A06.4",
+        "PR13-B02.4"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    },
+    {
+      "gate_id": "G2",
+      "old_unfinished": [
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-A09.4",
+        "PR13-B02.4",
+        "PR13-B06.3",
+        "PR13-B07.3",
+        "PR13-B08.3",
+        "PR13-B11.4"
+      ],
+      "current_unfinished": [
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A09.4"
+      ],
+      "stale_removed": [
+        "PR13-A03.4",
+        "PR13-A04.4",
+        "PR13-B02.4",
+        "PR13-B06.3",
+        "PR13-B07.3",
+        "PR13-B08.3",
+        "PR13-B11.4"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    },
+    {
+      "gate_id": "G3",
+      "old_unfinished": [
+        "LOAD-06.4",
+        "PR13-A01.4",
+        "PR13-A02.3",
+        "PR13-A06.3",
+        "PR13-B01.4",
+        "PR13-B03.4"
+      ],
+      "current_unfinished": [
+        "PR13-A01.4",
+        "PR13-A02.3"
+      ],
+      "stale_removed": [
+        "LOAD-06.4",
+        "PR13-A06.3",
+        "PR13-B01.4",
+        "PR13-B03.4"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    },
+    {
+      "gate_id": "G4",
+      "old_unfinished": [
+        "LOAD-09.4",
+        "LOAD-10.4",
+        "PR13-A10.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4"
+      ],
+      "current_unfinished": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ],
+      "stale_removed": [
+        "LOAD-09.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    },
+    {
+      "gate_id": "G5",
+      "old_unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.3",
+        "LOAD-11.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ],
+      "current_unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ],
+      "stale_removed": [
+        "LOAD-11.3"
+      ],
+      "newly_listed": [],
+      "state_unchanged": "NotAccepted"
+    }
+  ],
+  "current_gates": [
+    {
+      "gate_id": "G0",
+      "name": "来源、范围与基线",
+      "state": "NotAccepted",
+      "pass_criteria": "source/CI/image/config/seed/profile可追溯，文件锁与有界范围明确；missing单列。",
+      "unfinished": [
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ]
+    },
+    {
+      "gate_id": "G1",
+      "name": "离线、进程与合同",
+      "state": "NotAccepted",
+      "pass_criteria": "关键正常/边界/故障实际执行，数值合同编译修复，关键case无环境性skip。",
+      "unfinished": [
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A07.4"
+      ]
+    },
+    {
+      "gate_id": "G2",
+      "name": "玩法闭环和资产/战斗合同",
+      "state": "NotAccepted",
+      "pass_criteria": "正常三局/多账号、PG持久幂等、route/holds及资源/控制/选序/恢复合同一致；headless与render证据分层。",
+      "unfinished": [
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A09.4"
+      ]
+    },
+    {
+      "gate_id": "G3",
+      "name": "观测、历史和体验对账",
+      "state": "NotAccepted",
+      "pass_criteria": "三截止点守恒，86/90与130/139及旧52/77差异可解释；缺序号不造关联，删失/兜底/未知完整。",
+      "unfinished": [
+        "PR13-A01.4",
+        "PR13-A02.3"
+      ]
+    },
+    {
+      "gate_id": "G4",
+      "name": "传输收益、原容量、候选体验",
+      "state": "NotAccepted",
+      "pass_criteria": "三对同负载A/B、默认限流有效覆盖/长稳、数值配对/风险与真人反馈分别裁决；不足Unknown，不拿短战替原容量。",
+      "unfinished": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ]
+    },
+    {
+      "gate_id": "G5",
+      "name": "当前证据、源配置和回滚交付",
+      "state": "NotAccepted",
+      "pass_criteria": "132项实现或有证据NoChange/阻塞逐项可查；适用CI、账链告警、默认off、兼容与隔离回滚都有结论。完整交付允许列阻塞，验收通过要求适用阻塞清零。",
+      "unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ]
+    }
+  ],
+  "head_reference": "86ddee230a785d793757da6d0d24056a64a25955",
+  "source_is_dirty_reference_not_clean_build": true
+}

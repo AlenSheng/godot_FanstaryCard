@@ -1,0 +1,819 @@
+{
+  "schema_version": 2,
+  "authority": "MAIN",
+  "stage": "S6",
+  "review_source_sha": "e18c21d05183ef51d857cd938e9b117fcc01f931",
+  "human_instruction": "尽量把相对独立的待验收项先通过到已验收部分，释放相关临时测试数据。",
+  "authority_scope": "本次人工授权后逐案裁决八个独立子项；不作为其余项目、门禁或整体 MAIN 的自动授权。",
+  "task_decisions": [
+    {
+      "schema_version": 2,
+      "task_id": "LOAD-11.1",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "逐案核对 checkout/runtime 来源区分、2144 份缺历史原件的 Blocked 审计及真实 SDK 缺失拒绝；相关基线工具和 SDK 声明源码一致。接受的是来源冻结与拒绝虚报的合同，不是缺失历史或当前 SDK/CI 成功。",
+      "runtime_review_sources": {
+        "LOAD-11.1-T01": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+        "LOAD-11.1-T02": "3e45dd495215c3a0a5eda53a20449d9ad1e0d00d",
+        "LOAD-11.1-T03": "1c3bc86ca748b32d567d9d045295ddc2f4e1d36f"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "LOAD-11.1-T01",
+          "expected": "分别记录不等同",
+          "base_profiles": [
+            "OFFLINE",
+            "AUDIT"
+          ],
+          "base_source_sha": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-25/cases.jsonl",
+          "supplements": [],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-11.1-T02",
+          "expected": "历史归因Blocked而非重跑代替",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "AUDIT"
+              ],
+              "source_sha": "3e45dd495215c3a0a5eda53a20449d9ad1e0d00d",
+              "scope": "Tencent process audits actual frozen Git inventory and current acceptance/delivery records. No database, historical recovery, capacity, or whole MAIN claim.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/result.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/input-ledger.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-history-delivery-two-audit/independent-verification.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-11.1-T03",
+          "expected": "阻塞不降target",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "c60e4ea2f310fffc7a3aea80f5c025c01d5fdc13",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-25/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "AUDIT"
+              ],
+              "source_sha": "1c3bc86ca748b32d567d9d045295ddc2f4e1d36f",
+              "scope": "Actual current Git workflow/source/SDK declarations evaluated on Tencent; declared controlled old-run success flag and missing executable only. No remote workflow dispatch/pass, real old CI success, build, DB, or whole MAIN claim.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/result.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/input-ledger.original.json",
+                "docs/reports/pr13-stages-20261009/S5-current-CI-source-SDK-three-audit/independent-verification.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "source_model": "Explicit per-case and per-profile sources; no single executed SHA claimed."
+    },
+    {
+      "schema_version": 2,
+      "task_id": "LOAD-02.1",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "当前 coordinator/依赖源码与实际 PG 故障矩阵一致，保留未达负载、先业务失败后 STOP、多原因及证据损坏优先级；六维 Unknown/Failed 未伪升 Passed。",
+      "runtime_review_sources": {
+        "LOAD-02.1-T01": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.1-T02": "304e5be939d0c3259a453ee800a8fcef47f3bb37",
+        "LOAD-02.1-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "LOAD-02.1-T01",
+          "expected": "execution结束、load失败",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T01.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.1-T02",
+          "expected": "保留业务失败",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "304e5be939d0c3259a453ee800a8fcef47f3bb37",
+              "scope": "Same actual original timeout-before-stop variant of LOAD-02.2-T01; maps the earlier business-failure preservation invariant only. Underlying scenario failed as injected; native assertion passed. No new run or samples, capacity, LIVE or whole task acceptance.",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S6-after-load02-prior-business-failure-postgres/independent-G-audit.original.json",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/native-process29.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/independent-verification.json",
+                "docs/reports/pr13-stages-20261009/S4-current-process29-native-regression/complete-original-G-receipt.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.1-T03",
+          "expected": "记录两原因且证据无效优先退出码3",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.1-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "source_model": "Explicit per-case and per-profile sources; no single executed SHA claimed."
+    },
+    {
+      "schema_version": 2,
+      "task_id": "LOAD-02.3",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "正常 STOP 四个原始 await 子场景保留；当前 coordinator 真实 owned PID hang 和应急报告故障证据完整。客户端 graceful cleanup 仅新增票据权威查询调用的变更已用当前 gateway 原件 LIVE 取消票据路径复核；原 STOP 场景来源不改写。",
+      "runtime_review_sources": {
+        "LOAD-02.3-T01": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+        "LOAD-02.3-T02": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.3-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "LOAD-02.3-T01",
+          "expected": "grace内退出且服务后置状态可恢复",
+          "base_profiles": [
+            "OFFLINE",
+            "POSTGRES"
+          ],
+          "base_source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-32/cases.jsonl",
+          "supplements": [],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.3-T02",
+          "expected": "仅终止本轮PID并记录forced",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T02.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.3-T03",
+          "expected": "应急报告存在且不可Pass",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.3-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "source_model": "Explicit per-case and per-profile sources; no single executed SHA claimed."
+    },
+    {
+      "schema_version": 2,
+      "task_id": "LOAD-02.4",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "实际 preparation-only、性能红线、无效证据、人工 STOP 子进程退出码及原始报告核对通过；0/2/3/130 的语义保留，无执行或无证据运行不冒充成功。",
+      "runtime_review_sources": {
+        "LOAD-02.4-T01": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.4-T02": "fca807bba1ce56fbf0db9d77664fd74556370309",
+        "LOAD-02.4-T03": "fca807bba1ce56fbf0db9d77664fd74556370309"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "LOAD-02.4-T01",
+          "expected": "标仅准备不算压测成功",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T01.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.4-T02",
+          "expected": "exit2且记录全部触发",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-2/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T02.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "LOAD-02.4-T03",
+          "expected": "分别3/130",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-40/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "POSTGRES"
+              ],
+              "source_sha": "fca807bba1ce56fbf0db9d77664fd74556370309",
+              "scope": "Exact current coordinator verdict/cleanup fault integration while real PG room is held. Existing fake observations/clock/child fixtures remain explicit. Hang uses two real children and its exit 3 is harness classification. No real load, LIVE, capacity, numerical sample or MAIN claim",
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/independent-G-check.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/native-receipts/LOAD-02.4-T03.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/originals/evidence/persistent-output/results/native-ten.original.trx",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/G-original-to-report-paths.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/complete-original-G-receipt.original.json",
+                "docs/reports/pr13-stages-20261009/S4-load02-actual-coordinator-verdict-PG/passed-owned-cloud-cleanup.original.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "runtime_review_sha": "fca807bba1ce56fbf0db9d77664fd74556370309"
+    },
+    {
+      "schema_version": 2,
+      "task_id": "PR13-B02.1",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "旧 API 实际编译 CS1739/CS1061、正式默认策略与显式候选策略逐案例复核，9 条 PG、338 条 Domain 及 Godot 合同原件均无跳过；不复活废弃成员或修改默认。",
+      "runtime_review_sources": {
+        "PR13-B02.1-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.1-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.1-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "PR13-B02.1-T01",
+          "expected": "编译失败证据",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "e9d2a78464fef06f57c2e82124ddff81ad651ce6",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-22/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.1-T02",
+          "expected": "仍CurrentRhythm/CurrentSteps",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.1-T03",
+          "expected": "候选断言独立",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "runtime_review_sha": "53e576fcbad6f93fc533383cecc6190282828b67"
+    },
+    {
+      "schema_version": 2,
+      "task_id": "PR13-B02.2",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "首核顺序、逐卡 floor、限定完整上下文的 46/72/113 向量、普通治疗及向反 E0 原件齐全；保留指定卡组/装备/抗性上下文，不推广为任意火牌强度。",
+      "runtime_review_sources": {
+        "PR13-B02.2-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.2-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.2-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "PR13-B02.2-T01",
+          "expected": "按首核合同可不同",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.2-T02",
+          "expected": "46/72/113",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.2-T03",
+          "expected": "分别计算不共套牧师倍率",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "runtime_review_sha": "53e576fcbad6f93fc533383cecc6190282828b67"
+    },
+    {
+      "schema_version": 2,
+      "task_id": "PR13-B02.3",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "6 条真实 PG 及 8 条客户端原始检查验证 repeated preview 不改状态/RNG、原始 Protobuf 保序及 stale revision 拒绝。直接 codec/store 合同源码一致；早期失败、挂载失败与继续执行的分层来源保留。",
+      "runtime_review_sources": {
+        "PR13-B02.3-T01": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+        "PR13-B02.3-T02": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+        "PR13-B02.3-T03": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "PR13-B02.3-T01",
+          "expected": "不抽牌不进RNG不提交盾余量",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.3-T02",
+          "expected": "顺序保持",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "b62484c535f01d5034c0fb93add116842c24b0a6",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-5/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.3-T03",
+          "expected": "预览弃置不覆盖当前",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "7b9359306f5769588429e2a7962817204021f2f2",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-16/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/preview.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-preview-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "runtime_review_sha": "5a760e6d92a1123d70a9b73babb4abbb3ea6da9f"
+    },
+    {
+      "schema_version": 2,
+      "task_id": "PR13-B02.4",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "human_authorized": true,
+      "reason": "冻结房间策略、新旧来源与回滚新房间、PVP 工作副本恢复 PVE、旧 snapshot 缺字段与无效枚举逐案例完整；原执行清单覆盖 server/proto/Domain/PG/client，当前服务代码仅解释性注释变化。",
+      "runtime_review_sources": {
+        "PR13-B02.4-T01": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.4-T02": "53e576fcbad6f93fc533383cecc6190282828b67",
+        "PR13-B02.4-T03": "53e576fcbad6f93fc533383cecc6190282828b67"
+      },
+      "case_profile_sources": [
+        {
+          "case_id": "PR13-B02.4-T01",
+          "expected": "policy不静默换",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.4-T02",
+          "expected": "恢复PVE原state",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        },
+        {
+          "case_id": "PR13-B02.4-T03",
+          "expected": "兼容默认或明确拒绝不半恢复",
+          "base_profiles": [
+            "OFFLINE"
+          ],
+          "base_source_sha": "42237ed732ab05b5d4dd000a42d63009b5468ec1",
+          "base_evidence": "docs/reports/pr13-stages-20261009/S6-current-after-pg-matrix-guards/case-sources/family-38/cases.jsonl",
+          "supplements": [
+            {
+              "profiles": [
+                "OFFLINE",
+                "POSTGRES"
+              ],
+              "source_sha": "53e576fcbad6f93fc533383cecc6190282828b67",
+              "scope": null,
+              "evidence": [
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/native-result.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/source-hashes.json",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/numerical-postgres.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/domain.trx",
+                "docs/reports/pr13-stages-20261009/S3-b02-policy-postgres/client-result.json"
+              ]
+            }
+          ],
+          "all_required_profiles_covered": true
+        }
+      ],
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S6-independent-eight-main-reviewed-20261016/case-review.json",
+          "bytes": 66062,
+          "sha256": "6854268fcfbcc49b7d1efe52c538c7a9da125367ac96f29cde518eadbb166f0a"
+        }
+      ],
+      "rollback": "按原任务细则独立回退相关实现提交；保留全部原始证据、未确认结算和资产流水，不删业务行制造成功。",
+      "scope_limit": "仅本项列明案例及适用运行层；不推广 LIVE/容量/强度/未见行为。全范围 G0-G5 和 MAIN 不因此通过。CI 前置计费阻塞如实保留。",
+      "runtime_review_sha": "53e576fcbad6f93fc533383cecc6190282828b67"
+    }
+  ],
+  "whole_scope_accepted": false,
+  "no_workload_rerun": true
+}

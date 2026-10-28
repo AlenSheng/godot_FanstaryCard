@@ -1,0 +1,31 @@
+{
+  "case_targets": [
+    "PR13-B03.4-T01 EXPERIMENT",
+    "PR13-B03.4-T02 EXPERIMENT",
+    "PR13-B03.4-T03 EXPERIMENT"
+  ],
+  "profile_id": "b034-current-rule-identity-replay-v1",
+  "pre_execution_plan": true,
+  "actual_new_encounters": 12,
+  "candidate_cohorts": [
+    "outer-o6-hp085",
+    "outer-o6-hp090"
+  ],
+  "each_actual_encounters": 6,
+  "hero": "Mage",
+  "deck": "current default",
+  "strategy": "baseline_all_hand",
+  "group": "O6",
+  "seed_start": 202610170,
+  "samples_per_stratum": 3,
+  "cutoff_seconds": 60,
+  "positive_control_selection": "Known baseline winning seeds from earlier immutable budget study selected as diagnostic counterexample. This is postcollection positive-control design,not confirmatory benefit/strength sampling.",
+  "T02_reuse": "54 immutable old paired full ordered traces, same frozen context/seed/manifest, source45files rehashed; no rerun.",
+  "T03_faults": [
+    "Actual hp090 rows with coherently copied hp085 manifest identity must be undeclared/rejected",
+    "Two actual rule cohorts must be rejected by production mixed-frozen-input guard"
+  ],
+  "T01_capacity_inputs": "Actual offline encounter duration is not service HTTP p95; unavailable service metrics remain null, actual gameplay profile differs, no capacity/performance benefit.",
+  "no_changes_to_B032_budget": true,
+  "no_activation_or_human_claim": true
+}

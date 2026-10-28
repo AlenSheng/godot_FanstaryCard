@@ -1,0 +1,1930 @@
+{
+  "sha256": "5dfbfba056c8ed6b057514da793133c07e8a434082b748a901b4b49e57db4e69",
+  "messages": {
+    "Empty": {},
+    "UnfinishedMatchResponse": {
+      "1": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "room_revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "BootstrapResponse": {
+      "1": {
+        "name": "server_time",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "player",
+        "type": "PlayerProfileResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "wallet",
+        "type": "WalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "materials",
+        "type": "MaterialsResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "class_weapons",
+        "type": "ClassWeaponResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "7": {
+        "name": "equipped_loadouts",
+        "type": "LoadoutResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "8": {
+        "name": "decks",
+        "type": "DeckResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "9": {
+        "name": "cards",
+        "type": "CardResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "10": {
+        "name": "inventory_summary",
+        "type": "InventorySummaryResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "unfinished_match",
+        "type": "UnfinishedMatchResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "unfinished_settlement",
+        "type": "SettlementResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "inventory",
+        "type": "InventoryResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "shop",
+        "type": "ShopResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "market",
+        "type": "MarketListingResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "16": {
+        "name": "mail",
+        "type": "MailListResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "active_preparation",
+        "type": "PreparationResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "LocalSignInRequest": {
+      "1": {
+        "name": "device_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "display_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "SteamSignInRequest": {
+      "1": {
+        "name": "ticket",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "display_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "LocalSignInResponse": {
+      "1": {
+        "name": "access_token",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "expires_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "player",
+        "type": "PlayerProfileResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MailAttachmentResponse": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "amount",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "MailItemResponse": {
+      "1": {
+        "name": "id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "title",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "body",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "sender",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "sent_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "expires_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "read",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "claimed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "attachments",
+        "type": "MailAttachmentResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "10": {
+        "name": "title_en",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "body_en",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MailListResponse": {
+      "1": {
+        "name": "items",
+        "type": "MailItemResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "unread_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MailClaimResponse": {
+      "1": {
+        "name": "mail_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "already_claimed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "granted",
+        "type": "MailAttachmentResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "MailClaimAllResponse": {
+      "1": {
+        "name": "mail_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "attachment_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "claims",
+        "type": "MailClaimResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "MailDeleteResponse": {
+      "1": {
+        "name": "deleted_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "EnqueueMatchRequest": {
+      "1": {
+        "name": "preparation_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MatchTicketResponse": {
+      "1": {
+        "name": "ticket_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "preparation_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "queued_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "CreatePreparationRequest": {
+      "1": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "deck_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equipment_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "4": {
+        "name": "backpack_tier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "safe_slot_indexes",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "potion_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "difficulty",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "PreparationSnapshotResponse": {
+      "1": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "maximum_hp",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "card_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "4": {
+        "name": "equipment_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "class_weapon_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "backpack_tier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "backpack_capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "safe_slot_indexes",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      },
+      "9": {
+        "name": "potion_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "difficulty",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "equipment_snapshots",
+        "type": "PreparationEquipmentSnapshotResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "13": {
+        "name": "card_levels",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "PreparationEquipmentSnapshotResponse": {
+      "1": {
+        "name": "instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "PreparationResponse": {
+      "1": {
+        "name": "preparation_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "snapshot",
+        "type": "PreparationSnapshotResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "created_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "expires_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementResponse": {
+      "1": {
+        "name": "settlement_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "player_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "result",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "details",
+        "type": "SettlementDetails",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "created_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementAcknowledgementResponse": {
+      "1": {
+        "name": "settlement_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "acknowledged_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "PlayerProfileResponse": {
+      "1": {
+        "name": "user_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "display_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "selected_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "created_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "updated_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "UpdatePlayerProfileRequest": {
+      "1": {
+        "name": "display_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "selected_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ShopProductResponse": {
+      "1": {
+        "name": "product_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "price_gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "limit",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "purchased",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "payload",
+        "type": "ShopProductPayload",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "already_owned",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ShopResponse": {
+      "1": {
+        "name": "reset_key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "products",
+        "type": "ShopProductResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "refreshes_used",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "refresh_limit",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ShopInventoryContextResponse": {
+      "1": {
+        "name": "shop",
+        "type": "ShopResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "inventory",
+        "type": "InventoryResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "PurchaseShopRequest": {
+      "1": {
+        "name": "product_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ShopPurchaseResponse": {
+      "1": {
+        "name": "product_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "gold_after",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "granted",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CreateMarketListingRequest": {
+      "1": {
+        "name": "equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "price_gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketListingResponse": {
+      "1": {
+        "name": "listing_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "seller_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "price_gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "created_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "expires_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketInventoryContextResponse": {
+      "1": {
+        "name": "listings",
+        "type": "MarketListingResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "inventory",
+        "type": "InventoryResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "EconomyContextResponse": {
+      "1": {
+        "name": "shop",
+        "type": "ShopResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "market",
+        "type": "MarketListingResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "inventory",
+        "type": "InventoryResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketPurchaseResponse": {
+      "1": {
+        "name": "listing",
+        "type": "MarketListingResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "buyer_gold_after",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "WalletResponse": {
+      "1": {
+        "name": "gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "diamond",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MaterialsResponse": {
+      "1": {
+        "name": "warrior_soul",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "priest_soul",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "mage_soul",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "guardian_soul",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "equipment_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CardResponse": {
+      "1": {
+        "name": "card_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "rarity",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "unlocked",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "copy_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "craft_cost",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "upgrade_soul_spent",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "dismantle_refund",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "currency_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "can_dismantle",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "blocked_reason",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "upgrade_cost",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "upgrade_copy_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "can_upgrade",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "upgrade_blocked_reason",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "18": {
+        "name": "current_effect",
+        "type": "CardEffectResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "next_effect",
+        "type": "CardEffectResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CardEffectResponse": {
+      "1": {
+        "name": "elemental_damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "direct_damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "heal",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "shield",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "draw_charge",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "immediate_draw",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "draw_speed_modifier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "draw_speed_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "stun_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "draw_block_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "health_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "same_element_bonus",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "resonance_bonus",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "conflict_cancel_bonus",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "conflict_heal_coefficient",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "is_class_reveal",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "secondary_elemental_damage",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "secondary_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CardMutationRequest": {
+      "1": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CardMutationResponse": {
+      "1": {
+        "name": "card",
+        "type": "CardResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "materials",
+        "type": "MaterialsResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "currency_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "soul_amount",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "consumed_copies",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DeckResponse": {
+      "1": {
+        "name": "deck_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "card_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "4": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "updated_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "UpdateDeckRequest": {
+      "1": {
+        "name": "card_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ClassWeaponResponse": {
+      "1": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "EquipmentResponse": {
+      "1": {
+        "name": "instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "is_bound",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "location",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "LoadoutResponse": {
+      "1": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipment_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventorySummaryResponse": {
+      "1": {
+        "name": "capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipment_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "free_slots",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryConsumablesResponse": {
+      "1": {
+        "name": "health_potion_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "advanced_bag_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "top_bag_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryResponse": {
+      "1": {
+        "name": "summary",
+        "type": "InventorySummaryResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipments",
+        "type": "EquipmentResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "consumables",
+        "type": "InventoryConsumablesResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "UpdateLoadoutRequest": {
+      "1": {
+        "name": "equipment_ids",
+        "type": "string",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "EnhanceEquipmentRequest": {
+      "1": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "material_equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "EnhancementQuoteResponse": {
+      "1": {
+        "name": "target_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "current_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "next_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "fragment_cost",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "material_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "material_quality",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "available_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "available_material_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "can_enhance",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "blocked_reason",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "EnhanceResult": {
+      "1": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipment_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "consumed_material_equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "CardListResponse": {
+      "1": {
+        "name": "items",
+        "type": "CardResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "DeckListResponse": {
+      "1": {
+        "name": "items",
+        "type": "DeckResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "MarketListResponse": {
+      "1": {
+        "name": "items",
+        "type": "MarketListingResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "HttpError": {
+      "1": {
+        "name": "type",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "title",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "status",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "detail",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "trace_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "code",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "retry_after_seconds",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RealtimeTicketResponse": {
+      "1": {
+        "name": "ticket",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "expires_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementDetails": {
+      "1": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "revision",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "phase",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "position",
+        "type": "SettlementPosition",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "asset_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "items",
+        "type": "SettlementDisplayItem",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "SettlementPosition": {
+      "1": {
+        "name": "row",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "column",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementDisplayItem": {
+      "1": {
+        "name": "item",
+        "type": "SettlementDisplayAsset",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipped",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementDisplayAsset": {
+      "1": {
+        "name": "item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "is_safe",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "equipment",
+        "type": "SettlementEquipment",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SettlementEquipment": {
+      "1": {
+        "name": "slot",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "quality",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "element",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "is_bound",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "slot_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "quality_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "element_name",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ShopProductPayload": {
+      "1": {
+        "name": "card_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "rarity",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "count",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "amount",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "GoogleSignInRequest": {
+      "1": {
+        "name": "id_token",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "display_name",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "AccountDeletionStatus": {
+      "1": {
+        "name": "request_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "requested_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "scheduled_for",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "completed_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "cancelled_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    }
+  }
+}

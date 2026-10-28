@@ -1,0 +1,102 @@
+{
+  "kind": "FinalControlledUILayoutAndReadabilityReview",
+  "product_changes": [
+    "high contrast selected-card order badges",
+    "PVP waiting hint moved above preview and shown only when unavailable",
+    "heal/shield overflow directly visible",
+    "localized control units and full opponent class names",
+    "passive descriptions wrap at fixed18logical px"
+  ],
+  "formal_product_files": [
+    {
+      "path": "client/ui/exploration_view.gd",
+      "bytes": 44587,
+      "sha256": "57845bc212715e0eb5604f6cb9e1a87035b2929e234cb31f86504d3c487a78dd"
+    },
+    {
+      "path": "client/data/localization_battle.json",
+      "bytes": 5015,
+      "sha256": "7a0c1a603daaaad41ea12f85abab8a2ff7a59bb2b1f53be56e9acf9a7d87272a"
+    }
+  ],
+  "final_layout_matrix": {
+    "reviewed": 36,
+    "R1_unchanged_adopted": 18,
+    "R2_affected_replacements": 18,
+    "languages": [
+      "zh-CN",
+      "en"
+    ],
+    "widths": [
+      1920,
+      1280,
+      960
+    ]
+  },
+  "passive_caption_components": {
+    "reviewed": 12,
+    "heroes": 3,
+    "contexts": [
+      "PVE",
+      "PVP"
+    ],
+    "languages": 2,
+    "smallest_viewport": [
+      960,
+      540
+    ],
+    "R3_strict_native_pass": true
+  },
+  "additional_ordinary_health_frames": 4,
+  "priest_health_overcap": {
+    "authority": "human",
+    "instruction": "80/70是因为牧师职业有神器加成，允许突破血量上限",
+    "original80_over_70_valid_images_preserved_and_reviewed": true,
+    "extra80_over_80_does_not_replace_original_boundary": true,
+    "previous_fixture_error_assessment_explicitly_corrected": true,
+    "production_health_display_function_unchanged": true,
+    "no_health_formula_or_live_relic_acquisition_claim": true
+  },
+  "R1_full36_original_run": {
+    "strict_pass": false,
+    "exit_objects": 4,
+    "exit_resources": 2,
+    "original_failure_not_overwritten": true
+  },
+  "separate_audio_drain_probe_strict_pass": true,
+  "R2_18_strict_pass": true,
+  "R3_12_strict_pass": true,
+  "R4_4_strict_pass": true,
+  "all_archives_and_members_G_SHA_CRC_verified": true,
+  "review_originals": {
+    "path": "outputs/pr13-tencent-20261009/PR13_UI_FINAL_DISJOINT36_AND_CAPTION12_REVIEW_20261016_R3.json",
+    "bytes": 27100,
+    "sha256": "7f1c7b28ccb2490fc1a7326192868303c1b30442870daab1ddf58bcceef52e95"
+  },
+  "cleanup": {
+    "passed_jobs": 4,
+    "precise_temp_paths_removed": 8,
+    "actual_root_free_delta_bytes": 45461504,
+    "resource_after": {
+      "disk_available": 9071407104,
+      "disk_floor": 3164501606,
+      "memory_available": 2475032576,
+      "memory_floor": 191883878
+    },
+    "5pct_floor_preserved": true,
+    "G_originals_and_failed_R1_retained": true
+  },
+  "task_counts": {
+    "Accepted": 25,
+    "Partial": 88,
+    "Failed": 2,
+    "ReadyForAcceptance": 17
+  },
+  "remaining_unaccepted": 107,
+  "total_tasks": 132,
+  "canonical_cases": 396,
+  "whole_scope_accepted": false,
+  "no_completed_sampling_PG_statistics_or_full_UI_matrix_repeat": true,
+  "no_deploy": true,
+  "performance_scope": "Software GPU controlled rendered scenes only; no human, LIVE, capacity or hardware FPS claim"
+}

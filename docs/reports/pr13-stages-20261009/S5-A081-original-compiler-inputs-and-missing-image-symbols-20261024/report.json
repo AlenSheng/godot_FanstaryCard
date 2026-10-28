@@ -1,0 +1,222 @@
+{
+  "kind": "OriginalRuntimeCompilerInputAndExplicitMissingSymbolAudit_A081Supplement",
+  "generated_UTC": "2026-10-24T01:50:33.648368+00:00",
+  "review_head_sha": "866d9599d8607b98e57672eda44557b9bd0747c2",
+  "task_id": "PR13-A08.1",
+  "task_state": "ReadyForAcceptance",
+  "canonical_cases_and_pass_criterion": {
+    "implementation_steps": "区分cb96d16构建与a33f58f仅checkout；记当前head与历史run来源，无法读取写missing",
+    "cases": [
+      {
+        "id": "PR13-A08.1-T01",
+        "setup_and_injection": "marker先进但未rebuild",
+        "expected": "不写新镜像已运行",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A08.1-T02",
+        "setup_and_injection": "dirty补丁",
+        "expected": "单独hash来源",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A08.1-T03",
+        "setup_and_injection": "配置包同名不同hash",
+        "expected": "阻塞比较",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "每历史与新run有完整source/config/image关系，不靠部署marker替代内容证据。",
+    "interpretation": "Unreadableoruncapturedfactsretainexplicitmissingandblockunsupportedcomparison; thisdoesnotpermituninspectedavailablegroups tobeassumedmissingorwholeaccepted."
+  },
+  "original_five_cached_server_runs": {
+    "original_cache_archive_SHA": "67dce98fdaaa583851d1d3b4059bacd43c839231e751735417582fba35d65628",
+    "original_runtime21_and_source328_plus_metadata1_members350_rehashed": true,
+    "runtime_namespace_bound_explicitly_not_samebasename_source_copy": true,
+    "actual_original_managed_DLL_PDB_pairs3": true,
+    "compiler_document_occurrences143_all_checksum_exact": true,
+    "coarchived_authored_source_documents130_raw_exact": true,
+    "source_inputs_all130_equal_original_Git2dd_raw": true,
+    "generated_source_bodies11_found_by_actual_checksum_from_other_retained_artifacts": true,
+    "PDB_embedded_generated_source_bodies2": true,
+    "failed_build_provider_does_not_make_that_build_passed": true,
+    "current_866_existing_paths126_match4_different": true,
+    "current_different_paths": [
+      "server/src/FantasyCard.Contracts/Bootstrap/BootstrapContracts.cs",
+      "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+      "server/src/FantasyCard.Server/Bootstrap/BootstrapEndpoints.cs",
+      "server/src/FantasyCard.Server/Bootstrap/BootstrapRepository.cs"
+    ],
+    "no_old_binary_relabelled_as_current_runtime": true
+  },
+  "marker_boundary_original_module_families": {
+    "original_server245_SHA": "245265ff30515b9103a88e2a24e24a03eb3ebdfb294a1871eea1a59d4a406b57",
+    "reference_and_later_server8eb_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+    "actual_DLL_PDB_pairs6": true,
+    "compiler_document_occurrences286_all_checksum_exact_bodies": true,
+    "same_fingerprint_sources_are_byte_providers_not_same_original_locations_or_executions": true,
+    "old_running_module_not_replaced_by_checkout_or_marker": true
+  },
+  "combined_compiler_source_evidence": {
+    "actual_DLL_PDB_pairs9": 9,
+    "compiler_document_occurrences429": 429,
+    "unique_exact_source_byte_bodies269": 269,
+    "all_exact_source_private_bodies_reopened_SHA_matches": true,
+    "body_provider_kind_not_assumed_generated_or_authored_from_provider_path": true,
+    "matching_old_compiler_document_paths_not_whole_current_source_tree_or_runtime_equivalence": true,
+    "source_family_vs_current_source_scope": {
+      "path": "G:\\PR13Evidence\\A081-compiler-and-runtime-namespace-qualified-20261024-r403-originals\\original_family_vs_current_source_scope.private.original.json",
+      "bytes": 3950,
+      "sha256": "eb30df335893d3e7a5765896c76f5fcf28437dfceb3108f6555a0d2ba1dcfc01"
+    },
+    "all429_bindings_private": {
+      "path": "G:\\PR13Evidence\\A081-compiler-and-runtime-namespace-qualified-20261024-r403-originals\\all429-qualified-source-document-bindings.private.original.jsonl",
+      "bytes": 1119327,
+      "sha256": "bff2b89f05fb4164f8de603372ba68a13d9070d84c5d6db96b72dcc06878ca79"
+    }
+  },
+  "first_original_image": {
+    "actual_image_digest": "sha256:113d0087546c962c4ac3fa23847402e9c7e7a0013bf17258d3e9cfa234ce8485",
+    "current_three_DLLs_match_prior_original_image_read": true,
+    "source_revision_label_not_compiler_source_proof": "da845cac10fc83fc36d71c7f2d18507eb979e8d9",
+    "PDB_lookup": {
+      "paths": [
+        {
+          "path": "FantasyCard.Contracts.pdb",
+          "state": "MissingFromRetainedImagePath",
+          "copy_exit": 1
+        },
+        {
+          "path": "FantasyCard.Domain.pdb",
+          "state": "MissingFromRetainedImagePath",
+          "copy_exit": 1
+        },
+        {
+          "path": "FantasyCard.Server.pdb",
+          "state": "MissingFromRetainedImagePath",
+          "copy_exit": 1
+        }
+      ],
+      "state": "missing_from_retained_image_app_paths",
+      "not_global_no_symbols_or_corruption_claim": true
+    },
+    "stopped_container_read": {
+      "state_created_PID0_StartAtZero": true,
+      "read_only_rootfs": true,
+      "network_none_no_published_ports": true,
+      "no_image_code_started": true,
+      "exact_private_local_archive_verified_before_cleanup": true,
+      "owned_reader_removed_after_Gverification": true,
+      "original_image_and_all_other_cloud_data_retained": true
+    },
+    "historical_runtime_overlay_hash_stays_missing": true,
+    "source_of_actual_loaded_historical_overlay_not_inferred": true
+  },
+  "runtime_metadata_candidate_census": {
+    "candidate_locator_observations442": 442,
+    "all442_exact_indexed_metadata_reopened_and_parsed": true,
+    "distinct_byte_payloads285_not_run_count": 285,
+    "schema_groups61": 61,
+    "selected_filename_scope_not_all_run_coverage": true,
+    "assembly_like_fields43_refined": {
+      "ExplicitAssemblyFileDigestField_ProducerAndRunParentJoinStillRequired": 41,
+      "CurrentReferenceArtifact_NotRunningOldProcessSource": 1,
+      "ContainerIdentifier_NotAssemblyDigest": 1
+    },
+    "one_container_ID_not_assembly_hash": true,
+    "one_current_reference_artifact_not_old_running_source": true,
+    "other41_file_digest_fields_still_need_producer_and_run_parent_join": true,
+    "no_source_admission_from_64hex_or_current_marker_alone": true
+  },
+  "six_selected_relations": {
+    "path": "docs/reports/pr13-stages-20261009/S5-A081-original-compiler-inputs-and-missing-image-symbols-20261024/six-original-runtime-source-relations-qualified.json",
+    "bytes": 11407,
+    "sha256": "1ce645abdb075424ac1dbf058b2ab0c9e0a0cdb86c0d9239dd274c17d3050e23"
+  },
+  "remaining_scope": {
+    "all_other_historical_and_new_run_relations_not_yet_fully_adjudicated": true,
+    "runtime_candidates_require_source_config_image_parent_join": true,
+    "unreadable_fields_must_be_missing_not_fabricated_or_currently_substituted": true,
+    "original_four_editor_engine_hashes_not_recorded_kept_missing": true,
+    "original_Group1_overlay_not_recorded_kept_missing": true,
+    "old13run_2144declared_artifact_missing_observation_remains_historical_blockedcomparison_not_new_capture": true,
+    "source_label_coarchive_embeddedpackage_not_effective_environment_or_roompolicy_proof": true,
+    "no_forced_private_vendor_binary_authenticity_or_universal_secret_absence_requirement_added": true
+  },
+  "reader_error_history": {
+    "r395_initial_assertion": "Sameappsettingsbasenamesoccurunderbothsourceandruntime withsamebytes; initialreaderassertedunique. Originalfailure/sourcekept. R396usesexplicitruntime/namespacefor21runtimefiles andseparatelykeeps328sourcefiles+manifest.",
+    "r402_provider_label": "Genericother-providerlabelsaidGeneratedevenwhenmatchedauthoredsource. R403preservesoriginalandqualifiesgenericbyteprovider/inputroleindependently.",
+    "hash_identity_mismatch_or_business_rule_failures_not_inferred_from_reader_errors": true
+  },
+  "new_canonical_case_profile_closures": 0,
+  "whole_A081_or_project_accepted": false,
+  "counts": {
+    "Accepted": 111,
+    "Partial": 20,
+    "ReadyForAcceptance": 1,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 21,
+  "missing_pairs46": {
+    "CAPACITY": 36,
+    "POSTGRES": 7,
+    "LIVE": 2,
+    "AUDIT": 1
+  },
+  "all6gates_NotAccepted": true,
+  "no_new_criteria_sample_volume_or_resource_waivers": true,
+  "no_gameplay_accounts_worlds_Godot_Unity_PG_or_old_source_test_execution": true,
+  "cloud_operations": "ReadretainedimageviaoneownedcreatedPID0container/nativeSFTPthenverifiedexactcleanup;productionidentity/envsameandhealth200. No applicationdeploy/reboot/assets/ledgerwrites.",
+  "last_owned_reader_cleanup_private": {
+    "path": "G:\\PR13Evidence\\A081-image-symbol-reader-cleanup-20261024-r399-originals\\result.original.json",
+    "bytes": 651,
+    "sha256": "ce2931a5b7611443872076a909e0c49c9850b8a704e059a66a4efcece60c7c43"
+  },
+  "GDD_7375_bccf_unchanged_and_Priest80_Mage70_Guardian100_legal": true,
+  "human_experience_in_scope": false,
+  "private_proofs": {
+    "cache_pairs": {
+      "path": "G:\\PR13Evidence\\A081-original-cache-compiler-symbols-20261024-r396-originals\\result.original.json",
+      "bytes": 1658,
+      "sha256": "b3b6fd5a22444f75f670b859155fd885dafcab21b67d212d34b7f3b4acf6d3d2"
+    },
+    "cache_documents": {
+      "path": "G:\\PR13Evidence\\A081-original-compiler-documents-bound-20261024-r397-originals\\result.original.json",
+      "bytes": 1503,
+      "sha256": "3063d3e8da2e61d218ed2cfdb732be81b9090728f687c9ae3bbbd2a0c5ba99dd"
+    },
+    "image_capture": {
+      "path": "G:\\PR13Evidence\\A081-retained-image-symbols-20261024-r398-originals\\result.original.json",
+      "bytes": 985,
+      "sha256": "f9443f7c3c9d5a9175d2e3536ae1caacaa30b6ec1e12b50fe0c96eb3abf56a7d"
+    },
+    "image_cleanup": {
+      "path": "G:\\PR13Evidence\\A081-image-symbol-reader-cleanup-20261024-r399-originals\\result.original.json",
+      "bytes": 651,
+      "sha256": "ce2931a5b7611443872076a909e0c49c9850b8a704e059a66a4efcece60c7c43"
+    },
+    "witness_candidates": {
+      "path": "G:\\PR13Evidence\\A081-runtime-witness-candidate-census-20261024-r400-originals\\result.original.json",
+      "bytes": 1165,
+      "sha256": "b5e8d8e991cfd054a51abbe7eee01e7e688ffd51d41af6b698a3a3d270e93a70"
+    },
+    "marker_pairs": {
+      "path": "G:\\PR13Evidence\\A081-marker-families-original-symbols-20261024-r401-originals\\result.original.json",
+      "bytes": 2480,
+      "sha256": "13367d9a2f5e4d4a46f7ea09026cc7fced51de8cdc31c0ce780429661f20e0d2"
+    },
+    "marker_documents": {
+      "path": "G:\\PR13Evidence\\A081-marker-families-compiler-documents-20261024-r402-originals\\result.original.json",
+      "bytes": 1644,
+      "sha256": "c970246db75a707b329fc2d7054ebd016990df24952718c00d83063b70e6e5e4"
+    },
+    "qualified_compiler_and_namespaces": {
+      "path": "G:\\PR13Evidence\\A081-compiler-and-runtime-namespace-qualified-20261024-r403-originals\\result.original.json",
+      "bytes": 2219,
+      "sha256": "7e873253cd0da56629332da995e29235a04966620bed690b8574569ceece714f"
+    }
+  }
+}

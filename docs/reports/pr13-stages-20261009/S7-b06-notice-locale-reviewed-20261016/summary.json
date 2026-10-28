@@ -1,0 +1,235 @@
+{
+  "kind": "ScopedProductionNoticeLocaleAndFontLifetimeReview",
+  "at_local": "2026-10-16T10:04:16.348757+08:00",
+  "passed": 6,
+  "failed": 0,
+  "cases": [
+    {
+      "detail": {
+        "actual": "无法连接服务器",
+        "bounded": true,
+        "clear_resets_notice": true,
+        "expected": "无法连接服务器",
+        "glyphs_available": true,
+        "label_width": 154.0,
+        "localized": true,
+        "measured_text_width": 154.0,
+        "panel_width": 202.0,
+        "panel_within_ratio": true,
+        "text_fits": true,
+        "viewport_width": 1280.0,
+        "visible": true
+      },
+      "id": "NOTICE-01",
+      "language": "zh-CN",
+      "passed": true,
+      "resolution": [
+        1280,
+        720
+      ]
+    },
+    {
+      "detail": {
+        "actual": "无法连接服务器",
+        "bounded": true,
+        "clear_resets_notice": true,
+        "expected": "无法连接服务器",
+        "glyphs_available": true,
+        "label_width": 154.0,
+        "localized": true,
+        "measured_text_width": 154.0,
+        "panel_width": 202.0,
+        "panel_within_ratio": true,
+        "text_fits": true,
+        "viewport_width": 960.0,
+        "visible": true
+      },
+      "id": "NOTICE-02",
+      "language": "zh-CN",
+      "passed": true,
+      "resolution": [
+        960,
+        540
+      ]
+    },
+    {
+      "detail": {
+        "actual": "Unable to connect to server",
+        "bounded": true,
+        "clear_resets_notice": true,
+        "expected": "Unable to connect to server",
+        "glyphs_available": true,
+        "label_width": 282.0,
+        "localized": true,
+        "measured_text_width": 282.0,
+        "panel_width": 330.0,
+        "panel_within_ratio": true,
+        "text_fits": true,
+        "viewport_width": 1280.0,
+        "visible": true
+      },
+      "id": "NOTICE-03",
+      "language": "en",
+      "passed": true,
+      "resolution": [
+        1280,
+        720
+      ]
+    },
+    {
+      "detail": {
+        "actual": "Unable to connect to server",
+        "bounded": true,
+        "clear_resets_notice": true,
+        "expected": "Unable to connect to server",
+        "glyphs_available": true,
+        "label_width": 282.0,
+        "localized": true,
+        "measured_text_width": 282.0,
+        "panel_width": 330.0,
+        "panel_within_ratio": true,
+        "text_fits": true,
+        "viewport_width": 960.0,
+        "visible": true
+      },
+      "id": "NOTICE-04",
+      "language": "en",
+      "passed": true,
+      "resolution": [
+        960,
+        540
+      ]
+    },
+    {
+      "detail": {
+        "actual": "Unable to connect to server",
+        "bounded": true,
+        "expected": "Unable to connect to server",
+        "glyphs_available": true,
+        "label_width": 282.0,
+        "localized": true,
+        "measured_text_width": 282.0,
+        "panel_width": 330.0,
+        "panel_within_ratio": true,
+        "text_fits": true,
+        "viewport_width": 1280.0,
+        "visible": true
+      },
+      "id": "NOTICE-05",
+      "language": "en",
+      "passed": true,
+      "scope": "Newly emitted notice after fixture locale change"
+    },
+    {
+      "detail": {
+        "body_alive": false,
+        "number_alive": false,
+        "title_alive": false
+      },
+      "id": "NOTICE-06",
+      "passed": true,
+      "scope": "UI destroyed and public font cleanup called"
+    }
+  ],
+  "locale_transition_observation": {
+    "fixture_changed_to": "en",
+    "not_a_locale_persistence_or_settings_UI_test": true,
+    "observed_old_notice": "无法连接服务器",
+    "old_notice_retained": true,
+    "original_notice_language": "zh-CN"
+  },
+  "evidence": [
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-notice-locale-local-20261016-r1/source-manifest.original.json",
+      "bytes": 2461,
+      "SHA256": "7b2c8a3c77fe05a7fe5c613a7f7651d7b34799dfe55419f46974e615c60824dc"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-notice-locale-local-20261016-r1/probe.source.original.gd",
+      "bytes": 4327,
+      "SHA256": "7c6382273b8c80cab8656831a67817d94733dbf9b7b10f3084b23246d13c0af9"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-notice-locale-local-20261016-r1/baseline.observations.original.json",
+      "bytes": 3758,
+      "SHA256": "10de0268df83551ea1e5c40ce8a6c914d400dcb8f78a558889b742c952173d86"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-notice-locale-local-20261016-r1/baseline.terminal.original.json",
+      "bytes": 4556,
+      "SHA256": "b96f1b899d88fb72c78190bef2c1ec6a9892730cdcd9a0cd12b749c994bc6cd7"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-notice-locale-local-20261016-r1/baseline.stderr.original.log",
+      "bytes": 125,
+      "SHA256": "354f6b41afac0af85c870c4ddfdbe208e44ad5223ae6d89aba867d4090718998"
+    }
+  ],
+  "scope_limits": [
+    "Standalone headless component checks with actual translation tables and bundled fonts. No rendered-pixel, authenticated network or whole-client shutdown claim.",
+    "Fixture controls only in-memory Palette language and never calls preference-saving set_language. Settings UI and persistence are not verified.",
+    "Old notice retains creation language until cleared/re-emitted; no universal hot-switch translation claim.",
+    "Windows certificate-store diagnostic error preserved; no network/autoload or battles used.",
+    "Original cloud72row strict exit failure remains unresolved."
+  ],
+  "formal_product_source_edits_this_turn": false,
+  "register_gate_MAIN_changed": false,
+  "original132tasks396cases_complete": false,
+  "production_sources_SHA256": [
+    {
+      "path": "client/ui/palette.gd",
+      "bytes": 35154,
+      "SHA256": "80cc1bd3af9068f3eeeb257624bed14d32bc50d1d6b2a76dac82e1a44eaf13c2"
+    },
+    {
+      "path": "client/ui/tips_overlay.gd",
+      "bytes": 4347,
+      "SHA256": "78fb7260f8a8a464ac1c5872f1261eb3731568739081facd1f2fc7c282a190bc"
+    },
+    {
+      "path": "client/data/localization_config.json",
+      "bytes": 13751,
+      "SHA256": "6ed794b8aeb581a46d1a99dbbcfb741744a6c2e713a03e08f1e00cfb5932613b"
+    },
+    {
+      "path": "client/data/localization_modules.json",
+      "bytes": 26457,
+      "SHA256": "f7b08dfac74f2981de4966b4d096d533ee2dae29001792d23afde1690c02e66e"
+    },
+    {
+      "path": "client/data/localization_templates.json",
+      "bytes": 5885,
+      "SHA256": "8f0225c6af0dc1349d16b7fe32a7acdb49762dc429fb7cd4be740a7726988a8e"
+    },
+    {
+      "path": "client/data/localization_brand.json",
+      "bytes": 246,
+      "SHA256": "52f2b41f3d43ebea72a47217ca2f51c6260f87c30bbf0954021b3c5a44f2bf58"
+    },
+    {
+      "path": "client/data/login_localization.json",
+      "bytes": 889,
+      "SHA256": "493b6fc99b3abb8e6d506e3445b8708d5b4b5328197a5d44bde34879c848418b"
+    },
+    {
+      "path": "client/data/localization_battle.json",
+      "bytes": 4275,
+      "SHA256": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759"
+    },
+    {
+      "path": "client/data/localization_ui_gaps.json",
+      "bytes": 18793,
+      "SHA256": "f0bf60aa3e955fb57b282e22c6bde046f074371d4d8751aa8650f9231a296281"
+    },
+    {
+      "path": "client/assets/fonts/SourceHanSansSC-Regular.otf",
+      "bytes": 16529832,
+      "SHA256": "f1d8611151880c6c336aabeac4640ef434fa13cbfbf1ffe82d0a71b2a5637256"
+    },
+    {
+      "path": "client/assets/fonts/SourceHanSerifSC-SemiBold.otf",
+      "bytes": 24700532,
+      "SHA256": "faf16caeaf207e1926e01af8d9f1a8e71b0e9d8f51bf3b5d9a78f9f30e7e3e31"
+    }
+  ]
+}

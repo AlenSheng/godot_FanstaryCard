@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "human_instruction": "云服务器在北美，有延时正常，放开点测试基准线",
+  "region_source": "Human operator confirms North America",
+  "base_policy": "docs/plans/PR13_FINAL_CLOUD_MEMORY_CONCURRENCY_20261009.json",
+  "latency_policy": {
+    "http_p95_limit_ms": 5000,
+    "command_p95_limit_ms": 8000,
+    "health_limit_ms": 10000,
+    "monitor_timeout_seconds": 5,
+    "probe_collection_budget_seconds": 11,
+    "legacy_limits_retained_by_default": true,
+    "previous_failures_retained": true,
+    "basis": "Actual idle strict-SSH health median 1084 ms; cloud loopback median about 10 ms; prior ramp HTTP P95 about 4 s and command P95 about 5.5 s. Separate North America test tolerance, not a global production SLO change."
+  },
+  "unchanged": {
+    "memory_floor_bytes": 500000000,
+    "http_error_stop_fraction": 0.1,
+    "command_rejection_stop_fraction": 0.1,
+    "cpu_stop_percent": 85,
+    "disk_available_stop_percent": 15,
+    "actor_wait_p95_stop_ms": 100,
+    "online_targets": [
+      50,
+      100
+    ],
+    "active_targets": [
+      50,
+      100
+    ],
+    "hold_seconds": 600,
+    "minimum_continuous_seconds": 120,
+    "minimum_coverage": 0.95,
+    "maximum_sample_gap_seconds": 20,
+    "actual_client_http_timeout_ms": 10000,
+    "receipt_asset_ownership_and_evidence_requirements": true,
+    "gameplay_numbers": true
+  },
+  "temporary_test_concurrency_bypass": true,
+  "postgres_max_connections": 256,
+  "capacity_accepted": false,
+  "human_experience_in_scope": false
+}

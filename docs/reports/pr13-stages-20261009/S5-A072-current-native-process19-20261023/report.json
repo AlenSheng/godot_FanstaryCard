@@ -1,0 +1,313 @@
+{
+  "kind": "CurrentNative19PreviouslySkippedGodotPGCases_S5Only",
+  "generated_at_UTC": "2026-10-23T15:39:07.469010+00:00",
+  "state": "PassedScopedNative19",
+  "source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "source": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\source-manifest.original.json",
+    "bytes": 150351,
+    "sha256": "05fd47976faae7bc645e499026187a07fd229bb859286a986fac68937e45825e"
+  },
+  "source_input_count": 791,
+  "source_snapshot_reread_verified": true,
+  "actual_native_result": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\result.private.original.json",
+    "bytes": 11507,
+    "sha256": "51eb31e5471e9cff104a72317f07f95730f055a9e2e4887b4a23995d3f4411a7"
+  },
+  "native_TRX": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\results\\godot19.trx",
+    "bytes": 812298,
+    "sha256": "521dae559002426dc06f9d750510ee529f3b887848e671b4daa09f2d283c164b"
+  },
+  "actual_outcomes": {
+    "Passed": 19
+  },
+  "actual_cases": [
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+      "outcome": "Passed",
+      "execution_id": "dc3974cf-09e3-4cde-8752-507d65418394"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+      "outcome": "Passed",
+      "execution_id": "c6fecfb3-5c41-40a8-91b3-3f62bfd2b77a"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+      "outcome": "Passed",
+      "execution_id": "0f79e5e8-e823-45cb-895b-6127949d237d"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+      "outcome": "Passed",
+      "execution_id": "3598f555-b65f-401e-96c5-c3dd99ab98e5"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+      "outcome": "Passed",
+      "execution_id": "f9e32baf-a0c4-45cd-b04d-898d3da31c1a"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "outcome": "Passed",
+      "execution_id": "dc174df8-5b3a-4ead-9482-55f303a68998"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "outcome": "Passed",
+      "execution_id": "752ea135-cf9e-4894-84de-2f7b1372601a"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "outcome": "Passed",
+      "execution_id": "7d36a277-117f-45b2-95b7-5cb000db9f9e"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+      "outcome": "Passed",
+      "execution_id": "8021dcc8-678d-4f9e-9195-e21a8f647c1a"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+      "outcome": "Passed",
+      "execution_id": "3061afd1-dddc-4e52-859b-93dc577f4bda"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+      "outcome": "Passed",
+      "execution_id": "1742a231-1add-4585-a914-5e3b1e1a4b41"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+      "outcome": "Passed",
+      "execution_id": "f62c71a0-aac4-4b3a-8863-6918af353923"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+      "outcome": "Passed",
+      "execution_id": "361f859f-8fa1-4ad8-9e9a-f5efdd46e90a"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+      "outcome": "Passed",
+      "execution_id": "2b4ac57f-31c5-4fdc-bc72-2b787fd1cdbc"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+      "outcome": "Passed",
+      "execution_id": "f920a8bd-98c4-4b4d-b4db-0ce491c037f0"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+      "outcome": "Passed",
+      "execution_id": "03babd25-0304-4ce1-89f0-17394ce98d17"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+      "outcome": "Passed",
+      "execution_id": "36cbc58d-308d-431a-bf7f-abdbe4825585"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+      "outcome": "Passed",
+      "execution_id": "e2d43442-1885-4226-b593-a25dde7526bb"
+    },
+    {
+      "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+      "outcome": "Passed",
+      "execution_id": "4e0b32f4-c92f-44aa-9a33-bf2683dc9451"
+    }
+  ],
+  "native_exit_code": 0,
+  "compiled_test_assembly": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\source\\.artifacts\\bin\\FantasyCard.Server.Tests\\release\\FantasyCard.Server.Tests.dll",
+    "bytes": 1754112,
+    "sha256": "b1d35edf82850cb2108060828e30748b94b01fb021bf1569558787ac89d98748"
+  },
+  "phases": [
+    {
+      "phase": "offline-restore",
+      "exit_code": 0,
+      "elapsed_seconds": 13.89,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\offline-restore.stdout.private-original",
+        "bytes": 935,
+        "sha256": "a3f7d121f3d9e0d5b4c6ed1327169bdd60d870fefcb96016a5765136d5aa9b94"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\offline-restore.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "strict-test-build",
+      "exit_code": 0,
+      "elapsed_seconds": 56.984,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\strict-test-build.stdout.private-original",
+        "bytes": 990,
+        "sha256": "7863c33cd3aa82fdb3e81265b903172ebf74b21caa6c59cbd19a62fdf0db95da"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\strict-test-build.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "PG-init",
+      "exit_code": 0,
+      "elapsed_seconds": 4.375,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-init.stdout.private-original",
+        "bytes": 1089,
+        "sha256": "01a86b9554813a20b1f03037ce7e9812477bbadd63e5da67a0518a2da3f93460"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-init.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "PG-create-owned-database",
+      "exit_code": 0,
+      "elapsed_seconds": 0.437,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-create-owned-database.stdout.private-original",
+        "bytes": 17,
+        "sha256": "c4f0e6a1d4c0f5670985351933a6e3b37f82d0e083b70cd21e88d7d6258dd588"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-create-owned-database.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "previously-skipped19",
+      "exit_code": 0,
+      "elapsed_seconds": 790.219,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\previously-skipped19.stdout.private-original",
+        "bytes": 380,
+        "sha256": "ef28801168b313377a930a4c1f5d1612b674604a142fefad97f8b4ac37216a56"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\previously-skipped19.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "PG-remaining-schema-count",
+      "exit_code": 0,
+      "elapsed_seconds": 0.094,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-remaining-schema-count.stdout.private-original",
+        "bytes": 3,
+        "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-remaining-schema-count.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "phase": "PG-owned-stop",
+      "exit_code": 0,
+      "elapsed_seconds": 0.984,
+      "stdout": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-owned-stop.stdout.private-original",
+        "bytes": 58,
+        "sha256": "3589d2bd01f8295cc7c9ec3f5e07625fcd347ccb6f33f2d80edafe5f5217c1fb"
+      },
+      "stderr": {
+        "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\logs\\PG-owned-stop.stderr.private-original",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "exact_preregistered_intent": {
+    "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\preregistered-intent.original.json",
+    "bytes": 6673,
+    "sha256": "9e9eddd7ec3501243bd4da968f7ea05ffc600ed61b3b59f0495f37f5a4aa2abc"
+  },
+  "extra_test_only_change": {
+    "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+    "before": {
+      "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\ProcessLifecycleRecoveryTests.before-Dummy-audio.original.cs",
+      "bytes": 43675,
+      "sha256": "a3a00bccc4b4fc93392c2e8be2728451e987e31012e26a820676baa20e0c7259"
+    },
+    "after": {
+      "path": "G:\\PR13Evidence\\A072-native-Godot-process-20261023-r165-originals\\runtime\\source\\server\\tests\\FantasyCard.Server.Tests\\EndToEnd\\ProcessLifecycleRecoveryTests.cs",
+      "bytes": 43768,
+      "sha256": "c576a762692e64c9567c50411cbe7ed525c71f6a93c710d86b9f160ee8d15eb9"
+    },
+    "behavior": "Godot test fixture children explicitly receive --audio-driver Dummy in addition to existing headless and CreateNoWindow. The real production host argument path returns before these additions."
+  },
+  "cleanup": {
+    "owned_PG_terminal": true,
+    "owned_PG_stop_exit": 0,
+    "remaining_owned_fixture_schemas": 0,
+    "temporary_initialization_input_removed": true,
+    "independent_postmaster_PID_absence_rechecked": true
+  },
+  "prior_run_boundaries": {
+    "original_full_Server": "396Passed,20NotExecuted,2Failed;exit1 retained",
+    "prior_two_path_failures": "Same original assembly,short owned TEMP,2Passed;outer observer exit1 retained",
+    "new_native19": "Separate current saved test build with explicit Dummy-audio launcher delta; no original TRX overwritten",
+    "remaining_not_executed": "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets requires an owned PG container and immutable previous server artifact; not supplied by this native local run",
+    "no_single_full_green_Server_or_CI_claim": true
+  },
+  "receipt_and_audit_observations": {
+    "path": "docs/reports/pr13-stages-20261009/S5-A072-current-native-process19-20261023/receipt-and-audit-observations.json",
+    "bytes": 14065,
+    "sha256": "5fbf5e10b1965c992526c501cde9c12f7291d8daee21cfc0b694f8af151be896"
+  },
+  "register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-A071-current-native-accepted-20261023/register.json",
+    "counts": {
+      "Accepted": 101,
+      "Partial": 24,
+      "ReadyForAcceptance": 7,
+      "Failed": 0
+    },
+    "unchanged": true
+  },
+  "task_acceptance_not_granted": [
+    "PR13-A07.2",
+    "PR13-A07.3",
+    "PR13-A07.4"
+  ],
+  "new_case_profile_pairs_closed": 0,
+  "remaining_unaccepted": 31,
+  "registered_missing_case_profile_pairs": 47,
+  "global_gates": "AllNotAccepted",
+  "headless_Dummy_audio_no_window_low_priority": true,
+  "resource_limits_or_business_assertions_relaxed": false,
+  "production_application_or_data_changed": false,
+  "observer_metadata_corrections": [
+    "The source manifest's client_source_not_complete_artwork=false label is incorrect descriptive metadata. Actual included file identities are authoritative: minimal tracked scripts/data/font dependencies, not all2148 client files or full artwork.",
+    "A05 embedded sourceSha fields are null because this invocation supplied FANTASYCARD_PR13_SOURCE_SHA while those records read FANTASYCARD_PROCESS_SOURCE_SHA. Original null values remain; complete actual source/build/assembly identities are independently recorded."
+  ],
+  "prior_publication_observer_errors_preserved": [
+    {
+      "path": "G:\\PR13Evidence\\A071-current-native-MAIN-review-20261023-r162-originals\\publication-import-failure.original.json",
+      "bytes": 347,
+      "sha256": "007adea964070699c22fe6f2fb52c7777c0fed764fed9b2860700d8a3f57c177"
+    },
+    {
+      "path": "G:\\PR13Evidence\\A071-current-native-MAIN-review-20261023-r163-originals\\publication-display-name-failure.original.json",
+      "bytes": 291,
+      "sha256": "f8e6efcf03f1b27bc0dbe26561c3df9acb72ef510ac8b032da87c5ec4482b276"
+    }
+  ],
+  "whole_project_accepted": false
+}

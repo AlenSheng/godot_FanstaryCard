@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "canonical_POSTGRES_profiles_closed": 7,
+  "exact_case_ids": [
+    "LOAD-02.1-T01",
+    "LOAD-02.1-T03",
+    "LOAD-02.3-T02",
+    "LOAD-02.3-T03",
+    "LOAD-02.4-T01",
+    "LOAD-02.4-T02",
+    "LOAD-02.4-T03"
+  ],
+  "missing_profiles_before": {
+    "POSTGRES": 100,
+    "LIVE": 106,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "missing_profiles_after": {
+    "LIVE": 106,
+    "POSTGRES": 93,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "task_states": {
+    "Accepted": 14,
+    "ReadyForAcceptance": 26,
+    "Partial": 90,
+    "Failed": 2
+  },
+  "new_ReadyForAcceptance_tasks": [
+    "LOAD-02.1",
+    "LOAD-02.3",
+    "LOAD-02.4"
+  ],
+  "acceptance_granted": false,
+  "actual_native_PG_rows": 10,
+  "new_fault_matrix_methods": 1,
+  "actual_fault_subprocess_modes": 8,
+  "actual_load_or_capacity_samples": 0,
+  "all_other_layers_failed_tasks_and_gates_retained": true,
+  "MAIN_accepted": false
+}

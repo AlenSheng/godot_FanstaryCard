@@ -1,0 +1,188 @@
+{
+  "receipts": [
+    {
+      "receipt": "ACK-CYCLE-attempts-cycles-middle-uncommitted-loss",
+      "evidence_sha256": "a99868df120334794229cfa0659bcc768c308066c24ae50826e498fbe5fdc2e8",
+      "observations": {
+        "mode": "cycles-middle-uncommitted-loss"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-cycles-middle-uncommitted-loss",
+      "evidence_sha256": "c73f872e2e3a3cd5e17b135269b1a9a9b29253391676ee5a4a01f0da8e6311c5",
+      "observations": {
+        "mode": "cycles-middle-uncommitted-loss",
+        "expectedGames": 3,
+        "expectedCompletions": 3,
+        "partition": {
+          "cancelled": 0,
+          "completed": 3,
+          "failed": 0,
+          "incomplete": 0,
+          "started": 3
+        },
+        "equipmentLocation": "RelicPile"
+      }
+    },
+    {
+      "receipt": "ACK-STOP-observed",
+      "evidence_sha256": "04514d53b073ebb9bc196f711cd9eb6b2da9783ae10ec7bd2bac0a934d4f260a",
+      "observations": {
+        "mode": "stop-before-commit"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-attempts-stop-before-commit",
+      "evidence_sha256": "2c07b1ace984b60ec13fdb492701a49aa65c4821a91f5bde666e0ac750af9380",
+      "observations": {
+        "mode": "stop-before-commit"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-stop-before-commit",
+      "evidence_sha256": "03e006b0b576243997eb6caf54822fd37a1567a9f0ef1436ee321bfd38e159cf",
+      "observations": {
+        "mode": "stop-before-commit",
+        "expectedGames": 1,
+        "expectedCompletions": 0,
+        "partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "started": 1
+        },
+        "equipmentLocation": "RelicPile"
+      }
+    },
+    {
+      "receipt": "ACK-STOP-observed",
+      "evidence_sha256": "ec6223123f17efbc4117954cdc9d8614996459f79a9c15f3536aa5944d35d7ec",
+      "observations": {
+        "mode": "stop-after-commit"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-attempts-stop-after-commit",
+      "evidence_sha256": "2777040757d504113a801c2c4600fe752e072133bc7d7ab9cc5d28ff15e3ca12",
+      "observations": {
+        "mode": "stop-after-commit"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-stop-after-commit",
+      "evidence_sha256": "0e02a6268bd895ad2181b779a55133aba5260105d02321052e88de4e1ebb04a6",
+      "observations": {
+        "mode": "stop-after-commit",
+        "expectedGames": 1,
+        "expectedCompletions": 0,
+        "partition": {
+          "cancelled": 1,
+          "completed": 0,
+          "failed": 0,
+          "incomplete": 0,
+          "started": 1
+        },
+        "equipmentLocation": "RelicPile"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-attempts-cycles-middle-response-loss",
+      "evidence_sha256": "124ec486fe1be37bb63739b8441f4ebb88bc4b70d74bae0e9e27f44b9390bde5",
+      "observations": {
+        "mode": "cycles-middle-response-loss"
+      }
+    },
+    {
+      "receipt": "ACK-CYCLE-cycles-middle-response-loss",
+      "evidence_sha256": "15e7ddf181cf0c2878fd12be6559921384d8288f9bd1a5021c03bdafc2aa156f",
+      "observations": {
+        "mode": "cycles-middle-response-loss",
+        "expectedGames": 3,
+        "expectedCompletions": 3,
+        "partition": {
+          "cancelled": 0,
+          "completed": 3,
+          "failed": 0,
+          "incomplete": 0,
+          "started": 3
+        },
+        "equipmentLocation": "RelicPile"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-attempts-drop-all-committed",
+      "evidence_sha256": "153138ed898e82d77d98247ef9beafa24de621f7bcf0f3dc04a112b332536156",
+      "observations": {
+        "mode": "drop-all-committed"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-drop-all-committed",
+      "evidence_sha256": "ef95ae2b7da3f43e429896e92172784468357b3943bb1269e0c5b0c8322d7a15",
+      "observations": {
+        "mode": "drop-all-committed"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-attempts-drop-all-uncommitted",
+      "evidence_sha256": "9652172d9f6ca10403a4f7e0f9981a0a68b727ac55145afc36b29a0ea595fac5",
+      "observations": {
+        "mode": "drop-all-uncommitted"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-drop-all-uncommitted",
+      "evidence_sha256": "cc208dac6ab508014471917c08e63c6f53af47221291777c8f4e2f304ff711be",
+      "observations": {
+        "mode": "drop-all-uncommitted"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-attempts-drop-first-committed",
+      "evidence_sha256": "921824d61d31c6e87dd8c4698c9081250d1da3619a3472f6e92b501232ddb27d",
+      "observations": {
+        "mode": "drop-first-committed"
+      }
+    },
+    {
+      "receipt": "ACK-FAULT-drop-first-committed",
+      "evidence_sha256": "cf2894ae9cff27fcd85f6d2abbf23d143a79e4cd0b77b83e63c38b942a0d1eb6",
+      "observations": {
+        "mode": "drop-first-committed"
+      }
+    },
+    {
+      "receipt": "LOAD-04.4-T02-MarkRunning-committed-response-lost",
+      "evidence_sha256": "e8b1075d853d5d85e28b917954f7de70d30ee553f94a0116f1219620ecd61ff6",
+      "observations": {
+        "durableStatus": "Running",
+        "responseDelivered": false,
+        "dropped": {
+          "Index": 1,
+          "StatementSha256": "bb00bc4b9ebfa9691a6f2c378c2bdac71b0cc79935f64ce76565e11e7b642877",
+          "CommandTag": "UPDATE 1",
+          "ReadyState": "I",
+          "Dropped": true,
+          "CommittedAt": "2026-10-08T13:34:04.1959436+00:00"
+        }
+      }
+    },
+    {
+      "receipt": "LOAD-04.4-T02-MarkRunning-observed-operations",
+      "evidence_sha256": "d8e63cdaa916fa7b3f771ec8ea89e6eca1e28fe905b9ada2f391fd94f229343b",
+      "observations": {}
+    },
+    {
+      "receipt": "LOAD-04.4-T02-MarkRunning-recovered",
+      "evidence_sha256": "ffc409a163e553d4ff3103a9f3356837d998fd792f265a2f8002920466233eb5",
+      "observations": {}
+    },
+    {
+      "receipt": "LOAD-04.4-T02-MarkRunning-process-restart",
+      "evidence_sha256": "a57e925fe620aa30bbbca80aa7cb1bed66cfbba99fb6d9f51093d7009a31d38d",
+      "observations": {}
+    }
+  ],
+  "asset_mutation_or_history_repair": false
+}

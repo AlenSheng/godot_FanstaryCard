@@ -1,0 +1,416 @@
+{
+  "kind": "MAIN_LOAD114_CurrentTruthfulHandoffAndThreeBoundedRollbacks",
+  "generated_UTC": "2026-10-23T20:21:35.611563+00:00",
+  "source_sha": "e69338979012d6f4940066d503ba0fc23dc8aebc",
+  "review_scope": "LOAD-11.4 OFFLINE/AUDIT final delivery correctness and bounded rollback evidence only; a complete delivery may list blockers. This does not accept the whole PR/project or erase missing child task results.",
+  "contract": {
+    "id": "LOAD-11.4",
+    "title": "MAIN交付与回滚",
+    "source_instruction": "主agent验收PR交付回滚",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "PR13-B12.4",
+      "PR13-A08.4",
+      "PR13-A09.4",
+      "PR13-A10.4"
+    ],
+    "inputs": "所有LOAD/A/B裁决与G0-G5证据",
+    "implementation_steps": "汇总逐项实现/NoChange/Blocked、配置/兼容/风险和演练回滚；保持Draft到人工合并决定",
+    "test_cases": [
+      {
+        "id": "LOAD-11.4-T01",
+        "setup_and_injection": "任一适用门Blocked",
+        "expected": "不得PR全部Accepted",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-11.4-T02",
+        "setup_and_injection": "关闭PR但云端仍运行",
+        "expected": "不能声称已回滚",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "LOAD-11.4-T03",
+        "setup_and_injection": "回退配置旧room",
+        "expected": "沿原policy且资产不倒灌",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "每子项都有有证据裁决，未完清单和默认值真实；代码/配置/数据库回滚分别可执行。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "AUDIT"
+    ],
+    "command_refs": [
+      "C-PLAN",
+      "C-CI",
+      "C-AUDIT"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "Required",
+    "runtime_stage_reason": "按所列profile取得真实执行证据；历史结果不能冒充当前集成SHA。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/LOAD-11.4/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "只回退文档/工作流变更，保留历史报告和raw；部署回滚另按运行镜像/配置/DB备份演练。",
+    "gate_refs": [
+      "G0",
+      "G5"
+    ],
+    "historical_execution_state": "Planned"
+  },
+  "source_binding": {
+    "path": "docs/reports/pr13-stages-20261009/S5-LOAD114-current-truthful-delivery-rollback-20261024/source-and-dependency-review.json",
+    "bytes": 3604,
+    "sha256": "6892ce05017f07a509e19e29d97c475a4a8548d45dc2a1687a15b25a1da23fa3"
+  },
+  "current_input_register_counts": {
+    "Accepted": 106,
+    "Partial": 24,
+    "ReadyForAcceptance": 2,
+    "Failed": 0
+  },
+  "current_input_unaccepted_tasks26": true,
+  "current_case_profile_gap_counts": {
+    "CAPACITY": 36,
+    "LIVE": 2,
+    "POSTGRES": 7,
+    "AUDIT": 1
+  },
+  "current_missing_pairs46": true,
+  "all6_gate_states": {
+    "G0": "NotAccepted",
+    "G1": "NotAccepted",
+    "G2": "NotAccepted",
+    "G3": "NotAccepted",
+    "G4": "NotAccepted",
+    "G5": "NotAccepted"
+  },
+  "all132_have_current_evidence_disposition_or_unpassed_risk": true,
+  "all_106_accepted_have_explicit_MAIN_locator_and_no_missing_case_profiles": true,
+  "actual_cases": {
+    "LOAD-11.4-T01": {
+      "current_whole_project_all_accepted": false,
+      "actual_missing_profile_MAIN_rejection": "MAIN acceptance requires every mandatory case and profile: LOAD-10.1",
+      "target_task": "LOAD-10.1",
+      "target_unchanged": true,
+      "controlled_successful_candidate_cannot_waive_missing_capacity": {
+        "state": "Blocked",
+        "missing_suites": [],
+        "stale_source_suites": [],
+        "failed_suites": [],
+        "incomplete_suites": [
+          "ActualUnfinishedCapacity"
+        ],
+        "baseline_compile_exit": 0,
+        "acceptance": false
+      },
+      "not_executed_stays_Queued": "Queued"
+    },
+    "LOAD-11.4-T02": {
+      "actual_closedPR_and_current_health200": true,
+      "actual_deployment_claim": {
+        "code_review_closed": true,
+        "historical_environment_restoration_recorded": true,
+        "current_runtime_health": "Verified",
+        "runtime_rollback_verified": false,
+        "reason": "Code review state and a historical file restoration do not verify a current deployed runtime."
+      },
+      "current_approved_application_is_running_not_rolled_back": true,
+      "no_new_runtime_rollback_or_deployment_performed": true,
+      "actual_closed_PR13": {
+        "number": 13,
+        "state": "closed",
+        "merged": true,
+        "merged_at": "2026-10-08T09:39:02Z",
+        "closed_at": "2026-10-08T09:39:02Z",
+        "draft": true,
+        "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/pull/13"
+      },
+      "actual_current_runtime": {
+        "source": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+        "image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+        "container": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112",
+        "health": 200,
+        "started_at": "2026-10-23T01:38:31.393085673Z"
+      },
+      "actual_runtime_rollback_verified": false
+    },
+    "LOAD-11.4-T03": {
+      "original_native_outcome": "Passed",
+      "native_exit0": true,
+      "current_original_receipt": {
+        "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r267-originals\\runtime\\receipts\\receipts.jsonl",
+        "bytes": 1622,
+        "sha256": "bafbc87315ff9ac322c0a138600b7c0fab688e3f86396014967df9218206d162"
+      },
+      "actual": {
+        "oldSourceHash": "e9de90c98b3d04150f79748339cf0ee022c48778994c2b71c9c78f75d6294885",
+        "candidateSourceHash": "1c4c064cea15d7fa2e3ee9f24479e4f482f83937c37da3a3aceac0d157f7a418",
+        "rollbackSourceHash": "e9de90c98b3d04150f79748339cf0ee022c48778994c2b71c9c78f75d6294885",
+        "oldSnapshotBeforeHash": "e238c21d91f91fa1ca19431663985cb440d9456f8c8a946c889cef966ae51602",
+        "oldSnapshotAfterHash": "e238c21d91f91fa1ca19431663985cb440d9456f8c8a946c889cef966ae51602",
+        "candidateSnapshotBeforeHash": "2fce7101b150bac7368f5e14c4a771ad2aa355d025551689ba921089105d9929",
+        "candidateSnapshotAfterHash": "2fce7101b150bac7368f5e14c4a771ad2aa355d025551689ba921089105d9929",
+        "oldRawBeforeHash": "91689a0a6569015311fb2cab6e60ddb6777e4c5f6f841ece1d7af97c278ad898",
+        "oldRawAfterHash": "91689a0a6569015311fb2cab6e60ddb6777e4c5f6f841ece1d7af97c278ad898",
+        "activeAssetsBeforeHash": "7c1ae54b8e9cc5a743e08761dad916325de58c588f6a19379a197a349679552c",
+        "activeAssetsAfterHash": "7c1ae54b8e9cc5a743e08761dad916325de58c588f6a19379a197a349679552c",
+        "settledAssetsBeforeHash": "c930de1118cdc189f16921f005ec2353bb809b73d439e3b8875fa88433575070",
+        "settledAssetsAfterHash": "c930de1118cdc189f16921f005ec2353bb809b73d439e3b8875fa88433575070",
+        "nonzeroActiveGold": 23,
+        "nonzeroActivePotions": 2,
+        "settledBalance": 118,
+        "settledPotions": 6,
+        "goldCredit": 17,
+        "potionCredit": 3,
+        "settledLedgerRows": 1,
+        "repeatedSettlementCreated": false,
+        "repeatedCommitHolds": 0,
+        "seededMatches": 4,
+        "persistedActiveRooms": 3,
+        "oldMageLife": 70,
+        "policyOnlyRollbackNotWorkbookOrSchemaDeployment": true,
+        "noActualProgramOrGodotOrCapacityRun": true
+      },
+      "all_old_candidate_active_snapshot_and_asset_hashes_unchanged": true,
+      "source_policy_rollback_legacy_for_new_room": true,
+      "settled_balance118_potions6_one_ledger": true,
+      "duplicate_settlement_hold_and_ACK_no_asset_backflow": true,
+      "actual_RawQualification": {
+        "path": "G:\\PR13Evidence\\LOAD114-policy-assets-native-qualification-20261024-r268-originals\\result.original.json",
+        "bytes": 5321,
+        "sha256": "18d25ca8a60e1dc77f58970f0ba9cc6c43234cd52c0dbf8565e9abceb9db854f"
+      },
+      "no_production_or_arbitrary_workbook_schema_rollback_claim": true
+    }
+  },
+  "formal_default_policy": {
+    "id": "current",
+    "cards_spent_draw": false,
+    "fractional_guardian": false,
+    "optional_monster_pool": false,
+    "monster_capacity": 5,
+    "budgeted_bot_loot": false,
+    "bot_loot_count": 2,
+    "mortal_bot_pve": false
+  },
+  "all5_formal_candidate_flags_off": true,
+  "all5_controlled_flag_on_copies_refused": true,
+  "actual_candidate_without_layers_Blocked": true,
+  "current_machine_QA_report_only_Ready_not_MAIN": "ReadyForAcceptance",
+  "current_failed_UI_overrides_script_success": "Failed",
+  "current_Unknown_not_full_Pass": "Partial",
+  "current_production_readonly": {
+    "kind": "CurrentFormalDeliveryReadOnlyObservation",
+    "UTC": "2026-10-23T19:52:07.039932+00:00",
+    "app_container_id": "9a3886577aefffc42bd89fe0f1ee86f4f2aafff04756df09bc6b61e274ee1112",
+    "app_image_id": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+    "app_running": true,
+    "started_at": "2026-10-23T01:38:31.393085673Z",
+    "image_revision": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "PG_container_id": "e140d6f8ab9fbe129bdce6556ea8d1e15836619a92cf8bd6172cb4bf8340bab6",
+    "PG_running": true,
+    "ready_health": 200,
+    "boot_id": "4eab2634-08f1-4535-96d6-6ad1a54b1b3d",
+    "app_environment_list_sha256": "a50d16851ede044a93abd7df8e9ece899700292ba5c287a0433622dde6de20ec",
+    "env_file_sha256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+    "runtime_payload_sha256": {
+      "/app/FantasyCard.Contracts.dll": "aba1df56ebfb95dc77ef6c3efe119adaeb3a342bca18dfbc950653c2bfb31339",
+      "/app/FantasyCard.Domain.dll": "6959fa746af480561e1b86c5595371a1ee738fd6255ef118a9cfcd3c5ac0fd38",
+      "/app/FantasyCard.Server.dll": "fb1286a5a62e2c1d699d2c0342f1acaab4979992618752f52742f2ca62a18595",
+      "/app/appsettings.json": "8e5e47e5b7dbc7dd05bcbfae8aada11d1eba2796b0839b9df64b12c9f6088e8f"
+    },
+    "actual_appsettings_request_limits": {
+      "WindowSeconds": 60,
+      "AuthPermitLimit": 10,
+      "MarketReadPermitLimit": 120,
+      "EconomyWritePermitLimit": 30,
+      "RealtimeCommandsPerSecond": 30,
+      "RestMaximumBodyBytes": 65536,
+      "JsonMaximumDepth": 16
+    },
+    "actual_appsettings_persistence": {
+      "MaxPoolSize": 16,
+      "MinPoolSize": 1,
+      "ConnectionTimeoutSeconds": 5,
+      "CommandTimeoutSeconds": 10,
+      "KeepAliveSeconds": 30
+    },
+    "production_owned_test_bypass_on": false,
+    "legacy_ledger_state": {
+      "rows": 1,
+      "fingerprint": "191672b44d6e24d52fa40c10334093f8"
+    },
+    "specific_application_only_exception_present": true,
+    "prior_approved_application_update_ok": true,
+    "current_update_source_commit": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "retained_previous_image_exists": true,
+    "retained_previous_image_id": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+    "retained_fresh_backup": {
+      "bytes": 4757214,
+      "sha256": "8ae0f2fdd1d219a5cedd679e068af962706b60db2dafe9cf72e23e22c2d020ce"
+    },
+    "root_disk_free_ratio": 0.03254768352517023,
+    "root_disk_free_bytes": 2059943936,
+    "no_deploy_restart_backup_write_restore_or_asset_repair_performed": true
+  },
+  "current_PR_release_readonly": {
+    "UTC": "2026-10-23T19:52:26.504164+00:00",
+    "HEAD": "e69338979012d6f4940066d503ba0fc23dc8aebc",
+    "origin_release": "e69338979012d6f4940066d503ba0fc23dc8aebc",
+    "PR13": {
+      "number": 13,
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-08T09:39:02Z",
+      "closed_at": "2026-10-08T09:39:02Z",
+      "draft": true,
+      "html_url": "https://github.com/AlenSheng/godot_FanstaryCard/pull/13"
+    },
+    "no_PR_created_reopened_changed_or_messaged": true,
+    "no_merge_or_deploy_or_restart_performed": true
+  },
+  "application_update_is_completed_under_direct_human_app_only_authority": true,
+  "legacy_ledger_alert1_unchanged_NotAccepted": true,
+  "asset_acceptance_not_granted": {
+    "state": "Blocked",
+    "unexplained_alerts": [
+      "current-production-legacy-ledger-20260927"
+    ],
+    "asset_acceptance": false
+  },
+  "current_source_product_code_same_approved4a_no_new_application_deploy": true,
+  "current_code_config_and_DB_rollback_evidence_distinct": {
+    "path": "docs/reports/pr13-stages-20261009/S5-LOAD114-current-truthful-delivery-rollback-20261024/rollback-procedures.json",
+    "bytes": 6001,
+    "sha256": "e370a3b52895d2de0608beafbde4ab0abcf882652eff0290ffc6fcae2a178a81"
+  },
+  "minimum_child_inputs": {
+    "PR13-B12.4": {
+      "actual_state": "Partial",
+      "minimum_input": "Current132 evidence/disposition/risk rollup plus explicit unresolved gate/candidate/asset controls; no claim that all132 are accepted.",
+      "proof_roots": [
+        "G:\\PR13Evidence\\LOAD114-current-dispositions-and-guards-20261024-r261-originals",
+        "G:\\PR13Evidence\\LOAD114-current-production-readonly-20261024-r259-originals"
+      ],
+      "satisfied_for_truthful_delivery_only": true,
+      "whole_parent_acceptance_not_granted": true
+    },
+    "PR13-A08.4": {
+      "actual_state": "Partial",
+      "minimum_input": "Actual current production source/image/env/health and old-image/backup custody; current unpassed list and explicit separation of application update, code review and rollback.",
+      "proof_roots": [
+        "G:\\PR13Evidence\\LOAD114-current-production-readonly-20261024-r259-originals",
+        "G:\\PR13Evidence\\LOAD114-current-PR-and-release-state-20261024-r260-originals",
+        "G:\\PR13Evidence\\LOAD114-three-rollback-custody-20261024-r266-originals"
+      ],
+      "satisfied_for_truthful_delivery_only": true,
+      "whole_parent_acceptance_not_granted": true
+    },
+    "PR13-A09.4": {
+      "actual_state": "Partial",
+      "minimum_input": "Explicit MAIN decision locations for current106, immutable reports, no QA-self-report auto-promotion; current controlled failed-render and Unknown results remain failed/partial. Prior full source-bound live/render feedback proof remains separately in its task evidence.",
+      "satisfied_for_truthful_delivery_only": true,
+      "whole_parent_or_new_LIVE_RENDER_acceptance_not_granted": true
+    },
+    "PR13-A10.4": {
+      "actual_state": "Partial",
+      "minimum_input": "Original36 mandatory capacity pairs retained; original50/100 unsupported on current3.8GB cloud, no lighter-client substitution, candidate activation/benefit not granted.",
+      "satisfied_for_truthful_delivery_only": true,
+      "whole_parent_or_G4_acceptance_not_granted": true
+    }
+  },
+  "parents_NotAccepted_not_automatically_promoted": true,
+  "IMPORTANT_hero_mapping_observer_correction": {
+    "correct_hero_base_maximums": {
+      "Priest": 80,
+      "Mage": 70,
+      "Guardian": 100
+    },
+    "GDD_base_section": "GDD_BASE_v0.69.md:39,677; currentGDD:32",
+    "source": "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs:30",
+    "actual_old_Mage_life70_legal": true,
+    "wrong_private_observer_expectation_Mage80_was_an_avoidable_assumption": true,
+    "original_native_case_already_Passed_and_not_relabelled": true,
+    "original_false_observer_result": {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r267-originals\\result.private.original.json",
+      "bytes": 6047,
+      "sha256": "6af88dfd55b4e1544d653f8cbb4d90f8706f58924d7c46dbd89fe1d8a7aa23f5"
+    },
+    "current_data_qualification": {
+      "path": "G:\\PR13Evidence\\LOAD114-policy-assets-native-qualification-20261024-r268-originals\\result.original.json",
+      "bytes": 5321,
+      "sha256": "18d25ca8a60e1dc77f58970f0ba9cc6c43234cd52c0dbf8565e9abceb9db854f"
+    },
+    "no_hero_stat_or_game_rule_changed": true,
+    "no_successful_native_case_repeated": true,
+    "corrected_mapper_checks_exact_compiled_source_snapshot_not_generic100_threshold": true
+  },
+  "IMPORTANT_other_failed_fixture_rounds_preserved": [
+    {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r263-originals",
+      "reason": "Two nullable Hash-helper compile errors; strict compiler rejected them; no PG/native case started."
+    },
+    {
+      "path": "G:\\PR13Evidence\\LOAD114-nonzero-policy-asset-PG-20261024-r265-originals",
+      "reason": "Fixture account labels23 and21 exceeded actual2-20 character rule. Server correctly rejected; fixture corrected to compliant labels without changing name policy. One prior seeded room included in cumulative upper bound5."
+    }
+  ],
+  "cleanup": {
+    "owned_PG_native_stop0": true,
+    "owned_PG_terminal": true,
+    "initialization_secret_removed": true,
+    "completed_native_await_using_schema_disposal": true,
+    "separate_post_case_schema_count_query_not_executed": true,
+    "no_measured_global_schema_count0_claim": true
+  },
+  "IMPORTANT_no_limits_relaxed": {
+    "original4_room_attempt_budget": true,
+    "cumulative_seeded_room_upper_bound5_registered": true,
+    "new_live_or_capacity_game_samples0": true,
+    "native_case_deadline180_retained": true,
+    "no_FPS_memory_disk_latency_assertion_or_capacity_threshold_waived": true
+  },
+  "remaining_risks": [
+    "All36 mandatory CAPACITY pairs plus2 LIVE,7 POSTGRES and1 AUDIT pairs remain missing; current3.8GB cloud only.",
+    "Current disk free3.25percent remains below earlier functional4.8percent and original15percent; no cloud capacity rerun or success claim.",
+    "Actual forkPR proof remains unexecuted.",
+    "Historical missing originals/engine and overlay attribution, private source/privacy/causal child reviews remain incomplete.",
+    "Known Sept27 production gold-ledger chain mismatch remains NotAccepted under app-only user authorization.",
+    "No deployed production code/config/database rollback was performed; exact isolated rehearsal scope only."
+  ],
+  "source_scope_current_truth": {
+    "human_experience_in_scope": false,
+    "old_Oct8_delivery_policy_humanPending_and_productionFalse_preserved_as_historical": true,
+    "later_direct_scope_and_app_only_approval_are_effective": true,
+    "user_direct_release_summary_upload_override_preserved": true
+  },
+  "commands": {
+    "path": "docs/reports/pr13-stages-20261009/S5-LOAD114-current-truthful-delivery-rollback-20261024/commands.json",
+    "bytes": 4235,
+    "sha256": "825fddc7e4583b01fbf7f5a5703c71048831828c4f35dacd971dc4bc978b4aaa"
+  },
+  "new_canonical_case_profile_pairs_closed": 0,
+  "human_experience_excluded": true,
+  "new_Godot_fullProgram_cloud_gameplay_or_prod_data_mutation": false,
+  "whole_project_accepted": false
+}

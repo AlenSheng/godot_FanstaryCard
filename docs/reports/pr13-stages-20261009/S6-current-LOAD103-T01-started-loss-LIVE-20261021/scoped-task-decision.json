@@ -1,0 +1,59 @@
+{
+  "task_id": "LOAD-10.3",
+  "case_id": "LOAD-10.3-T01",
+  "state": "Partial",
+  "new_case_profiles_closed": [
+    "LIVE"
+  ],
+  "actual": {
+    "original_coordinator_exit": 0,
+    "actual_Native_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "actual_worlds": 1,
+    "actual_UIDs": 4,
+    "actual_playercycles": 4,
+    "actual_PG_receipts": 4,
+    "actual_PG_ACKs": 4,
+    "actual_ready_accepted_delivered": 4,
+    "actual_started_dropped": 4,
+    "actual_started_delivered": 0,
+    "actual_started_replay_copies_observed": 0,
+    "accepted_to_adopted_snapshot_ms": [
+      1318,
+      1319,
+      1318,
+      1325
+    ],
+    "all_Native_cleanup_Passed_engine_clean": true,
+    "proxy_sockets_threads_final0": true,
+    "initial_actual_snapshot_NOT_IN_ROOM": 4,
+    "initial_rejections_retained_then_bounded_retry_success": true,
+    "independent_checks": 466
+  },
+  "remaining_missing_case_profiles": {
+    "LOAD-10.3-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T02": [
+      "CAPACITY",
+      "LIVE"
+    ],
+    "LOAD-10.3-T03": [
+      "CAPACITY",
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "capacity_othercases_wholeTask_notaccepted": true,
+  "G": "G:\\PR13Evidence\\load103-started-loss-fullrunner-20261021-r1-originals",
+  "Gmembers": 536,
+  "archiveSHA": "7aa3d3b156dbae52e3231c62fa33549918d6b4bafa94fba699a41827fd5522db",
+  "all102_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+  "production_unchanged": true,
+  "budget": "Additional1actualworld4UIDs4playercycles. All prior LOAD103 budgets/failures retained without reset; LOAD1013 gameplayworld12cycles plus separate SQLfixture1 and LOAD10238world72cycles/conservative63-world cap unchanged.",
+  "whole_project_accepted": false
+}

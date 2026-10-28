@@ -1,0 +1,214 @@
+{
+  "kind": "ExactCurrentWorkspaceAndExplicitBeforeChangeSourceIdentities_NotOldExecutionOrRollback",
+  "generated_at": "2026-10-23T15:19:41.546546+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "source_refs_considered": 775,
+  "path_digest_versions_considered": 411,
+  "exact_source_refs_bound": 739,
+  "current_full_repository_path_bindings": 457,
+  "explicit_before_change_backup_bindings": 282,
+  "unique_source_body_versions": 380,
+  "private_body_bytes": 2531532,
+  "path_origin_custody_selector_controls_passed": 15,
+  "boundary_controls": [
+    {
+      "name": "repository client path",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "repository tool path",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "traversal",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "Windows path",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "backslash",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "artifact root not inferred",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "empty component",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "explicit before identity",
+      "actual": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "expected": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "passed": true
+    },
+    {
+      "name": "other origin path",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "other before hash",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "ambiguous origin records",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "exact custody member",
+      "actual": 2,
+      "expected": 2,
+      "passed": true
+    },
+    {
+      "name": "same basename not custody path",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "ambiguous custody member",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "boolean custody size",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    }
+  ],
+  "closed_native_physical_cursor": {
+    "name": "native_physical_prefix",
+    "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\file-identities.private.original.jsonl",
+    "start_limit": 608523042,
+    "consumed_prefix_bytes": 608523042,
+    "consumed_rows": 1395833,
+    "prefix_sha256": "1540ea60aab4e4bb271d2ecea71c1c6266d08be32e0b095fc4fdbe98b0fa54d0",
+    "contains_live_append_only_source": 0
+  },
+  "selected_index_nodes_checked_against_actual_closed_ledger_offsets_and_line_hashes": true,
+  "current_workspace_selected_file_bytes_match_declared_SHA_and_frozen_physical_capture": true,
+  "renamed_backup_requires_full_original_path_before_SHA_change_record_and_exact_custody_member": true,
+  "same_basename_or_hash_without_path_origin_not_used_to_select_renamed_backup": true,
+  "before_gateway_and_clock_validator_bodies_retained_without_rerunning_the_old_fix": [
+    {
+      "origin_change_record": {
+        "path": "G:\\PR13Evidence\\load041-current-match-LIVE-PG-20261017-originals\\all-runs-and-originals\\gateway-lifecycle-diagnostic-source-change.json",
+        "bytes": 714,
+        "sha256": "01955123880ce5d8738a61bd514c70442471daffe3a741e3709133de573be616",
+        "stable_open_handle_and_path": true
+      },
+      "custody_receipt": {
+        "path": "G:\\PR13Evidence\\load041-current-match-LIVE-PG-20261017-originals\\G-receipt.json",
+        "bytes": 22517,
+        "sha256": "7799fed3a6833502135adf3da1c927815b61ac52c4dfb167e428a539ded9cd18",
+        "stable_open_handle_and_path": true
+      },
+      "selected_original": {
+        "path": "G:\\PR13Evidence\\load041-current-match-LIVE-PG-20261017-originals\\all-runs-and-originals\\gateway.before-lifecycle-diagnostics.gd",
+        "bytes": 41643,
+        "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+        "stable_open_handle_and_path": true
+      }
+    },
+    {
+      "origin_change_record": {
+        "path": "G:\\PR13Evidence\\live-bounded-probes-r1-20261017-originals\\cutoff-clock-fix.source-change.json",
+        "bytes": 917,
+        "sha256": "d20c1426d939b7b0835adb26121296f09c89615404ea8a6e652c8b3f590f3620",
+        "stable_open_handle_and_path": true
+      },
+      "custody_receipt": {
+        "path": "G:\\PR13Evidence\\live-bounded-probes-r1-20261017-originals\\G-receipt.json",
+        "bytes": 21456,
+        "sha256": "6fb0d6ae44159e582999931304a65e52f11275d71c322910d079f117496135cc",
+        "stable_open_handle_and_path": true
+      },
+      "selected_original": {
+        "path": "G:\\PR13Evidence\\live-bounded-probes-r1-20261017-originals\\source-before-cutoff-clock-fix\\gameplay_load_validation.py",
+        "bytes": 23302,
+        "sha256": "41a83f43cbd905383835f6dc328fc3271a295a07c6c80e451b157710c5c48e81",
+        "stable_open_handle_and_path": true
+      }
+    }
+  ],
+  "original_caller_root_old_runtime_original_metrics_and_whole_source_tree_not_attested": true,
+  "before_change_sources_not_restored_over_current_code_and_original_failed_runs_not_changed_to_pass": true,
+  "original_expected_hashes_and_null_sizes_not_rewritten": true,
+  "version_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-workspace-before-source-20261023-r85-originals\\exact-workspace-before-source-version-bindings.private.original.jsonl",
+    "bytes": 608017,
+    "sha256": "ed21c6bd3bc622a7b58353aa5d3bc2d8340aeeab37cfc0265b1419ab88da0058",
+    "records": 380
+  },
+  "declaration_binding_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-workspace-before-source-20261023-r85-originals\\source-declaration-to-workspace-before-bindings.private.original.jsonl",
+    "bytes": 521983,
+    "sha256": "bfc68c2e4095bf61e5635e40237a7702ce046a104eb2bf4fd68f02536972e67a",
+    "records": 739
+  },
+  "workspace_different_version_attempts": {
+    "path": "G:\\PR13Evidence\\LOAD112-workspace-before-source-20261023-r85-originals\\current-workspace-different-version-or-unavailable.private.original.jsonl",
+    "bytes": 6504,
+    "sha256": "d8f6d824b845cad40ab51a22ab988505f79cf4903ff50a9b7536479a0f617062",
+    "records": 33
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-workspace-before-source-publication-20261023-r86-originals\\verified-workspace-backup-custody.original.json",
+    "bytes": 126023,
+    "sha256": "412f274b3e4e1789adfe0ed0076f1277453b61b4a75aecf0585829a6e9805666"
+  },
+  "size_omitting_reference_records_before": 1153,
+  "size_omitting_reference_records_after": 414,
+  "remaining_size_omitting_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-workspace-before-source-20261023-r85-originals\\remaining-size-omitting-declaration-review.private.original.jsonl",
+    "bytes": 190070,
+    "sha256": "7b6da1634b9259937097c0b9708ae48be9a9a5ac0dfaaf71c143db1c57137252",
+    "records": 414,
+    "unique_declared_digests": 165
+  },
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "original_content_review_queue_unchanged": 187,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "private_code_not_executed_or_publicly_exported": true,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_engine_or_cloud_operation": false
+}

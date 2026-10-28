@@ -1,0 +1,447 @@
+{
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "fixture_clock": true,
+  "fixture_duration_values": true,
+  "service_capacity_claim": false,
+  "owned_child": {
+    "pid": 97859,
+    "exit_code": 0,
+    "reaped": true,
+    "argv": [
+      "/workspace/relicround-env/venv/bin/python",
+      "-c",
+      "import json,os,pathlib,sys\nreport=pathlib.Path(sys.argv[1]);rows=[]\nfor seq in range(1,23):\n rows.append(dict(run_id='distribution-run',client_id='distribution-owned',process_epoch='epoch-A',event_seq=seq,\n  at_unix_ms=10000+seq,type='http',path='/fixture/a' if seq%2 else '/fixture/b',route='/fixture/a' if seq%2 else '/fixture/b',\n  phase='playing' if seq<16 else 'settlement',duration_ms=100 if seq==1 else 5,status=500 if seq==1 else 200,ok=seq!=1,result='error' if seq==1 else 'success'))\nstatus=dict(run_id='distribution-run',client_id='distribution-owned',process_epoch='epoch-A',pid=os.getpid(),status_seq=1,\n now_unix_ms=10022,event_seq_max=22,telemetry=rows,operations=rows,online=False,room=False,last_progress_age_ms=0)\npathlib.Path(str(report)+'.status.json').write_text(json.dumps(status))\npathlib.Path(str(report)+'.telemetry.jsonl').write_text(''.join(json.dumps(r)+'\\n' for r in rows))\nprint(json.dumps(dict(pid=os.getpid(),events_written=len(rows),fixture_clock=True,fixture_durations=True)),flush=True)\n",
+      "/workspace/pr13-takeover/load03-remaining-ee8adcf4/distribution-probe/client.json"
+    ]
+  },
+  "reader": {
+    "ownership_invalid": 0,
+    "event_loss": 0,
+    "audit_errors": [],
+    "raw_equals_consumed": true
+  },
+  "fixed_cutoffs": {
+    "start_ms": 10000,
+    "stop_ms": 10001,
+    "final_ms": 10022
+  },
+  "cutoff_distributions": {
+    "running": {
+      "http": {
+        "count": 1,
+        "min_ms": 100,
+        "mean_ms": 100.0,
+        "max_ms": 100,
+        "p50_ms": 100,
+        "p95_ms": 100,
+        "p99_ms": 100
+      },
+      "steady_http": {
+        "count": 1,
+        "min_ms": 100,
+        "mean_ms": 100.0,
+        "max_ms": 100,
+        "p50_ms": 100,
+        "p95_ms": 100,
+        "p99_ms": 100
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 1,
+          "min_ms": 100,
+          "mean_ms": 100.0,
+          "max_ms": 100,
+          "p50_ms": 100,
+          "p95_ms": 100,
+          "p99_ms": 100
+        }
+      },
+      "error_count": 1,
+      "sample_count": 1,
+      "logical_request_count": 1,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "valid_latency_count": 1,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 1.0,
+      "steady_error_count": 1,
+      "steady_sample_count": 1,
+      "steady_error_rate": 1.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "drain": {
+      "http": {
+        "count": 21,
+        "min_ms": 5,
+        "mean_ms": 5.0,
+        "max_ms": 5,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 5
+      },
+      "steady_http": {
+        "count": 21,
+        "min_ms": 5,
+        "mean_ms": 5.0,
+        "max_ms": 5,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 5
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 14,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        },
+        "settlement": {
+          "count": 7,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        }
+      },
+      "error_count": 0,
+      "sample_count": 21,
+      "logical_request_count": 21,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "valid_latency_count": 21,
+      "latency_sample_quality": {
+        "http": "sufficient_for_diagnostic_rule",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 21,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "final": {
+      "http": {
+        "count": 22,
+        "min_ms": 5,
+        "mean_ms": 9.32,
+        "max_ms": 100,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 100
+      },
+      "steady_http": {
+        "count": 22,
+        "min_ms": 5,
+        "mean_ms": 9.32,
+        "max_ms": 100,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 100
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 15,
+          "min_ms": 5,
+          "mean_ms": 11.33,
+          "max_ms": 100,
+          "p50_ms": 5,
+          "p95_ms": 100,
+          "p99_ms": 100
+        },
+        "settlement": {
+          "count": 7,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        }
+      },
+      "error_count": 1,
+      "sample_count": 22,
+      "logical_request_count": 22,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "valid_latency_count": 22,
+      "latency_sample_quality": {
+        "http": "sufficient_for_diagnostic_rule",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.045454545454545456,
+      "steady_error_count": 1,
+      "steady_sample_count": 22,
+      "steady_error_rate": 0.045454545454545456,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    }
+  },
+  "diagnostic_derived_route_distributions": {
+    "/fixture/a": {
+      "http": {
+        "count": 11,
+        "min_ms": 5,
+        "mean_ms": 13.64,
+        "max_ms": 100,
+        "p50_ms": 5,
+        "p95_ms": 100,
+        "p99_ms": 100
+      },
+      "steady_http": {
+        "count": 11,
+        "min_ms": 5,
+        "mean_ms": 13.64,
+        "max_ms": 100,
+        "p50_ms": 5,
+        "p95_ms": 100,
+        "p99_ms": 100
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 8,
+          "min_ms": 5,
+          "mean_ms": 16.88,
+          "max_ms": 100,
+          "p50_ms": 5,
+          "p95_ms": 100,
+          "p99_ms": 100
+        },
+        "settlement": {
+          "count": 3,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        }
+      },
+      "error_count": 1,
+      "sample_count": 11,
+      "logical_request_count": 11,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "valid_latency_count": 11,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.09090909090909091,
+      "steady_error_count": 1,
+      "steady_sample_count": 11,
+      "steady_error_rate": 0.09090909090909091,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    },
+    "/fixture/b": {
+      "http": {
+        "count": 11,
+        "min_ms": 5,
+        "mean_ms": 5.0,
+        "max_ms": 5,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 5
+      },
+      "steady_http": {
+        "count": 11,
+        "min_ms": 5,
+        "mean_ms": 5.0,
+        "max_ms": 5,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 5
+      },
+      "cancelled_http": {
+        "count": 0
+      },
+      "realtime": {
+        "count": 0
+      },
+      "rtt": {
+        "count": 0
+      },
+      "phase_http": {
+        "playing": {
+          "count": 7,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        },
+        "settlement": {
+          "count": 4,
+          "min_ms": 5,
+          "mean_ms": 5.0,
+          "max_ms": 5,
+          "p50_ms": 5,
+          "p95_ms": 5,
+          "p99_ms": 5
+        }
+      },
+      "error_count": 0,
+      "sample_count": 11,
+      "logical_request_count": 11,
+      "cancelled_count": 0,
+      "all_attempt_count": null,
+      "attempt_coverage": "unavailable",
+      "attempt_result_counts": {},
+      "valid_attempt_latency_count": 0,
+      "valid_latency_count": 11,
+      "latency_sample_quality": {
+        "http": "insufficient",
+        "realtime": "unavailable"
+      },
+      "error_rate": 0.0,
+      "steady_error_count": 0,
+      "steady_sample_count": 11,
+      "steady_error_rate": 0.0,
+      "invalid_metric_count": 0,
+      "invalid_duration_count": 0,
+      "invalid_schema_count": 0,
+      "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+    }
+  },
+  "last_window": {
+    "http": {
+      "count": 2,
+      "min_ms": 5,
+      "mean_ms": 5.0,
+      "max_ms": 5,
+      "p50_ms": 5,
+      "p95_ms": 5,
+      "p99_ms": 5
+    },
+    "steady_http": {
+      "count": 2,
+      "min_ms": 5,
+      "mean_ms": 5.0,
+      "max_ms": 5,
+      "p50_ms": 5,
+      "p95_ms": 5,
+      "p99_ms": 5
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {
+      "settlement": {
+        "count": 2,
+        "min_ms": 5,
+        "mean_ms": 5.0,
+        "max_ms": 5,
+        "p50_ms": 5,
+        "p95_ms": 5,
+        "p99_ms": 5
+      }
+    },
+    "error_count": 0,
+    "sample_count": 2,
+    "logical_request_count": 2,
+    "cancelled_count": 0,
+    "all_attempt_count": null,
+    "attempt_coverage": "unavailable",
+    "attempt_result_counts": {},
+    "valid_attempt_latency_count": 0,
+    "valid_latency_count": 2,
+    "latency_sample_quality": {
+      "http": "insufficient",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 2,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "full_run_error_count": 1,
+  "last_window_error_count": 0,
+  "unequal_window_p95_average": 52.5,
+  "full_raw_p95_ms": 5,
+  "production_route_distribution_present": false,
+  "production_throughput_present": false,
+  "source_file_sha256": {
+    "tools/gameplay_load_validation.py": "83a6d45a4938b09b9bc09ed568603752a7ce3e4520f3bb4e9761e0ab9cabb0d1",
+    "tools/gameplay_load_test.py": "e5cef5dbd0c63acf67579c3261262ab18346b718b6f32fbab2e265e1e671d52d"
+  },
+  "stage": "SupportForFullCriterionReview",
+  "limitation": "Diagnostic fixture recomputation exists here; production aggregate/coordinator do not output route distributions/throughput/full-run HTTP three-cutoff fields. Do not label this harness as implementation of those missing production fields.",
+  "Accepted": false
+}

@@ -1,0 +1,33 @@
+{
+  "case_targets": [
+    "PR13-B03.3-T02 EXPERIMENT",
+    "PR13-B03.3-T03 EXPERIMENT"
+  ],
+  "profile_id": "b033-current-censored-completeness-v1",
+  "pre_execution_plan": true,
+  "actual_new_encounters": 6,
+  "hero": "Priest",
+  "deck": "current default",
+  "strategy": "build",
+  "group": "BOSS",
+  "cutoff_seconds": 60,
+  "profiles": [
+    "Baseline",
+    "BaselinePairedControl"
+  ],
+  "candidate": "class-passives (Priest unchanged paired control)",
+  "seed_start": 202610173,
+  "samples_per_stratum": 3,
+  "source_sha": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+  "primary_endpoint": "time_to_victory_among_all_started_encounters",
+  "expected": "SmallN/highcensoring Inconclusive, unidentifiable all-started TTK never replaced by survivors; deleting incomplete rows rejected even when derived counts/checksums refreshed.",
+  "frozen_originals": "Official current CombatExperience.Run native raw/manifest/summary retained immutable; altered copies explicitly derived fault controls.",
+  "mutation_controls": [
+    "Remove one actual Censored row with coherent derived checksum/Total",
+    "Remove actual whole paired seed with coherent derived checksum/Total",
+    "Alter actual seed outside declared block"
+  ],
+  "precision_floor": "Current original sample_budget1000x3 remains unchanged; six-sample control cannot claim it. Original alreadycompleted large studies not rerun.",
+  "no_candidate_activation_or_capacity_human_claim": true,
+  "no_new_B032_archetype_scenes": true
+}

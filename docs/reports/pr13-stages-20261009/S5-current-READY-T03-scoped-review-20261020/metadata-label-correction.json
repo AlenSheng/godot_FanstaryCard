@@ -1,0 +1,126 @@
+{
+  "original_fault_event": {
+    "event": "explicit_actual_snapshot_payload_replaced_with_sameUID_historic",
+    "at_unix_ms": 1792435519222,
+    "at_monotonic_ns": 2821763277407712,
+    "original_current_sha256": "669459b76816dfd8f3e6b62cbcfee63e3ac957d6e3d6068b11e5e88322c931c8",
+    "historic_saved_packet_sha256": "f4777635a877286815d2a7bb02c47aeff94ce22acfd9cb12309d31c33252f4a5",
+    "forwarded_sha256": "4d43b24ec9752bda5a8e395df76b0716cfa087c88b20fb6c28aa86d9608bcc39",
+    "current_match_id": "01a1557b-72ea-705d-b191-c205e78c27a0",
+    "current_room_id": "01a1557b-72ea-7f99-9177-672225618d04",
+    "old_match_id": "01a15570-2155-7183-8c93-98d1973bce5d",
+    "old_room_id": "01a15570-2155-78f1-a5fd-75bb443c80fc",
+    "request_id": "7c9f7f2e5fc58f550043cf2b64d3f058",
+    "sequence": 7,
+    "actual_sequence_request_trace_envelope_unchanged": true,
+    "explicit_fault_not_authentic_current_reply": true
+  },
+  "schema": {
+    "1": {
+      "name": "room_id",
+      "type": "string",
+      "repeated": false,
+      "optional": false
+    },
+    "2": {
+      "name": "match_id",
+      "type": "string",
+      "repeated": false,
+      "optional": false
+    },
+    "3": {
+      "name": "room_revision",
+      "type": "int64",
+      "repeated": false,
+      "optional": false
+    },
+    "4": {
+      "name": "config_version",
+      "type": "string",
+      "repeated": false,
+      "optional": false
+    },
+    "5": {
+      "name": "self",
+      "type": "RoomPosition",
+      "repeated": false,
+      "optional": false
+    },
+    "6": {
+      "name": "map",
+      "type": "RoomMapCell",
+      "repeated": true,
+      "optional": false
+    },
+    "7": {
+      "name": "legal_moves",
+      "type": "RoomPosition",
+      "repeated": true,
+      "optional": false
+    },
+    "8": {
+      "name": "current_cell",
+      "type": "RoomCurrentCell",
+      "repeated": false,
+      "optional": false
+    },
+    "9": {
+      "name": "player",
+      "type": "RoomPlayer",
+      "repeated": false,
+      "optional": false
+    },
+    "10": {
+      "name": "pve",
+      "type": "RoomPve",
+      "repeated": false,
+      "optional": false
+    },
+    "11": {
+      "name": "duel",
+      "type": "RoomDuel",
+      "repeated": false,
+      "optional": false
+    },
+    "12": {
+      "name": "reward_choice",
+      "type": "RewardChoiceEvent",
+      "repeated": false,
+      "optional": false
+    },
+    "13": {
+      "name": "extraction_remaining_ms",
+      "type": "int64",
+      "repeated": false,
+      "optional": true
+    },
+    "14": {
+      "name": "spring_remaining_ms",
+      "type": "int64",
+      "repeated": false,
+      "optional": true
+    },
+    "15": {
+      "name": "allowed_actions",
+      "type": "string",
+      "repeated": true,
+      "optional": false
+    },
+    "16": {
+      "name": "map_player_count",
+      "type": "int32",
+      "repeated": false,
+      "optional": false
+    }
+  },
+  "schema_decoded_current": {
+    "match_id": "01a1557b-72ea-7f99-9177-672225618d04",
+    "room_id": "01a1557b-72ea-705d-b191-c205e78c27a0"
+  },
+  "schema_decoded_historic": {
+    "match_id": "01a15570-2155-78f1-a5fd-75bb443c80fc",
+    "room_id": "01a15570-2155-7183-8c93-98d1973bce5d"
+  },
+  "raw_original_labels_wrong_and_not_rewritten": true,
+  "business_guard_source_and_PG_correct_no_payload_or_verdict_rewrite": true
+}

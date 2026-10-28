@@ -1,0 +1,2041 @@
+{
+  "task_id": "PR13-A05.1",
+  "stage": "S5",
+  "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+  "runtime_image_digest": null,
+  "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+  "algorithm_version": "A05ProcessAcceptance/1",
+  "case_ids": [
+    "PR13-A05.1-T01",
+    "PR13-A05.1-T02",
+    "PR13-A05.1-T03"
+  ],
+  "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+  "actual": {
+    "cases": [
+      {
+        "task_id": "PR13-A05.1",
+        "case_id": "PR13-A05.1-T01",
+        "setup_and_injection": "提交前失败",
+        "expected": "无completed/可重试",
+        "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+        "status": "Passed",
+        "executed": true,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "raw": [
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 119,
+            "record_id": "A05-transaction-fault-observed"
+          },
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 125,
+            "record_id": "A05-transaction-fault-passed"
+          }
+        ],
+        "full_suite_TRX": "final-release/server.trx",
+        "accepted_by": null,
+        "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+      },
+      {
+        "task_id": "PR13-A05.1",
+        "case_id": "PR13-A05.1-T02",
+        "setup_and_injection": "提交后响应丢",
+        "expected": "同receipt恢复不再发资产",
+        "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+        "status": "Passed",
+        "executed": true,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "raw": [
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 100,
+            "record_id": "A05-db-committed-response-drop"
+          },
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 109,
+            "record_id": "A05-transaction-fault-passed"
+          }
+        ],
+        "full_suite_TRX": "final-release/server.trx",
+        "accepted_by": null,
+        "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+      },
+      {
+        "task_id": "PR13-A05.1",
+        "case_id": "PR13-A05.1-T03",
+        "setup_and_injection": "holds延迟",
+        "expected": "未ready不绕过",
+        "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+        "status": "Passed",
+        "executed": true,
+        "profiles": [
+          "OFFLINE",
+          "POSTGRES",
+          "AUDIT"
+        ],
+        "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+        "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+        "algorithm_version": "A05ProcessAcceptance/1",
+        "raw": [
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 78,
+            "record_id": "A05-runtime-pending-before"
+          },
+          {
+            "path": "final-release/receipts.jsonl",
+            "line": 83,
+            "record_id": "A05-runtime-passed"
+          }
+        ],
+        "full_suite_TRX": "final-release/server.trx",
+        "accepted_by": null,
+        "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+      }
+    ],
+    "stages": {
+      "S0": {
+        "status": "Passed",
+        "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+      },
+      "S1": {
+        "status": "Partial",
+        "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+      },
+      "S2": {
+        "status": "Partial",
+        "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+      },
+      "S3": {
+        "status": "Partial",
+        "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+      },
+      "S4": {
+        "status": "Partial",
+        "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+      },
+      "S5": {
+        "status": "Partial",
+        "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+      },
+      "S6": {
+        "status": "PendingMAIN",
+        "actual": "Independent decision only; Accepted null."
+      }
+    },
+    "full_suite": {
+      "total": 295,
+      "executed": 295,
+      "passed": 295,
+      "failed": 0,
+      "notExecuted": 0
+    },
+    "domain": {
+      "total": 317,
+      "executed": 317,
+      "passed": 317,
+      "failed": 0,
+      "notExecuted": 0
+    },
+    "focused_matrix": {
+      "total": 4,
+      "executed": 4,
+      "passed": 3,
+      "failed": 1,
+      "notExecuted": 0
+    },
+    "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+  },
+  "status": "Partial",
+  "recommendation": "Partial",
+  "accepted_by": null,
+  "sample_population": {
+    "original_task_cases": 3,
+    "canonical_total_cases": 9,
+    "canonical_scenario_entries": 4,
+    "full_suite_entries": 295,
+    "focused_entries": 4,
+    "positive_causal_entries": 1,
+    "negative_control_entries": 1,
+    "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+  },
+  "cutoff_monotonic": null,
+  "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+  "commands": "../../commands.json",
+  "tool_versions": {
+    "dotnet_sdk": "10.0.400",
+    "dotnet_runtime": "10.0.11",
+    "msbuild": "18.9.6",
+    "postgres": "18.6",
+    "psql": "18.6",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "python": "3.12.14",
+    "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+  },
+  "exit_codes": {
+    "C-BUILD": 0,
+    "C-DOMAIN": 0,
+    "C-SERVER": 0,
+    "C-A05-FOCUSED": 1,
+    "C-AUDIT_completed_procedures": 0,
+    "C-CAUSAL": 1
+  },
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "audit_files": [
+      {
+        "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+        "checks": {
+          "pending_holds": 0,
+          "queued_tickets": 0,
+          "locked_equipment": 0,
+          "unfinished_matches": 0,
+          "active_preparations": 0,
+          "wallet_gold_mismatches": 0,
+          "ledger_chain_mismatches": 0,
+          "unacknowledged_settlements": 0
+        },
+        "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+        "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+        "transaction": "READ ONLY; rollback; no mutation"
+      },
+      {
+        "path": "final-release/a05-audit-db-precommit-after.json",
+        "checks": {
+          "pending_holds": 0,
+          "queued_tickets": 0,
+          "locked_equipment": 0,
+          "unfinished_matches": 0,
+          "active_preparations": 0,
+          "wallet_gold_mismatches": 0,
+          "ledger_chain_mismatches": 0,
+          "unacknowledged_settlements": 0
+        },
+        "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+        "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+        "transaction": "READ ONLY; rollback; no mutation"
+      },
+      {
+        "path": "final-release/a05-audit-healthy-after.json",
+        "checks": {
+          "pending_holds": 0,
+          "queued_tickets": 0,
+          "locked_equipment": 0,
+          "unfinished_matches": 0,
+          "active_preparations": 0,
+          "wallet_gold_mismatches": 0,
+          "ledger_chain_mismatches": 0,
+          "unacknowledged_settlements": 0
+        },
+        "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+        "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+        "transaction": "READ ONLY; rollback; no mutation"
+      },
+      {
+        "path": "final-release/a05-audit-pending-after.json",
+        "checks": {
+          "pending_holds": 0,
+          "queued_tickets": 0,
+          "locked_equipment": 0,
+          "unfinished_matches": 0,
+          "active_preparations": 0,
+          "wallet_gold_mismatches": 0,
+          "ledger_chain_mismatches": 0,
+          "unacknowledged_settlements": 0
+        },
+        "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+        "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+        "transaction": "READ ONLY; rollback; no mutation"
+      }
+    ],
+    "per_case": "../../cases.jsonl",
+    "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+    "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+    "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+    "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+  },
+  "artifact_manifest": "../../MANIFEST.json",
+  "reviewer": null,
+  "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+  "remaining_blockers": [
+    "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+  ],
+  "missing_reasons": {
+    "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+    "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+    "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+    "accepted_by": "S6 decision belongs to independent MAIN."
+  },
+  "production_harness_provenance": "../../source-final.json",
+  "dependency_semantics": "Use minimal actual durable receipt/readiness, next-route, and owned audit inputs; no full upstream Accepted gate.",
+  "scope_limit": "Saved Running M input plus actual production actions and actual new N entry; N cleanup uses normal disconnect terminal. No full Boss/three-cycle capacity acceptance claim.",
+  "raw_location_policy": "Original raw remains authorized local only; ORIGINAL_LOCAL_RAW_MANIFEST.json indexes every original path/size/hash. Git contains summaries and harness only.",
+  "stage_receipts": [
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S0",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Passed",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Passed",
+        "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+      }
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S1",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Partial",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Partial",
+        "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+      }
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S2",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Partial",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Partial",
+        "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+      }
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S3",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Partial",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Partial",
+        "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+      }
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S4",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Partial",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Partial",
+        "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+      }
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "stage": "S5",
+      "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+      "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+      "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "effective_room_policy": "f812 default legacy numerics; production Gateway logical30s/transport10s; BotFill30s; request limits unchanged",
+      "runtime_image_digest": null,
+      "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+      "algorithm_version": "A05ProcessAcceptance/1",
+      "case_ids": [
+        "PR13-A05.1-T01",
+        "PR13-A05.1-T02",
+        "PR13-A05.1-T03"
+      ],
+      "expected": "durable settlement、holds、route、玩家下一局权限一致。",
+      "actual": {
+        "cases": [
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T01",
+            "setup_and_injection": "提交前失败",
+            "expected": "无completed/可重试",
+            "actual": "Real PG settlement INSERT is not forwarded inside the actual open transaction. SQL has zero receipt/holds and unchanged owned assets; production client has no completed receipt and retains retryable M. Release permits real retry and ACK.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 119,
+                "record_id": "A05-transaction-fault-observed"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 125,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T02",
+            "setup_and_injection": "提交后响应丢",
+            "expected": "同receipt恢复不再发资产",
+            "actual": "Real committed COMMIT response is dropped after backend ReadyForQuery Idle. One durable receipt recovers through actual host restart; identical PB receipt bytes and owned Gold23/Potions2/same equipment, one commit ledger and one settlement movement.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 100,
+                "record_id": "A05-db-committed-response-drop"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 109,
+                "record_id": "A05-transaction-fault-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          },
+          {
+            "task_id": "PR13-A05.1",
+            "case_id": "PR13-A05.1-T03",
+            "setup_and_injection": "holds延迟",
+            "expected": "未ready不绕过",
+            "actual": "Actual extraction produces one durable receipt and four Pending holds under an owned wallet lock. Across SIGKILL/new OS PID, real Bootstrap excludes unready receipt, client ACK is false, actual ACK409 and Free prepare409. Release leads to the same ready receipt and actual ACK/prepare201.",
+            "status": "Passed",
+            "executed": true,
+            "profiles": [
+              "OFFLINE",
+              "POSTGRES",
+              "AUDIT"
+            ],
+            "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+            "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+            "algorithm_version": "A05ProcessAcceptance/1",
+            "raw": [
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 78,
+                "record_id": "A05-runtime-pending-before"
+              },
+              {
+                "path": "final-release/receipts.jsonl",
+                "line": 83,
+                "record_id": "A05-runtime-passed"
+              }
+            ],
+            "full_suite_TRX": "final-release/server.trx",
+            "accepted_by": null,
+            "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+          }
+        ],
+        "stages": {
+          "S0": {
+            "status": "Passed",
+            "actual": "Original OFFLINE/POSTGRES/AUDIT contract, saved input seed73, profile budgets, owned boundaries and expected primary cases frozen. profile.json was materialized before new A05 entries ran; initial expectations already existed in test source."
+          },
+          "S1": {
+            "status": "Partial",
+            "actual": "Three original primary cases proved through real Program/production Godot/PB HTTP/WS. Controlled actual recovery-M causal window separately confirms a visible-state failure."
+          },
+          "S2": {
+            "status": "Partial",
+            "actual": "Production/UI/config bytes unchanged from f812. New files are harness-only. Repair proposal only; no production implementation or validation."
+          },
+          "S3": {
+            "status": "Partial",
+            "actual": "Full C-SERVER295/0/0 and Domain317/0/0. Original primary cases all Passed. Focused3/1/0 and controlled causal1Failed preserved independently."
+          },
+          "S4": {
+            "status": "Partial",
+            "actual": "Actual OS kill/restart, real authority PB responses/events and owned PG state compared. Confirmed client visible receipt remains M after durable ACK completion."
+          },
+          "S5": {
+            "status": "Partial",
+            "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+          },
+          "S6": {
+            "status": "PendingMAIN",
+            "actual": "Independent decision only; Accepted null."
+          }
+        },
+        "full_suite": {
+          "total": 295,
+          "executed": 295,
+          "passed": 295,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "domain": {
+          "total": 317,
+          "executed": 317,
+          "passed": 317,
+          "failed": 0,
+          "notExecuted": 0
+        },
+        "focused_matrix": {
+          "total": 4,
+          "executed": 4,
+          "passed": 3,
+          "failed": 1,
+          "notExecuted": 0
+        },
+        "causal_failure_scope": "A05.1 durable visibility consistency; no demonstrated asset/route failure in .2/.3"
+      },
+      "status": "Partial",
+      "sample_population": {
+        "original_task_cases": 3,
+        "canonical_total_cases": 9,
+        "canonical_scenario_entries": 4,
+        "full_suite_entries": 295,
+        "focused_entries": 4,
+        "positive_causal_entries": 1,
+        "negative_control_entries": 1,
+        "note": "Cases share entry/raw evidence and are not summed as extra test executions."
+      },
+      "cutoff_monotonic": null,
+      "window_or_drain_or_final": "Functional controlled windows and final READ ONLY audit; no capacity hold/drain claim.",
+      "commands": "../../commands.json",
+      "tool_versions": {
+        "dotnet_sdk": "10.0.400",
+        "dotnet_runtime": "10.0.11",
+        "msbuild": "18.9.6",
+        "postgres": "18.6",
+        "psql": "18.6",
+        "godot": "4.7.2.stable.official.ed1daf0bf",
+        "python": "3.12.14",
+        "global_json_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+      },
+      "exit_codes": {
+        "C-BUILD": 0,
+        "C-DOMAIN": 0,
+        "C-SERVER": 0,
+        "C-A05-FOCUSED": 1,
+        "C-AUDIT_completed_procedures": 0,
+        "C-CAUSAL": 1
+      },
+      "skip_reasons": [],
+      "asset_and_route_postconditions": {
+        "audit_files": [
+          {
+            "path": "final-release/a05-audit-db-committed-response-loss-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "f3d20de10ac5ab6794fef75ff714e41f7a67bbe11688f2f3017580a3796add8a",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-db-precommit-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "e22cfccb41d536c6d7884096b9254c609da9cbbf3a1cf9e5368a239c4c4aa1a1",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-healthy-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "6165711c160f46fc81bdceb783d4d5298efd7bd3374cccb03bbe673c2ca2eddb",
+            "transaction": "READ ONLY; rollback; no mutation"
+          },
+          {
+            "path": "final-release/a05-audit-pending-after.json",
+            "checks": {
+              "pending_holds": 0,
+              "queued_tickets": 0,
+              "locked_equipment": 0,
+              "unfinished_matches": 0,
+              "active_preparations": 0,
+              "wallet_gold_mismatches": 0,
+              "ledger_chain_mismatches": 0,
+              "unacknowledged_settlements": 0
+            },
+            "query_sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530",
+            "sha256": "40fcff9a492820164b9706938d1b587992f1a0bb31583e4b5e1cb22e7cba0943",
+            "transaction": "READ ONLY; rollback; no mutation"
+          }
+        ],
+        "per_case": "../../cases.jsonl",
+        "route": "Healthy M B continues and completes; terminal A new N retained across actual old callback and cold recovery.",
+        "visibility": "Original primary not-ready barriers pass; recovery-M/ACK old poll deficit retained and affects .1 full criterion.",
+        "next_permission": "Unready actual prepare409; ready + ACK actual prepare201 and cancel204. No next-permission bypass during Pending.",
+        "conservation": "Owned wallet/consumables/equipment identities/receipt/holds/ledger and all legal transfers compared before/after without repair."
+      },
+      "artifact_manifest": "../../MANIFEST.json",
+      "reviewer": null,
+      "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+      "remaining_blockers": [
+        "Actual recovery-M poll/ACK causal client receipt inconsistency; f812 is frozen. Any repair needs authorized production change and applicable regression verification. Proposed one-line patch is untested and unapplied."
+      ],
+      "missing_reasons": {
+        "runtime_image_digest": "Native dotnet OS child processes; no container image was used.",
+        "cutoff_monotonic": "Original functional matrix did not record a common monotonic cutoff and makes no rate/capacity/window accounting claims. The separate causal probe has actual same-client monotonic phase values in P0_CAUSAL.json.",
+        "reviewer": "S6 independent MAIN decision is pending; worker cannot sign Accepted.",
+        "accepted_by": "S6 decision belongs to independent MAIN."
+      },
+      "stage_detail": {
+        "status": "Partial",
+        "actual": "AUDIT executed in owned READ ONLY transactions; all completed final eight checks equal zero; assets and allowed custody changes retained. Actual controlled runtime exercised. No added LIVE/CI/human requirement."
+      }
+    }
+  ]
+}

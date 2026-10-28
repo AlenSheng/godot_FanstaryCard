@@ -1,0 +1,125 @@
+{
+  "ok": true,
+  "case_id": "PR13-B12.4-T03",
+  "profile": "POSTGRES",
+  "actual_native_PG_rows": 10,
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "original_nine_regression_rows": 9,
+  "new_real_ledger_gate_methods": 1,
+  "native_skipped": 0,
+  "all_original_G_members_rehashed": 670,
+  "archive_SHA_and_CRC_rechecked": true,
+  "current_source_members": 328,
+  "implementation_source_sha": "c8c9e23ce7cd7beae3a440971ceaf6cd9e7b4049",
+  "current_EconomyReconciliation_SQL_observed_one_actual_ledger_gap": true,
+  "actual_corrupt_balance_gap": 7,
+  "corrupt_ledger_evidence_not_repaired_or_deleted_to_pass": true,
+  "production_domain_assembly_unchanged": true,
+  "actual": {
+    "roomId": "20f383f5-29e8-4ea0-8e39-2967458f5cd5",
+    "actualConfigVersion": "gdd-0.70-numerical-1",
+    "cards": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "GUA-01",
+      "GUA-02",
+      "GUA-03",
+      "GUA-04",
+      "GUA-05",
+      "GUA-06",
+      "GUA-07"
+    ],
+    "playerId": "01a13970-d964-79ed-b59a-cbee6465d135",
+    "ledgerFirstId": "8ec2c2b9-7e2e-41c5-955f-a0076e57dc5e",
+    "ledgerSecondId": "13d7aee2-f61b-4baf-ba45-c806debb91ad",
+    "initialGold": 0,
+    "healthyReconciliation": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 0,
+      "TotalViolationCount": 0,
+      "IsHealthy": true
+    },
+    "brokenReconciliation": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 1,
+      "TotalViolationCount": 1,
+      "IsHealthy": false
+    },
+    "stillBrokenReconciliation": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 1,
+      "TotalViolationCount": 1,
+      "IsHealthy": false
+    },
+    "actualLedgerRows": 2,
+    "actualFirstBalance": 10,
+    "actualSecondBalance": 22,
+    "actualSecondDelta": 5,
+    "healthyLedgerRaw": "[{\"delta\": 10, \"ledger_id\": \"8ec2c2b9-7e2e-41c5-955f-a0076e57dc5e\", \"balance_after\": 10}, {\"delta\": 5, \"ledger_id\": \"13d7aee2-f61b-4baf-ba45-c806debb91ad\", \"balance_after\": 15}]",
+    "brokenLedgerRaw": "[{\"delta\": 10, \"ledger_id\": \"8ec2c2b9-7e2e-41c5-955f-a0076e57dc5e\", \"balance_after\": 10}, {\"delta\": 5, \"ledger_id\": \"13d7aee2-f61b-4baf-ba45-c806debb91ad\", \"balance_after\": 22}]",
+    "actualAssetGuard": {
+      "ok": true,
+      "actual_alerts": [
+        {
+          "id": "owned-ledger-chain-13d7aee2f61b4bafba45c806debb91ad",
+          "explained": false,
+          "actual_database_observation": {
+            "ledger_chain_mismatch_count": 1,
+            "total_violation_count": 1,
+            "healthy": false,
+            "observed_delta": 5,
+            "unexplained_balance_gap": 7,
+            "alert_id": "owned-ledger-chain-13d7aee2f61b4bafba45c806debb91ad"
+          }
+        }
+      ],
+      "actual_asset_gate": {
+        "state": "Blocked",
+        "unexplained_alerts": [
+          "owned-ledger-chain-13d7aee2f61b4bafba45c806debb91ad"
+        ],
+        "asset_acceptance": false
+      },
+      "healthy_no_alert_positive_gate": {
+        "state": "ReadyForMainReview",
+        "unexplained_alerts": [],
+        "asset_acceptance": false
+      },
+      "faulted_ledger_was_not_repaired_or_deleted_to_pass": true
+    },
+    "snapshotBeforeHash": "a9dd62f9d8df48da6da5445ee9e84a7d29c8030cde8c0937d2b9dbdd6b641d3e",
+    "snapshotAfterHash": "a9dd62f9d8df48da6da5445ee9e84a7d29c8030cde8c0937d2b9dbdd6b641d3e",
+    "databaseBeforeHash": "508d0e1d59e6ace734147e0c1621a545fd16ae07a23ee419f08794d8eb9c6b3e",
+    "databaseAfterHash": "508d0e1d59e6ace734147e0c1621a545fd16ae07a23ee419f08794d8eb9c6b3e",
+    "corruptEvidenceNotRepairedOrDeleted": true,
+    "productionSourceModified": false,
+    "liveAssetsTouched": false
+  },
+  "all_other_canonical_profiles_retained": true,
+  "MAIN_accepted": false
+}

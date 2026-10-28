@@ -1,0 +1,646 @@
+{
+  "kind": "CurrentIdentityRootsAndCallbackEvidenceReview_NotWholeAcceptance",
+  "generated_at": "2026-10-23T00:56:42.076210+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "identity_presence": {
+    "kind": "ActualIdentityPresenceRefinement_NotManifestBaseOrCausalAcceptance",
+    "ok": true,
+    "native_member_delta_counts": {
+      "new_unique_member_nodes": 24375,
+      "new_member_occurrences": 24382,
+      "new_occurrences_of_existing_member": 7
+    },
+    "cursors": [
+      {
+        "epoch": "archive-members-20261022-r1",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\member-identities.private.original.jsonl",
+        "captured_limit": 86959321,
+        "consumed_complete_prefix_bytes": 86959321,
+        "rows": 127530,
+        "prefix_sha256": "0bc750d913039bb21be12e037f90c0cd34190e1b1e06d518c917326dffc8b0d4",
+        "prior_prefix_sha256_verified": true,
+        "prior_consumed_bytes": 86959321,
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r2",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r2\\member-identities.private.original.jsonl",
+        "captured_limit": 3056100,
+        "consumed_complete_prefix_bytes": 3056100,
+        "rows": 4187,
+        "prefix_sha256": "a375b32d53e08832a2ab88731606d3953b2f44d8f798952d2b30a687af0e0a7c",
+        "prior_prefix_sha256_verified": true,
+        "prior_consumed_bytes": 3056100,
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r3",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r3\\member-identities.private.original.jsonl",
+        "captured_limit": 37616927,
+        "consumed_complete_prefix_bytes": 37616927,
+        "rows": 51829,
+        "prefix_sha256": "97c1d898030fc389d8cbfdffd30f9e11149d55db12153130e372eacd191d0fda",
+        "prior_prefix_sha256_verified": true,
+        "prior_consumed_bytes": 17866150,
+        "live_prefix": true
+      }
+    ],
+    "prior_unobserved_digest_pairs": 7294,
+    "prior_archive_refinement_observed": 521,
+    "currently_observed_from_archive_Git_or_exact_recovery": 2359,
+    "additional_observed_pairs_since_prior_refinement": 1838,
+    "observed_category_counts_overlap": {
+      "ActualNativeArchiveMemberIdentity": 1094,
+      "CurrentExactOriginalHashRecoveredFiles": 1266
+    },
+    "remaining_unobserved_in_this_bounded_evidence": 4935,
+    "unobserved_is_not_missing_or_corruption": true,
+    "native_archive_payloads_replayed_or_modified": false,
+    "original_prior_index_or_reports_modified": false,
+    "native_Git_object_reader_exit": 0,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false,
+    "elapsed_seconds": 41.54700000002049
+  },
+  "new_PG_snapshot_bindings": {
+    "kind": "IncrementalReceiptBoundPGDATAWholeMembership",
+    "ok": true,
+    "new_bindings": [
+      {
+        "manifest_path": "native-gameplay-memory-pair-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "0ffdc648858efa7f85e0ac46ecc254c2195f141594f6b63ac2312366a198086d",
+        "manifest_bytes": 227180,
+        "archive_path": "native-gameplay-memory-pair-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "1aff6c8a70347bafeb0f537f440f0dd9652de17cce8c70b3b0c86e9574ce4055",
+        "archive_bytes": 8689691,
+        "receipt_path": "native-gameplay-memory-pair-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-before-PG-cleanup.archive-ready.original.json",
+        "receipt_sha256": "3e0e0e5be6d217a812cb879b001bd0ef3c3dc701c014c93ee6947e92e0a4ae7e",
+        "same_receipt_binds_both_exact_manifest_and_archive": true,
+        "native_stable_outer_records": [
+          [
+            "archive-members-20261022-r3",
+            865643,
+            8689691
+          ]
+        ],
+        "native_complete_footer_records": [
+          [
+            "archive-members-20261022-r3",
+            26682072,
+            "tar.gzip"
+          ]
+        ],
+        "status": "ExactReceiptBoundWholePGDATAMembershipVerified",
+        "expected_files": 1434,
+        "actual_files": 1434,
+        "missing_paths": [],
+        "extra_paths": [],
+        "different_hash_paths": [],
+        "invalid_paths": [],
+        "PG_restore_or_gameplay_acceptance_granted": false
+      }
+    ],
+    "newly_verified_files": 1434,
+    "prior_qualified_snapshots_retained_without_replay": 1,
+    "prior_qualified_files_retained": 1278,
+    "pending_snapshots": [
+      {
+        "manifest_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "a94205a949bbea90037cefcaccb9ce4c718c404a53dbe983ce857080fd8f0277",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "60086507d42058d16a275bf2e3b38890f3485e4679fd6091408072391ca0ca8d",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "66abeb6e4324c56af27f95fef28f1d6d0d15e81ad93308e4590e89248630f1ba",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ac40a624dae3a04bc4dff4e33d66d96b6b344d39e49217b698e2e859ba585a2f",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "9399f361c78181cc4856b46d51066fee186d26b15ec9eba419d3327057df5820",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "988a293497c42241acf1aca552afce334f40f3815a618ca18b8c0314e8965dd2",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "archive_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "f35450553cde12a23cdf7adfbb3e119a4a0219dd0ad54ab22271e36b6b4a158b",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "archive_path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "66caa6bd7a9cafae90d96105ad103ef50eac7a83892e76c6535de4ed0caa7ab8",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "b3eb546bddfc211d41605f53c59c6ea80a25cbad8da24e8432e99667efcf086b",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "archive_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ab936d196ea96ebdafcc679d796620337300f7d5d0787876c21db1d2e8bee106",
+        "status": "AwaitingThisExactReceiptArchiveNativeCompletion",
+        "stable_outer_records": 0,
+        "complete_native_footer_records": 0
+      }
+    ],
+    "total_snapshot_manifest_objects": 14,
+    "outer_ledger_cursors_reconciled": [
+      {
+        "epoch": "archive-members-20261022-r1",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\outer-identities.private.original.jsonl",
+        "consumed_complete_prefix_bytes": 517948,
+        "rows": 1021,
+        "prefix_sha256": "b05777537f38647dc5e2d72f15df48bce45a06c9577b90c07860d84845725d97",
+        "all_indexed_stable_outer_records_reconciled": 1021,
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r2",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r2\\outer-identities.private.original.jsonl",
+        "consumed_complete_prefix_bytes": 155364,
+        "rows": 302,
+        "prefix_sha256": "6e854caa3fe565436465965eb4d46598f72d43b92c7b926d634f5c1aa5e890ed",
+        "all_indexed_stable_outer_records_reconciled": 302,
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r3",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r3\\outer-identities.private.original.jsonl",
+        "consumed_complete_prefix_bytes": 1448825,
+        "rows": 2817,
+        "prefix_sha256": "9747010a746e161d951d946bb2efc484947d073bf48e6cc8387cca099ca970fd",
+        "all_indexed_stable_outer_records_reconciled": 2817,
+        "live_prefix": true
+      }
+    ],
+    "source_payloads_replayed_or_modified": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "Windows_root_profile": {
+    "kind": "ActualWindowsRepositoryManifestNamespaceCorrection_NotHistoricalRecovery",
+    "ok": true,
+    "actual_controls": [
+      {
+        "input_separator_profile": "docs/reports/control/file.json",
+        "correct_root_native_public_guard_passed": true
+      },
+      {
+        "input_separator_profile": "docs\\reports\\control\\file.json",
+        "correct_root_native_public_guard_passed": true
+      },
+      {
+        "input_separator_profile": "docs/reports\\control/file.json",
+        "correct_root_native_public_guard_passed": true
+      },
+      {
+        "incorrect_sibling_root": true,
+        "actual_guard_reason": "Public evidence missing",
+        "expected_rejection": true
+      },
+      {
+        "namespace_negative_profile": "G:\\docs\\reports\\outside.json",
+        "not_reclassified_as_docs_namespace": true
+      },
+      {
+        "namespace_negative_profile": "..\\docs\\reports\\escape.json",
+        "not_reclassified_as_docs_namespace": true
+      },
+      {
+        "namespace_negative_profile": "docs\\reports\\..\\elsewhere.json",
+        "not_reclassified_as_docs_namespace": true
+      },
+      {
+        "namespace_negative_profile": "build-assemblies\\server\\bin\\x.dll",
+        "not_reclassified_as_docs_namespace": true
+      }
+    ],
+    "control_count": 8,
+    "corrected_manifest_profiles": 10,
+    "counts": {
+      "member_payloads": 47,
+      "member_bytes": 104401590,
+      "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed": 10
+    },
+    "results": [
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S0-Guardian-natural3-budget2400-20261016/manifest.json",
+        "manifest_bytes": 701,
+        "manifest_sha256": "7d626dc208332ea6abbd5f2ce1a1165d097e1a2b918b3834d658e2a9c2b26e72",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 3,
+        "member_bytes": 5083
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S5-natural1200-six-normal-and-Guardian-censored-20261016/manifest.json",
+        "manifest_bytes": 1004,
+        "manifest_sha256": "ef27cac2487a72632a9bea3958f77c22d80bf295a8a5ea8d01753e530d9a82d6",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 4,
+        "member_bytes": 14684
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S5-three-class-revised-nine-current-reviewed-20261016/manifest.json",
+        "manifest_bytes": 739,
+        "manifest_sha256": "8c9a6dd8cc3e78fe51644cbc46b607abd6e6bc3d3a0642b6297b67576ae5a3f4",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 3,
+        "member_bytes": 19172
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-a011-inventory-main-reviewed-20261016/manifest.json",
+        "manifest_bytes": 1163,
+        "manifest_sha256": "61255944fe2e5ee6a558ab281eee81b917c47380880e6066b2a2d80a73898d51",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 5,
+        "member_bytes": 14887616
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-a012-cutoff-main-reviewed-20261016/manifest.json",
+        "manifest_bytes": 1382,
+        "manifest_sha256": "45089958a47850dca67a50b7a85b383a5ca354c29b502ebdf9f5ea48c92a1a56",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 6,
+        "member_bytes": 14896738
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-a092-auto-abandon-LIVE-one-20261016/manifest.json",
+        "manifest_bytes": 915,
+        "manifest_sha256": "75a724ae31a9dc080ddce55ff3c4e8cf46b18b69f2f1870ee1672e08ab775eda",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 4,
+        "member_bytes": 14887452
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-load064-all-profiles-main-reviewed-20261016/manifest.json",
+        "manifest_bytes": 1678,
+        "manifest_sha256": "da9fa3e926f266da3824bdfed811d2725cd49887d002499d00651b6045cb2c05",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 7,
+        "member_bytes": 14962016
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-load064-current-LIVE-three-20261016/manifest.json",
+        "manifest_bytes": 1387,
+        "manifest_sha256": "5bc1b93eb4cb07d2b2682cf504491498d4c7c7178580db32b2772e4109333d53",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 6,
+        "member_bytes": 14904204
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S6-revised-lifecycle-nine-current-partial-20261016/manifest.json",
+        "manifest_bytes": 972,
+        "manifest_sha256": "56a880a2cf9d3e58be41f24e4e161ca9e7692443bbae9853cf53ce29ff59c54b",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 4,
+        "member_bytes": 14913048
+      },
+      {
+        "manifest": "docs/reports/pr13-stages-20261009/S7-load064-route-description-corrected-20261016/manifest.json",
+        "manifest_bytes": 1227,
+        "manifest_sha256": "064a9fa2af40e3bde69b18e136bbaaa5234ba6f684dd051d2101c70f93691b47",
+        "prior_locator_profile": "CandidateCurrentManifestSiblingTree_OriginalProducerBaseNotInferred",
+        "corrected_current_locator_profile": "ExplicitRepositoryDocsNamespace_WindowsSeparators",
+        "original_manifest_path_strings_or_expected_hashes_modified": false,
+        "historical_producer_execution_not_inferred": true,
+        "prior_reason": "Public evidence missing",
+        "status": "ExactCurrentMembershipAndUnchangedOriginalPublicGuardPassed",
+        "member_count": 5,
+        "member_bytes": 14911577
+      }
+    ],
+    "original_public_guard_source_sha256": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+    "original_rejections_retained": true,
+    "current_paths_missing_under_wrong_base_not_global_data_loss": true,
+    "source_manifests_or_payloads_modified": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "callback_receipt_producer_fix": {
+    "path": "tools/pr13_callback_isolation.py",
+    "change": "Do not persist the received Authorization header in request evidence",
+    "actual_baseline_HTTP_tests": {
+      "phase": "before",
+      "actual_native_exit": 1,
+      "command": [
+        "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "tools.tests.test_pr13_callback_evidence",
+        "-v"
+      ],
+      "producer_bytes": 15136,
+      "producer_sha256": "957c90e8f07118c822fef3cab2f3389fd4255f7f29fd040994df81801d5c1173",
+      "expected_native_exit": 1,
+      "no_Godot_or_UI_or_database_process_started": true,
+      "actual_loopback_HTTP_request_tests": 2,
+      "new_game_samples": 0
+    },
+    "actual_fixed_HTTP_tests": {
+      "phase": "after",
+      "actual_native_exit": 0,
+      "command": [
+        "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+        "-B",
+        "-m",
+        "unittest",
+        "tools.tests.test_pr13_callback_evidence",
+        "-v"
+      ],
+      "producer_bytes": 15084,
+      "producer_sha256": "06d8b54e512f3d5e58e66055b8f356ae8f2ef64ef4d4d79ace02f49053d7e96c",
+      "expected_native_exit": 0,
+      "no_Godot_or_UI_or_database_process_started": true,
+      "actual_loopback_HTTP_request_tests": 2,
+      "new_game_samples": 0
+    },
+    "additional_original_public_guard_tests": {
+      "command": "python -B -m unittest tools.tests.test_pr13_public_evidence -v",
+      "native_exit_observed_in_exec_tool": 0,
+      "tests_observed_passed": 14,
+      "source": "Actual tool output retained in thread transcript; no invented stdout file"
+    },
+    "current_producer_sha256": "06d8b54e512f3d5e58e66055b8f356ae8f2ef64ef4d4d79ace02f49053d7e96c",
+    "new_test_sha256": "1b164a0c30ba563f34ea58bd5b40a899a9baf18cfda291daada4257741104fd9",
+    "private_historical_raw_not_rewritten_or_declared_public": true,
+    "gameplay_engine_or_production_behavior_changed": false
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-identity-root-and-callback-review-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-prefixes/archive-members-20261022-r1/members.private.exact-prefix.jsonl",
+        "bytes": 86959321,
+        "sha256": "0bc750d913039bb21be12e037f90c0cd34190e1b1e06d518c917326dffc8b0d4",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "native-prefixes/archive-members-20261022-r2/members.private.exact-prefix.jsonl",
+        "bytes": 3056100,
+        "sha256": "a375b32d53e08832a2ab88731606d3953b2f44d8f798952d2b30a687af0e0a7c",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "native-prefixes/archive-members-20261022-r3/members.private.exact-prefix.jsonl",
+        "bytes": 37616927,
+        "sha256": "97c1d898030fc389d8cbfdffd30f9e11149d55db12153130e372eacd191d0fda",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "native-prefixes/archive-members-20261022-r1/outers.private.exact-prefix.jsonl",
+        "bytes": 517948,
+        "sha256": "b05777537f38647dc5e2d72f15df48bce45a06c9577b90c07860d84845725d97",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "native-prefixes/archive-members-20261022-r2/outers.private.exact-prefix.jsonl",
+        "bytes": 155364,
+        "sha256": "6e854caa3fe565436465965eb4d46598f72d43b92c7b926d634f5c1aa5e890ed",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "native-prefixes/archive-members-20261022-r3/outers.private.exact-prefix.jsonl",
+        "bytes": 1448825,
+        "sha256": "9747010a746e161d951d946bb2efc484947d073bf48e6cc8387cca099ca970fd",
+        "bounded_complete_native_prefix": true
+      },
+      {
+        "path": "executions/identity-presence-refinement-20261023-r2/archive-content.private.sqlite3",
+        "bytes": 187715584,
+        "sha256": "8d0db4e44760f6d2c5174b27fd39088b1967c7806a3a31d919c87af1fd78cc0f"
+      },
+      {
+        "path": "executions/identity-presence-refinement-20261023-r2/executed-refinement-source.original.py",
+        "bytes": 8503,
+        "sha256": "96fd693fd08eecccb79232b19a20862354598cbefcd62108370c896676fa5794"
+      },
+      {
+        "path": "executions/identity-presence-refinement-20261023-r2/prior-unobserved-identity-refinement.private.original.jsonl",
+        "bytes": 2437202,
+        "sha256": "2ee69a65caa59737e51dc01a6409a6003173e7b0ee9d92d6fb3a4268a6ee5bee"
+      },
+      {
+        "path": "executions/identity-presence-refinement-20261023-r2/remaining-unobserved.private.original.json",
+        "bytes": 561939,
+        "sha256": "93dd67ef5c9b852a5a29b1050121605719497f0a33eb5ad9f90ca7dfb5e09701"
+      },
+      {
+        "path": "executions/identity-presence-refinement-20261023-r2/result.original.json",
+        "bytes": 2864,
+        "sha256": "409cef756dad911011abf79bc67c719f1127ac5160b4f9380d4cb4ca6ec7ec46"
+      },
+      {
+        "path": "executions/PGDATA-new-completed-bindings-20261023-r3/executed-binding-source.original.py",
+        "bytes": 6147,
+        "sha256": "85e0e979f641819376a16657fa184377671450ccad80f40d7b0bfe3e685522ab"
+      },
+      {
+        "path": "executions/PGDATA-new-completed-bindings-20261023-r3/result.original.json",
+        "bytes": 10309,
+        "sha256": "a97695c2b565de6d894ceb39d4a98f480c5a263b74a619348da509a045db7674"
+      },
+      {
+        "path": "executions/windows-manifest-root-profile-20261023-r1/executed-root-profile-source.original.py",
+        "bytes": 4693,
+        "sha256": "8d3715cdd5bd16b73bef161ff031aa923b0118356efba3d8af4ab89f054c0886"
+      },
+      {
+        "path": "executions/windows-manifest-root-profile-20261023-r1/result.original.json",
+        "bytes": 9622,
+        "sha256": "659964e82481ef8397a55f03a0a3475fad6fa8406f744762d591397dcf6f5036"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/after-native-result.original.json",
+        "bytes": 532,
+        "sha256": "9a7c56358ff3fd56a0a8d694550607be4bb06ae99aaccf01843d350d2beb7126"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/after-producer.original.py",
+        "bytes": 15084,
+        "sha256": "06d8b54e512f3d5e58e66055b8f356ae8f2ef64ef4d4d79ace02f49053d7e96c"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/after-stderr.original.log",
+        "bytes": 349,
+        "sha256": "bb36f4bfdf579fd21fd38267a64587a2e1785b30fe3a6489fed467821638f5d1"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/after-stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/before-native-result.original.json",
+        "bytes": 533,
+        "sha256": "746c081e9ab49423cd90f1a64bab1e780168ec1ddd25d083b5580a6897545427"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/before-producer.original.py",
+        "bytes": 15136,
+        "sha256": "957c90e8f07118c822fef3cab2f3389fd4255f7f29fd040994df81801d5c1173"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/before-stderr.original.log",
+        "bytes": 2265,
+        "sha256": "e3d601b70b42cbc7b5a8a446a1a2b767038bd79650c59d33a09138256175284d"
+      },
+      {
+        "path": "executions/callback-receipt-redaction-20261023-r1/before-stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "current-sources/tools/pr13_callback_isolation.py",
+        "bytes": 15084,
+        "sha256": "06d8b54e512f3d5e58e66055b8f356ae8f2ef64ef4d4d79ace02f49053d7e96c"
+      },
+      {
+        "path": "current-sources/tools/tests/test_pr13_callback_evidence.py",
+        "bytes": 3859,
+        "sha256": "1b164a0c30ba563f34ea58bd5b40a899a9baf18cfda291daada4257741104fd9"
+      },
+      {
+        "path": "current-sources/tools/pr13_public_evidence.py",
+        "bytes": 8705,
+        "sha256": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 9647,
+        "sha256": "4b0ae03cd20c1ff343ea0749d2227bc584874126ec4a66205efc2303ff8dc36b"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 90966,
+        "sha256": "5bacad6527cc663317b8618ee161129a96bad96a672acea58e1ac00044b1aa0a"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "source_code_fix_is_local_reviewed_draft_not_release_push": true,
+  "archive_R3_original_process_continues": {
+    "pid": 25368,
+    "creation": "2026-10-22T22:40:28.614842+08:00",
+    "exec_session": 66445
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

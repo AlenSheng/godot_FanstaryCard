@@ -1,0 +1,88 @@
+{
+  "kind": "R7 timeout recovery UI and cloud functional followup; full capacity remains unpassed",
+  "base_source_commit": "2c37fdf981dd418d8deface583630574f7b6b2c3",
+  "change": "Reuse the existing recovery panel while a room write outcome is unknown; show current connection status and reconnect action until fresh scoped authority arrives. Avoid misleading exploration-preparation hall.",
+  "source_sha256": {
+    "client/state/game_store.gd": "93c7f3be4ea2aebf14d72f9fb2fd44cb7159a0d752a602f8212e764ac2e55349",
+    "client/ui/main.gd": "1c1b24ea20d97dd8e5c907538c93be82250eba6bd74a70cb3dd496d6ae8dcf37",
+    "client/ui/reference_ui.gd": "27b404644cdf574df3c4902689f43cc6ba1dbcf3dcbcdb64f7fc60e992daaa26",
+    "client/ui/exploration_view.gd": "2e692afa0ba7746315ef7d0c67043d1bbdd0d627d2937f80eab301e329487e41",
+    "client/tests/test_pending_timeout_recovery.gd": "4e6d007ca2f1b94cb4d4e18c41143d97055d289dfe17ccc03caaffa2e06ac212"
+  },
+  "UI_actual_offscreen_render": {
+    "resolutions": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ]
+    ],
+    "frames": 4,
+    "checks_passed": 12,
+    "layout_errors": 0,
+    "screenshots_individually_reviewed": true,
+    "existing_dark_teal_gold_style_kept": true,
+    "source_override_files_frozen_with_originals": true,
+    "no_ObjectDB_or_resource_leak_in_final_run": true,
+    "expected_Xvfb_VSync_and_missing_libdbus_diagnostics_retained": true
+  },
+  "local_native_validation": {
+    "common_suites": 24,
+    "common_named_checks": 284,
+    "timeout_checks": 48,
+    "extended_suites": 24,
+    "extended_named_checks": 389,
+    "suites_overlap_not_unique_sum": true,
+    "headless_Dummy_CNO_BelowNormal_last4_CPUs": true,
+    "memory_floor_bytes": 6442450944
+  },
+  "cloud_functional_smoke": {
+    "source_commit": "2c37fdf981dd418d8deface583630574f7b6b2c3",
+    "actual_full_native_clients": 4,
+    "profile": "functional-cycles",
+    "completed_cycles_per_client": 1,
+    "server_matches": 1,
+    "settlements": 4,
+    "pending_holds": 0,
+    "passed": true,
+    "not_three_normal_cycles_or_capacity": true
+  },
+  "backup_and_cleanup": {
+    "full_original_files": 292,
+    "UI_supplement_files": 70,
+    "all_individual_SHA256_verified_on_G": true,
+    "actual_DB_restored_and_audited": true,
+    "restored_matches": 1,
+    "restored_settlements": 4,
+    "restored_pending_holds": 0,
+    "owned_containers_removed": 11,
+    "source_untracked_inputs_verified": 80,
+    "freed_bytes": 4801110016,
+    "cloud_available_bytes_at_cleanup": 7978807296,
+    "formal_ready_HTTP": 200,
+    "formal_identity_unchanged": true,
+    "formal_DB_not_cleared": true
+  },
+  "earlier_failures_preserved": [
+    "R1 screenshot passed layout checks but visually showed an inappropriate preparation hall; final UI fixes it",
+    "R2 fixture asserted before rendering and failed; final fixture asserts after actual render",
+    "R3 and R4 fixture audio playback leaked at shutdown; final fixture stops existing audio and waits before exit",
+    "First cleanup guard rejected an outdated directory name before any command or mutation; corrected exact owned path then restored and cleaned successfully"
+  ],
+  "limits_unchanged": {
+    "initial_timeout_ms": 3000,
+    "capacity_latency_and_resource_floors": true,
+    "GDD_protocol_server_numerical_rules": true
+  },
+  "limitations": [
+    "No corrected-client 50 or 100 capacity result yet",
+    "Four-client smoke is not the three-class three-cycle result",
+    "CI above covers the earlier timeout source; new UI code requires its own CI",
+    "Prior missing original history and actual fork test remain unpassed"
+  ],
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792889350534.3357
+}

@@ -14,20 +14,20 @@ func local_login_enabled() -> bool:
 
 func google_login_unavailable_reason() -> String:
 	if str(ProjectSettings.get_setting("platform/google/web_client_id", "")).strip_edges().is_empty():
-		return "Google 登录尚未配置 Web Client ID"
+		return I18n.t("Google 登录尚未配置 Web Client ID")
 	if not Engine.has_singleton("GoogleSignIn"):
-		return "当前客户端未安装 Google 登录接入组件"
+		return I18n.t("当前客户端未安装 Google 登录接入组件")
 	_google = Engine.get_singleton("GoogleSignIn")
 	if not _google.has_method("sign_in"):
-		return "Google 登录接入组件版本不支持当前登录方式"
+		return I18n.t("Google 登录接入组件版本不支持当前登录方式")
 	if not _google.has_signal("sign_in_completed"):
-		return "Google 登录接入组件缺少登录结果回调"
+		return I18n.t("Google 登录接入组件缺少登录结果回调")
 	return ""
 
 func request_google_id_token() -> Dictionary:
 	var unavailable := google_login_unavailable_reason()
 	if not unavailable.is_empty(): return {"ok": false, "error": unavailable}
-	if _google_pending: return {"ok": false, "error": "Google 登录正在处理"}
+	if _google_pending: return {"ok": false, "error": I18n.t("Google 登录正在处理")}
 	_google_pending = true
 	_google_result = {}
 	if not _google.is_connected("sign_in_completed", _on_google_sign_in_completed):
@@ -40,9 +40,9 @@ func request_google_id_token() -> Dictionary:
 		await get_tree().process_frame
 	_google_pending = false
 	if _google_result.is_empty():
-		return {"ok": false, "error": "Google 未能提供有效登录凭证，请重试"}
+		return {"ok": false, "error": I18n.t("Google 未能提供有效登录凭证，请重试")}
 	var token := str(_google_result.get("id_token", _google_result.get("idToken", _google_result.get("token", ""))))
-	if token.is_empty(): return {"ok": false, "error": "Google 未能提供有效登录凭证，请重试"}
+	if token.is_empty(): return {"ok": false, "error": I18n.t("Google 未能提供有效登录凭证，请重试")}
 	return {"ok": true, "id_token": token}
 
 func _on_google_sign_in_completed(result: Variant = null, extra: Variant = null) -> void:

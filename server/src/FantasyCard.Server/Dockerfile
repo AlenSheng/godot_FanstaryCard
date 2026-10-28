@@ -1,11 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0.400 AS build
 WORKDIR /src
-COPY Directory.Build.props Directory.Packages.props global.json ./
-COPY src/FantasyCard.Contracts/FantasyCard.Contracts.csproj src/FantasyCard.Contracts/
-COPY src/FantasyCard.Domain/FantasyCard.Domain.csproj src/FantasyCard.Domain/
-COPY src/FantasyCard.Server/FantasyCard.Server.csproj src/FantasyCard.Server/
+COPY server/Directory.Build.props server/Directory.Packages.props server/global.json ./
+COPY server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj src/FantasyCard.Contracts/
+COPY server/src/FantasyCard.Domain/FantasyCard.Domain.csproj src/FantasyCard.Domain/
+COPY server/src/FantasyCard.Server/FantasyCard.Server.csproj src/FantasyCard.Server/
+COPY protocol/ /protocol/
 RUN dotnet restore src/FantasyCard.Server/FantasyCard.Server.csproj
-COPY . .
+COPY server/ .
 RUN dotnet publish src/FantasyCard.Server/FantasyCard.Server.csproj -c Release -o /input --no-restore \
     -p:DebugType=None -p:DebugSymbols=false -p:UseAppHost=false
 RUN dotnet tool install Obfuscar.GlobalTool --version 2.2.50 --tool-path /obfuscar
@@ -23,6 +24,8 @@ RUN mkdir -p /framework /private \
     && ! find /input -type f \( -name '*.pdb' -o -name '*.cs' -o -name '*.key' -o -name '*.dpapi' \) -print -quit | grep -q .
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+ARG FANTASYCARD_SOURCE_COMMIT=unrecorded
+LABEL org.opencontainers.image.revision=$FANTASYCARD_SOURCE_COMMIT
 WORKDIR /app
 COPY --from=build /input .
 # The publish output preserves restrictive source modes.  The runtime is

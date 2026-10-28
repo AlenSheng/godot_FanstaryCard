@@ -11,6 +11,7 @@ const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.pn
 const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
 const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
 const COMMON_CELL_GAP := 8
+const QUALITY_FILL_INSET_RATIO := 12.0 / 192.0
 ## Shared dark state for an empty equipment slot. Keep it visually distinct from White gear.
 const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
 const UNEQUIPPED_FRAME_MODULATE := Color8(105, 108, 108, 220)
@@ -19,6 +20,8 @@ static var _textures: Dictionary = {}
 static var _styles: Dictionary = {}
 
 static func clear_texture_cache() -> void:
+	# Cached styles also own textures; live controls keep their own references.
+	_styles.clear()
 	_textures.clear()
 
 static func texture(key: String) -> Texture2D:
@@ -63,7 +66,11 @@ static func item_texture(item: Dictionary) -> Texture2D:
 	var id := str(item.get("item_id", item.get("itemId", "")))
 	var kind := str(item.get("kind", item.get("Kind", "")))
 	for row in CATALOG.data.get("tables", {}).get("Items", []):
-		if str(row.get("id", "")) == id or (str(row.get("kind", "")) == kind and not id.begins_with("class_soul:")):
+		if not id.is_empty() and str(row.get("id", "")) == id:
+			var key := str(row.get("icon_key", ""))
+			if not key.is_empty(): return texture(key)
+	for row in CATALOG.data.get("tables", {}).get("Items", []):
+		if str(row.get("kind", "")) == kind and kind != "ClassSoul":
 			var key := str(row.get("icon_key", ""))
 			if not key.is_empty(): return texture(key)
 	return null
@@ -173,6 +180,12 @@ static func item_quality_rank(item: Dictionary) -> int:
 
 static func item_quality_name(item: Dictionary) -> String:
 	return quality_name(item_quality_rank(item))
+
+static func item_background_key(item: Dictionary) -> String:
+	return str(CatalogIndex.quality(item_quality_name(item)).get("item_background_key", COMMON_CELL_KEY))
+
+static func item_frame_key(item: Dictionary) -> String:
+	return str(CatalogIndex.quality(item_quality_name(item)).get("item_frame_key", ""))
 
 static func quality_color(rank: Variant) -> Color:
 	var quality := quality_name(rank)

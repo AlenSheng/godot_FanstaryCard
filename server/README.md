@@ -13,7 +13,7 @@
 - 大厅 Bootstrap：`GET /api/v1/bootstrap`
 - 图鉴与编组：`GET /api/v1/cards`、`GET/PUT /api/v1/decks`（PUT 要求 `Idempotency-Key`）
 - 探索准备：`GET/POST/DELETE /api/v1/preparations`，支持资产校验和幂等重试
-- WebSocket 会话入口：`/ws/v1/session?access_token=...`
+- WebSocket 会话入口：先用 Bearer 调用 `POST /api/v1/realtime/ticket`，再连接 `/ws/v1/session?ticket=...`（短时单次票据）
 - `ping` / `pong`、sequence、最近事件重放、`session.resume`、同账号连接接管与 16 KiB 消息上限
 - 实时事件流按 `Realtime:EventStreamIdleRetentionMinutes` 回收；缓存失效后客户端通过 session/room snapshot 恢复
 - JSON 结构化日志、请求追踪 ID、OpenTelemetry traces/metrics OTLP 接口
@@ -102,15 +102,19 @@ dotnet test FantasyCard.Server.slnx
 
 可用 `dotnet --version` 检查当前目录解析到的 SDK，预期输出 `10.0.400`。
 
-## WebSocket 消息
+## HTTP 与 WebSocket 消息
 
-连接成功后服务端发送带事件序号的消息：
+第一方登录/玩法 HTTP 使用 `application/protobuf`。契约、生成和字段适配见 [网络契约](../docs/network-protobuf-migration/protocol-compatibility.md)。公告、管理和登录前信息仍使用 JSON。原有 `.http` JSON 示例仅适用于显式设置 `ProtobufHttp:AllowLegacyJson=true` 的旧客户端兼容测试。旧 WebSocket 查询令牌也必须显式设置 `Realtime:AllowLegacyAccessTokenQuery=true`，默认关闭。
+
+构建容器时 Compose 的 context 为仓库根目录，以包含 `protocol/`；Dockerfile 的保护流程保持原样。此迁移没有执行生产部署。
+
+WebSocket 只收发 Protobuf v1 二进制帧。以下为解码后的字段示意，不能作为 JSON 文本帧发送。连接成功后服务端发送带事件序号的消息：
 
 ```json
 {"type":"session.connected","traceId":"...","payload":{"playerId":"..."},"eventId":"...","sequence":1,"occurredAt":"..."}
 ```
 
-客户端可发送：
+客户端应按 `ClientEnvelope` 编码发送以下语义：
 
 ```json
 {"type":"ping","requestId":"ping-00000001","payload":null}

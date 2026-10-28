@@ -8,6 +8,7 @@ using FantasyCard.Server.Mail;
 using FantasyCard.Server.Persistence;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Server.Realtime;
 using FantasyCard.Server.Rooms;
 using FantasyCard.Server.Settlement;
@@ -16,9 +17,23 @@ using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+RequestLimitExtensions.ValidateOwnedTestBypass(builder.Configuration, builder.Environment);
+var localMetricsFile = builder.Configuration["Diagnostics:LocalMetricsFile"];
+if (!string.IsNullOrWhiteSpace(localMetricsFile))
+{
+    var addresses = (builder.Configuration["urls"] ?? "").Split(';', StringSplitOptions.RemoveEmptyEntries);
+    if (!builder.Environment.IsDevelopment() || !Path.IsPathFullyQualified(localMetricsFile) || addresses.Length == 0 ||
+        addresses.Any(address => !Uri.TryCreate(address, UriKind.Absolute, out var uri) || !uri.IsLoopback))
+        throw new InvalidOperationException("Owned local diagnostics require Development, an absolute file and loopback-only bindings.");
+    builder.Services.AddHostedService(services => new LocalRuntimeDiagnostics(
+        services.GetRequiredService<ServerMetrics>(), localMetricsFile, services.GetRequiredService<ILogger<LocalRuntimeDiagnostics>>()));
+}
 // Console logging works in containers and on Windows without Event Log permissions.
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
+// Hosting's informational request-start message includes raw query strings.
+// Session credentials belong neither in logs nor in tracing URL attributes.
+builder.Logging.AddFilter("Microsoft.AspNetCore.Hosting.Diagnostics", LogLevel.Warning);
 var requestLimitDefaults = builder.Configuration
     .GetSection(RequestLimitOptions.SectionName)
     .Get<RequestLimitOptions>() ?? new RequestLimitOptions();
@@ -40,6 +55,7 @@ builder.Services.AddProblemDetails(options =>
 });
 builder.Services.AddSingleton<ServerMetrics>();
 builder.Services.AddFantasyCardRequestLimits(builder.Configuration);
+builder.Services.AddProtobufHttp(builder.Configuration);
 
 builder.Services.AddFantasyCardPersistence(builder.Configuration);
 builder.Services.AddIdentityModule(builder.Configuration);
@@ -118,7 +134,13 @@ app.Use(async (context, next) =>
         "camera=(), microphone=(), geolocation=(), payment=(), usb=()";
     await next(context);
 });
-app.UseExceptionHandler();
+app.UseMiddleware<ProtobufHttpMiddleware>();
+app.UseExceptionHandler(new ExceptionHandlerOptions
+{
+    StatusCodeSelector = exception => exception is BadHttpRequestException badRequest
+        ? badRequest.StatusCode
+        : StatusCodes.Status500InternalServerError
+});
 app.UseMiddleware<RequestTraceMiddleware>();
 app.UseRateLimiter();
 app.UseWebSockets(new WebSocketOptions

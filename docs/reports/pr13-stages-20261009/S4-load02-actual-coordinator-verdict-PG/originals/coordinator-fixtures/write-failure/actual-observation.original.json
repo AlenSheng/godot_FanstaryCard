@@ -1,0 +1,10 @@
+{
+  "mode": "write-failure",
+  "actual_child_exit_code": 3,
+  "actual_report": {
+    "emergency": "Report write failed: OSError('injected final report disk failure')\nstop=smoke_passed\noutcome={'classification': 'invalid_workload_or_evidence', 'passed': False, 'exit_code': 3}"
+  },
+  "return_code_source": "coordinator.main return propagated as child exit",
+  "injection_scope": "Current coordinator and existing frozen fake observation/clock/child fixtures, with real owned child cleanup for hang and real CLI preparation. Integrated while real PostgreSQL room is held; no live load or capacity claim",
+  "all_raw_fixture_files_preserved": true
+}

@@ -1,0 +1,4781 @@
+{
+  "source_sha": "32a108d9cfdff7d330e9113e4af3a41307ec35c5",
+  "analysis_source_sha": "32a108d9cfdff7d330e9113e4af3a41307ec35c5",
+  "plan_sha256": "5176ee139d4e632ba34469ae531ce7ec16478f356480e2d8e320cd51f3bcd703",
+  "source": {
+    "scope": "Current authoritative isolated PVE encounters, all weapon levels; legal full routes/PVP/prepared Boss/network capacity/human scope separate",
+    "native_preregistration_sha256": "496fdc906e228265550a27cfb6181286ae68fa94ff27fa078395e1e455bb03c2",
+    "execution_sha256": "bf9bf80e25a094c218e9a4497aef3358b1b5bc661f5e71c7fdc521e368afba7f",
+    "analysis_sha256": "37a9e1b0dd38f54baaed691df8be2d70b171eade0ad6a587dd5d9811fd66cecc"
+  },
+  "executed": 3,
+  "passed": 3,
+  "total_encounter_rows": 432000,
+  "levels": [
+    {
+      "weapon_level": 0,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 0,
+            "Death": 3000,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 0,
+            "Death": 3000,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 355,
+            "Death": 2645,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 355,
+            "Death": 2645,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 791,
+            "Death": 2209,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 791,
+            "Death": 2209,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": false
+    },
+    {
+      "weapon_level": 1,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 15.613666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                15.349333333333334,
+                15.921
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.001,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.003
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0016666666666666668,
+              "paired_seed_cluster_bootstrap95": [
+                0.0003333333333333333,
+                0.0033333333333333335
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 0,
+            "Death": 3000,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 5,
+            "Death": 2995,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 13.763333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                13.373333333333333,
+                14.142
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0013333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.003
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.181,
+              "paired_seed_cluster_bootstrap95": [
+                0.16733333333333333,
+                0.195
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 355,
+            "Death": 2645,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 898,
+            "Death": 2102,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 11.516333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                11.126333333333333,
+                11.879666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0023333333333333335,
+              "paired_seed_cluster_bootstrap95": [
+                0.0003333333333333333,
+                0.005
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.24233333333333335,
+              "paired_seed_cluster_bootstrap95": [
+                0.226,
+                0.258
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 791,
+            "Death": 2209,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 1518,
+            "Death": 1482,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 10.012333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                9.948333333333334,
+                10.072333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.003,
+              "paired_seed_cluster_bootstrap95": [
+                0.0003333333333333333,
+                0.006333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 7.977666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                7.669666666666667,
+                8.312666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.001,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0026666666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 7.016666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                6.712,
+                7.335666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0003333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.001
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.397,
+              "paired_seed_cluster_bootstrap95": [
+                1.3773333333333333,
+                1.417
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.1056666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                1.0723333333333334,
+                1.1366666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.0193333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                0.9886666666666667,
+                1.049
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.6946666666666668,
+              "paired_seed_cluster_bootstrap95": [
+                1.6763333333333332,
+                1.713
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.318,
+              "paired_seed_cluster_bootstrap95": [
+                1.2703333333333333,
+                1.362
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 1.2606666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                1.2263333333333333,
+                1.2956666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": false
+    },
+    {
+      "weapon_level": 2,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -10.646,
+              "paired_seed_cluster_bootstrap95": [
+                -10.917666666666667,
+                -10.343333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.007666666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -0.013333333333333334,
+                -0.003
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.117,
+              "paired_seed_cluster_bootstrap95": [
+                -0.129,
+                -0.10533333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 476,
+            "Death": 2524,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 125,
+            "Death": 2875,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -6.950666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -7.303,
+                -6.598
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0006666666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -0.0016666666666666668,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.11266666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -0.127,
+                -0.09866666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2043,
+            "Death": 957,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 1705,
+            "Death": 1295,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -5.524666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -5.842,
+                -5.192
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0003333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -0.0023333333333333335,
+                0.0023333333333333335
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.094,
+              "paired_seed_cluster_bootstrap95": [
+                -0.10533333333333333,
+                -0.083
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2489,
+            "Death": 511,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2207,
+            "Death": 793,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -5.566666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -5.605333333333333,
+                -5.527
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.018,
+              "paired_seed_cluster_bootstrap95": [
+                -0.026,
+                -0.011
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -4.0906666666666665,
+              "paired_seed_cluster_bootstrap95": [
+                -4.498,
+                -3.689
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.004,
+              "paired_seed_cluster_bootstrap95": [
+                -0.007666666666666666,
+                -0.001
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -4.348,
+              "paired_seed_cluster_bootstrap95": [
+                -4.71,
+                -4.020666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0013333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -0.0026666666666666666,
+                -0.0003333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0363333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -1.0433333333333332,
+                -1.03
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0033333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                -1.048,
+                -0.955
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0026666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -1.0423333333333333,
+                -0.963
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0933333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -1.105,
+                -1.0833333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0006666666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -0.002,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0916666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -1.1503333333333334,
+                -1.0306666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0003333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -0.001,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.0753333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -1.125,
+                -1.0273333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": true
+    },
+    {
+      "weapon_level": 3,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 9.393666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                9.086333333333334,
+                9.684333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.006333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0033333333333333335,
+                0.01
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.19566666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                0.18133333333333335,
+                0.20966666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 476,
+            "Death": 2524,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 1063,
+            "Death": 1937,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 5.528,
+              "paired_seed_cluster_bootstrap95": [
+                5.258,
+                5.797
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0013333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0003333333333333333,
+                0.0026666666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.09266666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                0.08066666666666666,
+                0.10466666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2043,
+            "Death": 957,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2321,
+            "Death": 679,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 4.258,
+              "paired_seed_cluster_bootstrap95": [
+                4.024333333333334,
+                4.473
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0013333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0003333333333333333,
+                0.0026666666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.061,
+              "paired_seed_cluster_bootstrap95": [
+                0.052333333333333336,
+                0.06966666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2489,
+            "Death": 511,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2672,
+            "Death": 328,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 4.540666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                4.508333333333334,
+                4.576666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.025,
+              "paired_seed_cluster_bootstrap95": [
+                0.017,
+                0.03333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 3.203666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                2.9193333333333333,
+                3.4963333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.007,
+              "paired_seed_cluster_bootstrap95": [
+                0.0033333333333333335,
+                0.011333333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 3.4126666666666665,
+              "paired_seed_cluster_bootstrap95": [
+                3.1656666666666666,
+                3.6523333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0033333333333333335,
+              "paired_seed_cluster_bootstrap95": [
+                0.001,
+                0.006333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.42866666666666664,
+              "paired_seed_cluster_bootstrap95": [
+                0.4116666666666667,
+                0.445
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.17,
+              "paired_seed_cluster_bootstrap95": [
+                0.15666666666666668,
+                0.184
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.13433333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.12266666666666666,
+                0.146
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.689,
+              "paired_seed_cluster_bootstrap95": [
+                0.673,
+                0.7056666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0003333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.001
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.3576666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                0.3403333333333333,
+                0.37366666666666665
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0003333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.001
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.27366666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                0.25866666666666666,
+                0.29
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": false
+    },
+    {
+      "weapon_level": 4,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -14.57,
+              "paired_seed_cluster_bootstrap95": [
+                -14.815666666666667,
+                -14.318666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.103,
+              "paired_seed_cluster_bootstrap95": [
+                -0.127,
+                -0.082
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.167,
+              "paired_seed_cluster_bootstrap95": [
+                -0.17933333333333334,
+                -0.15333333333333332
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2945,
+            "Death": 55,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2444,
+            "Death": 556,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -11.490666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -12.054333333333334,
+                -10.886
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.011333333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                -0.02,
+                -0.0033333333333333335
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.055,
+              "paired_seed_cluster_bootstrap95": [
+                -0.064,
+                -0.046
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2925,
+            "Death": 75,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2760,
+            "Death": 240,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -10.334333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -10.831666666666667,
+                -9.829333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.005333333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -0.011,
+                0.0003333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.030666666666666665,
+              "paired_seed_cluster_bootstrap95": [
+                -0.037,
+                -0.024666666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2971,
+            "Death": 29,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2879,
+            "Death": 121,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -10.115333333333334,
+              "paired_seed_cluster_bootstrap95": [
+                -10.193,
+                -10.034666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.6236666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -0.687,
+                -0.5673333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -7.472333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -8.037666666666667,
+                -6.937333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.27066666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -0.317,
+                -0.22333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -7.955333333333333,
+              "paired_seed_cluster_bootstrap95": [
+                -8.503333333333334,
+                -7.421666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.223,
+              "paired_seed_cluster_bootstrap95": [
+                -0.2633333333333333,
+                -0.18166666666666667
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -2.032,
+              "paired_seed_cluster_bootstrap95": [
+                -2.044,
+                -2.021
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.9086666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -1.9636666666666667,
+                -1.8553333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -1.8906666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -1.9323333333333332,
+                -1.849
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -2.103666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -2.117,
+                -2.0913333333333335
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.0023333333333333335,
+              "paired_seed_cluster_bootstrap95": [
+                -0.005333333333333333,
+                -0.0003333333333333333
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -2.0406666666666666,
+              "paired_seed_cluster_bootstrap95": [
+                -2.125,
+                -1.9493333333333334
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.002,
+              "paired_seed_cluster_bootstrap95": [
+                -0.004666666666666667,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -2.018666666666667,
+              "paired_seed_cluster_bootstrap95": [
+                -2.098,
+                -1.9356666666666666
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": true
+    },
+    {
+      "weapon_level": 5,
+      "strata": [
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.007,
+              "paired_seed_cluster_bootstrap95": [
+                -0.014,
+                -0.002
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2945,
+            "Death": 55,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2945,
+            "Death": 55,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2925,
+            "Death": 75,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2925,
+            "Death": 75,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "BOSS",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 2971,
+            "Death": 29,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 2971,
+            "Death": 29,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": -0.026,
+              "paired_seed_cluster_bootstrap95": [
+                -0.037,
+                -0.017
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "E1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O1",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "baseline_all_hand",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "basic",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        },
+        {
+          "deck": "default",
+          "group": "O6",
+          "strategy": "build",
+          "n": 3000,
+          "paired_intervals": {
+            "EffectiveShield": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "ShieldOverflow": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            },
+            "Victory": {
+              "paired_battles": 3000,
+              "independent_seed_clusters": 3000,
+              "mean_delta": 0.0,
+              "paired_seed_cluster_bootstrap95": [
+                0.0,
+                0.0
+              ],
+              "bootstrap_seed": 20260930,
+              "resamples": 1000,
+              "precision_guaranteed": false,
+              "capacity_acceptance": false,
+              "production_activation": false
+            }
+          },
+          "baseline_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          },
+          "candidate_outcomes": {
+            "Victory": 3000,
+            "Death": 0,
+            "Censored": 0,
+            "Error": 0
+          }
+        }
+      ],
+      "comparison_scope": "Each stratum separately; descriptive paired seed bootstrap95, no family corrected recommendation",
+      "observed_regression": false
+    }
+  ],
+  "parents": [
+    {
+      "path": "matrix/0/100001",
+      "raw_bytes": 26061314,
+      "raw_sha256": "849018e758f4072b87f1baca76e7c845fa0919b7e6695cee031dee970dd45a11",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1627559,
+        "stored_sha256": "f68833e60f34c91948b1cfef375f8a03164e5da3abee249107e34c265c7f171d",
+        "uncompressed_bytes": 26061314
+      },
+      "manifest_sha256": "f23b677bfa4c0bf98fec8628105c76c0df08b24f151274edc5efc57d1b8d9ba1",
+      "summary_sha256": "bd773ff5662c35ca9b417148b5600b55ab646ab85d5b118401fa2e301941eb2b"
+    },
+    {
+      "path": "matrix/0/101001",
+      "raw_bytes": 26057406,
+      "raw_sha256": "2cf41eddc44b315ac99e94de7e25b942d2a15b11a6d09def7d1522325e619c38",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1632565,
+        "stored_sha256": "f63b1a058e74625c49e73af251f400e564f8c31e581712ff03e95b9170ba2fcb",
+        "uncompressed_bytes": 26057406
+      },
+      "manifest_sha256": "e5cc5410b239c72bc30623e79389d3ccf85bd76de38f64fcf4403f8e3fa5e46a",
+      "summary_sha256": "0158c2faf015c6d8faba3c656b0a5a284a2e93d6bc834a0fec307850e1f0ab7f"
+    },
+    {
+      "path": "matrix/0/102001",
+      "raw_bytes": 26055776,
+      "raw_sha256": "de64ba81495c0ab50a91bfec321585a5b324bdb9165e05ccecc05caa80878b2e",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1625844,
+        "stored_sha256": "31f9b20ed137405a6caddb510e60015631c2479041157a4325959518214af47d",
+        "uncompressed_bytes": 26055776
+      },
+      "manifest_sha256": "200da88e1e0bdfb625ad4776de55c03fc19d8d378e26d412209dc2ee1cea86bd",
+      "summary_sha256": "51c8cf4c23b3f2bd6c01088d7fa5dea22d76da7674df65971f0aa2c8afa8f6bb"
+    },
+    {
+      "path": "matrix/1/100001",
+      "raw_bytes": 26049954,
+      "raw_sha256": "c2c00183d2a131ab9b7f4a3633769229af58c9c172973c119ad21e80b6509f69",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1630507,
+        "stored_sha256": "bb2e57092215db7eef7d2d9e336368bcca0da7de70de91fc6216a1a66d009471",
+        "uncompressed_bytes": 26049954
+      },
+      "manifest_sha256": "e4fba446783c593e420aefb5ff84acaa0f39b9c8148bb2bdcc3740eb7e351978",
+      "summary_sha256": "33779dfd13d89747e56701653397512d85bb679f3b9142f6b68b9d234ab3b1db"
+    },
+    {
+      "path": "matrix/1/101001",
+      "raw_bytes": 26048793,
+      "raw_sha256": "03d578d6daa92ad7ac5e3028e9264b12428de2b8bf20f53d013b8605c1b39867",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1633759,
+        "stored_sha256": "87d7b923a78c9cbd2ec7cce5e7e55dd6f600c35dec8f8ea3c127c6b92d7fb170",
+        "uncompressed_bytes": 26048793
+      },
+      "manifest_sha256": "91548d081b773a86626cdf979315409479d96f51b6ee2e1d3433f0317aa82a1b",
+      "summary_sha256": "0c5a4675556177e0638503731854988c624924cf4b76f9d12c94080a086af4d6"
+    },
+    {
+      "path": "matrix/1/102001",
+      "raw_bytes": 26045747,
+      "raw_sha256": "f16fddf09ca3c61234f7c6c04d7712f38ca3884637ceb23dac54526d6ce80ba5",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1630536,
+        "stored_sha256": "2070250c48c06b76284052880faf11a8e0341069544e17200bedbccda7a4daa3",
+        "uncompressed_bytes": 26045747
+      },
+      "manifest_sha256": "a90cc086fad23fae278cbb91c089a829dd6f4deb63e2e454c8fe85bdba21263e",
+      "summary_sha256": "0911ef5bcdef1ab0202d6d5091393ba02d0f05a1466958e37bd0f4d08efd729e"
+    },
+    {
+      "path": "matrix/2/100001",
+      "raw_bytes": 26010423,
+      "raw_sha256": "bbc5990eea5692f6af639ad4b75ece9854155921dfebb230a17f8cf4c0a6940a",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1625682,
+        "stored_sha256": "977c7cc074e5ea50a849e5b18b8e60882663fc1f3ea98d4851f499fd0bb0025c",
+        "uncompressed_bytes": 26010423
+      },
+      "manifest_sha256": "91e6a699d2c60d290aa5e2360412d2022cb99afac0cda085252de1529f246319",
+      "summary_sha256": "376ae9a2acea2c468d47b2aa42fa32841f696cebe5da163004268050755021f3"
+    },
+    {
+      "path": "matrix/2/101001",
+      "raw_bytes": 26006112,
+      "raw_sha256": "7d307e50d054ee69c2ce3f5026825b10c676886e79f19fb2fe5de51f9094b75e",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1631055,
+        "stored_sha256": "1a37ba944338cc208b2cbceba33cc95251a3a90db4628f16a27b151f9daa0bda",
+        "uncompressed_bytes": 26006112
+      },
+      "manifest_sha256": "a1a0a4cc83133c4e19be95c37d25e4663c856837caad075fd1337d4094d6395c",
+      "summary_sha256": "735d6dd3b07349a7c7b2a4519414ebefb8488e1e6274a27ca9c5ed4979c46549"
+    },
+    {
+      "path": "matrix/2/102001",
+      "raw_bytes": 26005453,
+      "raw_sha256": "6f0b5fbfb1193fc4aa9c82dc3620a200cc8835dff70106f7acdecd9a907729c6",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1629875,
+        "stored_sha256": "cc4e5d666f5e5aba8db47f72ffee2314af1a70979713ad7e1a12dcdf1548ee88",
+        "uncompressed_bytes": 26005453
+      },
+      "manifest_sha256": "89012a3a618b32f01efe333e3970591c07c8ed3fec3d41afd41b174c0a19a29b",
+      "summary_sha256": "99c1724f435d62ca84582511da97275c71416ce258b34bd037061e701282e4e8"
+    },
+    {
+      "path": "matrix/3/100001",
+      "raw_bytes": 25999187,
+      "raw_sha256": "f214b08aa9636a48b1356620d0438d310a24404ef44956200dfaa1356e6c362e",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1619948,
+        "stored_sha256": "746fa57204f89e43b8194fbc170b0cbc7316b03b6b8872b63b698c49586935c6",
+        "uncompressed_bytes": 25999187
+      },
+      "manifest_sha256": "2e9e3ab4e68c9ccdb9ae367e8e5e8980ea05e9b76bc4708c6f7e63c77841881f",
+      "summary_sha256": "917a7e4afdab6b5f0c395ddbe2dcd42962444a1228fe4769aa0bda988c7a9afa"
+    },
+    {
+      "path": "matrix/3/101001",
+      "raw_bytes": 25993070,
+      "raw_sha256": "bc6826715633893d71cf9a2d3454989f51b7b9d55538a05fced9366497a42285",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1615180,
+        "stored_sha256": "ff210ea7433d5b7d0ed677815697771d55f72eda35ba1fe77cd6d8bdc70f0265",
+        "uncompressed_bytes": 25993070
+      },
+      "manifest_sha256": "9782f74cab06f2ba796bedeb37c4fe8c955b96f1b6caff9071e731a5dbf8a615",
+      "summary_sha256": "76b8608fbe64a755896b11dc521bddeafa46329a0f398f23e16dbb8ebd395f98"
+    },
+    {
+      "path": "matrix/3/102001",
+      "raw_bytes": 25995137,
+      "raw_sha256": "25004c64c82ffe068892276918a0fd6706d903fd7552c8572a55fc20bd5e9c05",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1625104,
+        "stored_sha256": "4c3fb2a740374ef23e53b7a7bc1fa7899caffae7db62da72b41d22c68c473eab",
+        "uncompressed_bytes": 25995137
+      },
+      "manifest_sha256": "44f0c386e905c349addfa1706dc85753e5305c0ec6d4fbd287385ad584534789",
+      "summary_sha256": "8d33648c84f0c6a6c90bd41d7506530b82ad01094a77ac3dc7db9826955b5110"
+    },
+    {
+      "path": "matrix/4/100001",
+      "raw_bytes": 25968382,
+      "raw_sha256": "f8bd44e89b1c55abda4eae9e6ca530c86c77718a689af75e9fde37adaf25e730",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1570512,
+        "stored_sha256": "f572dc35ce53fd6c887a8ebdf906e519884b2c962508282fbf01ceedc8017984",
+        "uncompressed_bytes": 25968382
+      },
+      "manifest_sha256": "30e80ffa10ff18815a795cb438844f63025faee14dd91f38303d09996b2fb8a7",
+      "summary_sha256": "8e7420f95c373c43fdf82537e95a6bef52aa7a643ec0be9c29c51cef612bc9f0"
+    },
+    {
+      "path": "matrix/4/101001",
+      "raw_bytes": 25962876,
+      "raw_sha256": "c79a4d2d25790fa01f5bdc1d9134346c7e5ffdd8e5d513df4b476b0e564f567f",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1570674,
+        "stored_sha256": "93cb6abbce9552ab1d65d27176a25b3b119a640856a579caa1c6854d0e35cac1",
+        "uncompressed_bytes": 25962876
+      },
+      "manifest_sha256": "8e4c88e376487f8e434fbb63ee98463bc3c55614160449932c72ee6b488e67cf",
+      "summary_sha256": "f3a0a9112dd4b305c28349f9583eff69b6bd98fe6b3560994e11c79e7b3b1a85"
+    },
+    {
+      "path": "matrix/4/102001",
+      "raw_bytes": 25966029,
+      "raw_sha256": "e088f546d940156b4d7ecd91db6d04d30b79452136482c50bd7fda31b710b631",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1568374,
+        "stored_sha256": "992aa78ce80769d011fd0c59b9049935582b014e61bf67923b3c90d7baa4eb75",
+        "uncompressed_bytes": 25966029
+      },
+      "manifest_sha256": "3e2d16bd9a0016becb689a8914edae6c9e87b98997d1731ffc1c986107738485",
+      "summary_sha256": "e82271cc0eb8ac061db592e1bc8f7c996228815c1139c83ec922b396a04cb6b0"
+    },
+    {
+      "path": "matrix/5/100001",
+      "raw_bytes": 25964779,
+      "raw_sha256": "ff8794247fc394dce6c93b87235f4f8b48d5008a1177f41cdd5533f99e7153eb",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1563474,
+        "stored_sha256": "dd9622bff6e2882731a093c7201d07bc985581e1d461a7fc8316e8a9757fc023",
+        "uncompressed_bytes": 25964779
+      },
+      "manifest_sha256": "5cb63ef3f9a4615ffaaf8655b83326383b0fdedd9ca4383aa8e3af1632eae1f4",
+      "summary_sha256": "d669a7e886b465a836d67666c7b8c7278d6507a869d34285ba4c625e9baecbb0"
+    },
+    {
+      "path": "matrix/5/101001",
+      "raw_bytes": 25959127,
+      "raw_sha256": "2d36ec94a45bee3e1d6ae3cb2e578baf1600507a1863613d8a5328ec46031bd8",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1561208,
+        "stored_sha256": "d3d2044b36a71827e2a591fc8ea125607e0ec8ed77248959db350fa9804b109f",
+        "uncompressed_bytes": 25959127
+      },
+      "manifest_sha256": "7aade2feb3c9108f332ad05fe8982c4b90ce9921271a3ba72862482a1e3aee06",
+      "summary_sha256": "42972c6edd80ff7267ea881c98f4e6f4d0008a72af6751b282676e4f9098b44d"
+    },
+    {
+      "path": "matrix/5/102001",
+      "raw_bytes": 25962589,
+      "raw_sha256": "74e9b1743bcd42b36d1886b20c804a63fe400b4dce7a65f96c149c621deb6b06",
+      "raw_storage": {
+        "format": "gzip",
+        "file": "encounters.jsonl.gz",
+        "stored_bytes": 1559969,
+        "stored_sha256": "a72d58bbbb8a70d84c27d1cfb655a068e5ebc88e2dc9515d40a74887e0bac56c",
+        "uncompressed_bytes": 25962589
+      },
+      "manifest_sha256": "c565afaf9c026094995a319ec9b9ee53855dc1b668804d9aaf1b3797e901b915",
+      "summary_sha256": "bc9e76b6c5041a46e05f2f3917aaeccac1082bcb1d312773fa0786cb5189c81c"
+    }
+  ],
+  "mixed_level_aggregation_rejected": true,
+  "production_activation": false,
+  "human_acceptance": false,
+  "candidate_recommendation": "Blocked: +2/+4 effective shield and survival regressions require explicit review; legal route/PVP/prepared Boss and other mandatory layers incomplete",
+  "accepted": false
+}

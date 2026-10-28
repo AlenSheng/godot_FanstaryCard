@@ -1,0 +1,483 @@
+{
+  "kind": "CurrentCompleteNativePGMatrix_A072_S5",
+  "generated_at_UTC": "2026-10-23T16:11:47.825542+00:00",
+  "source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "saved_source_scope": "Current production HEAD4a plus frozen uncommitted test visibility/client fixtures and native rollback test adapter. No clean full-working-tree claim or historical SHA relabelling.",
+  "source": {
+    "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\source-manifest.original.json",
+    "bytes": 154558,
+    "sha256": "4cb5954faf0c397fbd29a59c102a2f032511f07d06b8c0b13587ab3a2fe8c42a"
+  },
+  "compiled_test_assembly": {
+    "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\source\\.artifacts\\bin\\FantasyCard.Server.Tests\\release\\FantasyCard.Server.Tests.dll",
+    "bytes": 1781248,
+    "sha256": "034acb0642944ec7b5f886f237dd74ec41a7c6b22959513be1c3f4f28a639074"
+  },
+  "production_code_protocol_config_unchanged": true,
+  "actual_full_Server": {
+    "exit_code": 0,
+    "Passed": 418,
+    "Failed": 0,
+    "NotExecuted": 0,
+    "unique_execution_IDs": 418,
+    "critical_numerical9_executed": true,
+    "original_TRX": {
+      "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\results\\full-server.trx",
+      "bytes": 1529997,
+      "sha256": "cee8cf167bc13694b5c982436252415629adfe0bfe6df53acab461eef508e28b"
+    },
+    "current_coverage": {
+      "state": "CoveredForMainReview",
+      "missing_assertion_rows": {},
+      "failed_cases": [],
+      "skipped_cases": [],
+      "counters": {
+        "total": 418,
+        "executed": 418,
+        "passed": 418,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "inconclusive": 0,
+        "passedButRunAborted": 0,
+        "notRunnable": 0,
+        "notExecuted": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "completed": 0,
+        "inProgress": 0,
+        "pending": 0
+      },
+      "acceptance": false
+    },
+    "current_matrix_gate": {
+      "state": "ReadyForMainReview",
+      "missing_suites": [],
+      "stale_source_suites": [],
+      "failed_suites": [],
+      "incomplete_suites": [],
+      "baseline_compile_exit": 0,
+      "acceptance": false
+    }
+  },
+  "T01": {
+    "actual_one_native_Passed": 1,
+    "full_required_matrix_rows": 418,
+    "actual_guard_missing417": true,
+    "current_assessment": {
+      "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\single-pass-full-matrix.original.json",
+      "bytes": 41370,
+      "sha256": "42f8741282be78fef9c354787fc5e8d9a17c2839d1e6024571990dbbdcef5b76"
+    },
+    "does_not_treat_single_match_as_full_matrix": true
+  },
+  "T02_T03": {
+    "real_native_underlying_case_rows": "NotExecuted",
+    "actual_native_exit0_pipeline3": true,
+    "guard_contexts": [
+      {
+        "context": "actual-critical-PG-skip",
+        "actual_gate_pipeline_exit": 3,
+        "actual_native_exit": 0,
+        "actual_native_outcome": "NotExecuted",
+        "expected_guard_state": "Blocked",
+        "report": {
+          "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\actual-critical-PG-skip\\native-gate\\report.json",
+          "bytes": 2003,
+          "sha256": "01ba854be97555dd78332834773eaee7670d0de0ba8ef8fda14836a9107166d3"
+        },
+        "native_TRX": {
+          "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\actual-critical-PG-skip\\native-gate\\native.original.trx",
+          "bytes": 4062,
+          "sha256": "c8d3ce7ccdc3b806007646bada2d7182992439f2dfd837fc26a48c7fe25d70c3"
+        },
+        "underlying_critical_test_not_passed": true,
+        "guard_case_meets_expected_rejection": true,
+        "real_production_address_or_credential_used": false
+      },
+      {
+        "context": "wrong-production-host-before-execution",
+        "actual_gate_pipeline_exit": 3,
+        "actual_native_exit": 0,
+        "actual_native_outcome": "NotExecuted",
+        "expected_guard_state": "Blocked",
+        "report": {
+          "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\wrong-production-host-before-execution\\native-gate\\report.json",
+          "bytes": 2006,
+          "sha256": "7d6b5793272c2786d68be1fa649c156aa89eadad972d15f402d84dd1e9f57d99"
+        },
+        "native_TRX": {
+          "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\wrong-production-host-before-execution\\native-gate\\native.original.trx",
+          "bytes": 4172,
+          "sha256": "60c527e5391d9894bb7ba0960a2ddf07925c0e632c284ef94656f291562121b1"
+        },
+        "underlying_critical_test_not_passed": true,
+        "guard_case_meets_expected_rejection": true,
+        "real_production_address_or_credential_used": false
+      }
+    ],
+    "expected_rejection_cases_passed": true,
+    "underlying_skipped_cases_never_relabelled_Passed": true,
+    "wrong_host_is_reserved_controlled_production_like_configuration_not_real_production": true
+  },
+  "native_ownership_safety": {
+    "negative_controls": [
+      {
+        "context": "non-test-database",
+        "actual_native_exit": 1,
+        "actual_TRX": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\results\\non-test-database.trx",
+          "bytes": 6301,
+          "sha256": "273ff23a0044d3444d0bc5f11df67082b4b90a26946c4150f2505cf3c65be7e6"
+        },
+        "expected_rejection": "database must have ready_stop_ prefix",
+        "owned_schema_and_database_set_unchanged": true,
+        "underlying_negative_native_run_not_passed": true
+      },
+      {
+        "context": "mismatched-PID",
+        "actual_native_exit": 1,
+        "actual_TRX": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\results\\mismatched-PID.trx",
+          "bytes": 6323,
+          "sha256": "0656a8205cfb0211a2bbc578092b63dfdfb72c7339656e7740068b6d98439e1a"
+        },
+        "expected_rejection": "postmaster PID differs from owned data directory",
+        "owned_schema_and_database_set_unchanged": true,
+        "underlying_negative_native_run_not_passed": true
+      },
+      {
+        "context": "outside-owned-data",
+        "actual_native_exit": 1,
+        "actual_TRX": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\results\\outside-owned-data.trx",
+          "bytes": 6299,
+          "sha256": "97c73f61d2a03d268fede7d64eb7926738574a6a4e889b2560de459ce9ca4ca2"
+        },
+        "expected_rejection": "data directory outside owned pg-data",
+        "owned_schema_and_database_set_unchanged": true,
+        "underlying_negative_native_run_not_passed": true
+      }
+    ],
+    "scope": "Fresh private loopback PG; compare data directory, postmaster PID/executable, port/database/user and five native tool hashes before schema creation or restore. Docker label path retained unchanged.",
+    "actual_code_and_database_restore": {
+      "positive": {
+        "selected": [
+          {
+            "caseId": "native-rollback-owned-PG-verified",
+            "recordedAt": "2026-10-23T15:51:27.4200218+00:00",
+            "evidence": {
+              "pid": 53688,
+              "port": 9760,
+              "ownedDataDirectory": "G:\\PR13Evidence\\fc-rollback-168-a7d21f\\pg-data",
+              "manifestSha256": "aa10da80dfeb1b123b623b3ce1ea387a1fb76b0614aa0ea3aaa50fd91dd9234e",
+              "toolContentsVerified": 5,
+              "transaction": "READ ONLY; rollback",
+              "noProductionOrInheritedConnection": true
+            }
+          },
+          {
+            "caseId": "actual-code-rollback",
+            "recordedAt": "2026-10-23T15:51:38.0918478+00:00",
+            "evidence": {
+              "oldServerSha256": "87e323557fe609a58a7a4cb227c70d40dd45a9bb6f72f6d2af19d20baa4ce844",
+              "match": "a35cfce0-31cd-47f9-a60e-9235c3061d11",
+              "receiptId": "01a16975-e6ab-7716-875d-00e96c421595",
+              "currentSnapshotRestoredByPreviousBinary": true,
+              "legalExtractionAfterRollback": true,
+              "originalAssetsOnce": true,
+              "scope": "only the declared current and retained 0cf43db binary/config pair; no production deployment or arbitrary older compatibility claim"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T15:51:38.099067+00:00",
+            "evidence": {
+              "tool": "pg_dump",
+              "Id": 66636,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_dump.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T15:51:38.2776265+00:00",
+            "evidence": {
+              "Id": 66636,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_dump.exe"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T15:51:38.3485551+00:00",
+            "evidence": {
+              "tool": "createdb",
+              "Id": 42468,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\createdb.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T15:51:38.7581727+00:00",
+            "evidence": {
+              "Id": 42468,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\createdb.exe"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T15:51:38.7643839+00:00",
+            "evidence": {
+              "tool": "pg_restore",
+              "Id": 18392,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_restore.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T15:51:39.0625164+00:00",
+            "evidence": {
+              "Id": 18392,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_restore.exe"
+            }
+          },
+          {
+            "caseId": "actual-native-backup-restore",
+            "recordedAt": "2026-10-23T15:51:39.1703816+00:00",
+            "evidence": {
+              "containerId": null,
+              "nativePostmasterPid": 53688,
+              "dumpSha256": "531ebe32dfb7836a4a73b5aba171d0d03df41c63f5afa01f58cfab955503161e",
+              "dumpBytes": 124424,
+              "nativeTools": "pg_dump custom schema backup and pg_restore into a newly owned isolated database",
+              "originalBalance": 23,
+              "restoredBalance": 23,
+              "committedLedgerRows": 1,
+              "repeatedAckAndHoldCommitDoNotCopyAssets": true,
+              "assetCorrection": false,
+              "scope": "same restored database scope, never combine original/clone balances or repair deleted historical ledgers"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T15:51:39.2619197+00:00",
+            "evidence": {
+              "tool": "dropdb",
+              "Id": 66432,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\dropdb.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T15:51:40.1145501+00:00",
+            "evidence": {
+              "Id": 66432,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\dropdb.exe"
+            }
+          },
+          {
+            "caseId": "owned-restored-database-removed",
+            "recordedAt": "2026-10-23T15:51:40.1158781+00:00",
+            "evidence": {
+              "created": true,
+              "removed": true,
+              "restoredName": "ready_stop_5b4e610be2db49dab6506f54c25d026e"
+            }
+          }
+        ],
+        "original": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\source\\outputs\\pr13-local-20261008\\positive-native-rollback\\receipts.jsonl",
+          "bytes": 7125,
+          "sha256": "40813a5dfe9a461a5e8ff172d212b9c5f8e5bc6be4dd305f7fee1f488bb65277"
+        },
+        "dump": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\source\\outputs\\pr13-local-20261008\\positive-native-rollback\\owned-rollback-backup.dump",
+          "bytes": 124424,
+          "sha256": "531ebe32dfb7836a4a73b5aba171d0d03df41c63f5afa01f58cfab955503161e"
+        }
+      },
+      "full": {
+        "selected": [
+          {
+            "caseId": "native-rollback-owned-PG-verified",
+            "recordedAt": "2026-10-23T16:06:49.4076002+00:00",
+            "evidence": {
+              "pid": 53688,
+              "port": 9760,
+              "ownedDataDirectory": "G:\\PR13Evidence\\fc-rollback-168-a7d21f\\pg-data",
+              "manifestSha256": "aa10da80dfeb1b123b623b3ce1ea387a1fb76b0614aa0ea3aaa50fd91dd9234e",
+              "toolContentsVerified": 5,
+              "transaction": "READ ONLY; rollback",
+              "noProductionOrInheritedConnection": true
+            }
+          },
+          {
+            "caseId": "actual-code-rollback",
+            "recordedAt": "2026-10-23T16:06:57.3809235+00:00",
+            "evidence": {
+              "oldServerSha256": "87e323557fe609a58a7a4cb227c70d40dd45a9bb6f72f6d2af19d20baa4ce844",
+              "match": "5ad661e2-6610-4be1-b9e7-e7c446bbd4ba",
+              "receiptId": "01a16983-f179-723e-af15-4c197073458c",
+              "currentSnapshotRestoredByPreviousBinary": true,
+              "legalExtractionAfterRollback": true,
+              "originalAssetsOnce": true,
+              "scope": "only the declared current and retained 0cf43db binary/config pair; no production deployment or arbitrary older compatibility claim"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T16:06:57.3877959+00:00",
+            "evidence": {
+              "tool": "pg_dump",
+              "Id": 69032,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_dump.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T16:06:57.5633611+00:00",
+            "evidence": {
+              "Id": 69032,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_dump.exe"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T16:06:57.5708295+00:00",
+            "evidence": {
+              "tool": "createdb",
+              "Id": 56048,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\createdb.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T16:06:58.1020202+00:00",
+            "evidence": {
+              "Id": 56048,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\createdb.exe"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T16:06:58.1077484+00:00",
+            "evidence": {
+              "tool": "pg_restore",
+              "Id": 3436,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_restore.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T16:06:58.4216326+00:00",
+            "evidence": {
+              "Id": 3436,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\pg_restore.exe"
+            }
+          },
+          {
+            "caseId": "actual-native-backup-restore",
+            "recordedAt": "2026-10-23T16:06:58.4792632+00:00",
+            "evidence": {
+              "containerId": null,
+              "nativePostmasterPid": 53688,
+              "dumpSha256": "281c251c94fa59b5b8249f964733ae9b95c3514161438180abab50092efc8cd3",
+              "dumpBytes": 124697,
+              "nativeTools": "pg_dump custom schema backup and pg_restore into a newly owned isolated database",
+              "originalBalance": 23,
+              "restoredBalance": 23,
+              "committedLedgerRows": 1,
+              "repeatedAckAndHoldCommitDoNotCopyAssets": true,
+              "assetCorrection": false,
+              "scope": "same restored database scope, never combine original/clone balances or repair deleted historical ledgers"
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-start",
+            "recordedAt": "2026-10-23T16:06:58.48556+00:00",
+            "evidence": {
+              "tool": "dropdb",
+              "Id": 61016,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\dropdb.exe",
+              "noWindow": true
+            }
+          },
+          {
+            "caseId": "native-rollback-tool-stop",
+            "recordedAt": "2026-10-23T16:07:00.2010197+00:00",
+            "evidence": {
+              "Id": 61016,
+              "ExitCode": 0,
+              "executable": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\tools\\engine-local\\protected\\postgres\\pgsql\\bin\\dropdb.exe"
+            }
+          },
+          {
+            "caseId": "owned-restored-database-removed",
+            "recordedAt": "2026-10-23T16:07:00.2022885+00:00",
+            "evidence": {
+              "created": true,
+              "removed": true,
+              "restoredName": "ready_stop_f4534abe2a794987b1b2df7bc07d893e"
+            }
+          }
+        ],
+        "original": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\source\\outputs\\pr13-local-20261008\\full-server-evidence\\receipts.jsonl",
+          "bytes": 856870,
+          "sha256": "c278af5ff339e5627788478eb97a1e9499cd8eb22df90b3c0e598bc48f4dd60c"
+        },
+        "dump": {
+          "path": "G:\\PR13Evidence\\A072-native-rollback-full-server-20261023-r169-originals\\runtime\\source\\outputs\\pr13-local-20261008\\full-server-evidence\\owned-rollback-backup.dump",
+          "bytes": 124697,
+          "sha256": "281c251c94fa59b5b8249f964733ae9b95c3514161438180abab50092efc8cd3"
+        }
+      }
+    },
+    "old_runtime_files18_and_old_DLL_hash_preserved": true
+  },
+  "version_and_migrations": {
+    "path": "docs/reports/pr13-stages-20261009/S5-A072-current-full-native-PG-matrix-20261024/native-version-migration-observations.json",
+    "bytes": 19587,
+    "sha256": "c13a611cca41685b707580eeec5053d13a42b0b3c6b037069fa7078088b95b1f"
+  },
+  "cleanup": {
+    "owned_PG_stop_exit0": true,
+    "actual_PID_file_absent": true,
+    "remaining_owned_schemas0": true,
+    "restored_database_set_equals_original_owned_set": true,
+    "temporary_initialization_input_removed": true
+  },
+  "prior_failures_and_skips_retained": [
+    "R158 full Server396/20/2 exit1",
+    "R160 two path retries native0,outer observer1",
+    "R159 full22 client20passed2failed and R161 scoped corrections",
+    "R16519 native passes and prior rollback NotExecuted",
+    "R169 three injected invalid-ownership native exits1; expected pre-write refusals, never passed underlying runs",
+    "R170 two genuine native zero-exit skipped cases; current coverage gates exit3"
+  ],
+  "observer_metadata_correction": {
+    "path": "G:\\PR13Evidence\\A072-current-native-matrix-guards-20261023-r170-originals\\observer-label-correction-after-run.original.json",
+    "bytes": 403,
+    "sha256": "72942bccfebac1bff3a6308d70215561cd6e5b3098c283b6a3219814fc9eddf2"
+  },
+  "no_native_reexecution_for_metadata_label_correction": true,
+  "CI_not_started_observation_retained": true,
+  "capacity_UI_RENDER_human_or_production_acceptance_not_granted": true,
+  "new_missing_profile_pairs_closed": 0,
+  "business_criteria_relaxed": false,
+  "whole_project_accepted": false
+}

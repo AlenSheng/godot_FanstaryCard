@@ -1,0 +1,57 @@
+{
+  "ok": true,
+  "checks": {
+    "original_real_SUT_stale_regression_retained": true,
+    "fixed_current_full_actualNative3cases_exit0": true,
+    "same_current_Server8eb_andSourceonlyclass_epochfix": true,
+    "beforeunitnegative_afterunitand22suites351pass": true,
+    "all2146current_client_inputs_match_fixed_actualsource": true,
+    "T01_two_real_callers_one_physicalbackend200": true,
+    "realprewrite_reply_bytes_held_then_forwarded_unchanged": true,
+    "T02_postwrite_GET_notmergedand_newvalue_persisted": true,
+    "T02_old_consumer_cannot_overwrite_new_version_or_class": true,
+    "T03_distinct_actual_players_notmergedor_crosscontaminated": true,
+    "T03_overlappingwrite_explicitfailure_not_fake_sharedsuccess": true,
+    "T03_one_actual_profile_version_increment": true,
+    "no_account_world_ACK_or8asset_changes": true,
+    "all_actual_native_logs_clean": true,
+    "all_ownedPGstopped_oldandnew": true
+  },
+  "checked_invariants": 15,
+  "case_reviews": [
+    {
+      "case": "LOAD-08.2-T01",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "actual": "Two simultaneoussameversionGETcalls,oneactualbackend200body,realresultssame",
+      "API_calls": 2,
+      "physical_backend_requests": 1,
+      "elapsed_ms": 284
+    },
+    {
+      "case": "LOAD-08.2-T02",
+      "profile": "EXPERIMENT",
+      "status": "Passed_after_real_SUTfix",
+      "actual": "HoldrealprewriteBootstrap,publicclasswriteandpostwritefreshGET,releaseoldconsumer;clientkeepssameversion/classasactualPG.",
+      "original_stale_failure_preserved": true,
+      "old_version": 2,
+      "new_version": 3
+    },
+    {
+      "case": "LOAD-08.2-T03",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "actual": "TwoactualUIDGETrequestsseparate,postwriteepochGETdoesnotjoinold,identicaloverlapPUTsecondcallergetsownexplicit0processingerror—notsamefake200;PGversionincrements1",
+      "two_player_backend_requests": 2,
+      "overlap_write_backend_requests": 1,
+      "overlap_write_true_successes": 1
+    }
+  ],
+  "actual_public_classwrite_lobby_epoch_fix_uncommitted": true,
+  "Native22suites351checks": true,
+  "new_real_worlds0_accounts0_currency_or_assets0": true,
+  "no_limits_or_GDDrules_relaxed": true,
+  "production_cloud_UIoperations0": true,
+  "local_visible_windows0": true,
+  "fullscope_acceptance_not_granted_by_review": true
+}

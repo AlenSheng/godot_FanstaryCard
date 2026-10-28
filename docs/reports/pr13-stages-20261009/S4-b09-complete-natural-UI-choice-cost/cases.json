@@ -1,0 +1,61 @@
+[
+  {
+    "case_id": "PR13-B09.4-T01",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "actual": {
+      "formal_routes": 36000,
+      "paired_seeds_per_hero": 3000,
+      "all_three_cap5_contrasts_report_benefit_and_interruption_separately": true,
+      "all_native_CPU_wall_economy_and_typed_traffic_in_original_arm_summaries": true,
+      "UI_choice_measurement_separate_from_native_cost": true,
+      "stable_benefit_not_forced": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/formal-route-analysis.original.json",
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/source-equivalence.json",
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/originals/work/outputs/choice-cost.json"
+    ]
+  },
+  {
+    "case_id": "PR13-B09.4-T02",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "actual": {
+      "natural_routes_hidden_order_negative_rejected": 36000,
+      "all_routes_required_hiddenOrderNegativeRejected": true,
+      "same_budget_and_legal_visible_information": true,
+      "full_source_algorithm_and_native_artifacts_preserved": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b09-continuity-formal-matrix-and-statistics/summary.json",
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/formal-route-analysis.original.json",
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/source-equivalence.json"
+    ]
+  },
+  {
+    "case_id": "PR13-B09.4-T03",
+    "status": "Passed",
+    "executed": true,
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "actual": {
+      "decision": "NoChange_stable_benefit_unproven",
+      "all_nine_primary_comparisons_retained": true,
+      "default_optional_pool_changed": false,
+      "low_discordance_retains_Inconclusive": true,
+      "no_default_policy_or_balance_change": true
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/formal-route-analysis.original.json",
+      "docs/reports/pr13-stages-20261009/S4-b09-complete-natural-UI-choice-cost/source-equivalence.json"
+    ]
+  }
+]

@@ -1,0 +1,110 @@
+{
+  "kind": "B064AutomatedPolicyExperienceComplete_DefaultNoChange_CandidatePartial",
+  "counts": {
+    "Accepted": 78,
+    "Partial": 46,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 54,
+  "missing_case_profile_pairs": 218,
+  "B064AutomatedTaskAccepted": true,
+  "implementation_decision": "NoChangeWithEvidence",
+  "candidate_recommendation": "PartialAlgorithmSimulation",
+  "actual_outcomes": {
+    "EncounterCleared": 20,
+    "TimeCapUnfinished": 32,
+    "FocalDeath": 43,
+    "FocalVictory": 5
+  },
+  "outcomes_by_scope": {
+    "pve": {
+      "EncounterCleared": 16,
+      "TimeCapUnfinished": 32
+    },
+    "pvp": {
+      "FocalDeath": 43,
+      "FocalVictory": 5
+    },
+    "warm": {
+      "EncounterCleared": 4
+    }
+  },
+  "actual_warm_sideeffects": [
+    {
+      "seed": 640101,
+      "formal": {
+        "resource_per_card": 0.42857142857142855,
+        "no_cards_seconds": 14.3
+      },
+      "candidate": {
+        "resource_per_card": 0.0,
+        "no_cards_seconds": 30.3
+      },
+      "formal_terminalMs": 15800,
+      "candidate_terminalMs": 31800,
+      "resource_field_definition": "passive immediate requested cards per actual spent card, not actual overflow-capped returns",
+      "existing_decision_function_result": {
+        "baseline": {
+          "resource_per_card": 0.42857142857142855,
+          "no_cards_seconds": 14.3
+        },
+        "candidate": {
+          "resource_per_card": 0.0,
+          "no_cards_seconds": 30.3
+        },
+        "deltas": {
+          "resource_per_card": -0.42857142857142855,
+          "no_cards_seconds": 16.0
+        },
+        "side_effects": [
+          "empty_hand_wait_increased"
+        ],
+        "single_card_resource_decreased": true,
+        "production_activation": false,
+        "retain_default": true
+      }
+    },
+    {
+      "seed": 640211,
+      "formal": {
+        "resource_per_card": 0.42857142857142855,
+        "no_cards_seconds": 14.5
+      },
+      "candidate": {
+        "resource_per_card": 0.0,
+        "no_cards_seconds": 30.5
+      },
+      "formal_terminalMs": 16000,
+      "candidate_terminalMs": 32000,
+      "resource_field_definition": "passive immediate requested cards per actual spent card, not actual overflow-capped returns",
+      "existing_decision_function_result": {
+        "baseline": {
+          "resource_per_card": 0.42857142857142855,
+          "no_cards_seconds": 14.5
+        },
+        "candidate": {
+          "resource_per_card": 0.0,
+          "no_cards_seconds": 30.5
+        },
+        "deltas": {
+          "resource_per_card": -0.42857142857142855,
+          "no_cards_seconds": 16.0
+        },
+        "side_effects": [
+          "empty_hand_wait_increased"
+        ],
+        "single_card_resource_decreased": true,
+        "production_activation": false,
+        "retain_default": true
+      }
+    }
+  ],
+  "actual_100gameplay_series104snapshot_boundaries": true,
+  "actual_original104_restored104_sharedMirror1_total209of300": true,
+  "native_actions1181_checks107215": "Internal actions/checkpoints not separate games or independent statistical samples",
+  "independent_data_checks1511440": true,
+  "MAIN_checks19": true,
+  "other131tasks_and_allgates_unchanged": true,
+  "whole_project_accepted": false
+}

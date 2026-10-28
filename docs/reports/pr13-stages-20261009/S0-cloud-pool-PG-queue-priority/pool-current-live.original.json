@@ -1,0 +1,92 @@
+{
+  "at_unix": 1791733499.7177136,
+  "whole_task_accepted": false,
+  "visual_final_review_pending": true,
+  "state": "observed_cloud_status",
+  "segment": "Priest-8-T01-en",
+  "required_segments": 54,
+  "required_rows": 5832,
+  "required_PNGs": 486,
+  "unit": {
+    "unit": "pr13-pool-segment-r3-priest-8-t01-en",
+    "MainPID": 1197014,
+    "ActiveState": "active",
+    "SubState": "running",
+    "LoadState": "loaded",
+    "ExecMainStatus": 0
+  },
+  "rows": 61,
+  "completed_segments": 39,
+  "cleanup_receipts_present": 39,
+  "resource_deferred": {
+    "deferred": true,
+    "uncertain_hold": false,
+    "cap_reservation": {
+      "deferred": false,
+      "reservation_present": true,
+      "attempt": "cap-missing-raw-recovery-r1",
+      "systemd_unit": "pr13-cap-missing-raw-recovery-mage-e1-water-l5-b0",
+      "G_backup_required_before_render": true,
+      "uncertain_hold": false,
+      "current_unit_state": {
+        "unit": "pr13-cap-missing-raw-recovery-mage-e1-water-l5-b0",
+        "MainPID": 0,
+        "ActiveState": "inactive",
+        "SubState": "dead",
+        "LoadState": "not-found",
+        "ExecMainStatus": 0
+      },
+      "reservation_status": "Ended",
+      "G_backup_verified": true,
+      "reason": "recovery original G backup and exact output cleanup verified",
+      "archive_sha256": "bb82d0606962595d02d825388cb2a8a85bdafcbf5234622f2350432867a25165",
+      "manifest_sha256": "64c12fd357325e9a93e2af398fc91a7ac433f26fd2fc21a51747120c6af3487d"
+    },
+    "cap_full_reservation": {
+      "deferred": false,
+      "reservation_present": true,
+      "attempt": "cap-experiment-full-r2",
+      "G_backup_required_before_render": true,
+      "uncertain_hold": false,
+      "cleaned_reservations_verified": 2,
+      "unit": "Mage-E1-Water-L5-B2",
+      "systemd_unit": "pr13-cap-full-r2-mage-e1-water-l5-b2",
+      "current_unit_state": {
+        "unit": "pr13-cap-full-r2-mage-e1-water-l5-b2",
+        "MainPID": 0,
+        "ActiveState": "inactive",
+        "SubState": "dead",
+        "LoadState": "not-found",
+        "ExecMainStatus": 0
+      },
+      "reservation_status": "Ended",
+      "reason": "all full cap reservations have exact G backup and output cleanup"
+    },
+    "cap_mixed_reservation": {
+      "deferred": false,
+      "reservation_present": true,
+      "attempt": "cap-experiment-full-r3",
+      "G_backup_required_before_render": true,
+      "uncertain_hold": false,
+      "cleaned_reservations_verified": 150,
+      "unit": "Priest-O6-Wood-L5-B2",
+      "systemd_unit": "pr13-cap-full-r3-priest-o6-wood-l5-b2",
+      "current_unit_state": {
+        "unit": "pr13-cap-full-r3-priest-o6-wood-l5-b2",
+        "MainPID": 0,
+        "ActiveState": "inactive",
+        "SubState": "dead",
+        "LoadState": "not-found",
+        "ExecMainStatus": 0
+      },
+      "reservation_status": "Ended",
+      "reason": "all mixed cap reservations have exact G backup and output cleanup"
+    },
+    "memory_available_bytes": 2068238336,
+    "memory_required_bytes": 2110612736,
+    "root_free_bytes": 10945908736,
+    "root_free_required_bytes": 9577390899,
+    "reason": "renderer output/metadata and 500 MB memory reserves unavailable; no startup created"
+  },
+  "scheduling_hold": null
+}

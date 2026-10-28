@@ -1,0 +1,26 @@
+{
+  "task_id": "LOAD-11.2",
+  "executed_profiles": [
+    "OFFLINE",
+    "AUDIT"
+  ],
+  "official_profiles_not_changed": true,
+  "cases": [
+    {
+      "case_id": "LOAD-11.2-T01",
+      "new_support": "Retained overwritten-name/hash rejection; exact captured bytes are zipped despite later mutation. Current local regression14 includes this.",
+      "whole_scope_closed": false
+    },
+    {
+      "case_id": "LOAD-11.2-T02",
+      "new_support": "Original six private-format bypasses rejected;57 historical flags classified;16 separate sanitized projections verified. Public ZIP blocks uninspected types.",
+      "whole_scope_closed": false
+    },
+    {
+      "case_id": "LOAD-11.2-T03",
+      "new_support": "Distinct original/derived files, SHA and relation recorded; same file/hardlink cannot claim independent parent. Linux exporter records source and derived SHA.",
+      "whole_scope_closed": false
+    }
+  ],
+  "why_no_whole_pass": "All current lineage and replay metadata are not resolved; r2 Linux and current local source versions are disclosed separately."
+}

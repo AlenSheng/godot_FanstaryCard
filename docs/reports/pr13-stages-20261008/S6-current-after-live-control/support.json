@@ -1,0 +1,635 @@
+{
+  "human_experience_decision": "机器人模拟补充体验，真人验收仍待补",
+  "delivery_policy": {
+    "schema_version": 1,
+    "decision_date": "2026-10-08",
+    "authority": "Direct human instruction in this session",
+    "user_instruction": "不需要写入草稿，把要写草稿的都在本地做一次总结直接合入传到远端release",
+    "destination": "origin/release",
+    "merge_release": true,
+    "draft_pr_updates": false,
+    "local_summary_required": true,
+    "supersedes": [
+      "The delivery-only merge_release=false field in the immutable S0 preregistration",
+      "Draft retention and publication decisions in the historical PR13 handbook"
+    ],
+    "acceptance_rule": "Merge authorization does not imply runtime acceptance. Retain concrete current results, failures, missing cases, capacity gaps and pending human acceptance.",
+    "execution_profiles": "PR13_LOCAL_PROFILES_20261008.json remains the immutable source of budgets, targets, stop conditions and default-off candidate policy.",
+    "human_experience_decision": "机器人模拟补充体验，真人验收仍待补",
+    "deleted_history_decision": "已删除，如果文件缺失则重新测试",
+    "production_deployment": false,
+    "remaining_work": "Continue the original S0-S6 implementation and staged verification; publish local summaries directly to release without inventing acceptance."
+  },
+  "evidence": [
+    {
+      "id": "current-python",
+      "tasks": [
+        "LOAD-01.1",
+        "LOAD-01.2",
+        "LOAD-01.3",
+        "LOAD-01.4",
+        "LOAD-02.1",
+        "LOAD-02.3",
+        "LOAD-03.1",
+        "LOAD-03.2",
+        "LOAD-03.3",
+        "LOAD-03.4",
+        "LOAD-07.1",
+        "LOAD-07.2",
+        "LOAD-07.3",
+        "LOAD-07.4",
+        "PR13-A02.1",
+        "PR13-A02.2"
+      ],
+      "paths": [
+        "outputs/pr13-local-20261008/S3/python-stage-182.private.log"
+      ],
+      "scope": "182 actual tool tests passed; direct case mappings remain separate."
+    },
+    {
+      "id": "current-pg",
+      "tasks": [
+        "LOAD-02.2",
+        "PR13-A03.1",
+        "PR13-A03.2",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.1",
+        "PR13-A04.2",
+        "PR13-A04.3",
+        "PR13-A04.4",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "PR13-A05.4"
+      ],
+      "paths": [
+        "outputs/pr13-local-20261008/S4/current-lifecycle-pg/report.json"
+      ],
+      "scope": "10 current selected native lifecycle/STOP tests passed, zero skips; 16 canonical PG mappings separately exported."
+    },
+    {
+      "id": "current-client",
+      "tasks": [
+        "PR13-B02.4",
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.2"
+      ],
+      "paths": [
+        "outputs/pr13-local-20261008/S3/current-gap-regressions/results.json"
+      ],
+      "scope": "Five actual current Godot regression groups after replay-gap fix. UI render fixtures are separate."
+    },
+    {
+      "id": "supplemental-experiment",
+      "tasks": [
+        "PR13-B03.1",
+        "PR13-B03.2",
+        "PR13-B03.3",
+        "PR13-B03.4",
+        "PR13-B05.1",
+        "PR13-B05.2",
+        "PR13-B05.3",
+        "PR13-B05.4"
+      ],
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S5-supplemental/summary.json"
+      ],
+      "scope": "864000 isolated encounter rows and controls; descriptive results, no candidate benefit or human acceptance."
+    },
+    {
+      "id": "explicit-fault-batch",
+      "tasks": [
+        "LOAD-02.1",
+        "LOAD-02.3",
+        "LOAD-02.4",
+        "LOAD-07.3",
+        "LOAD-07.4",
+        "PR13-A01.2",
+        "PR13-A02.3"
+      ],
+      "paths": [
+        "outputs/pr13-local-20261008/S3/fault-explicit-fixed/report.json"
+      ],
+      "scope": "16 explicit OFFLINE fault cases through actual coordinator and owned native/Godot processes; no live server or capacity claim."
+    },
+    {
+      "id": "audit-contract-cases",
+      "tasks": [
+        "PR13-A01.1",
+        "PR13-A01.3",
+        "PR13-A01.4"
+      ],
+      "paths": [
+        "outputs/pr13-local-20261008/S3/audit-explicit-fixed/report.json",
+        "outputs/pr13-local-20261008/S4/audit-current/results.json"
+      ],
+      "scope": "Nine explicit OFFLINE file/quarantine/denominator/replay contracts plus actual hash-verified 50/100 archives. Deleted old evidence is not recovered."
+    },
+    {
+      "id": "current-render",
+      "tasks": [
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.4"
+      ],
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S4-native-current/render-index.json"
+      ],
+      "scope": "126 actual rendered images with synthetic UI fixtures, three resolutions and FPS caps; no live interaction or human acceptance."
+    },
+    {
+      "id": "native-ui-contracts",
+      "tasks": [
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3",
+        "PR13-B10.4"
+      ],
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S4-ui-ledger-current/ui/report.json"
+      ],
+      "scope": "11 actual Godot store/codec cases with controlled gateway and room fixtures; RENDER remains separate."
+    },
+    {
+      "id": "actual-ledger-attribution",
+      "tasks": [
+        "PR13-A05.4"
+      ],
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S4-ui-ledger-current/ledger/report.json"
+      ],
+      "scope": "Full Program migrations, complete READ ONLY snapshots and actual restricted-role 42501; no production/historical attribution or repair."
+    },
+    {
+      "id": "current-explicit-contracts",
+      "tasks": [
+        "LOAD-04.1",
+        "LOAD-04.2",
+        "LOAD-04.3",
+        "LOAD-04.4",
+        "LOAD-05.1",
+        "LOAD-05.2",
+        "LOAD-05.3",
+        "LOAD-05.4",
+        "LOAD-06.1",
+        "LOAD-06.2",
+        "LOAD-07.2",
+        "LOAD-08.1",
+        "LOAD-08.2",
+        "LOAD-08.3",
+        "LOAD-08.4",
+        "LOAD-09.2",
+        "LOAD-10.1",
+        "LOAD-10.2",
+        "LOAD-10.4",
+        "LOAD-11.3",
+        "LOAD-11.4",
+        "PR13-A02.4",
+        "PR13-A03.1",
+        "PR13-A03.2",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.2",
+        "PR13-A04.3",
+        "PR13-A06.1",
+        "PR13-A06.2",
+        "PR13-A06.3",
+        "PR13-A06.4",
+        "PR13-A07.1",
+        "PR13-A07.2",
+        "PR13-A07.4",
+        "PR13-A08.1",
+        "PR13-A09.2",
+        "PR13-A09.3",
+        "PR13-A09.4",
+        "PR13-A10.1",
+        "PR13-A10.2",
+        "PR13-A10.3",
+        "PR13-A10.4",
+        "PR13-B01.1",
+        "PR13-B01.2",
+        "PR13-B01.4",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B03.1",
+        "PR13-B03.3",
+        "PR13-B03.4",
+        "PR13-B04.3",
+        "PR13-B04.4",
+        "PR13-B05.1",
+        "PR13-B05.2",
+        "PR13-B05.3",
+        "PR13-B05.4",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B06.4",
+        "PR13-B07.1",
+        "PR13-B07.3",
+        "PR13-B08.1",
+        "PR13-B08.3",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B10.4",
+        "PR13-B11.3",
+        "PR13-B12.1",
+        "PR13-B12.4"
+      ],
+      "scope": "123 new OFFLINE cases, 19 additional statistical controls, compiler negative, real PG faults and actual renderer; applicable layers remain explicit",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-contract-expansion/report.json",
+        "docs/reports/pr13-stages-20261008/S3-S4-contract-followup/report.json"
+      ]
+    },
+    {
+      "id": "wait-shield-route-current",
+      "tasks": [
+        "PR13-A07.1",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B03.1",
+        "PR13-B03.2",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B06.4",
+        "PR13-B07.1",
+        "PR13-B07.2",
+        "PR13-B07.3",
+        "PR13-B07.4",
+        "PR13-B08.1",
+        "PR13-B08.3",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.2",
+        "PR13-B11.4"
+      ],
+      "scope": "Exact domain, native legal route, actual GPU waiting/recovery and all-level isolated encounter cases; separate layers explicit",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S5-wait-shield-route/public-manifest.json",
+        "docs/reports/pr13-stages-20261008/S3-S5-wait-shield-route/runtime-observations.json"
+      ]
+    },
+    {
+      "id": "server-review-rollback-current",
+      "tasks": [
+        "LOAD-02.2",
+        "LOAD-04.4",
+        "LOAD-05.1",
+        "LOAD-05.3",
+        "LOAD-05.4",
+        "LOAD-06.3",
+        "LOAD-09.1",
+        "LOAD-09.2",
+        "LOAD-09.3",
+        "LOAD-09.4",
+        "LOAD-11.4",
+        "PR13-A02.4",
+        "PR13-A03.3",
+        "PR13-A04.3",
+        "PR13-A04.4",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "PR13-A07.1",
+        "PR13-A08.2",
+        "PR13-A08.4",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B06.4",
+        "PR13-B07.1",
+        "PR13-B07.3",
+        "PR13-B08.1",
+        "PR13-B08.3",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-B12.4"
+      ],
+      "scope": "26 additional exact native or controlled review cases; runtime server and PG matrices current, mandatory absent LIVE/experiment/human layers still separate",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/public-manifest.json",
+        "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json"
+      ]
+    },
+    {
+      "id": "prelaunch-experience-current",
+      "tasks": [
+        "LOAD-04.1",
+        "LOAD-04.2",
+        "LOAD-04.3",
+        "LOAD-05.1",
+        "LOAD-05.2",
+        "LOAD-06.2",
+        "LOAD-08.4",
+        "LOAD-10.1",
+        "LOAD-10.2",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.1",
+        "PR13-A04.2",
+        "PR13-A04.4",
+        "PR13-A09.1",
+        "PR13-B01.1",
+        "PR13-B01.2",
+        "PR13-B01.3",
+        "PR13-B02.3",
+        "PR13-B03.1",
+        "PR13-B04.3",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B10.4",
+        "PR13-B11.1",
+        "PR13-B11.2",
+        "PR13-B11.3",
+        "PR13-B11.4",
+        "PR13-B12.1"
+      ],
+      "scope": "22 additional explicit cases and actual affected-layer revalidation; Mage original-profile natural single three-cycle passed, other classes/capacity/human remain separate",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/public-manifest.json"
+      ]
+    },
+    {
+      "id": "budget-combined-rendered-current",
+      "tasks": [
+        "LOAD-02.2",
+        "LOAD-04.4",
+        "LOAD-05.1",
+        "LOAD-05.3",
+        "LOAD-05.4",
+        "LOAD-08.4",
+        "LOAD-09.2",
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "LOAD-10.4",
+        "LOAD-11.4",
+        "PR13-A02.4",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.3",
+        "PR13-A04.4",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "PR13-A06.4",
+        "PR13-A07.1",
+        "PR13-A09.3",
+        "PR13-A10.1",
+        "PR13-A10.4",
+        "PR13-B01.4",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B03.2",
+        "PR13-B03.3",
+        "PR13-B03.4",
+        "PR13-B04.2",
+        "PR13-B04.4",
+        "PR13-B05.1",
+        "PR13-B05.3",
+        "PR13-B05.4",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B06.4",
+        "PR13-B07.1",
+        "PR13-B07.3",
+        "PR13-B08.1",
+        "PR13-B08.3",
+        "PR13-B08.4",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B09.4",
+        "PR13-B11.3",
+        "PR13-B11.4",
+        "PR13-B12.3"
+      ],
+      "scope": "Exact native budget/domain/PG combined faults plus rendered natural Mage-only supplement; no mixed ten/capacity/human acceptance",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S5-budget-restart-current/summary.json"
+      ]
+    },
+    {
+      "id": "complete-explicit-case-contracts-current",
+      "tasks": [
+        "LOAD-02.3",
+        "LOAD-04.1",
+        "LOAD-04.2",
+        "LOAD-04.3",
+        "LOAD-05.1",
+        "LOAD-05.2",
+        "LOAD-05.3",
+        "LOAD-06.2",
+        "LOAD-06.3",
+        "LOAD-08.4",
+        "LOAD-09.1",
+        "LOAD-09.3",
+        "LOAD-09.4",
+        "LOAD-10.1",
+        "LOAD-10.3",
+        "LOAD-10.4",
+        "LOAD-11.4",
+        "PR13-A02.4",
+        "PR13-A03.3",
+        "PR13-A03.4",
+        "PR13-A04.1",
+        "PR13-A04.2",
+        "PR13-A06.2",
+        "PR13-A06.4",
+        "PR13-A07.1",
+        "PR13-A08.2",
+        "PR13-A08.3",
+        "PR13-A08.4",
+        "PR13-A09.1",
+        "PR13-A09.2",
+        "PR13-A09.4",
+        "PR13-A10.1",
+        "PR13-A10.2",
+        "PR13-A10.3",
+        "PR13-A10.4",
+        "PR13-B01.1",
+        "PR13-B01.2",
+        "PR13-B01.4",
+        "PR13-B02.1",
+        "PR13-B02.2",
+        "PR13-B02.3",
+        "PR13-B02.4",
+        "PR13-B03.1",
+        "PR13-B03.2",
+        "PR13-B03.3",
+        "PR13-B03.4",
+        "PR13-B04.1",
+        "PR13-B04.2",
+        "PR13-B04.3",
+        "PR13-B04.4",
+        "PR13-B05.1",
+        "PR13-B05.2",
+        "PR13-B05.3",
+        "PR13-B05.4",
+        "PR13-B06.1",
+        "PR13-B06.2",
+        "PR13-B06.3",
+        "PR13-B06.4",
+        "PR13-B07.1",
+        "PR13-B07.3",
+        "PR13-B08.1",
+        "PR13-B08.2",
+        "PR13-B08.3",
+        "PR13-B08.4",
+        "PR13-B09.1",
+        "PR13-B09.2",
+        "PR13-B09.3",
+        "PR13-B09.4",
+        "PR13-B10.1",
+        "PR13-B10.2",
+        "PR13-B10.3",
+        "PR13-B10.4",
+        "PR13-B11.3",
+        "PR13-B12.1",
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-B12.4"
+      ],
+      "scope": "All396 explicit component/contract cases with precise sources and declared layers; no blanket runtime, capacity or human acceptance",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S3-S5-complete-case-contracts-current/summary.json"
+      ]
+    },
+    {
+      "id": "latest-owned-runtime-and-capacity",
+      "tasks": [
+        "LOAD-02.2",
+        "PR13-A05.1",
+        "PR13-A05.2",
+        "PR13-A05.3",
+        "LOAD-10.2",
+        "PR13-A09.2",
+        "PR13-A01.1",
+        "PR13-A01.3",
+        "PR13-A10.4"
+      ],
+      "scope": "Complete native regression and real READY source kept separately; latest16/30 baseline and original50/100 resource stop with native server metrics",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/summary.json"
+      ]
+    },
+    {
+      "id": "existing-build-strategy-live-control",
+      "tasks": [
+        "LOAD-10.2",
+        "PR13-A09.2",
+        "PR13-B01.1",
+        "PR13-B04.1",
+        "PR13-B04.3",
+        "PR13-B05.1"
+      ],
+      "scope": "Actual existing visible-information build strategy, mixed10 accounts, cyclic-gameplay,3 natural cycles each,600s per cycle/1800s overall; no candidate flags/config/rate-limit changes. Unpaired maps: no statistical or paired performance benefit, no original baseline replacement, no human claim.",
+      "paths": [
+        "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+        "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/battle-metrics.json"
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "task_id": "PR13-A01.1",
+      "state": "Partial",
+      "stage": "S1",
+      "reason": "Fresh lazy-font original50/100 targets both stopped before goal at three shared-host RAM windows below15%. Native server CPU/RSS/GC/actor metrics now present; capacity and mixed-class baseline prerequisite remain unmet.",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/capacity.json",
+      "next_action": "Use sufficient controlled generator memory without relaxing limits/targets/windows; resolve original mixed-class natural30-cycle failure then rerun capacity."
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "state": "Partial",
+      "stage": "S1",
+      "reason": "Fresh lazy-font original50/100 targets both stopped before goal at three shared-host RAM windows below15%. Native server CPU/RSS/GC/actor metrics now present; capacity and mixed-class baseline prerequisite remain unmet.",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/capacity.json",
+      "next_action": "Use sufficient controlled generator memory without relaxing limits/targets/windows; resolve original mixed-class natural30-cycle failure then rerun capacity."
+    },
+    {
+      "task_id": "PR13-A09.2",
+      "state": "Failed",
+      "reason": "Latest actual original mixed-class ten-client baseline completed16 natural cycles and22ACK (6drain-only), not10x3. Owned host/database and business cleanup passed; coordinator original result remainsFailed.",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/ten-baseline.json",
+      "next_action": "继续独立层与场景；保留自然三局失败和600秒截止，不改基线判据或数值默认。",
+      "separate_legal_build_control": {
+        "state": "FailedFunctionalControl",
+        "natural_cycles": 21,
+        "target": 30,
+        "evidence": "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+        "original_baseline_failure_not_superseded": true
+      }
+    },
+    {
+      "task_id": "PR13-A09.4",
+      "state": "Partial",
+      "reason": "Latest actual original mixed-class ten-client baseline completed16 natural cycles and22ACK (6drain-only), not10x3. Owned host/database and business cleanup passed; coordinator original result remainsFailed.",
+      "next_action": "继续独立层与场景；保留自然三局失败和600秒截止，不改基线判据或数值默认。",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/ten-baseline.json",
+      "separate_legal_build_control": {
+        "state": "FailedFunctionalControl",
+        "natural_cycles": 21,
+        "target": 30,
+        "evidence": "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+        "original_baseline_failure_not_superseded": true
+      }
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "state": "Blocked",
+      "stage": "S5",
+      "owner": "MAIN",
+      "reason": "Fresh lazy-font original50/100 targets both stopped before goal at three shared-host RAM windows below15%. Native server CPU/RSS/GC/actor metrics now present; capacity and mixed-class baseline prerequisite remain unmet.",
+      "missing_input_or_environment": "Sufficient controlled generator memory and passing original mixed-class natural30-cycle prerequisite; native local server collector is now available.",
+      "affected_gates": [
+        "G4",
+        "G5"
+      ],
+      "unblock_condition": "Use sufficient authorized local generator resources and actual server/actor collectors without weakening safety lines, limits or gameplay; resolve the failed mixed-class baseline and rerun fixed-profile acceptance.",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/capacity.json",
+      "next_action": "Use sufficient controlled generator memory without relaxing limits/targets/windows; resolve original mixed-class natural30-cycle failure then rerun capacity."
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "state": "Failed",
+      "stage": "S5",
+      "reason": "Latest original ten-account baseline16/30 natural cycles under frozen600s/1800s cutoffs. Mage3x4, Priest1x3, Guardian0/1/0; zero fallback cycles. DrainACK cannot count as full games.",
+      "evidence": "docs/reports/pr13-stages-20261008/S4-S5-final-runtime-regression/ten-baseline.json",
+      "next_action": "Retain baseline failure. Finish missing class/strategy/full-route experience layers and resolve slow Guardian/Priest baseline before formal LIVE acceptance.",
+      "separate_legal_build_control": {
+        "state": "FailedFunctionalControl",
+        "natural_cycles": 21,
+        "target": 30,
+        "evidence": "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+        "original_baseline_failure_not_superseded": true
+      }
+    }
+  ]
+}

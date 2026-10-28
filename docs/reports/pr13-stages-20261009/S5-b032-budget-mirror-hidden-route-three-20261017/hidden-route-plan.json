@@ -1,0 +1,31 @@
+{
+  "case": "PR13-B03.2-T03 EXPERIMENT",
+  "profile_id": "b032-visible-route-secret-control-v1",
+  "native_scenarios": 9,
+  "policies": [
+    "baseline_all_hand",
+    "basic",
+    "build"
+  ],
+  "seeds": [
+    610001,
+    610002,
+    610003
+  ],
+  "prior_task_PVE": 216,
+  "prior_task_PVP_player_participations": 72,
+  "conservative_total_with_this_run": 298,
+  "ceiling": 300,
+  "controlled_entry": "Real full BattleRoom snapshot restore into actionbar; not a natural clear. No client room dictionary injection.",
+  "actual_hidden_mutations": [
+    "All non-current cell monster group",
+    "non-current evacuation",
+    "non-current treasure"
+  ],
+  "guard": "Full official projection must remain byte-identical before/after actual authoritative hidden map mutation.",
+  "decision": "Actual current native _choose_move with identical actual legal coordinates/visited set/RNG seed must remain identical,then actual room.move confirmed by Domain.",
+  "scope": "No optimal route/benefit/capacity/human/fullProgram/PG or natural-route claim; wider five archetype axes not claimed.",
+  "prior_route_diagnostic_scenarios": 1,
+  "original_failure": "R1 decision itself unchanged and official projection byte-identical, but compared room.started inner snapshot against room.snapshot with four consumer envelope metadata fields. Whole R1 not accepted/raw retained.",
+  "comparison": "Compare exact official payload after removing only the four documented transport fields; retain both original dictionaries and normalized payloads, retain actual authority byte equality guard."
+}

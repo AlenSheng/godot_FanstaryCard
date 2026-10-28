@@ -1,0 +1,137 @@
+{
+  "ok": true,
+  "T01": {
+    "controlled_favorable_candidate": {
+      "state": "EligibleForMainReview",
+      "reason": "isolated_candidate_threshold_and_risk_checks_met",
+      "point_improvement": 0.35,
+      "improvement_interval95": [
+        0.2,
+        0.5
+      ],
+      "holm_adjusted_p": {
+        "tail": 0.001
+      },
+      "drifts": {
+        "economy": 0,
+        "strength": 0
+      },
+      "risk_drift": {},
+      "production_defaults_retained": true,
+      "production_activation": false,
+      "capacity_acceptance": false,
+      "human_experience_acceptance": false
+    },
+    "actual_G4": {
+      "gate_id": "G4",
+      "name": "\u4f20\u8f93\u6536\u76ca\u3001\u539f\u5bb9\u91cf\u3001\u5019\u9009\u4f53\u9a8c",
+      "state": "NotAccepted",
+      "pass_criteria": "\u4e09\u5bf9\u540c\u8d1f\u8f7dA/B\u3001\u9ed8\u8ba4\u9650\u6d41\u6709\u6548\u8986\u76d6/\u957f\u7a33\u3001\u6570\u503c\u914d\u5bf9/\u98ce\u9669\u4e0e\u771f\u4eba\u53cd\u9988\u5206\u522b\u88c1\u51b3\uff1b\u4e0d\u8db3Unknown\uff0c\u4e0d\u62ff\u77ed\u6218\u66ff\u539f\u5bb9\u91cf\u3002",
+      "unfinished": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ]
+    },
+    "candidate_benefit_not_capacity_acceptance": true
+  },
+  "T02": {
+    "actual_spec_complete": true,
+    "actual_executed_rows0": true,
+    "actual_execution_state": "Queued"
+  },
+  "T03": {
+    "actual_ledger_alert": {
+      "id": "owned-ledger-chain-d28819380e8e4e5fb432bb9680ac987d",
+      "explained": false,
+      "actual_gap": 7
+    },
+    "actual_asset_gate": {
+      "state": "Blocked",
+      "unexplained_alerts": [
+        "owned-ledger-chain-d28819380e8e4e5fb432bb9680ac987d"
+      ],
+      "asset_acceptance": false
+    },
+    "actual_broken_ledger": {
+      "NegativeAccountCount": 0,
+      "ActiveListingAssetMismatchCount": 0,
+      "OrphanMarketListedEquipmentCount": 0,
+      "SoldListingMismatchCount": 0,
+      "MarketTransactionAmountMismatchCount": 0,
+      "LedgerChainMismatchCount": 1,
+      "TotalViolationCount": 1,
+      "IsHealthy": false
+    },
+    "corrupt_evidence_kept": true
+  },
+  "all_gate_states": [
+    {
+      "gate_id": "G0",
+      "name": "\u6765\u6e90\u3001\u8303\u56f4\u4e0e\u57fa\u7ebf",
+      "state": "NotAccepted",
+      "pass_criteria": "source/CI/image/config/seed/profile\u53ef\u8ffd\u6eaf\uff0c\u6587\u4ef6\u9501\u4e0e\u6709\u754c\u8303\u56f4\u660e\u786e\uff1bmissing\u5355\u5217\u3002",
+      "unfinished": [
+        "PR13-A08.1",
+        "PR13-B12.1"
+      ]
+    },
+    {
+      "gate_id": "G1",
+      "name": "\u79bb\u7ebf\u3001\u8fdb\u7a0b\u4e0e\u5408\u540c",
+      "state": "NotAccepted",
+      "pass_criteria": "\u5173\u952e\u6b63\u5e38/\u8fb9\u754c/\u6545\u969c\u5b9e\u9645\u6267\u884c\uff0c\u6570\u503c\u5408\u540c\u7f16\u8bd1\u4fee\u590d\uff0c\u5173\u952ecase\u65e0\u73af\u5883\u6027skip\u3002",
+      "unfinished": [
+        "LOAD-10.1",
+        "PR13-A02.3",
+        "PR13-A07.4"
+      ]
+    },
+    {
+      "gate_id": "G2",
+      "name": "\u73a9\u6cd5\u95ed\u73af\u548c\u8d44\u4ea7/\u6218\u6597\u5408\u540c",
+      "state": "NotAccepted",
+      "pass_criteria": "\u6b63\u5e38\u4e09\u5c40/\u591a\u8d26\u53f7\u3001PG\u6301\u4e45\u5e42\u7b49\u3001route/holds\u53ca\u8d44\u6e90/\u63a7\u5236/\u9009\u5e8f/\u6062\u590d\u5408\u540c\u4e00\u81f4\uff1bheadless\u4e0erender\u8bc1\u636e\u5206\u5c42\u3002",
+      "unfinished": [
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "PR13-A09.4"
+      ]
+    },
+    {
+      "gate_id": "G3",
+      "name": "\u89c2\u6d4b\u3001\u5386\u53f2\u548c\u4f53\u9a8c\u5bf9\u8d26",
+      "state": "NotAccepted",
+      "pass_criteria": "\u4e09\u622a\u6b62\u70b9\u5b88\u6052\uff0c86/90\u4e0e130/139\u53ca\u65e752/77\u5dee\u5f02\u53ef\u89e3\u91ca\uff1b\u7f3a\u5e8f\u53f7\u4e0d\u9020\u5173\u8054\uff0c\u5220\u5931/\u515c\u5e95/\u672a\u77e5\u5b8c\u6574\u3002",
+      "unfinished": [
+        "PR13-A01.4",
+        "PR13-A02.3"
+      ]
+    },
+    {
+      "gate_id": "G4",
+      "name": "\u4f20\u8f93\u6536\u76ca\u3001\u539f\u5bb9\u91cf\u3001\u5019\u9009\u4f53\u9a8c",
+      "state": "NotAccepted",
+      "pass_criteria": "\u4e09\u5bf9\u540c\u8d1f\u8f7dA/B\u3001\u9ed8\u8ba4\u9650\u6d41\u6709\u6548\u8986\u76d6/\u957f\u7a33\u3001\u6570\u503c\u914d\u5bf9/\u98ce\u9669\u4e0e\u771f\u4eba\u53cd\u9988\u5206\u522b\u88c1\u51b3\uff1b\u4e0d\u8db3Unknown\uff0c\u4e0d\u62ff\u77ed\u6218\u66ff\u539f\u5bb9\u91cf\u3002",
+      "unfinished": [
+        "LOAD-10.4",
+        "PR13-A10.4"
+      ]
+    },
+    {
+      "gate_id": "G5",
+      "name": "\u5f53\u524d\u8bc1\u636e\u3001\u6e90\u914d\u7f6e\u548c\u56de\u6eda\u4ea4\u4ed8",
+      "state": "NotAccepted",
+      "pass_criteria": "132\u9879\u5b9e\u73b0\u6216\u6709\u8bc1\u636eNoChange/\u963b\u585e\u9010\u9879\u53ef\u67e5\uff1b\u9002\u7528CI\u3001\u8d26\u94fe\u544a\u8b66\u3001\u9ed8\u8ba4off\u3001\u517c\u5bb9\u4e0e\u9694\u79bb\u56de\u6eda\u90fd\u6709\u7ed3\u8bba\u3002\u5b8c\u6574\u4ea4\u4ed8\u5141\u8bb8\u5217\u963b\u585e\uff0c\u9a8c\u6536\u901a\u8fc7\u8981\u6c42\u9002\u7528\u963b\u585e\u6e05\u96f6\u3002",
+      "unfinished": [
+        "LOAD-11.2",
+        "LOAD-11.4",
+        "PR13-A07.4",
+        "PR13-A08.4",
+        "PR13-B12.4"
+      ]
+    }
+  ],
+  "all_global_acceptance_false": true,
+  "actual_human_accepted": false,
+  "current_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1"
+}

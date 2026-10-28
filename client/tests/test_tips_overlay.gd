@@ -20,5 +20,21 @@ func run_test() -> Dictionary:
 		"Animation lasts about two seconds and rises visibly": is_equal_approx(TipsOverlay.DISPLAY_DURATION, 2.0) and TipsOverlay.RISE_DISTANCE >= 40.0,
 		"Tips appear above screen center": overlay.start_position().y < 1080.0 * 0.5,
 	}
+	(Engine.get_main_loop() as SceneTree).root.add_child(overlay)
+	overlay.show_tip("无法连接服务器")
+	var message := overlay.label.text
+	var serial := overlay._serial
+	var animation_id := overlay._tween.get_instance_id()
+	overlay.set_viewport_anchor(0.09)
+	checks["A pending notice keeps its text when the underlying screen changes"] = overlay.panel.visible and overlay.label.text == message
+	checks["Moving a notice preserves the original animation and serial"] = overlay._serial == serial and overlay._tween.get_instance_id() == animation_id
+	checks["Settlement placement follows its top anchor"] = is_equal_approx(overlay.start_position().y, overlay.get_viewport().get_visible_rect().size.y * 0.09 - overlay.panel.size.y * 0.5)
+	var placement := overlay.offset
+	overlay.set_viewport_anchor(0.09)
+	checks["Repeated same-screen placement does not restart or move the notice"] = overlay.offset == placement and overlay._serial == serial and overlay._tween.get_instance_id() == animation_id
+	overlay.show_tip("无法连接服务器", 0.09)
+	checks["A new settlement notice resets the old layer translation"] = overlay.offset == Vector2.ZERO and overlay.panel.visible and overlay.label.text == message
+	overlay.clear()
+	checks["Clearing a notice also clears its layer translation"] = overlay.offset == Vector2.ZERO and not overlay.panel.visible
 	overlay.free()
 	return {"ok": not checks.values().has(false), "checks": checks, "message": JSON.stringify(checks)}

@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "canonical_POSTGRES_profiles_closed": 1,
+  "exact_case_id": "PR13-A08.1-T02",
+  "missing_profiles_before": {
+    "POSTGRES": 101,
+    "LIVE": 106,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "missing_profiles_after": {
+    "POSTGRES": 100,
+    "LIVE": 106,
+    "EXPERIMENT": 117,
+    "CAPACITY": 36,
+    "AUDIT": 3,
+    "RENDER": 41
+  },
+  "task_states": {
+    "Accepted": 14,
+    "Partial": 93,
+    "Failed": 2,
+    "ReadyForAcceptance": 23
+  },
+  "A08_1_state": "Partial",
+  "A08_1_remaining_cases": [
+    "PR13-A08.1-T01"
+  ],
+  "actual_native_PG_rows": 10,
+  "new_control_rows": 1,
+  "original_nine_regression_rows": 9,
+  "all_other_layers_failed_tasks_and_gates_retained": true,
+  "MAIN_accepted": false
+}

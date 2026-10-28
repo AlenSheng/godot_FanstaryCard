@@ -1,0 +1,347 @@
+{
+  "checks": [
+    {
+      "name": "production probe loads after autoload construction",
+      "passed": true
+    },
+    {
+      "name": "Queued: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "Queued: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "Queued: real Game cancellation entry clears confirmed state",
+      "passed": true
+    },
+    {
+      "name": "Queued: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "Cancelled: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "Cancelled: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "Cancelled: real Game cancellation entry clears confirmed state",
+      "passed": true
+    },
+    {
+      "name": "Cancelled: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "QueuedNullMatch: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "QueuedNullMatch: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "QueuedNullMatch: real Game cancellation entry clears confirmed state",
+      "passed": true
+    },
+    {
+      "name": "QueuedNullMatch: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "QueuedMalformedMatch: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "QueuedMalformedMatch: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "QueuedMalformedMatch: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "QueuedMalformedMatch: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "Matched: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "Matched: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "Matched: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "Matched: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "Matched: wait for real deadline instead of DELETE",
+      "passed": true
+    },
+    {
+      "name": "Expired: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "Expired: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "Expired: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "Expired: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "Unknown: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "Unknown: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "Unknown: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "Unknown: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "ReadFailure: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "ReadFailure: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "ReadFailure: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "ReadFailure: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "DifferentTicket: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "DifferentTicket: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "DifferentTicket: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "DifferentTicket: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "DifferentPreparation: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "DifferentPreparation: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "DifferentPreparation: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "DifferentPreparation: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "QueuedWithMatch: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "QueuedWithMatch: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "QueuedWithMatch: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "QueuedWithMatch: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "MatchedWithoutMatch: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "MatchedWithoutMatch: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "MatchedWithoutMatch: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "MatchedWithoutMatch: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewSession: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "NewSession: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "NewSession: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "NewSession: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewSession: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "NewTicket: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "NewTicket: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "NewTicket: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "NewTicket: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewTicket: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "NewPreparation: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "NewPreparation: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "NewPreparation: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "NewPreparation: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewPreparation: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "NewRoomEpoch: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "NewRoomEpoch: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "NewRoomEpoch: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "NewRoomEpoch: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewRoomEpoch: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "RoomStarted: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "RoomStarted: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "RoomStarted: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "RoomStarted: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "RoomStarted: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "SettlementArrived: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "SettlementArrived: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "SettlementArrived: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "SettlementArrived: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "SettlementArrived: late reply cannot act on current context",
+      "passed": true
+    },
+    {
+      "name": "NewCycle: queued-only DELETE",
+      "passed": true
+    },
+    {
+      "name": "NewCycle: authority read precedes cancellation",
+      "passed": true
+    },
+    {
+      "name": "NewCycle: unconfirmed business state retained",
+      "passed": true
+    },
+    {
+      "name": "NewCycle: original identity retained in diagnostic event",
+      "passed": true
+    },
+    {
+      "name": "NewCycle: late reply cannot act on current context",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "ok": true,
+  "scope": "OFFLINE controlled transport and actual production cancellation entry; no LIVE or capacity claim"
+}

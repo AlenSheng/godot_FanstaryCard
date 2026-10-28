@@ -1,12 +1,18 @@
 extends RefCounted
 
-static var _body_font: FontFile = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
-static var _title_font: FontFile = preload("res://assets/fonts/SourceHanSerifSC-SemiBold.otf")
+static var _body_font: FontFile
+static var _title_font: FontFile
 static var _number_font: FontVariation
 static var _fonts_ready := false
+static var _scaled_body_font: FontFile
+static var _scaled_title_font: FontFile
+static var _scaled_number_font: FontVariation
+static var _scaled_fonts_ready := false
 static var _language := "zh-CN"
 static var _locale_config: Dictionary = {}
 static var _source_aliases: Dictionary = {}
+static var _source_templates: Array[Dictionary] = []
+static var _formatted_alias_cache: Dictionary = {}
 const LANGUAGE_SETTINGS_PATH := "user://fantasycard_language.cfg"
 
 static func clear_runtime_fonts() -> void:
@@ -14,6 +20,10 @@ static func clear_runtime_fonts() -> void:
 	_title_font = null
 	_number_font = null
 	_fonts_ready = false
+	_scaled_body_font = null
+	_scaled_title_font = null
+	_scaled_number_font = null
+	_scaled_fonts_ready = false
 
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
@@ -26,7 +36,7 @@ const ELEMENT := {"Fire": Color("f18751"), "Wood": Color("72c878"), "Water": Col
 const WORDS := {"Priest": "牧", "Mage": "法", "Guardian": "盾", "White": "白", "Green": "绿", "Blue": "蓝", "Purple": "紫", "Orange": "橙", "Red": "红", "Fire": "火", "Wood": "木", "Water": "水", "Metal": "金", "Earth": "土", "None": "直伤", "Head": "头部", "Helmet": "头部", "Chest": "胸甲", "Body": "胸甲", "Hands": "手部", "Gloves": "手部", "Legs": "腿部", "Feet": "鞋子", "Boots": "鞋子", "Gold": "金币", "EquipmentFragments": "装备碎片", "WarriorSoul": "勇士之魂", "ClassSoul": "职业之魂", "HealthPotion": "生命药剂", "Equipment": "装备", "CardPack": "卡包", "SoulPack": "勇士之魂包", "FragmentPack": "碎片包", "ClassSoulPack": "职业之魂包", "AdvancedBag": "高级背包", "TopBag": "顶级背包", "Card": "卡牌", "Bulwark": "载壁", "Piercing": "破击", "Vitality": "生息", "Damage": "伤害", "Heal": "回复", "Support": "辅助", "Pve": "交战", "Pvp": "决斗", "Choice": "战利品", "ActionBar": "探索", "Extracted": "撤离成功", "PveDeath": "探索失利", "PvpDeath": "决斗失利", "Death": "探索失利", "Dead": "探索失利"}
 const CLASSES := {"Priest": ["潮听 · 临", "临渊杖", 80, "潮汐将至，听见生机。", "残血治疗 / 控场"], "Mage": ["余烬 · 凯", "焚弦薪", 70, "让最后一簇火，照亮归途。", "元素连携 / 快攻"], "Guardian": ["载山 · 敦", "载岳盾", 100, "山岳不移，守住每次归来。", "满血护盾 / 坚守"]}
 const WORD_KEYS := {
-	"priest":"word_priest", "mage":"word_mage", "guardian":"word_guardian", "warrior":"word_warrior", "white":"word_white", "green":"word_green", "blue":"word_blue", "purple":"word_purple", "orange":"word_orange", "red":"word_red", "fire":"word_fire", "wood":"word_wood", "water":"word_water", "metal":"word_metal", "earth":"word_earth", "none":"word_none", "head":"word_head", "helmet":"word_head", "chest":"word_chest", "body":"word_chest", "hands":"word_hands", "gloves":"word_hands", "legs":"word_legs", "feet":"word_feet", "boots":"word_feet", "gold":"word_gold", "goldearned":"word_gold", "equipmentfragments":"word_equipment_fragments", "fragmentpack":"word_equipment_fragments", "warriorsoul":"word_warrior_soul", "classsoul":"word_class_soul", "soulpack":"word_warrior_soul", "classsoulpack":"word_class_soul", "priestsoul":"word_priest_soul", "magesoul":"word_mage_soul", "guardiansoul":"word_guardian_soul", "healthpotion":"word_health_potion", "equipment":"word_equipment", "item":"word_item", "card":"word_card", "cardpack":"word_card_pack", "advancedbag":"word_advanced_bag", "topbag":"word_top_bag", "diamond":"word_diamond", "bulwark":"word_bulwark", "piercing":"word_piercing", "vitality":"word_vitality", "damage":"word_damage", "heal":"word_heal", "support":"word_support", "pve":"word_pve", "pvp":"word_pvp", "choice":"word_choice", "actionbar":"word_action_bar", "extracted":"word_extracted", "pvedeath":"word_pve_death", "pvpdeath":"word_pvp_death", "death":"word_death", "dead":"word_dead"
+	"priest":"word_priest", "mage":"word_mage", "guardian":"word_guardian", "warrior":"word_warrior", "white":"word_white", "green":"word_green", "blue":"word_blue", "purple":"word_purple", "orange":"word_orange", "red":"word_red", "fire":"word_fire", "wood":"word_wood", "water":"word_water", "metal":"word_metal", "earth":"word_earth", "none":"word_none", "head":"word_head", "helmet":"word_head", "chest":"word_chest", "body":"word_chest", "hands":"word_hands", "gloves":"word_hands", "legs":"word_legs", "feet":"word_feet", "boots":"word_feet", "gold":"word_gold", "goldearned":"word_gold", "equipmentfragments":"word_equipment_fragments", "fragmentpack":"word_equipment_fragments", "warriorsoul":"word_warrior_soul", "classsoul":"word_class_soul", "soulpack":"word_warrior_soul", "classsoulpack":"word_class_soul", "priestsoul":"word_priest_soul", "magesoul":"word_mage_soul", "guardiansoul":"word_guardian_soul", "healthpotion":"word_health_potion", "equipment":"word_equipment", "item":"word_item", "card":"word_card", "cardpack":"word_card_pack", "advancedbag":"word_advanced_bag", "topbag":"word_top_bag", "diamond":"word_diamond", "bulwark":"word_bulwark", "piercing":"word_piercing", "vitality":"word_vitality", "damage":"word_damage", "heal":"word_heal", "support":"word_support", "elementtune":"word_element_coordination", "pve":"word_pve", "pvp":"word_pvp", "choice":"word_choice", "actionbar":"word_action_bar", "extracted":"word_extracted", "pvedeath":"word_pve_death", "pvpdeath":"word_pvp_death", "death":"word_death", "dead":"word_dead"
 }
 ## UI copy is kept in localization_config.json; this alias table lets legacy module
 ## calls pass their existing Chinese source text without bypassing localization.
@@ -79,6 +89,13 @@ static func font(role: String = "body") -> Font:
 		_title_font = load(_locale_config.languages[_language].fonts.title)
 		_body_font.allow_system_fallback = false
 		_title_font.allow_system_fallback = false
+		for typeface in [_body_font, _title_font]:
+			typeface.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+			typeface.hinting = TextServer.HINTING_NORMAL
+			typeface.force_autohinter = true
+			typeface.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_ONE_QUARTER
+			typeface.oversampling = 2.0
+			typeface.generate_mipmaps = true
 		_title_font.fallbacks = [_body_font]
 		_number_font = FontVariation.new()
 		_number_font.base_font = _body_font
@@ -89,6 +106,31 @@ static func font(role: String = "body") -> Font:
 		"title": return _title_font
 		"number": return _number_font
 	return _body_font
+
+## Card faces have their own fractional transform in addition to window scaling.
+## Distance-field glyphs keep those transformed edges sharp at all grid sizes.
+static func scaled_font(role: String = "body") -> Font:
+	if not _scaled_fonts_ready:
+		_scaled_body_font = _distance_field_font(font("body") as FontFile)
+		_scaled_title_font = _distance_field_font(font("title") as FontFile)
+		_scaled_title_font.fallbacks = [_scaled_body_font]
+		_scaled_number_font = FontVariation.new()
+		_scaled_number_font.base_font = _scaled_body_font
+		_scaled_number_font.opentype_features = {"pwid": 0}
+		_scaled_fonts_ready = true
+	match role:
+		"title": return _scaled_title_font
+		"number": return _scaled_number_font
+	return _scaled_body_font
+
+static func _distance_field_font(source: FontFile) -> FontFile:
+	var result := FontFile.new()
+	result.data = source.data
+	result.allow_system_fallback = false
+	result.multichannel_signed_distance_field = true
+	result.msdf_size = 96
+	result.msdf_pixel_range = 8
+	return result
 
 static func _ensure_locale() -> void:
 	if _locale_config.is_empty():
@@ -133,6 +175,14 @@ static func _ensure_locale() -> void:
 				strings.merge(battle_config.languages[code].get("strings", {}))
 				target["strings"] = strings
 				_locale_config.languages[code] = target
+		var ui_gaps_config: Variant = JSON.parse_string(FileAccess.get_file_as_string("res://data/localization_ui_gaps.json"))
+		if ui_gaps_config is Dictionary:
+			for code in ui_gaps_config.get("languages", {}):
+				var target: Dictionary = _locale_config.get("languages", {}).get(code, {})
+				var strings: Dictionary = target.get("strings", {})
+				strings.merge(ui_gaps_config.languages[code].get("strings", {}))
+				target["strings"] = strings
+				_locale_config.languages[code] = target
 		_language = str(_locale_config.get("default_language", "zh-CN"))
 		var saved_language := _load_language()
 		if _locale_config.get("languages", {}).has(saved_language):
@@ -141,6 +191,8 @@ static func _ensure_locale() -> void:
 
 static func _build_source_aliases() -> void:
 	_source_aliases.clear()
+	_source_templates.clear()
+	_formatted_alias_cache.clear()
 	for language_config in _locale_config.get("languages", {}).values():
 		var strings: Dictionary = language_config.get("strings", {})
 		for key in strings:
@@ -149,6 +201,76 @@ static func _build_source_aliases() -> void:
 			# Accept display text authored in either language. This keeps legacy
 			# screens localizable while they migrate from text to stable keys.
 			if not _source_aliases.has(source): _source_aliases[source] = str(key)
+	var chinese: Dictionary = _locale_config.get("languages", {}).get("zh-CN", {}).get("strings", {})
+	var english: Dictionary = _locale_config.get("languages", {}).get("en", {}).get("strings", {})
+	for key in chinese:
+		if not english.has(key): continue
+		var source := str(chinese[key])
+		var target := str(english[key])
+		if not source.contains("%") or source == target: continue
+		var prefix := source.get_slice("%", 0)
+		if prefix.length() < 2 and source.length() < 5: continue
+		var compiled := RegEx.new()
+		var pattern := _format_pattern(source)
+		if compiled.compile(pattern) != OK: continue
+		_source_templates.append({"regex": compiled, "prefix": prefix, "key": str(key)})
+
+static func _format_pattern(source: String) -> String:
+	var pattern := "^"
+	var index := 0
+	while index < source.length():
+		var character := source.substr(index, 1)
+		if character == "%":
+			if index + 1 < source.length() and source.substr(index + 1, 1) == "%":
+				pattern += "%"
+				index += 2
+				continue
+			var end := index + 1
+			while end < source.length() and source.substr(end, 1) in "0123456789.-+": end += 1
+			if end < source.length() and source.substr(end, 1) in "sdf":
+				pattern += "(.+?)"
+				index = end + 1
+				continue
+		if character in "\\.^$|?*+()[]{}": pattern += "\\"
+		pattern += character
+		index += 1
+	return pattern + "$"
+
+static func _fill_format(template: String, matches: RegExMatch) -> String:
+	var result := ""
+	var index := 0
+	var argument := 1
+	while index < template.length():
+		var character := template.substr(index, 1)
+		if character == "%":
+			if index + 1 < template.length() and template.substr(index + 1, 1) == "%":
+				result += "%"
+				index += 2
+				continue
+			var end := index + 1
+			while end < template.length() and template.substr(end, 1) in "0123456789.-+": end += 1
+			if end < template.length() and template.substr(end, 1) in "sdf":
+				if argument >= matches.get_group_count() + 1: return ""
+				result += matches.get_string(argument)
+				argument += 1
+				index = end + 1
+				continue
+		result += character
+		index += 1
+	return result if argument == matches.get_group_count() + 1 else ""
+
+static func _localized_format_alias(value: String) -> String:
+	if _language != "en": return ""
+	if _formatted_alias_cache.has(value): return str(_formatted_alias_cache[value])
+	for entry in _source_templates:
+		if not value.begins_with(str(entry.prefix)): continue
+		var matched: RegExMatch = entry.regex.search(value)
+		if matched == null: continue
+		var translated := _fill_format(localized(str(entry.key)), matched)
+		if translated.is_empty(): continue
+		_formatted_alias_cache[value] = translated
+		return translated
+	return ""
 
 static func language() -> String:
 	_ensure_locale()
@@ -160,6 +282,8 @@ static func set_language(value: String) -> void:
 	if _language == value: return
 	_language = value
 	_fonts_ready = false
+	_scaled_fonts_ready = false
+	_formatted_alias_cache.clear()
 	_save_language()
 
 static func _save_language() -> void:
@@ -189,6 +313,8 @@ static func localized_text(value: String) -> String:
 	aliases.merge(_source_aliases)
 	aliases.merge({"幻境牌旅":"game_title", "账号":"account", "试听 · 黄铜与纸牌":"sample_sound", "搜寻遗物，组合五行，带着战利品归来。":"login_subtitle", "输入唯一账号名称":"account_placeholder", "同名登录原账号，新名称自动注册新账号。":"account_hint", "每一次深入，都是新的抉择":"login_about_title", "三种职业 · 一套属于你的二十张牌":"login_feature_1", "五行连放 · 实时抽牌与目标选择":"login_feature_2", "只向内探索 · 在战斗与撤离之间取舍":"login_feature_3", "邮件":"mail", "全部已读":"mark_all_read", "一键全领":"claim_all", "删除已读":"delete_read", "关闭":"close", "暂无邮件":"no_mail", "领取":"claim", "已领取":"claimed", "删除":"delete", "已读":"read", "未读":"unread", "附件":"attachments", "发件人":"sender", "系统邮件":"system_mail", "收件箱":"inbox", "邮件详情":"mail_details", "选择一封邮件查看详情":"select_mail", "邮件附件已领取":"mail_claimed", "邮件附件已全部领取":"mail_all_claimed", "邮件已删除":"mail_deleted", "已读邮件已清理":"mail_read_deleted"})
 	if aliases.has(value): return localized(aliases[value])
+	var formatted := _localized_format_alias(value)
+	if not formatted.is_empty(): return formatted
 	var result := value
 	var phrases: Array = aliases.keys()
 	phrases.sort_custom(func(left, right): return str(left).length() > str(right).length())
@@ -219,14 +345,14 @@ static func languages() -> Dictionary:
 	_ensure_locale()
 	return _locale_config.get("languages", {})
 
-static func font_for_text(value: String, size: int = 24) -> Font:
+static func font_for_text(value: String, size: int = 24, scaled: bool = false) -> Font:
 	var numeric := not value.is_empty()
 	for character in value:
 		if character not in "0123456789+-−.,:%/ ×":
 			numeric = false
 			break
-	if numeric: return font("number")
-	return font("title") if size >= 32 and value.length() <= 26 and not value.contains("\n") else font("body")
+	var role := "number" if numeric else ("title" if size >= 32 and value.length() <= 26 and not value.contains("\n") else "body")
+	return scaled_font(role) if scaled else font(role)
 
 static func fit_font_size(typeface: Font, requested: int, height: float, width: float = -1.0, value: String = "") -> int:
 	var fitted := requested
@@ -249,10 +375,24 @@ static func fit_control_font(control: Control, typeface: Font, requested: int, h
 	if not is_instance_valid(control): return
 	var update := func() -> void:
 		if not is_instance_valid(control): return
+		# Containers allocate their children after insertion. Fitting the initial
+		# zero-width rectangle shrinks the font and therefore its minimum size,
+		# trapping labels at one pixel before layout can give them room.
+		if control.size.x <= horizontal_padding + 1.0:
+			if control.get_theme_font_size("font_size") != requested:
+				control.add_theme_font_size_override("font_size", requested)
+			return
 		var value := str(control.get("text"))
 		var width := maxf(1.0, control.size.x - horizontal_padding)
-		var height := control.size.y
-		control.add_theme_font_size_override("font_size", fit_font_size(typeface, requested, height, width, value))
+		# A container-managed label's height comes from its font, rather than an
+		# authored text box. Keep that minimum height independent of font fitting.
+		var height := -1.0 if control.get_parent() is Container else control.size.y
+		# Wrapping container labels grow vertically; fitting their whole paragraph
+		# on one line would make translated help text unnecessarily tiny.
+		var wrapping_container_label: bool = control is Label and control.get_parent() is Container and control.autowrap_mode != TextServer.AUTOWRAP_OFF
+		var fitted: int = requested if wrapping_container_label else fit_font_size(typeface, requested, height, width, value)
+		if control.get_theme_font_size("font_size") != fitted:
+			control.add_theme_font_size_override("font_size", fitted)
 	control.resized.connect(update)
 	# Resized will refit after layout. The initial size is already available
 	# here; deferring a lambda can retain a card that was returned to the pool.

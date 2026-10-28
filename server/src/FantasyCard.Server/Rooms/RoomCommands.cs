@@ -41,6 +41,8 @@ public sealed record ExecuteWithClientStateCommand<TResult>(
 
     public RoomCommandWithClientState<TResult> Execute(BattleRoom room)
     {
+		if (room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)
+            throw new RoomAlreadyEndedException(new GetRoomClientStateCommand(PlayerId).Execute(room));
         var result = Mutation.Execute(room);
         RoomClientState? clientState = null;
         try
@@ -54,6 +56,13 @@ public sealed record ExecuteWithClientStateCommand<TResult>(
         }
         return new(result, clientState);
     }
+}
+
+// The mutation was never invoked. Kept distinct from validation errors so a
+// scoped caller can receive an explicit cancellation instead of a false ACK.
+public sealed class RoomAlreadyEndedException(RoomClientState state) : Exception("The player's room has ended.")
+{
+    public RoomClientState State { get; } = state;
 }
 
 public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
@@ -298,4 +307,10 @@ public sealed record MoveRoomPlayerCommand(Guid PlayerId, MapPosition Target, lo
         var result = room.MovePlayerAndPair(PlayerId, Target, ExpectedRevision, Now);
         return new(result.Position, result.StartedDuel, result.RoomRevision);
     }
+}
+
+public sealed record ChooseMonsterCardCommand(Guid PlayerId, Guid CandidateId, bool Accept, Guid? ReplaceId,
+    string RequestId, long ExpectedRevision) : IRoomCommand<long>
+{
+    public long Execute(BattleRoom room) => room.DecideMonsterCard(PlayerId, CandidateId, Accept, ReplaceId, RequestId, ExpectedRevision);
 }

@@ -1,0 +1,16 @@
+{
+  "task_id": "LOAD-07.3",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T11:45:47.751304+08:00",
+  "reason": "整体发现并修复无文件上限/全量内存读取缺口；完整OFFLINE159/7套边界及当前4轮5真实客户端LIVE逐项复验，75独立不变量、SQL与资源清理通过。负例容量运行3/3/3/1不通过原样保留。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load073-current-bounded-archive-LIVE-20261017/main-independent-review.json",
+  "human_authorization": "本goal继续自动验收、测试限制与原失败披露授权。",
+  "business_correctness_criteria_relaxed": false,
+  "declared_test_conditions": "T01继承预登记5%资源故障观察线，旧15%容量不通过；T02b每进程4KiB2段小额度为显式故障注入；不改变正式默认。",
+  "scope": "Current bounded audit/session functional LIVE+OFFLINE; no capacity/performance/natural/human/RENDER claim",
+  "new_native_clients": 5,
+  "new_normal_cycles": 0,
+  "old_failed_originals_preserved": true,
+  "rollback": "可回到父register撤销本项验收；源码与完整旧原件均存G，无生产/后端/数值变更。"
+}

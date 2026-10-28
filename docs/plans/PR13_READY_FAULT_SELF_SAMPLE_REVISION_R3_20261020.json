@@ -1,0 +1,28 @@
+{
+  "kind": "ReadyFaultMatrixSelfSamplingRevision",
+  "at_local": "2026-10-20T02:32:18.476191+08:00",
+  "affected_tasks": [
+    "LOAD-04.3",
+    "LOAD-04.4"
+  ],
+  "original_self_new_world_cap": 1,
+  "prior_revised_cap": 2,
+  "revised_self_new_world_cap": 3,
+  "actual_R1_new_worlds": 1,
+  "actual_R2_new_worlds": 1,
+  "R1_R2_whole_Failed_preserved": true,
+  "R3_max_new_worlds": 1,
+  "maximum_player_starts_prior8_revised12": true,
+  "user_task_default_max300_unchanged": true,
+  "reason": "R2 actual Program registry retry exposed production client exhausted speculative snapshot budget before real matching start. Before native regression failed; fix23suites364passed. One fresh cloud world verifies exact missingrequired/reconnect/startloss/actualRegisterconflict combination.",
+  "bounded_product_recovery_change": "ordinary speculative reads3; at most one additional read on current verified start hint; total<=4, same1secondthrottle, original15sdeadline, READYsend3 unchanged",
+  "no_acceptance_deadline_asset_or_production_relaxation": true,
+  "other_task_budgets_not_reset": {
+    "LOAD053": 10,
+    "LOAD054": 3,
+    "LOAD084": 21,
+    "B111": 21,
+    "B112": 27
+  },
+  "must_frozen_before_R3_cloudstart": true
+}

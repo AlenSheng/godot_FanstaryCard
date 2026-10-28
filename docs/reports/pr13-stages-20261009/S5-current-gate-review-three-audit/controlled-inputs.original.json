@@ -1,0 +1,32 @@
+{
+  "main_decision_rejection_input": {
+    "authority": "MAIN",
+    "stage": "S6",
+    "integration_source_sha": "7df782f8268176388e89cc07fcce5e8cabb91a13",
+    "task_decisions": [
+      {
+        "task_id": "LOAD-02.1",
+        "state": "Accepted",
+        "reason": "Controlled rejection probe for a current missing mandatory profile",
+        "evidence": [
+          {
+            "path": "docs/reports/pr13-stages-20261009/S6-after-CI-source-SDK-three-audit/register.json",
+            "bytes": 13257922,
+            "sha256": "0b8e4e083abcc170512cc5f2764d41d4563e10d560efe41ed1254e72e78704d0"
+          }
+        ],
+        "rollback": "Controlled input only; no original register writes",
+        "runtime_review_sha": "7df782f8268176388e89cc07fcce5e8cabb91a13"
+      }
+    ]
+  },
+  "explicit_gate_inputs": {
+    "candidate": "Controlled successful benefit flag; no actual new candidate benefit claim",
+    "capacity": "Blocked from actual current register with 36 missing CAPACITY case profiles"
+  },
+  "specification_ready_but_unexecuted_input": {
+    "executed": false,
+    "status": "NotExecuted",
+    "profiles_executed": []
+  }
+}

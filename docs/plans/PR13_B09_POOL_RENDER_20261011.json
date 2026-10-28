@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "revision": 4,
+  "task_id": "PR13-B09.2",
+  "stage": "S0_for_RENDER",
+  "native_source_sha": "1341e160afc67ba826d4b37250c9ec58f8c99462",
+  "native_witness_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-capacity-wire/summary.json",
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "capacities": [
+    3,
+    5,
+    8
+  ],
+  "cases": [
+    "PR13-B09.2-T01",
+    "PR13-B09.2-T02",
+    "PR13-B09.2-T03"
+  ],
+  "languages": [
+    "zh-CN",
+    "en"
+  ],
+  "window_sizes": [
+    [
+      1920,
+      1080
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      960,
+      540
+    ]
+  ],
+  "frame_caps": [
+    30,
+    60,
+    144
+  ],
+  "controlled_response_delays_ms": [
+    0,
+    250,
+    1000
+  ],
+  "consecutive_cycles_per_profile": 3,
+  "seed_cycles": [
+    460001,
+    461001,
+    462001
+  ],
+  "units": 27,
+  "execution_scheduling": {
+    "logical_units": 27,
+    "owned_language_segments": 54,
+    "reason": "Explicit revision to actual product locales, retaining every non-language matrix dimension and original native witness. Legacy five-language gaps are recorded separately.",
+    "rows_per_language_segment": {
+      "T01": 81,
+      "T02": 81,
+      "T03": 162
+    },
+    "PNGs_per_language_segment": 9,
+    "segment_deadline_seconds": 900,
+    "prior_full_unit_retained": true,
+    "running_native_unit_not_restarted": true,
+    "authenticated_account_multigame_cycles_still_require_separate_evidence": true,
+    "logical_unit_pass_requires_all_configured_languages": true,
+    "total_required_product_rows": 5832,
+    "total_required_product_PNGs": 486
+  },
+  "T01_witness_selection": "All three original seed cycles at occupancy capacity minus one; actual entry and accept click, exact candidate payload and original after snapshot.",
+  "T02_witness_selection": "Original seed cycles select hand, library and discard replacement respectively; full pool initially disables accept, actual dropdown input chooses the active instance and enables accept, base instances retained.",
+  "T03_witness_selection": "Both zero occupancy and full pool for each original seed cycle; actual skip click with no replacement, original after snapshot and no compensation.",
+  "full_unit_rows": {
+    "T01": 162,
+    "T02": 162,
+    "T03": 324
+  },
+  "screenshots_per_full_unit": 18,
+  "source_rule": "Decode original native Protobuf snapshots. Use existing production exploration entry and MonsterPool UI; capture actual mouse/key routes and commands. Response delay is an explicit controlled UI fixture, not WAN or LIVE evidence.",
+  "diagnostic_probe": "Guardian capacity eight full replacement; English 960x540 at frame cap 60, one original hand-replacement seed. One PNG plus operation/geometry observations. This probe cannot grant canonical RENDER acceptance.",
+  "probe_deadline_seconds": 300,
+  "full_unit_deadline_seconds": 900,
+  "normal_shutdown_required": true,
+  "software_renderer": "Pinned X11 Mesa renderer; no hardware FPS, hearing, capacity or human claim",
+  "raw_storage": "Owned persistent bounded output; direct stream to G; independently verify original command bytes, raw members and PNGs before cleanup",
+  "memory_floor_bytes": 500000000,
+  "disk_free_ratio": 0.15,
+  "disk_safety_scope": "Cloud system volume remains at least 15 percent free, including the explicit persistent output reservation; every owned segment is bounded at 64 MiB.",
+  "probe_RAM_output_limit_bytes": 33554432,
+  "full_unit_RAM_output_limit_bytes": 67108864,
+  "production_optional_policy_activated": false,
+  "integration_promotion_allowed": false,
+  "formal_experiment_pending": true,
+  "whole_task_accepted": false,
+  "evidence_capture_recovery": {
+    "original_segment": "Guardian-8-T02-zh-CN",
+    "all_81_actual_command_captures_empty": true,
+    "original_attempt_accepted": false,
+    "original_attempt_preserved": true,
+    "new_attempt_required": true,
+    "freeze_outgoing_evidence_before_authority_response": true,
+    "first_recovery_segment_requires_G_gate_before_next": true
+  },
+  "locale_scope_revision": {
+    "reason": "Original PR13 B10.2-T03 requires Chinese, English and currently configured locales; product configuration exposes zh-CN and en. Three extra languages came from an inherited PR12 matrix, not reachable product locales.",
+    "original_PR13_attachment_lines": {
+      "B09.2": [
+        2579,
+        2597
+      ],
+      "B10.2_T03": 2673
+    },
+    "current_product_spec": "docs/CLIENT_LOCALIZATION.md",
+    "previous_five_language_matrix": {
+      "languages": [
+        "zh-CN",
+        "zh-TW",
+        "en",
+        "ja",
+        "ko"
+      ],
+      "execution_scheduling": {
+        "logical_units": 27,
+        "owned_language_segments": 54,
+        "reason": "Explicit revision to actual product locales, retaining every non-language matrix dimension and original native witness. Legacy five-language gaps are recorded separately.",
+        "rows_per_language_segment": {
+          "T01": 81,
+          "T02": 81,
+          "T03": 162
+        },
+        "PNGs_per_language_segment": 9,
+        "segment_deadline_seconds": 900,
+        "total_required_rows_unchanged": 5832,
+        "total_required_PNGs_unchanged": 486,
+        "prior_full_unit_retained": true,
+        "running_native_unit_not_restarted": true,
+        "authenticated_account_multigame_cycles_still_require_separate_evidence": true,
+        "logical_unit_pass_requires_all_configured_languages": true
+      },
+      "full_unit_rows": {
+        "T01": 405,
+        "T02": 405,
+        "T03": 810
+      },
+      "screenshots_per_full_unit": 45
+    },
+    "legacy_extra_locale_gaps_preserved": [
+      "zh-TW",
+      "ja",
+      "ko"
+    ],
+    "legacy_extra_locales_accepted": false,
+    "zh_TW_original_wire_and_GUI_operations_preserved_as_limited_evidence": true,
+    "zh_TW_rendered_language_acceptance_revoked": true,
+    "existing_native_seeds_resolutions_fps_delays_hero_capacity_cases_unchanged": true
+  },
+  "original_scope_reference": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md",
+  "original_scope_reference_sha256": "4e321ae927ea7b1bcec1aaa561ddf5e877fc84aac1d002b30e6754f99dbf13dc"
+}

@@ -1,0 +1,2090 @@
+{
+  "source_base_sha": "d0d7d9c592769be2d29077af0850b80f69fa9a36",
+  "frontend_overlay": {
+    "client/state/game_store.gd": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7",
+    "client/tests/test_terminal_room_actions.gd": "0c5e741b30e72ed548acf23ff078513094d815fa021e6633469632364ccd7a06",
+    "client/tests/pr13_load02_timeout_stop.gd": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+  },
+  "frontend_git_dirty": true,
+  "execution_host": "Tencent cloud",
+  "ok": true,
+  "unit_suites": 18,
+  "terminal_checks": 24,
+  "actual_postgres_rows": [
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+      "outcome": "Passed"
+    }
+  ],
+  "actual_postgres_counters": {
+    "total": "6",
+    "executed": "6",
+    "passed": "6",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "remaining_schemas": "0",
+  "actual_postgres_cleanup": {
+    "pr13-ordinary-context-fix-pg-attempt1": true,
+    "pr13-ordinary-context-fix-pg-attempt1-pg": true
+  },
+  "inputs_unchanged": true,
+  "full_suite_claim": false,
+  "live_acceptance": false,
+  "capacity_accepted": false,
+  "whole_scope_accepted": false,
+  "prior_unit_exit137_preserved": true,
+  "backend_binary_source_sha": "1c18d89ce4fdb074e6851d8b04312984bcd8a76a",
+  "files": [
+    {
+      "path": "ordinary-context-fix-pg-attempt1/containers.json",
+      "bytes": 909,
+      "sha256": "5dab2460e62095d751847d4eae99787b651c35439e16c9b39e4acdcf36dd58b5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/native.private.log",
+      "bytes": 390,
+      "sha256": "9155e27e82421ade614a849529782b501ebacede216cf1d8dbafe21898552b25"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/preregistration.json",
+      "bytes": 665,
+      "sha256": "16c1c3878da889f36f0a6f4118af1c0de049e32122cdd5b058c3d1d0344990a0"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-ordinary-success-after.json",
+      "bytes": 6943,
+      "sha256": "649ef3cd2f81d9795d021f648664ac5f02cb4cc55dc204e399aa209ecb22b9c8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-ordinary-success-before.json",
+      "bytes": 1679,
+      "sha256": "a3900bbfe19884b14fc47d3600a6b4ea6388dba07bea2c71109622ff484b9cf2"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-recovered-committed-loss-after.json",
+      "bytes": 6949,
+      "sha256": "18e58944d6bff4d8b7414a87c3855b3c7618b0e41bd4ed1be90eaca9d2d5a47d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-recovered-committed-loss-before.json",
+      "bytes": 1688,
+      "sha256": "e6aef8f8600733eefda90cc41fd6d7ba4a0fcbb2b08fd1b147eb24c8668e2423"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-recovered-uncommitted-loss-after.json",
+      "bytes": 6947,
+      "sha256": "adc3dd7298273d233ff119af209cbfe706232561e728e9a7b3fa40d111c50a6f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-audit-guard-recovered-uncommitted-loss-before.json",
+      "bytes": 1689,
+      "sha256": "8616726fca1c9e342f0117e2ecd77e028117ecfce7003a725543186c84661833"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/a05-owned-readonly-audit.sql",
+      "bytes": 2334,
+      "sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/client.log",
+      "bytes": 2226,
+      "sha256": "d558de278ec460ac9bb1ac32662a3146f8121249e09e048f013caf38856261f0"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/ack-cleared.json",
+      "bytes": 253,
+      "sha256": "79ecb9a950d7bba07233b68276cf861f179bb42457c46786528c05bbb97b5706"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/ack-held.json",
+      "bytes": 58,
+      "sha256": "44f47caf940cd2829cf61f0cba8c719f0d0322fec769affbb1ebc98cdd37ad45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/ack-released.json",
+      "bytes": 42,
+      "sha256": "a1bdd55124a7e53f44695c3f499d819e7721fad104896eed421327281979ffa1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/ack-returned.json",
+      "bytes": 219,
+      "sha256": "bc552cef4aa42e2844be499ce3b529752b0b421f9cbbec2ed61cccfd3b2111e5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/confirmed.json",
+      "bytes": 219,
+      "sha256": "b223015405ab171cc448ac8e3a505d4bc7e08eda8f558cd91053542e058428ec"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/context-ready.json",
+      "bytes": 254,
+      "sha256": "1081c64815b9cb8bdddde8c9933e639552718f1475a833bc09d1558495b46cb5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/extract.json",
+      "bytes": 42,
+      "sha256": "4dc0ff424467f0d37ef75e61e52524e1e242cefe2ea9a38971757fdc0a0e1888"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/get-released.json",
+      "bytes": 68,
+      "sha256": "67ff66ba5fbca959f9da575f14631117342bcd747db213e0e88882755c61c1f8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/ordinary-pending.json",
+      "bytes": 44,
+      "sha256": "dcba3d7578a6df4552ccabae950d844ee67a285c8dade42f9bdbbf256f47bd5c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/poll-released.json",
+      "bytes": 66,
+      "sha256": "6d89f756448abb97932e934847fe240d10d4a3ae3c82c973404f44d76c40c570"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/poll-returned-during-ack.json",
+      "bytes": 254,
+      "sha256": "0d61c75e814c3a1eabeb7808f995eab891752436ff21340f016971a4f05bfc2e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/result.json",
+      "bytes": 2685,
+      "sha256": "1fee7d5b66c6251bb9b16cacff2380b099ca6048670ae408ed47d9142b54920c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/control/running.json",
+      "bytes": 255,
+      "sha256": "3b66fdeb40bd4a670c6421f51b3ef8ce73e6f20d74204f5a42b86274aea009bf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/import.log",
+      "bytes": 3381,
+      "sha256": "41501f844d61f28331a72c38bb914846145214b08a375dfd39cadeda6090f682"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/tests/pr13_a05_guard_windows.gd",
+      "bytes": 5963,
+      "sha256": "b715e1dab4cb1f807f4750ee6c77b3b0ebc1ac7aaa74baa891dc9e186ebb6001"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/tests/pr13_a05_guard_windows.gd.uid",
+      "bytes": 20,
+      "sha256": "dbed2fb0554bcba7165ae1813fd48f2ea36eecb4b617050f1c65746ad37db99e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-ordinary-success-4648fd35dce043cab7b180095fa659e2/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/client.log",
+      "bytes": 2251,
+      "sha256": "328bba734f48849c4c05709d13b5767a37dc22d7d0c91bee6230c87c447915d2"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/ack-cleared.json",
+      "bytes": 326,
+      "sha256": "93007749a045147bbc9d802677d2714aa6c670e439ca1171dd657b06fdaf7aa5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/ack-held.json",
+      "bytes": 58,
+      "sha256": "44f47caf940cd2829cf61f0cba8c719f0d0322fec769affbb1ebc98cdd37ad45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/ack-released.json",
+      "bytes": 42,
+      "sha256": "a1bdd55124a7e53f44695c3f499d819e7721fad104896eed421327281979ffa1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/ack-returned.json",
+      "bytes": 220,
+      "sha256": "b90641b2141b67d4e0b1fd202b66975ec09419338a98100296f1717471e36514"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/confirmed.json",
+      "bytes": 220,
+      "sha256": "63e3bfe360738af5ac211b308bed37333d72e5edacd32c50643d2f657e4b01c3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/context-ready.json",
+      "bytes": 291,
+      "sha256": "c901b7622a9fda268489cd265f71f0771a6417c4eaadbd2d7de2c0adf8a7ca68"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/extract.json",
+      "bytes": 50,
+      "sha256": "c3dce24572853ab9babc04bf6e70e05646318d831d7db5e6d7b6c96fa8841dd4"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/get-released.json",
+      "bytes": 68,
+      "sha256": "67ff66ba5fbca959f9da575f14631117342bcd747db213e0e88882755c61c1f8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/poll-released.json",
+      "bytes": 66,
+      "sha256": "6d89f756448abb97932e934847fe240d10d4a3ae3c82c973404f44d76c40c570"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/poll-returned-during-ack.json",
+      "bytes": 327,
+      "sha256": "f7329d91bfd280abba62b7b0edbc4a6a284c0f7c7c2ac071615a8638827ec5c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/restarted.json",
+      "bytes": 17,
+      "sha256": "8c6e44713d62ff4b7e19704fa35e0615eac590ce06d478193755e05461c70a17"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/result.json",
+      "bytes": 2710,
+      "sha256": "e0f5cfbc928d6e500dfdce713c9f1e01bc3cb31c776072deda0042782a4f8e9a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/control/running.json",
+      "bytes": 255,
+      "sha256": "952c6f42858cd9ada0aadb0f90be3cb1c1d70856cf5c6a519c84f6d6f53cd939"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/import.log",
+      "bytes": 3454,
+      "sha256": "858943be18b4c58e5c173074f56d1464fea2caa73cce776bfd7ffe08d4db2be3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/tests/pr13_a05_guard_windows.gd",
+      "bytes": 5963,
+      "sha256": "b715e1dab4cb1f807f4750ee6c77b3b0ebc1ac7aaa74baa891dc9e186ebb6001"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/tests/pr13_a05_guard_windows.gd.uid",
+      "bytes": 20,
+      "sha256": "dbed2fb0554bcba7165ae1813fd48f2ea36eecb4b617050f1c65746ad37db99e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-committed-loss-761cb3422e0a4036a5f6c7197d0799a9/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/client.log",
+      "bytes": 2501,
+      "sha256": "eea8ed750d09f2bd8715fea585e5f1b4a0da97ce702106472d07adbf6e9c54f3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-cleared.json",
+      "bytes": 326,
+      "sha256": "dcd94ae68b0a409ab98b5de431901c484cc8b55971c05e539fbc1a26cc95c24c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-failed-restored.json",
+      "bytes": 1814,
+      "sha256": "b21703a2013965c964440167b994d8b948212e7480d70ec089bd3a3e754cd2e9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-held.json",
+      "bytes": 58,
+      "sha256": "44f47caf940cd2829cf61f0cba8c719f0d0322fec769affbb1ebc98cdd37ad45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-released.json",
+      "bytes": 42,
+      "sha256": "a1bdd55124a7e53f44695c3f499d819e7721fad104896eed421327281979ffa1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-retry.json",
+      "bytes": 49,
+      "sha256": "7e0f2ca231029a6ed91614d88e378ea846cd92839b9d4983d53f38cca08ffb4e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/ack-returned.json",
+      "bytes": 1814,
+      "sha256": "a76f791c9ace8621c3bce469b47ebc2e8119eb23c3e4d074a43a571d2aebcd77"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/confirmed.json",
+      "bytes": 220,
+      "sha256": "92b6cb1d174ccb24b7869855ac6df066acf74a93137640244a62779e329819d4"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/context-ready.json",
+      "bytes": 291,
+      "sha256": "22c865f99ab69537b4192b0a26b9f871226636f33cc08a8d4f9bc4a4d3807190"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/extract.json",
+      "bytes": 52,
+      "sha256": "208084ac89d05e8f4f2d25b818b3648e17c6ba1cd434faf7375843205cc3b5ed"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/get-released.json",
+      "bytes": 68,
+      "sha256": "67ff66ba5fbca959f9da575f14631117342bcd747db213e0e88882755c61c1f8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/poll-released.json",
+      "bytes": 66,
+      "sha256": "6d89f756448abb97932e934847fe240d10d4a3ae3c82c973404f44d76c40c570"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/poll-returned-during-ack.json",
+      "bytes": 327,
+      "sha256": "254a31c483c3ee73621d0e8697f3a55e53affe5bae54ce49aa56b4815376590a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/restarted.json",
+      "bytes": 17,
+      "sha256": "350625c8439420e8e45d7b481f5ab01850bd7d14ff9cba4116127c4997723710"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/result.json",
+      "bytes": 3023,
+      "sha256": "1510802e26bf7283ccdf090c99ccd285fd725be1903ce059b6150f232ce09690"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/control/running.json",
+      "bytes": 255,
+      "sha256": "ba3925d48e5d2752aed7cabd3904d421991d395481f4484f790b9753f2e34ed2"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/import.log",
+      "bytes": 3452,
+      "sha256": "c4596c91a4f26d3b4ede23bd7cf17e7afb1597cfc7395b416249f15fcd23e182"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/tests/pr13_a05_guard_windows.gd",
+      "bytes": 5963,
+      "sha256": "b715e1dab4cb1f807f4750ee6c77b3b0ebc1ac7aaa74baa891dc9e186ebb6001"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/tests/pr13_a05_guard_windows.gd.uid",
+      "bytes": 20,
+      "sha256": "dbed2fb0554bcba7165ae1813fd48f2ea36eecb4b617050f1c65746ad37db99e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-guard-recovered-uncommitted-loss-493ab4b13d6f40cf99d8c7211f09406c/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/STOP",
+      "bytes": 54,
+      "sha256": "4cb07c195faed8351b91c656a345f51c91741fd178374a576d4f67552f31a3a8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/client.log",
+      "bytes": 74,
+      "sha256": "97be7013c3d3be2166d829b04e25db6707c00c586edf3116758620c44f431b19"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/import.log",
+      "bytes": 3512,
+      "sha256": "2456282bd8283e68e24d94622e2237a7c8d4f73973cead734f48c586dfa9ba08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json",
+      "bytes": 166022,
+      "sha256": "9fbc50cf46c5ab12ead643ee6c66a5dc971b5ad007c1a89cd38732ce2a346fb0"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json.accounting.json",
+      "bytes": 3466,
+      "sha256": "57c3a3c4f4b91bb3dfcdc85caaf9994baaa6446f193badad6d14456008ea50ed"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json.started.json",
+      "bytes": 1840,
+      "sha256": "d3851ec37196433708492501fa7e96dc106d68d8aadabc5dfb112ab6f64b48f0"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json.status.json",
+      "bytes": 141511,
+      "sha256": "f92c1a98d047bcfa0ca13f68d9127f5692f77b5df0777edced96f12c78f16a0f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json.stop-observed.json",
+      "bytes": 2642,
+      "sha256": "6975e6659a26c9b34106906f2870694b18c151fe1a7fd8cb64eb7923a0039914"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load-result.json.telemetry.jsonl",
+      "bytes": 101262,
+      "sha256": "7515f47be5aecfa1add2fc307eed1625507b3e4895753d08f95aad2d4b29c56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/load02-source-manifest.json",
+      "bytes": 4308,
+      "sha256": "cfe01efed6f0f0122822254d4f063dede2a82b87f744557d8409c0a635150118"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/gameplay_load_client.gd",
+      "bytes": 40322,
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/gameplay_load_client.gd.uid",
+      "bytes": 20,
+      "sha256": "e54093501a03596325d7f5d1b17dfdc61974f4250245f912ec664218a44b66aa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/pr13_load02_timeout_stop.gd",
+      "bytes": 5739,
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/tests/pr13_load02_timeout_stop.gd.uid",
+      "bytes": 19,
+      "sha256": "29e526547e635c74b20953dbef7c52d0573a8729f33472063b9c1d791a543114"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-committed-unknown-stop-4b9ae529ec244034a6419df37be077b8/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/STOP",
+      "bytes": 54,
+      "sha256": "4cb07c195faed8351b91c656a345f51c91741fd178374a576d4f67552f31a3a8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/client.log",
+      "bytes": 74,
+      "sha256": "97be7013c3d3be2166d829b04e25db6707c00c586edf3116758620c44f431b19"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/import.log",
+      "bytes": 3439,
+      "sha256": "12b74e1a4ae7629f93119b63ef374688d87e0eda52fb393a2a991f0543883799"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json",
+      "bytes": 152545,
+      "sha256": "10bb76ac2ded7edf835dfdcd5963c9c827529706a69eecd2253b219bf13dc55a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json.accounting.json",
+      "bytes": 3265,
+      "sha256": "9df47a423c099cf5a2fc13a261118d766275c826af6fc9157f05a9db04933117"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json.started.json",
+      "bytes": 1804,
+      "sha256": "e03daff5cfde57a7d597bde03a2dca783d1f9525099d1b098ca5508ab46f57ae"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json.status.json",
+      "bytes": 129698,
+      "sha256": "e3c35a1b4b36efc6ae3f70a66281d1edf193b720cb5dd6fe4206b13a4d561822"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json.stop-observed.json",
+      "bytes": 2447,
+      "sha256": "985861b04f93a1fd6e043faaa618e1011f788169841c6885752c89d5e352a0b4"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load-result.json.telemetry.jsonl",
+      "bytes": 92454,
+      "sha256": "e4883351528121e3c9510dc6f02ca1cf16eeb535735d70592cb52d77bda898ac"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/load02-source-manifest.json",
+      "bytes": 4308,
+      "sha256": "cfe01efed6f0f0122822254d4f063dede2a82b87f744557d8409c0a635150118"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/gameplay_load_client.gd",
+      "bytes": 40322,
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/gameplay_load_client.gd.uid",
+      "bytes": 20,
+      "sha256": "e54093501a03596325d7f5d1b17dfdc61974f4250245f912ec664218a44b66aa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/pr13_load02_timeout_stop.gd",
+      "bytes": 5739,
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/tests/pr13_load02_timeout_stop.gd.uid",
+      "bytes": 19,
+      "sha256": "29e526547e635c74b20953dbef7c52d0573a8729f33472063b9c1d791a543114"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-normal-wait-stop-d9435ac964974d4786b9937592d1cbdc/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/STOP",
+      "bytes": 54,
+      "sha256": "4cb07c195faed8351b91c656a345f51c91741fd178374a576d4f67552f31a3a8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/client.log",
+      "bytes": 74,
+      "sha256": "97be7013c3d3be2166d829b04e25db6707c00c586edf3116758620c44f431b19"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_battle.json",
+      "bytes": 3617,
+      "sha256": "d96c4edd252602246368a9154022f039d3c4798c1bd6fc20b25be6ff0f4cf1c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_templates.json",
+      "bytes": 5787,
+      "sha256": "959aea99fecabc89a2ddd3ab36e21b9a86da27c3a635522a35c1fab3abcb37b9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/import.log",
+      "bytes": 3439,
+      "sha256": "12b74e1a4ae7629f93119b63ef374688d87e0eda52fb393a2a991f0543883799"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json",
+      "bytes": 37776,
+      "sha256": "f37e0578cb25e79af2e9c1eee4dd3fe742d73c1b7c295da511a3ddfc21996d88"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.accounting.json",
+      "bytes": 2803,
+      "sha256": "5a287f139672a1bfc41caae90b057261727743d292edf12d4998ca9c7e7215d8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.first-failure.json",
+      "bytes": 2101,
+      "sha256": "d690b5d66dc5cbf660a9e735475bd3b0ea9accf4ce081529bb9525ccaca9ecbd"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.started.json",
+      "bytes": 1822,
+      "sha256": "1cf9fdb44d5784f1d7eeb8552b5d5f1245b213f0f22c8d39717ba6fef30db1f2"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.status.json",
+      "bytes": 31938,
+      "sha256": "f006b973c6b4c751a07ac417c0da25386cc27c617fd9a372e33c5ac02a224fe2"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.stop-observed.json",
+      "bytes": 2104,
+      "sha256": "1995da04bd68791beeaba967d9f83456b36c1cb9cc4ba212a8cee4e059bc0ad3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load-result.json.telemetry.jsonl",
+      "bytes": 22723,
+      "sha256": "f04f5c2efaf234a0663cbe79ef099f0ae465d898470bc9f81c4a6f1d4f546363"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/load02-source-manifest.json",
+      "bytes": 4308,
+      "sha256": "cfe01efed6f0f0122822254d4f063dede2a82b87f744557d8409c0a635150118"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/gateway.gd",
+      "bytes": 38896,
+      "sha256": "bc725dacc52fa7d23a6ff6eacdd68c8b03fe72415bb95c51d0cee7ff334429bb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "36b14b7f5bde3d0320347f411de291a18507caffd06038817fba7a625d80f9c5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/reusable_http_client.gd",
+      "bytes": 5859,
+      "sha256": "006a279017c0ad72971f1694dfd5f494321e65c11263b3d9e5cf6dc3ee01be45"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/network/reusable_http_client.gd.uid",
+      "bytes": 20,
+      "sha256": "203511f1e2a87385063d94c845618e9e6f1eb7ad2b6f7c273cf891eb5383d7f9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "18594e453d23855f676eea1a402095d66fc89a10c6d192f6b34d3370625dc675"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "1c827a80e63bced1974da86b48f6438efa06e8b7e3a67db5c1b63ad9c71295ca"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/gameplay_load_client.gd",
+      "bytes": 40322,
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/gameplay_load_client.gd.uid",
+      "bytes": 20,
+      "sha256": "e54093501a03596325d7f5d1b17dfdc61974f4250245f912ec664218a44b66aa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/pr13_load02_timeout_stop.gd",
+      "bytes": 5739,
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/tests/pr13_load02_timeout_stop.gd.uid",
+      "bytes": 19,
+      "sha256": "29e526547e635c74b20953dbef7c52d0573a8729f33472063b9c1d791a543114"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/ui/palette.gd",
+      "bytes": 34758,
+      "sha256": "9399db0095b63349b14e053b30d5c04856ca661d95074fec3242701811da6bbf"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/ack-client-load02-timeout-before-stop-38aba7ba07814bc6832bd2f55bc289b3/ui/palette.gd.uid",
+      "bytes": 20,
+      "sha256": "f8b3cf4ee2b0fe6019c4f52e6da7f263653499abcf6a672688c0bc29d12a5bf1"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-before-409.log",
+      "bytes": 1288,
+      "sha256": "44da7f3b245c8e6b98366f447e19c412f8d870d1876b2bdaf193a9bb4c58b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-bootstrap-1.pb",
+      "bytes": 36230,
+      "sha256": "05800ea121c0cc7ae91e5d860fbd34e1ea06f6967a5743e20e3d04a3d7ccaffa"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-bootstrap-2.pb",
+      "bytes": 36118,
+      "sha256": "e6d6cff52cd539bf2e614076f857634b2d532e7dc91884096e2d4359e330d72d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-bootstrap-3.pb",
+      "bytes": 36622,
+      "sha256": "0045cee61ea9f8f98557b2a68ea3bd6fd4ffa3e7d25a4134ef7f17ace8ab3ee7"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-bootstrap-4.pb",
+      "bytes": 36207,
+      "sha256": "b4bb8f0ded73bc7d201390254833d6edea3527bb644c54d65283fd063cea5c3e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-ordinary-success-settlement-get.pb",
+      "bytes": 412,
+      "sha256": "80d3fda132b2b7948c78239cdeb5e80a1e1148ef4bcd91e058c08d597f87cd9f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-after-385.log",
+      "bytes": 1288,
+      "sha256": "ab2c30e25834ea86afdacc154541f84a88d0005cb2beed5236b8fcb53c55ada8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-before-333.log",
+      "bytes": 1288,
+      "sha256": "ab2c30e25834ea86afdacc154541f84a88d0005cb2beed5236b8fcb53c55ada8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-1.pb",
+      "bytes": 36230,
+      "sha256": "1beb351bdbcff5b5e162a6a3d8e09483ebce457a6ad3b67c39c8a4d225adb410"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-2.pb",
+      "bytes": 36118,
+      "sha256": "15a4351fbf69cffab231db8bf1cbbe871b00c074963c1bd77e7bf6655d7b89b8"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-3.pb",
+      "bytes": 36118,
+      "sha256": "b3172c952fc68e9a2c5d082cdf6b6166fb53caf05e1970ae3b97121d1fdb9cbd"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-4.pb",
+      "bytes": 36622,
+      "sha256": "ad7051ee4b20c97a6d0eafd52b4b8fd35d8dc33492cf0d1824daf70bffd32c52"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-5.pb",
+      "bytes": 36207,
+      "sha256": "5e918e88d35d202b135194a2bc0e75c85925643fbc61f669acec734cf54158a5"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-bootstrap-6.pb",
+      "bytes": 36207,
+      "sha256": "50240e69e23b17a624db8057aec9c2a84e2f8bee321bc2f56a871934ec5ac470"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-committed-loss-settlement-get.pb",
+      "bytes": 412,
+      "sha256": "26f3a9a6e2156772d2320dfed9c0686a2a4feb000fc41fc5322f7c046227b62d"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-after-311.log",
+      "bytes": 1288,
+      "sha256": "0cb4b821c68939284c30cd7356c1fa6fbd83ea5842dba9d33f70bfcea4dbb8df"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-before-261.log",
+      "bytes": 1288,
+      "sha256": "0cb4b821c68939284c30cd7356c1fa6fbd83ea5842dba9d33f70bfcea4dbb8df"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-1.pb",
+      "bytes": 36230,
+      "sha256": "1cd41429d8437a011a649d3cbb6ce12cc0a39427fe82ef3bf57c50a4999e03f4"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-2.pb",
+      "bytes": 36118,
+      "sha256": "5d63140476317a23903767a45f3f6b65ea05ce01761fe54dc8ce77e98f4aff48"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-3.pb",
+      "bytes": 36118,
+      "sha256": "f8e554de31168c0b99d6c13a660099b9755a20d4020076019a71a4ff0260fa75"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-4.pb",
+      "bytes": 36622,
+      "sha256": "81fbf801fe617495ae2232ac3d895eac51914dad5bc77ac82a80767683a0778a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-5.pb",
+      "bytes": 36622,
+      "sha256": "a414c64d1a2481d53347a046140f346282259adcc3bbfcb2ea57b900cd6557fe"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-bootstrap-6.pb",
+      "bytes": 36207,
+      "sha256": "b099a23ca492f5acdb4fff91af980da74b126740c3e0c26bcbab30ae46a8b737"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/guard-recovered-uncommitted-loss-settlement-get.pb",
+      "bytes": 412,
+      "sha256": "34c5d96911f4c3bf3ba1e1e1e70183c698133ca0e605d9d831e0e4d9fd14995a"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/load02-committed-unknown-stop-199.log",
+      "bytes": 1288,
+      "sha256": "e9c4381464f51deaaa560fd866c84d92684b919a9bf94f84790fdc60dee2ca62"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/load02-normal-wait-stop-90.log",
+      "bytes": 1288,
+      "sha256": "d15ec0d706c6d9d901b9f4598e2018d20339af085550caa02ce5635450662a5f"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/load02-timeout-before-stop-146.log",
+      "bytes": 1288,
+      "sha256": "12b0d4840a6603be48da27ad9cfeebe3d61d7730b15a554dffb216d1252ceabe"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/process-faults/receipts.jsonl",
+      "bytes": 462261,
+      "sha256": "7114bd73080062716753d2a4cfdfb8990e79e2e983d34b270ac951eb82d47283"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/result.json",
+      "bytes": 2739,
+      "sha256": "831cce0ae92be5c114b4173f09d6e94dd4b778c2e9a6e933b45dcc9e67bdce0e"
+    },
+    {
+      "path": "ordinary-context-fix-pg-attempt1/targeted.trx",
+      "bytes": 464801,
+      "sha256": "9bc229bb143d64d546d867b0d437c9db8edafcaf57956f74fecd5a28c7de8086"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/executed-inputs/client/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/executed-inputs/client/tests/pr13_load02_timeout_stop.gd",
+      "bytes": 5739,
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/executed-inputs/client/tests/test_terminal_room_actions.gd",
+      "bytes": 4559,
+      "sha256": "0c5e741b30e72ed548acf23ff078513094d815fa021e6633469632364ccd7a06"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/preregistration.json",
+      "bytes": 265448,
+      "sha256": "36ba07fd1ceaf8123f158bcc78282492448a8f5f4582cea6361921901ad802f1"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/regressions.private.log",
+      "bytes": 7694,
+      "sha256": "3ea55a98c1ed3ff81dcd4e9a5aecf4fc6d3681e0a750357dae877921a79b8c31"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt1/result.json",
+      "bytes": 3134,
+      "sha256": "0b54ff06e0828f5edddcda6fb1d663fb828d1a31e879661e46fc54ec359848c3"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/executed-inputs/client/state/game_store.gd",
+      "bytes": 90144,
+      "sha256": "e080ab68a201c8e7d105ee24151d03710ab83b8e8e627034bb4fe5b505d3b4d7"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/executed-inputs/client/tests/pr13_load02_timeout_stop.gd",
+      "bytes": 5739,
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/executed-inputs/client/tests/test_terminal_room_actions.gd",
+      "bytes": 4559,
+      "sha256": "0c5e741b30e72ed548acf23ff078513094d815fa021e6633469632364ccd7a06"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/preregistration.json",
+      "bytes": 265555,
+      "sha256": "59b913d7a0b3952745edb306f5d791422e496e94d38a5cf8ff672d5a39d3b730"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/regressions.private.log",
+      "bytes": 9794,
+      "sha256": "f32a00ddc0c6548605d66080d469eabbb5cb94a9d5d3c1aa576269487841d843"
+    },
+    {
+      "path": "ordinary-context-fix-unit-attempt2/result.json",
+      "bytes": 3650,
+      "sha256": "b22e2f35afb3d4de9e8cac0e7cc52e2d0998dba781236f274a5be84f737365d0"
+    }
+  ],
+  "private_archive": {
+    "bytes": 1210623,
+    "sha256": "e655704e44efc87890c8857b7288699d8b63f11f1109bd124bf0900c4fb7bf31",
+    "constituents_verified": 400
+  },
+  "staged_git_blobs_match_native_execution": true,
+  "original_ci_failure": {
+    "source_sha": "d0d7d9c592769be2d29077af0850b80f69fa9a36",
+    "run_id": 37980245207,
+    "counts": {
+      "passed": 339,
+      "failed": 2,
+      "skipped": 1,
+      "total": 342
+    },
+    "artifact_bytes": 3268810,
+    "artifact_sha256": "d8f1ebeac3b99dc0f7bc2c4736846b324b1b0dbb58246a08bc03c7c49eaad858",
+    "private_files": 1106
+  }
+}

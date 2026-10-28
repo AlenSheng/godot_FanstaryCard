@@ -1,0 +1,1752 @@
+{
+  "ok": true,
+  "Accepted": false,
+  "error": null,
+  "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "source_dirty": [],
+  "case_count": 10,
+  "planned_case_count": 10,
+  "passed_case_count": 10,
+  "cases": [
+    {
+      "case": "normal_ready",
+      "canonical_case_id": "LOAD-04.4-T01",
+      "expected": "Real normal READY followed by coordinator drain; one room, clear route/assets.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "01a0f408-c378-7893-a17f-1e950e497dee",
+        "case": "normal_ready",
+        "checks": [
+          {
+            "at_unix_ms": 1790800579266,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800579333,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800579438,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800579533,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800579802,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800579884,
+            "name": "enqueue_match",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800610825,
+            "name": "room_started",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "01a0f408-c378-7893-a17f-1e950e497dee",
+        "observed_room_id": "01a0f408-c378-7785-b029-2551ed2eba8a",
+        "own_user_id": "01a0f408-4847-79bc-91d3-d213093b793d",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 1,
+        "required_delivered": 1,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [
+          "pong"
+        ],
+        "stop_boundary": "room_started_then_stop",
+        "ticket_reads": 15,
+        "trace": [
+          {
+            "at_ms": 2373,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 4557,
+            "event": "ticket_response",
+            "read_no": 2,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 6724,
+            "event": "ticket_response",
+            "read_no": 3,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 8890,
+            "event": "ticket_response",
+            "read_no": 4,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 11056,
+            "event": "ticket_response",
+            "read_no": 5,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 13223,
+            "event": "ticket_response",
+            "read_no": 6,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 15390,
+            "event": "ticket_response",
+            "read_no": 7,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 17556,
+            "event": "ticket_response",
+            "read_no": 8,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 19723,
+            "event": "ticket_response",
+            "read_no": 9,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 21889,
+            "event": "ticket_response",
+            "read_no": 10,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 24063,
+            "event": "ticket_response",
+            "read_no": 11,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 26229,
+            "event": "ticket_response",
+            "read_no": 12,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 28413,
+            "event": "ticket_response",
+            "read_no": 13,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 30579,
+            "event": "ticket_response",
+            "read_no": 14,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 32629,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 32746,
+            "event": "ticket_response",
+            "read_no": 15,
+            "status": "Matched"
+          },
+          {
+            "after_stop": false,
+            "at_ms": 32746,
+            "event": "room.ready.attempt",
+            "online": true
+          },
+          {
+            "at_ms": 33279,
+            "boundary": "room_started_then_stop",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 1,
+        "rooms": 1,
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "normal_ready/client.json",
+        "normal_ready/postgres-postconditions.json",
+        "normal_ready-godot.log",
+        "normal_ready/server.log"
+      ]
+    },
+    {
+      "case": "required_lost_reconnect",
+      "canonical_case_id": "LOAD-04.4-T01",
+      "expected": "Drop first real required frame, disconnect, restore authoritative same room on reconnect.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "01a0f409-58cb-738f-b05d-27cee4c650c3",
+        "case": "required_lost_reconnect",
+        "checks": [
+          {
+            "at_unix_ms": 1790800617382,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800617465,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800617640,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800617849,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800617983,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800618066,
+            "name": "enqueue_match",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800650096,
+            "name": "room_started",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 3,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "01a0f409-58cb-738f-b05d-27cee4c650c3",
+        "observed_room_id": "01a0f409-58cb-7b98-8e38-1c16b3bee00d",
+        "own_user_id": "01a0f408-dcec-73d0-af50-67a4c7480e40",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 2,
+        "required_delivered": 3,
+        "required_dropped": true,
+        "route_probe_clear": true,
+        "route_probe_events": [
+          "pong"
+        ],
+        "stop_boundary": "room_started_then_stop",
+        "ticket_reads": 15,
+        "trace": [
+          {
+            "at_ms": 2540,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 4708,
+            "event": "ticket_response",
+            "read_no": 2,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 6874,
+            "event": "ticket_response",
+            "read_no": 3,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 9040,
+            "event": "ticket_response",
+            "read_no": 4,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 11206,
+            "event": "ticket_response",
+            "read_no": 5,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 13415,
+            "event": "ticket_response",
+            "read_no": 6,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 15554,
+            "event": "ticket_response",
+            "read_no": 7,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 17720,
+            "event": "ticket_response",
+            "read_no": 8,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 19904,
+            "event": "ticket_response",
+            "read_no": 9,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 22071,
+            "event": "ticket_response",
+            "read_no": 10,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 24253,
+            "event": "ticket_response",
+            "read_no": 11,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 26420,
+            "event": "ticket_response",
+            "read_no": 12,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 28586,
+            "event": "ticket_response",
+            "read_no": 13,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 30770,
+            "event": "ticket_response",
+            "read_no": 14,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 32854,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 32854,
+            "event": "required_dropped_disconnect",
+            "sequence_before": 5
+          },
+          {
+            "at_ms": 32940,
+            "event": "ticket_response",
+            "read_no": 15,
+            "status": "Matched"
+          },
+          {
+            "after_stop": false,
+            "at_ms": 32940,
+            "event": "room.ready.attempt",
+            "online": false
+          },
+          {
+            "at_ms": 33936,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 33953,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 33954,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "after_stop": false,
+            "at_ms": 33986,
+            "event": "room.ready.attempt",
+            "online": true
+          },
+          {
+            "at_ms": 34536,
+            "boundary": "room_started_then_stop",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 1,
+        "rooms": 1,
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "required_lost_reconnect/client.json",
+        "required_lost_reconnect/postgres-postconditions.json",
+        "required_lost_reconnect-godot.log",
+        "required_lost_reconnect/server.log"
+      ]
+    },
+    {
+      "case": "stop_prepare_await",
+      "canonical_case_id": "LOAD-04.4-T03",
+      "expected": "STOP while real preparation response awaits delivery; cancel preparation.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "",
+        "case": "stop_prepare_await",
+        "checks": [
+          {
+            "at_unix_ms": 1790800655763,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800655813,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800655902,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800656096,
+            "name": "hero_class_confirmed",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f409-732c-75e5-8740-1f13ccbe697e",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 0,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [],
+        "stop_boundary": "prepare_response_held",
+        "ticket_reads": 0,
+        "trace": [
+          {
+            "at_ms": 2059,
+            "boundary": "prepare_response_held",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [],
+        "human_match_states": [],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 0,
+        "ready_deadline_seconds": []
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_prepare_await/client.json",
+        "stop_prepare_await/postgres-postconditions.json",
+        "stop_prepare_await-godot.log",
+        "stop_prepare_await/server.log"
+      ]
+    },
+    {
+      "case": "stop_enqueue_await",
+      "canonical_case_id": "LOAD-04.4-T03",
+      "expected": "STOP while real enqueue response awaits delivery; cancel queued ticket.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "",
+        "case": "stop_enqueue_await",
+        "checks": [
+          {
+            "at_unix_ms": 1790800661255,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800661305,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800661411,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800661505,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800661656,
+            "name": "create_free_preparation",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f409-8877-778d-95c1-a42744c10968",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 0,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [],
+        "stop_boundary": "enqueue_response_held",
+        "ticket_reads": 0,
+        "trace": [
+          {
+            "at_ms": 1899,
+            "boundary": "enqueue_response_held",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "human_match_states": [],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 0,
+        "ready_deadline_seconds": []
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_enqueue_await/client.json",
+        "stop_enqueue_await/postgres-postconditions.json",
+        "stop_enqueue_await-godot.log",
+        "stop_enqueue_await/server.log"
+      ]
+    },
+    {
+      "case": "stop_ticket_await",
+      "canonical_case_id": "LOAD-04.4-T03",
+      "expected": "STOP while real queued ticket response awaits delivery; cancel ticket and no READY after STOP.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "",
+        "case": "stop_ticket_await",
+        "checks": [
+          {
+            "at_unix_ms": 1790800666749,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800666782,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800666904,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800667000,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800667150,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800667285,
+            "name": "enqueue_match",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f409-9dfb-7cae-8592-d7b26e7b8838",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 0,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [],
+        "stop_boundary": "ticket_response_held",
+        "ticket_reads": 1,
+        "trace": [
+          {
+            "at_ms": 2046,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 2046,
+            "boundary": "ticket_response_held",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "human_match_states": [],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 0,
+        "ready_deadline_seconds": []
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_ticket_await/client.json",
+        "stop_ticket_await/postgres-postconditions.json",
+        "stop_ticket_await-godot.log",
+        "stop_ticket_await/server.log"
+      ]
+    },
+    {
+      "case": "stop_queue_wait",
+      "canonical_case_id": "LOAD-04.4-T03",
+      "expected": "STOP in queued wait; cancel ticket and release assets/route.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "",
+        "case": "stop_queue_wait",
+        "checks": [
+          {
+            "at_unix_ms": 1790800672228,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800672278,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800672402,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800672495,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800672662,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800672745,
+            "name": "enqueue_match",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f409-b369-7c58-8531-9daa54c54eee",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 0,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [],
+        "stop_boundary": "queued_wait",
+        "ticket_reads": 1,
+        "trace": [
+          {
+            "at_ms": 2193,
+            "boundary": "queued_wait",
+            "event": "coordinator_stop"
+          },
+          {
+            "at_ms": 2227,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "human_match_states": [],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 0,
+        "ready_deadline_seconds": []
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_queue_wait/client.json",
+        "stop_queue_wait/postgres-postconditions.json",
+        "stop_queue_wait-godot.log",
+        "stop_queue_wait/server.log"
+      ]
+    },
+    {
+      "case": "stop_ready_enqueue_await",
+      "canonical_case_id": "PR13-A04.4-T01",
+      "expected": "Real READY arrives during enqueue await; STOP prevents send, actual 15s deadline removes player and releases holds.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "01a0f40a-4356-74db-bc17-62a117056945",
+        "case": "stop_ready_enqueue_await",
+        "checks": [
+          {
+            "at_unix_ms": 1790800677563,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800677597,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800677720,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800677814,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800677947,
+            "name": "create_free_preparation",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [
+          {
+            "at_unix_ms": 1790800708732,
+            "message": "Match ticket is not queued or does not belong to the player."
+          },
+          {
+            "at_unix_ms": 1790800708732,
+            "message": "Match ticket is not queued or does not belong to the player."
+          }
+        ],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f409-c82f-78b6-9a91-180cc96993a7",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 1,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [
+          "pong"
+        ],
+        "stop_boundary": "ready_during_enqueue_await",
+        "ticket_reads": 0,
+        "trace": [
+          {
+            "at_ms": 32550,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 32566,
+            "boundary": "ready_during_enqueue_await",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_ready_enqueue_await/client.json",
+        "stop_ready_enqueue_await/postgres-postconditions.json",
+        "stop_ready_enqueue_await-godot.log",
+        "stop_ready_enqueue_await/server.log"
+      ]
+    },
+    {
+      "case": "stop_ready_before_send",
+      "canonical_case_id": "PR13-A04.4-T01",
+      "expected": "STOP at actual READY event before send; cancellation or actual deadline removes player and releases holds.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "01a0f40b-08a6-7b0a-9e23-44a07c10a494",
+        "case": "stop_ready_before_send",
+        "checks": [
+          {
+            "at_unix_ms": 1790800728457,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800728490,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800728612,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800728707,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800728841,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800728907,
+            "name": "enqueue_match",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [
+          {
+            "at_unix_ms": 1790800759243,
+            "message": "Match ticket is not queued or does not belong to the player."
+          },
+          {
+            "at_unix_ms": 1790800759243,
+            "message": "Match ticket is not queued or does not belong to the player."
+          }
+        ],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f40a-8f2e-7d85-b8e3-96ffceee12f6",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 1,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [
+          "pong"
+        ],
+        "stop_boundary": "ready_before_send",
+        "ticket_reads": 14,
+        "trace": [
+          {
+            "at_ms": 1958,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 4108,
+            "event": "ticket_response",
+            "read_no": 2,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 6263,
+            "event": "ticket_response",
+            "read_no": 3,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 8429,
+            "event": "ticket_response",
+            "read_no": 4,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 10596,
+            "event": "ticket_response",
+            "read_no": 5,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 12763,
+            "event": "ticket_response",
+            "read_no": 6,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 14929,
+            "event": "ticket_response",
+            "read_no": 7,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 17096,
+            "event": "ticket_response",
+            "read_no": 8,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 19262,
+            "event": "ticket_response",
+            "read_no": 9,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 21429,
+            "event": "ticket_response",
+            "read_no": 10,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 23570,
+            "event": "ticket_response",
+            "read_no": 11,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 25736,
+            "event": "ticket_response",
+            "read_no": 12,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 27893,
+            "event": "ticket_response",
+            "read_no": 13,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 30059,
+            "event": "ticket_response",
+            "read_no": 14,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 31980,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 31980,
+            "boundary": "ready_before_send",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Removed"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 1,
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "stop_ready_before_send/client.json",
+        "stop_ready_before_send/postgres-postconditions.json",
+        "stop_ready_before_send-godot.log",
+        "stop_ready_before_send/server.log"
+      ]
+    },
+    {
+      "case": "late_required_duplicate",
+      "canonical_case_id": "LOAD-04.4-T01",
+      "expected": "Deliver the real delayed required packet twice after READY dispatch; decoder sequence filtering and room context remain correct.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "01a0f40b-cd1f-713a-acdf-2527b1436bff",
+        "case": "late_required_duplicate",
+        "checks": [
+          {
+            "at_unix_ms": 1790800778665,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800778731,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800778853,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800778949,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800779083,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800779166,
+            "name": "enqueue_match",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800810314,
+            "name": "room_started",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "01a0f40b-cd1f-713a-acdf-2527b1436bff",
+        "observed_room_id": "01a0f40b-cd20-715a-825b-1f47e2dfcbe2",
+        "own_user_id": "01a0f40b-533a-7de2-b409-41288367fb0d",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 1,
+        "required_delivered": 1,
+        "required_dropped": true,
+        "route_probe_clear": true,
+        "route_probe_events": [
+          "settlement.ready",
+          "match.settled",
+          "pong"
+        ],
+        "stop_boundary": "room_started_then_stop",
+        "ticket_reads": 15,
+        "trace": [
+          {
+            "at_ms": 1938,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 4085,
+            "event": "ticket_response",
+            "read_no": 2,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 6252,
+            "event": "ticket_response",
+            "read_no": 3,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 8418,
+            "event": "ticket_response",
+            "read_no": 4,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 10585,
+            "event": "ticket_response",
+            "read_no": 5,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 12751,
+            "event": "ticket_response",
+            "read_no": 6,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 14918,
+            "event": "ticket_response",
+            "read_no": 7,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 17084,
+            "event": "ticket_response",
+            "read_no": 8,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 19252,
+            "event": "ticket_response",
+            "read_no": 9,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 21417,
+            "event": "ticket_response",
+            "read_no": 10,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 23584,
+            "event": "ticket_response",
+            "read_no": 11,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 25751,
+            "event": "ticket_response",
+            "read_no": 12,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 27917,
+            "event": "ticket_response",
+            "read_no": 13,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 30084,
+            "event": "ticket_response",
+            "read_no": 14,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 31986,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 32250,
+            "event": "ticket_response",
+            "read_no": 15,
+            "status": "Matched"
+          },
+          {
+            "after_stop": false,
+            "at_ms": 32251,
+            "event": "room.ready.attempt",
+            "online": true
+          },
+          {
+            "at_ms": 32283,
+            "event": "required_transport_boundary",
+            "ticket_inflight": false
+          },
+          {
+            "at_ms": 32751,
+            "event": "late_required_duplicate_delivered"
+          },
+          {
+            "at_ms": 33050,
+            "boundary": "room_started_then_stop",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Settled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Matched"
+          }
+        ],
+        "human_match_states": [
+          {
+            "state": "Settled"
+          }
+        ],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 0,
+        "pending_settlement_holds": 0,
+        "settlements": 1,
+        "rooms": 1,
+        "ready_deadline_seconds": [
+          15.0
+        ]
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "late_required_duplicate/client.json",
+        "late_required_duplicate/postgres-postconditions.json",
+        "late_required_duplicate-godot.log",
+        "late_required_duplicate/server.log"
+      ]
+    },
+    {
+      "case": "late_accepted_before_ticket",
+      "canonical_case_id": "LOAD-04.4-T01",
+      "expected": "SupportOnly synthetic stale accepted packet through real decoder must not suppress authoritative current ticket reads.",
+      "actual": {
+        "Accepted": false,
+        "active_match_id": "",
+        "case": "late_accepted_before_ticket",
+        "checks": [
+          {
+            "at_unix_ms": 1790800843897,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800843947,
+            "name": "owned_equipment_fixture_seeded",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800844055,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800844147,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800844315,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1790800844399,
+            "name": "enqueue_match",
+            "passed": true
+          }
+        ],
+        "cleanup": {
+          "active_preparation": null,
+          "reason": "server_state_clear",
+          "state": "Passed",
+          "unfinished_match": null,
+          "unfinished_settlement": null
+        },
+        "client_preparation": {},
+        "client_ready_prompt": {},
+        "client_room": false,
+        "client_settlement": false,
+        "client_ticket": {},
+        "connected_count": 1,
+        "coverage": "SupportOnly",
+        "errors": [],
+        "local_terminal": true,
+        "message": "Coordinator cancelled current cycle",
+        "observed_match_id": "",
+        "observed_room_id": "",
+        "own_user_id": "01a0f40c-51c7-788a-96b7-5e295a30d198",
+        "passed": true,
+        "ready_send_after_stop": 0,
+        "ready_send_count": 0,
+        "required_delivered": 0,
+        "required_dropped": false,
+        "route_probe_clear": true,
+        "route_probe_events": [],
+        "stop_boundary": "support_observation_window_complete",
+        "ticket_reads": 2,
+        "trace": [
+          {
+            "at_ms": 2145,
+            "event": "synthetic_old_cycle_packet",
+            "support_only": true
+          },
+          {
+            "at_ms": 2211,
+            "event": "ticket_response",
+            "read_no": 1,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 4377,
+            "event": "ticket_response",
+            "read_no": 2,
+            "status": "Queued"
+          },
+          {
+            "at_ms": 5670,
+            "boundary": "support_observation_window_complete",
+            "event": "coordinator_stop"
+          }
+        ]
+      },
+      "postgres": {
+        "preparations": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "tickets": [
+          {
+            "status": "Cancelled"
+          }
+        ],
+        "human_match_states": [],
+        "locked_equipment": 0,
+        "preparation_asset_rows": 1,
+        "equipment_locks": 1,
+        "equipment_releases": 1,
+        "pending_settlement_holds": 0,
+        "settlements": 0,
+        "rooms": 0,
+        "ready_deadline_seconds": []
+      },
+      "postgres_passed": true,
+      "passed": true,
+      "Accepted": false,
+      "source_sha": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+      "source_dirty": [],
+      "input_hashes": {
+        "client/tests/gameplay_load_client.gd": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+        "client/state/game_store.gd": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+        "client/network/gateway.gd": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+        "client/tests/run_ready_stop_faults.py": "2c07dcd508fbdb278e50ff320eefa7e0c51553640d6b1a1680863f48eea7444b",
+        "client/tests/run_ready_stop_faults.gd": "39e9d2baed374b695e90c7692664f1f0d692c2143cbf31d70306f1b58730cea3"
+      },
+      "remaining_profiles": [
+        "LIVE",
+        "MAIN_INDEPENDENT_ADJUDICATION"
+      ],
+      "exit_code": 0,
+      "evidence": [
+        "late_accepted_before_ticket/client.json",
+        "late_accepted_before_ticket/postgres-postconditions.json",
+        "late_accepted_before_ticket-godot.log",
+        "late_accepted_before_ticket/server.log"
+      ]
+    }
+  ],
+  "remaining_profiles": [
+    "LIVE",
+    "MAIN_INDEPENDENT_ADJUDICATION"
+  ],
+  "original_raw_preserved": true,
+  "uploads": [],
+  "owned_server_stopped": true,
+  "owned_postgres_stopped": true
+}

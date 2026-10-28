@@ -6,7 +6,8 @@ namespace FantasyCard.Server.Realtime;
 internal sealed class RoomTransitionEventPublisher(
     BattleRoomSnapshot initial,
     RealtimeEventStore eventStore,
-    ConnectionRegistry? connections = null)
+    ConnectionRegistry? connections = null,
+    Guid? matchId = null)
 {
     private BattleRoomSnapshot _previous = initial;
 
@@ -73,7 +74,7 @@ internal sealed class RoomTransitionEventPublisher(
             var before = previous.Players.SingleOrDefault(value => value.PlayerId == player.PlayerId);
             if (before is null || before.Phase == RoomPlayerPhase.Dead || player.IsBot) continue;
             var cause = before.Phase == RoomPlayerPhase.Pvp ? "PvpDeath" : "PveDeath";
-            Add(player.PlayerId, "player.died", new PlayerDiedEventPayload(player.PlayerId, cause, before.CurrentDuelId));
+            Add(player.PlayerId, "player.died", new PlayerDiedEventPayload(player.PlayerId, cause, before.CurrentDuelId, current.RoomId, matchId));
         }
 
         foreach (var player in current.Players)
@@ -85,7 +86,7 @@ internal sealed class RoomTransitionEventPublisher(
             {
                 var completed = player.Phase == RoomPlayerPhase.Extracted;
                 Add(player.PlayerId, completed ? "action.extract_completed" : "action.extract_cancelled",
-                    new ActionExtractEventPayload(completed ? "Completed" : "Cancelled", TimeSpan.Zero));
+                    new ActionExtractEventPayload(completed ? "Completed" : "Cancelled", TimeSpan.Zero, current.RoomId, matchId));
             }
             if (before.SpringDrink is { } spring && spring.Remaining > TimeSpan.Zero && player.SpringDrink is null)
             {
@@ -98,6 +99,19 @@ internal sealed class RoomTransitionEventPublisher(
         if (connections is null) return;
         foreach (var delivery in deliveries)
             await connections.SendPresentationAsync(delivery.PlayerId, delivery.Event);
+
+        var mapPlayerCount = ActiveMapPlayerCount(current);
+        if (mapPlayerCount == ActiveMapPlayerCount(previous)) return;
+        foreach (var player in current.Players.Where(value => !value.IsBot && IsOnMap(value)))
+        {
+            var update = eventStore.Create(
+                player.PlayerId,
+                "map.player_count",
+                "room-population",
+                new MapPlayerCountEventPayload(mapPlayerCount),
+                roomRevision: current.Revision);
+            await connections.SendPresentationAsync(player.PlayerId, update);
+        }
 
         void AddIfHuman(RoomPlayerSnapshot player, string type, object payload)
         {
@@ -114,4 +128,10 @@ internal sealed class RoomTransitionEventPublisher(
                 roomRevision: current.Revision)));
         }
     }
+
+    private static int ActiveMapPlayerCount(BattleRoomSnapshot snapshot) =>
+        snapshot.Players.Count(IsOnMap);
+
+    private static bool IsOnMap(RoomPlayerSnapshot player) =>
+        player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted);
 }

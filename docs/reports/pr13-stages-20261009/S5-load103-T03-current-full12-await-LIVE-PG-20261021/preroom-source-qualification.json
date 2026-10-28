@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "old_driverSHA": "64475511b13a3c998164573ac94f8ba438d3eb8329954ac66089392c3056369c",
+  "current_driverSHA": "9babe9bbcaaf5d9e8e59b7a037870b7338fbb82d0d0b4c618d9b4631b464496a",
+  "all_other_client_runtime_inputs_identical": true,
+  "different_client_inputs": [
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "old": "64475511b13a3c998164573ac94f8ba438d3eb8329954ac66089392c3056369c",
+      "current": "9babe9bbcaaf5d9e8e59b7a037870b7338fbb82d0d0b4c618d9b4631b464496a"
+    },
+    {
+      "path": "client/tests/test_load_contexts.gd",
+      "old": "4ff239ef213e62589bf7c204f6d6a2bb8db6835e6869f39a882127e9a484bd22",
+      "current": "78cff9c5f1ec97f9bdd12848cb872139e4825adaf90c04e97930e792e7bd5f0d"
+    }
+  ],
+  "only_existing_function_change": "_graceful_cleanup",
+  "new_function": "_drain_cleanup_room",
+  "original_run_and_all_four_await_paths_byteequal": true,
+  "ACK_socket_close_bootstrap_suffix_byteequal": true,
+  "why_four_empty_preroom_paths_qualified": "Original four cohorts never room.started, room/settlement empty and no verifiedReady M; new helper returns immediately. Cancellation runs before helper in both sources. Its new verified-ready latejoin branch is independently exercised by current READY backlog trial. No wholefile same-SHA claim.",
+  "old_four_actuals": [
+    {
+      "mode": "login",
+      "cycles": 0,
+      "errors0": true,
+      "cleanup": "Passed",
+      "events_room_started": 0
+    },
+    {
+      "mode": "preparation",
+      "cycles": 0,
+      "errors0": true,
+      "cleanup": "Passed",
+      "events_room_started": 0
+    },
+    {
+      "mode": "enqueue",
+      "cycles": 0,
+      "errors0": true,
+      "cleanup": "Passed",
+      "events_room_started": 0
+    },
+    {
+      "mode": "ticket",
+      "cycles": 0,
+      "errors0": true,
+      "cleanup": "Passed",
+      "events_room_started": 0
+    }
+  ],
+  "Python_marker_fix": "Only creation/overwrite replaced with exclusivecreate/existingregularpreserve; default35 anddeadlinewaitkillreportsuffix byteequal. Earlier owned writable STOP marker existed under sameappuser; marker textualrewrite isnot consumedbyNative, onlyexistence. Currentclassqueue andPendingroot0644 prove current9a.",
+  "entire_source_current_claim": false,
+  "criteria_relaxed": false,
+  "entire_coordinator_runtime_protocol_GDD_package_compared_files": 40,
+  "only_changed_Python_package_file": [
+    "repo/tools/cloud_load_test.py"
+  ],
+  "Python_other_functions_AST_byteequal": true,
+  "Python_stop_all_deadline_wait_kill_report_suffix_byteequal": true,
+  "Python_stop_all_deadline_wait_kill_report_suffix_LF_equal": true,
+  "all_actual_runtime21_files_SHA_identical": true,
+  "old_four_full_audit_no_READY_send_or_room_started": true
+}

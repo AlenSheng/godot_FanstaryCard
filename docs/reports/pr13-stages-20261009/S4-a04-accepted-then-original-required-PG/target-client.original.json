@@ -1,0 +1,345 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+	"actual_load_ready_attempts": 1,
+	"actual_load_ready_successful_sends": 1,
+	"case": "accepted_then_late_original_required",
+	"checks": [
+		{
+			"at_unix_ms": 1791974687589,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974687689,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974687811,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974687907,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974688074,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974688157,
+			"name": "enqueue_match",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1791974719055,
+			"name": "room_started",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 1,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [],
+	"expected_match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+	"expected_room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+	"observed_room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+	"own_user_id": "01a13a03-c05f-7209-a11d-60cbd11ebf49",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 1,
+	"required_delivered": 1,
+	"required_dropped": true,
+	"resume_send_count": 1,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"settlement.ready",
+		"match.settled"
+	],
+	"stop_boundary": "accepted_then_late_required_stable_window_complete",
+	"ticket_reads": 17,
+	"trace": [
+		{
+			"at_ms": 2048,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 4214,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6381,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8548,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10714,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 12881,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 15047,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17214,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19380,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21547,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23714,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 25880,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 28047,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30213,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32146,
+			"event": "actual_server_envelope",
+			"kind": "match.found",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 5,
+			"sequence_before": 4
+		},
+		{
+			"at_ms": 32147,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32147,
+			"event": "required_transport_boundary",
+			"ticket_inflight": true
+		},
+		{
+			"at_ms": 32147,
+			"bytes": 167,
+			"event": "original_required_held",
+			"sequence": 6
+		},
+		{
+			"at_ms": 32197,
+			"event": "ticket_response",
+			"read_no": 15,
+			"status": "Matched"
+		},
+		{
+			"at_ms": 32380,
+			"event": "ticket_response",
+			"read_no": 16,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 32380,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 32396,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_accepted",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 7,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32397,
+			"event": "session.resume.attempt",
+			"last_sequence": 5,
+			"room_id": "",
+			"room_revision": 0
+		},
+		{
+			"at_ms": 32397,
+			"event": "actual_acceptance_applied_before_delayed_required",
+			"gateway_last_sequence": 5,
+			"gateway_ready_sends": 1,
+			"load_ready_accepted": false,
+			"load_ready_attempts": 1,
+			"load_successful_sends": 1,
+			"match_id": "",
+			"ready_prompt": {
+				"_event_revision": -1,
+				"_replayed": false,
+				"_request_id": "",
+				"_sequence": 5,
+				"deadline_unix_ms": 1791974733282,
+				"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+				"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+			},
+			"room_id": ""
+		},
+		{
+			"at_ms": 32413,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 32413,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 32414,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_accepted",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 7,
+			"sequence_before": 6
+		},
+		{
+			"at_ms": 32463,
+			"event": "ticket_response",
+			"read_no": 17,
+			"status": "Matched"
+		},
+		{
+			"at_ms": 32730,
+			"event": "actual_server_envelope",
+			"kind": "room.started",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 8,
+			"sequence_before": 7
+		},
+		{
+			"at_ms": 32733,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 9,
+			"sequence_before": 8
+		},
+		{
+			"at_ms": 32747,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e",
+			"sequence": 10,
+			"sequence_before": 9
+		},
+		{
+			"at_ms": 33596,
+			"event": "ordered_required_before",
+			"gateway_last_sequence": 10,
+			"gateway_ready_sends": 1,
+			"load_ready_accepted": true,
+			"load_ready_attempts": 1,
+			"load_successful_sends": 1,
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"ready_prompt": {},
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+		},
+		{
+			"at_ms": 33597,
+			"event": "ordered_required_immediate_after",
+			"gateway_last_sequence": 10,
+			"gateway_ready_sends": 1,
+			"load_ready_accepted": true,
+			"load_ready_attempts": 1,
+			"load_successful_sends": 1,
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"ready_prompt": {},
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+		},
+		{
+			"at_ms": 34813,
+			"event": "ordered_required_stable_after",
+			"gateway_last_sequence": 10,
+			"gateway_ready_sends": 1,
+			"load_ready_accepted": true,
+			"load_ready_attempts": 1,
+			"load_successful_sends": 1,
+			"match_id": "01a13a04-3b4d-7fc2-a473-77070e7613d0",
+			"ready_prompt": {},
+			"room_id": "01a13a04-3b4d-7dc8-bd90-2f101faba12e"
+		},
+		{
+			"at_ms": 34830,
+			"boundary": "accepted_then_late_required_stable_window_complete",
+			"event": "coordinator_stop"
+		}
+	]
+}

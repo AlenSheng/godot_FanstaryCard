@@ -1,0 +1,91 @@
+{
+  "kind": "NativeHTTPEmptyCompressedBodyFixAndTLSFramingReview",
+  "product_change": {
+    "path": "client/network/reusable_http_client.gd",
+    "before_sha256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1",
+    "after_sha256": "fb43fc1b384a3e129d8ebde0d4cdf97dfd48205c380a6813191235d1fcc292f8",
+    "initial_failure": "gzip-empty anddeflate-empty rejected; originals retained",
+    "local_EOF_controls_passed": 8,
+    "all_original_dirty_bytes_preserved": true
+  },
+  "root_cause": "decompress_dynamic returns an empty PackedByteArray for both valid zero-output gzip/deflate and decompression failure; old code rejected every empty result",
+  "fix": "Only accept zero-output compressed content after a built-in inflater consumes all encoded input,produces no output,and consumes zero bytes from an EOF probe. ISIZE or empty output alone is insufficient. Existing wire/expanded2MiB and TLS checks retained.",
+  "product_files_changed": [
+    "client/network/reusable_http_client.gd"
+  ],
+  "current_reuse_boundary_rows_passed": 33,
+  "current_oneoff_boundary_rows_passed": 33,
+  "current_gateway_integration_checks_passed": 9,
+  "built_in_inflater_EOF_controls_passed": 8,
+  "fixture_controls_passed": 19,
+  "raw_application_wire_hash_checks": 129,
+  "native_response_body_hash_checks": 132,
+  "original_current_round_failed_and_retained": true,
+  "original_current_failure_cases": [
+    "gzip-empty",
+    "deflate-empty"
+  ],
+  "original_test_recorder_empty_hash_error_also_retained": true,
+  "historical_HTTPRequest_reference_round_failed_and_retained": true,
+  "historical_reference_failure_cases": [
+    "gzip-corrupt-empty",
+    "unsupported-encoding"
+  ],
+  "historical_HTTPRequest_safe_rollback_proven": false,
+  "current_oneoff_connection_reuse_disabled_path_passed": true,
+  "positive_plain_sequential_socket_counts": {
+    "reuse": 1,
+    "oneoff": 3
+  },
+  "positive_TLS_sequential_socket_counts": {
+    "reuse": 1,
+    "oneoff": 3
+  },
+  "sequential_requests_per_arm_and_origin": 3,
+  "certificate_rejection_classes": [
+    "trusted_CA_wrong_hostname",
+    "trusted_CA_expired",
+    "untrusted_self_signed"
+  ],
+  "bad_certificate_HTTP_requests_each_current_arm": 0,
+  "subsequent_valid_TLS_recoveries_each_current_arm": 3,
+  "expected_negative_engine_diagnostics_are_not_hidden": true,
+  "current_expected_diagnostic_entries_each_arm_in_two_logs": 16,
+  "current_unique_case_and_message_diagnostic_events_each_arm": 8,
+  "unexpected_script_resource_or_engine_errors_in_current_arms": 0,
+  "TLS_verification_disabled": false,
+  "private_test_CA_override_only_probe_projects": true,
+  "production_project_godot_and_system_trust_unchanged": true,
+  "plaintext_application_frames_not_raw_TLS_ciphertext": true,
+  "full_current_client_inputs_in_Gateway_integration": 2127,
+  "physical_recovery_GET_attempts": 2,
+  "recovery_logical_id_preserved": true,
+  "overlap_fallback_connections_and_bodies_distinct": true,
+  "session_origin_credentials_and_late_result_headers_isolated": true,
+  "new_current_EXPERIMENT_observations_scope": "6current native transport-case observations plus3actualGateway cases,for review only; historical reference fails and canonical tasks remain Partial",
+  "current_nonnative_web_HTTPRequest_path_not_newly_verified": true,
+  "no_full_PG_LIVE_RENDER_capacity_or_production_latency_claim": true,
+  "native_starts_including_original_failures_parse_and_controls": 8,
+  "native_start_cap": 8,
+  "synthetic_HTTP_requests_all_rounds_including_controls": 135,
+  "HTTP_cap": 300,
+  "TCP_accepts_including_TLS_failures_and_controls": 125,
+  "TCP_cap": 400,
+  "execution_or_correctness_limits_relaxed": false,
+  "all_owned_native_and_fixture_processes_threads_sockets_terminal": true,
+  "new_accounts": 0,
+  "new_matches": 0,
+  "cloud_actions": false,
+  "server_source_build_or_CSharp_tests": false,
+  "human_experience_excluded": true,
+  "all_local_test_source_and_original_failures_preserved": true,
+  "all_original726dirty_working_paths_preserved": true,
+  "canonical132tasks396cases_preserved": true,
+  "formal_remaining_unaccepted_tasks": 77,
+  "canonical_register_gate_MAIN_changes": false,
+  "canonical_pointer_sha256": "9a4eca654ae7bd63d1dcea46ee12f6efe42e11b194eedf6b1044d8783281db74",
+  "canonical_register_sha256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+  "private_original_root": "G:\\PR13Evidence\\load081-current-transport-boundary-20261018-r1-originals",
+  "private_original_manifest_sha256": "14b008971821fb225ebe8cf6e292eb722c7e842474c9fd70ad78d5e7df755575",
+  "private_declared_original_members": 483
+}

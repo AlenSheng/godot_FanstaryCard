@@ -1,0 +1,53 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+  "no_task_acceptance": true,
+  "decisions": [
+    {
+      "authority": "MAIN",
+      "stage": "S6",
+      "case_ids": [
+        "LOAD-04.3-T03"
+      ],
+      "affected_tasks": [
+        "LOAD-04.3"
+      ],
+      "profiles_executed": [
+        "POSTGRES"
+      ],
+      "previously_missing_profiles_closed": 1,
+      "acceptance_granted": false,
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-current-old-match-snapshot-PG-20261019/summary.json"
+      ],
+      "scope": "Exact current local actual Program/PG/WS old-match correlated snapshot route fault; current recovery and authoritative completed+ACK postconditions. R1controllerfailed retained;R2targetedboundarypassed. Does not close cloudLIVE or whole task.",
+      "reason": "Current real Program/PG corroborates old completed route and current Running/Active recovery; independent raw decoder proves same known requestID and only2routeIDs corrupted;max3reads unchanged.",
+      "rollback": "Return canonical pointer to prior register; no product/runtime configuration changed."
+    },
+    {
+      "authority": "MAIN",
+      "stage": "S6",
+      "case_ids": [
+        "PR13-B11.3-T03"
+      ],
+      "affected_tasks": [
+        "PR13-B11.3"
+      ],
+      "profiles_executed": [
+        "RENDER"
+      ],
+      "previously_missing_profiles_closed": 1,
+      "acceptance_granted": false,
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-current-pending-hold-read-and-render-20261019/summary.json",
+        "docs/reports/pr13-stages-20261009/S6-current-local-snapshot-and-pending-render-scoped-20261019/pending-render-source-review.json"
+      ],
+      "scope": "Seven actual current Windows frames zh/en960/1280/1920Pending and1920ready;real retry click+samewaitingmatch+ownedholdrelease+same receipt recovery from originalR3. Does not close LIVE,performance or allUI.",
+      "reason": "All60client and637assetbytes remain current;all7actualpixels reviewed this turn and match original SHA;58original checks including actual retry interaction passed. R1/R2failures retained, source scopes distinct.",
+      "rollback": "Return canonical pointer to prior register; no product/UI/resource changes."
+    }
+  ]
+}

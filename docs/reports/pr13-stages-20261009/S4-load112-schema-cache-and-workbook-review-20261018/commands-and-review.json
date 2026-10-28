@@ -1,0 +1,67 @@
+{
+  "new_distinct_pure_control_cases": 11,
+  "controls": [
+    {
+      "module": "test_load112_schema_wire_privacy.py",
+      "tests": 6,
+      "exit": 0,
+      "chunk": "5e871b",
+      "includes_legal_80_over_70_unchanged": true
+    },
+    {
+      "module": "test_load112_config_value_roles.py",
+      "tests": 5,
+      "exit": 0,
+      "chunk": "9e9ef1"
+    }
+  ],
+  "actual_jobs": [
+    {
+      "name": "wire220_and_cache29",
+      "PID": 39808,
+      "exit": 0,
+      "completion_file_present": true
+    },
+    {
+      "name": "workbook_R2",
+      "PID": 129272,
+      "exit": 0,
+      "chunk": "171085"
+    },
+    {
+      "name": "config_role_R2",
+      "PID": 134648,
+      "exit": 0,
+      "chunk": "56466c"
+    }
+  ],
+  "reader_errors_preserved": [
+    {
+      "name": "schema unit command path typo",
+      "chunk": "f5f399",
+      "not_a_test_pass": true
+    },
+    {
+      "name": "wire shape inspector first revision",
+      "issue": "ConfigBundle hash bytes incorrectly routed as event UTF8 before suffix check",
+      "not_passed": true
+    },
+    {
+      "name": "workbook R1",
+      "exit": 1,
+      "chunk": "0ab540",
+      "issue": "Missing worksheet dimension metadata raised TypeError before cell iteration",
+      "not_passed": true
+    },
+    {
+      "name": "config role R1",
+      "exit": 0,
+      "chunk": "edc50f",
+      "issue": "Reader used column.type rather than schema value_type; 16043 mismatches are reader errors",
+      "not_passed": true
+    }
+  ],
+  "initial_1308_empty_value_flags_superseded_by_project_contract_review": true,
+  "no_threshold_relaxation": true,
+  "no_completed_gameplay_statistics_OCR_or_prior_control_suites_reexecuted": true
+}

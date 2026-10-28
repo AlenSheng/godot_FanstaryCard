@@ -1,0 +1,8 @@
+{
+  "path": "client/tests/gameplay_load_client.gd",
+  "before_sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99",
+  "after_sha256": "d07fd64c351a3ab7eb06359b262e7b9c4e506a1405aedfa2abc0c6e9d70741dd",
+  "trigger": "_update_context runs before _observe_battle on first action; actual snapshot battle_id exists but tracker empty",
+  "fix": "Read current authoritative duel/PVE ID directly; leave metrics lifecycle and game formulas untouched",
+  "original_observed_empty_origin_retained_in": "cloud-native/partial-610001/native.original.json"
+}

@@ -1,0 +1,40 @@
+2026-10-01T03:26:41.1751246Z Test run for /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+2026-10-01T03:26:41.9402062Z A total of 1 test files matched the specified pattern.
+2026-10-01T03:36:40.7976756Z [xUnit.net 00:09:58.14]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: "timeout-before-stop", caseId: "LOAD-02.2-T01") [FAIL]
+2026-10-01T03:36:40.8054115Z   Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: "timeout-before-stop", caseId: "LOAD-02.2-T01") [37 s]
+2026-10-01T03:36:40.8055059Z   Error Message:
+2026-10-01T03:36:40.8055984Z    System.Text.Json.JsonReaderException : The input does not contain any JSON tokens. Expected the input to start with a valid JSON token, when isFinalBlock is true. LineNumber: 0 | BytePositionInLine: 0.
+2026-10-01T03:36:40.8056811Z   Stack Trace:
+2026-10-01T03:36:40.8057859Z      at System.Text.Json.ThrowHelper.ThrowJsonReaderException(Utf8JsonReader& json, ExceptionResource resource, Byte nextByte, ReadOnlySpan`1 bytes)
+2026-10-01T03:36:40.8059168Z    at System.Text.Json.JsonDocument.Parse(ReadOnlySpan`1 utf8JsonSpan, JsonReaderOptions readerOptions, MetadataDb& database, StackRowStack& stack)
+2026-10-01T03:36:40.8061127Z    at System.Text.Json.JsonDocument.Parse(ReadOnlyMemory`1 utf8Json, JsonReaderOptions readerOptions, Byte[] extraRentedArrayPoolBytes, PooledByteBufferWriter extraPooledByteBufferWriter, Boolean allowDuplicateProperties)
+2026-10-01T03:36:40.8063472Z    at System.Text.Json.JsonDocument.Parse(ReadOnlyMemory`1 json, JsonDocumentOptions options)
+2026-10-01T03:36:40.8066410Z    at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(String mode, String caseId) in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs:line 60
+2026-10-01T03:36:40.8080211Z    at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(String mode, String caseId) in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs:line 95
+2026-10-01T03:36:40.8085462Z    at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(String mode, String caseId) in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs:line 178
+2026-10-01T03:36:40.8090257Z    at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(String mode, String caseId) in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs:line 178
+2026-10-01T03:36:40.8095731Z    at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(String mode, String caseId) in /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs:line 178
+2026-10-01T03:36:40.8098406Z --- End of stack trace from previous location ---
+2026-10-01T03:36:40.8099025Z   Standard Output Messages:
+2026-10-01T03:36:40.8103143Z  {"caseId":"process-start","recordedAt":"2026-10-01T03:36:03.2817771+00:00","evidence":{"label":"load02-timeout-before-stop","Id":5820,"executable":"/usr/share/dotnet/dotnet","dll":"/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.dll","port":43591,"SearchPath":"fc_runtime_test_5effdc056c2c4479b653db7909d20d44","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+2026-10-01T03:36:40.8108877Z  {"caseId":"LOAD02-process-exit","recordedAt":"2026-10-01T03:36:09.1763857+00:00","evidence":{"mode":"timeout-before-stop","import":true,"Id":5845,"ExitCode":0,"fixture":"/home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/gameplay-load/process-faults/ack-client-load02-timeout-before-stop-bbd3a705a24549c6baea92c511504ef9"}}
+2026-10-01T03:42:39.7452402Z Results File: /home/runner/work/godot_FanstaryCard/godot_FanstaryCard/test-results/gameplay-load/postgres-full.trx
+2026-10-01T03:42:39.7456271Z
+2026-10-01T03:42:39.7512147Z Failed!  - Failed:     1, Passed:   301, Skipped:     0, Total:   302, Duration: 15 m 54 s - FantasyCard.Server.Tests.dll (net10.0)
+2026-10-01T03:42:39.8199275Z ##[error]Process completed with exit code 1.
+2026-10-01T03:42:39.8295865Z ##[group]Run actions/upload-artifact@v7
+2026-10-01T03:42:39.8296162Z with:
+2026-10-01T03:42:39.8296476Z   name: gameplay-load-postgres-36f0a7b7a17e22968f36d6be49fe9d110f8098d5
+2026-10-01T03:42:43.1918356Z  	VALUES ($1, $2, NULL, $3, $4, $5)
+2026-10-01T03:42:43.1918963Z  2026-10-01 03:28:18.224 UTC [454] ERROR:  injected launch checkpoint failure
+2026-10-01T03:42:43.1919975Z  2026-10-01 03:28:18.224 UTC [454] CONTEXT:  PL/pgSQL function fail_launch_checkpoint() line 2 at RAISE
+2026-10-01T03:42:43.1923088Z  2026-10-01 03:28:18.224 UTC [454] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:43.1926730Z  2026-10-01 03:28:18.564 UTC [456] ERROR:  injected terminal checkpoint failure
+2026-10-01T03:42:43.1927729Z  2026-10-01 03:28:18.564 UTC [456] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-10-01T03:42:43.1930100Z  2026-10-01 03:28:18.564 UTC [456] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:43.1932338Z  2026-10-01 03:28:18.566 UTC [456] ERROR:  injected terminal checkpoint failure
+2026-10-01T03:42:43.1932928Z  2026-10-01 03:28:18.566 UTC [456] CONTEXT:  PL/pgSQL function fail_terminal_checkpoint() line 2 at RAISE
+2026-10-01T03:42:43.1934464Z  2026-10-01 03:28:18.566 UTC [456] STATEMENT:  INSERT INTO room_snapshots(room_id,revision,snapshot_json,rng_state_json,updated_at) VALUES($1,$2,$3,$4,$5) ON CONFLICT(room_id) DO UPDATE SET revision=EXCLUDED.revision,snapshot_json=EXCLUDED.snapshot_json,rng_state_json=EXCLUDED.rng_state_json,updated_at=EXCLUDED.updated_at WHERE room_snapshots.revision < EXCLUDED.revision
+2026-10-01T03:42:43.1936076Z  2026-10-01 03:28:23.246 UTC [483] ERROR:  duplicate key value violates unique constraint "ux_market_listings_active_equipment"
+2026-10-01T03:42:43.1937064Z  2026-10-01 03:28:23.246 UTC [483] DETAIL:  Key (equipment_id)=(200bc158-031d-4845-9f5f-7d63f3caf79e) already exists.
+2026-10-01T03:42:43.1938360Z  2026-10-01 03:28:23.246 UTC [483] STATEMENT:  INSERT INTO market_listings(listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at) SELECT gen_random_uuid(),seller_id,equipment_id,price_gold,'Active',1,created_at,expires_at FROM market_listings WHERE listing_id=$1

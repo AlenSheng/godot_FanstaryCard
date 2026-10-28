@@ -1,0 +1,139 @@
+{
+  "kind": "ActualReadLatencyRejectsR1_R2AutomaticOnlyCoordinationQualified",
+  "source_HEAD_base": "6f00f322952a104bb8d165687395a609def0781c",
+  "current_uncommitted_candidate_sha": "592bdc0948c3fe69c30fcd692a1312f58ea2de767e833e1c07d559b7f45cb2a2",
+  "R1_functional_Native_passed_but_manual_recovery_latency_rejected": true,
+  "R1_first_ready_ms": [
+    {
+      "mode": "fast",
+      "variant": "baseline",
+      "first_ready_ms": 50,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "fast",
+      "variant": "candidate-r1",
+      "first_ready_ms": 51,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "candidate-r1",
+      "first_ready_ms": 1850,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "baseline",
+      "first_ready_ms": 121,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "loss",
+      "variant": "baseline",
+      "first_ready_ms": 105,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    },
+    {
+      "mode": "loss",
+      "variant": "candidate-r1",
+      "first_ready_ms": 3517,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    }
+  ],
+  "R2_first_ready_ms": [
+    {
+      "mode": "fast",
+      "variant": "baseline",
+      "first_ready_ms": 67,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "fast",
+      "variant": "candidate-r2",
+      "first_ready_ms": 67,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "candidate-r2",
+      "first_ready_ms": 138,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "loss",
+      "variant": "candidate-r2",
+      "first_ready_ms": 122,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    }
+  ],
+  "real_fixture16players8worlds32receipts31ACK_unchanged": true,
+  "all_eight_asset_table_digests_unchanged": true,
+  "new_worlds": 0,
+  "new_accounts": 0,
+  "ACK_mutations": 0,
+  "real_Server_DLL_245265ff_unchanged": true,
+  "synthetic_faults": "Only hold actual GET receipt HTTP reply1800ms or discard real replies after backend contact;no fabricated status/bytes/businessstate.",
+  "R2_code_scope": "Only automatic GameStore._process scheduling waits for active known-ID read;explicit retry method retains original Bootstrap behavior and singleflight.",
+  "20Native_suites343checks_passed": true,
+  "targeted14checks_passed": true,
+  "baseline_auto_and_R1_explicit_negative_controls_exit1_with_expected_checks": true,
+  "initial_offline_mock_client_info_timer_failure_retained": true,
+  "checks": {
+    "six_R1_and_four_R2_real_program_cases_semantically_completed": true,
+    "all2144current_candidate_inputs_match": true,
+    "baseline_duplicate_auto_and_R1_manual_regression_controls_real": true,
+    "all20Native343checks_and_targeted14pass": true,
+    "load084-actual-latency-r1_assets_worlds_accounts_ACK_unchanged_and_PG_stopped": true,
+    "load084-actual-latency-r2_assets_worlds_accounts_ACK_unchanged_and_PG_stopped": true,
+    "R1_significant_explicit_retry_regression_retained": true,
+    "R2_automatic_fast_suppresses_one_Bootstrap_without_delay": true,
+    "R2_explicit_slow_and_loss_ready_before_original_point_reply": true,
+    "slow_actual_backend_200_real_reply_fault_only": true,
+    "slow_manual_recovery_bound_to_same_fixture_receipt": true,
+    "loss_actual_backend_200_real_reply_fault_only": true,
+    "loss_manual_recovery_bound_to_same_fixture_receipt": true,
+    "remaining72tasks266profiles_and_T01_still_missing": true,
+    "git_diff_check": true
+  },
+  "checked_invariants": 15,
+  "local_hidden_headless_Dummy_belowNormal_only": true,
+  "local_visible_windows": 0,
+  "production_or_cloud_operations": false,
+  "performance_or_full_room_acceptance": false,
+  "whole_task_accepted": false,
+  "NoChange_or_relaxation_granted": false,
+  "remaining_unaccepted": 72,
+  "missing_case_profiles": 266,
+  "G": "G:\\PR13Evidence\\load084-actual-latency-and-r2-20261019-originals"
+}

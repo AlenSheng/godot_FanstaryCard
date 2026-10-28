@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "owner": "pr13-native-image-context-offload-r1",
+  "target_root": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image",
+  "archive_prefix": "segment/context/",
+  "files": [
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image/Dockerfile",
+      "path": "context/Dockerfile",
+      "bytes": 998,
+      "sha256": "41ce87f9f6d913d5acc19e7764a05cad375d66502349ff1fb66dd09928558979",
+      "mode": 436,
+      "inode": 958851,
+      "device": 64770,
+      "nlink": 1
+    },
+    {
+      "source": "/home/ubuntu/pr13-acceptance-20261009/cache/native-image/godot",
+      "path": "context/godot",
+      "bytes": 146414384,
+      "sha256": "8d106cbe6144c2dc7e881d61d2429c1a8a76e6b22ef48bd5e48dcf934953f71e",
+      "mode": 493,
+      "inode": 958850,
+      "device": 64770,
+      "nlink": 1
+    }
+  ],
+  "successful_build_proof_sha256": "32847b6b2e1dad24d6b5753550423b6deb6e5b7b3c5088d1a8f1dc631f8f9297",
+  "successful_image_id": "sha256:6ea92944e8779a5bb6e5c40faca53a40a1b02b5a0dcd47fff0815ba9cfbded1f",
+  "expected_Dockerfile_sha256": "41ce87f9f6d913d5acc19e7764a05cad375d66502349ff1fb66dd09928558979",
+  "original_Godot_zip_sha256": "cadd3204e728a35d3f13adb7fd0d7902636b79f6b95c40c265eb73b6c35329e4",
+  "Godot_binary_matches_original_zip_member": true,
+  "image_binary_content_independently_extracted": false,
+  "equivalence_evidence": "Exact successful COPY Dockerfile, immutable image ID and original ZIP binary SHA; no container execution",
+  "restore_before": [
+    "Rebuilding the native test image from this context"
+  ],
+  "current_compiled_cap_and_image_contained_Godot_require_context": false,
+  "preserved_dependencies": [
+    "cache/nuget",
+    "cache/cleanup-authority-godot",
+    "cache/godot-linux.zip",
+    "client/.godot imports",
+    "all other cache and historical backups"
+  ],
+  "restore_requires_empty_exact_target_no_symlink_mode_and_SHA_verification": true,
+  "whole_task_accepted": false
+}

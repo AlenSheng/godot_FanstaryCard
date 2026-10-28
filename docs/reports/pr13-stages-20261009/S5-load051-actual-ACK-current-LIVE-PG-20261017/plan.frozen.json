@@ -1,0 +1,49 @@
+{
+  "task": "LOAD-05.1",
+  "cases": [
+    "LOAD-05.1-T01",
+    "LOAD-05.1-T02",
+    "LOAD-05.1-T03"
+  ],
+  "planned_accounts": 1,
+  "planned_actual_matches": 2,
+  "planned_controlled_abandonments": 2,
+  "max_matches_including_diagnostics": 4,
+  "max_conservative_player_room_starts": 16,
+  "goal_task_cap": 300,
+  "native_deadline_seconds": 360,
+  "service_deadline_seconds": 600,
+  "unit_deadline_seconds": 1200,
+  "READY_seconds_unchanged": 15,
+  "botfill_seconds_unchanged": 30,
+  "HTTP_attempt_timeout_ms_unchanged": 10000,
+  "HTTP_logical_timeout_ms_unchanged": 30000,
+  "HTTP_retries_same_idempotency_key_unchanged": 3,
+  "order": [
+    "M1 actual original_run_expedition until actual settled receipt, first Probe._wait holds consumer before ACK",
+    "T02 natural busy through original cancel of historical matched ticket, actual completed cancellation409 held at consumer; originalACK false, receipt retained,no ACK call; actualPGbeforeafter",
+    "T01 arm opaque local proxy to close all3retryattempts of exactlyoneactual logicalACK before upstream, releaseoriginalProbe gate; actual optimisticclear thenHTTPstatus0, realBootstrap stillreceipt and originalfullrestore, originalnegativechecknoCompletion",
+    "M1 public originalretry actualACK200 +unique realPGrecord1; manualretry never countednaturalcycle",
+    "M2 actual second_original_run_expedition +realcontrolledabandon; currentreceiptGETreturns temporarilyheld; only actualsettlementpoll returns unchangedcapturedoldM1Bootstrapdata at consumer; originalcurrentmatchguardmustreject/currentbusinessstateunchanged/PGnoACK",
+    "Releaseactual currentGET/pollresults, originalM2sameMatchACK200 causesactualscenario_finished; independently check2unique real ACKrows/2settledmembers/noholdslocks"
+  ],
+  "T03_source_clarification": "Canonical pr13_state_contract_cases maps T03 to settlement-poll foreign receipt, including OFFLINE ordinary/lost-room; no speculative change to ACK function signature. LIVE executes actual current terminal poll; no direct Game world data assignment.",
+  "explicit_consumer_faults": [
+    "Probe._wait pause only after actual terminalreceipt in M1, atmost45s, no serverclock change",
+    "OriginalStore constructor Gateway factory only; originalready wiring identical,persistfalseonlyfixture",
+    "Actual originalcancel completedHTTPresult held20smax to expose naturalbusy withnonemptyactualreceipt; no busy assignment",
+    "Proxy realHTTPlogicalACK3attempts closedbeforeupstream same actualidempotencykey; endpoint/token/payload not rewritten; actualbackendmutations0forfailedlogicalrequest",
+    "Replay exact previouslycapturedM1Bootstrap data onlyat original M2pollconsumer after actualM2HTTPcomplete; nofabricatedreceipt/no serverpublication claim; currentactualreceiptGET/followuppollheld30smax thenreleasedexactly"
+  ],
+  "product_source_changes": false,
+  "no_new_natural_capacity_human_RENDER_or_HP_claim": true,
+  "source_upload_bytes": 0,
+  "source_hashes": {
+    "client/state/game_store.gd": "5a5ca76967ca5ae550829da6b6634c53934987d97f35e01d74caf4f397a25c7a",
+    "client/network/gateway.gd": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637",
+    "client/tests/gameplay_load_client.gd": "f9073e62f463d143963f8f6b5ca076690b5cceb103ec372aaf73bdb1f646108a",
+    "client/tests/pr13_state_contract_cases.gd": "29e1d02ec66c23a9476e610ed6bc9c1bc31c502a804cae1505241a5da53480de",
+    "client/tests/test_settlement_return.gd": "ffdedece9ed0d5c8ad642a93721a3eacee9af17e956f68fe219836d75840b2eb",
+    "client/tests/test_settlement_polling.gd": "73d9ebca855709f333acc94335b4237f498575823ef759548a6fc558e5aa4e6d"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "kind": "ReviewedArtCacheLifecycleFix",
+  "at_local": "2026-10-16T09:48:25.324614+08:00",
+  "formal_file": "client/ui/art.gd",
+  "before_SHA256": "a05d290c66b54c6fc63c3495e574467849e527b5307f149c78f982fa97eb8184",
+  "after_SHA256": "da2a26073e79bc16855c839e2026469bcf0347e3314b6b52489647cea1613bf5",
+  "engine": "4.7.2.stable.official.ed1daf0bf",
+  "baseline": {
+    "styles_retained_after_cleanup": 4,
+    "texture_still_alive": true
+  },
+  "regression": {
+    "passed": 8,
+    "failed": 0,
+    "all_released_style_weakrefs": 0,
+    "texture_alive_after_last_holder_freed": false,
+    "cases": [
+      {
+        "id": "CACHE-01",
+        "description": "为真实按钮构建四种状态样式",
+        "assertion": "four_real_button_style_variants_cached",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-02",
+        "description": "清理样式与纹理两份缓存",
+        "assertion": "both_caches_empty_after_public_cleanup",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-03",
+        "description": "保留活动按钮持有的样式和纹理",
+        "assertion": "live_button_keeps_all_styles_and_texture",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-04",
+        "description": "按钮销毁后释放旧样式和纹理",
+        "assertion": "destroyed_button_releases_former_styles_and_texture",
+        "result": "PASS",
+        "detail": {
+          "live_styles": 0,
+          "texture_alive": false
+        }
+      },
+      {
+        "id": "CACHE-05",
+        "description": "后续按钮能够重建有效缓存",
+        "assertion": "new_button_repopulates_valid_caches",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-06",
+        "description": "面板样式副本互不污染",
+        "assertion": "panel_style_copies_remain_independent",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-07",
+        "description": "重复清理仍保留活动副本",
+        "assertion": "repeated_cleanup_preserves_live_style_copies",
+        "result": "PASS",
+        "detail": {}
+      },
+      {
+        "id": "CACHE-08",
+        "description": "所有外部持有者释放后资源可回收",
+        "assertion": "all_unreferenced_styles_and_texture_released",
+        "result": "PASS",
+        "detail": {
+          "copy_alive": false,
+          "remaining_prototypes": 0,
+          "texture_alive": false
+        }
+      }
+    ]
+  },
+  "current_original_scope": {
+    "tasks": 132,
+    "cases": 396,
+    "complete": false
+  },
+  "resource_floor_fraction": 0.05,
+  "evidence": [
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/source-manifest.original.json",
+      "bytes": 1348,
+      "SHA256": "253066ced5fc781df325c8cebfeda251e1ac6c840c8b4c531132f1d788c12da0"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/art.before.byte-original.gd",
+      "bytes": 9824,
+      "SHA256": "a05d290c66b54c6fc63c3495e574467849e527b5307f149c78f982fa97eb8184"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/fix-source-manifest.original.json",
+      "bytes": 546,
+      "SHA256": "020b55896245095c7dc7e4d245e9ddd7f4ea0e4d9dbbef793f2cafedbcd1270f"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/baseline.terminal.original.json",
+      "bytes": 943,
+      "SHA256": "d622e1193f9c819485f1c997c8abc8de24fdbd023dc076b11bb2fcaae0194e7a"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/baseline.observations.original.json",
+      "bytes": 387,
+      "SHA256": "b932ba58a509a8c99007bebe6fcc8caad1816acdc474d622f21bfb904e6f5936"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/regression-source.original.gd",
+      "bytes": 3443,
+      "SHA256": "5f0361c5735d7347af90428c9edca788679966d09e433f8ec55a154c0682de54"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/regression.terminal.original.json",
+      "bytes": 1809,
+      "SHA256": "02c8ece26fe033625b1fd0eb211b7b7c42da81234a84bd8831db3e9b699ebb98"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/regression.observations.original.json",
+      "bytes": 1183,
+      "SHA256": "4d306f050ae27d0891cd98b9cf0603292a10e7c293c35b6fc88b1ed912ed915f"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/baseline.stderr.original.log",
+      "bytes": 125,
+      "SHA256": "354f6b41afac0af85c870c4ddfdbe208e44ad5223ae6d89aba867d4090718998"
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/B06-art-cache-lifecycle-local-20261016-r1/regression.stderr.original.log",
+      "bytes": 125,
+      "SHA256": "354f6b41afac0af85c870c4ddfdbe208e44ad5223ae6d89aba867d4090718998"
+    }
+  ],
+  "scope_limits": [
+    "Standalone resource-lifetime checks; no gameplay, WSS, rendered-pixel, capacity or statistical claim.",
+    "Windows certificate-store read error preserved in raw logs; unrelated networking was not exercised.",
+    "Original cloud72row exit failure remains unresolved and is not relabeled as passing."
+  ],
+  "register_gate_MAIN_changed": false
+}

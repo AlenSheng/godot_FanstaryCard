@@ -1,0 +1,95 @@
+{
+  "ok": true,
+  "gates": [
+    {
+      "name": "import",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "started": 1790780858.3986883,
+      "elapsed": 53.07751274108887,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "load-parse",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_gameplay_load_parse.gd"
+      ],
+      "started": 1790780911.4762836,
+      "elapsed": 0.6606476306915283,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "client-regression",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_play_retry.gd"
+      ],
+      "started": 1790780912.136992,
+      "elapsed": 8.12339472770691,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "lobby-race",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_lobby_race.gd"
+      ],
+      "started": 1790780920.2604413,
+      "elapsed": 0.5769884586334229,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "numerical",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "res://tests/numerical_integration.tscn"
+      ],
+      "started": 1790780920.837652,
+      "elapsed": 0.7853491306304932,
+      "exit_code": 0,
+      "ok": true
+    },
+    {
+      "name": "localization",
+      "command": [
+        "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/godot_FanstaryCard/client",
+        "--script",
+        "res://tests/run_localization.gd"
+      ],
+      "started": 1790780921.6231778,
+      "elapsed": 1.1141033172607422,
+      "exit_code": 0,
+      "ok": true
+    }
+  ]
+}

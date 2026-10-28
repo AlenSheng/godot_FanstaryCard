@@ -1,0 +1,98 @@
+{
+  "original_complete_run": {
+    "source_sha": "7018a2e9fae3872055a907615941f0556ab2f3ee",
+    "exit_code": 1,
+    "counters": {
+      "total": "317",
+      "executed": "317",
+      "passed": "307",
+      "failed": "10",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "elapsed_seconds": 909.6560000001919,
+    "owned_databases_removed": true,
+    "runtime_inputs_unchanged": true
+  },
+  "scoped_retest": {
+    "source_sha": "8da9d3fd0cac622f0d80c328423dca952090cf2c",
+    "exit_code": 0,
+    "counters": {
+      "total": "10",
+      "executed": "10",
+      "passed": "10",
+      "failed": "0",
+      "error": "0",
+      "timeout": "0",
+      "aborted": "0",
+      "inconclusive": "0",
+      "passedButRunAborted": "0",
+      "notRunnable": "0",
+      "notExecuted": "0",
+      "disconnected": "0",
+      "warning": "0",
+      "completed": "0",
+      "inProgress": "0",
+      "pending": "0"
+    },
+    "elapsed_seconds": 84.31300000008196,
+    "owned_databases_removed": true,
+    "runtime_inputs_unchanged": true,
+    "exact_original_failed_tests": [
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+      "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping"
+    ]
+  },
+  "coverage_after_scoped_retest": {
+    "distinct_named_assertions": 317,
+    "passed": 317,
+    "failed": 0,
+    "not_executed": 0,
+    "single_complete_passing_run": false
+  },
+  "changed_since_original": [
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs"
+  ],
+  "code_reuse_scope": "All runtime production input bytes and307 passing assertion implementations remain unchanged; changed path finder is exercised by all10 formerly failing methods. Original307 are not relabeled with the newer source or fabricated into a new317-row TRX.",
+  "parents": [
+    {
+      "path": "outputs/pr13-local-20261008/S4/server-complete-current-runtime/report.json",
+      "bytes": 111013,
+      "sha256": "e56ee4831ee7e77a2f473138f9f1fd5b2b37bb4628739ef92fdcd4dd6fa0806f"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S4/server-complete-current-runtime/native.trx",
+      "bytes": 1159051,
+      "sha256": "3adb41af3b420926591d5f7639b2292fa2845361811d21e96500c4834396e270"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S4/server-network-location-fixed-runtime/report.json",
+      "bytes": 111122,
+      "sha256": "7db62718b8a0a0f613fe33524818a80929ac86f6c5e6b8c1bad07af365e7e027"
+    },
+    {
+      "path": "outputs/pr13-local-20261008/S4/server-network-location-fixed-runtime/native.trx",
+      "bytes": 23616,
+      "sha256": "edf7b857c193b57dbe4e39687afdaa65ecbee01135379797c2c57ccbe050dd80"
+    }
+  ],
+  "scope": "Owned PostgreSQL, production Godot and preserved previous rollback binary. Exact handbook case exports are separate; suite counts are not handbook counts. Original failed attempt retained."
+}

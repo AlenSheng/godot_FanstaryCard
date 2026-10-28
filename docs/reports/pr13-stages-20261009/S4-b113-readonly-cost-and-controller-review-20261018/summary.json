@@ -1,0 +1,158 @@
+{
+  "kind": "B113ReviewedReadOnlyCostObservationsWithRetainedControllerFailure",
+  "normal_read_only_measurement_observations_passed": 60,
+  "original_cloud_round_ok": false,
+  "original_cloud_failure": "Non-atomic finish file became visible before payload; controller JSONDecodeError, full original round remains failed",
+  "actual_server_exit": 0,
+  "wrapper_app_exit": 1,
+  "native_PID": 87120,
+  "native_exit": 0,
+  "native_engine_and_stdout_clean": true,
+  "cross_player_404_rejections": 3,
+  "authoritative_asset_tables_unchanged": 8,
+  "fixture_counts_unchanged": {
+    "players": 12,
+    "matches": 9,
+    "settlements": 36,
+    "ACKs": 36
+  },
+  "route_summaries": {
+    "bootstrap": {
+      "server_HTTP_ms": {
+        "n": 30,
+        "minimum": 13.6238,
+        "p50": 20.45935,
+        "p95_nearest_rank": 46.8718,
+        "maximum": 71.0358
+      },
+      "Npgsql_operation_union_ms": {
+        "n": 30,
+        "minimum": 12.4261,
+        "p50": 18.7566,
+        "p95_nearest_rank": 41.4112,
+        "maximum": 62.4236
+      },
+      "client_logical_ms": {
+        "n": 30,
+        "minimum": 833,
+        "p50": 1081.0,
+        "p95_nearest_rank": 1099,
+        "maximum": 1131
+      },
+      "response_body_bytes": {
+        "n": 30,
+        "minimum": 36090,
+        "p50": 36094.0,
+        "p95_nearest_rank": 36098,
+        "maximum": 36098
+      },
+      "Npgsql_client_operation_counts": {
+        "14": 30
+      },
+      "total_window_PG_statement_calls": 3204,
+      "total_window_PG_execution_ms": 377.765726
+    },
+    "receipt": {
+      "server_HTTP_ms": {
+        "n": 30,
+        "minimum": 1.7612,
+        "p50": 2.5805,
+        "p95_nearest_rank": 4.075,
+        "maximum": 4.8236
+      },
+      "Npgsql_operation_union_ms": {
+        "n": 30,
+        "minimum": 1.2976,
+        "p50": 2.01025,
+        "p95_nearest_rank": 3.3943,
+        "maximum": 3.6966
+      },
+      "client_logical_ms": {
+        "n": 30,
+        "minimum": 550,
+        "p50": 800.0,
+        "p95_nearest_rank": 817,
+        "maximum": 817
+      },
+      "response_body_bytes": {
+        "n": 30,
+        "minimum": 211,
+        "p50": 215.0,
+        "p95_nearest_rank": 217,
+        "maximum": 217
+      },
+      "Npgsql_client_operation_counts": {
+        "2": 30
+      },
+      "total_window_PG_statement_calls": 1944,
+      "total_window_PG_execution_ms": 29.94962299999998
+    }
+  },
+  "OTLP_original_unique_spans": 3256,
+  "selected_measured_HTTP_traces": 60,
+  "selected_measured_Npgsql_client_operation_spans": 480,
+  "source_reported_dropped_attributes": 0,
+  "source_reported_dropped_events": 0,
+  "source_reported_dropped_links": 0,
+  "OTLP_unknown_scopes": 0,
+  "OTLP_rejected_exports": 0,
+  "SQL_count_is_database_window_not_Npgsql_operation_count": true,
+  "SQL_planning_tracking": false,
+  "pool_wait_measurement": null,
+  "background_SQL_attribution_not_closed": true,
+  "NoHotspot_NoChange_or_optimization_benefit_claimed": false,
+  "product_code_changes": [],
+  "local_controls": {
+    "OTLP": 37,
+    "trace_proxy": 19,
+    "PG_readonly_observer": 11,
+    "atomic_finish": 13
+  },
+  "targeted_cloud_atomic_finish_repair_passed": true,
+  "atomic_repair_new_business_HTTP_requests": 0,
+  "old_failed_whole_round_reclassified": false,
+  "additional_inline_control_generation_failure_preserved": true,
+  "original_success_G_barrier_before_PG_cleanup_was_not_reached": true,
+  "later_all19_cloud_originals_G_SHA_verified": true,
+  "code_copies_G_archive_18_members_SHA_verified_before_deletion": true,
+  "cloud_code_and_metadata_copies_deleted": 18,
+  "empty_owned_directories_deleted": 5,
+  "all_local_test_code_preserved": true,
+  "production_unchanged": true,
+  "production_health": 200,
+  "original_source_dump_and_cached_Program_source_unchanged": true,
+  "minimum_recorded_memory_available_bytes": 2282659840,
+  "memory_total_bytes": 3837677568,
+  "minimum_recorded_disk_free_fraction": 0.14183620823331178,
+  "goal5percent_floors_met": true,
+  "old15percent_disk_capacity_gate_met": false,
+  "private_runtime_limits": {
+    "app_memory_MiB": 512,
+    "app_CPUs": 1,
+    "PG_memory_MiB": 384,
+    "PG_CPUs": 0.4,
+    "request_limits": [
+      100,
+      200,
+      500
+    ]
+  },
+  "native_logical_HTTP_samples_including_setup": 77,
+  "actual_proxy_HTTP_attempts_including_setup": 77,
+  "maximum_logical_budget": 90,
+  "maximum_attempt_budget": 120,
+  "new_accounts": 0,
+  "new_matches": 0,
+  "human_experience_excluded": true,
+  "RENDER_or_full_current_LIVE_gameplay_profile_discharged": false,
+  "B113_formal_state": "Partial",
+  "official_remaining_unaccepted_tasks": 77,
+  "canonical_132tasks396cases_preserved": true,
+  "canonical_pointer_sha256": "9a4eca654ae7bd63d1dcea46ee12f6efe42e11b194eedf6b1044d8783281db74",
+  "canonical_register_sha256": "aff75d05738e356c21b5fe42d9c433f6a597a6e6ed58f2041523312bfd3bcffe",
+  "canonical_register_gate_MAIN_changes": false,
+  "private_declared_originals_root": "G:\\PR13Evidence\\b113-cost-observer-20261018-r1-originals",
+  "private_manifest_sha256": "9cfad7ee0a25fac9ed9be29064109e96660a12c09df842ea64d84c6d7642cf31",
+  "private_declared_original_members": 347,
+  "privacy_limit": "No raw wire OTLP packets,SQL text,headers,span names,credential/resource values retained; permitted original scalar spans and packet hashes only. Not global raw-source closure."
+}

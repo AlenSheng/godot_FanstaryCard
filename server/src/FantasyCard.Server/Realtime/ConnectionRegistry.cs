@@ -25,6 +25,9 @@ public sealed class ConnectionRegistry
         return _connections.TryRemove(new KeyValuePair<Guid, RealtimeConnection>(playerId, connection));
     }
 
+    public bool IsCurrent(Guid playerId, RealtimeConnection connection) =>
+        _connections.TryGetValue(playerId, out var current) && ReferenceEquals(current, connection);
+
     public bool IsConnected(Guid playerId) => _connections.ContainsKey(playerId);
 
     public IReadOnlyList<Guid> ConnectedPlayerIds => _connections.Keys.ToArray();

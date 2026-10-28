@@ -56,16 +56,26 @@ func _build() -> void:
 	margin.add_child(body)
 
 	_build_title(body)
+	var scroll := ScrollContainer.new()
+	scroll.name = "ComparisonContentScroll"
+	scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	body.add_child(scroll)
+	var content := VBoxContainer.new()
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 10)
+	scroll.add_child(content)
 	var item_row := HBoxContainer.new()
 	item_row.add_theme_constant_override("separation", 18)
-	body.add_child(item_row)
+	content.add_child(item_row)
 	_item_card(item_row, _current, _t("current"), true)
 	_item_card(item_row, _selected, _t("selected"), false)
 
-	_section_title(body, _t("attributes"))
+	_section_title(content, _t("attributes"))
 	var attributes := HBoxContainer.new()
 	attributes.add_theme_constant_override("separation", 14)
-	body.add_child(attributes)
+	content.add_child(attributes)
 	_attribute_card(attributes, _current, _t("current_attributes"), _t("removed"), NEGATIVE)
 	var exchange := _label(attributes, "⇄", 34, P.GOLD)
 	exchange.custom_minimum_size.x = 48
@@ -73,29 +83,30 @@ func _build() -> void:
 	exchange.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_attribute_card(attributes, _selected, _t("selected_attributes"), _t("gained"), POSITIVE)
 
-	_section_title(body, _t("affix"))
+	_section_title(content, _t("affix"))
 	var affixes := HBoxContainer.new()
 	affixes.add_theme_constant_override("separation", 14)
-	body.add_child(affixes)
+	content.add_child(affixes)
 	_affix_card(affixes, _current, NEGATIVE)
 	_affix_card(affixes, _selected, POSITIVE)
 
-	_section_title(body, _t("set_changes"))
+	_section_title(content, _t("set_changes"))
 	var before := _loadout
 	var after := CompareModel.replace_slot(_loadout, _selected)
 	var changes := CompareModel.changed_sets(before, after)
 	var set_row := HBoxContainer.new()
 	set_row.add_theme_constant_override("separation", 12)
-	body.add_child(set_row)
+	content.add_child(set_row)
 	if changes.is_empty():
 		var unchanged := _panel(set_row, SUBPANEL)
 		_label(unchanged, "—", 22, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	else:
 		for change in changes: _set_card(set_row, change)
 
-	var spacer := Control.new()
-	spacer.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_child(spacer)
+	var effective := Button.new()
+	effective.text = preload("res://ui/numerical_details.gd").text("title")
+	effective.pressed.connect(func(): preload("res://ui/numerical_details.gd").show_compare(self, _loadout, _selected))
+	body.add_child(effective)
 	_build_actions(body)
 	var hint := _label(body, _t("empty_hint"), 17, P.MUTED)
 	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -175,6 +186,9 @@ func _affix_card(parent: Node, item: Dictionary, tint: Color) -> void:
 	name_label.custom_minimum_size.x = 90
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var description := _label(row, _affix_text(contribution), 19, tint)
+	description.name = "AffixDescription"
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	description.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
 	description.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	description.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
@@ -213,7 +227,7 @@ func _build_actions(parent: Node) -> void:
 	if _action.is_valid():
 		var confirm := Button.new()
 		confirm.name = "ConfirmEquip"
-		confirm.text = _action_title if not _action_title.is_empty() else _t("confirm")
+		confirm.text = P.localized_text(_action_title) if not _action_title.is_empty() else _t("confirm")
 		confirm.disabled = _busy
 		confirm.custom_minimum_size = Vector2(300, 62)
 		confirm.pressed.connect(_confirm)
@@ -257,6 +271,7 @@ func _section_title(parent: Node, text: String) -> void:
 	label.custom_minimum_size.y = 30
 
 func _label(parent: Node, text: String, size: int, color: Color, role: String = "body") -> Label:
+	size = _readable_font_size(size)
 	var label := Label.new()
 	label.text = text
 	label.add_theme_font_override("font", P.font(role))
@@ -274,7 +289,7 @@ func _badge(parent: Node, text: String, tint: Color) -> void:
 	badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	badge.custom_minimum_size = Vector2(94, 30)
 	badge.add_theme_font_override("font", P.font())
-	badge.add_theme_font_size_override("font_size", 17)
+	badge.add_theme_font_size_override("font_size", _readable_font_size(17))
 	badge.add_theme_color_override("font_color", tint.lightened(0.25))
 	var style := StyleBoxFlat.new()
 	style.bg_color = tint.darkened(0.68)
@@ -283,6 +298,10 @@ func _badge(parent: Node, text: String, tint: Color) -> void:
 	style.set_corner_radius_all(10)
 	badge.add_theme_stylebox_override("normal", style)
 	parent.add_child(badge)
+
+func _readable_font_size(requested: int) -> int:
+	var pixel_scale := float(get_window().size.x) / get_viewport_rect().size.x
+	return maxi(requested, ceili(12.0 / maxf(pixel_scale, 0.01)))
 
 func _attribute_name(entry: Dictionary) -> String:
 	match entry.kind:
@@ -293,8 +312,7 @@ func _attribute_name(entry: Dictionary) -> String:
 	return str(entry.kind)
 
 func _item_title(item: Dictionary) -> String:
-	var gear := CompareModel.gear(item)
-	return "%s%s%s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "")), gear.get("level", 0)]
+	return EquipmentDetails.title(item)
 
 func _affix_text(contribution: Dictionary) -> String:
 	var values: Dictionary = contribution.values

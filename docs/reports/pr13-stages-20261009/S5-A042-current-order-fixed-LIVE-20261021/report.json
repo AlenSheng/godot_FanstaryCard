@@ -1,0 +1,108 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A04.2-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "同账号第一局，原始READY循环两次本地send=false不写socket，第三次调用原Gateway.send并真实发送；恰3尝试、1实际成功，服务器接受一次并结算。",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/source-fix.json"
+      ],
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A04.2-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "实际accepted后将旧required原payload放入当前started外壳，序号及其余字段保持；当前Gateway按已确认的同M/room忽略旧通知，消耗实际游标，完整Native业务字典包括ready_prompt保持1/1，不重发，真实snapshot恢复房间。",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/source-fix.json"
+      ],
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A04.2-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "同UID/session/peer第二局N，将上一局M实际started原payload放入N当前started外壳，仅payload改变；原Gateway记录prior_room_context、消耗游标，N完整业务字典不变，后续权威snapshot恢复N并完成第二次唯一ACK。",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/independent-raw-review.json",
+        "docs/reports/pr13-stages-20261009/S5-A042-current-order-fixed-LIVE-20261021/source-fix.json"
+      ],
+      "business_criteria_relaxed": false
+    }
+  ],
+  "decisions": [
+    {
+      "case_id": "PR13-A04.2-T01",
+      "profile": "LIVE",
+      "verdict": "Passed",
+      "authority": "MAIN independent actual source/PB/audit/PG/UI-model review",
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A04.2-T02",
+      "profile": "LIVE",
+      "verdict": "Passed",
+      "authority": "MAIN independent actual source/PB/audit/PG/UI-model review",
+      "business_criteria_relaxed": false
+    },
+    {
+      "case_id": "PR13-A04.2-T03",
+      "profile": "LIVE",
+      "verdict": "Passed",
+      "authority": "MAIN independent actual source/PB/audit/PG/UI-model review",
+      "business_criteria_relaxed": false
+    }
+  ],
+  "summary": {
+    "counts": {
+      "Accepted": 92,
+      "Partial": 30,
+      "ReadyForAcceptance": 10,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 40,
+    "newly_accepted": [],
+    "newly_ready": [
+      "PR13-A04.2"
+    ],
+    "missing_case_profile_pairs_before": 137,
+    "missing_case_profile_pairs_after": 134,
+    "new_case_profile_closures": 3,
+    "new_physical_worlds_R1_R2": [
+      2,
+      2
+    ],
+    "total_real_UIDs": 2,
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A042-order-ready-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-A04-five-LIVE-boundaries-20261021/register.json",
+      "sha256": "af9a9eeb99e67e0bd084532c9f3dc73cb8518416b2ed737dccc4f6d0974e0887"
+    }
+  }
+}

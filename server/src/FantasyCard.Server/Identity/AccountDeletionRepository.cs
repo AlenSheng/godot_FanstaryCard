@@ -28,6 +28,7 @@ public sealed class AccountDeletionRepository(NpgsqlDataSource dataSource)
                 throw new InvalidOperationException("Player does not exist.");
         }
 
+        AccountDeletionStatus? pending = null;
         await using (var existing = new NpgsqlCommand(
             "SELECT request_id,status,requested_at,scheduled_for,completed_at,cancelled_at FROM account_deletion_requests WHERE player_id=$1 AND status='Requested' ORDER BY requested_at DESC LIMIT 1",
             connection, transaction))
@@ -35,11 +36,12 @@ public sealed class AccountDeletionRepository(NpgsqlDataSource dataSource)
             existing.Parameters.AddWithValue(playerId);
             await using var reader = await existing.ExecuteReaderAsync(cancellationToken);
             if (await reader.ReadAsync(cancellationToken))
-            {
-                var result = Read(reader);
-                await transaction.CommitAsync(cancellationToken);
-                return result;
-            }
+                pending = Read(reader);
+        }
+        if (pending is not null)
+        {
+            await transaction.CommitAsync(cancellationToken);
+            return pending;
         }
 
         var requestId = Guid.CreateVersion7();
@@ -102,7 +104,8 @@ public sealed class AccountDeletionRepository(NpgsqlDataSource dataSource)
             await ExecuteAsync(connection, transaction, "DELETE FROM settlement_asset_holds WHERE player_id=$1", request.PlayerId, cancellationToken);
             await ExecuteAsync(connection, transaction, "DELETE FROM match_settlements WHERE player_id=$1", request.PlayerId, cancellationToken);
             await ExecuteAsync(connection, transaction, "DELETE FROM market_transactions WHERE buyer_id=$1 OR seller_id=$1", request.PlayerId, cancellationToken);
-            await ExecuteAsync(connection, transaction, "DELETE FROM red_equipment_weekly_quotas WHERE player_id=$1", request.PlayerId, cancellationToken);
+            // Removing an account must not reopen the already-consumed global weekly quota.
+            await ExecuteAsync(connection, transaction, "UPDATE red_equipment_weekly_quotas SET player_id='00000000-0000-0000-0000-000000000000' WHERE player_id=$1", request.PlayerId, cancellationToken);
             await ExecuteAsync(connection, transaction, "UPDATE relic_piles SET dead_player_id='00000000-0000-0000-0000-000000000000' WHERE dead_player_id=$1", request.PlayerId, cancellationToken);
             await ExecuteAsync(connection, transaction, "DELETE FROM players WHERE user_id=$1", request.PlayerId, cancellationToken);
             await using var complete = new NpgsqlCommand(

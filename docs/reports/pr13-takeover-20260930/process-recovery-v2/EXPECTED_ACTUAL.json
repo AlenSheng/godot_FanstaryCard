@@ -1,0 +1,154 @@
+{
+  "kind": "full_actual_OS_Program_host_support_matrix",
+  "source_test_commit": "e9129643cbfad29cc7c85d02d63f1c26e0b19188",
+  "parent_overlay_sha256": "66a551c5ff9e586cc00d3b7e6ba3c1531ee96a95d08c9696560f6911f5dbd0d9",
+  "pure_source": false,
+  "results": [
+    {
+      "caseId": "PROC-01",
+      "recordedAt": "2026-09-30T18:59:45.2950129+00:00",
+      "evidence": {
+        "matchId": "25237b57-bf31-4e31-9757-4e5294fd1d39",
+        "RoomId": "9fc825f8-7901-447e-ac52-abf89060eec3",
+        "firstPid": 21750,
+        "secondPid": 21814,
+        "firstRevision": 16,
+        "RoomRevision": 32,
+        "expected": "same room/match, hand and RNG preserved, no settlement",
+        "actual": "matched"
+      },
+      "test": "Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "outcome": "Passed",
+      "accepted": false,
+      "canonical_execution": "SupportOnly"
+    },
+    {
+      "caseId": "PROC-02",
+      "recordedAt": "2026-09-30T18:59:42.0008936+00:00",
+      "evidence": {
+        "matchId": "cbe12e99-af60-41b9-b317-e0ba6c515e88",
+        "RoomId": "e044ef8c-814b-495b-b47c-c36e7380cd77",
+        "playerId": "01a0f3af-b4b9-7a40-b6b5-3dac821fdbee",
+        "equipmentId": "01a0f3af-b4ee-7007-b42c-0f8a8ea50d35",
+        "pids": [
+          21655,
+          21687,
+          21718
+        ],
+        "SettlementId": "01a0f3af-c6fa-7766-b629-3e5d8290d2bc",
+        "expected": "one receipt/credit/equipment movement, 4 holds committed, ACK timestamp persists over restart",
+        "actual": "matched"
+      },
+      "test": "Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "outcome": "Passed",
+      "accepted": false,
+      "canonical_execution": "SupportOnly"
+    },
+    {
+      "caseId": "PROC-03",
+      "recordedAt": "2026-09-30T18:59:33.5271668+00:00",
+      "evidence": {
+        "matchId": "000339b5-b79b-41af-a3cd-a65d53210464",
+        "RoomId": "8ee1fd72-1bdb-4e5c-8526-fc012485d6e3",
+        "SettlementId": "01a0f3af-a976-72ff-bcd5-c35ea59b87cc",
+        "pids": [
+          21594,
+          21624
+        ],
+        "expected": "durable Pending hold committed by actual host cold start; second start credits zero additional",
+        "actual": "matched"
+      },
+      "test": "Full_host_cold_start_commits_durable_pending_holds_once",
+      "outcome": "Passed",
+      "accepted": false,
+      "canonical_execution": "SupportOnly"
+    },
+    {
+      "caseId": "PROC-04",
+      "recordedAt": "2026-09-30T18:59:30.4231553+00:00",
+      "evidence": {
+        "formerMatch": "b6666c87-84c0-47ba-a7ce-42d7fa6fae84",
+        "formerRoom": "7d802bb5-6185-4df5-a8b7-0e74a650be23",
+        "nextMatch": "bba78b76-7c63-46a8-96b8-84a2d44ead63",
+        "nextRoom": "7c8cb851-04e4-4547-a100-7c81a046efb5",
+        "ProcessId": 21563,
+        "expected": "live 200, ready 503; old actor unavailable; next room WS snapshot retained; no extra settlement",
+        "actual": "matched"
+      },
+      "test": "Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "outcome": "Passed",
+      "accepted": false,
+      "canonical_execution": "SupportOnly"
+    },
+    {
+      "caseId": "PROC-05",
+      "recordedAt": "2026-09-30T18:59:27.5147676+00:00",
+      "evidence": {
+        "matchIds": [
+          "01a0f3ae-7128-7384-9d87-e43dc60d34df",
+          "01a0f3ae-b02e-7b67-9eea-6967aeab0b5e",
+          "01a0f3af-5d01-775f-a744-1ea861194b95"
+        ],
+        "previousPid": 21097,
+        "ProcessId": 21530,
+        "expected": "3 distinct matches, 12 settled/ACKed players and zero active locks/pending holds persist through actual restart",
+        "actual": "matched",
+        "scope": "three entry/disconnect-death cycles, not three full gameplay cycles or LIVE acceptance"
+      },
+      "test": "Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "outcome": "Passed",
+      "accepted": false,
+      "canonical_execution": "SupportOnly"
+    }
+  ],
+  "same_terminal_details_json_across_three_processes": true,
+  "terminal_asset_observations": [
+    {
+      "restart": 0,
+      "matchId": "cbe12e99-af60-41b9-b317-e0ba6c515e88",
+      "equipmentId": "01a0f3af-b4ee-7007-b42c-0f8a8ea50d35",
+      "ProcessId": 21655,
+      "goldCredit": 23,
+      "returnedPotions": 2,
+      "ownedArmor": "Equipped",
+      "pendingHolds": 0,
+      "committedHolds": 4,
+      "settlements": 1,
+      "ledgerRows": 1,
+      "movementRows": 1,
+      "persistedDetailsJson": "{\"items\": [{\"item\": {\"kind\": \"Gold\", \"isSafe\": false, \"itemId\": \"fixture-gold\", \"quantity\": 23, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:1\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:2\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"Equipment\", \"isSafe\": false, \"itemId\": \"01a0f3af-b4ee-7007-b42c-0f8a8ea50d35\", \"quantity\": 1, \"equipment\": {\"slot\": \"Feet\", \"level\": 0, \"element\": \"Fire\", \"isBound\": false, \"quality\": \"White\", \"effectAffix\": null, \"secondaryTrait\": \"DrawInterval\"}}, \"equipped\": true}], \"phase\": 5, \"roomId\": \"e044ef8c-814b-495b-b47c-c36e7380cd77\", \"position\": {\"row\": 4, \"column\": 4}, \"revision\": 48, \"heroClass\": \"Mage\", \"assetCount\": 4}"
+    },
+    {
+      "restart": 1,
+      "matchId": "cbe12e99-af60-41b9-b317-e0ba6c515e88",
+      "equipmentId": "01a0f3af-b4ee-7007-b42c-0f8a8ea50d35",
+      "ProcessId": 21687,
+      "goldCredit": 23,
+      "returnedPotions": 2,
+      "ownedArmor": "Equipped",
+      "pendingHolds": 0,
+      "committedHolds": 4,
+      "settlements": 1,
+      "ledgerRows": 1,
+      "movementRows": 1,
+      "persistedDetailsJson": "{\"items\": [{\"item\": {\"kind\": \"Gold\", \"isSafe\": false, \"itemId\": \"fixture-gold\", \"quantity\": 23, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:1\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:2\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"Equipment\", \"isSafe\": false, \"itemId\": \"01a0f3af-b4ee-7007-b42c-0f8a8ea50d35\", \"quantity\": 1, \"equipment\": {\"slot\": \"Feet\", \"level\": 0, \"element\": \"Fire\", \"isBound\": false, \"quality\": \"White\", \"effectAffix\": null, \"secondaryTrait\": \"DrawInterval\"}}, \"equipped\": true}], \"phase\": 5, \"roomId\": \"e044ef8c-814b-495b-b47c-c36e7380cd77\", \"position\": {\"row\": 4, \"column\": 4}, \"revision\": 48, \"heroClass\": \"Mage\", \"assetCount\": 4}"
+    },
+    {
+      "restart": 2,
+      "matchId": "cbe12e99-af60-41b9-b317-e0ba6c515e88",
+      "equipmentId": "01a0f3af-b4ee-7007-b42c-0f8a8ea50d35",
+      "ProcessId": 21718,
+      "goldCredit": 23,
+      "returnedPotions": 2,
+      "ownedArmor": "Equipped",
+      "pendingHolds": 0,
+      "committedHolds": 4,
+      "settlements": 1,
+      "ledgerRows": 1,
+      "movementRows": 1,
+      "persistedDetailsJson": "{\"items\": [{\"item\": {\"kind\": \"Gold\", \"isSafe\": false, \"itemId\": \"fixture-gold\", \"quantity\": 23, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:1\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"HealthPotion\", \"isSafe\": false, \"itemId\": \"health_potion:2\", \"quantity\": 1, \"equipment\": null}, \"equipped\": false}, {\"item\": {\"kind\": \"Equipment\", \"isSafe\": false, \"itemId\": \"01a0f3af-b4ee-7007-b42c-0f8a8ea50d35\", \"quantity\": 1, \"equipment\": {\"slot\": \"Feet\", \"level\": 0, \"element\": \"Fire\", \"isBound\": false, \"quality\": \"White\", \"effectAffix\": null, \"secondaryTrait\": \"DrawInterval\"}}, \"equipped\": true}], \"phase\": 5, \"roomId\": \"e044ef8c-814b-495b-b47c-c36e7380cd77\", \"position\": {\"row\": 4, \"column\": 4}, \"revision\": 48, \"heroClass\": \"Mage\", \"assetCount\": 4}"
+    }
+  ],
+  "limited_scope": "three entry/disconnect-death cohorts; seeded persisted states otherwise; not full gameplay/Boss cycles or LIVE acceptance",
+  "v3_latest_coverage": "NotExecutedByThisChild; parent owns v3+latest full regression"
+}

@@ -1,0 +1,47 @@
+name: PR13 specification checks
+
+on:
+  pull_request:
+    paths:
+      - 'docs/plans/**'
+      - 'tools/pr13_plan.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/tests/test_pr13_stages.py'
+      - 'docs/reports/pr13-stages-20261008/**'
+      - '.github/workflows/pr13-plan.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'docs/plans/**'
+      - 'tools/pr13_plan.py'
+      - 'tools/pr13_stages.py'
+      - 'tools/tests/test_pr13_stages.py'
+      - 'docs/reports/pr13-stages-20261008/**'
+      - '.github/workflows/pr13-plan.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  specification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Validate complete coverage, references, dependency graph and handbook
+        run: python tools/pr13_plan.py --check
+      - name: Check fail-closed stage profiles and evidence
+        run: python -m unittest tools.tests.test_pr13_stages -v
+      - name: Verify frozen stage delivery integrity
+        run: |
+          for summary in docs/reports/pr13-stages-20261008/S0*/summary.json; do
+            if [ -f "$summary" ]; then
+              python tools/pr13_stages.py check --input "${summary%/summary.json}" --historical
+            fi
+          done

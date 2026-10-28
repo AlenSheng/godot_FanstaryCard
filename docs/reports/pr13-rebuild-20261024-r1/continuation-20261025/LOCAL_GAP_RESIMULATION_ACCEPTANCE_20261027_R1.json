@@ -1,0 +1,676 @@
+{
+  "date": "2026-10-27",
+  "round_id": "local-gap-resimulation-20261027-r1",
+  "kind": "FreshCurrentLocalSimulationAcceptance_OriginalStrictVerdictsPreserved",
+  "user_instruction": "缺失的部分本机重新模拟，补上缺口推进任务验收",
+  "base_release_source": "ecb5428bc087a077f69453e1cdc51930775e4633",
+  "current_local_simulation_verdict": "Passed",
+  "four_task_local_layer_results": [
+    {
+      "case_ids": [
+        "LOAD-11.2-T01",
+        "LOAD-11.2-T02",
+        "LOAD-11.2-T03"
+      ],
+      "state": "PassedForCurrentLocalSimulation",
+      "task_id": "LOAD-11.2"
+    },
+    {
+      "case_ids": [
+        "PR13-A01.3-T01",
+        "PR13-A01.3-T02",
+        "PR13-A01.3-T03"
+      ],
+      "state": "PassedForCurrentLocalSimulation",
+      "task_id": "PR13-A01.3"
+    },
+    {
+      "case_ids": [
+        "PR13-A07.3-T01",
+        "PR13-A07.3-T02",
+        "PR13-A07.3-T03"
+      ],
+      "state": "PassedForCurrentLocalSimulation",
+      "task_id": "PR13-A07.3"
+    },
+    {
+      "case_ids": [
+        "PR13-A08.1-T01",
+        "PR13-A08.1-T02",
+        "PR13-A08.1-T03"
+      ],
+      "state": "PassedForCurrentLocalSimulation",
+      "task_id": "PR13-A08.1"
+    }
+  ],
+  "explicit_cases": [
+    {
+      "actual": {
+        "actual_same_name_changed_bytes_rejected": true,
+        "controlled_modified_SHA": "b546e5156d9bc1160c6435ebf73265a35fc5e60f6f408e49514c27f03a6c391e",
+        "original_expected_SHA": "bd12572922e492eaaa0249e2ca87173639ebc14bed1b0e8f0de187b71ee166be"
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "LOAD-11.2-T01",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "controlled_sensitive_public_export_rejected": true,
+        "raw_identity": {
+          "bytes": 88,
+          "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1\\attempt01\\private-sensitive-fixture.json",
+          "sha256": "39d6ace70d81335b0f4bc32ccf1f13a7ad9af0ad4c7d52f640fbc7214bca85eb"
+        },
+        "rejection_did_not_echo_value": true,
+        "sanitized_summary_passed": true
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "LOAD-11.2-T02",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "derived": {
+          "bytes": 21,
+          "path": "derived.json",
+          "sha256": "96cfad21f4bbe31978ae0854cf5f0e0bed6497c4d7b523143b7f66cf63d1b46b"
+        },
+        "original_overwritten": false,
+        "parent": {
+          "bytes": 16,
+          "path": "raw.jsonl",
+          "sha256": "0cae835d8fc20e5a5e65aa2970055fe58f7ca8fc7a7dc4c9101da74c63cf2daf"
+        },
+        "relation": "derived_from"
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "LOAD-11.2-T03",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "evidence_errors": [
+          "same_cutoff_claim_conflict:running:completed_cycles"
+        ],
+        "same_cutoff_contradiction_rejected": true
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A01.3-T01",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "cutoff_clock": "Controlled_virtual_clock;not_game_latency_measurement",
+        "old_Sept29_events_recovered": false,
+        "scenarios": [
+          {
+            "complete_event_identity_rows": [
+              {
+                "at_unix_ms": 511,
+                "client_id": "sim-client-34",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-34:2",
+                "event_seq": 4,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 513,
+                "client_id": "sim-client-35",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-35:2",
+                "event_seq": 4,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 515,
+                "client_id": "sim-client-36",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-36:2",
+                "event_seq": 4,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 517,
+                "client_id": "sim-client-37",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-37:2",
+                "event_seq": 4,
+                "event_type": "cycle.completed"
+              }
+            ],
+            "delta": 4,
+            "final": 90,
+            "new_run_id": "new-local-sim-ef0434f35e6643ddb34c378267cd84d0",
+            "original_bytes_unchanged": true,
+            "running": 86
+          },
+          {
+            "complete_event_identity_rows": [
+              {
+                "at_unix_ms": 511,
+                "client_id": "sim-client-26",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-26:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 513,
+                "client_id": "sim-client-27",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-27:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 515,
+                "client_id": "sim-client-28",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-28:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 517,
+                "client_id": "sim-client-29",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-29:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 519,
+                "client_id": "sim-client-30",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-30:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 521,
+                "client_id": "sim-client-31",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-31:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 523,
+                "client_id": "sim-client-32",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-32:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 525,
+                "client_id": "sim-client-33",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-33:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              },
+              {
+                "at_unix_ms": 527,
+                "client_id": "sim-client-34",
+                "cutoff": "drain",
+                "cycle_id": "sim-client-34:3",
+                "event_seq": 6,
+                "event_type": "cycle.completed"
+              }
+            ],
+            "delta": 9,
+            "final": 139,
+            "new_run_id": "new-local-sim-b15c304a1f1149aa85fa856c8313adf5",
+            "original_bytes_unchanged": true,
+            "running": 130
+          }
+        ],
+        "simulated_cycles": 229
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A01.3-T02",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "actual_native_client_processes": 0,
+        "controlled_injected_check_denominators": {
+          "failed_checks": 77,
+          "failed_clients": 52
+        }
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A01.3-T03",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "actual_workflow_SHA": "c38adad444eca8e89d20f6516938a1ff60bf7326e598fec93abcedaf55b4fba6",
+        "event_path_matches": {
+          "pull_request": true,
+          "push": true
+        },
+        "hosted_workflow_actually_triggered": false
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A07.3-T01",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "actual_external_fork_or_hosted_PR_run": false,
+        "deployment_guard_allows": false,
+        "event": {
+          "base_sha": "101426b98e43ebea6444edb673b40302c19890fa",
+          "event_name": "pull_request",
+          "head_sha": "1ea760227c26e6bc77fc902667514d8f00d9e0d0",
+          "local_only": true,
+          "ref": "refs/pull/1/merge",
+          "repository": "local-simulation/fork"
+        },
+        "local_fork_commit": "1ea760227c26e6bc77fc902667514d8f00d9e0d0",
+        "local_upstream_commit": "101426b98e43ebea6444edb673b40302c19890fa",
+        "sanitized_child_environment": {
+          "credential_name_count": 0
+        }
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A07.3-T02",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "TRX_is_controlled_fixture_not_new_native_PG_result": true,
+        "controlled_full_method_state": "CoveredForMainReview",
+        "exit0_missing_method_state": "Blocked",
+        "stale_source_state": "Blocked"
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A07.3-T03",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "checkout_sha": "1ea760227c26e6bc77fc902667514d8f00d9e0d0",
+        "different_sources": true,
+        "qualification": "Git references identify code only. A checkout/marker advance does not prove a rebuilt or running image/assembly.",
+        "runtime_execution_verified": false,
+        "runtime_reference_sha": "101426b98e43ebea6444edb673b40302c19890fa"
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A08.1-T01",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "after": {
+          "git_commit": "1ea760227c26e6bc77fc902667514d8f00d9e0d0",
+          "git_dirty": true,
+          "platform": "Windows-10-10.0.19045-SP0",
+          "python": "3.10.11",
+          "sha256": {
+            "fixture.py": "e941b4131cfc21ea6d45afce52c9840d3ff60508e91e2cde1a4d99e5bad14471"
+          }
+        },
+        "before": {
+          "git_commit": "1ea760227c26e6bc77fc902667514d8f00d9e0d0",
+          "git_dirty": false,
+          "platform": "Windows-10-10.0.19045-SP0",
+          "python": "3.10.11",
+          "sha256": {
+            "fixture.py": "53a8e63ec54d02dd39132db6df251f20f01e3157eb482020e574f99b00663a39"
+          }
+        },
+        "dirty_overlay_not_hidden": true
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A08.1-T02",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    },
+    {
+      "actual": {
+        "actual_observed_config": {
+          "bytes": 14,
+          "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1\\attempt01\\local-fork\\config.json",
+          "sha256": "aab41f219a4fbdfdfc305d8b58700f569a96ed6112a6b62a95a7929dc3da3471"
+        },
+        "historical_overlay_or_engine_identity_recovered": false,
+        "same_name_changed_configuration_state": "HashMismatchQuarantined"
+      },
+      "actual_native_gameplay_or_external_CI_execution": false,
+      "case_id": "PR13-A08.1-T03",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "status": "Passed"
+    }
+  ],
+  "explicit_cases_passed": 12,
+  "existing_regression": {
+    "errors": 0,
+    "executed": 31,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0
+  },
+  "controlled_cutoff_cycle_budget": {
+    "simulated_cycles": 229,
+    "maximum_per_task": 300,
+    "actual_native_games": 0,
+    "actual_native_clients": 0,
+    "virtual_cutoff_profiles": [
+      [
+        86,
+        90
+      ],
+      [
+        130,
+        139
+      ]
+    ],
+    "event_level_deltas_retained": true,
+    "new_data_not_Sept29_recovered_events": true
+  },
+  "input_completeness": {
+    "exact_frozen_Git_source_files": 282,
+    "final_local_epoch_input_files": 690,
+    "full_input_SHA_audit_passed": true,
+    "old3005_historical_queue_resolved": false,
+    "preliminary_Git_archive_export_retained": true,
+    "execution_uses_exact_git_blob_bytes": true
+  },
+  "actual_PG_evidence_reverified": {
+    "actual_original_parent": {
+      "bytes": 3612145,
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\user-final-capacity-plan-20261026-r36\\CI-originals\\artifact-12645587563.original.zip",
+      "sha256": "741d29eeacee8ba93adeed4bbaffb13e24a7e0abbd31cecb8a407762c82ee763"
+    },
+    "actual_result_rows": 418,
+    "code_tree_equivalence": {
+      ".github": {
+        "equal": true,
+        "new_reference_tree": "56ea2cd42cb0feb99f14cff21145d636edc97bb7",
+        "original_CI_reference_tree": "56ea2cd42cb0feb99f14cff21145d636edc97bb7"
+      },
+      "client": {
+        "equal": true,
+        "new_reference_tree": "33802c85918089cbd2a367b2e7426da9591a7e74",
+        "original_CI_reference_tree": "33802c85918089cbd2a367b2e7426da9591a7e74"
+      },
+      "config": {
+        "equal": true,
+        "new_reference_tree": "38aac2092d02eedce31ff9ef8c3c8428ac9e52aa",
+        "original_CI_reference_tree": "38aac2092d02eedce31ff9ef8c3c8428ac9e52aa"
+      },
+      "protocol": {
+        "equal": true,
+        "new_reference_tree": "31c85b54318653b0d78ca4182e6a10f05ba7e43b",
+        "original_CI_reference_tree": "31c85b54318653b0d78ca4182e6a10f05ba7e43b"
+      },
+      "server": {
+        "equal": true,
+        "new_reference_tree": "aaae63f849d2be108058380a791a878cc93fa3d6",
+        "original_CI_reference_tree": "aaae63f849d2be108058380a791a878cc93fa3d6"
+      },
+      "tools": {
+        "equal": true,
+        "new_reference_tree": "1d8e520dfbc455ab87ff903e1f81a593221adfd3",
+        "original_CI_reference_tree": "1d8e520dfbc455ab87ff903e1f81a593221adfd3"
+      }
+    },
+    "current_release_reference": "ecb5428bc087a077f69453e1cdc51930775e4633",
+    "fork_event_PG_execution_proved": false,
+    "fresh_read_and_reverification": true,
+    "new_local_PG_execution": false,
+    "original_CI_run": 40311272218,
+    "original_CI_source": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "original_TRX": {
+      "bytes": 1490824,
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1\\reused-PG-originals\\postgres-full.trx",
+      "sha256": "24ca6a492b26f88c2662aa868c7ddfa149d6203e49bf8ce3a9ecc703fc5aa0f9"
+    },
+    "original_artifact": 12645587563,
+    "passed_rows": 418,
+    "scope": "Reuse original actual PG coverage for unchanged code;local fork-event and privacy simulation is separately recorded.",
+    "skipped_rows": 0,
+    "strict_required_method_coverage": {
+      "acceptance": false,
+      "counters": {
+        "aborted": 0,
+        "completed": 0,
+        "disconnected": 0,
+        "error": 0,
+        "executed": 418,
+        "failed": 0,
+        "inProgress": 0,
+        "inconclusive": 0,
+        "notExecuted": 0,
+        "notRunnable": 0,
+        "passed": 418,
+        "passedButRunAborted": 0,
+        "pending": 0,
+        "timeout": 0,
+        "total": 418,
+        "warning": 0
+      },
+      "failed_cases": [],
+      "missing_assertion_rows": {},
+      "skipped_cases": [],
+      "state": "CoveredForMainReview"
+    }
+  },
+  "runtime_witness": {
+    "PID": 42020,
+    "Python_executable": {
+      "bytes": 103192,
+      "path": "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "sha256": "3cce33d75d6fdae4e004d0bdf149320b3147482a9caf370079dcb9c191a1b260"
+    },
+    "Python_version": "3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]",
+    "actual_runtime_kind": "LocalPythonOfflineSimulation_NotGodotOrServerRuntime",
+    "base_reference": "ecb5428bc087a077f69453e1cdc51930775e4633",
+    "exact_source_manifest": {
+      "bytes": 83150,
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1\\exact-source-input-manifest.original.json",
+      "sha256": "e65ee4629da6d1ade5e191bb1bb976ec7107ae0d992c7023c56aa466223ef762"
+    },
+    "native_gameplay_PG_processes_started": 0,
+    "runner_source": {
+      "bytes": 14431,
+      "path": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1\\run-local-resimulation.original.py",
+      "sha256": "b42e5b0cf111e02ad1f6f1512be751d6edecbf1d0d8d10af138a36b52ca2b59a"
+    },
+    "same_229_simulated_cycles_not_229_actual_game_matches": true
+  },
+  "runtime_flags_hardware": {
+    "Python_executable": {
+      "bytes": 103192,
+      "path": "C:\\Users\\SHENGJIAHAO\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+      "sha256": "3cce33d75d6fdae4e004d0bdf149320b3147482a9caf370079dcb9c191a1b260"
+    },
+    "Python_version": "3.10.11",
+    "at": "2026-10-27T18:01:25.492666+08:00",
+    "flags": [
+      "-B",
+      "PYTHONDONTWRITEBYTECODE=1",
+      "BelowNormal",
+      "NoExternalGitRemote",
+      "NoPGOrGodotLaunch"
+    ],
+    "heavy_native_tests_started": 0,
+    "logical_CPUs": 16,
+    "native_memory_reserve_GiB": 6,
+    "observed_runtime": "PythonOfflineSimulation",
+    "other_task_processes_not_modified": true,
+    "platform": "Windows-10-10.0.19045-SP0",
+    "protected_health_rule": "GDD0.2 retains70/80/100;noHP clamp or generic100HP validator introduced",
+    "randomization": "Unique run UUIDs recorded in raw;controlled virtual cutoff profiles fixed;no combat RNG experiments",
+    "region": "LocalHost_NoCloudOrExternalRequests",
+    "selectors": [
+      "LOAD-11.2-T01",
+      "LOAD-11.2-T02",
+      "LOAD-11.2-T03",
+      "PR13-A01.3-T01",
+      "PR13-A01.3-T02",
+      "PR13-A01.3-T03",
+      "PR13-A07.3-T01",
+      "PR13-A07.3-T02",
+      "PR13-A07.3-T03",
+      "PR13-A08.1-T01",
+      "PR13-A08.1-T02",
+      "PR13-A08.1-T03"
+    ]
+  },
+  "resource_qualification": {
+    "observed_free_bytes": 7371747328,
+    "observed_reserve_floor_met": true,
+    "whole_native_launch_admission": "NotGranted;reserve floor alone does not qualify per-process or concurrent queue budgets",
+    "heavy_launches": 0
+  },
+  "original_strict_four_task_states_unchanged": true,
+  "original_effective_disposition_counts_unchanged": {
+    "Accepted": 116,
+    "ClosedByAgreement": 12,
+    "Partial": 3,
+    "ReadyForAcceptance": 1
+  },
+  "original_strict_goal_status_last_observed": "blocked",
+  "current_local_followup_complete": true,
+  "new_actual_historical_original_or_external_fork_evidence_claimed": false,
+  "actual_external_fork_PR_runs": 0,
+  "new_Godot_or_PG_business_runs": 0,
+  "new_100_capacity_retest": false,
+  "production_or_cloud_changed": false,
+  "current5_and_capacity12_decisions_unchanged": true,
+  "historical_failures_CPU_adjustment_GDD_and_original_register_unchanged": true,
+  "scope_limits": [
+    "All4 local simulation layers passed;not retroactive recovery of the two old reports or old runtime identities.",
+    "Local Git upstream/fork with sanitized subprocess environment is recorded as local simulation;not a hosted external fork PR/PG execution.",
+    "The418 actual PG passes are reverified original CI on identical code trees;not newly executed PG tests or new-head hosted results.",
+    "Original strict whole-task verdicts stay separate from this new local simulation acceptance."
+  ],
+  "private_evidence_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\local-gap-resimulation-20261027-r1",
+  "at": "2026-10-27T18:07:26.123851+08:00",
+  "private_proof_metadata": [
+    {
+      "name": "policy.original.json",
+      "bytes": 7310,
+      "sha256": "fd477a04fa2be3edd59c270fa81b529b7819342b2b542ff9bf1a5366725d0772"
+    },
+    {
+      "name": "exact-source-input-manifest.original.json",
+      "bytes": 83150,
+      "sha256": "e65ee4629da6d1ade5e191bb1bb976ec7107ae0d992c7023c56aa466223ef762"
+    },
+    {
+      "name": "execution-source-selection.original.json",
+      "bytes": 364,
+      "sha256": "1c0aa4157831cc07bb042bef99780977ca665305b612ecb125c14ad07ee83459"
+    },
+    {
+      "name": "attempt01/summary.json",
+      "bytes": 639,
+      "sha256": "3d13bd646c90ef77b263afc9c34b4f6bd46dfd9768d56e969437eb45b382e011"
+    },
+    {
+      "name": "attempt01/runtime-source-witness.original.json",
+      "bytes": 1201,
+      "sha256": "7adddd78c9a625b79e6963d90d4e9af7f5390c2ac0a02536f958df679afbd276"
+    },
+    {
+      "name": "attempt01/existing-regression.original.json",
+      "bytes": 94,
+      "sha256": "cf7548b666914dd5cf6cad54e8b78d1e167109251034bb950cda6b057c25a666"
+    },
+    {
+      "name": "final-current-input-manifest.original.json",
+      "bytes": 129224,
+      "sha256": "de78f5f9b082f2f29a45349878496392fa7cb9b6ca0bb1d278c533d5fdaf2d4b"
+    },
+    {
+      "name": "final-current-input-audit.derived.json",
+      "bytes": 261402,
+      "sha256": "01b29e36b1722ddf33e6861a7f6a0cf86ea9f8aafff5403f2bca84c98a977907"
+    },
+    {
+      "name": "final-current-input-audit-parent.derived.json",
+      "bytes": 435,
+      "sha256": "3aeeca3df3de92cc3f609a79a9280a75bf7c9f67c9bf6a4744e5cae375a7247d"
+    },
+    {
+      "name": "controlled-input-provider-map.original.json",
+      "bytes": 1455,
+      "sha256": "140a3a431b36c072aacb7f1aa1f1377591960504ecb0fab4960ae7864230eb98"
+    },
+    {
+      "name": "reused-PG-byte-and-source-verification.original.json",
+      "bytes": 2979,
+      "sha256": "2add58b1841039602270ae755f6bead0196cdb2b2172200847a53e086a75f3c6"
+    },
+    {
+      "name": "local-runtime-flags-and-hardware.original.json",
+      "bytes": 1260,
+      "sha256": "72fc6c20a2647c792d7ba33f80971185cefb59bcc5aec0b38d0fc953f8b01aab"
+    },
+    {
+      "name": "resource-launch-admission-qualification.derived.json",
+      "bytes": 233,
+      "sha256": "82e016cc7062be4b70a579e52543091bd1e5a14313333466d6fb4d16f4a3bb50"
+    },
+    {
+      "name": "current-local-simulation-acceptance.derived.json",
+      "bytes": 4091,
+      "sha256": "be6c0c9e1e295d5840cb298405466d5cdb600b7ac1194acfbbcd8e527c291182"
+    },
+    {
+      "name": "run-local-resimulation.original.py",
+      "bytes": 14431,
+      "sha256": "b42e5b0cf111e02ad1f6f1512be751d6edecbf1d0d8d10af138a36b52ca2b59a"
+    },
+    {
+      "name": "verify-reused-PG-and-new-inputs.original.py",
+      "bytes": 5511,
+      "sha256": "9fb11d92f1980d06a43f0fba2e34e3c2b49c1a9361bb8990a1ca049418aeae9b"
+    },
+    {
+      "name": "seal-and-adjudicate-local-round.original.py",
+      "bytes": 4654,
+      "sha256": "2a120b4b11b82ce0fbc4fc3cd860e8a247cf189fd7fd7bebb5546c512e534426"
+    }
+  ]
+}

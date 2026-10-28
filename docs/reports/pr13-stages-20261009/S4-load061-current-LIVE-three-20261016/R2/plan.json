@@ -1,0 +1,16 @@
+{
+  "task": "LOAD-06.1",
+  "profile": "LIVE",
+  "origin": "https://www.relicbound.cn",
+  "account": "test_hctx01",
+  "device": "load-hctx-01a14470-r1",
+  "maximum_native_process_seconds": 75,
+  "planned_HTTP_backend_requests": 8,
+  "rooms_or_game_encounters": 0,
+  "no_production_source_upload": true,
+  "no_production_configuration_edit": true,
+  "T01": "Actual POST realtime ticket, discard two original200 replies to induce two transport retries; compare real write header/body hashes.",
+  "T02": "Actual GET players/me, delay original reply, change controlled cycle context during outstanding request; not a physical game cycle claim.",
+  "T03": "Actual GET players/me first reply withheld12s to cause real native10s timeout and retry; separately corrupt original200 protobuf body to invalid wire type.",
+  "sensitive_data": "Tokens, authorization, ticket values and original private bodies remain ephemeral in RAM; only hashes/status/count/timing retained."
+}

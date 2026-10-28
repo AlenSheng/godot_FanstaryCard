@@ -1,0 +1,481 @@
+{
+  "cases": [
+    {
+      "case_id": "PR13-A03.3-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "真实M非零装备Pending提交后，ACK三次相同key真实后端200全部丢响应；原Store据权威Bootstrap确认一次，业务完成与PG唯一ACK一致，不猜成功。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.3-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "真实N同一key三次ACK均未接触后端，Native实际超时10010/10000/6933ms，逻辑30009ms；原Store返回false并恢复N收据，不计完成。公开重试新逻辑key、同SID，才一次完成。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.3-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "actual": "旧M实际成功Bootstrap在N交回，N完整业务指纹和完成计数保持；第三局ACK忙等待时第二次公开调用false，没有额外HTTP或完成信用，原UI等待提示/禁用入口来自真实状态。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "同一UID/session/socket第二局N接替M，旧M成功值返回后N的room/receipt/recovery/poll/load/lobby归属和业务指纹保持，PG仍一条成功ACK。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "actual": "真实所属装备行锁使非零hold Pending；原生先后实际消费两条同M NOT_IN_ROOM和无收据Bootstrap，保持M。精确自有锁释放后同M/SID就绪；装备最终RelicPile且恰三次移动。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    },
+    {
+      "case_id": "PR13-A03.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE",
+        "LIVE",
+        "POSTGRES"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "actual": "一个真实Native、同一UID/gen1/同peer、三个不同M和SID，epochs2/3/4。重复错误、旧回包、提交后丢响应、未提交超时和busy重入共同作用下最终恰3次成功公开ACK/三个唯一持久记录；两次预期失败/拒绝无完成计数。",
+      "shared_actual": {
+        "Native60checks_allpass_OS0_clean": true,
+        "independent_checks74": true,
+        "current_OFFLINE_original_component_suites4_passed": true,
+        "worlds": [
+          {
+            "M": "01a15cc7-9341-7b41-a9af-6b0613c00a83",
+            "SID": "01a15cc7-9776-7e38-a245-ad2cddd95d31",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 1,
+            "epoch": 2,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc7-9341-7e34-ba58-0141f63b6221"
+          },
+          {
+            "M": "01a15cc8-4b30-7752-83d8-3f00a98d94ae",
+            "SID": "01a15cc8-4bd0-7bef-b22e-3b8409f38aef",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 2,
+            "epoch": 3,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc8-4b30-7b98-81cc-c62a7c8c5d6d"
+          },
+          {
+            "M": "01a15cc9-5150-7293-ac20-b42b6fda6115",
+            "SID": "01a15cc9-51f8-7095-ba46-fce1b81c0942",
+            "UID": "01a15cc7-1720-7033-968b-8420b9fa1383",
+            "cycle": 3,
+            "epoch": 4,
+            "generation": 1,
+            "peer_id": -9223371992948799942,
+            "room_id": "01a15cc9-5150-707e-b8d7-34aee20eedc2"
+          }
+        ],
+        "actual_initial_item_count": 1,
+        "asset_movements": 3,
+        "destination": "RelicPile",
+        "actual_successful_public_completions": 3,
+        "actual_network_ACKattempts": 8,
+        "actual_backend_ACKcontacts": 5,
+        "actual_logical_ACKkeys": 4,
+        "actual_unique_durable_ACKs": 3,
+        "UI_scope": "OriginalReferenceUI actualbusy semantic nodes only; no pixels/FPSclaim"
+      },
+      "source_scope": "Unmodified originalRoot Store/Gateway recovery andACK; private Gateway only holds oldsuccessfulM return after completedtransport. Private Store factory substitution only, original_on_event inherited. OneRootUI hall instance usesrealbusy state, no state ortext substitution.",
+      "business_criteria_relaxed": false,
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/README.md",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A033-A034-current-ACK-threecycle-20261021/independent-raw-review.json"
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "task_id": "PR13-A03.3",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "classification": "当前原始ACK恢复和同账号三局故障合同通过，产品逻辑无需修改",
+      "new_case_profiles_closed": {
+        "PR13-A03.3-T01": [
+          "LIVE"
+        ],
+        "PR13-A03.3-T02": [
+          "LIVE"
+        ],
+        "PR13-A03.3-T03": [
+          "LIVE",
+          "POSTGRES"
+        ]
+      },
+      "shared_new_physical_worlds": 3,
+      "not_doubled_to6": true,
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false
+    },
+    {
+      "task_id": "PR13-A03.4",
+      "authority": "MAIN",
+      "state": "Accepted",
+      "classification": "当前原始ACK恢复和同账号三局故障合同通过，产品逻辑无需修改",
+      "new_case_profiles_closed": {
+        "PR13-A03.4-T01": [
+          "LIVE"
+        ],
+        "PR13-A03.4-T02": [
+          "LIVE"
+        ],
+        "PR13-A03.4-T03": [
+          "LIVE",
+          "POSTGRES"
+        ]
+      },
+      "shared_new_physical_worlds": 3,
+      "not_doubled_to6": true,
+      "business_criteria_relaxed": false,
+      "whole_project_or_global_gate_accepted": false
+    }
+  ],
+  "summary": {
+    "counts": {
+      "Accepted": 92,
+      "Partial": 32,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "newly_accepted": [
+      "PR13-A03.3",
+      "PR13-A03.4"
+    ],
+    "remaining_unaccepted": 40,
+    "missing_case_profile_pairs_before": 150,
+    "missing_case_profile_pairs_after": 142,
+    "new_case_profile_closures": 8,
+    "actual_shared_new_worlds_UIDs_items": [
+      3,
+      1,
+      1
+    ],
+    "whole_project_accepted": false,
+    "current_register": "docs/reports/pr13-stages-20261009/S6-current-A033-A034-accepted-20261021/register.json",
+    "previous_register": {
+      "path": "docs/reports/pr13-stages-20261009/S6-current-A032-accepted-20261021/register.json",
+      "sha256": "658fccd9884913118dd2a2d8bed8467211cc83fb42e534d6fcbb627c5813a796"
+    }
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "summary": {
+    "kind": "B044WholeMAINAccepted_AutomatedScope_RiskRecoveryAndCurrentUI",
+    "counts": {
+      "Accepted": 82,
+      "Partial": 42,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 50,
+    "missing_case_profile_pairs": 197,
+    "B044Accepted": true,
+    "human_experience_excluded_not_passed": true,
+    "old21600_all36_outcomes": "13421Victory8179Death0Censored0Error retained",
+    "actual_more606effectiveactions_and49deaths_guardBlocked": true,
+    "actual_fault_assessmentFailed9_expected_healthy9recovered": true,
+    "new_actual18rooms18restores36of120": true,
+    "newUI18of60_reused36_currentframes": true,
+    "manual_new_images8_not18": true,
+    "independent_actualrisk_recovery_checks907": true,
+    "UI_MAIN_checks5876": true,
+    "G_raw_members235": true,
+    "cloudsource_cleanup_complete": true,
+    "production_unchangedhealth200": true,
+    "other131tasks_allgates_unchanged": true,
+    "whole_project_accepted": false
+  },
+  "cases": [
+    {
+      "case_id": "PR13-B04.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "setup": "操作更多但死亡增多",
+      "expected": "不自动更好",
+      "actual": {
+        "actual_samebudget300pairedseeds": {
+          "hero": "Mage",
+          "group": "E1",
+          "strategy": "build",
+          "effective_actions_delta": 606,
+          "death_delta": 49,
+          "death_rate_delta": 0.16333333333333333,
+          "full_arm_totals": {
+            "ActualPublishedDefault": {
+              "n": 300,
+              "outcomes": {
+                "Death": 245,
+                "Victory": 55
+              },
+              "actual_actions": 6458,
+              "effective_actions": 6164,
+              "zero_effective_actions": 294,
+              "cards_spent": 11119,
+              "seconds_all_outcomes": 32936.50000000001,
+              "strategy_hold_seconds": 25758.399999999816,
+              "natural_draws": 9446,
+              "immediate_draws": 831,
+              "first_effective_seconds_missing": 0,
+              "final_pool_size_distribution": {
+                "20": 245,
+                "21": 55
+              }
+            },
+            "SingleCardCandidate": {
+              "n": 300,
+              "outcomes": {
+                "Death": 294,
+                "Victory": 6
+              },
+              "actual_actions": 7091,
+              "effective_actions": 6770,
+              "zero_effective_actions": 321,
+              "cards_spent": 11956,
+              "seconds_all_outcomes": 37699.799999999996,
+              "strategy_hold_seconds": 28967.19999999964,
+              "natural_draws": 10623,
+              "immediate_draws": 462,
+              "first_effective_seconds_missing": 0,
+              "final_pool_size_distribution": {
+                "20": 294,
+                "21": 6
+              }
+            }
+          }
+        },
+        "current_policy": "Blocked: mortalityrisk>5%; bothdeclaredp_control0/1 guardchecks Blocked, controlsnotmeasuredpvalues",
+        "current_RENDER": "Reuse18currentthreehero buildhold frames, selecteddecision/actiongate legible; visualizations not statisticalproof"
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "new_Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "current_runtime713source_exact": true,
+        "old540_21600_compiled9555_restrictedsourcequalification": "Old844DLL isnotcurrentc825. B041 proves138source equivalence onlyoriginal1real/nonbot/noBots fixture. Oldoriginalall540/21600 rehashed retained notrerun.",
+        "UI_current2147source_exact": true
+      },
+      "scope": "Automated frozenbarePVE metrics andactualcurrentDomain controlledpoolcorruption experiment, currentUI. Humanexcludedbydirectuser; notnaturalexpedition/LIVE/PG/capacity orhumansatisfaction.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b044-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B044-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b044-current-experience-and-recovery-20261020-originals"
+    },
+    {
+      "case_id": "PR13-B04.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "setup": "一职业无恢复动作",
+      "expected": "正确性Failed",
+      "actual": {
+        "actual_trials": "Threehero three_newseed healthy/faultpairs,18actualroom+18maprestore=36allocations;9healthy recoverhand1at4s/2at8s andkeep20IDs;9deliberatelycorruptedpool0 lose20IDs andcannotrestoreplay",
+        "current_policy": "All9badassessedFailed fromactualID/recoverypredicate; healthy9notFailed. NegativecaseexpectedFailed passed; noactualproductpoolloss discovered.",
+        "current_RENDER": "18newMageHUD projections: healthyempty0/recovered1/faultlost20×2locale×3size. ActualCardName/slots/counts/button gates tested; invalidfaultkeepsFailed"
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "new_Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "current_runtime713source_exact": true,
+        "old540_21600_compiled9555_restrictedsourcequalification": "Old844DLL isnotcurrentc825. B041 proves138source equivalence onlyoriginal1real/nonbot/noBots fixture. Oldoriginalall540/21600 rehashed retained notrerun.",
+        "UI_current2147source_exact": true
+      },
+      "scope": "Automated frozenbarePVE metrics andactualcurrentDomain controlledpoolcorruption experiment, currentUI. Humanexcludedbydirectuser; notnaturalexpedition/LIVE/PG/capacity orhumansatisfaction.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b044-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B044-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b044-current-experience-and-recovery-20261020-originals"
+    },
+    {
+      "case_id": "PR13-B04.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT",
+        "RENDER"
+      ],
+      "setup": "候选无显著收益",
+      "expected": "保留默认并记录NoChange",
+      "actual": {
+        "actual_no_observed_gain_stratum": {
+          "hero": "Guardian",
+          "group": "O1",
+          "strategy": "baseline_all_hand",
+          "actual_paired_seeds": 300,
+          "full_outcomes": {
+            "ActualPublishedDefault": {
+              "all_original_outcomes": {
+                "Victory": 300,
+                "Death": 0,
+                "Censored": 0,
+                "Error": 0
+              },
+              "total": 300,
+              "victory_rate_wilson95": [
+                0.987357028775448,
+                1
+              ],
+              "death_rate_wilson95": [
+                0,
+                0.012642971224552227
+              ],
+              "observed_time_all_outcome_quantiles": {
+                "0.1": 52.1,
+                "0.5": 60.1,
+                "0.9": 64.1,
+                "0.95": 64.1,
+                "0.99": 64.1
+              },
+              "conditional_victory_time_quantiles": {
+                "0.1": 52.1,
+                "0.5": 60.1,
+                "0.9": 64.1,
+                "0.95": 64.1,
+                "0.99": 64.1
+              },
+              "censored_time_not_dropped": true,
+              "natural_draws": 4481,
+              "immediate_draws": 0,
+              "cards_spent": 5381,
+              "requested_heal": 2206,
+              "effective_heal": 1318,
+              "heal_overflow": 888,
+              "requested_shield": 11687,
+              "effective_shield": 11687,
+              "shield_overflow": 0
+            },
+            "SingleCardCandidate": {
+              "all_original_outcomes": {
+                "Victory": 300,
+                "Death": 0,
+                "Censored": 0,
+                "Error": 0
+              },
+              "total": 300,
+              "victory_rate_wilson95": [
+                0.987357028775448,
+                1
+              ],
+              "death_rate_wilson95": [
+                0,
+                0.012642971224552227
+              ],
+              "observed_time_all_outcome_quantiles": {
+                "0.1": 60.1,
+                "0.5": 64.1,
+                "0.9": 68.1,
+                "0.95": 68.1,
+                "0.99": 68.1
+              },
+              "conditional_victory_time_quantiles": {
+                "0.1": 60.1,
+                "0.5": 64.1,
+                "0.9": 68.1,
+                "0.95": 68.1,
+                "0.99": 68.1
+              },
+              "censored_time_not_dropped": true,
+              "natural_draws": 4862,
+              "immediate_draws": 0,
+              "cards_spent": 5762,
+              "requested_heal": 2324,
+              "effective_heal": 1325,
+              "heal_overflow": 999,
+              "requested_shield": 14737,
+              "effective_shield": 14737,
+              "shield_overflow": 0
+            }
+          },
+          "original_pointwise_victory_interval": {
+            "paired_battles": 300,
+            "independent_seed_clusters": 300,
+            "mean_delta": 0.0,
+            "paired_seed_cluster_bootstrap95": [
+              0.0,
+              0.0
+            ],
+            "bootstrap_seed": 20260930,
+            "resamples": 1000,
+            "precision_guaranteed": false,
+            "capacity_acceptance": false,
+            "production_activation": false
+          }
+        },
+        "current_policy": "Inconclusive→NoChangeWithEvidence; defaultretained, noactivation. Originalall36mixedstrata retained, no global safechange/equivalence claim",
+        "current_RENDER": "Reuse18current default20threehero two-language three-size frames. Productsource/configunchanged andUIbusinesscommands0/noSave."
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "actual_source": {
+        "new_Domain_SHA": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "current_runtime713source_exact": true,
+        "old540_21600_compiled9555_restrictedsourcequalification": "Old844DLL isnotcurrentc825. B041 proves138source equivalence onlyoriginal1real/nonbot/noBots fixture. Oldoriginalall540/21600 rehashed retained notrerun.",
+        "UI_current2147source_exact": true
+      },
+      "scope": "Automated frozenbarePVE metrics andactualcurrentDomain controlledpoolcorruption experiment, currentUI. Humanexcludedbydirectuser; notnaturalexpedition/LIVE/PG/capacity orhumansatisfaction.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/report.json",
+        "docs/reports/pr13-stages-20261009/S4-b044-current-risk-recovery-and-UI-20261020/cases.jsonl",
+        "docs/reports/pr13-stages-20261009/S5-b044-whole-MAIN-20261020/main-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-B044-accepted-20261020/main-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\b044-current-experience-and-recovery-20261020-originals"
+    }
+  ]
+}

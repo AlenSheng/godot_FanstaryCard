@@ -1,0 +1,114 @@
+{
+  "ok": true,
+  "mode": "baseline-compile-failed",
+  "actual_observation": {
+    "actual_full_server_test_project_compile_exit": 1,
+    "actual_positive_original_PG_coverage": {
+      "state": "CoveredForMainReview",
+      "missing_assertion_rows": {},
+      "failed_cases": [],
+      "skipped_cases": [],
+      "counters": {
+        "total": 9,
+        "executed": 9,
+        "passed": 9,
+        "failed": 0,
+        "error": 0,
+        "timeout": 0,
+        "aborted": 0,
+        "inconclusive": 0,
+        "passedButRunAborted": 0,
+        "notRunnable": 0,
+        "notExecuted": 0,
+        "disconnected": 0,
+        "warning": 0,
+        "completed": 0,
+        "inProgress": 0,
+        "pending": 0
+      },
+      "acceptance": false
+    },
+    "actual_gate": {
+      "state": "Blocked",
+      "missing_suites": [],
+      "stale_source_suites": [],
+      "failed_suites": [],
+      "incomplete_suites": [],
+      "baseline_compile_exit": 1,
+      "acceptance": false
+    },
+    "positive_original_source_gate": {
+      "state": "ReadyForMainReview",
+      "missing_suites": [],
+      "stale_source_suites": [],
+      "failed_suites": [],
+      "incomplete_suites": [],
+      "baseline_compile_exit": 0,
+      "acceptance": false
+    },
+    "controlled_compile_fault_prefix": "#error PR13_DECLARED_BASELINE_COMPILATION_FAILURE\n",
+    "original_parent_source_sha256": "28525e08ead85255ec4e45f8eeb25a54ab9371855d082a89453c9e1f3033ac76",
+    "faulted_baseline_source_sha256": "3146823d70fe6245c91e7d9c46c27067ef760232f5e1e328074c0af453cfefa0",
+    "scope": "Full current Server.Tests project and referenced production projects; not the entire solution or an obsolete-API miniature probe. Positive nine run from original parent artifacts; faulty clone is separately recorded."
+  },
+  "actual_phases": [
+    {
+      "label": "baseline-restore",
+      "arguments": [
+        "dotnet",
+        "restore",
+        "/control/baseline-compile-failure-source/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "--source",
+        "/packages",
+        "--artifacts-path",
+        "/artifacts/baseline-compile-failure",
+        "-p:RestorePackagesPath=/packages",
+        "-p:UseSharedCompilation=false",
+        "-maxcpucount:1"
+      ],
+      "actual_exit_code": 0,
+      "expected_exit_code": 0
+    },
+    {
+      "label": "actual-full-server-tests-baseline-build",
+      "arguments": [
+        "dotnet",
+        "build",
+        "/control/baseline-compile-failure-source/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-restore",
+        "--artifacts-path",
+        "/artifacts/baseline-compile-failure",
+        "-p:UseSharedCompilation=false",
+        "-maxcpucount:1"
+      ],
+      "actual_exit_code": 1,
+      "expected_exit_code": 1
+    },
+    {
+      "label": "actual-original-nine-positive",
+      "arguments": [
+        "dotnet",
+        "test",
+        "/work/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--no-restore",
+        "--artifacts-path",
+        "/artifacts",
+        "--filter",
+        "FullyQualifiedName~PostgresNumericalContractTests&FullyQualifiedName!~Actual_failed_numerical_and_baseline_build_gates_preserve_postgres_room",
+        "--results-directory",
+        "/output/gate-controls/baseline-compile-failed/original-nine",
+        "--logger",
+        "trx;LogFileName=actual.original.trx"
+      ],
+      "actual_exit_code": 0,
+      "expected_exit_code": 0
+    }
+  ],
+  "full_MAIN_gate_was_not_accepted": true,
+  "faulted_source_copies_never_deployed": true
+}

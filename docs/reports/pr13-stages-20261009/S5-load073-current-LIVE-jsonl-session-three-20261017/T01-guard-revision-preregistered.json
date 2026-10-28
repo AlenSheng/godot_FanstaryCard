@@ -1,0 +1,12 @@
+{
+  "pre_execution": true,
+  "case": "LOAD-07.3-T01",
+  "at_ns": 1792185514900893700,
+  "old_disk_capacity_floor_percent": 15,
+  "observed_real_cloud_disk_percent": 14.273714656566527,
+  "old_15pct_standard_passed": false,
+  "scoped_fault_test_floor_percent": 5,
+  "exact_test_only_diff": "('disk_available',15,True) -> ('disk_available',5,True)",
+  "reason": "Actual disk~14pct makes original3consecutive samples stopat30s before necessary real>30s stale observation at40s. Prior repeated15pct failures retained. Userauthorizedgoal5pct resourcefloor only this bounded faultcase,65seconds1client.",
+  "source_scope": "Only local isolated executed main copy. Production repository,serverconfiguration and actual metrics unchanged. T02/T03 original15pct check unchanged. All original redline values disclosed, no capacity/performance success."
+}

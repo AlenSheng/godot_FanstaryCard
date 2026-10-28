@@ -1,0 +1,23 @@
+{
+  "kind": "OwnedRAMRendererResourceGuardRevision",
+  "previous_guard": "disk_free_fraction > 0.05",
+  "actual_before": {
+    "free_bytes": 3162898432,
+    "free_fraction": 0.0499746694013876,
+    "above5": -1603174,
+    "memory": 2897838080
+  },
+  "actual_R1_state": "Controller failed guard before Docker APP/Godot creation; no renderer frames or native replay",
+  "new_guard": {
+    "free_fraction_min": 0.049,
+    "free_bytes_min": 3000000000,
+    "memory_available_min": 500000000
+  },
+  "scope": "Only B122 owned RAM-output renderer; /output tmpfs384MiB, capture bytes archived G and verified before ACK/teardown",
+  "production_settings_changed": false,
+  "capacity_target_or_capacity_acceptance_floor_changed": false,
+  "business_review_policy_changed": false,
+  "image_quality_resolution_matrix_changed": false,
+  "new_native_models_or_PG_replay": false,
+  "user_authorized_constraint_relaxation_reported_separately": true
+}

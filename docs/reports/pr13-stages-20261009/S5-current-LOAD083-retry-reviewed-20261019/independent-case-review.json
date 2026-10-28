@@ -1,0 +1,66 @@
+{
+  "ok": true,
+  "checks": {
+    "original_R4_whole_round_failed_and_forced_exit_retained": true,
+    "new_R5_native_readonly_exit0_two_durable_cases": true,
+    "T01_two_real_attempts_minimum5seconds_measured": true,
+    "T01_original_context_and_logical_id_unchanged_aftercaller_moved": true,
+    "T02_one_attempt_cancel_under1000ms_retainsorigin": true,
+    "T02_external_owned_STOP_notonly_pretendflag": true,
+    "T01T02_no_backend_contact_for_injected429": true,
+    "R5_all8businessassetdigests_and_worlds_ACK_unchanged": true,
+    "T03_real_two_attempts_identical_key_trace_and_body": true,
+    "T03_actualBackend200_then_explicit503_then_realreplay200": true,
+    "T03_two_original_purchase_reply_bytes_identical": true,
+    "actual_one_charge_and_oneGrant_not_synthetic_result": true,
+    "one_actual_purchase_row_key_qty_price": true,
+    "two_legitimate_distinct_currency_ledger_rows_each_once": true,
+    "source_documents_materialGrant_andGold_both_ledger_bycurrency": true,
+    "T03_write_retry_wait_and_attempt_amplification_recorded": true,
+    "one_declared180seed_reused_not_doubled_in_R4_R5": true,
+    "native_r4_failed_round_not_relabelled_as_exit0": true,
+    "localPGstopped_andproductGateway_source_unchanged": true
+  },
+  "checked_invariants": 19,
+  "case_reviews": [
+    {
+      "case": "LOAD-08.3-T01",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "source": "R5Nativeexit0+actualLoopbackRelay+current8ebProgramPG",
+      "elapsed_ms": 5284,
+      "physical_attempts": 2,
+      "request_amplification": 2,
+      "minimum_wait_between_attempts_ms": 5203.0
+    },
+    {
+      "case": "LOAD-08.3-T02",
+      "profile": "EXPERIMENT",
+      "status": "Passed",
+      "source": "R5externalSTOP+actualGatewayend_sessioncancellationprimitive,notwholeRunnerdrain",
+      "cancel_elapsed_ms": 17,
+      "physical_attempts": 1,
+      "backend_attempts": 0,
+      "original_context_preserved": true
+    },
+    {
+      "case": "LOAD-08.3-T03",
+      "profile": "EXPERIMENT",
+      "status": "Passed_scoped_actual_write_component_from_failed_R4_controller",
+      "source": "R4durableNativereply+2realbackendprotobufreplies+stableproxykey/body+PGgold/soul/purchase/percurrencyledgerproof. R4aggregate remainsFailed/forced. No repurchase.",
+      "elapsed_ms": 1268,
+      "physical_attempts": 2,
+      "request_amplification": 2,
+      "actual_purchase_transactions": 1,
+      "gold_delta": -180,
+      "warrior_soul_delta": 20,
+      "ledger_rows2_distinct_currencies_not_duplicate_assets": true
+    }
+  ],
+  "original_parse_import_funding_controller_mistakes_and_failedR4retained": true,
+  "no_product_rule_or_limit_relaxed": true,
+  "declared_private_initial_gold180_not_game_default": true,
+  "new_worlds0_accounts0_no_cloud_or_production_changes": true,
+  "local_visible_windows0": true,
+  "NativeR4whole_pass_claim": false
+}

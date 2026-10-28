@@ -16,6 +16,10 @@ func run_test() -> Dictionary:
 		else: monster_count += 1
 	for id in Art.MANIFEST.data.monsters:
 		if Art.monster(id) == null: return {"ok": false, "message": "Missing monster species " + id}
+	for id in ["fire-bat", "thorn-mite", "murk-snail", "sand-lizard", "rust-rat", "box-spirit", "metal-guard", "fire-herald", "marsh-mother", "stone-guard", "thorn-guard", "annihilation-core"]:
+		if Art.monster(id) == null: return {"ok": false, "message": "Missing runtime monster art: " + id}
+	if Art.monster("box-spirit") != Art.monster("treasure-box-spirit") or Art.monster("box-spirit") != Art.card("M-BOXSPIRIT"):
+		return {"ok": false, "message": "Box spirit battle and card art must share the supplied texture"}
 	for id in ["fire-bat", "murk-snail"]:
 		if Art.monster(id + "-a") != Art.monster(id) or Art.monster(id + "-b") != Art.monster(id):
 			return {"ok": false, "message": "Paired monsters must share species art: " + id}

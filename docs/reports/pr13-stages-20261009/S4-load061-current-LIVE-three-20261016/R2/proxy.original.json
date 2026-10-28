@@ -1,0 +1,223 @@
+[
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944034890000000,
+    "mode": "setup",
+    "number": 1,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "actual_backend_response",
+    "monotonic_ns": 1944035375000000,
+    "mode": "setup",
+    "number": 1,
+    "path": "/api/v1/auth/local",
+    "method": "POST",
+    "status": 200,
+    "bytes": 205,
+    "original_response_sha256": "71e1f9e6a265e3b89f2cfa6b4a7fa285b5d8d4dbb4e39ebdc5cb255251e15871",
+    "request_body_sha256": "805ae2544b904508d29891fa979822d7fe3b43ff1bf3d8a2a66a5bbc6dfbcdc9",
+    "idempotency_key_sha256": "83f90dbd7ae52617e7aeb1664a3c62d05f73bd4bf1851c63fd8a9f3ef854cc8d",
+    "trace_id_sha256": "83f90dbd7ae52617e7aeb1664a3c62d05f73bd4bf1851c63fd8a9f3ef854cc8d"
+  },
+  {
+    "event": "delivered",
+    "monotonic_ns": 1944035375000000,
+    "mode": "setup",
+    "number": 1,
+    "status": 200,
+    "body_sha256": "71e1f9e6a265e3b89f2cfa6b4a7fa285b5d8d4dbb4e39ebdc5cb255251e15871",
+    "bytes": 205,
+    "corrupted": false
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944036078000000,
+    "mode": "retry-two",
+    "number": 1,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "actual_backend_response",
+    "monotonic_ns": 1944036406000000,
+    "mode": "retry-two",
+    "number": 1,
+    "path": "/api/v1/realtime/ticket",
+    "method": "POST",
+    "status": 200,
+    "bytes": 80,
+    "original_response_sha256": "b87b6bd15ca55f17290c59e710056db1c94b5f80a532a1d2d04e1a87517d8fc1",
+    "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "idempotency_key_sha256": "c023aa21bca433dca2dc782a2aec29c87bb744b6aa98a6310301bb110fe7b538",
+    "trace_id_sha256": "c023aa21bca433dca2dc782a2aec29c87bb744b6aa98a6310301bb110fe7b538"
+  },
+  {
+    "event": "original_response_dropped",
+    "monotonic_ns": 1944036406000000,
+    "mode": "retry-two",
+    "number": 1
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944049609000000,
+    "mode": "retry-two",
+    "number": 2,
+    "error_type": "TimeoutError"
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944053484000000,
+    "mode": "retry-two",
+    "number": 3,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "actual_backend_response",
+    "monotonic_ns": 1944058484000000,
+    "mode": "retry-two",
+    "number": 3,
+    "path": "/api/v1/realtime/ticket",
+    "method": "POST",
+    "status": 200,
+    "bytes": 80,
+    "original_response_sha256": "b7971e4ffa83b6d6fd7dfca163cde110e46ee0a906fac623372ad28fb90808c8",
+    "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "idempotency_key_sha256": "c023aa21bca433dca2dc782a2aec29c87bb744b6aa98a6310301bb110fe7b538",
+    "trace_id_sha256": "c023aa21bca433dca2dc782a2aec29c87bb744b6aa98a6310301bb110fe7b538"
+  },
+  {
+    "event": "delivered",
+    "monotonic_ns": 1944058484000000,
+    "mode": "retry-two",
+    "number": 3,
+    "status": 200,
+    "body_sha256": "b7971e4ffa83b6d6fd7dfca163cde110e46ee0a906fac623372ad28fb90808c8",
+    "bytes": 80,
+    "corrupted": false
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944070515000000,
+    "mode": "late-cycle",
+    "number": 1,
+    "error_type": "TimeoutError"
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944075843000000,
+    "mode": "late-cycle",
+    "number": 2,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944081375000000,
+    "mode": "late-cycle",
+    "number": 2,
+    "error_type": "RemoteDisconnected"
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944082265000000,
+    "mode": "timeout",
+    "number": 1,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944090500000000,
+    "mode": "timeout",
+    "number": 1,
+    "error_type": "RemoteDisconnected"
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944093453000000,
+    "mode": "late-cycle",
+    "number": 3,
+    "error_type": "SSLEOFError"
+  },
+  {
+    "event": "upstream_error",
+    "monotonic_ns": 1944099828000000,
+    "mode": "timeout",
+    "number": 2,
+    "error_type": "TimeoutError"
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944101718000000,
+    "mode": "timeout",
+    "number": 3,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "actual_backend_response",
+    "monotonic_ns": 1944102062000000,
+    "mode": "timeout",
+    "number": 3,
+    "path": "/api/v1/players/me",
+    "method": "GET",
+    "status": 200,
+    "bytes": 123,
+    "original_response_sha256": "b8539468eff0c5561f54549bc9048d8dd3cc8fc44dd0eebaf72ad7e27bb13fa3",
+    "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "idempotency_key_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trace_id_sha256": "5954794eac063c8368321465c3164aa76f3bee8c4e33b520a6203a5cf5ab5435"
+  },
+  {
+    "event": "delivered",
+    "monotonic_ns": 1944102062000000,
+    "mode": "timeout",
+    "number": 3,
+    "status": 200,
+    "body_sha256": "b8539468eff0c5561f54549bc9048d8dd3cc8fc44dd0eebaf72ad7e27bb13fa3",
+    "bytes": 123,
+    "corrupted": false
+  },
+  {
+    "event": "verified_public_TLS",
+    "monotonic_ns": 1944102781000000,
+    "mode": "decode-error",
+    "number": 1,
+    "hostname": "www.relicbound.cn",
+    "certificate_sha256": "155528a0554ae5292fab25c960af0758d58574736f1d41173a70bda22767f7ab",
+    "version": "TLSv1.3"
+  },
+  {
+    "event": "actual_backend_response",
+    "monotonic_ns": 1944103125000000,
+    "mode": "decode-error",
+    "number": 1,
+    "path": "/api/v1/players/me",
+    "method": "GET",
+    "status": 200,
+    "bytes": 123,
+    "original_response_sha256": "b8539468eff0c5561f54549bc9048d8dd3cc8fc44dd0eebaf72ad7e27bb13fa3",
+    "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "idempotency_key_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trace_id_sha256": "4a9da3a22ee596b2d13e07833ae5eb7fd3234499c0a7c358c92835c3ced3d710"
+  },
+  {
+    "event": "delivered",
+    "monotonic_ns": 1944103125000000,
+    "mode": "decode-error",
+    "number": 1,
+    "status": 200,
+    "body_sha256": "dc0e9c3658a1a3ed1ec94274d8b19925c93e1abb7ddba294923ad9bde30f8cb8",
+    "bytes": 1,
+    "corrupted": true
+  }
+]

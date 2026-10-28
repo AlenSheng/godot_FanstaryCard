@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Server.Common;
 using Microsoft.Extensions.Options;
 
@@ -5,9 +6,11 @@ namespace FantasyCard.Server.Identity;
 
 public static class AccountDeletionEndpoints
 {
+    public sealed record EmptyAccountDeletionRequest;
+
     public static IEndpointRouteBuilder MapAccountDeletionEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/api/v1/account-deletion").WithTags("Account deletion");
+        var group = endpoints.MapGroup("/api/v1/account-deletion").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Account deletion");
         group.MapPost("", RequestAsync).RequireRateLimiting(RequestLimitOptions.AuthPolicy);
         group.MapGet("", GetAsync);
         group.MapDelete("", CancelAsync).RequireRateLimiting(RequestLimitOptions.AuthPolicy);
@@ -15,6 +18,7 @@ public static class AccountDeletionEndpoints
     }
 
     private static async Task<IResult> RequestAsync(
+        GameBody<EmptyAccountDeletionRequest> request,
         HttpContext context,
         IdentityService identityService,
         AccountDeletionRepository repository,

@@ -1,0 +1,69 @@
+{
+  "ok": true,
+  "kind": "ActualACKResponseLossThenOwnedProgramForcedRestartOriginalMain",
+  "actual_direct_main_exit3_InvalidEvidence_expected": true,
+  "actual_four_Native": [
+    {
+      "client_id": "g001c01fb0ce3",
+      "UID": "01a15e80-ba23-779f-9615-ca8b6ea86e85",
+      "reportSHA": "944c582648456987187cbba34cb68f84dd20a2853c7908573452d8a60db3d336",
+      "audio_shutdown": {
+        "drain_ms": 165,
+        "service_present": true,
+        "stop_requested": true
+      }
+    },
+    {
+      "client_id": "g001c024841c6",
+      "UID": "01a15e80-ba1c-783b-884c-6de039a987af",
+      "reportSHA": "5d0e9f20592080e869331532da776bb812a1a9adbe18b5929392245daa7549f2",
+      "audio_shutdown": {
+        "drain_ms": 161,
+        "service_present": true,
+        "stop_requested": true
+      }
+    },
+    {
+      "client_id": "g001c03b14be9",
+      "UID": "01a15e80-ba1c-73c7-b939-8c786d49a45e",
+      "reportSHA": "7ddfbcc025e57efef9a7047a8ca29b3321175751eda91725e4ffb4665fffd3ed",
+      "audio_shutdown": {
+        "drain_ms": 164,
+        "service_present": true,
+        "stop_requested": true
+      }
+    },
+    {
+      "client_id": "g001c04ab5e36",
+      "UID": "01a15e80-bb32-727d-aad0-b1b8ee2babe8",
+      "reportSHA": "9b38ec23579ad8d908b7819cceefd31523d13ced36d70bbcc0619b5f431756de",
+      "audio_shutdown": {
+        "drain_ms": 165,
+        "service_present": true,
+        "stop_requested": true
+      }
+    }
+  ],
+  "actual_target": {
+    "method": "POST",
+    "path": "/api/v1/settlements/01a15e81-9435-7932-b6b8-684497b22098/acknowledge",
+    "status": 200,
+    "request_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "response_body_sha256": "b1f7e904f499f98f353d1761a568ac801782fe0ebab450cfff6c332d7f7a5219",
+    "reply_bytes": 73,
+    "key_sha256": "284e667293a89d14beba6e67bc1fc0097377f8d6d9a21763777e0bb37548b1fe",
+    "file": "actual-fourth-ACK-first-response.original.pb",
+    "selected_unique_ACK_ordinal": 4,
+    "backend_response_at_unix_ms": 1792586913660,
+    "attempts": 2
+  },
+  "actual_samekey_response_replayed_byteexact_after_real_SIGKILL_restart": true,
+  "whole_task_or_capacity_accepted": false,
+  "original_main_acceptance_passed": false,
+  "original_main_outcome": {
+    "classification": "invalid_workload_or_evidence",
+    "passed": false,
+    "exit_code": 3
+  },
+  "proxy_clean": true
+}

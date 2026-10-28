@@ -1,0 +1,64 @@
+{
+  "kind": "Prospective WAN latency policy for a new capacity round; not a result",
+  "scope": "Explicit North America latency tolerance only",
+  "latency_profile": "north-america-5s-8s-10s-monitor10s",
+  "source_documents": [
+    "docs/plans/PR13_NORTH_AMERICA_LATENCY_PROFILE_20261009.json",
+    "docs/plans/PR13_CAPACITY100_MONITOR_RETRY_20261009.json"
+  ],
+  "user_authorization": "Current goal permits a disclosed limit relaxation after repeated failed cycles; project documents separately record prior North America tolerance authorization",
+  "limits": {
+    "HTTP_P95_ms": 5000,
+    "command_P95_ms": 8000,
+    "health_ms": 10000,
+    "monitor_timeout_seconds": 10
+  },
+  "default_limits_retained": {
+    "HTTP_P95_ms": 1500,
+    "command_P95_ms": 2000,
+    "health_ms": 5000,
+    "monitor_timeout_seconds": 3
+  },
+  "declaration_and_both_original_contracts_must_match": true,
+  "original_default_capacity_results_never_promoted": true,
+  "unchanged": [
+    "Actual50 clients in25+25 partitions",
+    "Each25 active95percent with a600second shared window,720second per-host hold and120second continuous minimum",
+    "maximum sampling gap20seconds and full native uncapped engine",
+    "Windows6GiB/cloud500MB RAM and disk3GB/5percent floors",
+    "all business failures, actual execution, evidence, ownership and cleanup gates",
+    "GDD,protocol,server,numericalrules and actual3000ms command timeout",
+    "current16connection pool and actual temporary permit quotas; no old bypass/256pool profile copied"
+  ],
+  "unit_validation": {
+    "tests_passed": 157,
+    "new_policy_cases": 11,
+    "actual_boundary_raw_requests_and_window_replay": true,
+    "unknown_profiles_and_arbitrary_monitor_budget_rejected": true,
+    "default_scope_and_contract_mismatch_rejected": true,
+    "49active_and_failed_execution_and_low_RAM_still_fail": true
+  },
+  "R8_default_original_replay": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "cohort_count_mismatch"
+    ],
+    "latency_profile": "default",
+    "latency_limits": {
+      "http_p95_limit_ms": 1500,
+      "command_p95_limit_ms": 2000,
+      "health_limit_ms": 5000,
+      "monitor_timeout_seconds": 3
+    },
+    "source_head": "84600ec3e4d5546e09f0d32652c84d5ab4f5daa1",
+    "frozen_client_tree": "606fcf52ff3101713d765ff695757e68f1561bd5",
+    "algorithm_version": "distributed-full-native-capacity-v2-explicit-latency-profile",
+    "adjudicator_source_sha256": "f41b40dbf5dcb1be22998a581cfee00dfc649dd025c0f9aa75aa261657ad57fe",
+    "captured_input_sha256": "ed7bdc2ac54d250336c69454c5ed562c3e8bf9046bdd288998379f44ec7623e5"
+  },
+  "new_live_capacity_state": "NotStarted; R9 full normal cycles still running on its frozen source",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792890622285.9468
+}

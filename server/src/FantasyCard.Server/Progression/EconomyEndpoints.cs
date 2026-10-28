@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -20,7 +21,7 @@ public static class EconomyEndpoints
 
     public static IEndpointRouteBuilder MapEconomyEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var economy = endpoints.MapGroup("/api/v1/economy").WithTags("Economy");
+        var economy = endpoints.MapGroup("/api/v1/economy").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Economy");
         economy.MapGet("/context", GetEconomyContextAsync)
             .RequireRateLimiting(RequestLimitOptions.ReadPolicy)
             .Produces<EconomyContextResponse>()
@@ -30,13 +31,13 @@ public static class EconomyEndpoints
             .Produces<WalletResponse>()
             .ProducesProblem(401);
 
-        var shop = endpoints.MapGroup("/api/v1/shop").WithTags("Economy");
+        var shop = endpoints.MapGroup("/api/v1/shop").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Economy");
         shop.MapGet("/", GetShopAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<ShopResponse>().ProducesProblem(401);
         shop.MapGet("/context", GetShopContextAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<ShopInventoryContextResponse>().ProducesProblem(401);
         shop.MapPost("/refresh", RefreshShopAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<ShopResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
         shop.MapPost("/purchases", PurchaseAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<ShopPurchaseResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
 
-        var market = endpoints.MapGroup("/api/v1/market").WithTags("Economy");
+        var market = endpoints.MapGroup("/api/v1/market").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Economy");
         market.MapGet("/", GetMarketAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<IReadOnlyList<MarketListingResponse>>().ProducesProblem(401);
         market.MapGet("/context", GetMarketContextAsync).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<MarketInventoryContextResponse>().ProducesProblem(401);
         market.MapPost("/listings", ListAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy).Produces<MarketListingResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
@@ -56,7 +57,7 @@ public static class EconomyEndpoints
         if (player is null) return context.UnauthorizedProblem();
 
         var shopTask = economy.GetShopAsync(player.UserId, ct);
-        var marketTask = economy.GetMarketAsync(ct);
+        var marketTask = economy.GetMarketAsync(ct, GamePage.Read(context).Limit, GamePage.Read(context).Offset);
         var inventoryTask = progression.GetInventoryAsync(player.UserId, ct);
         await Task.WhenAll(shopTask, marketTask, inventoryTask);
 
@@ -119,7 +120,7 @@ public static class EconomyEndpoints
         }
     }
 
-    private static async Task<IResult> PurchaseAsync(PurchaseShopRequest request, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
+    private static async Task<IResult> PurchaseAsync(GameBody<PurchaseShopRequest> request, HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);
@@ -130,7 +131,7 @@ public static class EconomyEndpoints
     }
 
     private static async Task<IResult> GetMarketAsync(HttpContext context, IdentityService identity, EconomyRepository repository, CancellationToken ct)
-    { var player = await context.AuthenticatePlayerAsync(identity, ct); return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetMarketAsync(ct)); }
+    { var player = await context.AuthenticatePlayerAsync(identity, ct); return player is null ? context.UnauthorizedProblem() : Results.Ok(await repository.GetMarketAsync(ct, GamePage.Read(context).Limit, GamePage.Read(context).Offset)); }
 
     private static async Task<IResult> GetMarketContextAsync(
         HttpContext context,
@@ -141,13 +142,13 @@ public static class EconomyEndpoints
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct);
         if (player is null) return context.UnauthorizedProblem();
-        var listingsTask = economy.GetMarketAsync(ct);
+        var listingsTask = economy.GetMarketAsync(ct, GamePage.Read(context).Limit, GamePage.Read(context).Offset);
         var inventoryTask = progression.GetInventoryAsync(player.UserId, ct);
         await Task.WhenAll(listingsTask, inventoryTask);
         return Results.Ok(new MarketInventoryContextResponse(listingsTask.Result, inventoryTask.Result));
     }
 
-    private static async Task<IResult> ListAsync(CreateMarketListingRequest request, HttpContext context, IdentityService identity, EconomyRepository repository, ConnectionRegistry connections, RealtimeEventStore eventStore, CancellationToken ct)
+    private static async Task<IResult> ListAsync(GameBody<CreateMarketListingRequest> request, HttpContext context, IdentityService identity, EconomyRepository repository, ConnectionRegistry connections, RealtimeEventStore eventStore, CancellationToken ct)
     {
         var player = await context.AuthenticatePlayerAsync(identity, ct); if (player is null) return context.UnauthorizedProblem();
         var requestId = IdempotencyKeys.Read(context);

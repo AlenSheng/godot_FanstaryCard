@@ -1,0 +1,141 @@
+{
+  "state": "Completed_original_joint_identity_input_mismatch;sealed_restored_cleaned;versioned_repair_pending",
+  "source": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+  "original_joint": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "workload_identity_mismatch"
+    ],
+    "latency_profile": "north-america-pooled5s8s-window95-v2",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "source_head": "7b0f6008f4527c5c1536e9090d7d21820e72551a",
+    "frozen_client_tree": "33802c85918089cbd2a367b2e7426da9591a7e74",
+    "algorithm_version": "distributed-full-native-capacity-v5-actual50-budgeted-recovery-v2",
+    "adjudicator_source_sha256": "aad180fb6608680dac41af15bdf0cdf0dc495080461885ca1542e20bbd04cc4c",
+    "captured_input_sha256": "6db87c73f8972fcb273063351dabe54f7ee605be51604a242038655d302cf5ff"
+  },
+  "producer_identity_diagnosis": {
+    "diagnosis": "Verifier omitted complete active client input map that original producer included",
+    "hosts": [
+      {
+        "host": "windows",
+        "original_outcome": {
+          "classification": "load_window_completed",
+          "passed": true,
+          "exit_code": 0
+        },
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Passed",
+          "gameplay": "NotApplicable",
+          "performance": "Passed",
+          "cleanup": "Passed"
+        },
+        "full_source_identity_matches": true,
+        "original_source_controls_count": 20,
+        "active_client_input_count": 2159,
+        "all_native_exits0": true,
+        "refusal_review": {
+          "passed": true,
+          "original_error_count": 12,
+          "inferred_short_stun_requests": [],
+          "evidence_errors": []
+        }
+      },
+      {
+        "host": "cloud",
+        "original_outcome": {
+          "classification": "load_window_completed",
+          "passed": true,
+          "exit_code": 0
+        },
+        "dimensions": {
+          "execution": "Passed",
+          "evidence": "Passed",
+          "load": "Passed",
+          "gameplay": "NotApplicable",
+          "performance": "Passed",
+          "cleanup": "Passed"
+        },
+        "full_source_identity_matches": true,
+        "original_source_controls_count": 20,
+        "active_client_input_count": 2159,
+        "all_native_exits0": true,
+        "refusal_review": {
+          "passed": true,
+          "original_error_count": 0,
+          "inferred_short_stun_requests": [],
+          "evidence_errors": []
+        }
+      }
+    ],
+    "original_joint_failure_retained": true,
+    "capacity_acceptance": false,
+    "new_live_worlds": 0
+  },
+  "original_backup": {
+    "ok": true,
+    "archive": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\capacity50-aggregate-20261026-r34\\full-cloud-originals\\evidence.original.tar.xz",
+    "bytes": 5521820,
+    "sha256": "9b54af4804304240513303531c7c116e236f05acc1533a9fc9b5b7e0287fda70",
+    "manifest_SHA256": "f44df5e2f768dbab20773bf625a428f616853e03b596931e31e0f3e361ad3eb4",
+    "verified_original_files": 311,
+    "verified_logical_bytes": 203530419,
+    "all_member_paths_regular_safe_distinct": true,
+    "every_original_member_SHA256_verified": true,
+    "at_ns": 1793008861736164000,
+    "CNO_BelowNormal_last4_CPUs": true
+  },
+  "actual_restore": {
+    "ok": true,
+    "restored_matches": 31,
+    "restored_settlements": 107,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "actual_unique_participants": 64,
+    "all_participants_equal_original_backend_snapshot": true,
+    "scratch_DB_dropped": true,
+    "owned_PG_stopped_again": true,
+    "original_failed_capacity_and_evidence_outcomes_retained": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "owned_cleanup": {
+    "ok": true,
+    "at_ns": 1793008957394134371,
+    "all_G_originals_and_actual_restore_verified": true,
+    "late_restore_originals_G_preserved": true,
+    "own_stopped_containers_removed": 6,
+    "owned_empty_network_removed": true,
+    "only_restored_owned_PG_and_hash_verified_result_duplicates_removed": true,
+    "temporary_owned_environment_files_removed": true,
+    "shared_source_and_import_cache_retained": true,
+    "G_originals_cloud_archive_and_source_metadata_retained": true,
+    "actual_freed_bytes": 462184448,
+    "cloud_available_bytes": 3684048896,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "world_budget": {
+    "prior": 253,
+    "actual_this_attempt": 31,
+    "cumulative": 284,
+    "combined_cap": 300,
+    "remaining": 16
+  },
+  "old_verdict_not_overwritten": true,
+  "capacity_acceptance_claimed": false,
+  "whole_project_accepted": false,
+  "repair_scope": "Only missing complete active-client hash map;original criteria AST must remain identical;formal review pending frozen CI",
+  "at_ns": 1793010266934713400
+}

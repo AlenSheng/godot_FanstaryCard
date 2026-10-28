@@ -10,6 +10,7 @@ public sealed class SettlementCoordinator(
     TimeProvider? timeProvider = null)
 {
     private const int MaximumTrackedSettlements = 4096;
+    private static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
     private readonly TimeProvider _timeProvider = timeProvider ?? TimeProvider.System;
     private readonly ConcurrentDictionary<SettlementKey, DateTimeOffset> _completed = new();
     private readonly ConcurrentDictionary<SettlementKey, byte> _inFlight = new();
@@ -41,6 +42,7 @@ public sealed class SettlementCoordinator(
                     var assets = result == "Extracted"
                         ? ExtractedAssets(player)
                         : DeadAssets(snapshot, player);
+                    var items = SettlementItems(player, result);
                     using var details = JsonDocument.Parse(JsonSerializer.Serialize(new
                     {
                         snapshot.RoomId,
@@ -48,8 +50,9 @@ public sealed class SettlementCoordinator(
                         player.Phase,
                         player.Position,
                         heroClass = player.HeroClass.ToString(),
-                        assetCount = assets.Length
-                    }));
+                        assetCount = assets.Length,
+                        items
+                    }, Json));
                     await repository.SettleAsync(
                         matchId,
                         player.PlayerId,
@@ -86,6 +89,24 @@ public sealed class SettlementCoordinator(
     }
 
     private readonly record struct SettlementKey(Guid MatchId, Guid PlayerId);
+
+    private sealed record SettlementDisplayItem(SettlementDisplayAsset Item, bool Equipped);
+    private sealed record SettlementDisplayAsset(
+        string ItemId, string Kind, int Quantity, bool IsSafe, EquipmentRewardData? Equipment);
+
+    private static SettlementDisplayItem[] SettlementItems(RoomPlayerSnapshot player, string result)
+    {
+        var inventory = (player.Inventory?.Items ?? [])
+            .Where(item => result == "Extracted" || item.IsSafe)
+            .Select(item => DisplayItem(item, false));
+        var worn = result == "Extracted"
+            ? (player.WornArmor ?? []).Select(item => DisplayItem(item, true))
+            : Enumerable.Empty<SettlementDisplayItem>();
+        return [.. inventory.Concat(worn)];
+    }
+
+    private static SettlementDisplayItem DisplayItem(ExplorationItem item, bool equipped) =>
+        new(new(item.ItemId, item.Kind.ToString(), item.Quantity, item.IsSafe, item.Equipment), equipped);
 
     private static SettlementAsset[] ExtractedAssets(RoomPlayerSnapshot player)
     {

@@ -1,0 +1,85 @@
+{
+  "task_id": "LOAD-10.3",
+  "case_id": "LOAD-10.3-T03",
+  "state": "Partial",
+  "actual_stage_subset": {
+    "real_stage_subset_passed": [
+      "login",
+      "preparation",
+      "enqueue",
+      "ticket"
+    ],
+    "original_main_exits": [
+      130,
+      130,
+      130,
+      130
+    ],
+    "original_main_classification": "operator_stopped",
+    "original_main_passed_flags": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "actual_Native_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "actual_Native_outcomes": [
+      "cancelled",
+      "cancelled",
+      "cancelled",
+      "cancelled"
+    ],
+    "normal_cycles": 0,
+    "ACKs": 0,
+    "actual_worlds": 0,
+    "actual_UIDs": 4,
+    "cancelled_preparations": 3,
+    "cancelled_tickets": 2,
+    "locked_equipment": 0,
+    "all_late_HTTP_observation_phase": "drain",
+    "late_HTTP_original_phases": [
+      "login",
+      "initial",
+      "initial",
+      "matchmaking"
+    ],
+    "actual_backend_statuses": [
+      200,
+      201,
+      202,
+      200
+    ],
+    "all_audio_drain_ms": 164,
+    "engine_scripts_and_exit_resources_clean": true,
+    "proxy_threads_sockets_final0": true,
+    "independent_checks": 101,
+    "login_Native_own_user_id_empty_retained_actual_PG_cohort_identity_separate": true
+  },
+  "new_case_profiles_closed": [],
+  "remaining_missing_case_profiles": {
+    "LOAD-10.3-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T02": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T03": [
+      "CAPACITY",
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "whole_case_profile_or_task_notaccepted": true,
+  "G": "G:\\PR13Evidence\\load103-original-main-preroom-STOP4-20261021-r1-originals",
+  "Gmembers": 294,
+  "archiveSHA": "8bbac3e6cd789867af7e74d0bba629e19b292c4c77c7ffd0f93abfaff643abf1",
+  "all103_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+  "production_unchanged": true,
+  "budget": "Additional4actualNative/coordinator invocations,4newrealUIDs,0worlds/0cycles/0ACKs. Prior T01+T02 subtotal2world8cycles plus all historical LOAD103 remains; all LOAD101/102 andother budgets unchanged.",
+  "whole_project_accepted": false
+}

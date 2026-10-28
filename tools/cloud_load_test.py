@@ -57,27 +57,35 @@ def read_json(path: Path) -> dict | None:
         return None
 
 
-def health_probe(url: str) -> dict:
+def health_probe(url: str, timeout_seconds: float = 15) -> dict:
     probe_url = url.rstrip("/") + "/health/ready"
+    started = time.perf_counter()
+    if not math.isfinite(timeout_seconds) or timeout_seconds <= 0:
+        raise ValueError("Health probe timeout must be finite and positive")
     # Use the Windows curl trust store when available; the bundled Python
     # runtime may not share the host certificate store used by Godot/curl.
     try:
         result = subprocess.run(
-            ["curl.exe", "-sS", "-o", "NUL", "-w", "%{http_code} %{time_total}", "--connect-timeout", "10", "--max-time", "15", probe_url],
+            ["curl.exe", "-sS", "-o", "NUL", "-w", "%{http_code} %{time_total}", "--connect-timeout", str(min(10,timeout_seconds)), "--max-time", str(timeout_seconds), probe_url],
             capture_output=True,
             text=True,
-            timeout=20,
+            timeout=timeout_seconds+.5,
             check=False,
         )
         fields = result.stdout.strip().split()
         if len(fields) >= 2 and fields[0].isdigit():
             return {"at_unix_ms": int(time.time() * 1000), "duration_ms": round(float(fields[1]) * 1000, 2), "status": int(fields[0]), "ok": int(fields[0]) == 200}
-    except (FileNotFoundError, subprocess.SubprocessError, ValueError):
+        # A completed or timed-out probe is one observation. Retrying through
+        # another transport would exceed its budget and conceal that failure.
+        return {"at_unix_ms":int(time.time()*1000),"duration_ms":round((time.perf_counter()-started)*1000,2),"status":0,"ok":False,"error":"invalid_probe_output"}
+    except FileNotFoundError:
         pass
-    started = time.perf_counter()
+    except (subprocess.SubprocessError, ValueError) as error:
+        return {"at_unix_ms":int(time.time()*1000),"duration_ms":round((time.perf_counter()-started)*1000,2),"status":0,"ok":False,"error":type(error).__name__}
+    remaining = max(.001,timeout_seconds-(time.perf_counter()-started))
     request = urllib.request.Request(probe_url, headers={"User-Agent": "FantasyCard-CloudLoad/1.0"})
     try:
-        with urllib.request.urlopen(request, timeout=15) as response:
+        with urllib.request.urlopen(request, timeout=remaining) as response:
             response.read()
             return {"at_unix_ms": int(time.time() * 1000), "duration_ms": round((time.perf_counter() - started) * 1000, 2), "status": response.status, "ok": response.status == 200}
     except urllib.error.HTTPError as error:
@@ -95,8 +103,10 @@ def load_client_status(report_dir: Path) -> list[dict]:
     return statuses
 
 
-def aggregate_recent(statuses: list[dict], window_ms: int) -> dict:
-    cutoff = int(time.time() * 1000) - window_ms
+def aggregate_recent(statuses: list[dict], window_ms: int, *, now_ms: int | None = None) -> dict:
+    # Optional frozen observation time enables exact historical replay while
+    # preserving the default legacy filters and error denominator.
+    cutoff = (int(time.time() * 1000) if now_ms is None else now_ms) - window_ms
     http: list[dict] = []
     steady_http: list[dict] = []
     realtime: list[dict] = []
@@ -162,23 +172,33 @@ def start_client(args: argparse.Namespace, report_dir: Path, stop_file: Path, gr
     processes.append({"process": process, "log": log, "client_id": client_id, "group": group, "report": report_path})
 
 
-def stop_all(processes: list[dict], stop_file: Path) -> None:
-    stop_file.write_text("stop", encoding="utf-8")
-    deadline = time.monotonic() + 35
+def stop_all(processes: list[dict], stop_file: Path, grace_seconds: float = 35) -> list[int]:
+    # An external supervisor may own a readable marker that we cannot rewrite.
+    # Its existence has already signalled STOP; preserve that signal and reason.
+    try:
+        with stop_file.open("x", encoding="utf-8") as marker:
+            marker.write("stop")
+    except FileExistsError:
+        if not stop_file.is_file():
+            raise IsADirectoryError("Existing STOP marker is not a regular file: " + str(stop_file))
+    deadline = time.monotonic() + max(0, grace_seconds)
     while time.monotonic() < deadline:
         alive = [entry for entry in processes if entry["process"].poll() is None]
         if not alive:
-            return
+            return []
         time.sleep(1)
+    forced: list[int] = []
     for entry in processes:
         process = entry["process"]
         if process.poll() is None:
+            forced.append(process.pid)
             if os.name == "nt":
                 subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
             else:
                 process.kill()
     for entry in processes:
         entry["process"].wait(timeout=10)
+    return forced
 
 
 def write_report(path: Path, report: dict) -> None:

@@ -1,0 +1,80 @@
+{
+  "kind": "North America exact50 actual native trial R10 stopped on native progress-stall observation; not passed",
+  "runtime_source_commit": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
+  "profile": "north-america-5s-8s-10s-monitor10s",
+  "actual_native_processes": {
+    "Windows": 25,
+    "cloud": 25
+  },
+  "both_original_OS_process_inspections_completed": true,
+  "observed_server_humans_in_room": 50,
+  "shared600second_window_not_reached": true,
+  "original_Windows_stop_reason": "invalid_evidence:workload_or_generator_failure",
+  "original_Windows_exit": 3,
+  "cloud_peer_stop_exit": 130,
+  "original_trigger": {
+    "stalled_native_client": "g001c06ef0c29",
+    "stalled_ms": 90000,
+    "all25_statuses_fresh": true,
+    "business_error_arrays_empty": true,
+    "failed_processes_at_trigger": []
+  },
+  "same_original_trigger_sample": {
+    "health_HTTP": 200,
+    "health_duration_ms": 4200.05,
+    "cloud_CPU_percent": 67.61206896553631,
+    "cloud_memory_available_bytes": 915931136,
+    "cloud_disk_available_percent": 5.869424582511092,
+    "actor_wait_ms": 4.756095387467028,
+    "server_humans": 50
+  },
+  "actual_Windows_visible_window_count_for25_owned_natives": 0,
+  "all25_BelowNormal_last4_logical_CPUs": true,
+  "no_OOM_or_forced_Windows_native_termination": true,
+  "raw_progress_gap_observation": {
+    "same_battle_summary_closed_as_PhaseChanged_228ms_after_unknown_command_timeout": true,
+    "later_own_request_correlated_combo_events": 23,
+    "later_combo_events_marked_gameplay_progress": 0,
+    "actual_following_reward_claim_and_room_move_completed": true,
+    "hypothesis": "Recorder battle lifecycle may have incorrectly marked a temporarily cleared authority room as terminal; reproduce with scoped recovery before sole-cause claim",
+    "stall_threshold_not_relaxed": true,
+    "original_failure_not_reclassified": true
+  },
+  "joint_verdict": {
+    "capacity_accepted": false,
+    "default_latency_capacity_accepted": false,
+    "whole_project_accepted": false,
+    "evidence_errors": [
+      "original_cohort_did_not_pass"
+    ],
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "latency_limits": {
+      "http_p95_limit_ms": 5000,
+      "command_p95_limit_ms": 8000,
+      "health_limit_ms": 10000,
+      "monitor_timeout_seconds": 10
+    },
+    "source_head": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
+    "frozen_client_tree": "606fcf52ff3101713d765ff695757e68f1561bd5",
+    "algorithm_version": "distributed-full-native-capacity-v3-registered50or100-latency-profile",
+    "adjudicator_source_sha256": "8143c5f7b8736282264cde6cf88f259e400ff5271ee40b60246b5d2e658dacc7",
+    "captured_input_sha256": "bb654f4042619baf5cbe66f3cdfb57a393c2980bf05fa8dde196134e9478c4c7"
+  },
+  "backups": {
+    "Windows_originals_sealed_on_G": true,
+    "cloud_cohort_all_members_G_verified": true,
+    "full_cloud_original_files_G_SHA256_verified": 327,
+    "full_cloud_archive_SHA256": "c7060f91785a6df7efaf5ff545673e5c040fe63979317e14e5593a66ed6193e4",
+    "actual_owned_DB_dump_matches": 14,
+    "actual_owned_DB_dump_settlements": 54,
+    "settlements_include4_closed_warmup_users_plus50_load_users": true,
+    "pending_holds": 0,
+    "actual_R10_DB_restore_not_yet_executed": true,
+    "all4_owned_services_stopped_source_and_DB_retained": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true
+  },
+  "actual100": "NotExecuted",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792894963440.3584
+}

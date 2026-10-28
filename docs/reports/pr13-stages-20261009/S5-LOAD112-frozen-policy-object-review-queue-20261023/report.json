@@ -1,0 +1,131 @@
+{
+  "kind": "Frozen8200Observations_ContentAddressedIntentReviewQueue",
+  "generated_at": "2026-10-23T01:56:04.832318+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "ok": true,
+  "frozen_native_findings_sha256": "b13e2c5e08f45cdeb1ad2779b30f4980d7aef4df5ce13bd4c9dcbf20295edf9b",
+  "observation_aliases": 8200,
+  "distinct_content_objects": 679,
+  "counts": {
+    "unclassified_content_objects": 647,
+    "unclassified_observation_aliases": 8105,
+    "private_only_objects": 663,
+    "known_intent_content_objects": 32,
+    "known_intent_observation_aliases": 95,
+    "public_context_objects_known": 16
+  },
+  "remaining_review_priority_counts": {
+    "SourceLanguageExpressionIntent": 484,
+    "PrivateStructuredOrRuntimeContent": 107,
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 8,
+    "BoundedStreamingFormat": 29
+  },
+  "original_reason_counts": {
+    "Credential-like source text requires private classification": 7091,
+    "Credential-like value in public evidence": 889,
+    "Public evidence text is not UTF-8": 45,
+    "Malformed public evidence JSON": 91,
+    "Sensitive field in public evidence: authorization": 43,
+    "OversizedTextNeedsStreamingAndStructuredInspection": 31,
+    "Sensitive field in public evidence: ticketbody": 4,
+    "Sensitive field in public evidence: accesstoken": 4,
+    "Sensitive field in public evidence: password": 1,
+    "Sensitive field in public evidence: token": 1
+  },
+  "known_proof_documents": [
+    {
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\full-public-inventory-r1\\rule-hit-classification.original.json",
+      "bytes": 29085,
+      "sha256": "afc05b57d5fe9b9e606e09883a63ae7ef251ef296283708a795c727cb96f6185"
+    },
+    {
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\first-SDK-hit-classification-20261022-r1\\classification.original.json",
+      "bytes": 7691,
+      "sha256": "b00c301e100720e5aba77e6dce9e9e32ec9f8e2d2a74aeec4950c424f35d142f"
+    },
+    {
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\epoch-delta-hit-classification-20261022-r1\\result.original.json",
+      "bytes": 12788,
+      "sha256": "768036fff17abf1de6f994343c0c1d707a21b7d127bd97b88a70f6e6dd89d4c3"
+    },
+    {
+      "source": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S5-LOAD112-private-stream-encoding-progress-20261022\\report.json",
+      "bytes": 20750,
+      "sha256": "6b839bf2feefbdec718550c4db33f15f013a14db35aef8843372a82aa0fa3589"
+    }
+  ],
+  "all_source_observations_and_original_rejections_retained": true,
+  "grouping_does_not_validate_current_file_locators_or_all_parent_relations": true,
+  "known_intent_is_not_public_export_or_whole_task_approval": true,
+  "native_archive_member_findings_are_a_separate_ongoing_scope": true,
+  "no_source_payloads_modified": true,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-frozen-policy-object-review-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-grouping/all-content-objects-and-aliases.private.original.jsonl",
+        "bytes": 2250879,
+        "sha256": "75dc00c91cb63d45a1f12f07e30c5920788f94aa32a57e0fbed4b46f1115453e"
+      },
+      {
+        "path": "native-grouping/executed-grouping-source.original.py",
+        "bytes": 11324,
+        "sha256": "3cfa9ef36bb79b876c38a7c923c00538228ea018de980f212142324487ad85ff"
+      },
+      {
+        "path": "native-grouping/remaining-content-review-queue.private.original.jsonl",
+        "bytes": 2195667,
+        "sha256": "89185d564719daa4b505f328cce19624e1a97ce4ed42873b95b43b7a956a9479"
+      },
+      {
+        "path": "native-grouping/result.original.json",
+        "bytes": 3077,
+        "sha256": "0438701ec5221b3cfb012ab9d3333572abf90db287262714ccbc3cd332750f1c"
+      },
+      {
+        "path": "closed-native-findings.exact-copy.jsonl",
+        "bytes": 3470995,
+        "sha256": "b13e2c5e08f45cdeb1ad2779b30f4980d7aef4df5ce13bd4c9dcbf20295edf9b"
+      },
+      {
+        "path": "completed-native-G-custody.exact-copy.json",
+        "bytes": 2466,
+        "sha256": "915178449533478605e5da87c6a51e6934ebec07e5db733b6d8dec8504115507"
+      },
+      {
+        "path": "prior-qualified-proofs/0.exact-copy.json",
+        "bytes": 29085,
+        "sha256": "afc05b57d5fe9b9e606e09883a63ae7ef251ef296283708a795c727cb96f6185"
+      },
+      {
+        "path": "prior-qualified-proofs/1.exact-copy.json",
+        "bytes": 7691,
+        "sha256": "b00c301e100720e5aba77e6dce9e9e32ec9f8e2d2a74aeec4950c424f35d142f"
+      },
+      {
+        "path": "prior-qualified-proofs/2.exact-copy.json",
+        "bytes": 12788,
+        "sha256": "768036fff17abf1de6f994343c0c1d707a21b7d127bd97b88a70f6e6dd89d4c3"
+      },
+      {
+        "path": "prior-qualified-proofs/3.exact-copy.json",
+        "bytes": 20750,
+        "sha256": "6b839bf2feefbdec718550c4db33f15f013a14db35aef8843372a82aa0fa3589"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "production_application_switch_performed": false
+}

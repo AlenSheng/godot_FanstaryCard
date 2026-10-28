@@ -1,0 +1,72 @@
+[
+  {
+    "label": "godot-import",
+    "command": [
+      "/usr/local/bin/godot",
+      "--headless",
+      "--path",
+      "/output/native/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/source",
+    "exit_code": 0,
+    "duration_seconds": 6.694,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "godot-autoload-import",
+    "command": [
+      "/usr/local/bin/godot",
+      "--headless",
+      "--path",
+      "/output/native/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/source",
+    "exit_code": 0,
+    "duration_seconds": 3.971,
+    "deadline_seconds": 30,
+    "log": "godot-autoload-import.log"
+  },
+  {
+    "label": "normal_ready-godot",
+    "command": [
+      "/usr/local/bin/godot",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/output/native/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/source",
+    "exit_code": 0,
+    "duration_seconds": 37.427,
+    "deadline_seconds": 95,
+    "log": "normal_ready-godot.log"
+  },
+  {
+    "label": "send_false_twice_then_success-godot",
+    "command": [
+      "/usr/local/bin/godot",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/output/native/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/source",
+    "exit_code": 0,
+    "duration_seconds": 40.061,
+    "deadline_seconds": 95,
+    "log": "send_false_twice_then_success-godot.log"
+  }
+]

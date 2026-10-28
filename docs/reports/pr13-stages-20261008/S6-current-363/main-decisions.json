@@ -1,0 +1,403 @@
+{
+  "schema_version": 1,
+  "authority": "MAIN",
+  "stage": "S6",
+  "integration_source_sha": "562065de8fef449b1d5927b30c3263017276f9f0",
+  "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+  "code_reuse_reason": "New frozen PG source5013792 verifies combined ACK loss/restart and owner/hold guards. PairedDeckBudget is an isolated experiment-entry validator; released config/formal combat/network/UI implementations preserve declared previous receipts. Original runtime SHAs and mandatory profiles remain exact; new source SHA never substitutes for historical execution.",
+  "task_decisions": [
+    {
+      "task_id": "LOAD-01.1",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-01.2",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-01.3",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-01.4",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-02.2",
+      "state": "Accepted",
+      "runtime_review_sha": "380f80f4b3f568f1af5a36ed7725896a0a974e02",
+      "reason": "MAIN在有界并行投递与分段测量实施后实际复跑完整READY15与A05/timeoutSTOP10矩阵，零跳过，资产/route/receipt后置成立。其他自然三局/容量/真人门仍独立。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "e39714cf5584d9fe7571b51d42f58af45ed5186595dedabcded46c8128a6dc02"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/report.json",
+          "bytes": 1953,
+          "sha256": "2d14b8043d02702dfbc5e39671b42dff0ec5b783a0c9124fddd1f1084035f8f5"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json",
+          "bytes": 3183,
+          "sha256": "ad2fa2b68800b1217770cfb8df09ec9869c6b3325a7f5fdabdc9e42f68a6d980"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-03.1",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-03.2",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-03.3",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "LOAD-03.4",
+      "state": "Accepted",
+      "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+      "reason": "MAIN重跑全部正常/边界/故障离线用例并复核当前输入字节、缺失与故障分类。本项仅需OFFLINE，公网/真人/容量不增加该判据可信度。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/cases.jsonl",
+          "bytes": 164220,
+          "sha256": "0b0c8b1e8d3173c4925acaf10f4e86501699ba77eef78581214f658ebb047767"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-boundary-current/report.json",
+          "bytes": 562,
+          "sha256": "bce9d0505cba135abcd7db12c177cf75005b44d09a5ee68939afdbd2e48914b8"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "cf949afde80e9885c3efda95ee18f4963987a3005359a0ed176db12e7619f43f"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S4-native-current/report.json",
+          "bytes": 1953,
+          "sha256": "9f7ce7100117fce07999475b5752f24b328228371b9cb4e2f9d3760dadd06d95"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "PR13-A05.1",
+      "state": "Accepted",
+      "runtime_review_sha": "380f80f4b3f568f1af5a36ed7725896a0a974e02",
+      "reason": "MAIN在有界并行投递与分段测量实施后实际复跑完整READY15与A05/timeoutSTOP10矩阵，零跳过，资产/route/receipt后置成立。其他自然三局/容量/真人门仍独立。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "e39714cf5584d9fe7571b51d42f58af45ed5186595dedabcded46c8128a6dc02"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/report.json",
+          "bytes": 1953,
+          "sha256": "2d14b8043d02702dfbc5e39671b42dff0ec5b783a0c9124fddd1f1084035f8f5"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json",
+          "bytes": 3183,
+          "sha256": "ad2fa2b68800b1217770cfb8df09ec9869c6b3325a7f5fdabdc9e42f68a6d980"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "PR13-A05.2",
+      "state": "Accepted",
+      "runtime_review_sha": "380f80f4b3f568f1af5a36ed7725896a0a974e02",
+      "reason": "MAIN在有界并行投递与分段测量实施后实际复跑完整READY15与A05/timeoutSTOP10矩阵，零跳过，资产/route/receipt后置成立。其他自然三局/容量/真人门仍独立。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "e39714cf5584d9fe7571b51d42f58af45ed5186595dedabcded46c8128a6dc02"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/report.json",
+          "bytes": 1953,
+          "sha256": "2d14b8043d02702dfbc5e39671b42dff0ec5b783a0c9124fddd1f1084035f8f5"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json",
+          "bytes": 3183,
+          "sha256": "ad2fa2b68800b1217770cfb8df09ec9869c6b3325a7f5fdabdc9e42f68a6d980"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "PR13-A05.3",
+      "state": "Accepted",
+      "runtime_review_sha": "380f80f4b3f568f1af5a36ed7725896a0a974e02",
+      "reason": "MAIN在有界并行投递与分段测量实施后实际复跑完整READY15与A05/timeoutSTOP10矩阵，零跳过，资产/route/receipt后置成立。其他自然三局/容量/真人门仍独立。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/cases.jsonl",
+          "bytes": 14839,
+          "sha256": "e39714cf5584d9fe7571b51d42f58af45ed5186595dedabcded46c8128a6dc02"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/ready-a05/report.json",
+          "bytes": 1953,
+          "sha256": "2d14b8043d02702dfbc5e39671b42dff0ec5b783a0c9124fddd1f1084035f8f5"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-server-review-rollback/runtime-suites.json",
+          "bytes": 3183,
+          "sha256": "ad2fa2b68800b1217770cfb8df09ec9869c6b3325a7f5fdabdc9e42f68a6d980"
+        }
+      ],
+      "rollback": "按本项原细则回退相关统计/客户端流程提交；保留raw、未确认结算上下文和服务器资产，不修余额或删除流水。",
+      "scope_limit": "仅本子项所列case/profile；全范围G0-G5未通过，其他运行/真人门槛独立。"
+    },
+    {
+      "task_id": "PR13-A05.4",
+      "state": "Accepted",
+      "runtime_review_sha": "6bd486f42a1ebe254530cd6c86ce51ff647e7209",
+      "reason": "MAIN复验实际全Program迁移后的独立一次性PG数据库：既有告警有先前完整只读链；新增差异阻塞资产；受限角色真实42501拒绝返回Blocked。原始SQL结果、前后snapshot/hash、角色/数据库清理已复核。仅裁决归因功能，不宣称历史已恢复或资产风险已清。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-ui-ledger-current/ledger/cases.jsonl",
+          "bytes": 2809,
+          "sha256": "69db7e1855bd9d29b5d9282f92e4a48d603011441a02c31ac10af0428c6a6d36"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S4-ui-ledger-current/ledger/report.json",
+          "bytes": 801,
+          "sha256": "8da33412d4a53523f46f8f5d88909002dae8fdf5d1d1fd558abcb5b85db79124"
+        }
+      ],
+      "rollback": "回退只读归因工具/fixture提交；保留原始链条和来源，不修余额或删除流水。",
+      "scope_limit": "本项三个case及OFFLINE/POSTGRES/AUDIT；全范围验收和其他业务门槛独立。"
+    },
+    {
+      "task_id": "PR13-B10.4",
+      "state": "Accepted",
+      "runtime_review_sha": "84defc1c231ec95296fa8b3eed26ad51c2c774e6",
+      "reason": "MAIN完成三项全部OFFLINE/RENDER层，162组实际GPU矩阵覆盖三职业/三分辨率/三FPS/双语言/三受控投递延迟；实际下帧反馈、合法选牌、重连有界、旧反馈及死亡目标拒绝，复核实际截图。受控延迟不宣称公网测速或真人体验。",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/feedback-render/cases.jsonl",
+          "bytes": 1371,
+          "sha256": "daf4407164610998952fbedc91e50110a7b4123606156c87f788d451e7463ef6"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/feedback-render/report.json",
+          "bytes": 9585,
+          "sha256": "66b061a7cbdab0f51c3ae3d1c554318b73c816738911d1c3b4d1a43ddca04ccd"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/feedback-render/observations.json",
+          "bytes": 80244,
+          "sha256": "089669d0f5d32273bdcedc949bb9446fd88349a77fe92b85ae97f033fffafb6a"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261008/S3-S5-prelaunch-experience-current/feedback-render/feedback_30.png",
+          "bytes": 782180,
+          "sha256": "9041e0d13f094574253768b0ceb86ea6b7799daf7a445280993628fb3eec396e"
+        }
+      ],
+      "rollback": "按UI/网络实现独立提交回退；保留各次失败/修正原始记录，不改服务器资产或规则。",
+      "scope_limit": "仅B10.4所列适用层；全范围G0-G5及真人尚未通过。"
+    }
+  ],
+  "whole_scope_accepted": false,
+  "remote_ci_status": "Unavailable; no remote CI pass claim",
+  "human_experience": "机器人模拟补充体验，真人验收仍待补"
+}

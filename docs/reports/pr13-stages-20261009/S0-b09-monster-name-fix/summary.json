@@ -1,0 +1,29 @@
+{
+  "stage": "S0",
+  "task_id": "PR13-B09.2",
+  "state": "ProductionCatalogNameCallFixed",
+  "defect": "MonsterPool omitted formal catalog row when calling CardDetails.localized_name, so Simplified Chinese displayed M-FIREBAT despite catalog name 火蝠.",
+  "affected_calls": [
+    "active pool names",
+    "candidate card name",
+    "replacement dropdown names"
+  ],
+  "formal_data_reused": true,
+  "fixture_names_modified": false,
+  "gameplay_numbers_changed": false,
+  "previous_wire_operation_evidence_retained": true,
+  "previous_name_render_accepted": false,
+  "new_corrected_source_full_matrix_required": true,
+  "product_languages": [
+    "zh-CN",
+    "en"
+  ],
+  "required_segments": 54,
+  "required_rows": 5832,
+  "required_PNGs": 486,
+  "cloud_verification_pending": false,
+  "MAIN_accepted": false,
+  "acceptance_states_unchanged": true,
+  "corrected_source_first_segment_report": "docs/reports/pr13-stages-20261009/S3-b09-pool-formal-names/summary.json",
+  "full_matrix_still_pending": true
+}

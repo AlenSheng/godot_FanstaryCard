@@ -1,0 +1,199 @@
+{
+  "task_id": "A05-relay-transport",
+  "base_sha": "419961a86b2bbcaacf96eaafa5e21ded3b722a79",
+  "fixed_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+  "status": "VerifiedFixtureFix; MAIN acceptance pending",
+  "profile_hash": "96bce82c613695025cd28ecc8db257222af034450a910d4875fdeb3cc18e48b9",
+  "red_ci": {
+    "source_sha": "419961a86b2bbcaacf96eaafa5e21ded3b722a79",
+    "jobs": [
+      {
+        "job": 110195517896,
+        "run": 36807662006
+      },
+      {
+        "job": 110195517712,
+        "run": 36807661991
+      }
+    ],
+    "counts_per_job": {
+      "passed": 300,
+      "failed": 2,
+      "skipped": 0
+    },
+    "cause": "relay ctor rejects TCP loopback before fault injection"
+  },
+  "fresh_build": {
+    "exit": 0,
+    "warnings": 0,
+    "errors": 0
+  },
+  "cases": [
+    {
+      "profile": "green-unix",
+      "transport": "Unix",
+      "mode": "committed-response-loss",
+      "canonical": "PR13-A05.1-T02",
+      "status": "Passed",
+      "original_deadline_seconds": 180,
+      "fault_drops": 1,
+      "receipts_at_fault": 1,
+      "godot_exit_code": 0,
+      "original_client_checks_passed": true,
+      "same_ACK_repeats": 3,
+      "same_ACK_response_bytes_equal": true,
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "acknowledged_settlements": 1,
+      "committed_holds": 4,
+      "final_readonly_audit": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "profile": "green-unix",
+      "transport": "Unix",
+      "mode": "precommit",
+      "canonical": "PR13-A05.1-T01",
+      "status": "Passed",
+      "original_deadline_seconds": 180,
+      "fault_drops": 2,
+      "receipts_at_fault": 0,
+      "godot_exit_code": 0,
+      "original_client_checks_passed": true,
+      "same_ACK_repeats": 3,
+      "same_ACK_response_bytes_equal": true,
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "acknowledged_settlements": 1,
+      "committed_holds": 4,
+      "final_readonly_audit": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "profile": "green-tcp",
+      "transport": "Tcp",
+      "mode": "committed-response-loss",
+      "canonical": "PR13-A05.1-T02",
+      "status": "Passed",
+      "original_deadline_seconds": 180,
+      "fault_drops": 1,
+      "receipts_at_fault": 1,
+      "godot_exit_code": 0,
+      "original_client_checks_passed": true,
+      "same_ACK_repeats": 3,
+      "same_ACK_response_bytes_equal": true,
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "acknowledged_settlements": 1,
+      "committed_holds": 4,
+      "final_readonly_audit": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    },
+    {
+      "profile": "green-tcp",
+      "transport": "Tcp",
+      "mode": "precommit",
+      "canonical": "PR13-A05.1-T01",
+      "status": "Passed",
+      "original_deadline_seconds": 180,
+      "fault_drops": 4,
+      "receipts_at_fault": 0,
+      "godot_exit_code": 0,
+      "original_client_checks_passed": true,
+      "same_ACK_repeats": 3,
+      "same_ACK_response_bytes_equal": true,
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "acknowledged_settlements": 1,
+      "committed_holds": 4,
+      "final_readonly_audit": {
+        "ledger_chain_mismatches": 0,
+        "wallet_gold_mismatches": 0,
+        "pending_holds": 0,
+        "active_preparations": 0,
+        "queued_tickets": 0,
+        "unacknowledged_settlements": 0,
+        "unfinished_matches": 0,
+        "locked_equipment": 0
+      }
+    }
+  ],
+  "results": [
+    {
+      "profile": "green-unix",
+      "transport": "Unix",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 29.95193220499641,
+      "trx": "green-unix/unix.trx"
+    },
+    {
+      "profile": "green-tcp",
+      "transport": "Tcp",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 37.38189477499691,
+      "trx": "green-tcp/tcp.trx"
+    }
+  ],
+  "source_files": 967,
+  "build_files": 167,
+  "byte_mismatches": 0,
+  "host_pairs": 6,
+  "relay_directories_removed": 4,
+  "live_owned_children": 0,
+  "owned_pg_stopped": true,
+  "owned_pg_data_and_socket_removed": true,
+  "final_readonly_audits": 4,
+  "zero_audit_counts": 32,
+  "scope": "one relay fixture file; original seeded Running room input and original actual assertions; no full gameplay claim",
+  "raw_handling": "private local only; publish only redacted summary and name/size/SHA index"
+}

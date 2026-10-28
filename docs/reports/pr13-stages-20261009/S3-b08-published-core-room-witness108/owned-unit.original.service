@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 B08 published tuning and recovery room witness matrix
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B08-core-room-witness-r2-20261012/outer.original.py
+RuntimeMaxSec=7200
+Restart=no

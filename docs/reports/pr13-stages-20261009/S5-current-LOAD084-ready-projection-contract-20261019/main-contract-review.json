@@ -1,0 +1,50 @@
+{
+  "kind": "MAINDesignReview_ReadyOnlyBootstrapProjection_ApprovedForImplementationNotAcceptance",
+  "authority": "MAIN current goal",
+  "trigger_evidence": "Sixwholeworlds,24unknownIDsettlementBootstrapreadscost~145KB76SQLperworld,~33%body/~19%foregroundSQL. Notglobalcapacityproof.",
+  "source_docs": [
+    "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md:LOAD-08.4",
+    "docs/SERVER_SPEC.md",
+    "docs/SERVER_0_TO_1_GUIDE.md",
+    "docs/network-protobuf-migration/protocol-compatibility.md",
+    "server/docs/CLIENT_INTEGRATION.md"
+  ],
+  "proposed_existing_route": "GET /api/v1/bootstrap?settlementMatchId=<actual match UUID>",
+  "no_new_endpoint_or_proto_tag": true,
+  "wire_response": "Existing BootstrapResponse protobuf;only serverTime,configVersion,unfinishedSettlement populated. Typed BootstrapSettlementProjection DTO,not anonymous JSON or newembeddedpayload.",
+  "selection_guards": [
+    "Authenticate caller before query validation.",
+    "One nonempty validUUID;malformed/multiple/empty400 typedexistingHttpError;unauthenticated401.",
+    "Single SQLstatement snapshot WHERE callerplayer_id AND suppliedmatch_id AND acknowledged_at ISNULL AND NOTEXISTS settlement_asset_holds.state=Pending.",
+    "No receipt/notready/notcaller/notmatch/alreadyACK all unfinishedSettlementnull;cannotexposePending asready.",
+    "No asset/ack/cursor mutation;no numerical/HP/deck orlimitschange."
+  ],
+  "compatibility": [
+    "Noquery existing fullBootstrap behavior and DTO unchanged.",
+    "Existing receiptID and matchdetail200 semantics unchanged;rawPendingdetail notreadiness.",
+    "Oldclient never opts into projection,keepsfullBootstrap.",
+    "Newclient on oldserver:oldserverignoresquery andreturnsfullBootstrap,existingconsumerstillonlyadopts same-matchreadyreceipt.",
+    "Current GameStore poll only uses config/readiness envelope;partialprojection mustneverreplace lobby/catalog cache.",
+    "Existing Gateway URI fingerprint includesquery andHTTPregistry canonical path unchanged;paginationheaders absentforprojection."
+  ],
+  "implementation_outline": [
+    "BootstrapContracts add typed projectionrecord reusing existingwirefield names.",
+    "BootstrapRepository add matchscoped ready-onlysingle-querymethodusing sameguardasfullBootstrap.",
+    "BootstrapEndpoints opt-invalidatedquery branch;noquerycalls originalGetAsync.",
+    "GameStore unknownIDpoll uses encodedmatchselector;knownID GET and explicit retry remain.",
+    "Documentation routequerycontract and meaningful codec/PG/auth/foreign/ack/Pending/old-server tests."
+  ],
+  "before_any_acceptance": [
+    "Prove codec omits catalogs andkeeps exactreceipt against officialcurrentparser.",
+    "Actual isolatedPG ready/Pending/ACK/foreign/oldmatch boundaries andstatebeforeafter;noSkips.",
+    "OldfullBootstrap andoldclient/newserver plusnewclient/oldserver compatibilitysource-qualified/actual tests.",
+    "NewcompiledProgramruntime provenance;old245265ff results notcurrentnewProgram.",
+    "Three preregisteredfullbaseline-vsnewcandidatepairs andactualUIwhereaffected.",
+    "Alloriginal failures andsampling revisions kept;newbudget explicitly declared,not reset14."
+  ],
+  "approved_for_implementation_only": true,
+  "implemented": false,
+  "whole_task_accepted": false,
+  "no_protocol_owner_or_human_approval_impersonated": true,
+  "rollback": "ClientremovequeryreturnsoriginalfullBootstrap;servernoquerypath/oldroutes unchanged,noDBmigrationorassetrollback."
+}

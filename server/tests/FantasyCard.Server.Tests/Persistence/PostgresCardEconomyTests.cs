@@ -91,25 +91,39 @@ public sealed class PostgresCardEconomyTests
         var ct = TestContext.Current.CancellationToken;
         var player = await CreatePlayerAsync(database);
         var repository = new ProgressionRepository(database.DataSource);
-        var cardId = GameConfigCatalog.Current.Cards.First(card => card.IsCodex && card.Quality == "Blue").CardId;
-        await using (var seed = database.DataSource.CreateCommand(
-            "UPDATE player_cards SET unlocked=true,copy_count=1,level=3 WHERE player_id=$1 AND card_id=$2"))
+        // GDD 4.6.1: common Blue unlock 50, upgrades 12 + 24 + 48.
+        // CLIENT_INTEGRATION 3.x: refund floor((unlock + cumulative upgrades) / 4).
+        var cardId = GameConfigCatalog.Current.Cards.First(card => card.IsCodex &&
+            !card.InitiallyUnlocked && card.HeroClass is null && card.Quality == "Blue").CardId;
+        var original = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == cardId);
+        Assert.Equal(50, original.CraftCost);
+        var crafted = await repository.MutateCardAsync(player, cardId, "activate-trained", new(original.Version), true, ct);
+        Assert.Equal(950, crafted.Materials.WarriorSoul);
+        var trained = crafted.Card;
+        foreach (var cost in new[] { 12, 24, 48 })
         {
-            seed.Parameters.AddWithValue(player);
-            seed.Parameters.AddWithValue(cardId);
-            await seed.ExecuteNonQueryAsync(ct);
+            Assert.Equal(cost, trained.UpgradeCost);
+            var upgraded = await repository.UpgradeCardAsync(player, cardId, "upgrade-" + trained.Level, new(trained.Version), ct);
+            Assert.Equal(cost, upgraded.SoulAmount);
+            trained = upgraded.Card;
         }
-        var trained = (await repository.GetCardsAsync(player, ct)).Single(card => card.CardId == cardId);
         Assert.Equal(84, trained.UpgradeSoulSpent);
         Assert.Equal(33, trained.DismantleRefund);
-        var last = await repository.MutateCardAsync(player, cardId, "remove-trained", new(trained.Version), false, ct);
+        var request = new CardMutationRequest(trained.Version);
+        var last = await repository.MutateCardAsync(player, cardId, "remove-trained", request, false, ct);
         Assert.Equal(33, last.SoulAmount);
-        Assert.Equal(1045, last.Materials.WarriorSoul);
+        Assert.Equal(1000 - 50 - 84 + 33, last.Materials.WarriorSoul);
         Assert.Equal(0, last.Card.Level);
         Assert.False(last.Card.Unlocked);
+        Assert.Equal(last, await repository.MutateCardAsync(player, cardId, "remove-trained", request, false, ct));
+        Assert.Equal(5L, await database.ScalarAsync<long>("SELECT COUNT(*) FROM economy_ledger WHERE player_id=$1", player));
+        Assert.Equal(-101L, await database.ScalarAsync<long>("SELECT SUM(delta)::bigint FROM economy_ledger WHERE player_id=$1 AND currency='WarriorSoul'", player));
+        Assert.Equal(899L, await database.ScalarAsync<long>("SELECT warrior_soul FROM player_materials WHERE player_id=$1", player));
         var recrafted = await repository.MutateCardAsync(player, cardId, "recraft", new(last.Card.Version), true, ct);
         Assert.Equal(0, recrafted.Card.Level);
         Assert.Equal(12, recrafted.Card.DismantleRefund);
+        Assert.Equal(849, recrafted.Materials.WarriorSoul);
+        Assert.True((await new EconomyReconciliationRepository(database.DataSource).InspectAsync(ct)).IsHealthy);
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]

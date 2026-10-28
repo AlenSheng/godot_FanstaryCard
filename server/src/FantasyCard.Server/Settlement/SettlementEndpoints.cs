@@ -1,3 +1,4 @@
+using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
@@ -8,14 +9,14 @@ public static class SettlementEndpoints
 {
     public static IEndpointRouteBuilder MapSettlementEndpoints(this IEndpointRouteBuilder endpoints)
     {
-        var settlements = endpoints.MapGroup("/api/v1/settlements").WithTags("Settlement");
+        var settlements = endpoints.MapGroup("/api/v1/settlements").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Settlement");
         settlements.MapGet("/{settlementId:guid}", GetAsync).Produces<SettlementResponse>().ProducesProblem(401).ProducesProblem(404);
         settlements.MapPost("/{settlementId:guid}/acknowledge", AcknowledgeAsync)
             .Produces<SettlementAcknowledgementResponse>()
             .ProducesProblem(401)
             .ProducesProblem(404)
             .ProducesProblem(409);
-        endpoints.MapGet("/api/v1/matches/{matchId:guid}/settlement", GetForMatchAsync)
+        endpoints.MapGet("/api/v1/matches/{matchId:guid}/settlement", GetForMatchAsync).AddEndpointFilter<ProtobufHttpFilter>()
             .WithTags("Settlement").Produces<SettlementResponse>().ProducesProblem(401).ProducesProblem(404);
         return endpoints;
     }

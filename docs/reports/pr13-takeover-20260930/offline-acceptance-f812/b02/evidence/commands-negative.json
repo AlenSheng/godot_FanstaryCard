@@ -1,0 +1,50 @@
+[
+  {
+    "name": "old-fenxian",
+    "argv": [
+      "dotnet",
+      "build",
+      "/workspace/pr13-takeover/b02-acceptance-f812/harness/old-fenxian/Probe.csproj",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "exit_code": 1,
+    "expected": "nonzero CS1739",
+    "elapsed_seconds": 2.1590005530015333,
+    "raw": "evidence/old-fenxian.log",
+    "probe_sha256": "f17b866b890fe11ef7386ff2a4252e82a24070deb56b112ebecb8015c3d4266b"
+  },
+  {
+    "name": "old-guardian",
+    "argv": [
+      "dotnet",
+      "build",
+      "/workspace/pr13-takeover/b02-acceptance-f812/harness/old-guardian/Probe.csproj",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "exit_code": 1,
+    "expected": "nonzero CS1739",
+    "elapsed_seconds": 2.088567946000694,
+    "raw": "evidence/old-guardian.log",
+    "probe_sha256": "727b9a1140027e2e718fde20fe2a7b050af9099577277f4976520430dcc75d47"
+  },
+  {
+    "name": "old-remainder",
+    "argv": [
+      "dotnet",
+      "build",
+      "/workspace/pr13-takeover/b02-acceptance-f812/harness/old-remainder/Probe.csproj",
+      "-c",
+      "Release"
+    ],
+    "cwd": "/workspace/pr13-takeover/b02-acceptance-f812",
+    "exit_code": 1,
+    "expected": "nonzero CS1061",
+    "elapsed_seconds": 2.091827012001886,
+    "raw": "evidence/old-remainder.log",
+    "probe_sha256": "846cbd69a232b1c3e3f5782faaeb2059b05f5fff3a3438cd08ccfc814c4b080d"
+  }
+]

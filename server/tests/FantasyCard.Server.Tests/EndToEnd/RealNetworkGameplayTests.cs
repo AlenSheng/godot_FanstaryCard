@@ -1,3 +1,7 @@
+using System.Diagnostics;
+using FantasyCard.Contracts.Http;
+using Google.Protobuf;
+using Wire = FantasyCard.Contracts.Http.V1;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Net.WebSockets;
@@ -92,7 +96,7 @@ public sealed partial class RealNetworkEndToEndTests
             Assert.True(resolution.BattleEnded);
             Assert.True(resolution.Damage > 0);
             Assert.NotEmpty(resolution.DamageSegments!);
-            var combatReplay = await SendGameplayCommandAsync(winnerSocket, played.Command, ct);
+            var combatReplay = await SendGameplayCommandAsync(winnerSocket, played.Command, ct, played.Event.Type);
             Assert.Equal(played.Event.EventId, combatReplay.EventId);
             await WaitForGameplayConditionAsync(async () => await database.ScalarAsync<string>(
                 "SELECT location FROM equipments WHERE instance_id=$1", equipmentId) == "RelicPile", ct);
@@ -110,7 +114,7 @@ public sealed partial class RealNetworkEndToEndTests
                     return new RelicTakeCommandPayload(pile.PileId, itemId, pile.Version);
                 }, ct);
                 Assert.IsType<RelicTakeEventPayload>(taken.Event.Payload);
-                var replay = await SendGameplayCommandAsync(winnerSocket, taken.Command, ct);
+                var replay = await SendGameplayCommandAsync(winnerSocket, taken.Command, ct, taken.Event.Type);
                 Assert.Equal(taken.Event.EventId, replay.EventId);
             }
             var inventory = (await ReadGameplaySnapshotAsync(winnerSocket, ct)).Player.Inventory;
@@ -119,7 +123,7 @@ public sealed partial class RealNetworkEndToEndTests
             var extraction = await SendGameplayMutationAsync(winnerSocket, "action.extract",
                 _ => new ActionExtractCommandPayload(), ct);
             Assert.IsType<ActionExtractEventPayload>(extraction.Event.Payload);
-            var extractionReplay = await SendGameplayCommandAsync(winnerSocket, extraction.Command, ct);
+            var extractionReplay = await SendGameplayCommandAsync(winnerSocket, extraction.Command, ct, extraction.Event.Type);
             Assert.Equal(extraction.Event.EventId, extractionReplay.EventId);
             BattleRoomSnapshot? checkpoint = null;
             await WaitForGameplayConditionAsync(async () =>
@@ -181,7 +185,8 @@ public sealed partial class RealNetworkEndToEndTests
             request.Headers.Add("Idempotency-Key", "parallel-upgrade");
             request.Content = JsonContent.Create(new CardMutationRequest(before.Version), options: WebJson);
             using var response = await client.SendAsync(request, ct);
-            response.EnsureSuccessStatusCode();
+            Assert.True(response.IsSuccessStatusCode,
+                $"Concurrent upgrade returned {(int)response.StatusCode}: {await response.Content.ReadAsStringAsync(ct)}");
             return (await response.Content.ReadFromJsonAsync<CardMutationResponse>(WebJson, ct))!;
         }));
         Assert.All(results, result => Assert.Equal(results[0], result));
@@ -189,6 +194,109 @@ public sealed partial class RealNetworkEndToEndTests
         Assert.Equal(0, results[0].Materials.WarriorSoul);
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND reason='card.upgrade'", player.Id));
+    }
+
+    [Fact(Skip = "Set isolated PostgreSQL database.", SkipUnless = nameof(HasTestDatabase))]
+    [Trait("Category", "PostgresIntegration")]
+    public async Task Real_default_protobuf_preparation_ready_and_room_entry()
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: false);
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        timeout.CancelAfter(TimeSpan.FromSeconds(60));
+        var ct = timeout.Token;
+        var port = ReserveLoopbackPort();
+        var start = new ProcessStartInfo("dotnet")
+        {
+            WorkingDirectory = FindServerProjectDirectory(), UseShellExecute = false,
+            RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true
+        };
+        start.ArgumentList.Add(typeof(FantasyCard.Server.Persistence.DatabaseMigrator).Assembly.Location);
+        start.Environment["ASPNETCORE_ENVIRONMENT"] = "Development";
+        start.Environment["ASPNETCORE_URLS"] = $"http://127.0.0.1:{port}";
+        start.Environment["ConnectionStrings__Postgres"] = database.ConnectionString;
+        start.Environment["Identity__EnableLocalAuth"] = "true";
+        start.Environment["ProtobufHttp__AllowLegacyJson"] = "false";
+        start.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "false";
+        // Development defaults to instant bot fill; this case exercises four-human matching.
+        start.Environment["Matchmaking__BotFillDelaySeconds"] = "30";
+        start.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
+        await using var server = NetworkServerProcess.Start(start);
+        using var client = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{port}") };
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpProtocolRegistry.MediaType));
+        await server.WaitUntilReadyAsync(client, ct);
+        var sockets = new List<ClientWebSocket>();
+        var players = new List<Guid>();
+        try
+        {
+            for (var index = 0; index < 4; index++)
+            {
+                client.DefaultRequestHeaders.Authorization = null;
+                var login = Wire.LocalSignInResponse.Parser.ParseFrom(await Call(HttpMethod.Post, "/api/v1/auth/local",
+                    new Wire.LocalSignInRequest { DeviceId = Guid.NewGuid().ToString(), DisplayName = $"Ready {index}" }));
+                players.Add(Guid.Parse(login.Player.UserId));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
+                var bootstrap = Wire.BootstrapResponse.Parser.ParseFrom(await Call(HttpMethod.Get, "/api/v1/bootstrap"));
+                var deck = bootstrap.Decks.First(value => value.HeroClass == "Priest");
+                var loadout = Wire.LoadoutResponse.Parser.ParseFrom(await Call(HttpMethod.Get, "/api/v1/loadouts/Priest"));
+                var request = new Wire.CreatePreparationRequest
+                {
+                    HeroClass = "Priest", DeckVersion = deck.Version, BackpackTier = "Free", Difficulty = "Standard"
+                };
+                request.EquipmentIds.Add(loadout.EquipmentIds);
+                var preparation = Wire.PreparationResponse.Parser.ParseFrom(await Call(HttpMethod.Post, "/api/v1/preparations", request));
+                var ticket = Wire.RealtimeTicketResponse.Parser.ParseFrom(await Call(HttpMethod.Post, "/api/v1/realtime/ticket", new Wire.Empty()));
+                var socket = new ClientWebSocket();
+                sockets.Add(socket);
+                await socket.ConnectAsync(new Uri($"ws://127.0.0.1:{port}/ws/v1/session?ticket={Uri.EscapeDataString(ticket.Ticket)}"), ct);
+                Assert.Equal("session.connected", RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(socket, ct)).Type);
+                await Call(HttpMethod.Post, "/api/v1/matches/enqueue", new Wire.EnqueueMatchRequest { PreparationId = preparation.PreparationId });
+            }
+            Guid? roomId = null;
+            Guid? matchId = null;
+            for (var index = 0; index < sockets.Count; index++)
+            {
+                ServerEvent message;
+                do { message = RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(sockets[index], ct)); }
+                while (message.Type != "room.ready_required");
+                var required = Assert.IsType<RoomReadyRequiredEventPayload>(message.Payload);
+                Assert.Equal(4, required.RequiredPlayers);
+                roomId ??= required.RoomId;
+                matchId ??= required.MatchId;
+                Assert.Equal(roomId, required.RoomId);
+                var ready = await SendGameplayCommandAsync(sockets[index],
+                    new("room.ready", Guid.NewGuid().ToString("N"), null, new RoomReadyCommandPayload()), ct);
+                Assert.IsType<RoomReadyAcceptedEventPayload>(ready.Payload);
+            }
+            await WaitForGameplayConditionAsync(async () => await database.ScalarAsync<string>(
+                "SELECT status FROM matches WHERE match_id=$1", matchId!.Value) == "Running", ct);
+            for (var index = 0; index < sockets.Count; index++)
+            {
+                var snapshot = await ReadGameplaySnapshotAsync(sockets[index], ct);
+                Assert.Equal(roomId, snapshot.RoomId);
+                Assert.Equal(players[index], snapshot.Player.PlayerId);
+                Assert.Equal(4, snapshot.MapPlayerCount);
+                Assert.Equal("Pve", snapshot.Player.Phase);
+            }
+            Assert.Equal(4L, await database.ScalarAsync<long>(
+                "SELECT count(*) FROM match_players WHERE match_id=$1 AND is_bot=false", matchId!.Value));
+        }
+        finally { foreach (var socket in sockets) socket.Dispose(); }
+
+        async Task<byte[]> Call(HttpMethod method, string path, IMessage? body = null)
+        {
+            using var request = new HttpRequestMessage(method, path);
+            if (method != HttpMethod.Get) request.Content = PbContent(body ?? new Wire.Empty());
+            request.Headers.Add("Idempotency-Key", Guid.NewGuid().ToString("N"));
+            var started = Stopwatch.GetTimestamp();
+            TestContext.Current.TestOutputHelper?.WriteLine($"PB ready begin: {method} {path}, players={players.Count}");
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
+            TestContext.Current.TestOutputHelper?.WriteLine($"PB ready headers: {method} {path}, elapsedMs={Stopwatch.GetElapsedTime(started).TotalMilliseconds:F2}, status={(int)response.StatusCode}, length={response.Content.Headers.ContentLength}");
+            var bytes = await response.Content.ReadAsByteArrayAsync(ct);
+            TestContext.Current.TestOutputHelper?.WriteLine($"PB ready body: {method} {path}, elapsedMs={Stopwatch.GetElapsedTime(started).TotalMilliseconds:F2}, bytes={bytes.Length}");
+            Assert.True(response.IsSuccessStatusCode, $"{method} {path}: {response.StatusCode}");
+            Assert.Equal(HttpProtocolRegistry.MediaType, response.Content.Headers.ContentType?.MediaType);
+            return bytes;
+        }
     }
 
     private static async Task<(Guid Id, string Token)> SeedNetworkPlayerAsync(
@@ -235,13 +343,18 @@ public sealed partial class RealNetworkEndToEndTests
         throw new InvalidOperationException("Room did not accept the command after revision refreshes.");
     }
 
-    private static async Task<ServerEvent> SendGameplayCommandAsync(ClientWebSocket socket, ClientCommand command, CancellationToken ct)
+    private static async Task<ServerEvent> SendGameplayCommandAsync(ClientWebSocket socket, ClientCommand command, CancellationToken ct, string? expectedEventType = null)
     {
         await socket.SendAsync(RealtimeProtobufCodec.EncodeClient(command), WebSocketMessageType.Binary, true, ct);
         while (true)
         {
             var result = RealtimeProtobufCodec.DecodeServer(await ReceiveBinaryAsync(socket, ct));
-            if (result.RequestId == command.RequestId) return result;
+            // A mutation returns multiple events with the same request id (including a
+            // trailing room.snapshot). A retry must match the original response type,
+            // not mistake that still-buffered snapshot for the replayed mutation.
+            if (result.RequestId == command.RequestId &&
+                (expectedEventType is null || result.Type == expectedEventType || result.Payload is CommandRejectedEventPayload))
+                return result;
         }
     }
 

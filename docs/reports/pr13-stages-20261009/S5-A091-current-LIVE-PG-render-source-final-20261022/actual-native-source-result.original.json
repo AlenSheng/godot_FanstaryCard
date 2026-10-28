@@ -1,0 +1,2415 @@
+{
+  "ok": true,
+  "actual_original_native_case1_passed_skip0": true,
+  "actual_source_fault_receipts": [
+    {
+      "ok": true,
+      "case_id": "PR13-A09.1-T01",
+      "actual": {
+        "actual_refs": {
+          "checkout_sha": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+          "runtime_reference_sha": "3de572176352fd32b3fe4013311c4754ad14a3e3",
+          "different_sources": true,
+          "runtime_execution_verified": false,
+          "qualification": "Git references identify code only. A checkout/marker advance does not prove a rebuilt or running image/assembly."
+        },
+        "private_actual_A": "3de572176352fd32b3fe4013311c4754ad14a3e3",
+        "private_actual_B": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+        "original_running_receipt_SHA": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+        "root_HEAD_not_changed": true,
+        "new_head_not_built_or_attributed_to_running_runtime": true
+      },
+      "actual_host_liveness": {
+        "PID": 132,
+        "start_ticks": "5367786",
+        "expected_argument": "/runtime/FantasyCard.Server.dll"
+      },
+      "actual_Godot_liveness": {
+        "PID": 245,
+        "start_ticks": "5369012",
+        "expected_argument": "res://tests/A091_live_source_attribution.gd"
+      },
+      "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+      "actual_SQL_before": "SQL-T01-before.original.json",
+      "actual_SQL_after": "SQL-T01-after.original.json",
+      "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+      "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+      "source_boundary_not_runtime_acceptance": true
+    },
+    {
+      "ok": true,
+      "case_id": "PR13-A09.1-T02",
+      "actual": {
+        "first_manifest": {
+          "path": "room-observation.json",
+          "bytes": 5320,
+          "sha256": "51a96987ddac89f2febde4e779d9e037557c95ccdbadcbf63977f319e78646df"
+        },
+        "fresh_manifest": {
+          "path": "room-observation.json",
+          "bytes": 5320,
+          "sha256": "273adb50f0759179ff9ebb3530d41557e780bf8079773563baace0486d53d9a8"
+        },
+        "actual_old_manifest_rejected": true,
+        "actual_fresh_manifest_verified": true,
+        "both_are_real_received_authority_observations_not_synthetic_game_state": true
+      },
+      "actual_host_liveness": {
+        "PID": 132,
+        "start_ticks": "5367786",
+        "expected_argument": "/runtime/FantasyCard.Server.dll"
+      },
+      "actual_Godot_liveness": {
+        "PID": 245,
+        "start_ticks": "5369012",
+        "expected_argument": "res://tests/A091_live_source_attribution.gd"
+      },
+      "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+      "actual_SQL_before": "SQL-T02-before.original.json",
+      "actual_SQL_after": "SQL-T02-after.original.json",
+      "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+      "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+      "source_boundary_not_runtime_acceptance": true
+    },
+    {
+      "ok": true,
+      "case_id": "PR13-A09.1-T03",
+      "actual": {
+        "actual_successful_business_ACK_original": {
+          "actual_business_ack_returned_true": true,
+          "at_unix_ms": 1792623300850,
+          "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+          "completed_cycle_not_claimed": true,
+          "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "event_seq": 1,
+          "event_type": "settlement.acknowledged",
+          "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "process_epoch": "245-11488",
+          "run_id": "owned-a05-runtime"
+        },
+        "actual_PG_matching_ACK_verified": true,
+        "missing_run_id_copy": {
+          "actual_business_ack_returned_true": true,
+          "at_unix_ms": 1792623300850,
+          "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+          "completed_cycle_not_claimed": true,
+          "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "event_seq": 1,
+          "event_type": "settlement.acknowledged",
+          "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "process_epoch": "245-11488",
+          "agent_id": "declared-agent-sentinel-must-not-substitute-run"
+        },
+        "positive_derivation": {
+          "running": {
+            "acknowledgements": 1,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {
+              "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1
+            },
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "drain": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "final": {
+            "acknowledgements": 1,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {
+              "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1
+            },
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "completion_classification_algorithm": "owned-cycle-origins-v1",
+          "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+          "zero_cycle_clients": null,
+          "zero_cycle_reason": "requires_launch_manifest",
+          "evidence_errors": [],
+          "stop_ms": 1792623305850,
+          "final_ms": 1792623305850
+        },
+        "missing_derivation": {
+          "running": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "drain": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "final": {
+            "acknowledgements": 0,
+            "completed_cycles": 0,
+            "cycles_by_client": {},
+            "acknowledgements_by_client": {},
+            "distribution": {},
+            "fallback_cycles": 0,
+            "normal_completed_cycles": 0,
+            "fallback_completed_cycles": 0,
+            "scenario_completed_cycles": 0,
+            "drain_only_completed_cycles": 0,
+            "unclassified_completed_cycles": 0,
+            "normal_cycles_by_client": {},
+            "fallback_cycles_by_client": {},
+            "scenario_cycles_by_client": {},
+            "drain_only_cycles_by_client": {},
+            "unclassified_cycles_by_client": {}
+          },
+          "completion_classification_algorithm": "owned-cycle-origins-v1",
+          "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+          "zero_cycle_clients": null,
+          "zero_cycle_reason": "requires_launch_manifest",
+          "evidence_errors": [
+            "missing_context"
+          ],
+          "stop_ms": 1792623305850,
+          "final_ms": 1792623305850
+        },
+        "agent_id_not_substituted": true,
+        "actual_completed_cycle_not_invented": true
+      },
+      "actual_host_liveness": {
+        "PID": 132,
+        "start_ticks": "5367786",
+        "expected_argument": "/runtime/FantasyCard.Server.dll"
+      },
+      "actual_Godot_liveness": {
+        "PID": 245,
+        "start_ticks": "5369012",
+        "expected_argument": "res://tests/A091_live_source_attribution.gd"
+      },
+      "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+      "actual_SQL_before": "SQL-T03-before.original.json",
+      "actual_SQL_after": "SQL-T03-after.original.json",
+      "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+      "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+      "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+      "source_boundary_not_runtime_acceptance": true
+    }
+  ],
+  "actual_render18": {
+    "actual_auth_ack_event": {
+      "actual_business_ack_returned_true": true,
+      "at_unix_ms": 1792623300850,
+      "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+      "completed_cycle_not_claimed": true,
+      "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "event_seq": 1,
+      "event_type": "settlement.acknowledged",
+      "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+      "process_epoch": "245-11488",
+      "run_id": "owned-a05-runtime"
+    },
+    "checkpoints": [
+      {
+        "receipt": {
+          "actual": {
+            "actual_refs": {
+              "checkout_sha": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+              "different_sources": true,
+              "qualification": "Git references identify code only. A checkout/marker advance does not prove a rebuilt or running image/assembly.",
+              "runtime_execution_verified": false,
+              "runtime_reference_sha": "3de572176352fd32b3fe4013311c4754ad14a3e3"
+            },
+            "new_head_not_built_or_attributed_to_running_runtime": true,
+            "original_running_receipt_SHA": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+            "private_actual_A": "3de572176352fd32b3fe4013311c4754ad14a3e3",
+            "private_actual_B": "88f199990896a42089f4637d2d4cbf23f7eb1b58",
+            "root_HEAD_not_changed": true
+          },
+          "actual_Godot_liveness": {
+            "PID": 245.0,
+            "expected_argument": "res://tests/A091_live_source_attribution.gd",
+            "start_ticks": "5369012"
+          },
+          "actual_SQL_after": "SQL-T01-after.original.json",
+          "actual_SQL_before": "SQL-T01-before.original.json",
+          "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+          "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_host_liveness": {
+            "PID": 132.0,
+            "expected_argument": "/runtime/FantasyCard.Server.dll",
+            "start_ticks": "5367786"
+          },
+          "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+          "case_id": "PR13-A09.1-T01",
+          "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+          "ok": true,
+          "source_boundary_not_runtime_acceptance": true
+        },
+        "request": {
+          "actual_ack_event": {
+            "actual_business_ack_returned_true": true,
+            "at_unix_ms": 1792623300850,
+            "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+            "completed_cycle_not_claimed": true,
+            "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "event_seq": 1,
+            "event_type": "settlement.acknowledged",
+            "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "process_epoch": "245-11488",
+            "run_id": "owned-a05-runtime"
+          },
+          "actual_before": {
+            "actual_gateway_online": true,
+            "at_unix_ms": 1792623303476,
+            "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+            "native_PID": 245,
+            "room": {
+              "allowed_actions": [
+                "battle.play_cards",
+                "battle.abandon"
+              ],
+              "config_version": "gdd-0.70-numerical-1",
+              "current_cell": {
+                "has_evacuation": false,
+                "monster_group_id": "O1",
+                "relic_pile_ids": [],
+                "relic_piles": [],
+                "spring_consumed": false
+              },
+              "legal_moves": [],
+              "map": [
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 4,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 1,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": true,
+                  "row": 3
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 0,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 2,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 5,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                }
+              ],
+              "map_player_count": 4,
+              "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+              "player": {
+                "base_draw_interval_seconds": "4",
+                "battle_status": {
+                  "bonuses": [
+                    {
+                      "key": "weapon_bonus",
+                      "value": "0.06"
+                    },
+                    {
+                      "key": "damage_Fire",
+                      "value": "0.04"
+                    },
+                    {
+                      "key": "resistance_Fire",
+                      "value": "0.02"
+                    }
+                  ],
+                  "charge_level": 0,
+                  "combo": 0,
+                  "core_element": "",
+                  "draw_interval_seconds": "4",
+                  "passive_kind": "FenXian",
+                  "sets": []
+                },
+                "combat": {
+                  "effective_maximum_hp": 70,
+                  "hp": 70,
+                  "maximum_hp": 70,
+                  "shield": 0
+                },
+                "discard_count": 0,
+                "draw_block_remaining_ms": 0,
+                "draw_block_speed_remaining_ms": 0,
+                "draw_charge": "0",
+                "draw_speed_remaining_ms": 0,
+                "equipped_items": [
+                  {
+                    "equipment": {
+                      "effect_affix": "",
+                      "element": "Fire",
+                      "is_bound": false,
+                      "level": 0,
+                      "quality": "White",
+                      "secondary_trait": "DrawInterval",
+                      "slot": "Feet"
+                    },
+                    "is_safe": false,
+                    "item_id": "01a160ac-7114-7416-a932-7a86bef8c1ee",
+                    "kind": "Equipment",
+                    "quantity": 1
+                  }
+                ],
+                "hand": [
+                  {
+                    "card_id": "C02",
+                    "instance_id": "01a160ac-d85a-7171-bf46-d4b9651910fe",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "MAG-07",
+                    "instance_id": "01a160ac-d85a-72c5-b032-bfbc65992f91",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C06",
+                    "instance_id": "01a160ac-d85a-70d9-9d8c-1e8e332e37d4",
+                    "level": 0
+                  }
+                ],
+                "hero_class": "Mage",
+                "inventory": [],
+                "inventory_capacity": 20,
+                "library_count": 17,
+                "numerical_state": {
+                  "fenxian_policy": "CurrentRhythm",
+                  "guardian_policy": "CurrentSteps",
+                  "guardian_remainder_tenths": 0
+                },
+                "phase": "Pve",
+                "player_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+                "safe_slot_indexes": [],
+                "stun_remaining_ms": 0,
+                "weapon_level": 0
+              },
+              "pve": {
+                "battle_id": "01a160ac-d877-7abc-9c23-43bce6281d62",
+                "current_target_id": "fire-bat",
+                "monsters": [
+                  {
+                    "boss_phase": 1,
+                    "hp": 78,
+                    "intent_element": "Fire",
+                    "intent_kind": "Attack",
+                    "intent_value": 3,
+                    "interval_progress_ms": 0,
+                    "maximum_hp": 78,
+                    "monster_id": "fire-bat",
+                    "shield": 0,
+                    "stun_remaining_ms": 0,
+                    "windup_remaining_ms": 0
+                  }
+                ],
+                "phase": "Active"
+              },
+              "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+              "room_revision": 1,
+              "self": {
+                "column": 5,
+                "row": 1
+              }
+            },
+            "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+            "server_sequence": 15,
+            "user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76"
+          },
+          "actual_fresh": {},
+          "original_match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "sequence": 1
+        }
+      },
+      {
+        "receipt": {
+          "actual": {
+            "actual_fresh_manifest_verified": true,
+            "actual_old_manifest_rejected": true,
+            "both_are_real_received_authority_observations_not_synthetic_game_state": true,
+            "first_manifest": {
+              "bytes": 5320.0,
+              "path": "room-observation.json",
+              "sha256": "51a96987ddac89f2febde4e779d9e037557c95ccdbadcbf63977f319e78646df"
+            },
+            "fresh_manifest": {
+              "bytes": 5320.0,
+              "path": "room-observation.json",
+              "sha256": "273adb50f0759179ff9ebb3530d41557e780bf8079773563baace0486d53d9a8"
+            }
+          },
+          "actual_Godot_liveness": {
+            "PID": 245.0,
+            "expected_argument": "res://tests/A091_live_source_attribution.gd",
+            "start_ticks": "5369012"
+          },
+          "actual_SQL_after": "SQL-T02-after.original.json",
+          "actual_SQL_before": "SQL-T02-before.original.json",
+          "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+          "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_host_liveness": {
+            "PID": 132.0,
+            "expected_argument": "/runtime/FantasyCard.Server.dll",
+            "start_ticks": "5367786"
+          },
+          "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+          "case_id": "PR13-A09.1-T02",
+          "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+          "ok": true,
+          "source_boundary_not_runtime_acceptance": true
+        },
+        "request": {
+          "actual_ack_event": {
+            "actual_business_ack_returned_true": true,
+            "at_unix_ms": 1792623300850,
+            "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+            "completed_cycle_not_claimed": true,
+            "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "event_seq": 1,
+            "event_type": "settlement.acknowledged",
+            "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "process_epoch": "245-11488",
+            "run_id": "owned-a05-runtime"
+          },
+          "actual_before": {
+            "actual_gateway_online": true,
+            "at_unix_ms": 1792623309388,
+            "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+            "native_PID": 245,
+            "room": {
+              "_command_action": "room.snapshot.read",
+              "_command_result": "completed",
+              "_event_revision": 51,
+              "_origin_context": {
+                "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+                "origin": "http://127.0.0.1:33141",
+                "room_context_epoch": 3,
+                "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+                "session_generation": 1
+              },
+              "_replayed": false,
+              "_request_id": "f30bedfcf1fc5f77ec5f2712c259515b",
+              "_sequence": 19,
+              "allowed_actions": [
+                "battle.play_cards",
+                "battle.abandon"
+              ],
+              "config_version": "gdd-0.70-numerical-1",
+              "current_cell": {
+                "has_evacuation": false,
+                "monster_group_id": "O1",
+                "relic_pile_ids": [],
+                "relic_piles": [],
+                "spring_consumed": false
+              },
+              "legal_moves": [],
+              "map": [
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 4,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 1,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": true,
+                  "row": 3
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 0,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 2,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 5,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                }
+              ],
+              "map_player_count": 4,
+              "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+              "player": {
+                "base_draw_interval_seconds": "4",
+                "battle_status": {
+                  "bonuses": [
+                    {
+                      "key": "weapon_bonus",
+                      "value": "0.06"
+                    },
+                    {
+                      "key": "damage_Fire",
+                      "value": "0.04"
+                    },
+                    {
+                      "key": "resistance_Fire",
+                      "value": "0.02"
+                    }
+                  ],
+                  "charge_level": 0,
+                  "combo": 0,
+                  "core_element": "",
+                  "draw_interval_seconds": "4",
+                  "passive_kind": "FenXian",
+                  "sets": []
+                },
+                "combat": {
+                  "effective_maximum_hp": 70,
+                  "hp": 67,
+                  "maximum_hp": 70,
+                  "shield": 0
+                },
+                "discard_count": 0,
+                "draw_block_remaining_ms": 0,
+                "draw_block_speed_remaining_ms": 0,
+                "draw_charge": "0.25000000000000044",
+                "draw_speed_remaining_ms": 0,
+                "equipped_items": [
+                  {
+                    "equipment": {
+                      "effect_affix": "",
+                      "element": "Fire",
+                      "is_bound": false,
+                      "level": 0,
+                      "quality": "White",
+                      "secondary_trait": "DrawInterval",
+                      "slot": "Feet"
+                    },
+                    "is_safe": false,
+                    "item_id": "01a160ac-7114-7416-a932-7a86bef8c1ee",
+                    "kind": "Equipment",
+                    "quantity": 1
+                  }
+                ],
+                "hand": [
+                  {
+                    "card_id": "C02",
+                    "instance_id": "01a160ac-d85a-7171-bf46-d4b9651910fe",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "MAG-07",
+                    "instance_id": "01a160ac-d85a-72c5-b032-bfbc65992f91",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C06",
+                    "instance_id": "01a160ac-d85a-70d9-9d8c-1e8e332e37d4",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C08",
+                    "instance_id": "01a160ac-d85a-7f14-9ea2-820120f9f9e2",
+                    "level": 0
+                  }
+                ],
+                "hero_class": "Mage",
+                "inventory": [],
+                "inventory_capacity": 20,
+                "library_count": 16,
+                "numerical_state": {
+                  "fenxian_policy": "CurrentRhythm",
+                  "guardian_policy": "CurrentSteps",
+                  "guardian_remainder_tenths": 0
+                },
+                "phase": "Pve",
+                "player_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+                "safe_slot_indexes": [],
+                "stun_remaining_ms": 0,
+                "weapon_level": 0
+              },
+              "pve": {
+                "battle_id": "01a160ac-d877-7abc-9c23-43bce6281d62",
+                "current_target_id": "fire-bat",
+                "monsters": [
+                  {
+                    "boss_phase": 1,
+                    "hp": 78,
+                    "intent_element": "Fire",
+                    "intent_kind": "Attack",
+                    "intent_value": 3,
+                    "interval_progress_ms": 800,
+                    "maximum_hp": 78,
+                    "monster_id": "fire-bat",
+                    "shield": 0,
+                    "stun_remaining_ms": 0,
+                    "windup_remaining_ms": 0
+                  }
+                ],
+                "phase": "Active"
+              },
+              "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+              "room_revision": 51,
+              "self": {
+                "column": 5,
+                "row": 1
+              }
+            },
+            "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+            "server_sequence": 19,
+            "user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76"
+          },
+          "actual_fresh": {
+            "actual_gateway_online": true,
+            "at_unix_ms": 1792623309876,
+            "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+            "native_PID": 245,
+            "room": {
+              "_command_action": "room.snapshot.read",
+              "_command_result": "completed",
+              "_event_revision": 66,
+              "_origin_context": {
+                "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+                "origin": "http://127.0.0.1:33141",
+                "room_context_epoch": 3,
+                "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+                "session_generation": 1
+              },
+              "_replayed": false,
+              "_request_id": "8dd5ac69751fe6138e1ffabf0319e3dc",
+              "_sequence": 20,
+              "allowed_actions": [
+                "battle.play_cards",
+                "battle.abandon"
+              ],
+              "config_version": "gdd-0.70-numerical-1",
+              "current_cell": {
+                "has_evacuation": false,
+                "monster_group_id": "O1",
+                "relic_pile_ids": [],
+                "relic_piles": [],
+                "spring_consumed": false
+              },
+              "legal_moves": [],
+              "map": [
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 4,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 1,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": true,
+                  "row": 3
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 0,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 2,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 5,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                }
+              ],
+              "map_player_count": 4,
+              "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+              "player": {
+                "base_draw_interval_seconds": "4",
+                "battle_status": {
+                  "bonuses": [
+                    {
+                      "key": "weapon_bonus",
+                      "value": "0.06"
+                    },
+                    {
+                      "key": "damage_Fire",
+                      "value": "0.04"
+                    },
+                    {
+                      "key": "resistance_Fire",
+                      "value": "0.02"
+                    }
+                  ],
+                  "charge_level": 0,
+                  "combo": 0,
+                  "core_element": "",
+                  "draw_interval_seconds": "4",
+                  "passive_kind": "FenXian",
+                  "sets": []
+                },
+                "combat": {
+                  "effective_maximum_hp": 70,
+                  "hp": 67,
+                  "maximum_hp": 70,
+                  "shield": 0
+                },
+                "discard_count": 0,
+                "draw_block_remaining_ms": 0,
+                "draw_block_speed_remaining_ms": 0,
+                "draw_charge": "0.6250000000000008",
+                "draw_speed_remaining_ms": 0,
+                "equipped_items": [
+                  {
+                    "equipment": {
+                      "effect_affix": "",
+                      "element": "Fire",
+                      "is_bound": false,
+                      "level": 0,
+                      "quality": "White",
+                      "secondary_trait": "DrawInterval",
+                      "slot": "Feet"
+                    },
+                    "is_safe": false,
+                    "item_id": "01a160ac-7114-7416-a932-7a86bef8c1ee",
+                    "kind": "Equipment",
+                    "quantity": 1
+                  }
+                ],
+                "hand": [
+                  {
+                    "card_id": "C02",
+                    "instance_id": "01a160ac-d85a-7171-bf46-d4b9651910fe",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "MAG-07",
+                    "instance_id": "01a160ac-d85a-72c5-b032-bfbc65992f91",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C06",
+                    "instance_id": "01a160ac-d85a-70d9-9d8c-1e8e332e37d4",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C08",
+                    "instance_id": "01a160ac-d85a-7f14-9ea2-820120f9f9e2",
+                    "level": 0
+                  }
+                ],
+                "hero_class": "Mage",
+                "inventory": [],
+                "inventory_capacity": 20,
+                "library_count": 16,
+                "numerical_state": {
+                  "fenxian_policy": "CurrentRhythm",
+                  "guardian_policy": "CurrentSteps",
+                  "guardian_remainder_tenths": 0
+                },
+                "phase": "Pve",
+                "player_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+                "safe_slot_indexes": [],
+                "stun_remaining_ms": 0,
+                "weapon_level": 0
+              },
+              "pve": {
+                "battle_id": "01a160ac-d877-7abc-9c23-43bce6281d62",
+                "current_target_id": "fire-bat",
+                "monsters": [
+                  {
+                    "boss_phase": 1,
+                    "hp": 78,
+                    "intent_element": "Fire",
+                    "intent_kind": "Attack",
+                    "intent_value": 3,
+                    "interval_progress_ms": 2300,
+                    "maximum_hp": 78,
+                    "monster_id": "fire-bat",
+                    "shield": 0,
+                    "stun_remaining_ms": 0,
+                    "windup_remaining_ms": 0
+                  }
+                ],
+                "phase": "Active"
+              },
+              "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+              "room_revision": 66,
+              "self": {
+                "column": 5,
+                "row": 1
+              }
+            },
+            "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+            "server_sequence": 20,
+            "user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76"
+          },
+          "original_match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "sequence": 2
+        }
+      },
+      {
+        "receipt": {
+          "actual": {
+            "actual_PG_matching_ACK_verified": true,
+            "actual_completed_cycle_not_invented": true,
+            "actual_successful_business_ACK_original": {
+              "actual_business_ack_returned_true": true,
+              "at_unix_ms": 1792623300850.0,
+              "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+              "completed_cycle_not_claimed": true,
+              "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+              "event_seq": 1.0,
+              "event_type": "settlement.acknowledged",
+              "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+              "process_epoch": "245-11488",
+              "run_id": "owned-a05-runtime"
+            },
+            "agent_id_not_substituted": true,
+            "missing_derivation": {
+              "completion_classification_algorithm": "owned-cycle-origins-v1",
+              "drain": {
+                "acknowledgements": 0.0,
+                "acknowledgements_by_client": {},
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "evidence_errors": [
+                "missing_context"
+              ],
+              "final": {
+                "acknowledgements": 0.0,
+                "acknowledgements_by_client": {},
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "final_ms": 1792623305850.0,
+              "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+              "running": {
+                "acknowledgements": 0.0,
+                "acknowledgements_by_client": {},
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "stop_ms": 1792623305850.0,
+              "zero_cycle_clients": null,
+              "zero_cycle_reason": "requires_launch_manifest"
+            },
+            "missing_run_id_copy": {
+              "actual_business_ack_returned_true": true,
+              "agent_id": "declared-agent-sentinel-must-not-substitute-run",
+              "at_unix_ms": 1792623300850.0,
+              "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+              "completed_cycle_not_claimed": true,
+              "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+              "event_seq": 1.0,
+              "event_type": "settlement.acknowledged",
+              "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+              "process_epoch": "245-11488"
+            },
+            "positive_derivation": {
+              "completion_classification_algorithm": "owned-cycle-origins-v1",
+              "drain": {
+                "acknowledgements": 0.0,
+                "acknowledgements_by_client": {},
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "evidence_errors": [],
+              "final": {
+                "acknowledgements": 1.0,
+                "acknowledgements_by_client": {
+                  "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1.0
+                },
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "final_ms": 1792623305850.0,
+              "normal_completion_scope": "Acknowledged cycle without a recorded fallback, functional abandon or drain-only origin; undeclared abandon attempts remain unclassified; not proof of combat victory, full route coverage or capacity",
+              "running": {
+                "acknowledgements": 1.0,
+                "acknowledgements_by_client": {
+                  "01a160ac-6ecf-7de9-8fa0-b367569c6e76": 1.0
+                },
+                "completed_cycles": 0.0,
+                "cycles_by_client": {},
+                "distribution": {},
+                "drain_only_completed_cycles": 0.0,
+                "drain_only_cycles_by_client": {},
+                "fallback_completed_cycles": 0.0,
+                "fallback_cycles": 0.0,
+                "fallback_cycles_by_client": {},
+                "normal_completed_cycles": 0.0,
+                "normal_cycles_by_client": {},
+                "scenario_completed_cycles": 0.0,
+                "scenario_cycles_by_client": {},
+                "unclassified_completed_cycles": 0.0,
+                "unclassified_cycles_by_client": {}
+              },
+              "stop_ms": 1792623305850.0,
+              "zero_cycle_clients": null,
+              "zero_cycle_reason": "requires_launch_manifest"
+            }
+          },
+          "actual_Godot_liveness": {
+            "PID": 245.0,
+            "expected_argument": "res://tests/A091_live_source_attribution.gd",
+            "start_ticks": "5369012"
+          },
+          "actual_SQL_after": "SQL-T03-after.original.json",
+          "actual_SQL_before": "SQL-T03-before.original.json",
+          "actual_SQL_schema": "fc_runtime_test_2cb517bec7ca44b48712a34303e0c55d",
+          "actual_assets_SHA_after": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_assets_SHA_before": "b3c051b266f57905cae2c6abb3b593b53da096765e6ddf1919bc493e7a95e821",
+          "actual_host_liveness": {
+            "PID": 132.0,
+            "expected_argument": "/runtime/FantasyCard.Server.dll",
+            "start_ticks": "5367786"
+          },
+          "actual_running_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+          "case_id": "PR13-A09.1-T03",
+          "frozen_running_receipt_SHA_unchanged": "256299309f3ed87ca3884ee18c6e1c081287eebb1eea62a0a95fc41886b560d4",
+          "ok": true,
+          "source_boundary_not_runtime_acceptance": true
+        },
+        "request": {
+          "actual_ack_event": {
+            "actual_business_ack_returned_true": true,
+            "at_unix_ms": 1792623300850,
+            "client_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+            "completed_cycle_not_claimed": true,
+            "cycle_id": "owned-ACK-scope:cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "event_seq": 1,
+            "event_type": "settlement.acknowledged",
+            "match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+            "process_epoch": "245-11488",
+            "run_id": "owned-a05-runtime"
+          },
+          "actual_before": {
+            "actual_gateway_online": true,
+            "at_unix_ms": 1792623317344,
+            "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+            "native_PID": 245,
+            "room": {
+              "_command_action": "room.snapshot.read",
+              "_command_result": "completed",
+              "_event_revision": 140,
+              "_origin_context": {
+                "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+                "origin": "http://127.0.0.1:33141",
+                "room_context_epoch": 3,
+                "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+                "session_generation": 1
+              },
+              "_replayed": false,
+              "_request_id": "5f90a8d03f08577b63bb980453e1a7ba",
+              "_sequence": 27,
+              "allowed_actions": [
+                "battle.play_cards",
+                "battle.abandon"
+              ],
+              "config_version": "gdd-0.70-numerical-1",
+              "current_cell": {
+                "has_evacuation": false,
+                "monster_group_id": "O1",
+                "relic_pile_ids": [],
+                "relic_piles": [],
+                "spring_consumed": false
+              },
+              "legal_moves": [],
+              "map": [
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 4,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 0
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 1
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 2
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 1,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": true,
+                  "row": 3
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 3
+                },
+                {
+                  "column": 0,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 2,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 5,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 4
+                },
+                {
+                  "column": 0,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 1,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 2,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 3,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 4,
+                  "has_spring": false,
+                  "is_boss": false,
+                  "row": 5
+                },
+                {
+                  "column": 5,
+                  "has_spring": true,
+                  "is_boss": false,
+                  "row": 5
+                }
+              ],
+              "map_player_count": 4,
+              "match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+              "player": {
+                "base_draw_interval_seconds": "4",
+                "battle_status": {
+                  "bonuses": [
+                    {
+                      "key": "weapon_bonus",
+                      "value": "0.06"
+                    },
+                    {
+                      "key": "damage_Fire",
+                      "value": "0.04"
+                    },
+                    {
+                      "key": "resistance_Fire",
+                      "value": "0.02"
+                    }
+                  ],
+                  "charge_level": 0,
+                  "combo": 0,
+                  "core_element": "",
+                  "draw_interval_seconds": "4",
+                  "passive_kind": "FenXian",
+                  "sets": []
+                },
+                "combat": {
+                  "effective_maximum_hp": 70,
+                  "hp": 61,
+                  "maximum_hp": 70,
+                  "shield": 0
+                },
+                "discard_count": 0,
+                "draw_block_remaining_ms": 0,
+                "draw_block_speed_remaining_ms": 0,
+                "draw_charge": "0.47500000000000014",
+                "draw_speed_remaining_ms": 0,
+                "equipped_items": [
+                  {
+                    "equipment": {
+                      "effect_affix": "",
+                      "element": "Fire",
+                      "is_bound": false,
+                      "level": 0,
+                      "quality": "White",
+                      "secondary_trait": "DrawInterval",
+                      "slot": "Feet"
+                    },
+                    "is_safe": false,
+                    "item_id": "01a160ac-7114-7416-a932-7a86bef8c1ee",
+                    "kind": "Equipment",
+                    "quantity": 1
+                  }
+                ],
+                "hand": [
+                  {
+                    "card_id": "C02",
+                    "instance_id": "01a160ac-d85a-7171-bf46-d4b9651910fe",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "MAG-07",
+                    "instance_id": "01a160ac-d85a-72c5-b032-bfbc65992f91",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C06",
+                    "instance_id": "01a160ac-d85a-70d9-9d8c-1e8e332e37d4",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C08",
+                    "instance_id": "01a160ac-d85a-7f14-9ea2-820120f9f9e2",
+                    "level": 0
+                  },
+                  {
+                    "card_id": "C05",
+                    "instance_id": "01a160ac-d85a-7cf8-98c0-7c6840f9bdc5",
+                    "level": 0
+                  }
+                ],
+                "hero_class": "Mage",
+                "inventory": [],
+                "inventory_capacity": 20,
+                "library_count": 15,
+                "numerical_state": {
+                  "fenxian_policy": "CurrentRhythm",
+                  "guardian_policy": "CurrentSteps",
+                  "guardian_remainder_tenths": 0
+                },
+                "phase": "Pve",
+                "player_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+                "safe_slot_indexes": [],
+                "stun_remaining_ms": 0,
+                "weapon_level": 0
+              },
+              "pve": {
+                "battle_id": "01a160ac-d877-7abc-9c23-43bce6281d62",
+                "current_target_id": "fire-bat",
+                "monsters": [
+                  {
+                    "boss_phase": 1,
+                    "hp": 78,
+                    "intent_element": "Fire",
+                    "intent_kind": "Attack",
+                    "intent_value": 3,
+                    "interval_progress_ms": 1300,
+                    "maximum_hp": 78,
+                    "monster_id": "fire-bat",
+                    "shield": 0,
+                    "stun_remaining_ms": 0,
+                    "windup_remaining_ms": 0
+                  }
+                ],
+                "phase": "Active"
+              },
+              "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+              "room_revision": 140,
+              "self": {
+                "column": 5,
+                "row": 1
+              }
+            },
+            "room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+            "server_sequence": 27,
+            "user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76"
+          },
+          "actual_fresh": {},
+          "original_match_id": "cfdc77b2-6210-4a48-8179-76c3db6e203e",
+          "sequence": 3
+        }
+      }
+    ],
+    "no_fake_completed_cycles": true,
+    "ok": true,
+    "rows": [
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-zh-CN-960.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "01961fa6d844c5accc93ebbb65afaba39c019cbbdbcfd7849ba4d59f6c8ef43d",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-zh-CN-1280.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "8392307ca08c22d8ccd5663fc35a3764f091d6429adf8710f8702df5dd862b3d",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-zh-CN-1920.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "bb50404d68ec7d844024fde4a27eb68093c86c9460af431de40f54235b1c1616",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-en-960.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "a667b9c7ac5b33e7fdde89d32cbd13935255b4d07b6b8692307b0fd006a19297",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-en-1280.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "992bcf4836d28191ec2d0d3ce34ac779327902c2dc57cfa025560026402f6ae9",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T01",
+        "image": "T01-en-1920.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "5756b28c5964c0411ec3df7a550652ae8c5e0f3a5e191c72af9a3419749fc523",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 1
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-zh-CN-960.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "afe743a5502d9b501afb2c0feffc98991bdf1df691a9b2e04673106abac99773",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-zh-CN-1280.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "596f0a29c6017daa635f19ff5520143ab8b573f9dd38a971864e8834bfe58e63",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-zh-CN-1920.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "41bb5467b713297399dae9002bbb8cb79c99710dcd726ca6108fd0e87b98ceef",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-en-960.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "ba48a139ad7b8d58e4988b6318676c313b1ca01b93e1c3caa6d32976eb9bee5d",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-en-1280.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "cb63da184c78b088f10da06d974b722d640fe0ad8dd3e407fe082699cbbd47a0",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T02",
+        "image": "T02-en-1920.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "3cbd44552d1b192f4f398c232e113861bc3d07bfe2f84ef9a3e0c71ff0f371fa",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 2
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-zh-CN-960.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "258f91b21ceca6308f00430f4a2193d0a601fd68bb73ffa522439c8953b8ce5c",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 3
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-zh-CN-1280.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "3a0abc9892a0c968d94ebf8b02e21f25acca78981a0bad96884aa6c02945f721",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 3
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-zh-CN-1920.webp",
+        "locale": "zh-CN",
+        "native_RGBA8_pixel_SHA": "c657aa9bb8407ec9c944f7d8160d4657bda8ddea151e577bea0eee3dfe063f92",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 3
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-en-960.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "0ae3e457fc4f5eee7c3a920a21bb971dbebc0ddf2c38aa9656c3aea5fcddd092",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          960,
+          540
+        ],
+        "sequence": 3
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-en-1280.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "0261e063786c709fc940c4ed44b87ee2c958702b5e84f866ec2ca8a40965f429",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1280,
+          720
+        ],
+        "sequence": 3
+      },
+      {
+        "actual_live": true,
+        "actual_match_id": "01a160ac-d58e-7c9d-ad07-cf5e80fbdf8e",
+        "actual_native_PID": 245,
+        "actual_receipt_ok": true,
+        "actual_room_id": "01a160ac-d58e-7171-a245-3e0335e76a76",
+        "actual_user_id": "01a160ac-6ecf-7de9-8fa0-b367569c6e76",
+        "case_id": "PR13-A09.1-T03",
+        "image": "T03-en-1920.webp",
+        "locale": "en",
+        "native_RGBA8_pixel_SHA": "645556026c9ff8a1e013e93c27ed03950ef3b97b5690711e1ebe4ac1c317218b",
+        "native_lossless_WebP": true,
+        "passed": true,
+        "resolution": [
+          1920,
+          1080
+        ],
+        "sequence": 3
+      }
+    ]
+  },
+  "new_logical_rooms2_UID5_original_contract": true,
+  "actual_native_original_protocol_assets_and_OS_restart_assertions_passed": true,
+  "actual_human_accepted": false,
+  "no_natural_three_cycle_or_capacity_claim": true
+}

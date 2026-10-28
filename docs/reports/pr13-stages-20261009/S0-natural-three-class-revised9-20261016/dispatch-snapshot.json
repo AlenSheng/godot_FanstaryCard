@@ -1,0 +1,58 @@
+{
+  "at_local": "2026-10-16T19:50:50.562600+08:00",
+  "state": "ActiveAtRecordedSnapshot",
+  "goal_status": "active",
+  "unified_exec_session_id": 90516,
+  "driver_PID": 72548,
+  "verified_live_client_PIDs": [
+    120632,
+    99772
+  ],
+  "latest_status_at_unix_ms": 1792151445974,
+  "latest_recorded_clients": [
+    {
+      "client": "PR13NFG01",
+      "PID": 120632,
+      "exit": null,
+      "stage": "playing",
+      "cycles": 0,
+      "last_progress_age_ms": 2233
+    },
+    {
+      "client": "PR13NFP01",
+      "PID": 99772,
+      "exit": null,
+      "stage": "playing",
+      "cycles": 0,
+      "last_progress_age_ms": 3801
+    }
+  ],
+  "pending_clients": [
+    "PR13NFM01"
+  ],
+  "safety_windows_at_snapshot": {
+    "CPU": 0,
+    "actor_wait": 0,
+    "actor_missing": 0
+  },
+  "plan_sha256": "e40984bc4687c2ce0edc6434129e8c07cd5bb0692a0fed28e9ff30ef9f165e52",
+  "profile": "current-three-heroes-natural3-concurrency2-budget1200-r1",
+  "new_planned_cycles": 9,
+  "maximum_concurrency": 2,
+  "cycle_budget_seconds": 1200,
+  "criteria_revision_is_explicit": true,
+  "original30_strict_pass": false,
+  "new_profile_pass": "Unverified until all originals and DB postconditions reviewed",
+  "cloud_environment_changed": false,
+  "human_experience_in_scope": false,
+  "current_acceptance_counts": {
+    "Accepted": 26,
+    "Partial": 87,
+    "Failed": 2,
+    "ReadyForAcceptance": 17
+  },
+  "remaining_unaccepted": 106,
+  "raw_evidence_root": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run",
+  "no_automatic_restart": true,
+  "resume_instruction": "Poll unified exec session90516 and inspect the same handles. A stale snapshot or observation timeout is not terminal and does not authorize relaunch."
+}

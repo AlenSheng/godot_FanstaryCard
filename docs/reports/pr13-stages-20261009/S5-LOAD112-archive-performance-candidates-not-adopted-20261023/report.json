@@ -1,0 +1,418 @@
+{
+  "kind": "MeasuredArchiveAuditCandidatesNotAdopted",
+  "generated_at": "2026-10-23T01:50:08.171952+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "record_copy_candidate": {
+    "kind": "ArchiveRecordCopyCandidateEquivalenceAndActualWindowTiming",
+    "ok": true,
+    "compatibility_cases_including_actual_windows": 57,
+    "actual_source_windows": [
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Priest-BOSS-Metal-L5-B2/verified/outputs/Priest-BOSS-Metal-L5-B2/native/cap-events-008.jsonl.gz",
+          "bytes": 5611777,
+          "sha256": "044d2422e4bce71a3b83066a0d92a4cada595bcc2b5d34c14cc2deb2dd742af7",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "window_bytes": 8389904,
+        "window_sha256": "5c2ec0ac9e40ed043472fbaed0dea42a043b6ff6eedc9c3a4ea1cf6eb6972077",
+        "physical_records_in_window": 6203,
+        "scope": "Bounded actual complete-record prefix of already completed original; not a new game or whole source CRC requalification"
+      },
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Guardian-E1-Earth-L0-B2/verified/outputs/Guardian-E1-Earth-L0-B2/native/cap-events-026.jsonl.gz",
+          "bytes": 5804099,
+          "sha256": "0454b74669b11c67b37e297c8caf35dc91ac19e79a9ea210eb2f15e856dcaec3",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "window_bytes": 8389342,
+        "window_sha256": "2598fad2d0bf1fe403ab59145be41ef456aaf94a544ba846993e5bd4c5411582",
+        "physical_records_in_window": 5989,
+        "scope": "Bounded actual complete-record prefix of already completed original; not a new game or whole source CRC requalification"
+      },
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Mage-BOSS-Wood-L0-B2/verified/outputs/Mage-BOSS-Wood-L0-B2/native/cap-events-019.jsonl.gz",
+          "bytes": 5653745,
+          "sha256": "046d7f7e03a50a48e0e64f73a26282efd3ab6ed022d93c1b155799b888ef5b6c",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "window_bytes": 8388631,
+        "window_sha256": "0e595e592bd9c3b829b86ae8e4647973c93df258732633309d1a15a1cb9c60b5",
+        "physical_records_in_window": 6034,
+        "scope": "Bounded actual complete-record prefix of already completed original; not a new game or whole source CRC requalification"
+      },
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Priest-E1-Earth-L0-B1/verified/outputs/Priest-E1-Earth-L0-B1/native/cap-events-014.jsonl.gz",
+          "bytes": 5501714,
+          "sha256": "0477613143609ecc991f651399b20729a6b78942ebf0e99bc2b22e41e7598d4e",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "window_bytes": 8389148,
+        "window_sha256": "5732167d770e010b6ab4c4d9fbe4009060018c20d5142eb6723742cc0171d392",
+        "physical_records_in_window": 6028,
+        "scope": "Bounded actual complete-record prefix of already completed original; not a new game or whole source CRC requalification"
+      }
+    ],
+    "actual_native_timing_seconds": {
+      "original": [
+        0.9804414999962319,
+        0.9396597000013571,
+        0.946206099994015
+      ],
+      "candidate": [
+        0.9498788999917451,
+        0.8410890999948606,
+        0.8310017999901902
+      ]
+    },
+    "median_original_to_candidate_speed_ratio": 1.124977246762319,
+    "qualification_threshold_ratio": 1.15,
+    "measured_benefit_qualified_for_consideration": false,
+    "semantic_compatibility_qualified": true,
+    "no_new_parser_dependency_or_rule_changes": true,
+    "same_stdlib_JSON_parser_and_same_depth_size_limits": true,
+    "candidate_not_activated": true,
+    "live_worker_not_stopped_or_restarted": true,
+    "whole_archive_queue_throughput_improvement_not_claimed_from_parser_only_timing": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "copy_compatibility": {
+    "retained_or_edge_case_count": 53,
+    "actual_window_equivalence_cases": 4,
+    "all_complete_emitted_records_and_counters_equal": true,
+    "candidate_sha256": "7a5060336682d928ffd2322f53d6f968efd91356cd8ab061f10e7d472ca980ba",
+    "original_engine_sha256": "a372fb211d708e3ae812653f6f4dc5b996c4f7b30486eae0e815fb8f9438ffd5"
+  },
+  "input_buffer_candidate": {
+    "kind": "ActualFullCompressedSourceInputBufferQualification",
+    "ok": true,
+    "constraints": {
+      "buffering_change_only": true,
+      "unchanged_engine_sha256": "a372fb211d708e3ae812653f6f4dc5b996c4f7b30486eae0e815fb8f9438ffd5",
+      "original_public_guard_sha256": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+      "activation_min_wall_speed_ratio": 1.15,
+      "activation_min_read_operation_reduction_ratio": 4,
+      "full_record_emission_equality_required": true,
+      "resource_limits_and_source_hash_CRC_checks_unchanged": true,
+      "live_worker_not_touched": true
+    },
+    "runs": [
+      {
+        "variant": "default",
+        "wall_seconds": 5.557239199988544,
+        "process_cpu_seconds": 5.515625,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 1422,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 88,
+          "ReadTransferCount": 22836191,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 2486
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      },
+      {
+        "variant": "1MiB",
+        "wall_seconds": 5.801054900017334,
+        "process_cpu_seconds": 5.8125,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 37,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 50,
+          "ReadTransferCount": 22831752,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 1676
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      },
+      {
+        "variant": "1MiB",
+        "wall_seconds": 7.355893300002208,
+        "process_cpu_seconds": 7.1875,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 37,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 50,
+          "ReadTransferCount": 22831752,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 1676
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      },
+      {
+        "variant": "default",
+        "wall_seconds": 7.189494799997192,
+        "process_cpu_seconds": 7.140625,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 1420,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 50,
+          "ReadTransferCount": 22831752,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 1676
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      },
+      {
+        "variant": "default",
+        "wall_seconds": 6.839351900009206,
+        "process_cpu_seconds": 6.78125,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 1420,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 50,
+          "ReadTransferCount": 22831752,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 1676
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      },
+      {
+        "variant": "1MiB",
+        "wall_seconds": 7.357394799997564,
+        "process_cpu_seconds": 7.234375,
+        "I_O_counters_delta": {
+          "ReadOperationCount": 37,
+          "WriteOperationCount": 0,
+          "OtherOperationCount": 50,
+          "ReadTransferCount": 22831752,
+          "WriteTransferCount": 0,
+          "OtherTransferCount": 1676
+        },
+        "full_source_hashes_native_CRC_all_emissions_and_counters_equal": true
+      }
+    ],
+    "actual_qualified_source_objects": [
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Priest-BOSS-Metal-L5-B2/verified/outputs/Priest-BOSS-Metal-L5-B2/native/cap-events-008.jsonl.gz",
+          "bytes": 5611777,
+          "sha256": "044d2422e4bce71a3b83066a0d92a4cada595bcc2b5d34c14cc2deb2dd742af7",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "records": [
+          {
+            "kind": "member",
+            "parent_archive_sha256": "044d2422e4bce71a3b83066a0d92a4cada595bcc2b5d34c14cc2deb2dd742af7",
+            "member_ordinal": 1,
+            "member_name": "cap-events-008.jsonl",
+            "depth": 0,
+            "bytes": 134217403,
+            "sha256": "15f883bf3f02eed7760201c2ba10ee69969cddd193fec5d4007e25096d20539f",
+            "declared_size": null,
+            "metadata": {
+              "format": "gzip",
+              "logical_name_derived_from_outer_suffix": true
+            },
+            "inspection": "PrivateJSONLStructureInspected_PublicExportDenied",
+            "JSONL": {
+              "physical_records": 99057,
+              "nonempty_records_inspected": 99057,
+              "failure_counts": {},
+              "whole_file_public_export_limit_unchanged": true,
+              "private_raw_structure_only": true,
+              "public_export_denied_without_separate_original_public_validation": true
+            }
+          },
+          {
+            "kind": "archive",
+            "archive_sha256": "044d2422e4bce71a3b83066a0d92a4cada595bcc2b5d34c14cc2deb2dd742af7",
+            "archive_name": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Priest-BOSS-Metal-L5-B2/verified/outputs/Priest-BOSS-Metal-L5-B2/native/cap-events-008.jsonl.gz",
+            "depth": 0,
+            "format": "gzip",
+            "native_compression_footer_read_completed": true
+          }
+        ],
+        "members": 1,
+        "findings": 0,
+        "nested": 0,
+        "decoded_bytes": 134217403,
+        "stable_during_full_native_inspection": true
+      },
+      {
+        "source": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Guardian-E1-Earth-L0-B2/verified/outputs/Guardian-E1-Earth-L0-B2/native/cap-events-026.jsonl.gz",
+          "bytes": 5804099,
+          "sha256": "0454b74669b11c67b37e297c8caf35dc91ac19e79a9ea210eb2f15e856dcaec3",
+          "frozen_snapshot_alias_paths": 1
+        },
+        "records": [
+          {
+            "kind": "member",
+            "parent_archive_sha256": "0454b74669b11c67b37e297c8caf35dc91ac19e79a9ea210eb2f15e856dcaec3",
+            "member_ordinal": 1,
+            "member_name": "cap-events-026.jsonl",
+            "depth": 0,
+            "bytes": 134216666,
+            "sha256": "d54471d2caca6476fcae7fac19b93e90798c88f2ab353ca0821a1c3545dd4e51",
+            "declared_size": null,
+            "metadata": {
+              "format": "gzip",
+              "logical_name_derived_from_outer_suffix": true
+            },
+            "inspection": "PrivateJSONLStructureInspected_PublicExportDenied",
+            "JSONL": {
+              "physical_records": 95787,
+              "nonempty_records_inspected": 95787,
+              "failure_counts": {},
+              "whole_file_public_export_limit_unchanged": true,
+              "private_raw_structure_only": true,
+              "public_export_denied_without_separate_original_public_validation": true
+            }
+          },
+          {
+            "kind": "archive",
+            "archive_sha256": "0454b74669b11c67b37e297c8caf35dc91ac19e79a9ea210eb2f15e856dcaec3",
+            "archive_name": "outputs/pr13-tencent-20261009/cap-experiment-full-r3-raw/Guardian-E1-Earth-L0-B2/verified/outputs/Guardian-E1-Earth-L0-B2/native/cap-events-026.jsonl.gz",
+            "depth": 0,
+            "format": "gzip",
+            "native_compression_footer_read_completed": true
+          }
+        ],
+        "members": 1,
+        "findings": 0,
+        "nested": 0,
+        "decoded_bytes": 134216666,
+        "stable_during_full_native_inspection": true
+      }
+    ],
+    "wall_median_default_to_1MiB_ratio": 0.92977856272156,
+    "read_operation_default_to_1MiB_ratio": 38.37837837837838,
+    "activation_qualified": false,
+    "same_original_engine_and_rules": true,
+    "live_worker_not_stopped_restarted_or_modified": true,
+    "all_existing_completed_queue_attempts_must_be_retained_without_replay_if_later_adopted": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "decision": "Keep original R3 auditor: neither candidate met the predeclared wall-time benefit threshold",
+  "copy_parser_median_speed_ratio": 1.124977246762319,
+  "copy_qualification_threshold_ratio": 1.15,
+  "input_buffer_median_wall_speed_ratio": 0.92977856272156,
+  "input_buffer_read_operation_reduction_ratio": 38.37837837837838,
+  "no_concurrent_queue_repartition_or_worker_restart_performed": true,
+  "all_original_size_depth_public_private_hash_CRC_rules_and_game_budgets_unchanged": true,
+  "benchmark_replayed_existing_audit_inputs_only_not_game_execution": true,
+  "do_not_repeat_identical_candidates_without_new_evidence_or_changes": true,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-archive-performance-candidates-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/actual-source-window-0.private-original.jsonl",
+        "bytes": 8389904,
+        "sha256": "5c2ec0ac9e40ed043472fbaed0dea42a043b6ff6eedc9c3a4ea1cf6eb6972077"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/actual-source-window-1.private-original.jsonl",
+        "bytes": 8389342,
+        "sha256": "2598fad2d0bf1fe403ab59145be41ef456aaf94a544ba846993e5bd4c5411582"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/actual-source-window-2.private-original.jsonl",
+        "bytes": 8388631,
+        "sha256": "0e595e592bd9c3b829b86ae8e4647973c93df258732633309d1a15a1cb9c60b5"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/actual-source-window-3.private-original.jsonl",
+        "bytes": 8389148,
+        "sha256": "5732167d770e010b6ab4c4d9fbe4009060018c20d5142eb6723742cc0171d392"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/compatibility-qualified.original.json",
+        "bytes": 15134,
+        "sha256": "6d4680763d8ab534e6e5726a2a2a83d2aa0127356d6e52b90fb2eae5d824205e"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/executed-qualification-source.original.py",
+        "bytes": 7663,
+        "sha256": "965cf7ec3ea86a0409d0228afa7ee7186f9910f5ea69247933bad6218cd0c172"
+      },
+      {
+        "path": "native-executions/archive-copy-candidate-qualification-20261023-r1/timing-result.original.json",
+        "bytes": 3854,
+        "sha256": "fa4ed3655a00ca4671ce7da227fea5912a42f3c55995c28631cc02019649edca"
+      },
+      {
+        "path": "native-executions/compressed-input-buffer-qualification-20261023-r1/before-measurement-constraints.original.json",
+        "bytes": 489,
+        "sha256": "8bb3b00a87f43f6257b48218ec1dd19b3d85cf91862089b80f8340362425ffcd"
+      },
+      {
+        "path": "native-executions/compressed-input-buffer-qualification-20261023-r1/executed-buffer-qualification-source.original.py",
+        "bytes": 5468,
+        "sha256": "41a0dc27e8d3f49e70d38a9fc7ea76b4c9c45ccfd4444164e76ef57b349b15b4"
+      },
+      {
+        "path": "native-executions/compressed-input-buffer-qualification-20261023-r1/progress.snapshot.json",
+        "bytes": 2807,
+        "sha256": "30d793f32fc9576a594906f0b8f8234b8760e65376effb66c41c507fe2f2e811"
+      },
+      {
+        "path": "native-executions/compressed-input-buffer-qualification-20261023-r1/result.original.json",
+        "bytes": 7893,
+        "sha256": "5a281ba082a9ef5b0714bfe39cb734c50ed6e26d0440a13bc476d7703c88b367"
+      },
+      {
+        "path": "source-witnesses/LOAD112_archive_members_engine_r3_20261022.py",
+        "bytes": 16125,
+        "sha256": "a372fb211d708e3ae812653f6f4dc5b996c4f7b30486eae0e815fb8f9438ffd5"
+      },
+      {
+        "path": "source-witnesses/LOAD112_archive_members_engine_copy_candidate_20261023.py",
+        "bytes": 16123,
+        "sha256": "7a5060336682d928ffd2322f53d6f968efd91356cd8ab061f10e7d472ca980ba"
+      },
+      {
+        "path": "source-witnesses/LOAD112_prepare_archive_copy_candidate_20261023.py",
+        "bytes": 1403,
+        "sha256": "4bdfab4f0edcec8635dfe6c92c4a3fb5b1004030358e2165555b3e0116880fc2"
+      },
+      {
+        "path": "source-witnesses/LOAD112_publish_archive_performance_decision_20261023.py",
+        "bytes": 7444,
+        "sha256": "ff8cb5bfaf9dfa6d3bd90c1235de01d148095bc57de1da2caf8f9e0f1443ff6a"
+      },
+      {
+        "path": "actual-benchmark-parents/source-0.private-original.jsonl.gz",
+        "bytes": 5611777,
+        "sha256": "044d2422e4bce71a3b83066a0d92a4cada595bcc2b5d34c14cc2deb2dd742af7"
+      },
+      {
+        "path": "actual-benchmark-parents/source-1.private-original.jsonl.gz",
+        "bytes": 5804099,
+        "sha256": "0454b74669b11c67b37e297c8caf35dc91ac19e79a9ea210eb2f15e856dcaec3"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 93722,
+        "sha256": "8b1c412fe9da6faeffb6701a4096bdde56ca881f1a65414b4003d6399f281e92"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

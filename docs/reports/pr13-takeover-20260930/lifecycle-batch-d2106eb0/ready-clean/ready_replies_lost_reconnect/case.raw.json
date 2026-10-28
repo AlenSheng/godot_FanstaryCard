@@ -1,0 +1,646 @@
+{
+  "client": {
+    "Accepted": false,
+    "active_match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+    "case": "ready_replies_lost_reconnect",
+    "checks": [
+      {
+        "at_unix_ms": 1790803818625,
+        "name": "realtime_connected",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803818691,
+        "name": "owned_equipment_fixture_seeded",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803818819,
+        "name": "login_and_bootstrap",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803818908,
+        "name": "hero_class_confirmed",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803819051,
+        "name": "create_free_preparation",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803819126,
+        "name": "enqueue_match",
+        "passed": true
+      },
+      {
+        "at_unix_ms": 1790803851143,
+        "name": "room_started",
+        "passed": true
+      }
+    ],
+    "cleanup": {
+      "active_preparation": null,
+      "reason": "server_state_clear",
+      "state": "Passed",
+      "unfinished_match": null,
+      "unfinished_settlement": null
+    },
+    "client_preparation": {},
+    "client_ready_prompt": {},
+    "client_room": false,
+    "client_settlement": false,
+    "client_ticket": {},
+    "connected_count": 3,
+    "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+    "errors": [],
+    "expected_match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+    "expected_room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+    "local_terminal": true,
+    "message": "Coordinator cancelled current cycle",
+    "observed_match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+    "observed_room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+    "own_user_id": "01a0f439-b5df-7cf1-82b8-45293d5acdf0",
+    "passed": true,
+    "ready_send_after_stop": 0,
+    "ready_send_count": 2,
+    "required_delivered": 1,
+    "required_dropped": false,
+    "resume_send_count": 1,
+    "route_probe_clear": true,
+    "route_probe_events": [
+      "pong"
+    ],
+    "stop_boundary": "authority_recovered_room_started_then_stop",
+    "ticket_reads": 15,
+    "trace": [
+      {
+        "at_ms": 2085,
+        "event": "ticket_response",
+        "read_no": 1,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 4253,
+        "event": "ticket_response",
+        "read_no": 2,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 6419,
+        "event": "ticket_response",
+        "read_no": 3,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 8585,
+        "event": "ticket_response",
+        "read_no": 4,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 10769,
+        "event": "ticket_response",
+        "read_no": 5,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 12935,
+        "event": "ticket_response",
+        "read_no": 6,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 15102,
+        "event": "ticket_response",
+        "read_no": 7,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 17268,
+        "event": "ticket_response",
+        "read_no": 8,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 19435,
+        "event": "ticket_response",
+        "read_no": 9,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 21601,
+        "event": "ticket_response",
+        "read_no": 10,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 23768,
+        "event": "ticket_response",
+        "read_no": 11,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 25969,
+        "event": "ticket_response",
+        "read_no": 12,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 28134,
+        "event": "ticket_response",
+        "read_no": 13,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 30301,
+        "event": "ticket_response",
+        "read_no": 14,
+        "status": "Queued"
+      },
+      {
+        "at_ms": 32284,
+        "event": "actual_server_envelope",
+        "kind": "room.ready_required",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 6,
+        "sequence_before": 5
+      },
+      {
+        "at_ms": 32284,
+        "event": "required_transport_boundary",
+        "ticket_inflight": false
+      },
+      {
+        "at_ms": 32468,
+        "event": "ticket_response",
+        "read_no": 15,
+        "status": "Matched"
+      },
+      {
+        "after_stop": false,
+        "at_ms": 32468,
+        "event": "room.ready.attempt",
+        "online": true
+      },
+      {
+        "after_stop": false,
+        "at_ms": 33517,
+        "event": "room.ready.attempt",
+        "online": false
+      },
+      {
+        "at_ms": 33984,
+        "event": "session.resume.attempt",
+        "last_sequence": 6,
+        "room_id": "",
+        "room_revision": 0
+      },
+      {
+        "at_ms": 33985,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 10,
+        "sequence_before": 6
+      },
+      {
+        "at_ms": 34000,
+        "event": "actual_server_envelope",
+        "kind": "room.ready_accepted",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 7,
+        "sequence_before": 10
+      },
+      {
+        "at_ms": 34001,
+        "event": "actual_server_envelope",
+        "kind": "room.started",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 8,
+        "sequence_before": 10
+      },
+      {
+        "at_ms": 34003,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 10,
+        "sequence_before": 9
+      },
+      {
+        "at_ms": 34005,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 11,
+        "sequence_before": 10
+      },
+      {
+        "at_ms": 34018,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 12,
+        "sequence_before": 11
+      },
+      {
+        "at_ms": 34067,
+        "boundary": "authority_recovered_room_started_then_stop",
+        "event": "coordinator_stop"
+      },
+      {
+        "at_ms": 34119,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 14,
+        "sequence_before": 13
+      },
+      {
+        "at_ms": 34135,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 15,
+        "sequence_before": 14
+      },
+      {
+        "at_ms": 34521,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 17,
+        "sequence_before": 15
+      },
+      {
+        "at_ms": 34535,
+        "event": "actual_server_envelope",
+        "kind": "room.snapshot",
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "sequence": 18,
+        "sequence_before": 17
+      }
+    ]
+  },
+  "postgres": {
+    "preparations": [
+      {
+        "status": "Settled"
+      }
+    ],
+    "tickets": [
+      {
+        "status": "Matched"
+      }
+    ],
+    "human_match_states": [
+      {
+        "state": "Settled"
+      }
+    ],
+    "locked_equipment": 0,
+    "preparation_asset_rows": 1,
+    "equipment_locks": 1,
+    "equipment_releases": 0,
+    "pending_settlement_holds": 0,
+    "settlements": 1,
+    "rooms": 1,
+    "matches": 1,
+    "match_rows": [
+      {
+        "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+        "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+        "status": "Completed",
+        "created_at_unix_ms": 1790803849356.382,
+        "ready_deadline_unix_ms": 1790803864356.382,
+        "observed_at_unix_ms": 1790803853711.594
+      }
+    ],
+    "ready_deadline_seconds": [
+      15.0
+    ]
+  },
+  "transport": [
+    {
+      "event": "proxy_ready",
+      "at_monotonic_ms": 23156085,
+      "listen_host": "127.0.0.1",
+      "port": 45359,
+      "upstream_host": "127.0.0.1",
+      "upstream_port": 35095
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 23157180,
+      "connection": 1
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 23157959,
+      "connection": 2
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23157967,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 1,
+      "bytes": 138,
+      "sha256": "65b1e4d6eafcec04303178cd8207cad45a839366ba6fcd658795698cc309f84c",
+      "file": "0001-server_to_client-session.connected.pb",
+      "sequence": 1,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23188868,
+      "kind": "room.ready_required",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 2,
+      "bytes": 167,
+      "sha256": "4fc93bf8391f0a6a5a851ef41e7dba2f27c8a486e8920e8bdc8a2dde28f93e52",
+      "file": "0002-server_to_client-room.ready_required.pb",
+      "sequence": 6,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23189062,
+      "kind": "room.ready",
+      "direction": "client_to_server",
+      "connection": 2,
+      "ordinal": 3,
+      "bytes": 50,
+      "sha256": "fd3bd0b47bddce30ad44c3b9a70b1d9f9beef11a64676b832d43ae611c45d77b",
+      "file": "0003-client_to_server-room.ready.pb",
+      "sequence": null,
+      "request_id": "2cf9887ee36c7585cdb65b15ef1166f9"
+    },
+    {
+      "event": "frame_dropped",
+      "at_monotonic_ms": 23189084,
+      "kind": "room.ready_accepted",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 4,
+      "bytes": 223,
+      "sha256": "17b9ba07e4b1c0a77df41cdb603d3205dc4e79b6151afae8cebd09c26ad1fce0",
+      "file": "0004-server_to_client-room.ready_accepted.pb",
+      "sequence": 7,
+      "request_id": "2cf9887ee36c7585cdb65b15ef1166f9",
+      "postgres_at_drop": [
+        {
+          "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+          "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+          "status": "Starting",
+          "player_state": "Ready",
+          "ready_deadline_seconds": 15.0
+        }
+      ],
+      "drop_no": 1
+    },
+    {
+      "event": "frame_dropped",
+      "at_monotonic_ms": 23189506,
+      "kind": "room.started",
+      "direction": "server_to_client",
+      "connection": 2,
+      "ordinal": 5,
+      "bytes": 1225,
+      "sha256": "d79eb2950b87bc30ec18567b67d6c0efdb6917b4bed9693a6752952963edccaf",
+      "file": "0005-server_to_client-room.started.pb",
+      "sequence": 8,
+      "request_id": "",
+      "postgres_at_drop": [
+        {
+          "match_id": "01a0f43a-308e-7c71-823d-dfb55290bb49",
+          "room_id": "01a0f43a-308e-79fb-8dab-d7a449e40b7a",
+          "status": "Running",
+          "player_state": "Active",
+          "ready_deadline_seconds": 15.0
+        }
+      ],
+      "drop_no": 1
+    },
+    {
+      "event": "fault_disconnect",
+      "at_monotonic_ms": 23189506,
+      "connection": 2,
+      "kind": "room.started"
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 23190570,
+      "connection": 3
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190572,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 6,
+      "bytes": 138,
+      "sha256": "b73f82a3077759c7123bc383e53fa0c08eca96d03622b8720d1a7fa586bcfb89",
+      "file": "0006-server_to_client-session.connected.pb",
+      "sequence": 9,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190575,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 7,
+      "bytes": 1182,
+      "sha256": "8a2de31cfe863ca35ec6c052a4158dcc1d92c9f866e493c653626250884e43cc",
+      "file": "0007-server_to_client-room.snapshot.pb",
+      "sequence": 10,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190577,
+      "kind": "session.resume",
+      "direction": "client_to_server",
+      "connection": 3,
+      "ordinal": 8,
+      "bytes": 60,
+      "sha256": "eaa75ff935f85f0aa666d76c2e01c51caeea45a1c26b87be9584c9477d962c70",
+      "file": "0008-client_to_server-session.resume.pb",
+      "sequence": null,
+      "request_id": "60b2500b209dbb61372b3ab9f71d0c7c"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190585,
+      "kind": "room.ready_accepted",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 9,
+      "bytes": 223,
+      "sha256": "17b9ba07e4b1c0a77df41cdb603d3205dc4e79b6151afae8cebd09c26ad1fce0",
+      "file": "0009-server_to_client-room.ready_accepted.pb",
+      "sequence": 7,
+      "request_id": "2cf9887ee36c7585cdb65b15ef1166f9"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190585,
+      "kind": "room.started",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 10,
+      "bytes": 1225,
+      "sha256": "d79eb2950b87bc30ec18567b67d6c0efdb6917b4bed9693a6752952963edccaf",
+      "file": "0010-server_to_client-room.started.pb",
+      "sequence": 8,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190586,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 11,
+      "bytes": 138,
+      "sha256": "b73f82a3077759c7123bc383e53fa0c08eca96d03622b8720d1a7fa586bcfb89",
+      "file": "0011-server_to_client-session.connected.pb",
+      "sequence": 9,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190586,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 12,
+      "bytes": 1182,
+      "sha256": "8a2de31cfe863ca35ec6c052a4158dcc1d92c9f866e493c653626250884e43cc",
+      "file": "0012-server_to_client-room.snapshot.pb",
+      "sequence": 10,
+      "request_id": ""
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190586,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 13,
+      "bytes": 1216,
+      "sha256": "2f10b6f97d01f990b8f38d19a3519dd2ee4b79e81dbbb07e68b14bba5090579b",
+      "file": "0013-server_to_client-room.snapshot.pb",
+      "sequence": 11,
+      "request_id": "60b2500b209dbb61372b3ab9f71d0c7c"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190599,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 14,
+      "bytes": 1216,
+      "sha256": "623e3362d75bd52111edfe8752cdb47a3fd97a61a211d89b131ac4687e794fc3",
+      "file": "0014-server_to_client-room.snapshot.pb",
+      "sequence": 12,
+      "request_id": "f3b212f8d591be5257cb9bbcb2857199"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190699,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 15,
+      "bytes": 1064,
+      "sha256": "15f7f9077bc8a01dc99a6108a8b6b41200ce94a67e8dac967da98a7f3bec3b7d",
+      "file": "0015-server_to_client-room.snapshot.pb",
+      "sequence": 14,
+      "request_id": "f06afd0e2c7e7df7f32d3154bce0bc94"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23190715,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 16,
+      "bytes": 1062,
+      "sha256": "1ccd80a4af31cd3b7ce93639b0db1f0671fe64f9ebb6afdbb189dffe4426f508",
+      "file": "0016-server_to_client-room.snapshot.pb",
+      "sequence": 15,
+      "request_id": "ea71e059c7b8209b1fc030faa8d9e9d8"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23191106,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 17,
+      "bytes": 882,
+      "sha256": "28afc5391e5c614d7bbef7928aaed14aaa9a80f5459e1a19d14976b389dd9be7",
+      "file": "0017-server_to_client-room.snapshot.pb",
+      "sequence": 17,
+      "request_id": "f77372fe1e4121977c5a25d64453b054"
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23191120,
+      "kind": "room.snapshot",
+      "direction": "server_to_client",
+      "connection": 3,
+      "ordinal": 18,
+      "bytes": 882,
+      "sha256": "1716f7d8e14e3a82abee79d974d2388da9fd9edceeb41ee6e27027bd1a1dad63",
+      "file": "0018-server_to_client-room.snapshot.pb",
+      "sequence": 18,
+      "request_id": "ba7088425a9f53f1108948e1c4a202fd"
+    },
+    {
+      "event": "websocket_connected",
+      "at_monotonic_ms": 23192265,
+      "connection": 4
+    },
+    {
+      "event": "frame_forwarded",
+      "at_monotonic_ms": 23192266,
+      "kind": "session.connected",
+      "direction": "server_to_client",
+      "connection": 4,
+      "ordinal": 19,
+      "bytes": 138,
+      "sha256": "7d31a05b53356cdd911f3e8d0afa5c8d34132ad56751f36f32e9e3a0682035da",
+      "file": "0019-server_to_client-session.connected.pb",
+      "sequence": 21,
+      "request_id": ""
+    },
+    {
+      "event": "proxy_stopped",
+      "at_monotonic_ms": 23193175,
+      "remaining_connections": 0,
+      "synthetic_envelopes": 0
+    }
+  ],
+  "command_exit_code": 0
+}

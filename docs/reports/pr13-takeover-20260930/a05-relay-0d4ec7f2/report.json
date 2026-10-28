@@ -1,0 +1,316 @@
+{
+  "task_id": "A05-relay-transport",
+  "stage": "S5 complete; S6 MAIN pending",
+  "integration_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+  "config_source_hash": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+  "config_bytes_hash": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+  "effective_room_policy": {
+    "config_version": "gdd-0.70-numerical-1",
+    "actual_client_server_bytes_equal": true,
+    "attempt_timeout_ms": 10000,
+    "logical_timeout_ms": 30000,
+    "cleanup_timeout_ms": 22000,
+    "bot_fill_ms": 30000,
+    "fixture_deadline_seconds": 180,
+    "match_seed": 73,
+    "room_origin": "original seeded Running room input; actual extraction through production GameStore/Program",
+    "hero": "Mage",
+    "saved_phase": "ActionBar at generated evacuation",
+    "gold_fixture": 23,
+    "potions_fixture": 2
+  },
+  "runtime_image_digest": null,
+  "profile_hash": "96bce82c613695025cd28ecc8db257222af034450a910d4875fdeb3cc18e48b9",
+  "algorithm_version": "A05-relay-transport-check/1",
+  "case_ids": [
+    "PR13-A05.1-T01",
+    "PR13-A05.1-T02",
+    "PR13-A05.3-T01"
+  ],
+  "expected": "retain original Unix actual transaction assertions; support owned TCP loopback and pass both modes without deadline/skip changes",
+  "actual": {
+    "red_ci": "red-ci-provenance.json",
+    "results": [
+      {
+        "profile": "green-unix",
+        "transport": "Unix",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "exit_code": 0,
+        "elapsed_seconds": 29.95193220499641,
+        "trx": "green-unix/unix.trx"
+      },
+      {
+        "profile": "green-tcp",
+        "transport": "Tcp",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "exit_code": 0,
+        "elapsed_seconds": 37.38189477499691,
+        "trx": "green-tcp/tcp.trx"
+      }
+    ],
+    "cases": "cases.jsonl",
+    "asset_summary": [
+      {
+        "profile": "green-unix",
+        "transport": "Unix",
+        "mode": "committed-response-loss",
+        "canonical": "PR13-A05.1-T02",
+        "status": "Passed",
+        "original_deadline_seconds": 180,
+        "fault_drops": 1,
+        "receipts_at_fault": 1,
+        "godot_exit_code": 0,
+        "original_client_checks_passed": true,
+        "same_ACK_repeats": 3,
+        "same_ACK_response_bytes_equal": true,
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "acknowledged_settlements": 1,
+        "committed_holds": 4,
+        "final_readonly_audit": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "profile": "green-unix",
+        "transport": "Unix",
+        "mode": "precommit",
+        "canonical": "PR13-A05.1-T01",
+        "status": "Passed",
+        "original_deadline_seconds": 180,
+        "fault_drops": 2,
+        "receipts_at_fault": 0,
+        "godot_exit_code": 0,
+        "original_client_checks_passed": true,
+        "same_ACK_repeats": 3,
+        "same_ACK_response_bytes_equal": true,
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "acknowledged_settlements": 1,
+        "committed_holds": 4,
+        "final_readonly_audit": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "profile": "green-tcp",
+        "transport": "Tcp",
+        "mode": "committed-response-loss",
+        "canonical": "PR13-A05.1-T02",
+        "status": "Passed",
+        "original_deadline_seconds": 180,
+        "fault_drops": 1,
+        "receipts_at_fault": 1,
+        "godot_exit_code": 0,
+        "original_client_checks_passed": true,
+        "same_ACK_repeats": 3,
+        "same_ACK_response_bytes_equal": true,
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "acknowledged_settlements": 1,
+        "committed_holds": 4,
+        "final_readonly_audit": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "profile": "green-tcp",
+        "transport": "Tcp",
+        "mode": "precommit",
+        "canonical": "PR13-A05.1-T01",
+        "status": "Passed",
+        "original_deadline_seconds": 180,
+        "fault_drops": 4,
+        "receipts_at_fault": 0,
+        "godot_exit_code": 0,
+        "original_client_checks_passed": true,
+        "same_ACK_repeats": 3,
+        "same_ACK_response_bytes_equal": true,
+        "after": {
+          "Gold": 23,
+          "Potions": 2,
+          "Location": "Equipped",
+          "GoldLedger": 1,
+          "Movements": 1
+        },
+        "acknowledged_settlements": 1,
+        "committed_holds": 4,
+        "final_readonly_audit": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      }
+    ],
+    "source_bytes": "967 exact fixed objects",
+    "fresh_build_bytes": "167 original/preserved matches"
+  },
+  "status": "VerifiedFixtureFix; Ready proposal for parent review, not Accepted",
+  "sample_population": {
+    "transports": 2,
+    "modes": 2,
+    "configuration_cases": 4,
+    "canonical_transaction_cases": 2,
+    "derived_ACK_case_also": "PR13-A05.3-T01"
+  },
+  "cutoff_monotonic": {
+    "unit": "ns",
+    "command_windows": {
+      "green-unix-focused2": {
+        "start": 44191088690209,
+        "exit": 44221042162566
+      },
+      "green-tcp-focused2": {
+        "start": 44266189683456,
+        "exit": 44303572941976
+      }
+    },
+    "case": null,
+    "final_cleanup": 44921141923746
+  },
+  "window_or_drain_or_final": "fault-observed, release/recovery, committed-mode OS restart, ACK and 3 repeated ACKs, final READONLY audit, all owned cleanup",
+  "commands": "commands.json",
+  "tool_versions": {
+    "python": "Python 3.12.14",
+    "dotnet_sdk": "10.0.400",
+    "godot": "4.7.2.stable.official.ed1daf0bf",
+    "postgres": "postgres (PostgreSQL) 18.6",
+    "dotnet_runtimes": "Microsoft.AspNetCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.AspNetCore.App]\nMicrosoft.NETCore.App 10.0.11 [/workspace/relicround-env/dotnet/usr/share/dotnet/shared/Microsoft.NETCore.App]"
+  },
+  "exit_codes": {
+    "pg-init": 0,
+    "pg-start": 0,
+    "pg-createdb": 0,
+    "fresh-green-build": 0,
+    "pg-policy-unix": 0,
+    "pg-policy-tcp": 0,
+    "green-unix-focused2": 0,
+    "green-tcp-focused2": 0,
+    "pg-final-readonly": 0,
+    "pg-stop": 0,
+    "pg-status-after-stop": 3
+  },
+  "skip_reasons": [],
+  "asset_and_route_postconditions": {
+    "raw_per_case": "cases.jsonl",
+    "final_audits": [
+      {
+        "path": "green-unix/a05-audit-db-committed-response-loss-after.json",
+        "transaction": "READ ONLY; rollback; no mutation",
+        "requireClear": true,
+        "counts": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "path": "green-unix/a05-audit-db-precommit-after.json",
+        "transaction": "READ ONLY; rollback; no mutation",
+        "requireClear": true,
+        "counts": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "path": "green-tcp/a05-audit-db-committed-response-loss-after.json",
+        "transaction": "READ ONLY; rollback; no mutation",
+        "requireClear": true,
+        "counts": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      },
+      {
+        "path": "green-tcp/a05-audit-db-precommit-after.json",
+        "transaction": "READ ONLY; rollback; no mutation",
+        "requireClear": true,
+        "counts": {
+          "ledger_chain_mismatches": 0,
+          "wallet_gold_mismatches": 0,
+          "pending_holds": 0,
+          "active_preparations": 0,
+          "queued_tickets": 0,
+          "unacknowledged_settlements": 0,
+          "unfinished_matches": 0,
+          "locked_equipment": 0
+        }
+      }
+    ],
+    "scope": "original actual transaction fixture assets/receipt. No next prepare/cancel or full Boss/three-route claim."
+  },
+  "artifact_manifest": "manifest.json",
+  "reviewer": null,
+  "rollback": "single test-relay commit 0d4ec7f2 can be reverted by root; original evidence retained",
+  "remaining_blockers": [
+    "MAIN independent S6 acceptance / parent CI rerun outside this child task"
+  ],
+  "missing_reasons": {
+    "runtime_image_digest": "actual local Program/Godot processes, no image used",
+    "cutoff_monotonic.case": "original case receipts are UTC/order; command monotonic clocks preserved",
+    "reviewer": "MAIN S6 pending; child cannot sign Accepted"
+  }
+}

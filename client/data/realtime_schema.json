@@ -1,5 +1,5 @@
 {
-  "sha256": "a50b3da25658a3d2febda736bba7f2a29d5913c1bbe6e54c11746fbd55a04cd3",
+  "sha256": "73f2c9b5e761a282604abe909324adfa72d6e037648c3aaa1bc3b6c05f8cd9f2",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -29,6 +29,18 @@
       "5": {
         "name": "payload",
         "type": "bytes",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "match_id",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -709,6 +721,30 @@
         "type": "RoomBattleStatus",
         "repeated": false,
         "optional": false
+      },
+      "12": {
+        "name": "opponent_stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "opponent_draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "separate_loot",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "searchable_loot",
+        "type": "RoomInventoryItem",
+        "repeated": true,
+        "optional": false
       }
     },
     "RoomCurrentCell": {
@@ -827,6 +863,48 @@
         "type": "RoomBattleStatus",
         "repeated": false,
         "optional": false
+      },
+      "15": {
+        "name": "stun_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "draw_block_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "draw_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "draw_block_speed_remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "19": {
+        "name": "base_draw_interval_seconds",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "20": {
+        "name": "monster_pool",
+        "type": "RoomMonsterPool",
+        "repeated": false,
+        "optional": false
+      },
+      "21": {
+        "name": "numerical_state",
+        "type": "RoomNumericalState",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomSnapshotEvent": {
@@ -918,6 +996,12 @@
         "name": "allowed_actions",
         "type": "string",
         "repeated": true,
+        "optional": false
+      },
+      "16": {
+        "name": "map_player_count",
+        "type": "int32",
+        "repeated": false,
         "optional": false
       }
     },
@@ -1139,6 +1223,24 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "24": {
+        "name": "resonance_multiplier",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "25": {
+        "name": "conflict_pair_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "26": {
+        "name": "conflict_cancellation",
+        "type": "string",
+        "repeated": false,
+        "optional": false
       }
     },
     "CombatDamageSegment": {
@@ -1347,6 +1449,18 @@
       "2": {
         "name": "remaining_ms",
         "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "match_id",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -1766,6 +1880,112 @@
       "3": {
         "name": "duel_id",
         "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomCommandCancelledEvent": {
+      "1": {
+        "name": "room_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "match_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "command_type",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "reason",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MapPlayerCountEvent": {
+      "1": {
+        "name": "player_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MonsterCardChooseCommand": {
+      "1": {
+        "name": "candidate_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "accept",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "replace_instance_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomMonsterPool": {
+      "1": {
+        "name": "capacity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "pending",
+        "type": "RoomCard",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "active",
+        "type": "RoomCard",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "RoomNumericalState": {
+      "1": {
+        "name": "fenxian_policy",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "guardian_policy",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "guardian_remainder_tenths",
+        "type": "int32",
         "repeated": false,
         "optional": false
       }

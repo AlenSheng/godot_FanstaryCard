@@ -1,0 +1,462 @@
+{
+  "date": "2026-10-27",
+  "kind": "Read-only remaining acceptance audit; no execution queue",
+  "current_round_user_acceptance": "Passed_and_closed_over300_actual356_with_verified_native50",
+  "current_round_blocking_tasks": [],
+  "automatic100_retest": false,
+  "no_tests_started": true,
+  "source_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-A094-current-whole-adjudication-accepted-20261024/register.json",
+    "git_commit": "0fbf2002dce254d226fa3117f63644a5f2b8948b",
+    "git_blob_sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8",
+    "current_root_canonical_equal_git": true,
+    "immutable": true
+  },
+  "original_132_task_counts": {
+    "Accepted": 111,
+    "Partial": 20,
+    "ReadyForAcceptance": 1
+  },
+  "not_accepted_task_count": 21,
+  "failed_task_state_count": 0,
+  "remaining_profile_pair_counts": {
+    "CAPACITY": 36,
+    "LIVE": 2,
+    "POSTGRES": 7,
+    "AUDIT": 1
+  },
+  "original_gates": [
+    {
+      "id": "G0",
+      "name": "来源、范围与基线",
+      "state": "NotAccepted"
+    },
+    {
+      "id": "G1",
+      "name": "离线、进程与合同",
+      "state": "NotAccepted"
+    },
+    {
+      "id": "G2",
+      "name": "玩法闭环和资产/战斗合同",
+      "state": "NotAccepted"
+    },
+    {
+      "id": "G3",
+      "name": "观测、历史和体验对账",
+      "state": "NotAccepted"
+    },
+    {
+      "id": "G4",
+      "name": "传输收益、原容量、候选体验",
+      "state": "NotAccepted"
+    },
+    {
+      "id": "G5",
+      "name": "当前证据、源配置和回滚交付",
+      "state": "NotAccepted"
+    }
+  ],
+  "groups": [
+    {
+      "title": "容量及严格性能层（12项，旧口径缺层保留，本轮不再补测）",
+      "task_ids": [
+        "LOAD-10.1",
+        "LOAD-10.2",
+        "LOAD-10.3",
+        "LOAD-10.4",
+        "PR13-A02.1",
+        "PR13-A02.2",
+        "PR13-A02.3",
+        "PR13-A02.4",
+        "PR13-A10.1",
+        "PR13-A10.2",
+        "PR13-A10.3",
+        "PR13-A10.4"
+      ]
+    },
+    {
+      "title": "原件、来源与全量脱敏（3项）",
+      "task_ids": [
+        "LOAD-11.2",
+        "PR13-A01.3",
+        "PR13-A08.1"
+      ]
+    },
+    {
+      "title": "真实fork验证（1项）",
+      "task_ids": [
+        "PR13-A07.3"
+      ]
+    },
+    {
+      "title": "依赖与全量最终裁决（5项）",
+      "task_ids": [
+        "PR13-A08.4",
+        "PR13-B12.1",
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-B12.4"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "LOAD-10.1",
+      "title": "独立离线/协议套件",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.1-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "集成SHA适用测试真实执行，原断言不删除放宽，跳过清单逐项解释。",
+      "historical_next_action_not_authorization": "T01协议、T02完整审计文件故障、T03原生关键环境跳过的当前LIVE/POSTGRES支持已齐。T03同一方法正常PG环境Passed/native0/门禁0 ReadyForMainReview；只移除testPG环境后NotExecuted/native0，真实CLI门禁3 Blocked，不把Skip当Pass。新增CLI复用原函数、5个进程边界回归通过；不能称全suite/CI通过。整项仍Partial：T01/T02/T03各余CAPACITY，需容量资源/相同来源运行层证明，不能由4人/零玩法门禁推断。"
+    },
+    {
+      "task_id": "LOAD-10.2",
+      "title": "真实同账号三局",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.2-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "每局匹配/settlement/ack可关联且DB资产一次；30局目标缺一正常终态即不能称全通过。",
+      "historical_next_action_not_authorization": "当前源码原10账号×3正常周期已严格通过：30normal/唯一ACK、3撤离27自然死亡、17世界，55975事件11段连续；12资产hold/账本与余额版本精确一致，10Native业务errors0/OS0/cleanupPassed/退出资源告警0，音频关闭等待162–165ms。当前负载驱动退出缺陷Closed；旧R1/R2失败不改，历史未知类名不倒填。旧一次PvE→PvP在途拒绝按匹配源码/实际权威状态解释为NoChangeWithEvidence，不修改业务或放宽本轮规则。整项仍Partial：三个CAPACITY层级未补，依赖/全局门仍未通过；停止重复本30已通过用例，继续其他未验收故障/容量项。"
+    },
+    {
+      "task_id": "LOAD-10.3",
+      "title": "全链路故障用例",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.3-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T02": [
+          "CAPACITY"
+        ],
+        "LOAD-10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "故障矩阵逐行有实际值，组合失败不被正常三局掩盖。",
+      "historical_next_action_not_authorization": "T01/T02/T03功能LIVE/POSTGRES故障证据已闭合，T03当前12等待点及READY晚入局/MOVE在途补充已逐项核对。整项仍Partial，三个CAPACITY profile按用户仅当前云主机/资源不足不通过保留；不再重复功能矩阵，继续其他可执行未验收项。"
+    },
+    {
+      "task_id": "LOAD-10.4",
+      "title": "同负载性能与保持",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "LOAD-10.4-T01": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T02": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ],
+        "LOAD-10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "有界退出与性能/SLO分别判定，默认限流和临时覆盖结果分列，原停止线保留。",
+      "historical_next_action_not_authorization": "T03默认单IP429的LIVE功能层已由12真实原生/默认Auth10/60秒/原协调器3且不通过验证；按记录的临时沙箱磁盘4.9%→4.8%修订条件限定闭合，原资源条件未通过与所有失败维度保留。真实HTTP429为5次(认证2)，含对应终态共10条(认证4)，不重复计数。T01/T02原100/50同负载与全部CAPACITY仍缺，不把限流或提前退出当容量/收益。"
+    },
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {},
+      "pass_criteria": "可重算资料来源完整，Git仅脱敏摘要，历史字节不被新报告覆盖。",
+      "historical_next_action_not_authorization": "全仓公开文本与文件身份首轮已采集（21122/11650），16命中逐内容hash分类，不能把权限元数据/源表达式/受控fixture当生产凭据。继续ignored/private/G/H/嵌套归档来源与全部原始→派生父关系，补本次发布新增文件delta；严格公共导出仍拒绝credential-like原片段，未授予全量脱敏通过。"
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A01.3-T02": [
+          "AUDIT"
+        ]
+      },
+      "pass_criteria": "两处总数差异和旧失败表均有可审查映射；未能解释则G3仍Blocked。",
+      "historical_next_action_not_authorization": "需要两个原始历史运行的匹配资料才能逐client/cycle/event解释86/90和130/139；实际52采样进程/最终77检查已映射，STOP精确因果未知不补造。继续其他可执行项。"
+    },
+    {
+      "task_id": "PR13-A02.1",
+      "title": "负载模型预登记",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.1-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "合同在运行前hash冻结，测后不能根据结果降低目标；目标与观测用同窗口。",
+      "historical_next_action_not_authorization": "T03采样断档POSTGRES已用真实双客户端/PG与原协调器SIGSTOP26秒闭合；实际26.531秒Unknown保留在120秒分母内，73.572秒累计不等于63.547秒连续，原进程3且不通过。T01/T02显式100/50条件与全部CAPACITY仍缺，按当前主机限制保留，不以本次2人负例代替容量。"
+    },
+    {
+      "task_id": "PR13-A02.2",
+      "title": "时间覆盖验收函数",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.2-T01": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T02": [
+          "CAPACITY",
+          "POSTGRES"
+        ],
+        "PR13-A02.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "覆盖率分母含全部声明稳定时长，实际负载下降可见；exit0不推出容量通过。",
+      "historical_next_action_not_authorization": "T03采样断档POSTGRES已用真实双客户端/PG与原协调器SIGSTOP26秒闭合；实际26.531秒Unknown保留在120秒分母内，73.572秒累计不等于63.547秒连续，原进程3且不通过。T01/T02显式100/50条件与全部CAPACITY仍缺，按当前主机限制保留，不以本次2人负例代替容量。"
+    },
+    {
+      "task_id": "PR13-A02.3",
+      "title": "STOP尾部证据",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "最后一窗之后的事件亦守恒，先前错误不被stop_all成功抹去。",
+      "historical_next_action_not_authorization": "三个STOP故障的POSTGRES层已由原完整协调器、实际原生客户端和真实PG补齐：正常对照0；损坏最终JSON/STOP后真实exit7/缺末尾审计行均原3且不通过，结算ACK8及资产一致。R1外层字段错误与R2磁盘拦截原件保留，原对照只复用不重跑。整项仍Partial，三个CAPACITY按仅当前主机/资源不足保留未通过；继续其他缺口。"
+    },
+    {
+      "task_id": "PR13-A02.4",
+      "title": "服务端后置清理",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A02.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A02.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "每测试账号有业务后置报告，无route错误残留和无界冻结；无法验证为Blocked。",
+      "historical_next_action_not_authorization": "grace内查询取消/超时回收和待结算恢复；进程结束与业务资源状态单独签署"
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A07.3-T02": [
+          "POSTGRES"
+        ]
+      },
+      "pass_criteria": "能证明哪些用例在当前SHA运行，不能只用工作流绿色徽标替代清单。",
+      "historical_next_action_not_authorization": "T01 actual READY-only push triggered hosted PG execution and real numerical9 at745; current1cf full418/0skip separately verified. Only T02 POSTGRES actual fork-PR execution proof remains missing. Keep T02 and whole A073 Partial; current hosted runners now work, previous4a prestart/billing annotation is historical."
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "state": "ReadyForAcceptance",
+      "missing_cases": [],
+      "missing_case_profiles": {},
+      "pass_criteria": "每历史与新run有完整source/config/image关系，不靠部署marker替代内容证据。",
+      "historical_next_action_not_authorization": "六组大报告的服务端程序集/镜像/嵌入包层已关联并分级；继续其他运行组、压缩包/远端血缘及真实编译源关联。Group1原运行时overlay哈希未记录、四个editor原引擎哈希及删除历史原件仍缺；嵌入包不等于环境/room策略覆盖。A08.1继续Ready，A08.2/A08.3不自动接受。"
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A08.4-T01": [],
+        "PR13-A08.4-T02": [],
+        "PR13-A08.4-T03": []
+      },
+      "pass_criteria": "文档事实与版本可核对，未合并/未启用不伪称上线完成。",
+      "historical_next_action_not_authorization": "自身OFFLINE/POSTGRES/AUDIT案例层已闭合；当前A08.3已Accepted，B12.4仍Partial。本项整项来源/依赖与证据范围尚需独立MAIN裁决，保持Partial；不重复已闭合案例冒充历史来源或容量恢复。"
+    },
+    {
+      "task_id": "PR13-A10.1",
+      "title": "三组成对A/B预登记",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.1-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.1-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "三对均有实际负载和完整结果，不能选择性删红线/失败配对。",
+      "historical_next_action_not_authorization": "AB/BA顺序交错至少三对，固定warmup/hold/drain/拒绝标准；收益目标先冻结"
+    },
+    {
+      "task_id": "PR13-A10.2",
+      "title": "默认限流建立负载",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.2-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.2-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "默认限流保持，50/100各独立声明目标与覆盖；临时覆盖不替代默认容量。",
+      "historical_next_action_not_authorization": "合法多发压源或预登录/渐进启动，记录各IP持续写/读率；无法建立目标直接Blocked"
+    },
+    {
+      "task_id": "PR13-A10.3",
+      "title": "长期资源回收",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.3-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.3-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "无未解释单调资源增长或业务遗留；时长/目标预登记，30分钟不冒称无限稳定。",
+      "historical_next_action_not_authorization": "先30分钟稳定观察再明确预算的浸泡；资源斜率/GC后水位/每已完成局回收及drain核查"
+    },
+    {
+      "task_id": "PR13-A10.4",
+      "title": "性能收益和容量裁决",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-A10.4-T01": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T02": [
+          "CAPACITY"
+        ],
+        "PR13-A10.4-T03": [
+          "CAPACITY"
+        ]
+      },
+      "pass_criteria": "G4分别给传输收益/原profile容量/候选玩法结果，不用单个exit0代替所有结论。",
+      "historical_next_action_not_authorization": "Resolve generator memory feasibility and actual transition/rejection evidence; then rerun original 50/100 targets under preregistered North America latency and 500 MB policy. Do not reduce client fidelity or infer 100 capacity from the partial ramp."
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-B12.1-T01": [],
+        "PR13-B12.1-T02": [],
+        "PR13-B12.1-T03": []
+      },
+      "pass_criteria": "code/config/evidence对应同一确定运行输入；candidate标签不能代替有效策略。",
+      "historical_next_action_not_authorization": "三个案例全部显式缺层已补齐，A08.1来源前置尚未Accepted，B12.1保持Partial；不能把本次当前源/数据反例替代A08.1全历史服务器版本重建证据。继续B12.2/B12.4其余实验/PG/渲染层及A08/A09等独立缺口。"
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-B12.2-T01": [],
+        "PR13-B12.2-T02": [],
+        "PR13-B12.2-T03": []
+      },
+      "pass_criteria": "当前SHA全部适用层实际执行；每候选有范围/分母/失败/区间，不用历史load CI替代。",
+      "historical_next_action_not_authorization": "三个反例的显式机器缺层均已补齐，真人按用户要求不在范围，不能声称真人通过。B12.1/A07.4等集成前置和全局来源/容量仍未Accepted，本项保持Partial；不得把反例分类通过提升为候选收益、全组合或正式激活。继续B12.4及A08/A09独立缺口。"
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-B12.3-T01": [],
+        "PR13-B12.3-T02": [],
+        "PR13-B12.3-T03": []
+      },
+      "pass_criteria": "源/生成物hash链完整，价格/drop/冻结候选启用须独立决策；资产不倒灌。",
+      "historical_next_action_not_authorization": "T01/T02/T03全部显式缺层已闭合；B12.1前置仍未Accepted，B12.3保持Partial。继续B12.1来源冻结、同版本异bytes、标on实off的EXPERIMENT/RENDER，不能用本次候选flags拒绝证明不同的来源反例。"
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "state": "Partial",
+      "missing_cases": [],
+      "missing_case_profiles": {
+        "PR13-B12.4-T01": [],
+        "PR13-B12.4-T02": [],
+        "PR13-B12.4-T03": []
+      },
+      "pass_criteria": "132细项有清楚证据/裁决/风险，未启用不写上线，合并仍由用户决定。",
+      "historical_next_action_not_authorization": "本项三个反例剩余8个机器层已补齐，全部自身缺层空；B12.2/B12.3/A10.4等前置仍未Accepted，整项保持Partial。现有云主机资源不足的原容量继续未通过；完整方案未执行为Queued，未解释账差为Blocked。继续A08/A09来源与正式运行链缺口，不把本轮反例通过提升为整体或候选收益通过。"
+    }
+  ],
+  "current_technical_boundaries": {
+    "native100": "GeneratorLimited_NoValid100Window_NotServerFailureProven;waived_no_retest",
+    "default1200s_duration": "NotPassed_1of30_max1600.528s;normal_functional2400s_passed",
+    "default_strict_capacity_latency": "Not_promoted;native50_registered_revised5s8s_profile_passed",
+    "candidate_optimization_benefit": "Inconclusive_9independent_seed_clusters_no15percent_tail_proof;candidate_not_enabled",
+    "historical_missing_originals": "NotRecovered;new_epoch_does_not_replace_old86_90_130_139",
+    "actual_fork": "NotExecuted_no_environment",
+    "legacy_ledger_anomaly": "Retained_without_asset_or_ledger_correction",
+    "old_proxy_template_purpose": "StillUnresolved"
+  },
+  "interpretation": "21 non-Accepted historical whole tasks are not 21 newly found product bugs. Latest user-scoped round is accepted by explicit agreement; historical gates and missing layers stay recorded without automatic execution.",
+  "created_at": "2026-10-27T11:47:07.611574+08:00"
+}

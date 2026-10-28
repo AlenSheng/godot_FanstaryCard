@@ -1,0 +1,124 @@
+{
+  "kind": "MAINIndependentEndpointCensorFallbackThreeCaseReview",
+  "all_three_cases_passed": true,
+  "cases": [
+    {
+      "case_id": "PR13-B01.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "raw_starts": 108,
+        "actual_censored_at60s": 68,
+        "zero_completed_TTK_substitutions": 0,
+        "all_outcomes_retained": {
+          "Victory": 40,
+          "Censored": 68
+        }
+      },
+      "scope": "Postcollection current production report helper on immutable actual experiment rows; no new scenes or strength conclusion"
+    },
+    {
+      "case_id": "PR13-B01.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "strata": 18,
+        "raw_per_stratum": 6,
+        "seed_clusters_per_stratum": 3,
+        "P99_all_Unknown": true,
+        "population_tail_floor": 3000
+      },
+      "scope": "Actual immutable stratum rows and production tail gate; repeated seeds not independent, no budget/precision equivalence claim"
+    },
+    {
+      "case_id": "PR13-B01.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "real_effective_age_ms_at_fallback": 60013,
+        "real_communication_samples": 56,
+        "actual_abandon_request_id": "0fc196950dbb70792053a7319319790e",
+        "authoritative_phase": "Dead",
+        "classified_endpoint": "ScriptFallback",
+        "normal_victories": 0,
+        "normal_completed_cycles": 0,
+        "causal_stagnation_censoring_independent": false,
+        "same_actual_shared_producer_method_used_by_main_loop": true
+      },
+      "scope": "One actual currentEngine/officialcodec/currentnative real60s monotonic fallback experiment with declared frozen authority clock and withheld ordinary decisions. No fullProgram/auth/PG/LIVE/capacity/natural claim."
+    }
+  ],
+  "started_ledger_components": [
+    {
+      "study": "currentactualDomain108immutable",
+      "starts": 108,
+      "normalVictory": 40,
+      "CensoredAt60s": 68,
+      "Death": 0,
+      "Error": 0,
+      "active_unknown": 0
+    },
+    {
+      "study": "actualreal60sScriptFallbackBoundary",
+      "starts": 1,
+      "ScriptFallback": 1,
+      "normalVictory": 0,
+      "active_unknown": 0
+    }
+  ],
+  "combined_accounting_count_only_not_a_pooled_latency_population": 109,
+  "classification_conservation": true,
+  "raw_source_contexts_kept_separate": true,
+  "observed_duration_never_replaced_with_zero_or_completed_TTK": true,
+  "actual_fallback_age_ms": 60013,
+  "actual_fallback_normal_wins": 0,
+  "fallback_is_informative_script_termination_not_independent_random_censoring": true,
+  "small_N_P99_allUnknown": true,
+  "old108_encounters_not_rerun": true,
+  "new_encounters": 1,
+  "current_driver_extraction": {
+    "path": "client/tests/gameplay_load_client.gd",
+    "before_sha256": "d07fd64c351a3ab7eb06359b262e7b9c4e506a1405aedfa2abc0c6e9d70741dd",
+    "after_sha256": "0b2237d5a00a944e10b66868436a601efc4f1aa17a8bfa30e80cce9c92d0cf57",
+    "logic_preserved": [
+      "cyclic-gameplay profile only",
+      "allowed abandon",
+      "strictly more than60000ms since real effective progress",
+      "same actual Game.command",
+      "samewait/continue if permitted send fails"
+    ],
+    "metadata_added": "Freeze actual battle and original common context on fallback event",
+    "gameplay_formulas_changed": false
+  },
+  "threshold_or_gameplay_formulas_changed": false,
+  "fallback_origin_config_version_limit": "Boundary fixture omits normal bootstrap lobby; empty config_version preserved as raw,not used as new full-context evidence. Actual config version is in authority info; this case verifies endpoint/cause linkage.",
+  "scope_limits": [
+    "Declared decision-layer stall with frozen authoritative game clock; real communication and real client60s watchdog clock. Not an assertion that normal autonomous gameplay stalls naturally.",
+    "Actual Domain abandonment is confirmed after the request,then summary classified ScriptFallback; no ACK/settlement or fullProgram/persistence claim.",
+    "108 prior synthetic encounters and one real-time boundary scenario have different clock domains/profiles; only accounting identities combined,never pooled for SLO/TTK.",
+    "Prior18strata raw6/3seedclusters do not satisfy populationP99 floor3000. Casepasses rejection behavior,not precision."
+  ],
+  "owned_native_and_authority_processes_terminal": true,
+  "source_upload_bytes": 0,
+  "pointer_sha256": "46b6976e0706419df58c63fe9a574755dcca9ba70a6378c45f8bfb0e46ce08c9",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-progress-metric-two-tasks-main-reviewed-20261017/register.json",
+    "sha256": "79835c8b130e02e5eabc6c9be03e61619b908d2fc6f77c411721ad6463e40240"
+  },
+  "raw_hashes": {
+    "native": "587faee887a12341d4e39633573ac8b8ace9624b4c38da50004e9a11f2c9ab2f",
+    "authority": "e350fa621d9c6721e92924ff9d0b4242ffc33f9725a02f63e983c8b4491bff3e",
+    "audit": "94be35fb1a17ba1f4deb1835be0982b1aae4355bd416d0660727f990233905ab",
+    "old_actual_encounters": "7b6d9b2638a5bd506c3ad7b7b0eeea96130b13c2e06bce34e40fc585e32d2075",
+    "current_driver": "0b2237d5a00a944e10b66868436a601efc4f1aa17a8bfa30e80cce9c92d0cf57"
+  }
+}

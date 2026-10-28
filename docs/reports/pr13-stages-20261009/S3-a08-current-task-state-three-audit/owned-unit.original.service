@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 actual task-state audit
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/A08-task-state-audit-r1-20261012/outer.original.py
+RuntimeMaxSec=240
+Restart=no

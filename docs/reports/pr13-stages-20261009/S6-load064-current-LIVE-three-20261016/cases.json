@@ -1,0 +1,100 @@
+[
+  {
+    "case_id": "LOAD-06.4-T01",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "LIVE"
+    ],
+    "setup": "本地单调钟测耗时",
+    "expected": "正确非负",
+    "actual": {
+      "actual_HTTP_rows": 98,
+      "min_duration_ms": 317,
+      "max_duration_ms": 1802,
+      "ordered_monotonic_event_prefixes": true,
+      "source_uses_GetTicks_not_cross_host_UTC": true,
+      "logical_duration_covers_own_actual_attempts": true,
+      "external_curl_or_cloud_health_not_merged": true
+    },
+    "scope": "Actual Windows native public HTTPS login/ticket telemetry from running owned study; no completed natural-cycle or capacity claim.",
+    "evidence": [
+      "actual-public-telemetry-summary.json"
+    ]
+  },
+  {
+    "case_id": "LOAD-06.4-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "LIVE"
+    ],
+    "setup": "无TLS阶段hook",
+    "expected": "null+unavailable",
+    "actual": {
+      "actual_transport_phase_summary": {
+        "dns_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        },
+        "tcp_connect_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        },
+        "tls_handshake_ms": {
+          "count": 0,
+          "p95_ms": null,
+          "quality": "unavailable",
+          "missing_reason": "No attributable local request phase hook in supplied audit"
+        }
+      },
+      "total_request_duration_not_substituted_for_TLS_DNS_TCP": true
+    },
+    "scope": "Current production aggregation of exact actual native public HTTPS request attempts with no phase hooks; unknown transport stages explicitly unavailable.",
+    "evidence": [
+      "actual-public-telemetry-summary.json"
+    ]
+  },
+  {
+    "case_id": "LOAD-06.4-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "LIVE"
+    ],
+    "setup": "token/票据正文",
+    "expected": "脱敏审查拒绝入报告",
+    "actual": {
+      "actual_login_and_ticket_telemetry_passed_public_guard": true,
+      "raw_auth_or_ticket_response_bodies_logged": false,
+      "sensitive_candidate_rejections": [
+        {
+          "controlled_candidate": 1,
+          "rejected": true,
+          "error_excludes_value": true,
+          "actual_credential_read_or_network_injection": false
+        },
+        {
+          "controlled_candidate": 2,
+          "rejected": true,
+          "error_excludes_value": true,
+          "actual_credential_read_or_network_injection": false
+        },
+        {
+          "controlled_candidate": 3,
+          "rejected": true,
+          "error_excludes_value": true,
+          "actual_credential_read_or_network_injection": false
+        }
+      ]
+    },
+    "scope": "Actual LIVE login/ticket report-output integration plus declared synthetic sensitive-field rejection at the existing report guard; no real credential read and no network-body injection claim.",
+    "evidence": [
+      "actual-public-telemetry-summary.json"
+    ]
+  }
+]

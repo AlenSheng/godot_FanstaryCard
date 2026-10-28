@@ -1,0 +1,131 @@
+{
+  "schema_version": 4,
+  "at": 100030.0,
+  "sample_monotonic_ms": 30000.0,
+  "run_id": "9c68339122e244f59263e5dbed3680c1",
+  "groups": 1,
+  "clients": 1,
+  "alive_processes": 1,
+  "fresh_status_clients": 1,
+  "online": 1,
+  "in_room": 1,
+  "room_state_clients": 1,
+  "active_in_room": 1,
+  "server_confirmed_in_room": null,
+  "invalid_schema_count": 0,
+  "failed_processes": [],
+  "stale_clients": [],
+  "stalled_clients": [],
+  "missing_clients": [],
+  "invalid_clients": [],
+  "workload_failure": false,
+  "server_count_scope": "all registered non-bot active player routes on this server; no per-run labels",
+  "command_rate": 2.0,
+  "command_rate_clock": "local_monotonic",
+  "completed_cycles": 0,
+  "invalid_status_files": 0,
+  "status_read_errors": [],
+  "generator": {
+    "available": true,
+    "host_memory_available_bytes": 3221225472
+  },
+  "observed_interval_seconds": 10.0,
+  "scheduled_at": 100030.0,
+  "sample_schedule_lag_ms": 0.0,
+  "sample_collection_ms": 0.0,
+  "window": {
+    "http": {
+      "count": 0
+    },
+    "steady_http": {
+      "count": 0
+    },
+    "cancelled_http": {
+      "count": 0
+    },
+    "realtime": {
+      "count": 20,
+      "min_ms": 1,
+      "mean_ms": 1,
+      "max_ms": 1,
+      "p50_ms": 1,
+      "p95_ms": 1,
+      "p99_ms": 1
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {},
+    "route_http": {},
+    "observed_window_seconds": 10.0,
+    "logical_requests_per_second": 0.0,
+    "completed_requests_per_second": 0.0,
+    "throughput_missing_reason": null,
+    "logical_result_counts": {},
+    "error_count": 0,
+    "sample_count": 0,
+    "logical_request_count": 0,
+    "cancelled_count": 0,
+    "all_attempt_count": null,
+    "attempt_coverage": "unavailable",
+    "attempt_result_counts": {},
+    "valid_attempt_latency_count": 0,
+    "transport_phase_timings": {
+      "dns_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tcp_connect_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tls_handshake_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      }
+    },
+    "valid_latency_count": 0,
+    "latency_sample_quality": {
+      "http": "unavailable",
+      "realtime": "sufficient_for_diagnostic_rule"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 0,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels",
+    "lost_event_count": 0,
+    "audit_lost_count": 0,
+    "command_rejections": 0,
+    "command_error_rate": 0.0
+  },
+  "health": {
+    "ok": true,
+    "duration_ms": 1,
+    "status": 200
+  },
+  "resources": {
+    "cpu": 95,
+    "memory_available": 10,
+    "memory_available_bytes": 3221225472,
+    "disk_available": 90,
+    "actor_wait": 1
+  },
+  "reasons": [
+    "cpu_redline",
+    "memory_available_redline"
+  ],
+  "streaks": {
+    "memory_available_redline": 3,
+    "cpu_redline": 3
+  }
+}

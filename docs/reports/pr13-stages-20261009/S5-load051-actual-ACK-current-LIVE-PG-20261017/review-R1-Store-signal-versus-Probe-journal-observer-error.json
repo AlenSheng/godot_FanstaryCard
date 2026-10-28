@@ -1,0 +1,8 @@
+{
+  "review_exit": 1,
+  "failed_assertion": "T01_original_load_false_check_and_ack_failed_lifecycle_retained",
+  "cause": "Review looked for Probe-owned settlement.ack_failed in Store.network_telemetry recorder; actual original LoadProbe calls its own _on_telemetry and writes owned journal directly. Actual required event is present in original Probe journal.",
+  "correction": "Read exact original actual-load-observer.original.json.telemetry.jsonl for load lifecycle; retain Store signal separately for actual HTTP traces. No event fabrication/threshold change/fixture or game rerun.",
+  "journal_rows": 145,
+  "journal_sequence_contiguous": true
+}

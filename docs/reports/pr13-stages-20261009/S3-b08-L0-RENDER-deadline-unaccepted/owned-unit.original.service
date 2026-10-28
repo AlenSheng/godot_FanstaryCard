@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 full original B08 core witness GUI segment
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B08-core-render-L0-r1-20261012/runner.original.py 0
+RuntimeMaxSec=7200
+Restart=no

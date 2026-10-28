@@ -1,0 +1,377 @@
+{
+  "source_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+  "business_source_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "status": "Failed",
+  "counts": {
+    "Passed": 0,
+    "Failed": 1,
+    "Skipped": 0
+  },
+  "assertions": "Original two Assert.False stale_during_ack/stale_after_ack unchanged",
+  "setup_valid": true,
+  "stale_during_ack": true,
+  "stale_after_ack": true,
+  "client_exit": 0,
+  "test_exit": 1,
+  "host_pids": [
+    102599,
+    102683
+  ],
+  "host_exit_codes": [
+    137,
+    137
+  ],
+  "client_pid": 102650,
+  "timeline_ms": {
+    "actual_recovery_M": 5656,
+    "GET_loaded_poll_waiting": 8439,
+    "ACK_clear_pending": 8489,
+    "old_poll_stale_during_ACK": 8590,
+    "ACK200_and_bootstrap_completed_but_stale": 8806
+  },
+  "legacy_raw_productionSha_label": "Original copied regression record labels business f812; actual integration2dda is frozen in commands/source/build proof. Final candidate harness metadata will use actual source SHA, without overwriting this raw.",
+  "raw_manifest": [
+    {
+      "path": "red/a05-audit-causal-after.json",
+      "bytes": 6921,
+      "sha256": "938e6ed5944649bb81d2d3b08a09adae38317205ecb17b4fe7d9985a90969692"
+    },
+    {
+      "path": "red/a05-audit-causal-before.json",
+      "bytes": 1663,
+      "sha256": "c2a53dc7ccb88f29c3ff8305e4061355d6d29dbc2908aa8b9011365eefeac7d0"
+    },
+    {
+      "path": "red/a05-causal-after-102683.log",
+      "bytes": 1276,
+      "sha256": "835506bd54e3ffd1220eaa73e8c947c947d2df488f3a290e008cade7177a2ad6"
+    },
+    {
+      "path": "red/a05-causal-before-102599.log",
+      "bytes": 1276,
+      "sha256": "835506bd54e3ffd1220eaa73e8c947c947d2df488f3a290e008cade7177a2ad6"
+    },
+    {
+      "path": "red/a05-owned-readonly-audit.sql",
+      "bytes": 2334,
+      "sha256": "5512d5152320fce9f899347e8853beff96b7cd31787f35b306125cf032bc8530"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/client.log",
+      "bytes": 14882,
+      "sha256": "aaa5041cd02d0ff3b17629477d56ce8ab0957c257c72dcd2eb8b9cfc18efec58"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/ack-cleared.json",
+      "bytes": 325,
+      "sha256": "fad8107c4c00122b78e54e967f16344733f9c695d4141c78f49c01b79a6316ee"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/ack-held.json",
+      "bytes": 66,
+      "sha256": "50aceaf598165ab25898473b5931a5e8b179d1e603230ca19de4384150e98df6"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/ack-released.json",
+      "bytes": 71,
+      "sha256": "6b3c294acc60e555e13a06c1f2387ceb5569ef7b587b76fa4e52de974dfe5b8f"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/ack-returned.json",
+      "bytes": 1741,
+      "sha256": "e5f2ff0de8cb9342c467eef9f36c7b6508d293e8a5e8957a632fe96d2b7078c5"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/extract.json",
+      "bytes": 50,
+      "sha256": "d55681e732b2f1f2fdca257007be2fd412ab8c5af094fb34341d8473edeb7d29"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/get-released.json",
+      "bytes": 66,
+      "sha256": "7a5efbd0dd219ea7492fec0b653e9f51135ac1d79f2adbb4ac1b30facc9e1042"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/poll-released.json",
+      "bytes": 86,
+      "sha256": "4852244d5a13671e6638fa0cc5e5936e55cefa9c87dca029c96313c8b21f083c"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/poll-returned-during-ack.json",
+      "bytes": 1776,
+      "sha256": "0d9fa0157942af14ec001351ae87c16c1235b405fafc54ed568b6428b063d61b"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/recovery-M.json",
+      "bytes": 291,
+      "sha256": "c5a2686d06c0823b55911403d1c3c54ec563fa579d1741a5a378ca6483e7a408"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/restarted.json",
+      "bytes": 20,
+      "sha256": "f9f264ec8c30477810fb4e601e3afb5202a56f2bd7c70bdda0af7f588b6ca651"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/result.json",
+      "bytes": 17931,
+      "sha256": "ece7615bd711918368f5b5b93b3b9fa4e7ee66cf4e6c4dfaacb0b206b61e9515"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/running.json",
+      "bytes": 255,
+      "sha256": "5448bbdfb17123b8a9bf4ed762a5f3eba8a8d022cf21951e60828c5d04595fd0"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/control/stale-final.json",
+      "bytes": 1741,
+      "sha256": "acb4c593247f17378528dc1b4621116f34fed57b3a30033e0269b7755ce31d6f"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/card_descriptions.json",
+      "bytes": 55407,
+      "sha256": "9d07c99d1a64cdeb01b7b90414c410b306262808704fbb12b11d4c496a1c8263"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/card_names.json",
+      "bytes": 5746,
+      "sha256": "2f0c0a511d138a27e451fb0ac2382ac1ab5efccf74879695f3ac6aa84fcbef05"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/catalog.json",
+      "bytes": 396138,
+      "sha256": "fa284e27b3afbd20b754b989e56f1e8030eb5d17befcbd114a4796d0c897eb2d"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/catalog_index.gd",
+      "bytes": 1217,
+      "sha256": "177f3c38694b4ba93b64a22b70b520afde84d8ed2c1ba2186f7268e8cf7f30a7"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/catalog_index.gd.uid",
+      "bytes": 20,
+      "sha256": "0bbbb0173861fc113fe039a52c9bb3d6364d69c39f17de028a9eb9cdb6b9ac84"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/equipment_compare_text.json",
+      "bytes": 1759,
+      "sha256": "be74f08327751a8518cc5330d583130142153f455382291b08741f05ac4e8faa"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/http_endpoints.json",
+      "bytes": 12116,
+      "sha256": "b2b7467812569bf9ab158e87ccc141f2edca6e56ce5d5636ca8477729b51a482"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/http_schema.json",
+      "bytes": 41094,
+      "sha256": "5b16f625d7c7e4c46a986bc2e0469de6a70374b0d330a17be1008c756c741bff"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_battle.json",
+      "bytes": 3439,
+      "sha256": "20b84515ecd9266f01effe9d79ec0bfd65688f86665cba16410d774591afba3c"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_brand.json",
+      "bytes": 231,
+      "sha256": "0b903acce2a4b1d10059e7849e357963dccd90bbf605f7341f63f04d59f6ff3d"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_config.json",
+      "bytes": 13730,
+      "sha256": "bf449bc795cde5e7b6f283a1bf8a88b051db7290489374164b5ad48efb51e529"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_modules.json",
+      "bytes": 26425,
+      "sha256": "659f0a6a4540fff99ab4db8b49112b49aec032221b9bb1286bf056b27c8dc56c"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_templates.json",
+      "bytes": 5747,
+      "sha256": "fb6ceb9115fba9596ac468549ec8275696c85a24682eacfcdbe55007828e068f"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/localization_ui_gaps.json",
+      "bytes": 18465,
+      "sha256": "23cba93dcf2033472c88c2babb59df33e7436a3114500c2771b84d2b88189d0d"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/login_localization.json",
+      "bytes": 865,
+      "sha256": "40162cffc677ff43be65515c7312c8ba4b911f93850eb5973a1e5546c78ef068"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/random_names.json",
+      "bytes": 1919,
+      "sha256": "bfee93001035c025ef4211c7af7d6a6982bda29ec007ddd2afa74ddf658c99b1"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/realtime_schema.json",
+      "bytes": 41865,
+      "sha256": "009d3afb24e2ec3b7631a47b7ba1c9ea0559ce2b0324b04d41f8c5715642766b"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/data/ui_config.json",
+      "bytes": 104,
+      "sha256": "0af3d9a0f1a637673910f5747197fa7ec7fc2f8da25173c1987496506fee8c79"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/import.log",
+      "bytes": 3020,
+      "sha256": "350ad3aae90ad5bb191f62e0a9fc93ce70ed2db56709ac295060f8f52d10b64c"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/gateway.gd",
+      "bytes": 33401,
+      "sha256": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/gateway.gd.uid",
+      "bytes": 20,
+      "sha256": "c5f21c5b9645de2182202ef58e035cc313b8b687c194188a12605efb668fd360"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/http_protocol.gd",
+      "bytes": 4982,
+      "sha256": "c8fbd5d4c0d42368b14c99125b8d2493f58d7dddf405260cbfaf5b8f05b64205"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/http_protocol.gd.uid",
+      "bytes": 20,
+      "sha256": "b424b8941348c9c7b57a864999ea6c794d7d5b528fd1a0daf9cb024140595c27"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/protobuf.gd",
+      "bytes": 10466,
+      "sha256": "3572b9c313a18b14d35c815b1e09d08ef392a450a8292a55161a31c90a8ee8a3"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/protobuf.gd.uid",
+      "bytes": 19,
+      "sha256": "b29ec614657d1862f00267be4e4cb9d7144c96d9d8621ec76745aa922734b03b"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/reusable_http_client.gd",
+      "bytes": 4765,
+      "sha256": "c2ff3d069e9f4815059297dc570983857ffb4ee415548bbcf5409f03c9873424"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/network/reusable_http_client.gd.uid",
+      "bytes": 18,
+      "sha256": "5752e58343c69a35157142a66435336861cf1ee3ba2798c40a9e11a65e236cf1"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/platform/platform_service.gd",
+      "bytes": 3541,
+      "sha256": "37e32c0c9866af1270f134a7520b046b33ec5519833922d82b41f8e89f320f7f"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/platform/platform_service.gd.uid",
+      "bytes": 20,
+      "sha256": "1d853fad09303eeca5893e91184505a288bf2d04cbc03ca817f4b94216cfc717"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/project.godot",
+      "bytes": 215,
+      "sha256": "9ce03760c5cd24214ea09d8a7de440525befefc851770666a5a867a6e05394e8"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/source-manifest.json",
+      "bytes": 3809,
+      "sha256": "24bf0d7c3eaef5929b8d72f7c6c3f633ba432b74a2bcc0b6af71595c291fc18a"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/battle_targets.gd",
+      "bytes": 536,
+      "sha256": "e87dbe311082289ce96a2fec0bacd64f0bcf3a72d7316b35d2fdab64f52cdedb"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/battle_targets.gd.uid",
+      "bytes": 20,
+      "sha256": "f12478ec14b274b222363c4001e7a1a3c8876365dd25aa07d40805ccef4c5f8f"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/element_rules.gd",
+      "bytes": 834,
+      "sha256": "fe47bb4dc00b4473f4ce0e1a8c768d6d50b6d97caec0e846b945d38c85abc7a9"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/element_rules.gd.uid",
+      "bytes": 19,
+      "sha256": "f8cbe756797d461446d7807e9b1c3d176ac1a2cb964f5b5224d8c818e3b4fc1a"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/game_store.gd",
+      "bytes": 86911,
+      "sha256": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/state/game_store.gd.uid",
+      "bytes": 20,
+      "sha256": "75d52d2e24a9ac576d90b59002b125caf026b93582775921f6a42dfc27897d92"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/tests/pr13_a05_ack_poll_causal.gd",
+      "bytes": 5167,
+      "sha256": "b88eda4cbb2363996f19c2e24b81f949381479a950a294ac21f9b97e946e54c7"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/tests/pr13_a05_ack_poll_causal.gd.uid",
+      "bytes": 20,
+      "sha256": "528dbb3da979a5e61b59762549681d3b144247a29d1e15e29c3700dfeb63fb77"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/tests/pr13_ack_response_loss.gd",
+      "bytes": 3402,
+      "sha256": "071b75a0716a8ce2c5602e35a34ad3a99d90ad42091b18fe9dd52804409946bc"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/tests/pr13_ack_response_loss.gd.uid",
+      "bytes": 20,
+      "sha256": "bdfabf37f0f36eba7975e1203f2cdfb640b8e561f3526a0adacb9dcca19c0c08"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/ui/card_details.gd",
+      "bytes": 8632,
+      "sha256": "4cd2187bcccbe63b7a29f85a1b0f26e93078eec898e38d9a775d397e8d548327"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/ui/card_details.gd.uid",
+      "bytes": 20,
+      "sha256": "91a624fb6902ec6550cedde42b79a2179a41410f6c56596f083f89ae9d878c0e"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/ui/palette.gd",
+      "bytes": 34880,
+      "sha256": "74221a4b661d299958228925ba283a6ead19ef5e70f80d130770a864bc826ee4"
+    },
+    {
+      "path": "red/ack-client-a05-causal-bd960140fed54d66bd18ffd2e0b34300/ui/palette.gd.uid",
+      "bytes": 19,
+      "sha256": "f9c1b28f2f208b6e84bbfb8e979a1c1b8e7e9bf1b0610a31d8af862093f4138d"
+    },
+    {
+      "path": "red/causal-old-ready-bootstrap.pb",
+      "bytes": 36618,
+      "sha256": "b7cb17b63241c4cdb8748b712c8f961950bde4f6b4303d4a1428db5c70a04070"
+    },
+    {
+      "path": "red/causal-settlement-get.pb",
+      "bytes": 411,
+      "sha256": "b3b648d399ca935548f979d65787cc0c06c64ec3b090ddc18c2a62bc1686366c"
+    },
+    {
+      "path": "red/receipts.jsonl",
+      "bytes": 23950,
+      "sha256": "14fa8df175192783295a8e8e239c70e74a4a521e9d530383e446f5db7d4c4045"
+    },
+    {
+      "path": "red/red.trx",
+      "bytes": 47761,
+      "sha256": "7822cfb85ba233cc3346a42ae7f68ca6e1911dc1fbb7b446548c6923be1ca80f"
+    }
+  ],
+  "build_provenance": "red-build-provenance.json",
+  "commands": "commands.jsonl"
+}

@@ -1,0 +1,30 @@
+  FantasyCard.ConfigExporter -> /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.ConfigExporter/debug/FantasyCard.ConfigExporter.dll
+  FantasyCard.Domain -> /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Domain/debug/FantasyCard.Domain.dll
+  FantasyCard.Contracts -> /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Contracts/debug/FantasyCard.Contracts.dll
+  FantasyCard.Server -> /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server/debug/FantasyCard.Server.dll
+  FantasyCard.Server.Tests -> /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll
+Test run for /workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server.Tests/debug/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:08.83]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes [5 s]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "UPDATE 0"
+Actual:   "DISCARD ALL"
+           ↑ (pos 0)
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 116
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 130
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 146
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes() in /workspace/pr13-takeover/register-response-batch/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs:line 146
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ {"caseId":"process-start","recordedAt":"2026-09-30T21:18:13.8940505+00:00","evidence":{"label":"register-committed-loss","Id":49752,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/register-evidence-20260930/fresh-build/bin/FantasyCard.Server/debug/FantasyCard.Server.dll","port":38931,"SearchPath":"fc_runtime_test_9566e3677df44293a9d5e962d3fdc20e","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+ {"caseId":"LOAD-04.4-T02-MarkRunning-committed-response-lost","recordedAt":"2026-09-30T21:18:17.9750835+00:00","evidence":{"ProcessId":49752,"matchId":"01a0f42e-b775-75bc-9ad0-d694649422d4","roomId":"01a0f42e-b775-788e-bfb4-37c6d3da6b36","dropped":{"Index":1,"StatementSha256":"bb00bc4b9ebfa9691a6f2c378c2bdac71b0cc79935f64ce76565e11e7b642877","CommandTag":"UPDATE 1","ReadyState":"I","Dropped":true,"CommittedAt":"2026-09-30T21:18:17.9169893+00:00"},"durableStatus":"Running","responseDelivered":false}}
+ {"caseId":"process-stop","recordedAt":"2026-09-30T21:18:19.307364+00:00","evidence":{"label":"register-committed-loss","ProcessId":49752,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/register-evidence-20260930/targeted/register-committed-loss-49752.log"}}
+
+
+Results File: /workspace/pr13-takeover/register-evidence-20260930/targeted/registration-targeted.trx
+
+Failed!  - Failed:     1, Passed:     2, Skipped:     0, Total:     3, Duration: 7 s - FantasyCard.Server.Tests.dll (net10.0)

@@ -1,0 +1,354 @@
+{
+  "kind": "MAINLiveHTTPImmutableContextThreeCaseReview",
+  "all_three_LIVE_cases_passed": true,
+  "cases": [
+    {
+      "case_id": "LOAD-06.1-T01",
+      "status": "Passed",
+      "profile": "LIVE"
+    },
+    {
+      "case_id": "LOAD-06.1-T02",
+      "status": "Passed",
+      "profile": "LIVE"
+    },
+    {
+      "case_id": "LOAD-06.1-T03",
+      "status": "Passed",
+      "profile": "LIVE"
+    }
+  ],
+  "backend_HTTP_responses": 8,
+  "native_attempts": 8,
+  "native_logical_terminals": 5,
+  "all_backend_statuses_200": true,
+  "same_write_key_and_body_three_attempts_verified": true,
+  "two_actual_reply_drops": 2,
+  "old_controlled_cycle_origin_retained": true,
+  "timeout_attempt_ms": 10005,
+  "timeout_logical_ms": 11564,
+  "decode_invalid_wire_terminal_error": true,
+  "verified_upstream_TLS_connection_reuses": 7,
+  "no_upstream_errors_R3": true,
+  "R1": {
+    "status": "TLSPreflightFailed",
+    "backend_requests_completed": 0,
+    "failure_type": "SSLCertVerificationError",
+    "originals_preserved": true
+  },
+  "R2": {
+    "status": "DeclaredControlConditionsNotEstablished",
+    "native_case_statuses": [
+      "Failed",
+      "Failed",
+      "Failed"
+    ],
+    "unexpected_upstream_TLS_TCP_timeout_EOF_failures_retained": true,
+    "old_request_still_origin_labelled": true,
+    "no_gameplay_failure_inferred": true
+  },
+  "production_sources_unchanged_rehashed": 7,
+  "rooms_or_game_encounters": 0,
+  "cloud_source_upload": false,
+  "cloud_configuration_change": false,
+  "native_process_terminal": true,
+  "local_proxy_shutdown": true,
+  "task_state": "Partial",
+  "whole_scope_accepted": false,
+  "coverage_correction": {
+    "case_id": "LOAD-06.1-T01",
+    "profile_reopened": "POSTGRES",
+    "original_claimed_setup": "两次重试",
+    "actual_route": "GET /api/v1/players/me?mode=retry-five",
+    "actual_attempt_count": 2,
+    "actual_retry_count": 1,
+    "required_retry_count": 2,
+    "write_key_in_original_T01": false,
+    "reason": "Old actual PG T01 verifies one GET retry, not two retries plus write-header identity. Preserve original nativePassed row, withdraw only canonical-profile coverage claim.",
+    "old_fixture_sha256": "31cacfda28d3c7ac3eb500ebb0f246a80760a25e1a29da7b7582172df926debe",
+    "old_native_result_sha256": "549b7338631ca01f6749f2299d468ee69f68ffb28b998ce2a577a619d5313351"
+  },
+  "limits": [
+    "Controlled telemetry cycle change is not a physical game cycle or B01 room-context experiment.",
+    "Realtime ticket replies have different hashes. This verifies identical client write key/body, not server once-only ticket minting or financial effects.",
+    "R1/R2/R3 retain separate attempt namespaces; fixed test run/cycle labels are not evidence of production process-epoch uniqueness.",
+    "Old PG per-request transport implementation differs; only existing reusable HTTP equivalence supports remaining original T02/T03 profiles."
+  ],
+  "pointer_sha256": "b0619075c78c897f920aaca6282ad494d0ae604157185783a6c4e94a78548861",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-b031-two-experiment-cases-reviewed-20261016/register.json",
+    "sha256": "cda02c520664a07144977db2c45c1ea2fa4471dfd259601cd3ecfc82a12ac461"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\execution-intent.json",
+      "bytes": 63,
+      "sha256": "97e6f81a6f483268a7d08156293fd035ab2a3c0f1e751bce85182e17e5110627"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\native.original.json",
+      "bytes": 2978,
+      "sha256": "ad9b9c4f02519ccadbcc4de9ff4effaf500b1ec408d43ecf0ec7d42a31ff93d4"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\native.original.log",
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\plan.json",
+      "bytes": 981,
+      "sha256": "5e5fd9d26e082b1d31060e1785e6948ecaaedd5fd122b499c9e6f53a3b58147b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\process-result.json",
+      "bytes": 115,
+      "sha256": "fda3efc0c78d63d068fc8abb238bd80f84d7893bad061676bfa6ae7bb9a941a5"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\data\\http_endpoints.json",
+      "bytes": 12491,
+      "sha256": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\data\\http_schema.json",
+      "bytes": 42972,
+      "sha256": "75bbfee7ed51c19a14d17bd009866ff1c706bf3e0e255a9f4e46d13673b25f1d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\data\\realtime_schema.json",
+      "bytes": 45188,
+      "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\network\\gateway.gd",
+      "bytes": 41643,
+      "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\network\\http_protocol.gd",
+      "bytes": 5080,
+      "sha256": "9c10ce36d3f38566b68a8ad922a61cbe74b56065ba100b0ce436d989d546d733"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\network\\protobuf.gd",
+      "bytes": 10750,
+      "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\network\\reusable_http_client.gd",
+      "bytes": 5974,
+      "sha256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\probe.gd",
+      "bytes": 6535,
+      "sha256": "e1beec983973a7aff6c1dfb7f51f2f8237c8f4ec8cf061e6f61592dcf3e923df"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\project\\project.godot",
+      "bytes": 176,
+      "sha256": "9c49e9c11d67a1f580af100214c0ff0a9cb16ba715565ffaefd42ff40444d61b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\proxy.original.json",
+      "bytes": 509,
+      "sha256": "6296d37d79ae9721d5919ffbc25023ba5220871b8b042d47af2a3fe359345ab1"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r1\\source-manifest.json",
+      "bytes": 2191,
+      "sha256": "1ec0afd1ba66083ded72a5dcfd4f563cfa2add8006ac3b21989bcd649c16a066"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\execution-intent.json",
+      "bytes": 63,
+      "sha256": "fa233023572d48796fe83cbb0d9d32d4ad6d11627ba2a54214ca16b320994e7e"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\native.original.json",
+      "bytes": 21877,
+      "sha256": "d3a16ea8a97666d76cc2f4f6ac3d28b551ddb7fe2caa232a329131f672edb8dc"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\native.original.log",
+      "bytes": 237,
+      "sha256": "b2d880279fb8bab9b6113d2fea5a6bdd9cdfbf70adc8e9ee6fef5316b2f39253"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\plan.json",
+      "bytes": 981,
+      "sha256": "5e5fd9d26e082b1d31060e1785e6948ecaaedd5fd122b499c9e6f53a3b58147b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\process-result.json",
+      "bytes": 115,
+      "sha256": "fda3efc0c78d63d068fc8abb238bd80f84d7893bad061676bfa6ae7bb9a941a5"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\data\\http_endpoints.json",
+      "bytes": 12491,
+      "sha256": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\data\\http_schema.json",
+      "bytes": 42972,
+      "sha256": "75bbfee7ed51c19a14d17bd009866ff1c706bf3e0e255a9f4e46d13673b25f1d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\data\\realtime_schema.json",
+      "bytes": 45188,
+      "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\network\\gateway.gd",
+      "bytes": 41643,
+      "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\network\\http_protocol.gd",
+      "bytes": 5080,
+      "sha256": "9c10ce36d3f38566b68a8ad922a61cbe74b56065ba100b0ce436d989d546d733"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\network\\protobuf.gd",
+      "bytes": 10750,
+      "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\network\\reusable_http_client.gd",
+      "bytes": 5974,
+      "sha256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\probe.gd",
+      "bytes": 6535,
+      "sha256": "e1beec983973a7aff6c1dfb7f51f2f8237c8f4ec8cf061e6f61592dcf3e923df"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\project\\project.godot",
+      "bytes": 176,
+      "sha256": "9c49e9c11d67a1f580af100214c0ff0a9cb16ba715565ffaefd42ff40444d61b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\proxy.original.json",
+      "bytes": 7316,
+      "sha256": "cb1685514da36f28147b164e62c65ba29156dff455fefae5bdc148559d0216d2"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\source-manifest.json",
+      "bytes": 2191,
+      "sha256": "d69fcc070561d3ecca0cc65c634ce071e0bcfdd7c99aa178ad3fab24d99e9c4b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\task-only-Windows-TLS-CA.pem",
+      "bytes": 147898,
+      "sha256": "c6a22a08f9b20c09c40b5b2c742258b593caa8a6041aaa52e541fc8db007effa"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r2\\trust-provenance.json",
+      "bytes": 613,
+      "sha256": "69c1ea793da730a9052779592842609344990dadce88b9c8dcd8cd2333598036"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\execution-intent.json",
+      "bytes": 63,
+      "sha256": "44cac9f9f8b8dab38476a19c723448dc03472acc2cb6f18f06a38a34e46f382f"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\live_http_context_proxy.py",
+      "bytes": 4305,
+      "sha256": "9af3544235528f0185a91be87ecdf746d9cdbd8497bb6389d788d437895b3210"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\native.original.json",
+      "bytes": 20568,
+      "sha256": "f7fa89586e9e6a3aa8f42ea3f1fc2ca5060284f770f3bbe8fe00f2a6d2337358"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\native.original.log",
+      "bytes": 236,
+      "sha256": "0efcb4396dd9eb94b22c476c63ee37fab582be001577ba96ab432888420f681f"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\plan.json",
+      "bytes": 1156,
+      "sha256": "64c0bde9896f68004d094d9e2346c6b2d836a165cc5192dd5be1e32a2eac0241"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\process-result.json",
+      "bytes": 115,
+      "sha256": "d36cb3d62f77f25f75379fa26d42702ba89cde5643f801574b8a97909f7d8fce"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\data\\http_endpoints.json",
+      "bytes": 12491,
+      "sha256": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\data\\http_schema.json",
+      "bytes": 42972,
+      "sha256": "75bbfee7ed51c19a14d17bd009866ff1c706bf3e0e255a9f4e46d13673b25f1d"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\data\\realtime_schema.json",
+      "bytes": 45188,
+      "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\network\\gateway.gd",
+      "bytes": 41643,
+      "sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\network\\http_protocol.gd",
+      "bytes": 5080,
+      "sha256": "9c10ce36d3f38566b68a8ad922a61cbe74b56065ba100b0ce436d989d546d733"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\network\\protobuf.gd",
+      "bytes": 10750,
+      "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\network\\reusable_http_client.gd",
+      "bytes": 5974,
+      "sha256": "964f8babc258a38664d9cc3d07b96df2a2f823a230a283f1c91155efe51082b1"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\probe.gd",
+      "bytes": 6630,
+      "sha256": "829460fb636c9bc02e0724e6f4310559ce9765dd74a02250d8a2906800afc49c"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\project\\project.godot",
+      "bytes": 176,
+      "sha256": "9c49e9c11d67a1f580af100214c0ff0a9cb16ba715565ffaefd42ff40444d61b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\proxy.original.json",
+      "bytes": 13201,
+      "sha256": "847643fa0b347e115cb023604038c0af68537a5681622a24adf256ed12cd496b"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\run_live_http_context.py",
+      "bytes": 2058,
+      "sha256": "52a98c3056cc1ed0adada860ccba97ea3c19cec7da0a9aca7d39485c3764af3f"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\source-manifest.json",
+      "bytes": 2191,
+      "sha256": "c7970a76cf7e7b6e45fd56bd2aea0baddfd9fc70a5dc1e063f7a1f5cbf9b3e2e"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\task-only-Windows-TLS-CA.pem",
+      "bytes": 147898,
+      "sha256": "c6a22a08f9b20c09c40b5b2c742258b593caa8a6041aaa52e541fc8db007effa"
+    },
+    {
+      "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\live-http-context-r3\\trust-provenance.json",
+      "bytes": 613,
+      "sha256": "69c1ea793da730a9052779592842609344990dadce88b9c8dcd8cd2333598036"
+    }
+  ]
+}

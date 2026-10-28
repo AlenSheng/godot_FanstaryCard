@@ -1,0 +1,89 @@
+{
+  "ok": true,
+  "scope": "synthetic metadata equality and AST only",
+  "checks": [
+    {
+      "name": "stable-semantic-UUID-bijection-positive",
+      "ok": true
+    },
+    {
+      "name": "changed_hp_cost",
+      "rejected": true
+    },
+    {
+      "name": "changed_conflict_heal",
+      "rejected": true
+    },
+    {
+      "name": "permuted_selected_order",
+      "rejected": true
+    },
+    {
+      "name": "permuted_cast_identity",
+      "rejected": true
+    },
+    {
+      "name": "unstable_selected_UUID",
+      "rejected": true
+    },
+    {
+      "name": "changed_selected_card_semantics",
+      "rejected": true
+    },
+    {
+      "name": "changed_BattleId_within_encounter",
+      "rejected": true
+    },
+    {
+      "name": "reused_BattleId_across_encounters",
+      "rejected": true
+    },
+    {
+      "name": "reused_current_BattleId_across_encounters",
+      "rejected": true
+    },
+    {
+      "name": "changed_AttackerId_within_encounter",
+      "rejected": true
+    },
+    {
+      "name": "reused_AttackerId_across_encounters",
+      "rejected": true
+    },
+    {
+      "name": "reused_current_AttackerId_across_encounters",
+      "rejected": true
+    },
+    {
+      "name": "changed_Actual_damage_with_valid_opaque_ID",
+      "rejected": true
+    },
+    {
+      "name": "exact-type-no-int-bool-equivalence",
+      "rejected": true
+    },
+    {
+      "name": "exact-decimal-no-tolerance",
+      "rejected": true
+    },
+    {
+      "name": "unknown-field-rejected",
+      "rejected": true
+    },
+    {
+      "name": "UUID-bijection-many-to-one-rejected",
+      "rejected": true
+    },
+    {
+      "name": "changed-element-override-rejected",
+      "rejected": true
+    },
+    {
+      "name": "nonselected-UUID-field-not-ignored",
+      "rejected": true
+    }
+  ],
+  "native_execution": false,
+  "business_oracle_execution": false,
+  "formal_acceptance_granted": false
+}

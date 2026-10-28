@@ -1,0 +1,913 @@
+{
+  "kind": "MAINIndependentCombatMetricBoundarySixCaseReview",
+  "six_cases_passed": true,
+  "cases": [
+    {
+      "case_id": "PR13-B01.2-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "native_case": {
+              "actual": {
+                "after": {
+                  "effective": 463,
+                  "pong": 2,
+                  "progress": 0,
+                  "snapshot": 2
+                },
+                "authoritative_elapsed_ms": 0.0,
+                "before": {
+                  "effective": 463,
+                  "pong": 0,
+                  "progress": 0,
+                  "snapshot": 0
+                },
+                "snapshot_control": "Same actual projection/revision, distinct ordered server envelopes"
+              },
+              "case_id": "PR13-B01.2-T01",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610002,
+            "native_case": {
+              "actual": {
+                "after": {
+                  "effective": 1638,
+                  "pong": 1,
+                  "progress": 0,
+                  "snapshot": 2
+                },
+                "authoritative_elapsed_ms": 0.0,
+                "before": {
+                  "effective": 1638,
+                  "pong": 0,
+                  "progress": 0,
+                  "snapshot": 0
+                },
+                "snapshot_control": "Same actual projection/revision, distinct ordered server envelopes"
+              },
+              "case_id": "PR13-B01.2-T01",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610003,
+            "native_case": {
+              "actual": {
+                "after": {
+                  "effective": 1571,
+                  "pong": 1,
+                  "progress": 0,
+                  "snapshot": 2
+                },
+                "authoritative_elapsed_ms": 0.0,
+                "before": {
+                  "effective": 1571,
+                  "pong": 0,
+                  "progress": 0,
+                  "snapshot": 0
+                },
+                "snapshot_control": "Same actual projection/revision, distinct ordered server envelopes"
+              },
+              "case_id": "PR13-B01.2-T01",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    },
+    {
+      "case_id": "PR13-B01.2-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "native_case": {
+              "actual": {
+                "actual_request_sent_client_ms": 1129,
+                "actual_result": {
+                  "_command_action": "battle.play_cards",
+                  "_command_result": "completed",
+                  "_event_revision": 2,
+                  "_origin_context": {
+                    "battle_id": "",
+                    "battle_seed": null,
+                    "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+                    "client_id": "metric-boundary",
+                    "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+                    "config_package_unavailable_reason": null,
+                    "config_version": "gdd-0.70-numerical-1",
+                    "config_version_source": "actual_domain_authority",
+                    "cycle_id": "metric-boundary:1",
+                    "effective_room_policy": {
+                      "fenxian_policy": "CurrentRhythm",
+                      "guardian_policy": "CurrentSteps",
+                      "guardian_remainder_tenths": 0
+                    },
+                    "hero_class": "Priest",
+                    "load_profile": "cyclic-gameplay",
+                    "match_id": "475ed79b-ae65-4bfb-938c-95c227dcbada",
+                    "origin": "http://127.0.0.1:3026",
+                    "phase": "playing",
+                    "process_epoch": "1707d6815b3b160177ee3bbb72953721",
+                    "room_context_epoch": 1,
+                    "room_id": "f505d21c-2be1-4a5b-8e3c-eacd009141b5",
+                    "run_id": "boundary-local-waits-610001",
+                    "session_generation": 0,
+                    "strategy": "baseline_all_hand",
+                    "strategy_seed": 20260930
+                  },
+                  "_replayed": false,
+                  "_request_id": "5022fb0804f8da95fdd7a45c49817c4b",
+                  "_sequence": 7,
+                  "attacker_id": "dda8f091-5749-4404-8306-a83c618eceb8",
+                  "battle_ended": false,
+                  "battle_id": "01a145c6-ce32-7282-bd82-7cee60cb8331",
+                  "card_instance_ids": [
+                    "01a145c6-ce1e-75fa-b6e8-98ed9ae8f348"
+                  ],
+                  "conflict_cancellation": "",
+                  "conflict_pair_count": 0,
+                  "core_count": 0,
+                  "core_element": "",
+                  "damage": 0,
+                  "damage_segments": [],
+                  "draw_block_seconds": "0",
+                  "draw_block_speed_seconds": "",
+                  "draw_charge": "0",
+                  "draw_speed_modifier": "",
+                  "draw_speed_seconds": "",
+                  "heal": 0,
+                  "health_cost": 0,
+                  "hp_damage": 0,
+                  "immediate_draw": 0,
+                  "resonance_multiplier": "",
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "source_id": "",
+                  "stun_seconds": "0",
+                  "target_defeated": false,
+                  "target_id": "fire-bat-a"
+                },
+                "before_hp": 80,
+                "effective_clock_after": 463,
+                "effective_clock_before": 463,
+                "effective_maximum_hp": 80,
+                "metrics": {
+                  "actions": 1,
+                  "battle_id": "01a145c6-ce32-7282-bd82-7cee60cb8331",
+                  "cards_spent": 1,
+                  "effective_actions": 0,
+                  "first_effective_ms": null,
+                  "heal": 0,
+                  "heal_overflow": null,
+                  "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+                  "hp_damage": 0,
+                  "longest_effective_gap_ms": 0,
+                  "observed_cards_drawn": 0,
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "zero_effective_actions": 1
+                },
+                "overflow_unavailable_reason": "not_published_by_authoritative_event"
+              },
+              "case_id": "PR13-B01.2-T02",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610002,
+            "native_case": {
+              "actual": {
+                "actual_request_sent_client_ms": 4137,
+                "actual_result": {
+                  "_command_action": "battle.play_cards",
+                  "_command_result": "completed",
+                  "_event_revision": 2,
+                  "_origin_context": {
+                    "battle_id": "",
+                    "battle_seed": null,
+                    "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+                    "client_id": "metric-boundary",
+                    "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+                    "config_package_unavailable_reason": null,
+                    "config_version": "gdd-0.70-numerical-1",
+                    "config_version_source": "actual_domain_authority",
+                    "cycle_id": "metric-boundary:1",
+                    "effective_room_policy": {
+                      "fenxian_policy": "CurrentRhythm",
+                      "guardian_policy": "CurrentSteps",
+                      "guardian_remainder_tenths": 0
+                    },
+                    "hero_class": "Priest",
+                    "load_profile": "cyclic-gameplay",
+                    "match_id": "9ec3e924-b6b2-4f31-a311-fab99bce0d2f",
+                    "origin": "http://127.0.0.1:5320",
+                    "phase": "playing",
+                    "process_epoch": "69ed6d0002ffc3215279c04fefe2338c",
+                    "room_context_epoch": 1,
+                    "room_id": "e0e28bec-d98b-426c-af26-ea446d6a65d8",
+                    "run_id": "boundary-cloud-waits-610002",
+                    "session_generation": 0,
+                    "strategy": "baseline_all_hand",
+                    "strategy_seed": 20260930
+                  },
+                  "_replayed": false,
+                  "_request_id": "e5115c08e781d98a44c835a296d28ad9",
+                  "_sequence": 7,
+                  "attacker_id": "764e141d-c58f-4974-8db2-4b675f63af60",
+                  "battle_ended": false,
+                  "battle_id": "01a145cd-0b14-749e-92de-10ec1aeabd4e",
+                  "card_instance_ids": [
+                    "01a145cd-0aef-79e4-ae38-8818a0fc3ed1"
+                  ],
+                  "conflict_cancellation": "",
+                  "conflict_pair_count": 0,
+                  "core_count": 0,
+                  "core_element": "",
+                  "damage": 0,
+                  "damage_segments": [],
+                  "draw_block_seconds": "0",
+                  "draw_block_speed_seconds": "",
+                  "draw_charge": "0",
+                  "draw_speed_modifier": "",
+                  "draw_speed_seconds": "",
+                  "heal": 0,
+                  "health_cost": 0,
+                  "hp_damage": 0,
+                  "immediate_draw": 0,
+                  "resonance_multiplier": "",
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "source_id": "",
+                  "stun_seconds": "0",
+                  "target_defeated": false,
+                  "target_id": "fire-bat-a"
+                },
+                "before_hp": 80,
+                "effective_clock_after": 1638,
+                "effective_clock_before": 1638,
+                "effective_maximum_hp": 80,
+                "metrics": {
+                  "actions": 1,
+                  "battle_id": "01a145cd-0b14-749e-92de-10ec1aeabd4e",
+                  "cards_spent": 1,
+                  "effective_actions": 0,
+                  "first_effective_ms": null,
+                  "heal": 0,
+                  "heal_overflow": null,
+                  "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+                  "hp_damage": 0,
+                  "longest_effective_gap_ms": 0,
+                  "observed_cards_drawn": 0,
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "zero_effective_actions": 1
+                },
+                "overflow_unavailable_reason": "not_published_by_authoritative_event"
+              },
+              "case_id": "PR13-B01.2-T02",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610003,
+            "native_case": {
+              "actual": {
+                "actual_request_sent_client_ms": 4136,
+                "actual_result": {
+                  "_command_action": "battle.play_cards",
+                  "_command_result": "completed",
+                  "_event_revision": 2,
+                  "_origin_context": {
+                    "battle_id": "",
+                    "battle_seed": null,
+                    "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+                    "client_id": "metric-boundary",
+                    "config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+                    "config_package_unavailable_reason": null,
+                    "config_version": "gdd-0.70-numerical-1",
+                    "config_version_source": "actual_domain_authority",
+                    "cycle_id": "metric-boundary:1",
+                    "effective_room_policy": {
+                      "fenxian_policy": "CurrentRhythm",
+                      "guardian_policy": "CurrentSteps",
+                      "guardian_remainder_tenths": 0
+                    },
+                    "hero_class": "Priest",
+                    "load_profile": "cyclic-gameplay",
+                    "match_id": "e85e30ad-b3ee-4b33-925b-d6bf96def068",
+                    "origin": "http://127.0.0.1:5320",
+                    "phase": "playing",
+                    "process_epoch": "5b49e1ba6398a08330c9b279cdeecb02",
+                    "room_context_epoch": 1,
+                    "room_id": "9d628856-68f8-4c82-b59b-90c5993a13a7",
+                    "run_id": "boundary-cloud-waits-610003",
+                    "session_generation": 0,
+                    "strategy": "baseline_all_hand",
+                    "strategy_seed": 20260930
+                  },
+                  "_replayed": false,
+                  "_request_id": "d8f6ec1f4702827f05543bdd26d7dc2d",
+                  "_sequence": 7,
+                  "attacker_id": "2954ce6e-6ce9-46d2-a95c-c9b063f996fa",
+                  "battle_ended": false,
+                  "battle_id": "01a145cd-2e50-721e-a330-73b695386cc9",
+                  "card_instance_ids": [
+                    "01a145cd-2e4f-74b0-84c6-2616068dc476"
+                  ],
+                  "conflict_cancellation": "",
+                  "conflict_pair_count": 0,
+                  "core_count": 0,
+                  "core_element": "",
+                  "damage": 0,
+                  "damage_segments": [],
+                  "draw_block_seconds": "0",
+                  "draw_block_speed_seconds": "",
+                  "draw_charge": "0",
+                  "draw_speed_modifier": "",
+                  "draw_speed_seconds": "",
+                  "heal": 0,
+                  "health_cost": 0,
+                  "hp_damage": 0,
+                  "immediate_draw": 0,
+                  "resonance_multiplier": "",
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "source_id": "",
+                  "stun_seconds": "0",
+                  "target_defeated": false,
+                  "target_id": "fire-bat-a"
+                },
+                "before_hp": 80,
+                "effective_clock_after": 1571,
+                "effective_clock_before": 1571,
+                "effective_maximum_hp": 80,
+                "metrics": {
+                  "actions": 1,
+                  "battle_id": "01a145cd-2e50-721e-a330-73b695386cc9",
+                  "cards_spent": 1,
+                  "effective_actions": 0,
+                  "first_effective_ms": null,
+                  "heal": 0,
+                  "heal_overflow": null,
+                  "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+                  "hp_damage": 0,
+                  "longest_effective_gap_ms": 0,
+                  "observed_cards_drawn": 0,
+                  "shield_damage": 0,
+                  "shield_gain": 0,
+                  "zero_effective_actions": 1
+                },
+                "overflow_unavailable_reason": "not_published_by_authoritative_event"
+              },
+              "case_id": "PR13-B01.2-T02",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    },
+    {
+      "case_id": "PR13-B01.2-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "native_case": {
+              "actual": {
+                "confirming": {
+                  "hand_count": 3,
+                  "legal_opportunity": false,
+                  "reason": "confirming",
+                  "remaining_ms": 0
+                },
+                "drawing": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "drawing",
+                  "remaining_ms": 0
+                },
+                "legal_intentional_hold": {
+                  "hand_count": 1,
+                  "intentional_hold": true,
+                  "legal_opportunity": true,
+                  "reason": "strategy_wait",
+                  "remaining_ms": 0,
+                  "strategy": "build"
+                },
+                "no_manual_native_room_or_pending_assignment": true,
+                "stunned": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "stunned",
+                  "remaining_ms": 1499
+                }
+              },
+              "case_id": "PR13-B01.2-T03",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610002,
+            "native_case": {
+              "actual": {
+                "confirming": {
+                  "hand_count": 3,
+                  "legal_opportunity": false,
+                  "reason": "confirming",
+                  "remaining_ms": 0
+                },
+                "drawing": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "drawing",
+                  "remaining_ms": 0
+                },
+                "legal_intentional_hold": {
+                  "hand_count": 1,
+                  "intentional_hold": true,
+                  "legal_opportunity": true,
+                  "reason": "strategy_wait",
+                  "remaining_ms": 0,
+                  "strategy": "build"
+                },
+                "no_manual_native_room_or_pending_assignment": true,
+                "stunned": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "stunned",
+                  "remaining_ms": 1499
+                }
+              },
+              "case_id": "PR13-B01.2-T03",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          },
+          {
+            "seed": 610003,
+            "native_case": {
+              "actual": {
+                "confirming": {
+                  "hand_count": 3,
+                  "legal_opportunity": false,
+                  "reason": "confirming",
+                  "remaining_ms": 0
+                },
+                "drawing": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "drawing",
+                  "remaining_ms": 0
+                },
+                "legal_intentional_hold": {
+                  "hand_count": 1,
+                  "intentional_hold": true,
+                  "legal_opportunity": true,
+                  "reason": "strategy_wait",
+                  "remaining_ms": 0,
+                  "strategy": "build"
+                },
+                "no_manual_native_room_or_pending_assignment": true,
+                "stunned": {
+                  "hand_count": 0,
+                  "legal_opportunity": false,
+                  "reason": "stunned",
+                  "remaining_ms": 1499
+                }
+              },
+              "case_id": "PR13-B01.2-T03",
+              "executed": true,
+              "profiles_executed": [
+                "EXPERIMENT"
+              ],
+              "scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+              "status": "Passed"
+            }
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    },
+    {
+      "case_id": "PR13-B01.3-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "case_id": "PR13-B01.3-T01",
+            "actual_effect_intervals": [
+              {
+                "start_ms": 0.0,
+                "end_ms": 3000.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "1d36dbb081df4885b53023e45b6fe7a1",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              },
+              {
+                "start_ms": 0.0,
+                "end_ms": 1500.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "1d36dbb081df4885b53023e45b6fe7a1",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              }
+            ],
+            "calculated_union": {
+              "available": true,
+              "union_ms": 3000.0,
+              "interval_count": 2,
+              "merged_intervals": [
+                [
+                  0.0,
+                  3000.0
+                ]
+              ],
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "world_id": "1d36dbb081df4885b53023e45b6fe7a1",
+                "clock": "BattleRoom.Elapsed"
+              }
+            },
+            "observed_engine_union_ms": 3000.0,
+            "observation_window_ms": 3000,
+            "target_alive_window": true,
+            "naive_sum_ms": 4500
+          },
+          {
+            "seed": 610002,
+            "case_id": "PR13-B01.3-T01",
+            "actual_effect_intervals": [
+              {
+                "start_ms": 0.0,
+                "end_ms": 3000.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "f12e2f18de3a4302aaaa1d959b3b0b92",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              },
+              {
+                "start_ms": 0.0,
+                "end_ms": 1500.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "f12e2f18de3a4302aaaa1d959b3b0b92",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              }
+            ],
+            "calculated_union": {
+              "available": true,
+              "union_ms": 3000.0,
+              "interval_count": 2,
+              "merged_intervals": [
+                [
+                  0.0,
+                  3000.0
+                ]
+              ],
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "world_id": "f12e2f18de3a4302aaaa1d959b3b0b92",
+                "clock": "BattleRoom.Elapsed"
+              }
+            },
+            "observed_engine_union_ms": 3000.0,
+            "observation_window_ms": 3000,
+            "target_alive_window": true,
+            "naive_sum_ms": 4500
+          },
+          {
+            "seed": 610003,
+            "case_id": "PR13-B01.3-T01",
+            "actual_effect_intervals": [
+              {
+                "start_ms": 0.0,
+                "end_ms": 3000.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "4ab9698b90c64ec18c585b28308c3095",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              },
+              {
+                "start_ms": 0.0,
+                "end_ms": 1500.0,
+                "clock_origin": {
+                  "host": "92a85bf27a3f",
+                  "world_id": "4ab9698b90c64ec18c585b28308c3095",
+                  "clock": "BattleRoom.Elapsed"
+                }
+              }
+            ],
+            "calculated_union": {
+              "available": true,
+              "union_ms": 3000.0,
+              "interval_count": 2,
+              "merged_intervals": [
+                [
+                  0.0,
+                  3000.0
+                ]
+              ],
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "world_id": "4ab9698b90c64ec18c585b28308c3095",
+                "clock": "BattleRoom.Elapsed"
+              }
+            },
+            "observed_engine_union_ms": 3000.0,
+            "observation_window_ms": 3000,
+            "target_alive_window": true,
+            "naive_sum_ms": 4500
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    },
+    {
+      "case_id": "PR13-B01.3-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "case_id": "PR13-B01.3-T02",
+            "recovery": {
+              "requested": 10,
+              "effective": 2,
+              "overflow": 8
+            },
+            "denominator": "one actual PRI-01 level3 cast",
+            "source_request_id": "2a27a0fca51259c26b95088136ea8bf7"
+          },
+          {
+            "seed": 610002,
+            "case_id": "PR13-B01.3-T02",
+            "recovery": {
+              "requested": 10,
+              "effective": 2,
+              "overflow": 8
+            },
+            "denominator": "one actual PRI-01 level3 cast",
+            "source_request_id": "2b19d5255cedb15e171e3460d4d4f8dc"
+          },
+          {
+            "seed": 610003,
+            "case_id": "PR13-B01.3-T02",
+            "recovery": {
+              "requested": 10,
+              "effective": 2,
+              "overflow": 8
+            },
+            "denominator": "one actual PRI-01 level3 cast",
+            "source_request_id": "fd01655699618aaed4d04008e4d77525"
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    },
+    {
+      "case_id": "PR13-B01.3-T03",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "EXPERIMENT"
+      ],
+      "actual": {
+        "independent_seed_contexts": 3,
+        "observations": [
+          {
+            "seed": 610001,
+            "case_id": "PR13-B01.3-T03",
+            "actual_correlated_request_id": "2a27a0fca51259c26b95088136ea8bf7",
+            "client_first_effective_local_ms": 1449,
+            "actual_client_send": {
+              "monotonic_ms": 1872,
+              "clock_origin": {
+                "host": null,
+                "host_unavailable_reason": "COMPUTERNAME_missing_in_native_environment",
+                "process_epoch": "05231dd1cc7c5f6a48bbd2b3f3abfdc2",
+                "clock": "Godot ticks since process start"
+              }
+            },
+            "actual_server_receive": {
+              "monotonic_ms": 2558692880.805842,
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "process_epoch": "30c986318f5b4c7bae6d48d108f8e9cd",
+                "ticks_per_second": 1000000000
+              }
+            },
+            "cross_host_result": {
+              "available": false,
+              "value_ms": null,
+              "reason": "cross_clock_or_unknown_origin"
+            },
+            "client_and_authority_physically_different": true,
+            "server_own_execution_ms": 0.370091,
+            "HTTP_p95": null,
+            "HTTP_p95_unavailable_reason": "controlHTTP_is_not_productionHTTPRequest_telemetry; command and server clock quantities remain separate"
+          },
+          {
+            "seed": 610002,
+            "case_id": "PR13-B01.3-T03",
+            "actual_correlated_request_id": "2b19d5255cedb15e171e3460d4d4f8dc",
+            "client_first_effective_local_ms": 1450,
+            "actual_client_send": {
+              "monotonic_ms": 2297,
+              "clock_origin": {
+                "host": null,
+                "host_unavailable_reason": "COMPUTERNAME_missing_in_native_environment",
+                "process_epoch": "1b172bc3dbb424467626598935fd6c98",
+                "clock": "Godot ticks since process start"
+              }
+            },
+            "actual_server_receive": {
+              "monotonic_ms": 2558697224.121515,
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "process_epoch": "30c986318f5b4c7bae6d48d108f8e9cd",
+                "ticks_per_second": 1000000000
+              }
+            },
+            "cross_host_result": {
+              "available": false,
+              "value_ms": null,
+              "reason": "cross_clock_or_unknown_origin"
+            },
+            "client_and_authority_physically_different": true,
+            "server_own_execution_ms": 0.338033,
+            "HTTP_p95": null,
+            "HTTP_p95_unavailable_reason": "controlHTTP_is_not_productionHTTPRequest_telemetry; command and server clock quantities remain separate"
+          },
+          {
+            "seed": 610003,
+            "case_id": "PR13-B01.3-T03",
+            "actual_correlated_request_id": "fd01655699618aaed4d04008e4d77525",
+            "client_first_effective_local_ms": 1533,
+            "actual_client_send": {
+              "monotonic_ms": 1936,
+              "clock_origin": {
+                "host": null,
+                "host_unavailable_reason": "COMPUTERNAME_missing_in_native_environment",
+                "process_epoch": "4f3d0dbb9601157bb9ae275e185e91ee",
+                "clock": "Godot ticks since process start"
+              }
+            },
+            "actual_server_receive": {
+              "monotonic_ms": 2558700934.73295,
+              "clock_origin": {
+                "host": "92a85bf27a3f",
+                "process_epoch": "30c986318f5b4c7bae6d48d108f8e9cd",
+                "ticks_per_second": 1000000000
+              }
+            },
+            "cross_host_result": {
+              "available": false,
+              "value_ms": null,
+              "reason": "cross_clock_or_unknown_origin"
+            },
+            "client_and_authority_physically_different": true,
+            "server_own_execution_ms": 0.248374,
+            "HTTP_p95": null,
+            "HTTP_p95_unavailable_reason": "controlHTTP_is_not_productionHTTPRequest_telemetry; command and server clock quantities remain separate"
+          }
+        ]
+      },
+      "scope": "Real current combat engine, official snapshot/protobuf and native metric consumer in controlled legal isolated encounters. Actual state/effect interventions and explicit simulated Domain clock; no auth/PG/LIVE/natural/capacity/render claim."
+    }
+  ],
+  "valid_domain_worlds": 9,
+  "local_valid_worlds": 1,
+  "cloud_valid_worlds": 8,
+  "invalid_diagnostic_worlds": 4,
+  "extra_real_first_context_regression_worlds": 1,
+  "total_worlds_including_all_attempts": 14,
+  "new_context_regression_passed": true,
+  "known_first_context_bug_fixed_and_original_empty_origin_retained": true,
+  "first_context_OFFLINE_checks": {
+    "active_duel_over_frozen_pve": true,
+    "before_tracker_init": true,
+    "no_stale_id_outside_battle": true
+  },
+  "metric_processing_functions_unchanged": [
+    "_on_event",
+    "_observe_battle",
+    "_strategy_wait_state",
+    "_on_telemetry"
+  ],
+  "domain_formulas_or_default_config_changed": false,
+  "source_upload_bytes": 0,
+  "cloud_container_internal_network_removed": true,
+  "native_processes_and_tunnels_terminal": true,
+  "production_state_unchanged": true,
+  "scenario_scope": "Legal20-card instance multiset retained,only PRI-01 level3. Full80/80 or actual TakeDamage2 to78/80 with effective cap80 from engine; actual control effect injection. These are controlled synthetic entry states,not natural accounts/routes.",
+  "diagnostic_failures_preserved": [
+    "R1 autoloadoverride signature invalid",
+    "R2 gateway polling disabled",
+    "R3 test authority omitted first room.started on fresh session",
+    "R4 no draw after4s is normal because1.5s control freezes charge; metadata remains rawFailed guard"
+  ],
+  "no_false_game_failure_for_normal_stun_draw_pause": true,
+  "observer_overflow_remains_null_when_not_published": true,
+  "clock_scope": "Client first effective and roundtrip are client-clock quantities; authority applies own Stopwatch timestamps; host env missing staysnull+reason. Actual Windows↔cloud topology and request-ID correlation known,but no cross-clock latency value fabricated.",
+  "source_control_history_limit": "Local test control later gained first-command regression guards; original SUT input hashes and runtime outputs are retained. Formal metric methods unchanged; localcompiled authority binary kept at artifacts. No reconstructed runtime output.",
+  "resource_scope": "Currentgoal5pct floor; old15pct disk template notclaimedpassed. One1024MB SDK,internalnetwork,nohostports. NoPG/auth/fullProgram.",
+  "local_first_context_fix": {
+    "path": "client/tests/gameplay_load_client.gd",
+    "before_sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99",
+    "after_sha256": "d07fd64c351a3ab7eb06359b262e7b9c4e506a1405aedfa2abc0c6e9d70741dd",
+    "trigger": "_update_context runs before _observe_battle on first action; actual snapshot battle_id exists but tracker empty",
+    "fix": "Read current authoritative duel/PVE ID directly; leave metrics lifecycle and game formulas untouched",
+    "original_observed_empty_origin_retained_in": "cloud-native/partial-610001/native.original.json"
+  },
+  "pointer_sha256": "b950288337b4b3a9dcc91ef254d7d7797565b745f1677280a8a50015ae90133d",
+  "parent_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-enqueue-context-two-tasks-main-reviewed-20261017/register.json",
+    "sha256": "8c89643b69864aecf76d737019335d336f6aab535b23cdc52301a28d8e84b355"
+  },
+  "raw_input_sources": {
+    "cloud_records_sha256": "a770e044f2953d34a81929304200a4a8eee652a22294d12797983c49ebc3767c",
+    "local_waits_sha256": "87ddd43e8da19af2dd353adbef6da8a8f9ae7426dfa8516100d7da488f244631",
+    "current_gameplay_load_client_sha256": "d07fd64c351a3ab7eb06359b262e7b9c4e506a1405aedfa2abc0c6e9d70741dd",
+    "cloud_archive_sha256": "7634515020ff94d261d5d4ce4ae69a6c3f2acf7dd37965299ce7b5d17ff63532"
+  }
+}

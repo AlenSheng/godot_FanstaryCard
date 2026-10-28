@@ -1,0 +1,22 @@
+{
+  "task_id": "LOAD-02.2",
+  "case_id": "LOAD-02.2-T01",
+  "canonical_expected": "STOP前超时：业务失败不变取消",
+  "canonical_pass_criteria": "每cycle一个终态，取消不抹去先前失败，未知资产写入不猜成功/失败。",
+  "observed_actual_paths": [
+    "real-timeout/client.json.boundary.json",
+    "real-timeout/client.json",
+    "timeout_before/runs/*/report.json",
+    "pg-support/ack-client-runner-stop-before-commit-*/load-result.json.accounting.json"
+  ],
+  "missing_fact": "No actual Program+PG gameplay timeout followed by STOP with authoritative failed/cancelled/incomplete per-cycle mutually-exclusive partition. Real Gateway preSTOP failure plus errors is known; actual PG reused ACKSTOP cases do not prove this timeout case.",
+  "minimum_production_scope_for_future_investigation": [
+    "client/tests/gameplay_load_client.gd::_run/_finish cycle terminal state",
+    "tools/pr13_runtime_evidence.py::reconcile_cycles terminal accounting",
+    "tools/gameplay_load_test.py::finally cutoff and dimension/report accounting"
+  ],
+  "production_patch_proposed": false,
+  "P0_claimed": false,
+  "next_minimum_evidence": "Owned actual Program/PG game, induce one terminal network timeout before STOP without reducing production limits, capture original cycle/session context and monotonic STOP, final one-terminal partition plus bootstrap/settlement/holds/asset postconditions.",
+  "online_or_CI_requirement_added": false
+}

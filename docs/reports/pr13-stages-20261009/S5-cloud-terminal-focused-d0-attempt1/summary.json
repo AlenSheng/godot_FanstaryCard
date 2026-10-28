@@ -1,0 +1,727 @@
+{
+  "source_sha": "d0d7d9c592769be2d29077af0850b80f69fa9a36",
+  "runtime_revision": "da845cac10fc83fc36d71c7f2d18507eb979e8d9",
+  "collected_at": 1791577920.444178,
+  "audit": {
+    "actual": {
+      "pending_holds": 0,
+      "active_match_players": 0,
+      "settlements": 6,
+      "ledger_rows": 4
+    },
+    "read_only": true,
+    "execution_host": "Tencent cloud"
+  },
+  "cleanup": {
+    "server": true,
+    "prometheus": true,
+    "otel": true,
+    "postgres": true
+  },
+  "financial_classification": "NoAlertInObservedScope",
+  "financial_acceptance": false,
+  "known_currency_reconciliation_passed": true,
+  "known_currency_rows": 4,
+  "complete_owned_actor_checkpoints_preserved": true,
+  "files": [
+    {
+      "path": "database-audit.json",
+      "bytes": 178,
+      "sha256": "8eacee3b508e1afcb42bb955193e3f6056429f2b704e038df299b5405eae3825"
+    },
+    {
+      "path": "financial-attribution.json",
+      "bytes": 1634,
+      "sha256": "bb9a72c2cf670d0f04bb450757a1fbdc2b454ab6b20e4d0d7fa55d28f63612e9"
+    },
+    {
+      "path": "known-currency-reconciliation.private.json",
+      "bytes": 1083,
+      "sha256": "51c65211d542a4e38b2c72894b989bd8cafc9e15412e8c4a19d5d88dd0da8554"
+    },
+    {
+      "path": "live-runtime-cleanup.json",
+      "bytes": 129,
+      "sha256": "42bfba19e43197f3434289a31987fcd977cc02dbab8b7563c97b5fafd1d56a9d"
+    },
+    {
+      "path": "live-runtime.json",
+      "bytes": 2790,
+      "sha256": "088061049215dd913d331559bb75ac77a38aaaf20c3b10e9ac388400f802a412"
+    },
+    {
+      "path": "rooms-and-matches.private.json",
+      "bytes": 339113,
+      "sha256": "6bc92fce74a36aeca5f7321616315fa2b11c4b58c010bf0210d59d2d283c398b"
+    },
+    {
+      "path": "service-evidence/financial-after.private.json",
+      "bytes": 17518,
+      "sha256": "58931ea471fa8711923c6d855c7c4cecb67986a7b5c276ce9e0124002bfb682f"
+    },
+    {
+      "path": "service-evidence/financial-before.private.json",
+      "bytes": 1145,
+      "sha256": "cd835324c14fb99fe85d49c53a03c03d3770dde1119afdbb4e7b7e04932f6d43"
+    },
+    {
+      "path": "service-evidence/financial-opened-eligibility.json",
+      "bytes": 258,
+      "sha256": "3e0ed698d000aaff243d6a11a26fac2682a7bd34784b488a5f9c5e68ebc13b26"
+    },
+    {
+      "path": "service-evidence/financial-opened.private.json",
+      "bytes": 3105,
+      "sha256": "7f7575145b9a359d7b607e5e8e0612f2fba33066548d70e0c7e6906b9b89ff13"
+    },
+    {
+      "path": "service-evidence/server-metrics.private.jsonl",
+      "bytes": 2286754,
+      "sha256": "ccd5cb29561163833710d46ac226e2e4c8b0ef135550a6d2dc59262b10e46538"
+    },
+    {
+      "path": "service-evidence/server.private.log",
+      "bytes": 9210,
+      "sha256": "767d2f88e16cc43b1a5403c5a0d461078fbbe7c4c47956eeb753ebb52a1d4631"
+    },
+    {
+      "path": "terminal-fence-focused-attempt1-preregistration.json",
+      "bytes": 2139,
+      "sha256": "94e9956c89f2ae73d51da6d0193bd1628e33c1354f134b00d093680ae3f223e7"
+    },
+    {
+      "path": "terminal-focused-financial-phase.json",
+      "bytes": 108,
+      "sha256": "0a122ce7e5220cc5b2bde8f4b571ce5224129c7587345d299cae4b6291985cf7"
+    },
+    {
+      "path": "terminal-focused-runtime.json",
+      "bytes": 2790,
+      "sha256": "088061049215dd913d331559bb75ac77a38aaaf20c3b10e9ac388400f802a412"
+    }
+  ],
+  "whole_scope_accepted": false,
+  "private_archive": {
+    "bytes": 218678,
+    "sha256": "30aaa6f257c329e13de674fcdc32f25a55dcef9b9d88646774353d6a8e42fa82",
+    "constituents_verified": 15
+  },
+  "scope": "Focused actual local Windows Mage/Priest 2x3 cyclic gameplay against owned Tencent; HTTP/ticket WS over strict SSH",
+  "clients": [
+    {
+      "client_id": "g001c018241ce",
+      "class": "Mage",
+      "natural_cycles": 3,
+      "errors": 5
+    },
+    {
+      "client_id": "g001c02a001d3",
+      "class": "Priest",
+      "natural_cycles": 3,
+      "errors": 4
+    }
+  ],
+  "natural_cycles": 6,
+  "rejections": [
+    {
+      "client_id": "g001c018241ce",
+      "request_id": "76af3d12e101e44489afdd694e7de03d",
+      "action": "battle.play_cards",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c018241ce:1",
+      "estimated_dispatch_unix_ms": 1791576312183,
+      "estimated_dispatch_monotonic_ms": 191654,
+      "reply_unix_ms": 1791576312536,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791576312535,
+          "monotonic_ms": 192007,
+          "_sequence": 266,
+          "_event_revision": 1664,
+          "player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "own_player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576313170,
+          "monotonic_ms": 192641,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576313253,
+          "monotonic_ms": 192724,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c018241ce",
+      "request_id": "70cf587f6582d5cc05e0f96e3596c0c5",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c018241ce:1",
+      "estimated_dispatch_unix_ms": 1791576312535,
+      "estimated_dispatch_monotonic_ms": 192006,
+      "reply_unix_ms": 1791576312963,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791576312535,
+          "monotonic_ms": 192007,
+          "_sequence": 266,
+          "_event_revision": 1664,
+          "player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "own_player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576313170,
+          "monotonic_ms": 192641,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576313253,
+          "monotonic_ms": 192724,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c018241ce",
+      "request_id": "5c2a5722d624eff8212ce9c1ec729179",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c018241ce:2",
+      "estimated_dispatch_unix_ms": 1791576504185,
+      "estimated_dispatch_monotonic_ms": 383655,
+      "reply_unix_ms": 1791576504639,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791576504185,
+          "monotonic_ms": 383654,
+          "_sequence": 550,
+          "_event_revision": 1647,
+          "player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "own_player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576504847,
+          "monotonic_ms": 384316,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576504847,
+          "monotonic_ms": 384316,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c018241ce",
+      "request_id": "acdd9765ee1f2457a878f87201bf60ea",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c018241ce:3",
+      "estimated_dispatch_unix_ms": 1791576702900,
+      "estimated_dispatch_monotonic_ms": 582367,
+      "reply_unix_ms": 1791576703369,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791576702899,
+          "monotonic_ms": 582367,
+          "_sequence": 837,
+          "_event_revision": 1709,
+          "player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "own_player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576703370,
+          "monotonic_ms": 582837,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576703370,
+          "monotonic_ms": 582837,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c018241ce",
+      "request_id": "c7ffd7d1f8169eadc2568cac0a27ef1c",
+      "action": "battle.play_cards",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c018241ce:3",
+      "estimated_dispatch_unix_ms": 1791576702900,
+      "estimated_dispatch_monotonic_ms": 582367,
+      "reply_unix_ms": 1791576703369,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791576702899,
+          "monotonic_ms": 582367,
+          "_sequence": 837,
+          "_event_revision": 1709,
+          "player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "own_player_id": "01a12242-24ad-79a1-a6bf-b316ca430a7c",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576703370,
+          "monotonic_ms": 582837,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576703370,
+          "monotonic_ms": 582837,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c02a001d3",
+      "request_id": "5fcb1195d24a3228bdb494ecfb9e9770",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c02a001d3:1",
+      "estimated_dispatch_unix_ms": 1791576379579,
+      "estimated_dispatch_monotonic_ms": 255907,
+      "reply_unix_ms": 1791576380041,
+      "terminal_events": [
+        {
+          "event_type": "action.extract_completed",
+          "at_unix_ms": 1791576379580,
+          "monotonic_ms": 255907,
+          "_sequence": 376,
+          "_event_revision": 2367,
+          "player_id": null,
+          "own_player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "status": "Completed",
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791576380491,
+          "monotonic_ms": 256818,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791576380491,
+          "monotonic_ms": 256819,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c02a001d3",
+      "request_id": "017a800dfa37d319d3c1940a753a18e6",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c02a001d3:2",
+      "estimated_dispatch_unix_ms": 1791577159455,
+      "estimated_dispatch_monotonic_ms": 1035776,
+      "reply_unix_ms": 1791577159875,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791577159663,
+          "monotonic_ms": 1035984,
+          "_sequence": 1481,
+          "_event_revision": 7722,
+          "player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "own_player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791577160539,
+          "monotonic_ms": 1036859,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791577160539,
+          "monotonic_ms": 1036859,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c02a001d3",
+      "request_id": "c58ac3402a2dbb1ceedca94c6b9e7566",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c02a001d3:2",
+      "estimated_dispatch_unix_ms": 1791577159664,
+      "estimated_dispatch_monotonic_ms": 1035984,
+      "reply_unix_ms": 1791577160083,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791577159663,
+          "monotonic_ms": 1035984,
+          "_sequence": 1481,
+          "_event_revision": 7722,
+          "player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "own_player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791577160539,
+          "monotonic_ms": 1036859,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791577160539,
+          "monotonic_ms": 1036859,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    },
+    {
+      "client_id": "g001c02a001d3",
+      "request_id": "bf74d1768e07cf781046a9cbacd11971",
+      "action": "room.snapshot.read",
+      "code": "NOT_IN_ROOM",
+      "cycle_id": "g001c02a001d3:3",
+      "estimated_dispatch_unix_ms": 1791577617604,
+      "estimated_dispatch_monotonic_ms": 1493921,
+      "reply_unix_ms": 1791577618025,
+      "terminal_events": [
+        {
+          "event_type": "player.died",
+          "at_unix_ms": 1791577617604,
+          "monotonic_ms": 1493921,
+          "_sequence": 2150,
+          "_event_revision": 4441,
+          "player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "own_player_id": "01a12242-2ec2-776f-83ad-f6f13ae26022",
+          "status": null,
+          "wire_match_id_present": false,
+          "wire_room_id_present": false
+        },
+        {
+          "event_type": "settlement.ready",
+          "at_unix_ms": 1791577617818,
+          "monotonic_ms": 1494135,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        },
+        {
+          "event_type": "match.settled",
+          "at_unix_ms": 1791577617818,
+          "monotonic_ms": 1494135,
+          "_sequence": null,
+          "_event_revision": null,
+          "player_id": null,
+          "own_player_id": null,
+          "status": null,
+          "wire_match_id_present": null,
+          "wire_room_id_present": null
+        }
+      ],
+      "dispatch_time_quality": "Derived from same-client response timestamp minus measured command duration; millisecond ordering at equal or near-equal timestamps remains uncertain"
+    }
+  ],
+  "rejection_actions": {
+    "battle.play_cards": 2,
+    "room.snapshot.read": 7
+  },
+  "accepted": false,
+  "capacity_accepted": false,
+  "public_tls_accepted": false,
+  "original_result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Passed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Passed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "original_triggers": [
+    "command_rejections_10pct",
+    "final_business_failure",
+    "smoke_passed"
+  ],
+  "guard_stop": null,
+  "local_archive": {
+    "bytes": 653921,
+    "sha256": "55f1ff573071c8d0fc57b268d0881aa6e1aabb5fc46c8df6726dc8f889a8d873",
+    "files": [
+      {
+        "path": "cloud-resource-guard.jsonl",
+        "bytes": 41866,
+        "sha256": "520cfcc760c0386162d211c52acf56fea3c9e576e2a0a49497513b4bebdb52c3"
+      },
+      {
+        "path": "coordinator.private.log",
+        "bytes": 472862,
+        "sha256": "ce26af586ff824dbb9c401e07461a21aafc74bb2c389faa79c315961bfe022f9"
+      },
+      {
+        "path": "execution.json",
+        "bytes": 3948,
+        "sha256": "c2e14e6d5c05eb43c91200c0ef8ebea8128a9dc453bc6839d05e0cc684356fbd"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c018241ce.json",
+        "bytes": 482076,
+        "sha256": "003c99b7fd75aa1ee40de36e52e139ac1f3a28321d8e7c62b79b39887dde0165"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c018241ce.json.status.json",
+        "bytes": 403479,
+        "sha256": "20a2f0499952e6b038c8908a76ae61c0d012f6c3d74dc92c92400709ce14487c"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c018241ce.json.telemetry.jsonl",
+        "bytes": 2129630,
+        "sha256": "40ae769db7325e955bdf589938a7cc0ed2e99d4264058953c293b904eb945fa1"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c018241ce.log",
+        "bytes": 75,
+        "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c02a001d3.json",
+        "bytes": 469487,
+        "sha256": "90bfc93a3497dc771ef41a96efb50e497e41092ce5ff326c7362b9dea1780c86"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c02a001d3.json.status.json",
+        "bytes": 393551,
+        "sha256": "26e3993fdf1867a3a5625eafb97ccdcf10367ed3f31e615f166ac6fa1f145d73"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c02a001d3.json.telemetry.jsonl",
+        "bytes": 5462189,
+        "sha256": "cfa6bae81007aa548db09c929e1565a2e9079024ed9348621c2561f3f216c93e"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/g001c02a001d3.log",
+        "bytes": 75,
+        "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/launch-manifest.json",
+        "bytes": 279302,
+        "sha256": "b58519a7c73f3ace36055e0f25cbb86dc9d2907ff69a2c08bf5bc571b0a9726e"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/load-contract.json",
+        "bytes": 995,
+        "sha256": "845bfeda170e71c3c99db23e7ceb4d6cf324703c0d68482edba91347f29b96a9"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/report.json",
+        "bytes": 2193479,
+        "sha256": "218b8cfd3587929283833fa496e95fee445cc65603fb04b2623705636e827721"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/samples.jsonl",
+        "bytes": 471463,
+        "sha256": "c0d2fcccc63cf9d65eb5362634f9ea9963e2250115b53c39cd486294aaaf7360"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/state.json",
+        "bytes": 5734,
+        "sha256": "fb9006550f3cf5623b2ff6069e1a8995735d051d3e6c1fa560dc2e486a10fb68"
+      },
+      {
+        "path": "load/20261010-040200-167b9f/STOP",
+        "bytes": 4,
+        "sha256": "6c45cb72a36e63d522aa54ed8adbd7a29a989474f2f77e0458af8800564ef3cb"
+      },
+      {
+        "path": "ssh.private.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "all_constituents_verified": true
+  },
+  "final_latency": {
+    "http": {
+      "count": 149,
+      "min_ms": 227,
+      "mean_ms": 438.72,
+      "max_ms": 959,
+      "p50_ms": 428,
+      "p95_ms": 883,
+      "p99_ms": 921
+    },
+    "realtime": {
+      "count": 1975,
+      "min_ms": 213,
+      "mean_ms": 394.93,
+      "max_ms": 607,
+      "p50_ms": 421,
+      "p95_ms": 490,
+      "p99_ms": 545
+    },
+    "rtt": {
+      "count": 207,
+      "min_ms": 235,
+      "mean_ms": 389.98,
+      "max_ms": 607,
+      "p50_ms": 387,
+      "p95_ms": 497,
+      "p99_ms": 552
+    }
+  },
+  "followup": "Add authoritative terminal context and handle already-in-flight room operations without falsely confirming rejected writes; preserve all original errors"
+}

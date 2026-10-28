@@ -1,0 +1,40 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/harness/coordinator_gap.py",
+    "gap_sticky",
+    "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/evidence/coordinator-sticky-verified"
+  ],
+  "caller_exit": 3,
+  "expected_exit": 3,
+  "elapsed_real_seconds": 1.3333557019977889,
+  "first_window_lost": 1,
+  "final_snapshot_sequences": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "tail_lost": 0,
+  "evidence_dimension": "Failed",
+  "audit_errors": [
+    {
+      "client_id": "g001c01093f7f",
+      "line": 2,
+      "error": "event_sequence_gap_or_reorder",
+      "expected": 2,
+      "actual": 3
+    }
+  ],
+  "model_inputs": [
+    "clock",
+    "metrics",
+    "telemetry"
+  ],
+  "real_paths": [
+    "coordinator.main/report/exit",
+    "owned child",
+    "STOP grace35"
+  ],
+  "capacity_claim": false
+}

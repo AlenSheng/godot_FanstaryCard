@@ -1,0 +1,18 @@
+Oct 13 19:16:52 VM-0-11-ubuntu systemd[1]: Starting pr13-cap-a07-exit0-missing-pg-coverage-r1.service - Owned actual PG exit0 missing coverage control...
+Oct 13 19:16:52 VM-0-11-ubuntu systemd[1]: Started pr13-cap-a07-exit0-missing-pg-coverage-r1.service - Owned actual PG exit0 missing coverage control.
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]: Traceback (most recent call last):
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:   File "/home/ubuntu/pr13-acceptance-20261009/evidence/A07-exit0-missing-PG-coverage-r1-20261013/controller.original.py", line 226, in <module>
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:     execute()
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:   File "/home/ubuntu/pr13-acceptance-20261009/evidence/A07-exit0-missing-PG-coverage-r1-20261013/controller.original.py", line 116, in execute
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:     plan = frozen()
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:            ^^^^^^^^
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:   File "/home/ubuntu/pr13-acceptance-20261009/evidence/A07-exit0-missing-PG-coverage-r1-20261013/controller.original.py", line 84, in frozen
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:     raw = run(['git', '-C', str(repo), 'show', 'HEAD:' + row['path']]).stdout
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:   File "/home/ubuntu/pr13-acceptance-20261009/evidence/A07-exit0-missing-PG-coverage-r1-20261013/controller.original.py", line 46, in run
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:     r.check_returncode()
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:   File "/usr/lib/python3.12/subprocess.py", line 502, in check_returncode
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]:     raise CalledProcessError(self.returncode, self.args, self.stdout,
+Oct 13 19:16:52 VM-0-11-ubuntu python3[4037927]: subprocess.CalledProcessError: Command '['git', '-C', '/opt/fantasycard-github', 'show', 'HEAD:protocol/config/v1/config_bundle.proto']' returned non-zero exit status 128.
+Oct 13 19:16:52 VM-0-11-ubuntu systemd[1]: pr13-cap-a07-exit0-missing-pg-coverage-r1.service: Main process exited, code=exited, status=1/FAILURE
+Oct 13 19:16:52 VM-0-11-ubuntu systemd[1]: pr13-cap-a07-exit0-missing-pg-coverage-r1.service: Failed with result 'exit-code'.

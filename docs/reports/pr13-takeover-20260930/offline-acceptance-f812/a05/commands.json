@@ -1,0 +1,112 @@
+[
+  {
+    "id": "C-BUILD",
+    "cwd": "server",
+    "command": "dotnet build FantasyCard.Server.slnx -c Release --no-restore",
+    "log": "build-release2.log",
+    "exit_code": 0
+  },
+  {
+    "id": "C-DOMAIN",
+    "cwd": "server",
+    "command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --no-build --logger \"trx;LogFileName=domain.trx\" --results-directory ../evidence/a05-f812-20260930/final-release",
+    "log": "final-release/domain.log",
+    "exit_code": 0,
+    "counts": {
+      "passed": 317,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  {
+    "id": "C-SERVER",
+    "cwd": "server",
+    "command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-build --logger \"trx;LogFileName=server.trx\" --results-directory ../evidence/a05-f812-20260930/final-release",
+    "environment": [
+      "source /workspace/relicround-env/activate.sh",
+      "FANTASYCARD_TEST_POSTGRES=Host=/tmp/pr13-a05-f812-socket;Port=55447;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL=/workspace/pr13-takeover/a05-acceptance-f812/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE=.../final-release"
+    ],
+    "log": "final-release/server.log",
+    "exit_code": 0,
+    "state": "completed; full suite without filter",
+    "counts": {
+      "total": 295,
+      "executed": 295,
+      "passed": 295,
+      "failed": 0,
+      "notExecuted": 0
+    }
+  },
+  {
+    "id": "C-A05-FOCUSED",
+    "cwd": "server",
+    "command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --no-build --filter FullyQualifiedName~ProcessLifecycleRecoveryTests.A05_ --logger \"trx;LogFileName=a05.trx\" --results-directory ../evidence/a05-f812-20260930/final-a05",
+    "environment": [
+      "source /workspace/relicround-env/activate.sh",
+      "FANTASYCARD_TEST_POSTGRES=Host=/tmp/pr13-a05-f812-socket;Port=55447;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL=/workspace/pr13-takeover/a05-acceptance-f812/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE=.../final-a05"
+    ],
+    "log": "final-a05/test.log",
+    "exit_code": 1,
+    "state": "completed; 3 pass, genuine additional client-clearing assertion fails",
+    "counts": {
+      "total": 4,
+      "executed": 4,
+      "passed": 3,
+      "failed": 1,
+      "notExecuted": 0
+    }
+  },
+  {
+    "id": "C-AUDIT",
+    "cwd": "server",
+    "entrypoint": "ProcessLifecycleA05AssetAudit.cs/A05AuditAsync invoked by all4 new entries; same C-SERVER/C-A05-FOCUSED commands",
+    "procedure": [
+      "Open own schema Npgsql connection",
+      "BEGIN transaction",
+      "SET TRANSACTION READ ONLY; SET LOCAL statement_timeout=5s",
+      "Execute A05AuditSql full owned schema ledger/wallet/item/movement/hold/match/preparation queries",
+      "ROLLBACK unchanged transaction",
+      "Store raw before/after JSON+query SHA",
+      "Assert completed postconditions equal0 and actual conservation"
+    ],
+    "query_file": "final-a05/a05-owned-readonly-audit.sql",
+    "exit_code": 0,
+    "state": "all completed audit procedures succeed",
+    "executed_snapshots": {
+      "final-release": 8,
+      "final-a05": 7,
+      "positive-causal": 2
+    },
+    "scope_note": "Focused Pending failure interrupts its after-audit; full-suite Pending and controlled positive causal each have a complete after-audit. No after-state is fabricated."
+  },
+  {
+    "id": "C-CAUSAL",
+    "cwd": "server",
+    "actual_assembly": "tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.dll",
+    "observed_test": "ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+    "reproduction_command": "dotnet test tests/FantasyCard.Server.Tests/bin/Causal/FantasyCard.Server.Tests.dll --filter FullyQualifiedName~Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt --logger \"trx;LogFileName=causal.trx\" --results-directory ../evidence/a05-f812-20260930/causal-pending-f812",
+    "exact_original_shell_wrapper": null,
+    "exit_code": 1,
+    "counts": {
+      "total": 1,
+      "executed": 1,
+      "passed": 0,
+      "failed": 1,
+      "notExecuted": 0
+    },
+    "log": "causal-pending-f812/test.log",
+    "environment": [
+      "source /workspace/relicround-env/activate.sh",
+      "FANTASYCARD_TEST_POSTGRES=Host=/tmp/pr13-a05-f812-socket;Port=55447;Username=agent;Database=postgres;Pooling=true;Maximum Pool Size=8",
+      "FANTASYCARD_PROCESS_SERVER_DLL=/workspace/pr13-takeover/a05-acceptance-f812/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+      "FANTASYCARD_PROCESS_EVIDENCE=/workspace/pr13-takeover/a05-acceptance-f812/evidence/a05-f812-20260930/causal-pending-f812"
+    ],
+    "missing_reasons": {
+      "exact_original_shell_wrapper": "Original invocation shell text was not saved in the evidence directory; assembly/filter/output are evidenced by TRX and logs. Reproduction command is explicit, not relabelled as captured shell text."
+    }
+  }
+]

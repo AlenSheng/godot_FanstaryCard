@@ -1,0 +1,22 @@
+SPEC={'target': '/home/ubuntu/pr13-acceptance-20261009/work/dual-GUI-full-mage-r2-inputs', 'members': 3372, 'source_rows_sha256': '3d72f3db1e225c244fec1cb4c1609ee4bf7b1a3d26e765cce16c411c5480f4be', 'passed_attempts': [{'attempt': 'dual-GUI-full-mage-en-r2-20261012', 'all_logical_G_members_rehashed': 3420, 'archive_SHA_and_CRC_reverified': True, 'native_observations': 243, 'original_PNGs': 36, 'G_receipt': {'ok': True, 'native_ok': True, 'local_directory': 'G:\\PR13Evidence\\dual-GUI-full-mage-en-r2', 'archive_sha256': '5e1888f34b61d11b280cec9898a11c041756fa1d65737d1b105e3d0b45ff6e0c', 'archive_bytes': 30317035, 'archive_gzip_CRC_verified': True, 'logical_original_members_verified': 3420, 'existing_G_members_rehashed': 3363, 'changed_and_output_members_transferred': 57, 'complete_logical_manifest_sha256': '9fd5f37283c98f9b34da1540acd2ac2394b44c2945658f669713373946891755', 'full_sources_preserved_via_existing_verified_G_bytes_and_new_deltas': True, 'cloud_cleanup_performed': False, 'MAIN_accepted': False}}, {'attempt': 'dual-GUI-full-mage-zh-cn-r2-20261012', 'all_logical_G_members_rehashed': 3420, 'archive_SHA_and_CRC_reverified': True, 'native_observations': 243, 'original_PNGs': 36, 'G_receipt': {'ok': True, 'native_ok': True, 'local_directory': 'G:\\PR13Evidence\\dual-GUI-full-mage-zh-cn-r2', 'archive_sha256': '14846f2deb2928d16e3160692d754a2956b24a6850cad1e55716f802bd8cd371', 'archive_bytes': 30248832, 'archive_gzip_CRC_verified': True, 'logical_original_members_verified': 3420, 'existing_G_members_rehashed': 3363, 'changed_and_output_members_transferred': 57, 'complete_logical_manifest_sha256': 'c664fe15b93dc3f69637c671f8afb2c1fe637a630b1e4e8cc784a50070b295b8', 'full_sources_preserved_via_existing_verified_G_bytes_and_new_deltas': True, 'cloud_cleanup_performed': False, 'MAIN_accepted': False}}], 'shared_original_source_and_SDK_cache_preserved': True}
+
+import fcntl,hashlib,json,os,shutil,subprocess
+from pathlib import Path
+B=Path('/home/ubuntu/pr13-acceptance-20261009');root=Path(SPEC['target']);C=B/'evidence/passed-mage-GUI-input-cleanup-r1-20261013';assert not C.exists();assert root==B/'work/dual-GUI-full-mage-r2-inputs' and root.resolve(strict=True)==root and not root.is_symlink()
+with (B/'evidence/shared-resource-coordination.lock').open('a') as lock:
+ fcntl.flock(lock.fileno(),fcntl.LOCK_EX|fcntl.LOCK_NB)
+ for proof in SPEC['passed_attempts']:
+  E=B/'evidence'/proof['attempt'];state=dict(l.split('=',1) for l in subprocess.check_output(['systemctl','show','pr13-cap-'+proof['attempt'],'--property=MainPID,ActiveState,ExecMainStatus'],text=True).splitlines());assert state['MainPID']=='0' and state['ActiveState']=='inactive' and state['ExecMainStatus']=='0';r=json.loads((E/'run-result.json').read_bytes());assert r['ok'] and r['owned_container_removed'] and r['frozen_inputs_unchanged']
+ ids=subprocess.check_output(['docker','ps','-q'],text=True).split();cs=json.loads(subprocess.check_output(['docker','inspect',*ids])) if ids else []
+ for c in cs:
+  for bind in c['Mounts']:
+   if bind['Type']!='bind':continue
+   p=Path(bind['Source']).resolve()
+   if c['Id']=='2734235cbfa1f9d8f1352cd9a925251f6356021d86ede341f80c6196e799149a' and p==Path('/') and bind['RW'] is False:continue
+   assert not (p==root or p.is_relative_to(root) or root.is_relative_to(p))
+ rows=[];allocated=0
+ for p in root.rglob('*'):
+  assert not p.is_symlink()
+  if p.is_file():rows.append({'source':str(p),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()});allocated+=p.stat().st_blocks*512
+  else:assert p.is_dir()
+ rows.sort(key=lambda r:r['source']);assert len(rows)==SPEC['members'] and hashlib.sha256(json.dumps(rows,sort_keys=True,separators=(',',':')).encode()).hexdigest()==SPEC['source_rows_sha256'];C.mkdir();(C/'cleanup-intent.original.json').write_bytes((json.dumps(SPEC,indent=2)+'\n').encode());before=os.statvfs('/');shutil.rmtree(root);after=os.statvfs('/');v={'ok':True,'exact_target':str(root),'members':len(rows),'allocated_bytes_removed':allocated,'actual_root_bytes_reclaimed':(after.f_bavail-before.f_bavail)*after.f_frsize,'G_SHA_and_CRC_reverified':True,'both_native_passed_handles_terminal':True,'no_active_overlapping_bind':True,'failed_originals_and_shared_source_package_SDK_caches_preserved':True,'MAIN_accepted':False};(C/'cleanup.original.json').write_bytes((json.dumps(v,indent=2)+'\n').encode());print(json.dumps(v))

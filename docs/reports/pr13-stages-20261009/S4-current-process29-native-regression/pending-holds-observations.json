@@ -1,0 +1,143 @@
+{
+  "original_receipt": {
+    "caseId": "A05-runtime-passed",
+    "recordedAt": "2026-10-11T19:22:03.9042522+00:00",
+    "evidence": {
+      "canonical": [
+        "PR13-A05.1-T03",
+        "PR13-A05.3-T02"
+      ],
+      "matchId": "5592608e-9294-4d60-95ca-0f3ab72eeb35",
+      "RoomId": "530f4adb-d482-4d7a-b5c1-c7827d07708f",
+      "receiptId": "01a12c69-e708-78a1-ac7b-09606c2f6b8c",
+      "playerId": "01a12c69-b3e3-7f73-bb84-72921716625c",
+      "equipmentId": "01a12c69-b4ad-7596-91db-613a02900a18",
+      "pids": [
+        1032,
+        1075
+      ],
+      "before": {
+        "Gold": 0,
+        "Potions": 0,
+        "Owner": "01a12c69-b3e3-7f73-bb84-72921716625c",
+        "Location": "InMatchEquipped",
+        "GoldLedger": 0,
+        "Movements": 0
+      },
+      "after": {
+        "Gold": 23,
+        "Potions": 2,
+        "Owner": "01a12c69-b3e3-7f73-bb84-72921716625c",
+        "Location": "Equipped",
+        "GoldLedger": 1,
+        "Movements": 1
+      },
+      "pendingBefore": 4,
+      "committedAfter": 4,
+      "profiles": [
+        "OFFLINE",
+        "POSTGRES",
+        "AUDIT"
+      ],
+      "scope": "owned saved Running input, actual Program and production Godot legal extraction; live Pending interval and actual SIGKILL restart",
+      "acceptedBy": null
+    }
+  },
+  "control_directory": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-a05-pending-b2da34d0d2b042a5a363a7f1762b382a\\control",
+  "observations": [
+    {
+      "check": "actual PB login/bootstrap/WS recovered Running M",
+      "passed": true
+    },
+    {
+      "check": "owned control extract",
+      "passed": true
+    },
+    {
+      "check": "legal production extract command sent",
+      "passed": true
+    },
+    {
+      "check": "owned control pending",
+      "passed": true
+    },
+    {
+      "check": "pending-before-restart Pending not displayed as ready",
+      "passed": true
+    },
+    {
+      "check": "pending-before-restart original recovery match retained",
+      "passed": true
+    },
+    {
+      "check": "pending-before-restart no premature client completion",
+      "passed": true
+    },
+    {
+      "check": "pending-before-restart actual pending ACK rejected 409",
+      "passed": true
+    },
+    {
+      "check": "pending-before-restart actual next preparation rejected",
+      "passed": true
+    },
+    {
+      "check": "owned control restarted",
+      "passed": true
+    },
+    {
+      "check": "production Gateway automatically reconnects after OS restart",
+      "passed": true
+    },
+    {
+      "check": "pending-after-restart Pending not displayed as ready",
+      "passed": true
+    },
+    {
+      "check": "pending-after-restart original recovery match retained",
+      "passed": true
+    },
+    {
+      "check": "pending-after-restart no premature client completion",
+      "passed": true
+    },
+    {
+      "check": "pending-after-restart actual pending ACK rejected 409",
+      "passed": true
+    },
+    {
+      "check": "pending-after-restart actual next preparation rejected",
+      "passed": true
+    },
+    {
+      "check": "owned control released",
+      "passed": true
+    },
+    {
+      "check": "release exposes same durable receipt",
+      "passed": true
+    },
+    {
+      "check": "release preserves M ownership",
+      "passed": true
+    },
+    {
+      "check": "actual production ACK completes",
+      "passed": true
+    },
+    {
+      "check": "confirmed M cleared",
+      "passed": true
+    },
+    {
+      "check": "next preparation permitted only after completion",
+      "passed": true
+    },
+    {
+      "check": "next preparation cleanup via actual API",
+      "passed": true
+    }
+  ],
+  "POSTGRES_only": true,
+  "WAN_LIVE_claimed": false
+}

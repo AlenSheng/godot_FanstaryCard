@@ -1,0 +1,219 @@
+{
+  "ok": true,
+  "task_id": "PR13-B08.4",
+  "stage": "S3_EXPERIMENT_two_Water_units_closed",
+  "native_execution_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "controller_tools_publication_source_sha": "bdced93f33415e095de5e580981e8b7cbcdd92f3",
+  "native_execution_source_not_relabelled": true,
+  "units": [
+    {
+      "unit": "Mage-E1-Water-L5-B1",
+      "seed_start": 441001,
+      "seed_end": 442000,
+      "encounters_verified": 2000,
+      "pairs_verified": 1000,
+      "actual_casts_verified": 76936,
+      "actual_ticks_verified": 1058608,
+      "raw_events_verified": 1135544,
+      "outcomes": {
+        "Victory": 2000
+      },
+      "case_denominators": {
+        "BaselinePurple/all_casts": 38484,
+        "BaselinePurple/T03_no_shield": 36227,
+        "BaselinePurple/all_ticks": 529504,
+        "BaselinePurple/T01_capped_ticks": 529504,
+        "BaselinePurple/T02_equipment_floor_ticks": 529504,
+        "BaselinePurple/T02_PVE_conversion_ticks": 46116,
+        "BaselinePurple/T02_expiry_ticks": 4246,
+        "BaselinePurple/T02_card_speed_ticks": 292613,
+        "BaselinePurple/T03_positive_shield": 2257,
+        "SingleOrangeHead/all_casts": 38452,
+        "SingleOrangeHead/T03_no_shield": 36197,
+        "SingleOrangeHead/all_ticks": 529104,
+        "SingleOrangeHead/T01_capped_ticks": 529104,
+        "SingleOrangeHead/T02_equipment_floor_ticks": 529104,
+        "SingleOrangeHead/T02_PVE_conversion_ticks": 46082,
+        "SingleOrangeHead/T02_expiry_ticks": 4242,
+        "SingleOrangeHead/T02_card_speed_ticks": 292328,
+        "SingleOrangeHead/T03_positive_shield": 2255
+      },
+      "cloud_negative_controls": [
+        {
+          "name": "wrong-resistance-cap",
+          "rejected": true
+        },
+        {
+          "name": "wrong-conversion-stage",
+          "rejected": true
+        },
+        {
+          "name": "wrong-shield-overflow",
+          "rejected": true
+        },
+        {
+          "name": "candidate-policy-enabled",
+          "rejected": true
+        }
+      ],
+      "native_summary_passed": true,
+      "cloud_validation_ok": true,
+      "G_archive_bytes": 56561468,
+      "G_archive_sha256": "3a2fc957244316fe5012a9b86eafc5fa89d587c39203588d5ba38922017b91da",
+      "G_manifest_sha256": "d262f2ffbff3502e7e605044b31408f66d4e72934f5503dbf8b78b2f5de77fab",
+      "G_original_members_verified": 28,
+      "inner_gzip_files_verified": 13,
+      "archive_and_inner_CRC_SHA_counts_reverified": true,
+      "cloud_cleanup_verified": true,
+      "root_disk_bytes_reclaimed": 66748416,
+      "runner_provenance": {
+        "native_execution_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+        "controller_tools_publication_source_sha": "bdced93f33415e095de5e580981e8b7cbcdd92f3",
+        "actual_cloud_runner_sha256": "cd8566571527d16f33e33ccabb3327948d8b003fe762699cbb3c934011ea3bd9",
+        "runner_original_G_relative_path": "Mage-E1-Water-L5-B1/verified/metadata/runner.py",
+        "native_runtime_relabelled_to_tools_commit": false,
+        "native_runtime_original_hashes": {
+          "FantasyCard.Numerics.pdb": "c54f071eb83687f4c0e56e555445df55db10d5bf861b264a47397ac628d1cbbb",
+          "FantasyCard.Numerics.dll": "cb9d50683a13957eeeb442824d26b06c209356e61a0289c2dc9fe9988a68c0df",
+          "FantasyCard.Numerics.runtimeconfig.json": "6eaff27a497447817e02c096da9afb530324590c005c1c011cd87bf2669f9dfd",
+          "FantasyCard.Numerics.deps.json": "3f2ef034feee6d02a18bce64a2a55c898c76b29bee8748fc912ca781f8e6dc92",
+          "FantasyCard.Numerics": "31792193aae65a9a253370df35bd434f0c6cf5616e269f088c4a1cd5df728616",
+          "FantasyCard.Domain.pdb": "986c5b1be4366ef9e91a70c671a210d3bd2b53f72fcb53be7e1088433a80a7e5",
+          "FantasyCard.Domain.dll": "6e8650494db8e95dbf6a47af0eaf880a119bc36f348a9aaa9cd9437ca969249a",
+          "FantasyCard.Domain.deps.json": "84049a6e2e274b4fd62887cce60fbf77aeeee5336c87f7d5150d602fb887a553"
+        }
+      },
+      "formal_EXPERIMENT_pending": true,
+      "MAIN_accepted": false
+    },
+    {
+      "unit": "Mage-E1-Water-L5-B2",
+      "seed_start": 442001,
+      "seed_end": 443000,
+      "encounters_verified": 2000,
+      "pairs_verified": 1000,
+      "actual_casts_verified": 76403,
+      "actual_ticks_verified": 1058180,
+      "raw_events_verified": 1134583,
+      "outcomes": {
+        "Victory": 2000
+      },
+      "case_denominators": {
+        "BaselinePurple/all_casts": 38226,
+        "BaselinePurple/T03_no_shield": 35967,
+        "BaselinePurple/all_ticks": 529396,
+        "BaselinePurple/T01_capped_ticks": 529396,
+        "BaselinePurple/T02_equipment_floor_ticks": 529396,
+        "BaselinePurple/T03_positive_shield": 2259,
+        "BaselinePurple/T02_card_speed_ticks": 287265,
+        "BaselinePurple/T02_PVE_conversion_ticks": 45854,
+        "BaselinePurple/T02_expiry_ticks": 4193,
+        "SingleOrangeHead/all_casts": 38177,
+        "SingleOrangeHead/T03_no_shield": 35921,
+        "SingleOrangeHead/all_ticks": 528784,
+        "SingleOrangeHead/T01_capped_ticks": 528784,
+        "SingleOrangeHead/T02_equipment_floor_ticks": 528784,
+        "SingleOrangeHead/T03_positive_shield": 2256,
+        "SingleOrangeHead/T02_card_speed_ticks": 286809,
+        "SingleOrangeHead/T02_PVE_conversion_ticks": 45790,
+        "SingleOrangeHead/T02_expiry_ticks": 4185
+      },
+      "cloud_negative_controls": [
+        {
+          "name": "wrong-resistance-cap",
+          "rejected": true
+        },
+        {
+          "name": "wrong-conversion-stage",
+          "rejected": true
+        },
+        {
+          "name": "wrong-shield-overflow",
+          "rejected": true
+        },
+        {
+          "name": "candidate-policy-enabled",
+          "rejected": true
+        }
+      ],
+      "native_summary_passed": true,
+      "cloud_validation_ok": true,
+      "G_archive_bytes": 56468139,
+      "G_archive_sha256": "9a98e0c775a247e4ed70dafde325e368acc222098b9a10eb1072b7ff0fd74172",
+      "G_manifest_sha256": "7653c92beac71d59ee7ba6252be33ba1018d1512d14737992a10642e36ed9346",
+      "G_original_members_verified": 28,
+      "inner_gzip_files_verified": 13,
+      "archive_and_inner_CRC_SHA_counts_reverified": true,
+      "cloud_cleanup_verified": true,
+      "root_disk_bytes_reclaimed": 66654208,
+      "runner_provenance": {
+        "native_execution_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+        "controller_tools_publication_source_sha": "bdced93f33415e095de5e580981e8b7cbcdd92f3",
+        "actual_cloud_runner_sha256": "cd8566571527d16f33e33ccabb3327948d8b003fe762699cbb3c934011ea3bd9",
+        "runner_original_G_relative_path": "Mage-E1-Water-L5-B2/verified/metadata/runner.py",
+        "native_runtime_relabelled_to_tools_commit": false,
+        "native_runtime_original_hashes": {
+          "FantasyCard.Numerics.pdb": "c54f071eb83687f4c0e56e555445df55db10d5bf861b264a47397ac628d1cbbb",
+          "FantasyCard.Numerics.dll": "cb9d50683a13957eeeb442824d26b06c209356e61a0289c2dc9fe9988a68c0df",
+          "FantasyCard.Numerics.runtimeconfig.json": "6eaff27a497447817e02c096da9afb530324590c005c1c011cd87bf2669f9dfd",
+          "FantasyCard.Numerics.deps.json": "3f2ef034feee6d02a18bce64a2a55c898c76b29bee8748fc912ca781f8e6dc92",
+          "FantasyCard.Numerics": "31792193aae65a9a253370df35bd434f0c6cf5616e269f088c4a1cd5df728616",
+          "FantasyCard.Domain.pdb": "986c5b1be4366ef9e91a70c671a210d3bd2b53f72fcb53be7e1088433a80a7e5",
+          "FantasyCard.Domain.dll": "6e8650494db8e95dbf6a47af0eaf880a119bc36f348a9aaa9cd9437ca969249a",
+          "FantasyCard.Domain.deps.json": "84049a6e2e274b4fd62887cce60fbf77aeeee5336c87f7d5150d602fb887a553"
+        }
+      },
+      "formal_EXPERIMENT_pending": true,
+      "MAIN_accepted": false
+    }
+  ],
+  "new_G_verified_units": 2,
+  "new_G_verified_encounters": 4000,
+  "new_G_verified_pairs": 2000,
+  "new_actual_casts_verified": 153339,
+  "new_actual_ticks_verified": 2116788,
+  "new_original_raw_events_verified": 2270127,
+  "all_original_outcomes": {
+    "Victory": 4000
+  },
+  "cloud_root_disk_bytes_reclaimed_sum": 133402624,
+  "prior_adoption": {
+    "path": "docs/reports/pr13-stages-20261009/S0-b08-persistent-continuation/adoption-revision2.json",
+    "sha256": "5dc9626947d8bc29d0c3230c94ce1c685899e74be1e2a1db5c1af91c4399d247",
+    "logical_G_verified_units": 88,
+    "original_G_verified_units": 87,
+    "separate_missing_raw_recovery_units": 1
+  },
+  "coverage_after_these_two_units": {
+    "logical_G_verified_units": 90,
+    "required_native_units": 360,
+    "native_execution_attempts_with_successful_results": 91,
+    "execution_count_includes_original_missing_raw_B0_and_its_separate_recovery": true,
+    "G_verified_encounters": 180000,
+    "G_verified_pairs": 90000,
+    "remaining_units": 270,
+    "remaining_encounters": 540000,
+    "remaining_pairs": 270000
+  },
+  "frozen_plan": {
+    "path": "docs/plans/PR13_B08_CAP_EFFECTIVE_EXPERIMENT_20261011.json",
+    "source_sha": "bdced93f33415e095de5e580981e8b7cbcdd92f3",
+    "committed_blob_sha256": "4e868fa8571fdd5bd75b693024144aafe0c5f50008d9adfef20bff6db5863fd5",
+    "revision": 2,
+    "full_expected_encounters": 720000,
+    "full_expected_pairs": 360000
+  },
+  "full_statistics_and_applicability_pending": true,
+  "formal_EXPERIMENT_pending": true,
+  "MAIN_accepted": false,
+  "LIVE_accepted": false,
+  "capacity_tests_deferred": true,
+  "human_experience_in_current_scope": false,
+  "whole_task_accepted": false,
+  "card_deck_or_balance_values_changed": false,
+  "Guardian_long_progressing_fights_are_not_a_contract_failure": true,
+  "complete_original_raw_archives_retained_on_G_not_copied_to_Git": true,
+  "no_native_business_executed_locally": true,
+  "current_register_states_unchanged": true,
+  "publication_manifest_committed_Git_bytes_verification_required": true
+}

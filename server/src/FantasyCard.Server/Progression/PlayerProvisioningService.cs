@@ -43,14 +43,10 @@ public sealed class PlayerProvisioningService
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid playerId,
-        string displayName,
         DateTimeOffset now,
         CancellationToken cancellationToken)
     {
         await InsertAccountsAsync(connection, transaction, playerId, cancellationToken);
-        if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") is "Development" or "DevelopmentLocal" &&
-            displayName.StartsWith("test_", StringComparison.OrdinalIgnoreCase))
-            await InsertDevelopmentTestMailAsync(connection, transaction, playerId, now, cancellationToken);
         await InsertStarterCardsAsync(connection, transaction, playerId, cancellationToken);
 
         foreach (var heroClass in Enum.GetValues<HeroClass>())
@@ -59,12 +55,6 @@ public sealed class PlayerProvisioningService
             await InsertDefaultDeckAsync(connection, transaction, playerId, heroClass, now, cancellationToken);
             await InsertDefaultLoadoutAsync(connection, transaction, playerId, heroClass, cancellationToken);
         }
-    }
-
-    private static async Task InsertDevelopmentTestMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, DateTimeOffset now, CancellationToken cancellationToken)
-    {
-        await using var mail = new NpgsqlCommand("INSERT INTO player_mail(mail_id,player_id,title,body,attachments,created_at) VALUES ($1,$2,'开发测试资源','测试账号资源已通过邮件发放，请领取附件。',$3::jsonb,$4) ON CONFLICT (mail_id) DO NOTHING", connection, transaction);
-        mail.Parameters.AddWithValue(CreateStableGuid(playerId, "dev-mail")); mail.Parameters.AddWithValue(playerId); mail.Parameters.AddWithValue("{\"gold\":100000,\"diamond\":100000,\"warriorSoul\":100000,\"priestSoul\":100000,\"mageSoul\":100000,\"guardianSoul\":100000,\"equipmentFragments\":100000,\"equipmentQualities\":[\"White\",\"Green\",\"Blue\",\"Purple\",\"Orange\",\"Red\"]}"); mail.Parameters.AddWithValue(now); await mail.ExecuteNonQueryAsync(cancellationToken);
     }
 
     private static async Task InsertAccountsAsync(

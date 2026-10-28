@@ -1,0 +1,267 @@
+{
+  "sources": [
+    {
+      "client_id": "PR13NFG01",
+      "native_PID": 120632,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFG01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFG01.prefix128.original.jsonl",
+      "prefix_bytes": 127440,
+      "prefix_sha256": "f785431beabbac4dbf8e57c7a6a6c1fbaa6a990608d9c0f85865856f50f7aaa0",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 24,
+      "http_attempts": 24,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    },
+    {
+      "client_id": "PR13NFP01",
+      "native_PID": 99772,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFP01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFP01.prefix128.original.jsonl",
+      "prefix_bytes": 127208,
+      "prefix_sha256": "afbe875dc5dcbf6ebd9c48f79f8c1b2c7d1693609978d6ceaff0c1ab49343daf",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 25,
+      "http_attempts": 25,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    }
+  ],
+  "metrics": {
+    "http": {
+      "count": 47,
+      "min_ms": 317,
+      "mean_ms": 558.11,
+      "max_ms": 1502,
+      "p50_ms": 434,
+      "p95_ms": 1352,
+      "p99_ms": 1502
+    },
+    "steady_http": {
+      "count": 43,
+      "min_ms": 317,
+      "mean_ms": 493.4,
+      "max_ms": 1502,
+      "p50_ms": 417,
+      "p95_ms": 1283,
+      "p99_ms": 1502
+    },
+    "cancelled_http": {
+      "count": 2,
+      "min_ms": 1785,
+      "mean_ms": 1793.5,
+      "max_ms": 1802,
+      "p50_ms": 1785,
+      "p95_ms": 1802,
+      "p99_ms": 1802
+    },
+    "realtime": {
+      "count": 0
+    },
+    "rtt": {
+      "count": 0
+    },
+    "phase_http": {
+      "login": {
+        "count": 10,
+        "min_ms": 347,
+        "mean_ms": 947.9,
+        "max_ms": 1502,
+        "p50_ms": 900,
+        "p95_ms": 1502,
+        "p99_ms": 1502
+      },
+      "initial": {
+        "count": 6,
+        "min_ms": 350,
+        "mean_ms": 680.5,
+        "max_ms": 1283,
+        "p50_ms": 450,
+        "p95_ms": 1283,
+        "p99_ms": 1283
+      },
+      "matchmaking": {
+        "count": 31,
+        "min_ms": 317,
+        "mean_ms": 408.68,
+        "max_ms": 900,
+        "p50_ms": 367,
+        "p95_ms": 467,
+        "p99_ms": 900
+      }
+    },
+    "route_http": {
+      "/api/v1/client-info": {
+        "count": 2,
+        "min_ms": 1352,
+        "mean_ms": 1427,
+        "max_ms": 1502,
+        "p50_ms": 1352,
+        "p95_ms": 1502,
+        "p99_ms": 1502,
+        "logical_request_count": 4,
+        "error_count": 0,
+        "cancelled_count": 2,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/auth/local": {
+        "count": 2,
+        "min_ms": 1316,
+        "mean_ms": 1399.5,
+        "max_ms": 1483,
+        "p50_ms": 1316,
+        "p95_ms": 1483,
+        "p99_ms": 1483,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/bootstrap": {
+        "count": 2,
+        "min_ms": 900,
+        "mean_ms": 1108,
+        "max_ms": 1316,
+        "p50_ms": 900,
+        "p95_ms": 1316,
+        "p99_ms": 1316,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/realtime/ticket": {
+        "count": 2,
+        "min_ms": 347,
+        "mean_ms": 405,
+        "max_ms": 463,
+        "p50_ms": 347,
+        "p95_ms": 463,
+        "p99_ms": 463,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/players/me": {
+        "count": 2,
+        "min_ms": 350,
+        "mean_ms": 400,
+        "max_ms": 450,
+        "p50_ms": 350,
+        "p95_ms": 450,
+        "p99_ms": 450,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/preparations": {
+        "count": 2,
+        "min_ms": 367,
+        "mean_ms": 417,
+        "max_ms": 467,
+        "p50_ms": 367,
+        "p95_ms": 467,
+        "p99_ms": 467,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/inventory": {
+        "count": 2,
+        "min_ms": 350,
+        "mean_ms": 400,
+        "max_ms": 450,
+        "p50_ms": 350,
+        "p95_ms": 450,
+        "p99_ms": 450,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/matches/enqueue": {
+        "count": 2,
+        "min_ms": 1166,
+        "mean_ms": 1224.5,
+        "max_ms": 1283,
+        "p50_ms": 1166,
+        "p95_ms": 1283,
+        "p99_ms": 1283,
+        "logical_request_count": 2,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "insufficient"
+      },
+      "/api/v1/matches/tickets/{ticketId:guid}": {
+        "count": 31,
+        "min_ms": 317,
+        "mean_ms": 408.68,
+        "max_ms": 900,
+        "p50_ms": 367,
+        "p95_ms": 467,
+        "p99_ms": 900,
+        "logical_request_count": 31,
+        "error_count": 0,
+        "cancelled_count": 0,
+        "latency_sample_quality": "sufficient_for_diagnostic_rule"
+      }
+    },
+    "observed_window_seconds": null,
+    "logical_requests_per_second": null,
+    "completed_requests_per_second": null,
+    "throughput_missing_reason": "No measured observation interval supplied",
+    "logical_result_counts": {
+      "success": 47,
+      "cancelled": 2
+    },
+    "error_count": 0,
+    "sample_count": 47,
+    "logical_request_count": 49,
+    "cancelled_count": 2,
+    "all_attempt_count": 49,
+    "attempt_coverage": "measured",
+    "attempt_result_counts": {
+      "success": 47,
+      "cancelled": 2
+    },
+    "valid_attempt_latency_count": 49,
+    "transport_phase_timings": {
+      "dns_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tcp_connect_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      },
+      "tls_handshake_ms": {
+        "count": 0,
+        "p95_ms": null,
+        "quality": "unavailable",
+        "missing_reason": "No attributable local request phase hook in supplied audit"
+      }
+    },
+    "valid_latency_count": 47,
+    "latency_sample_quality": {
+      "http": "sufficient_for_diagnostic_rule",
+      "realtime": "unavailable"
+    },
+    "error_rate": 0.0,
+    "steady_error_count": 0,
+    "steady_sample_count": 43,
+    "steady_error_rate": 0.0,
+    "invalid_metric_count": 0,
+    "invalid_duration_count": 0,
+    "invalid_schema_count": 0,
+    "steady_definition": "exclude auth/bootstrap paths and login/bootstrap/initial labels"
+  },
+  "external_health_or_curl_rows_merged": false,
+  "performance_SLO_or_natural_cycle_pass_claimed": false
+}

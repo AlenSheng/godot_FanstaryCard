@@ -39,8 +39,19 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 		var quality: String = QUALITIES[i]
 		var selected: bool = host._quality == quality
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
-		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(676 + i * 94, 132, 86, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
+		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(676 + i * 94, 132, 92, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "DeckFilter_" + ("All" if quality.is_empty() else quality)
+		# Narrow filters need their own padding and the font actually drawn by the button.
+		for state_name in ["normal", "hover", "pressed", "disabled"]:
+			var style: StyleBox = filter.get_theme_stylebox(state_name).duplicate()
+			style.set_content_margin(SIDE_LEFT, 8)
+			style.set_content_margin(SIDE_RIGHT, 8)
+			style.set_content_margin(SIDE_TOP, 6)
+			style.set_content_margin(SIDE_BOTTOM, 6)
+			filter.add_theme_stylebox_override(state_name, style)
+		filter.size = Vector2(92, 62)
+		filter.tooltip_text = filter.text
+		P.fit_control_font(filter, filter.get_theme_font("font"), 22, 20.0)
 	return search
 
 static func _owned_cards(ui: Control, host: Control) -> Dictionary:
@@ -50,7 +61,7 @@ static func _owned_cards(ui: Control, host: Control) -> Dictionary:
 	scroll.name = "DeckOwnedScroll"
 	var grid := CardGridView.new()
 	grid.name = "DeckOwnedGrid"
-	grid.columns = 4
+	grid.columns = CardGridView.display_layout(host, 4, 236.0, 1182.0, 48.0).columns
 	grid.add_theme_constant_override("h_separation", 48)
 	grid.add_theme_constant_override("v_separation", 42)
 	scroll.add_child(grid)
@@ -78,7 +89,9 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 			"callback": _activate_owned.bind(host, id, scroll), "selected": in_deck, "disabled": Game.busy,
 			"options": {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))},
 			"tooltip": reason if not reason.is_empty() else "加入编组"})
-	grid.configure(host, scroll, entries, 236.0)
+	var layout := CardGridView.display_layout(host, 4, 236.0, 1182.0, 48.0)
+	grid.columns = layout.columns
+	grid.configure(host, scroll, entries, layout.side)
 	count.text = P.localized("owned_cards_count").format({"count": entries.size()})
 
 static func _deck_panel(ui: Control, host: Control) -> void:
@@ -92,9 +105,9 @@ static func _deck_panel(ui: Control, host: Control) -> void:
 	var limit_label: Label = ui.text(limit_text, Rect2(1290, 211, 570, 32), 19, P.MUTED)
 	limit_label.name = "DeckOrangeLimits"
 	limit_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var rows_rect := Rect2(1280, 251, 590, 642)
+	var rows_rect := Rect2(1280, 251, 590, 660)
 	for index in range(DECK_SIZE):
-		_deck_row(ui, host, index, Rect2(rows_rect.position + Vector2(0, index * 32), Vector2(rows_rect.size.x, 30)))
+		_deck_row(ui, host, index, Rect2(rows_rect.position + Vector2(0, index * 33), Vector2(rows_rect.size.x, 32)))
 	var auto: Button = ui.button(P.localized("auto_build"), Rect2(1280, 920, 270, 68), auto_build.bind(host), Game.busy, ui.BLUE)
 	auto.name = "AutoBuildDeck"
 	var done: Button = ui.button(P.localized("finish_deck"), Rect2(1580, 920, 290, 68), host._save_deck, Game.busy, ui.ORANGE)
@@ -123,16 +136,17 @@ static func _deck_row(ui: Control, host: Control, index: int, rect: Rect2) -> vo
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		empty.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		return
-	var name_label: Label = ui.text(CardDetails.localized_name(id, info), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 18, P.PAPER)
+	var name_label: Label = ui.text(CardDetails.localized_name(id, info), Rect2(rect.position + Vector2(28, 1), Vector2(205, rect.size.y - 2)), 22, P.PAPER)
 	name_label.name = "DeckCardName_%02d" % (index + 1)
 	name_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	name_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	var effect: String = host.card_description(id, "face")
+	var effect: String = host.card_description(id, "face", int(host._owned_card(id).get("level", 0)))
 	if effect.is_empty():
 		var parts: PackedStringArray = host._card_text(id).split("\n\n", true, 1)
 		effect = parts[1] if parts.size() > 1 else host._card_text(id)
-	var effect_label: Label = ui.text(effect.replace("\n", " "), Rect2(rect.position + Vector2(244, 1), Vector2(316, rect.size.y - 2)), 16, P.MUTED)
+	row.tooltip_text = "%s\n%s\n\n%s" % [name_label.text, effect, P.localized("remove_from_deck")]
+	var effect_label: Label = ui.text(effect.replace("\n", " "), Rect2(rect.position + Vector2(244, 1), Vector2(316, rect.size.y - 2)), 20, P.MUTED)
 	effect_label.name = "DeckCardEffect_%02d" % (index + 1)
 	effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 	effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS

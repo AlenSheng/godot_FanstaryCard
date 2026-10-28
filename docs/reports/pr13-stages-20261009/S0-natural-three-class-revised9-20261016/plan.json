@@ -1,0 +1,81 @@
+{
+  "kind": "HumanAuthorizedRepeatedFailureNaturalCycleCriterionRevision",
+  "profile": "current-three-heroes-natural3-concurrency2-budget1200-r1",
+  "run_id": "PR13-natural-followup-01a14470-r1-20261016",
+  "endpoint": "https://www.relicbound.cn",
+  "clients": [
+    {
+      "id": "PR13NFG01",
+      "hero": "Guardian",
+      "project_config_sha256": "da2027e58857e40a44ec1e17d4392d58ab8a460edf0e0e0ea58712142f3ef853"
+    },
+    {
+      "id": "PR13NFP01",
+      "hero": "Priest",
+      "project_config_sha256": "95e203169b9b9d22c4466728642bda1735f5b4c8d7df825a367535019fe08d25"
+    },
+    {
+      "id": "PR13NFM01",
+      "hero": "Mage",
+      "project_config_sha256": "a131835da750d58fb11f695823a4df0994f40ef7ee80495157c54c46ae1de4d6"
+    }
+  ],
+  "cycles_per_account": 3,
+  "required_new_natural_cycles": 9,
+  "max_concurrency": 2,
+  "cycle_seconds": 1200,
+  "overall_seconds": 7800,
+  "cleanup_seconds": 120,
+  "maximum_new_matches": 9,
+  "controller_sha256": "bfe59dad4feba86745de3a4fd22dc8f3f54e1a9abe27250ebdce8135f287a983",
+  "control_sha256": {
+    "cloud_reader.py": "97e7d81de3c707c5aa202b9f80fd551e0fc7559fa0f76181cea4313b67a0b342",
+    "task_resources.py": "2ceeeedc6a54b17230bf7f145dbd052345cf23263ecbf416c7fba48bd9ef1a3a",
+    "task_transport.py": "ac2008d7bed6bea8e3abed9c851c5799db75478020c2eb46263f47a95d8fe2db"
+  },
+  "source_base_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+  "current_uncommitted_gateway_sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+  "human_authorization": "多次周期测试部分失败导致整体验收不通过时可以放宽限制，并在报告重点说明；本次最多几百场，真人排除。",
+  "original_criteria": {
+    "accounts": 10,
+    "natural_cycles_each": 3,
+    "total": 30,
+    "per_cycle_seconds": 600,
+    "overall_seconds": 1800
+  },
+  "prior_original_strict_results": [
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-cloud-unrestricted-baseline/summary.json",
+      "natural_cycles": 18,
+      "strict_pass": false
+    },
+    {
+      "path": "docs/reports/pr13-stages-20261009/S5-cloud-gdd1200-baseline/summary.json",
+      "natural_cycles": 22,
+      "strict_pass": false
+    },
+    {
+      "path": "outputs/pr13-tencent-20261009/PR13_LIVE_TEN_R2_CLOSED_ORIGINAL_CASE_REVIEW_20261016_R1.json",
+      "natural_cycles": 19,
+      "strict_pass": false
+    }
+  ],
+  "revision_reason": "Repeated partial completion. Four latest cutoffs occurred at600s with live monsters and recent effective actions; GDD base section1 line204 gives10-20minute mid/deep target.1200s is an observation budget,not proof all games finish by it. Lower concurrency separates lifecycle reliability from independent capacity tests.",
+  "original_four_cutoff_trace_review": "outputs/pr13-tencent-20261009/PR13_LIVE_TEN_R2_FOUR_CUTOFF_TRACE_REVIEW_20261016_R1.json",
+  "pass_rule": "Each of three distinct class accounts must independently complete three natural matches with same-account lifecycle,normal settlement ACK and one-time DB asset effects; no drain/abandon/timeout counted. Review complete raw event and SQL after execution.",
+  "unchanged_rules": [
+    "Baseline all-hand strategy",
+    "Seed20260930",
+    "Production card formula and classHP",
+    "Natural route and no forced success",
+    "Original CPU85/actor100ms three-window STOP",
+    "Monitor cadence10s,maximum gap20s",
+    "5pct disk and RAM floor",
+    "No automatic worker restart"
+  ],
+  "scope_limit": "This revised nine-cycle profile cannot be called original10accounts30strict pass,CAPACITY acceptance,human experience or fullMAIN. Original failures are retained. No canonical state promotion before per-case review.",
+  "cloud_limits_changed": false,
+  "deployment": false,
+  "human_experience_in_scope": false,
+  "automatic_retry": false
+}

@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="68b063ae-ac50-4e6e-8ee0-2f37b7e082e1" name="@c2d7a4ca306e 2026-09-30 18:35:13" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-09-30T18:35:13.8931379+00:00" queuing="2026-09-30T18:35:13.8931379+00:00" start="2026-09-30T18:33:51.3134379+00:00" finish="2026-09-30T18:35:28.1352081+00:00" />
+  <TestSettings name="default" id="33f3303b-e1c6-4154-9a81-30d592fab546">
+    <Deployment runDeploymentRoot="_c2d7a4ca306e_2026-09-30_18_35_13" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="75153af6-53df-4abe-9f8a-b4e715b0f7e7" testId="5608863a-0145-7b76-3fe4-723a937ac844" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks" computerName="c2d7a4ca306e" duration="00:01:20.4400651" startTime="2026-09-30T18:33:53.3798719+00:00" endTime="2026-09-30T18:35:13.8481652+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="75153af6-53df-4abe-9f8a-b4e715b0f7e7">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T18:33:53.6700378+00:00","evidence":{"label":"entry-three","Id":18416,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":37203,"SearchPath":"fc_runtime_test_1b72573074f7465ea364060371797c3f","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"PROC-05-cycle-1","recordedAt":"2026-09-30T18:34:12.3154229+00:00","evidence":{"cycle":1,"matchId":"01a0f398-4022-7bb5-893d-c656452021fa","roomId":"01a0f398-4022-7940-a8c6-88ea663b02f7","ProcessId":18416,"expected":"four PB preparations/entry; first READY replay; disconnect death; four durable ACK replays; no active prep locks","actual":"matched"}}
+{"caseId":"PROC-05-cycle-2","recordedAt":"2026-09-30T18:34:27.8776442+00:00","evidence":{"cycle":2,"matchId":"01a0f398-7ee9-7327-99c8-a5be429ad759","roomId":"01a0f398-7ee9-7e38-9590-4439ae07ff60","ProcessId":18416,"expected":"four PB preparations/entry; first READY replay; disconnect death; four durable ACK replays; no active prep locks","actual":"matched"}}
+{"caseId":"entry-window-pacing","recordedAt":"2026-09-30T18:34:27.8780931+00:00","evidence":{"cycle":3,"delaySeconds":29.0093582,"action":"wait before cohort queues; rate limits and 30s bot fill unchanged"}}
+{"caseId":"PROC-05-cycle-3","recordedAt":"2026-09-30T18:35:12.6863688+00:00","evidence":{"cycle":3,"matchId":"01a0f399-2d9f-72b8-a444-728ebf1c7213","roomId":"01a0f399-2d9f-70cc-a782-cc5edfe1508f","ProcessId":18416,"expected":"four PB preparations/entry; first READY replay; disconnect death; four durable ACK replays; no active prep locks","actual":"matched"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:12.7206568+00:00","evidence":{"label":"entry-three","ProcessId":18416,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/entry-three-18416.log"}}
+{"caseId":"process-start","recordedAt":"2026-09-30T18:35:12.7235894+00:00","evidence":{"label":"entry-three-restart","Id":18584,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":37203,"SearchPath":"fc_runtime_test_1b72573074f7465ea364060371797c3f","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"PROC-05","recordedAt":"2026-09-30T18:35:13.7768271+00:00","evidence":{"matchIds":["01a0f398-4022-7bb5-893d-c656452021fa","01a0f398-7ee9-7327-99c8-a5be429ad759","01a0f399-2d9f-72b8-a444-728ebf1c7213"],"previousPid":18416,"ProcessId":18584,"expected":"3 distinct matches, 12 settled/ACKed players and zero active locks/pending holds persist through actual restart","actual":"matched","scope":"three entry/disconnect-death cycles, not three full gameplay cycles or LIVE acceptance"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:13.8055316+00:00","evidence":{"label":"entry-three-restart","ProcessId":18584,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/entry-three-restart-18584.log"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5736f6b5-a6ec-492e-ab5a-ade05e5babd6" testId="02aaa0cc-06df-9cee-f6e8-576d1accc656" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once" computerName="c2d7a4ca306e" duration="00:00:03.3339667" startTime="2026-09-30T18:35:16.1734354+00:00" endTime="2026-09-30T18:35:19.5077008+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5736f6b5-a6ec-492e-ab5a-ade05e5babd6">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T18:35:16.3647545+00:00","evidence":{"label":"pending-0","Id":18648,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":34019,"SearchPath":"fc_runtime_test_78567555b6f2414b8eb3bb8569df92cc","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:18.0367984+00:00","evidence":{"label":"pending-0","ProcessId":18648,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/pending-0-18648.log"}}
+{"caseId":"process-start","recordedAt":"2026-09-30T18:35:18.038016+00:00","evidence":{"label":"pending-1","Id":18677,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":34019,"SearchPath":"fc_runtime_test_78567555b6f2414b8eb3bb8569df92cc","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:19.4688323+00:00","evidence":{"label":"pending-1","ProcessId":18677,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/pending-1-18677.log"}}
+{"caseId":"PROC-03","recordedAt":"2026-09-30T18:35:19.4697088+00:00","evidence":{"matchId":"da663c4c-4459-41fc-a143-002e61157cb1","RoomId":"69b852b8-2ae5-42f6-b8e7-bcf379454374","SettlementId":"01a0f399-7805-7265-83c9-3a483afebb18","pids":[18648,18677],"expected":"durable Pending hold committed by actual host cold start; second start credits zero additional","actual":"matched"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b28dcf36-9bfa-49b0-9c52-88e4337ce98e" testId="35301d28-a41f-51dc-7c27-6e0c31e88021" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room" computerName="c2d7a4ca306e" duration="00:00:02.3109528" startTime="2026-09-30T18:35:13.8594042+00:00" endTime="2026-09-30T18:35:16.1710757+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b28dcf36-9bfa-49b0-9c52-88e4337ce98e">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T18:35:14.4991661+00:00","evidence":{"label":"quarantine","Id":18618,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":36433,"SearchPath":"fc_runtime_test_30b92ef43da54adc83bd01b57ccf9966","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"PROC-04","recordedAt":"2026-09-30T18:35:16.0982239+00:00","evidence":{"formerMatch":"6a1ef2b1-4d10-4442-a312-e454524b9079","formerRoom":"79871110-edeb-42b9-81fd-349455428bc2","nextMatch":"d84ac006-4c38-432a-9554-47643142cbc1","nextRoom":"35fdba15-59ce-41bf-b0e9-963d669da02f","ProcessId":18618,"expected":"live 200, ready 503; old actor unavailable; next room WS snapshot retained; no extra settlement","actual":"matched"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:16.1310242+00:00","evidence":{"label":"quarantine","ProcessId":18618,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/quarantine-18618.log"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0c9d8911-b730-4cf0-a723-d3b27b437b80" testId="52b0e5b7-c10b-c369-879c-6fa848fcbabe" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK" computerName="c2d7a4ca306e" duration="00:00:05.4074363" startTime="2026-09-30T18:35:19.5094977+00:00" endTime="2026-09-30T18:35:24.9359495+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c9d8911-b730-4cf0-a723-d3b27b437b80">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T18:35:19.7231667+00:00","evidence":{"label":"extraction-0","Id":18709,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":46879,"SearchPath":"fc_runtime_test_2c2f83c764eb4c09b5b886b4f1181739","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:24.8793794+00:00","evidence":{"label":"extraction-0","ProcessId":18709,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/extraction-0-18709.log"}}</StdOut>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42883: operator does not exist: uuid = text
+
+POSITION: 55</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1924
+   at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters) in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1924
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 135
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 156
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK() in /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs:line 159
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7af60b70-9bc5-4fad-aedf-b02cf65a567c" testId="cf46c16d-0812-d526-f626-3ce37387556e" testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart" computerName="c2d7a4ca306e" duration="00:00:03.1079607" startTime="2026-09-30T18:35:24.9370421+00:00" endTime="2026-09-30T18:35:28.0451519+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7af60b70-9bc5-4fad-aedf-b02cf65a567c">
+      <Output>
+        <StdOut>{"caseId":"process-start","recordedAt":"2026-09-30T18:35:25.1917099+00:00","evidence":{"label":"running-1","Id":18744,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":41705,"SearchPath":"fc_runtime_test_838ee4724bb04ac19a53439e29b3d404","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:26.5413562+00:00","evidence":{"label":"running-1","ProcessId":18744,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/running-1-18744.log"}}
+{"caseId":"process-start","recordedAt":"2026-09-30T18:35:26.5421947+00:00","evidence":{"label":"running-2","Id":18772,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":41705,"SearchPath":"fc_runtime_test_838ee4724bb04ac19a53439e29b3d404","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"PROC-01","recordedAt":"2026-09-30T18:35:27.9818244+00:00","evidence":{"matchId":"e8444131-e6fd-4c1f-a531-c9af123766f5","RoomId":"954aef9b-87d1-4d0a-b64a-86718b9f2e2c","firstPid":18744,"secondPid":18772,"firstRevision":14,"RoomRevision":28,"expected":"same room/match, hand and RNG preserved, no settlement","actual":"matched"}}
+{"caseId":"process-stop","recordedAt":"2026-09-30T18:35:28.0110877+00:00","evidence":{"label":"running-2","ProcessId":18772,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/running-2-18772.log"}}</StdOut>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="52b0e5b7-c10b-c369-879c-6fa848fcbabe">
+      <Execution id="0c9d8911-b730-4cf0-a723-d3b27b437b80" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="cf46c16d-0812-d526-f626-3ce37387556e">
+      <Execution id="7af60b70-9bc5-4fad-aedf-b02cf65a567c" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_Running_room_resumes_after_abrupt_OS_process_restart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="02aaa0cc-06df-9cee-f6e8-576d1accc656">
+      <Execution id="5736f6b5-a6ec-492e-ab5a-ade05e5babd6" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_cold_start_commits_durable_pending_holds_once" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="5608863a-0145-7b76-3fe4-723a937ac844">
+      <Execution id="75153af6-53df-4abe-9f8a-b4e715b0f7e7" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room" storage="/workspace/pr13-takeover/process-recovery/server/tests/fantasycard.server.tests/bin/release/net10.0/fantasycard.server.tests.dll" id="35301d28-a41f-51dc-7c27-6e0c31e88021">
+      <Execution id="b28dcf36-9bfa-49b0-9c52-88e4337ce98e" />
+      <TestMethod codeBase="/workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="5608863a-0145-7b76-3fe4-723a937ac844" executionId="75153af6-53df-4abe-9f8a-b4e715b0f7e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="02aaa0cc-06df-9cee-f6e8-576d1accc656" executionId="5736f6b5-a6ec-492e-ab5a-ade05e5babd6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="35301d28-a41f-51dc-7c27-6e0c31e88021" executionId="b28dcf36-9bfa-49b0-9c52-88e4337ce98e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52b0e5b7-c10b-c369-879c-6fa848fcbabe" executionId="0c9d8911-b730-4cf0-a723-d3b27b437b80" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf46c16d-0812-d526-f626-3ce37387556e" executionId="7af60b70-9bc5-4fad-aedf-b02cf65a567c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="4" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.27]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:00.83]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:01.16]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:01:32.83]       Npgsql.PostgresException : 42883: operator does not exist: uuid = text
+[xUnit.net 00:01:32.83]       
+[xUnit.net 00:01:32.83]       POSITION: 55
+[xUnit.net 00:01:32.83]       Stack Trace:
+[xUnit.net 00:01:32.83]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:01:32.83]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]            at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:01:32.83]         /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs(1924,0): at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters)
+[xUnit.net 00:01:32.83]         /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs(1924,0): at FantasyCard.Server.Tests.Persistence.PostgresTestSchema.ScalarAsync[T](String sql, Object[] parameters)
+[xUnit.net 00:01:32.83]         /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs(135,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK()
+[xUnit.net 00:01:32.83]         /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs(156,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK()
+[xUnit.net 00:01:32.83]         /workspace/pr13-takeover/process-recovery/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs(159,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK()
+[xUnit.net 00:01:32.83]         --- End of stack trace from previous location ---
+[xUnit.net 00:01:32.83]       Output:
+[xUnit.net 00:01:32.83]         {"caseId":"process-start","recordedAt":"2026-09-30T18:35:19.7231667+00:00","evidence":{"label":"extraction-0","Id":18709,"executable":"/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet","dll":"/workspace/pr13-takeover/process-recovery/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll","port":46879,"SearchPath":"fc_runtime_test_2c2f83c764eb4c09b5b886b4f1181739","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+[xUnit.net 00:01:32.83]         {"caseId":"process-stop","recordedAt":"2026-09-30T18:35:24.8793794+00:00","evidence":{"label":"extraction-0","ProcessId":18709,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/workspace/pr13-takeover/process-recovery/evidence/process-recovery-20260930/matrix-attempt4/extraction-0-18709.log"}}
+[xUnit.net 00:01:35.94]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="c2d7a4ca306e" outcome="Error" timestamp="2026-09-30T18:35:24.9483949+00:00">
+        <Text>[xUnit.net 00:01:32.83]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

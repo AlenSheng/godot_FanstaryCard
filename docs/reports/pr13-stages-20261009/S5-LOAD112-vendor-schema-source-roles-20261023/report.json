@@ -1,0 +1,350 @@
+{
+  "kind": "ExactVendorAPIModelSourceRolesScoped_OriginalStrictRejectionsPreserved",
+  "generated_at": "2026-10-23T11:01:22.850516+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "definition_source": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md#load-112-\u5168\u91cfmanifest\u8131\u654f",
+  "exact_outer_archive": {
+    "path": "tools/engine-local/protected/postgresql.zip",
+    "bytes": 343808005,
+    "sha256": "fbe23da234ee31547bf8a36d29dfd81e82b849df2d2b78d2eecb43d360252f8c",
+    "current_original_hash_equal_and_open_handle_stable": true,
+    "git_ignored_rule": "tools/.gitignore:2:engine-local/\ttools/engine-local/protected/postgresql.zip",
+    "tracked_paths": 0
+  },
+  "exact_target_body_objects_read": 1326,
+  "exact_target_observations": 1379,
+  "nested_formats_checked_by_target_identity": [
+    "ZIP",
+    "gzip",
+    "wheel ZIP"
+  ],
+  "retained_snapshot_R44_failure": {
+    "ok": false,
+    "native_exit": 1,
+    "exception": "AssertionError",
+    "failed_assumption": "All nested vendor contents are single-member gzip",
+    "actual_additional_format": "nested pip wheel ZIP",
+    "partial_private_body_files_retained": 50,
+    "qualified_objects": 0
+  },
+  "R45_snapshot_R46_probe_R47_role_processes_observed_native_exit": 0,
+  "total_candidate_model_objects": 710,
+  "probe_all_roles_mapped_candidates": 674,
+  "qualified_exact_schema_source_role_objects": 651,
+  "family_counts": {
+    "GoogleDiscovery": 549,
+    "AWSServiceModel": 102
+  },
+  "event_role_counts": {
+    "SchemaPropertyOrParameterDefinition": 972,
+    "NamedTypeDefinition": 72,
+    "MemberTypeReference": 286,
+    "StaticModelDocumentation": 81
+  },
+  "stricter_shape_deferrals": 23,
+  "other_unmapped_model_objects_retained": 36,
+  "boundary_controls_passed": 18,
+  "boundary_controls": [
+    {
+      "name": "AWS member type reference",
+      "expected_source_role_only": true,
+      "actual_source_role_only": true,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "AWS named type definition",
+      "expected_source_role_only": true,
+      "actual_source_role_only": true,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Google property declaration",
+      "expected_source_role_only": true,
+      "actual_source_role_only": true,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Google parameter declaration",
+      "expected_source_role_only": true,
+      "actual_source_role_only": true,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Static documentation scope without publication permission",
+      "expected_source_role_only": true,
+      "actual_source_role_only": true,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Runtime sibling is not covered",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Scalar is not an AWS declaration",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "AWS declaration with embedded supplied value",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Unresolved AWS type reference",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Unrelated string is not documentation",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Scalar is not a Google declaration",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Google declaration with supplied value",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Unresolved Google schema reference",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Misplaced declaration-shaped dictionary",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Non-model credential-shaped input",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Enum content is not documentation",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Nested response is not a declaration",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    },
+    {
+      "name": "Mixed safe and supplied scalar keeps object pending",
+      "expected_source_role_only": false,
+      "actual_source_role_only": false,
+      "original_public_guard_still_rejects": true
+    }
+  ],
+  "declared_package_metadata": [
+    {
+      "declared_name": "botocore",
+      "declared_version": "1.43.65",
+      "content": {
+        "path": "G:\\PR13Evidence\\LOAD112-vendor-package-snapshot-20261023-r45-originals\\exact-support-bytes.private\\a37480e9fe61d93316ee761707cf6161cfc243a98ed74f0707447cc39f692246.private-original",
+        "bytes": 5569,
+        "sha256": "a37480e9fe61d93316ee761707cf6161cfc243a98ed74f0707447cc39f692246"
+      },
+      "exact_native_node": {
+        "row": {
+          "kind": "member",
+          "outer_source": {
+            "root": "workspace",
+            "path": "tools/engine-local/protected/postgresql.zip",
+            "bytes": 343808005,
+            "sha256": "fbe23da234ee31547bf8a36d29dfd81e82b849df2d2b78d2eecb43d360252f8c",
+            "frozen_snapshot_alias_paths": 3
+          },
+          "parent_archive_sha256": "fbe23da234ee31547bf8a36d29dfd81e82b849df2d2b78d2eecb43d360252f8c",
+          "member_ordinal": 8876,
+          "member_name": "pgsql/pgAdmin 4/python/Lib/site-packages/botocore-1.43.65.dist-info/METADATA",
+          "depth": 0,
+          "bytes": 5569,
+          "sha256": "a37480e9fe61d93316ee761707cf6161cfc243a98ed74f0707447cc39f692246",
+          "declared_size": 5569,
+          "metadata": {
+            "format": "zip",
+            "CRC32": 2853537659,
+            "compressed_bytes": 2171,
+            "declared_uncompressed_bytes": 5569
+          },
+          "inspection": "BinaryIdentityOnly"
+        },
+        "native_line_ordinal": 41696,
+        "native_line_sha256": "da4daa64a701a2762d35532c885264b8f80780a88d031f2558faa2f1c4090d12"
+      }
+    },
+    {
+      "declared_name": "google-api-python-client",
+      "declared_version": "2.198.0",
+      "content": {
+        "path": "G:\\PR13Evidence\\LOAD112-vendor-schema-context-20261023-r46-originals\\b6a323edbd41c7120b7232389d772041d4c5da941ae67a05da43681fabc74315.private-original",
+        "bytes": 7009,
+        "sha256": "b6a323edbd41c7120b7232389d772041d4c5da941ae67a05da43681fabc74315"
+      },
+      "exact_native_node": {
+        "row": {
+          "kind": "member",
+          "outer_source": {
+            "root": "workspace",
+            "path": "tools/engine-local/protected/postgresql.zip",
+            "bytes": 343808005,
+            "sha256": "fbe23da234ee31547bf8a36d29dfd81e82b849df2d2b78d2eecb43d360252f8c",
+            "frozen_snapshot_alias_paths": 3
+          },
+          "parent_archive_sha256": "fbe23da234ee31547bf8a36d29dfd81e82b849df2d2b78d2eecb43d360252f8c",
+          "member_ordinal": 10811,
+          "member_name": "pgsql/pgAdmin 4/python/Lib/site-packages/google_api_python_client-2.198.0.dist-info/METADATA",
+          "depth": 0,
+          "bytes": 7009,
+          "sha256": "b6a323edbd41c7120b7232389d772041d4c5da941ae67a05da43681fabc74315",
+          "declared_size": 7009,
+          "metadata": {
+            "format": "zip",
+            "CRC32": 1864021091,
+            "compressed_bytes": 2440,
+            "declared_uncompressed_bytes": 7009
+          },
+          "inspection": "BinaryIdentityOnly"
+        },
+        "native_line_ordinal": 44251,
+        "native_line_sha256": "752c32555d6b0052127d0a99b6c25ca76a83e2f8afdaae6d3657f9c33eacc5a7"
+      }
+    }
+  ],
+  "consumer_AST_witnesses": [
+    {
+      "label": "JSON model decoder",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/botocore/loaders.py",
+      "source_sha256": "aa2be08c3dd386f52681b27e325d28664cd9c6b9cdbd6cf8eff7d2eda66aea42",
+      "line": 182,
+      "end_line": 182,
+      "ast_node_sha256": "8999cfac32c6ccef9e1c445fffd03a8a9da21839c6d2cb8f71ef4833b3c2be9e"
+    },
+    {
+      "label": "Named shape lookup",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/botocore/model.py",
+      "source_sha256": "1f502c7ddf1ca329b695e30d36eff773fd2c483434ef1f1d9bc27582d1c38b8a",
+      "line": 767,
+      "end_line": 767,
+      "ast_node_sha256": "c1e90c0be445dc8e227eb078a5e28d0a75573677d1797a21b835a68ab22e59b2"
+    },
+    {
+      "label": "Shape type discriminator",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/botocore/model.py",
+      "source_sha256": "1f502c7ddf1ca329b695e30d36eff773fd2c483434ef1f1d9bc27582d1c38b8a",
+      "line": 123,
+      "end_line": 123,
+      "ast_node_sha256": "be4f269fc190555bd1759e98f334fcf14f004dc57550832afd7599dcbdc92ddb"
+    },
+    {
+      "label": "Shape type discriminator",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/botocore/model.py",
+      "source_sha256": "1f502c7ddf1ca329b695e30d36eff773fd2c483434ef1f1d9bc27582d1c38b8a",
+      "line": 771,
+      "end_line": 771,
+      "ast_node_sha256": "be4f269fc190555bd1759e98f334fcf14f004dc57550832afd7599dcbdc92ddb"
+    },
+    {
+      "label": "Bundled discovery document file read",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/googleapiclient/discovery_cache/__init__.py",
+      "source_sha256": "c30fef974be154bb874847514efdfe82ae840c6fbe15feeb20b6071c589f9f37",
+      "line": 73,
+      "end_line": 73,
+      "ast_node_sha256": "806c0135149f14272c6b76535ad7c02afb18fa8371fbfe1a1c4186eab89582de"
+    },
+    {
+      "label": "Discovery text decoder",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/googleapiclient/discovery.py",
+      "source_sha256": "6872c47019ab87827ff7d5928bb32e67ebe073e120d4bad63c8f9df9e21e5eb7",
+      "line": 556,
+      "end_line": 556,
+      "ast_node_sha256": "34aaa480f069b5ad0bab7aba52c9f07e85c54e553820088380c4e226d58835ee"
+    },
+    {
+      "label": "Discovery text decoder",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/googleapiclient/discovery.py",
+      "source_sha256": "6872c47019ab87827ff7d5928bb32e67ebe073e120d4bad63c8f9df9e21e5eb7",
+      "line": 558,
+      "end_line": 558,
+      "ast_node_sha256": "d2319db43838be08273f6cef5e148ca5c7726017350c270255ccaa3aa847efb7"
+    },
+    {
+      "label": "Discovery schema constructor",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/googleapiclient/discovery.py",
+      "source_sha256": "6872c47019ab87827ff7d5928bb32e67ebe073e120d4bad63c8f9df9e21e5eb7",
+      "line": 587,
+      "end_line": 587,
+      "ast_node_sha256": "107c6ab56d8958a92147c9bfec3ee57beafc8b84efd309b79385473dd0e80628"
+    },
+    {
+      "label": "Schema definition dictionary consumer",
+      "member": "pgsql/pgAdmin 4/python/Lib/site-packages/googleapiclient/schema.py",
+      "source_sha256": "ad1deef163d0fd5f1aec6094b0dbafb5fe86c73c2e30ed076aab13069ded9f23",
+      "line": 81,
+      "end_line": 81,
+      "ast_node_sha256": "e49d0d83a3c078ad98c173e37ac0340bfbe9345e80bd4242204c9437814144b3"
+    }
+  ],
+  "qualified_private_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-vendor-schema-source-roles-20261023-r47-originals\\exact-vendor-schema-role-proofs.private.original.jsonl",
+    "bytes": 1814241,
+    "sha256": "3b75b5b579e572e73392c15822c82dc5e5df73aa2fe2ec074071c6f65925f58b",
+    "records": 651
+  },
+  "previous_archive_delta_objects": 1417,
+  "remaining_archive_delta_objects": 766,
+  "remaining_archive_delta_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-vendor-schema-source-roles-20261023-r47-originals\\remaining-archive-delta-content-review-queue.private.original.jsonl",
+    "bytes": 691707,
+    "sha256": "39ee899257a897d81fcaa22aff6ab9f0215d179c7bbb0929a7afd146c110d7ce",
+    "remaining_objects": 766,
+    "finding_observations": 849
+  },
+  "original_source_content_pending_unchanged": 220,
+  "combined_content_review_objects_pending": 986,
+  "structural_path_observations_pending_unchanged": 226,
+  "known_invalid_empty_package_not_accepted": true,
+  "all_native_original_findings_and_public_rejections_retained": true,
+  "source_role_scope_does_not_authorize_public_export": true,
+  "static_documentation_examples_not_attested_credential_free": true,
+  "upstream_vendor_authenticity_and_actual_runtime_values_not_attested": true,
+  "public_guard_sha256_unchanged": "2969671beea4bad2158c09577ea1da86ed7e5bdb8e3ccaa1457a6c023442b4d9",
+  "source_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-vendor-schema-role-publication-20261023-r48-originals\\verified-source-custody.original.json",
+    "bytes": 453991,
+    "sha256": "0a77493fa3c57b216828bff2db7f1da3585a06fb5775e5885758f76cae825104"
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "current_register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "Godot_or_production_operation_performed": false
+}

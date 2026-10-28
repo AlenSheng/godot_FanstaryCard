@@ -1,0 +1,196 @@
+{
+  "at": "2026-10-27T19:27:34.377219+08:00",
+  "goal": "各玩法UI排版、多语言重叠、文字对比度与整体风格统一性验收",
+  "state": "Active_PartialVisualBaseline_ChangesAwaitFullMatrixValidation",
+  "source_base": "40b853d644ebcecaaea3e46b3a67d895a1456948",
+  "languages": [
+    "zh-CN",
+    "en"
+  ],
+  "required_resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "required_cross_product_per_screen": 6,
+  "required_screen_families": [
+    "login",
+    "hall and three heroes",
+    "prep normal/locked",
+    "codex filters/details",
+    "deck builder selected/full",
+    "equipment and comparison",
+    "enhancement quote/blocked",
+    "shop scroll/confirmation",
+    "market listings/details",
+    "mail list/long body/attachments",
+    "settings/audio/language",
+    "ready prompt",
+    "exploration/actions/map/midlayer",
+    "inventory/details/relic replacement",
+    "PVE/PVP/status/pool/choice",
+    "settlement success/death",
+    "recovery/confirmation/notices"
+  ],
+  "baseline_actual_frames": 22,
+  "baseline_scope": "Both languages at960x540,11 basic screens,actual OpenGL rendered pixels",
+  "baseline_defects_confirmed": [
+    "English codex quality filter captions truncated",
+    "Login shell labels collapse to font size1 during container layout"
+  ],
+  "proposed_code_fixes": [
+    "Use requested font until container allocation;avoid fitting against font-derived container height",
+    "Measure button text with its actual rendered font",
+    "Use appropriate compact margins and actual font fitting for quality filters"
+  ],
+  "fixture_corrections": [
+    "Populate lobby cards before production card-pool prewarm",
+    "Use normal localized game-change notifications in isolated APPDATA",
+    "Login uses non-reference shell and is not a missing-reference error"
+  ],
+  "current_compilation_evidence": {
+    "headless05": {
+      "actual_game_matches": 0,
+      "mode": "headless",
+      "ok": true,
+      "scripts": [
+        {
+          "compiled": true,
+          "path": "res://ui/palette.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/reference_ui.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/codex_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/deck_builder_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://ui/exploration_view.gd"
+        },
+        {
+          "compiled": true,
+          "path": "res://tests/ui_visual_review.gd"
+        }
+      ]
+    },
+    "later_review_harness_position_helper_requires_fresh_precheck": true
+  },
+  "new_asset": {
+    "path": "client/assets/generated/ui/exploration_move_compass.png",
+    "tool": "BuiltInImageGen",
+    "transparent_background": true,
+    "image_pixels_unmodified_after_generation": true,
+    "prompt_file": "docs/reports/ui-visual-review-20261027-r1/imagegen-prompt.txt",
+    "status": "GeneratedAndReferenced_RenderAcceptancePending"
+  },
+  "source_changes": [
+    {
+      "path": "client/ui/palette.gd",
+      "bytes": 35695,
+      "sha256": "d9fbdabc422b18de5352fe5b205bfcdb14698ad772a310f4afb252a37b092424"
+    },
+    {
+      "path": "client/ui/reference_ui.gd",
+      "bytes": 75937,
+      "sha256": "b6c2262d9b51831241fea137c46af3b16dad4c9cea72b27db30ca0644cc28177"
+    },
+    {
+      "path": "client/ui/codex_view.gd",
+      "bytes": 18326,
+      "sha256": "f8ec2b4607bd2b45109c9c55822a2ede1026355eea351ec89d4a7fe361a0eb1f"
+    },
+    {
+      "path": "client/ui/deck_builder_view.gd",
+      "bytes": 20483,
+      "sha256": "48c0aa6b5fc55532d41d814ca60d5d1bfdb09ecd155e3fa0f9935db636e1bb4b"
+    },
+    {
+      "path": "client/ui/exploration_view.gd",
+      "bytes": 47576,
+      "sha256": "853b262db6550bb4ed85e1b9ddb79940f03738bcf0061c29c093601d8c2b9eb1"
+    },
+    {
+      "path": "client/tests/ui_visual_review.gd",
+      "bytes": 7088,
+      "sha256": "96987a7e119a4ba5114aa094ac1ee7f3ebab0cc2d3b7d36c38e8c4761cd4bb5e"
+    },
+    {
+      "path": "client/tests/ui_visual_review.tscn",
+      "bytes": 296,
+      "sha256": "c3cacb778a4601becaa3b04f0069d0221318ad4fccfb73c0f9a6f842e5e31d0b"
+    },
+    {
+      "path": "client/tests/ui_visual_validation.gd",
+      "bytes": 1093,
+      "sha256": "1bf3172d7ff20800379071b4326e6e8282de6403e6fe6783454036f49a09000c"
+    },
+    {
+      "path": "client/tests/ui_visual_validation.tscn",
+      "bytes": 185,
+      "sha256": "e9c1fc599b678c0c216f138d149d8e32279a828a6d3ea4cd54efb0dc6340d81e"
+    },
+    {
+      "path": "client/assets/generated/ui/exploration_move_compass.png",
+      "bytes": 2557094,
+      "sha256": "b2b53f73c94482410a2cf4fdf6a066e05a23662bd85d57b606e318a90ee5a0c5"
+    }
+  ],
+  "render_mode_policy": {
+    "headless_for_script_checks": true,
+    "visible_user_desktop_windows_allowed": false,
+    "real_rendering_requires_inactive_private_Windows_desktop": true,
+    "never_switch_or_activate_user_desktop": true,
+    "no_visible_fallback_if_private_desktop_fails": true,
+    "owned_processes_only_stopped": true
+  },
+  "attempts": {
+    "baseline01": "Native0_22actualPNGs",
+    "pass02": "MemoryAdmissionRejected_NoNative",
+    "import03": "HeadlessImportNative0",
+    "pass03": "ScriptIndentError_NoNewPNGs_UserClosedOwnWindow",
+    "headless04": "CheckOnlyAutoloadContextUnsupported_NotProductFailure",
+    "headless05": "All6ScriptsCompile_HeadlessNative0",
+    "offscreen06": "DesktopVisibilityGuardStoppedOwnProcess_NoPNGs",
+    "isolated08": "MemoryAdmissionRejected_BeforeDesktopOrNativeCreation"
+  },
+  "resource_policy": {
+    "reserve_GiB": 6,
+    "single_renderer_startup_budget_GiB": 1,
+    "admission_requires_min7GiB_and_guarded_sequential_launches": true,
+    "other_project_processes_not_modified": true
+  },
+  "next_actions": [
+    "Read actual resource state and confirm no live owned run;do not duplicate handles",
+    "Use a NEW immutable attempt folder for private-desktop launcher;headless precheck must pass before GPU worker",
+    "Inspect actual repaired screenshots and assertions in all6 language/resolution combinations",
+    "Extend rendered variants to every listed dialog/screen family;include long text,scrolling,disabled and active states",
+    "Verify cached-card selected text across locale changes;card pool signature currently has no explicit locale,not yet proven defect",
+    "Measure contrast against rendered backdrops and review style/new compass at real display size",
+    "Do not declare whole UI acceptance before rendered evidence and interactions cover the full matrix"
+  ],
+  "new_capacity_or_actual_game_matches": 0,
+  "old_acceptance_reports_and_GDD_not_modified": true,
+  "active_goal_complete": false,
+  "private_evidence_root": "G:\\PR13Evidence\\ui-visual-review-20261027-r1",
+  "references": {
+    "contrast": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+    "private_desktop": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createdesktopw",
+    "desktop_launch": "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-startupinfow"
+  }
+}

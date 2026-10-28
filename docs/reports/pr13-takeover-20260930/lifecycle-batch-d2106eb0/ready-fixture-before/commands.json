@@ -1,0 +1,330 @@
+[
+  {
+    "label": "fresh-source-build",
+    "command": [
+      "/workspace/relicround-env/dotnet/usr/share/dotnet/dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss/server",
+    "exit_code": 0,
+    "duration_seconds": 11.386,
+    "deadline_seconds": 180,
+    "log": "fresh-source-build.log"
+  },
+  {
+    "label": "godot-import",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--editor",
+      "--import",
+      "--quit"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 7.068,
+    "deadline_seconds": 120,
+    "log": "godot-import.log"
+  },
+  {
+    "label": "private-pg-init",
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/private-pg",
+      "-U",
+      "ready_stop_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 0.982,
+    "deadline_seconds": 30,
+    "log": "private-pg-init.log"
+  },
+  {
+    "label": "private-pg-start",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/private-pg",
+      "-l",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/private-pg.log",
+      "-o",
+      "-c listen_addresses='' -k /tmp/pr13-ready-stop-g4c_2m4b",
+      "-w",
+      "start"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 0.107,
+    "deadline_seconds": 30,
+    "log": "private-pg-start.log"
+  },
+  {
+    "label": "ready_accepted_lost_resume-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/pr13-takeover/ready-response-loss/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "38487",
+      "--case",
+      "ready_accepted_lost_resume",
+      "--evidence",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/ready_accepted_lost_resume/transport",
+      "--database",
+      "ready_stop_685a5d3ebcef42018c09e318b1acbc83"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": null,
+    "status": "started",
+    "pid": 47286,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_accepted_lost_resume-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 36.801,
+    "deadline_seconds": 95,
+    "log": "ready_accepted_lost_resume-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "47286"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.032,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_started_lost_reconnect-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/pr13-takeover/ready-response-loss/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "33073",
+      "--case",
+      "ready_started_lost_reconnect",
+      "--evidence",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/ready_started_lost_reconnect/transport",
+      "--database",
+      "ready_stop_01c142f07d3648baab2acfaa95a9fb59"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": null,
+    "status": "started",
+    "pid": 48186,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_started_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 39.051,
+    "deadline_seconds": 95,
+    "log": "ready_started_lost_reconnect-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "48186"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.032,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_replies_lost_reconnect-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/pr13-takeover/ready-response-loss/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "43467",
+      "--case",
+      "ready_replies_lost_reconnect",
+      "--evidence",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/ready_replies_lost_reconnect/transport",
+      "--database",
+      "ready_stop_2d7d5e5c7d564972af92b5d04a55e988"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": null,
+    "status": "started",
+    "pid": 49154,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_replies_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 36.894,
+    "deadline_seconds": 95,
+    "log": "ready_replies_lost_reconnect-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "49154"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.032,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_lost_reconnect-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/pr13-takeover/ready-response-loss/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "44363",
+      "--case",
+      "ready_send_lost_reconnect",
+      "--evidence",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/ready_send_lost_reconnect/transport",
+      "--database",
+      "ready_stop_bb0ec6a6b0be44f1b11041e83323ceba"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": null,
+    "status": "started",
+    "pid": 50152,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_lost_reconnect-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 38.057,
+    "deadline_seconds": 95,
+    "log": "ready_send_lost_reconnect-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "50152"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.19,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_all_lost_stop-frame-proxy-start",
+    "command": [
+      "/workspace/relicround-env/venv/bin/python3",
+      "/workspace/pr13-takeover/ready-response-loss/client/tests/ready_frame_proxy.py",
+      "--upstream-port",
+      "37525",
+      "--case",
+      "ready_send_all_lost_stop",
+      "--evidence",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/ready_send_all_lost_stop/transport",
+      "--database",
+      "ready_stop_c7ca32b447734b22a3637dfca4a7f01f"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": null,
+    "status": "started",
+    "pid": 50962,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "ready_send_all_lost_stop-godot",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--max-fps",
+      "60",
+      "--path",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/godot",
+      "--script",
+      "res://tests/run_ready_stop_faults.gd"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 49.901,
+    "deadline_seconds": 95,
+    "log": "ready_send_all_lost_stop-godot.log"
+  },
+  {
+    "label": "owned-frame-proxy-cleanup",
+    "command": [
+      "SIGTERM",
+      "50962"
+    ],
+    "exit_code": 0,
+    "duration_seconds": 0.015,
+    "deadline_seconds": 10
+  },
+  {
+    "label": "owned-pg-cleanup",
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/ready-response-loss-red-01/private-pg",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "cwd": "/workspace/pr13-takeover/ready-response-loss",
+    "exit_code": 0,
+    "duration_seconds": 1.003,
+    "deadline_seconds": 30,
+    "log": "owned-pg-cleanup.log"
+  }
+]

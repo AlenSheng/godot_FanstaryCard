@@ -1,0 +1,599 @@
+{
+  "kind": "CurrentNativeNumericalContractReview_A071Only",
+  "generated_at_UTC": "2026-10-23T15:20:15.600719+00:00",
+  "source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "GDD_pins": [
+    {
+      "path": "GDD.md",
+      "bytes": 15047,
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "bytes": 271379,
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    },
+    {
+      "path": "config/FantasyCard_Config.xlsx",
+      "bytes": 87352,
+      "sha256": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6"
+    }
+  ],
+  "scope": "Only the three A07.1 compiler/API/default contract cases, OFFLINE+POSTGRES. Broader suite and CI outcomes are supporting observations, not blanket pass claims.",
+  "task_contract": {
+    "id": "PR13-A07.1",
+    "title": "旧数值合同定位",
+    "source_instruction": "依据可访问A处理包正文重新明确的细项，非原附件逐字恢复。",
+    "specification_state": "ReviewReady",
+    "execution_state": "NotRevalidated",
+    "accepted_by": null,
+    "requires_before_integration": [
+      "LOAD-10.1"
+    ],
+    "inputs": "编译日志及当前策略API",
+    "implementation_steps": "复现旧布尔/余量成员错误，列每断言迁移映射给B02；不恢复废弃参数",
+    "test_cases": [
+      {
+        "id": "PR13-A07.1-T01",
+        "setup_and_injection": "useConsumptionBasedFenxian",
+        "expected": "映射现有枚举",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A07.1-T02",
+        "setup_and_injection": "余量旧属性",
+        "expected": "现有GuardianShieldRemainderTenths",
+        "executed": false,
+        "evidence": null
+      },
+      {
+        "id": "PR13-A07.1-T03",
+        "setup_and_injection": "默认断言误用候选",
+        "expected": "默认/candidate分离",
+        "executed": false,
+        "evidence": null
+      }
+    ],
+    "pass_criteria": "每编译错误有当前合同去向，无删测试/禁分析器/改默认迎合断言。",
+    "failure_rule": "任一必测用例与预期不符为Failed；缺输入/环境/证据为Blocked；仅完成部分层次为Partial，不升级Accepted。",
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES"
+    ],
+    "command_refs": [
+      "C-BUILD",
+      "C-DOMAIN",
+      "C-SERVER",
+      "C-GODOT",
+      "C-CI"
+    ],
+    "stage_refs": [
+      "S0",
+      "S1",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6"
+    ],
+    "runtime_stage": "NotApplicableWithReason",
+    "runtime_stage_reason": "仅凭指定离线/集成产物即可判定本子项；公网压测不增加该判据可信度。",
+    "evidence_root": "outputs/pr13-acceptance/<integration_sha>/PR13-A07.1/",
+    "deliverables": [
+      "report.json（逐条预期/实际/判定）",
+      "cases.jsonl（用例与业务关联）",
+      "commands.json（命令/工具版本/退出码/跳过）",
+      "manifest.json（相对路径/大小/SHA256）"
+    ],
+    "rollback": "回退服务代码并复测旧新房间恢复；保留数据库备份/幂等流水，不用删行制造成功。",
+    "gate_refs": [
+      "G1",
+      "G2",
+      "G5"
+    ],
+    "historical_execution_state": "Queued"
+  },
+  "source_snapshots": {
+    "PG9": {
+      "manifest": {
+        "path": "G:\\PR13Evidence\\A071-current-source-local-PG9-20261023-r157-originals\\current-saved-source-manifest.original.json",
+        "bytes": 78721,
+        "sha256": "337518e2414bdbbdd4fb39b5dff3bdb3781824e8a86198509656583ecada918d"
+      },
+      "verified_snapshot_inputs": 393,
+      "HEAD": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "test_visibility_only_delta": {
+        "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs",
+        "before_sha256": "445eb56464e369fbcf1ce9ca57e89ba6e6d634753878e50f5877b11baf891543",
+        "after_sha256": "cb68e2946d8cd7ccc610855bdb980a4cc8aa9994157f900d322ed90cce4cff7b"
+      }
+    },
+    "full": {
+      "manifest": {
+        "path": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\current-saved-source-manifest.original.json",
+        "bytes": 82433,
+        "sha256": "f6a251858ec292e33fc925d2e5bd4e0261f699df18302ee4a43d111bc0331cb1"
+      },
+      "verified_snapshot_inputs": 413,
+      "HEAD": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "test_visibility_only_delta": {
+        "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs",
+        "before_sha256": "445eb56464e369fbcf1ce9ca57e89ba6e6d634753878e50f5877b11baf891543",
+        "after_sha256": "cb68e2946d8cd7ccc610855bdb980a4cc8aa9994157f900d322ed90cce4cff7b"
+      },
+      "additional_shared_factory_visibility_delta": {
+        "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+        "before_sha256": "78575956eef5696f44e85ccee44b209b00ac9a90c73632ec639d15db06f21f14",
+        "after_sha256": "a3a00bccc4b4fc93392c2e8be2728451e987e31012e26a820676baa20e0c7259"
+      }
+    }
+  },
+  "source_inputs_reread_and_identity_verified": true,
+  "default_assertions_and_obsolete_compiler_mapping": [
+    [
+      "PR13-A07.1-T01",
+      "useConsumptionBasedFenxian",
+      "FenxianImmediateDrawPolicy.CurrentRhythm by default; CoreCardsSpent only by explicit candidate",
+      [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03"
+      ]
+    ],
+    [
+      "PR13-A07.1-T02",
+      "GuardianShieldRemainder",
+      "GuardianShieldRemainderTenths with tenths units; snapshot/preview restores preserve the current contract",
+      [
+        "PR13-B02.1-T01",
+        "PR13-B02.1-T03",
+        "PR13-B02.4-T02"
+      ]
+    ],
+    [
+      "PR13-A07.1-T03",
+      "candidate assertions accidentally used as defaults",
+      "CurrentRhythm/CurrentSteps remain policy1; candidate policy2 has separate assertions and source rollback",
+      [
+        "PR13-B02.1-T02",
+        "PR13-B02.1-T03",
+        "PR13-B02.4-T01",
+        "PR13-B02.4-T03"
+      ]
+    ]
+  ],
+  "explicit_supporting_Domain_methods": [
+    "FantasyCard.Domain.Tests.Combat.FenxianImmediateDrawPolicyTests.Default_policy_preserves_current_rhythm_based_draws",
+    "FantasyCard.Domain.Tests.Combat.GuardianShieldBonusPolicyTests.Current_policy_never_commits_fractional_remainder",
+    "FantasyCard.Domain.Tests.Combat.GuardianShieldBonusPolicyTests.Resolve_preview_calculates_next_remainder_without_mutating_state",
+    "FantasyCard.Domain.Tests.Rooms.NumericalPolicySnapshotTests.Json_roundtrip_keeps_policy_and_zero_missing_fields_resolve_to_legacy",
+    "FantasyCard.Domain.Tests.Rooms.NumericalPolicySnapshotTests.New_source_policy_does_not_change_a_live_default_room_or_its_saved_instances",
+    "FantasyCard.Domain.Tests.Rooms.NumericalPolicySnapshotTests.Rolling_source_back_changes_new_rooms_and_preserves_existing_candidate_room_instances"
+  ],
+  "current_source_native9": {
+    "outcomes": {
+      "Passed": 9
+    },
+    "raw_TRX": {
+      "path": "G:\\PR13Evidence\\A071-current-source-local-PG9-20261023-r157-originals\\runtime\\results\\current-nine.trx",
+      "bytes": 16301,
+      "sha256": "7a395c831a49763edcc39b6458a011638ec5cd597b6c1f7b94cf8a5cdfd62dd5"
+    },
+    "remaining_owned_fixture_schemas": 0
+  },
+  "full_solution_build_exit0": true,
+  "full_Domain": {
+    "outcomes": {
+      "Passed": 388
+    },
+    "raw_TRX": {
+      "path": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\runtime\\results\\full-domain.trx",
+      "bytes": 640996,
+      "sha256": "8a7c592ea76ef5b337623d8bb90a23734c8b13c6988b890f4c030b9c520f67e4"
+    }
+  },
+  "full_Server": {
+    "original_outcomes": {
+      "Passed": 396,
+      "NotExecuted": 20,
+      "Failed": 2
+    },
+    "original_exit1": true,
+    "raw_TRX": {
+      "path": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\runtime\\results\\full-server.trx",
+      "bytes": 746043,
+      "sha256": "efb654cd537d987a596d9d3cf6dc7e86926c92d1d2f00b99285891edcc7e0fe9"
+    },
+    "unexecuted": [
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+        "outcome": "NotExecuted",
+        "execution_id": "6026639b-4716-4829-974c-1caf051516d3",
+        "test_id": "5a5415ea-0a09-cf38-508f-c935b2ddd856"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+        "outcome": "NotExecuted",
+        "execution_id": "004c548d-e2ae-4d2a-9218-fb945452bc63",
+        "test_id": "a727663c-23ab-ecb3-99a7-572112ea42d0"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+        "outcome": "NotExecuted",
+        "execution_id": "22868abe-d057-4cc9-9e03-9abd73248a08",
+        "test_id": "aeb67fd0-59e3-4e1e-818e-31a7a1037de9"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+        "outcome": "NotExecuted",
+        "execution_id": "b341fb67-19dc-444b-ab0d-e1ccdad03c0e",
+        "test_id": "cc02faa2-3b8f-6f4d-512d-ccdc30e595d9"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+        "outcome": "NotExecuted",
+        "execution_id": "098a016e-8635-4ee7-a395-aa1b136f2abf",
+        "test_id": "681fe499-4a1b-d1fe-2d82-5771f0696e1c"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+        "outcome": "NotExecuted",
+        "execution_id": "b6744d7f-3f9b-4b9b-bc8d-3ab2d55d228d",
+        "test_id": "aed29db4-4c98-63a9-5963-fb749d6b7e81"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+        "outcome": "NotExecuted",
+        "execution_id": "c621e719-cb16-43c2-93b6-391eb6fd318b",
+        "test_id": "3bf6f8da-4c15-0c92-881b-a7be2042e789"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+        "outcome": "NotExecuted",
+        "execution_id": "ab8efbbf-fbe4-444a-82b6-080ffe64a29c",
+        "test_id": "b8b53809-2049-0340-dcc7-fad021b8663d"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+        "outcome": "NotExecuted",
+        "execution_id": "dd63cbd4-e817-40bf-8095-4385536751f0",
+        "test_id": "8aabd2fe-875d-d14d-c958-f5e3cbaa8da6"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+        "outcome": "NotExecuted",
+        "execution_id": "4f451d72-ec5c-4c8e-ab0c-009f48660bab",
+        "test_id": "f61264bf-bb50-c262-6bdf-16524042dc58"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+        "outcome": "NotExecuted",
+        "execution_id": "037d3b2b-ed9b-4a74-8bcb-2e5b10222609",
+        "test_id": "e015a176-07b5-e795-7dd0-fecbec6270cb"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+        "outcome": "NotExecuted",
+        "execution_id": "a4c6502e-8c79-46ed-b796-057bca364a06",
+        "test_id": "5c9c1bef-e826-2f0b-7a87-e54504483371"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+        "outcome": "NotExecuted",
+        "execution_id": "49f16629-a510-4bcb-9ab7-fa55f3ef722e",
+        "test_id": "770515bb-82c1-1984-c80a-79070035a696"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+        "outcome": "NotExecuted",
+        "execution_id": "44a9d9a4-9365-4b4b-9035-9da5fc37ff99",
+        "test_id": "45bbd903-3829-27ab-1d60-eab394bbfb95"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+        "outcome": "NotExecuted",
+        "execution_id": "116fd665-b4d4-40e6-8ca8-3e6407d0c6a2",
+        "test_id": "1d4184d8-819e-f174-718f-51bfa1286f18"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+        "outcome": "NotExecuted",
+        "execution_id": "3648e2c1-e9e6-4048-b43b-dd4aaefcf3cc",
+        "test_id": "ec02b27e-88c5-adec-6ed4-12266dd2f003"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+        "outcome": "NotExecuted",
+        "execution_id": "8bdecbef-d80b-41aa-82ff-1adb5c32beea",
+        "test_id": "695bc5b0-0680-f807-06ea-215ab1261832"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+        "outcome": "NotExecuted",
+        "execution_id": "8e7f0bdb-0334-4780-bac7-f74773c47b66",
+        "test_id": "73c73838-5a71-b5d3-7885-161dc5e99d80"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+        "outcome": "NotExecuted",
+        "execution_id": "9670434b-932e-4d10-8de4-206072f1e8a5",
+        "test_id": "c211d468-2278-9345-9d96-8fdf0050712b"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+        "outcome": "NotExecuted",
+        "execution_id": "c0542957-8fcf-4879-a901-0f262ace3ddd",
+        "test_id": "6b77ff7c-b250-a35a-9e10-060e63545ad2"
+      }
+    ],
+    "original_failed": [
+      {
+        "test": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+        "outcome": "Failed",
+        "execution_id": "4f2e1611-cd8b-4738-b30b-06294ef0aa68",
+        "test_id": "2c9e51b5-24a3-8db7-7d25-c048f79e5211"
+      },
+      {
+        "test": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+        "outcome": "Failed",
+        "execution_id": "c39cda59-ef29-4452-a7b4-632a53a505e7",
+        "test_id": "857ee863-4ff0-6656-b5cf-eb866819b2c8"
+      }
+    ],
+    "scoped_same_assembly_retry": {
+      "outcomes": {
+        "Passed": 2
+      },
+      "raw_TRX": {
+        "path": "G:\\PR13Evidence\\A071-short-socket-retry-20261023-r160-originals\\runtime\\results\\two-retry.trx",
+        "bytes": 4970,
+        "sha256": "aecb61b2eebbd755af1b154c1d4017ca9658a29ed058ed4d9c7fd071c50ec34a"
+      },
+      "assembly": {
+        "path": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\runtime\\source\\.artifacts\\bin\\FantasyCard.Server.Tests\\release\\FantasyCard.Server.Tests.dll",
+        "bytes": 1755648,
+        "sha256": "2b7716208def2fdcf2e1df0d64830af6d6388dd12023587d321317cf8734512a"
+      },
+      "maximum_socket_bytes": 85,
+      "outer_observer_exit1_preserved": true,
+      "independent_schema_count_not_queried": true
+    }
+  },
+  "client": {
+    "original22": {
+      "Passed": 20,
+      "Failed": 2,
+      "exit_code": 1,
+      "raw_record": {
+        "path": "G:\\PR13Evidence\\A071-current-headless-clients-20261023-r159-originals\\play-retry-contracts.result.original.json",
+        "bytes": 2493,
+        "sha256": "d61f95d68aa460ab6c0cc87fd8359c7fef30aeb671ca96d8b592367b92ebfa2a"
+      }
+    },
+    "failed2_fixture_retry_passed": true,
+    "parser_passed": true,
+    "no_single_green22_claim": true,
+    "production_gateway_and_store_unchanged": true,
+    "fixture_inputs": [
+      {
+        "path": "client/project.godot",
+        "bytes": 1117,
+        "sha256": "3b6b98a106322f71bee784ae418aa1eac40be97fbfafc48aef2206e966dfc2cb"
+      },
+      {
+        "path": "client/tests/test_audio_events.gd",
+        "bytes": 10658,
+        "sha256": "7608342356256aec6ecb40f4db513ded0cb57670727086cb135045cdeb1ac070"
+      },
+      {
+        "path": "client/tests/test_terminal_room_actions.gd",
+        "bytes": 4616,
+        "sha256": "beb15ac1799200c4152b1c2d76602064dc678aa8b611d50dcd1c209efe28472d"
+      },
+      {
+        "path": "client/tests/run_gameplay_load_parse.gd",
+        "bytes": 983,
+        "sha256": "3ca267225b2f512eaa3eb5fb0373c80c83e28519c4ba9b3a1b91635e0cc79fee"
+      },
+      {
+        "path": "client/tests/fixture_runtime.py",
+        "bytes": 736,
+        "sha256": "7aaa48a741706e81d908a14d9d101fa970de7febb671a58f7c86a198ac7d2db7"
+      }
+    ]
+  },
+  "minimum_dependency_review": {
+    "dependency": "LOAD-10.1",
+    "canonical_semantics": "requires_before_integration约束S4/S5所需产物；测试设计和S0/S1可提前。依赖为最小子项合同，不把整个父包Accepted作为前置造成循环。",
+    "needed_artifacts": "Executable independent native suites, exact inputs/outputs, fail-closed skipped critical-case gate and auditable suite results are available. Current native PG9 also executes the mandatory numerical cases without skip.",
+    "upstream_artifacts": {
+      "latest_LOAD101_protocol_two_profile_scoped": {
+        "review_scope": "MAIN_case_profile_only",
+        "task_id": "LOAD-10.1",
+        "state": "Partial",
+        "accepted": false,
+        "case_profiles_closed": {
+          "LOAD-10.1-T01": [
+            "LIVE",
+            "POSTGRES"
+          ]
+        },
+        "component_supports_no_profile_promotion": [
+          "LOAD-10.1-T02",
+          "LOAD-10.1-T03"
+        ],
+        "remaining_missing_case_profiles": {
+          "LOAD-10.1-T01": [
+            "CAPACITY"
+          ],
+          "LOAD-10.1-T02": [
+            "CAPACITY",
+            "LIVE",
+            "POSTGRES"
+          ],
+          "LOAD-10.1-T03": [
+            "CAPACITY",
+            "LIVE",
+            "POSTGRES"
+          ]
+        },
+        "actual_PGplayers4_WSsent16_received20_matches0": true,
+        "actual_protocol_vector_andaccounting_functionalcases64": "Not1309games; all smallfunctionaltests retained",
+        "native_critical_test_body": "NotExecuted,notPGtestPassed; guardBlocked expected",
+        "R1overall_failed_aftercompleteprotocol_positive": "Kept139/OOMfalse,notresetorsilentlygreen",
+        "R2launchonlyfix_noProgramrerun": true,
+        "local_unflushedProgramlogtail_andfirsttoponlyexport_limits_explicit": true,
+        "G1313andlocal853_exactsourcecleanupcomplete": true,
+        "no_product_changes_standard_relaxation_capacity_orwholeCI_claim": true,
+        "whole_project_accepted": false
+      },
+      "latest_LOAD101_T02_fullrunner_actual_filefault": {
+        "task_id": "LOAD-10.1",
+        "case_id": "LOAD-10.1-T02",
+        "state": "Partial",
+        "new_case_profiles_closed": [
+          "LIVE",
+          "POSTGRES"
+        ],
+        "actual_main0_3_3_with_real_clients_andPG": true,
+        "remaining_missing_case_profiles": {
+          "LOAD-10.1-T01": [
+            "CAPACITY"
+          ],
+          "LOAD-10.1-T02": [
+            "CAPACITY"
+          ],
+          "LOAD-10.1-T03": [
+            "CAPACITY",
+            "LIVE",
+            "POSTGRES"
+          ]
+        },
+        "T03_andcapacity_notcovered": true,
+        "scope": "Complete actual runtime+PG+archive-intake negative chain. Entry is explicitdatamutationwrappercallingoriginalmain,notliteralunwrappedscriptentry;notnetworkpacketloss/TLS/WAN/capacity. NegativecasePasseddoesNOTmarkcorruptedunderlyingrunsPassed. Localutilityhasderivedcycleeligibility/fakepollobjectonlyforutilityprecheck,notLIVEproof.",
+        "G": "G:\\PR13Evidence\\load101-full-runner-audit-fault-20261021-r1-originals",
+        "Gmembers": 337,
+        "archiveSHA": "ee3db5df040cc06d18b6c18a1e5cb99a90766df0a37497e640dc951db3a7131c",
+        "source101_client2147_verified_thenexactownedcleanup": true,
+        "production_unchanged": true,
+        "current_product_source_assertion_limits_notchanged": "OnlydeclareddisposableHTTPadmission30/120/480,actualsourcecodeunchanged",
+        "actual_new_task_worlds3_cycles12_priorprotocol0world4UIDnotreset": true,
+        "whole_task_project_accepted": false
+      },
+      "latest_LOAD101_T03_actual_native_gate": {
+        "task_id": "LOAD-10.1",
+        "case_id": "LOAD-10.1-T03",
+        "state": "Partial",
+        "new_case_profiles_closed": [
+          "LIVE",
+          "POSTGRES"
+        ],
+        "actual_native0_0_pipeline0_3_Ready_Blocked": true,
+        "underlying_skipped_critical_NotExecuted_neverPass": true,
+        "remaining_missing_case_profiles": {
+          "LOAD-10.1-T01": [
+            "CAPACITY"
+          ],
+          "LOAD-10.1-T02": [
+            "CAPACITY"
+          ],
+          "LOAD-10.1-T03": [
+            "CAPACITY"
+          ]
+        },
+        "capacity_fullsuite_CI_wholeTask_notaccepted": true,
+        "source_change_thinCLIonly_assessmentfunctions_andnativeassertions_unchanged": true,
+        "G": "G:\\PR13Evidence\\load101-native-suite-gate-cli-20261021-r1-originals",
+        "Gmembers": 438,
+        "archiveSHA": "cba321a0ba91426fc18e865ca62b72004e2f69a255455a24ecaff485c4637b0d",
+        "all175_inputs_verified_thenexactownedcleanup": true,
+        "production_unchanged": true,
+        "new_budget": "2Native invocations,oneactualSQLfixturematch/twofixtureidentitiesinownremovedschema;0onlinegameplayaccounts/cycles. Prior1013gameworld12cycles/protocol0world4UIDand10238world72cyclesunchanged",
+        "whole_project_accepted": false
+      }
+    },
+    "upstream_whole_task_accepted": false,
+    "upstream_CAPACITY_gaps_retained": true
+  },
+  "actual_CI_observation": {
+    "source_HEAD": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+    "run_id": 39742974053,
+    "actual_jobs": 4,
+    "all_jobs_runner_id0_steps0": true,
+    "all_tests_not_started": true,
+    "current_native_UI_annotation_observed": true,
+    "current_annotation_count": 4,
+    "provider_reason": "Account payment failure OR spending limit restriction; exact alternative not established.",
+    "observed_UTC": "2026-10-22T20:39:04.440Z",
+    "no_new_rerun_or_dispatch": true,
+    "T01_T02_POSTGRES_gaps_unchanged": true,
+    "evidence": "docs/reports/pr13-stages-20261009/S5-current4a-CI-annotation-confirmed-20261023/report.json",
+    "evidence_sha256": "6c0bad0846f0828f17000a2c8847aa6f1c6431368165fbf94d4934f0e16219cd"
+  },
+  "private_original_results": {
+    "PG9": {
+      "path": "G:\\PR13Evidence\\A071-current-source-local-PG9-20261023-r157-originals\\result.private.original.json",
+      "bytes": 6987,
+      "sha256": "bcf686838fc871962d04088d661e19ea614f214390b3ad8899ebc579fe2ff0cc"
+    },
+    "full": {
+      "path": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\result.private.original.json",
+      "bytes": 12050,
+      "sha256": "1edcef615618410d390e024b551a41a769fb6767f120687026343b5ddc3eef88"
+    },
+    "socket_retry": {
+      "path": "G:\\PR13Evidence\\A071-short-socket-retry-20261023-r160-originals\\result.private.original.json",
+      "bytes": 3495,
+      "sha256": "c5fc3d5ca296397b1ff36aa7fc4184601cfcf60a9fa096f1cb9761002ccb4165"
+    },
+    "client_retry": {
+      "path": "G:\\PR13Evidence\\A071-client-fixture-compatibility-20261023-r161-originals\\result.private.original.json",
+      "bytes": 4118,
+      "sha256": "6c47d5398b822fd4f241d9566b8116f0c4e5d3b88e4c6b67db336b44cdbe455f"
+    }
+  },
+  "earlier_pretest_snapshot_failure": {
+    "path": "G:\\PR13Evidence\\A071-current-source-local-PG9-20261023-r156-originals\\result.private.original.json",
+    "bytes": 3221,
+    "sha256": "cb4ea2ffecfeb5997e0830183171c046f1ac6fa6530de63124574106389f5633"
+  },
+  "cloud_readonly_admission": {
+    "path": "G:\\PR13Evidence\\A071-current4a-PG9-preflight-20261023-r155-originals\\admission-checks.original.json",
+    "bytes": 297,
+    "sha256": "8043174d65c09a0a9709809f974840c5e2e670fa1856695797624ef388f2d096"
+  },
+  "cleanup": {
+    "PG9_terminal": true,
+    "PG9_schemas0": true,
+    "full_run_delayed_terminal": {
+      "kind": "ActualOwnedPGEventuallyTerminalAfterEarlierStopTimeout_NotOldExitCodeRewrite",
+      "owned_data_dir": "G:\\PR13Evidence\\A071-current-source-full-suites-20261023-r158-originals\\runtime\\private-pg",
+      "pg_ctl_status_exit": 3,
+      "postmaster_pid_absent": true,
+      "temporary_password_file_removed_after_terminal_recheck": true,
+      "earlier_stop_exit1_preserved": true,
+      "no_other_process_or_database_service_touched": true
+    },
+    "socket_retry_terminal": true,
+    "temporary_initialization_inputs_removed": true
+  },
+  "local_execution_no_window_headless_Dummy_below_normal": true,
+  "new_game_samples": 0,
+  "new_case_profile_pairs_closed": 0,
+  "business_thresholds_relaxed": false,
+  "only_test_fixture_and_visibility_changes": true,
+  "production_application_or_data_changed_by_this_review": false,
+  "whole_project_accepted": false,
+  "limitations": [
+    "Full Server original exit1:396 Passed/20 NotExecuted/2 Failed. The two path-only failures passed against the same assembly with shorter owned TEMP. No single all-green full Server run is claimed.",
+    "19 Godot-dependent process tests and one previous-binary/owned-container rollback test remain NotExecuted in this full Server invocation; none becomes Passed by this review.",
+    "The socket retry native tests exited0, but its outer observer exited1 with a missing sys import after saving results. Both outcomes are retained; the corrected observer was not rerun.",
+    "Original full22 client run exited1 (20 passed,2 failed). Two fixtures were corrected and only those2 groups plus the parser were rerun successfully; no single green22 rerun is claimed.",
+    "R156 first snapshot omitted an embedded admin.html resource and failed build before tests; corrected full tracked-input snapshot is distinct. R158 first owned PG stop timed out; later independent status3/PID absence confirms termination.",
+    "Hosted CI did not start test steps; no CI, capacity, render, historical source restoration or whole-project acceptance is granted.",
+    "Cloud readonly preflight showed root free ratio0.03205983975322276, below previous minimum0.048; no cloud test or resource-limit mutation was performed. Local isolated native PG used instead.",
+    "No runtime image digest exists for local native processes; source manifests, tool identity, compiled artifact identity and actual TRX are recorded instead.",
+    "Current production source is HEAD4a; the executed tests include hashed uncommitted visibility changes. Client fixture fixes are also saved, hashed and uncommitted. Historical runs retain their original source identities."
+  ]
+}

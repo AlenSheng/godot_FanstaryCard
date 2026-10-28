@@ -1,0 +1,4 @@
+{
+  "exit_code": 1,
+  "stderr": "fatal: path 'tools/__init__.py' does not exist in '3e45dd495215c3a0a5eda53a20449d9ad1e0d00d'\nTraceback (most recent call last):\n  File \"<stdin>\", line 2, in <module>\n  File \"current-history-delivery-audit.original.py\", line 22, in <module>\n  File \"current-history-delivery-audit.original.py\", line 9, in frozen\n  File \"/usr/lib/python3.12/subprocess.py\", line 466, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', '-C', '/opt/fantasycard-github', 'show', '3e45dd495215c3a0a5eda53a20449d9ad1e0d00d:tools/__init__.py']' returned non-zero exit status 128.\n"
+}

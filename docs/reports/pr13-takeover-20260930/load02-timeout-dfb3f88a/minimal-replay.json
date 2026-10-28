@@ -1,0 +1,131 @@
+{
+  "task_id": "LOAD-02.2",
+  "runtime_review_sha": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+  "source_manifest": "source-dfb3f88a73ef-fixed.json",
+  "profile": "profile.json",
+  "profile_hash": "47d985a7d8106f8b9b7469dee979012058c4ce355ac11e5d943ad8a7ed1cc4c8",
+  "tools_activation": "source /workspace/relicround-env/activate.sh",
+  "source_materialization": "Choose a new owned private directory; materialize exactly the 967 paths listed in source manifest using git show <fixed_sha>:<path>, compare each blob/byte SHA, and remove all generated server bin/obj before actual source-internal Release build. Do not copy historical evidence or caches. The local freeze_source.py documents the exact original preparation.",
+  "git_provenance": "Original tools/pr13_simulation_report.py calls git rev-parse HEAD. Provide real fixed Git metadata before C-PY: git init private, objects/info/alternates points read-only to authorized repository common objects, HEAD dfb3f88a73efd85cc4ed12b8d49038bebbb1f953. This is a partial source working directory, not a clean full checkout; all copied bytes are independently checked.",
+  "owned_pg": {
+    "engine": "PostgreSQL18.6",
+    "uid": 1000,
+    "user": "agent",
+    "authentication": "trust local Unix socket; host reject",
+    "listen_addresses": "",
+    "port": 55451,
+    "max_connections": 64,
+    "shared_buffers": "32MB",
+    "initdb_argv": [
+      "initdb",
+      "-D",
+      "<new_owned_pgdata>",
+      "-U",
+      "agent",
+      "--auth-local=trust",
+      "--auth-host=reject",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "connection": "Host=<new_owned_unix_socket>;Port=<owned_free_port>;Username=agent;Database=<owned_database>;Pooling=true;Maximum Pool Size=8",
+    "cleanup": "After child host/Godot processes finish, query owned schemas/backend state read-only, pg_ctl fast stop, verify stopped, remove only owned pgdata/socket; retain all evidence."
+  },
+  "commands": [
+    {
+      "id": "build",
+      "cwd": "server",
+      "argv": [
+        "dotnet",
+        "build",
+        "FantasyCard.Server.slnx",
+        "-c",
+        "Release",
+        "--nologo"
+      ]
+    },
+    {
+      "id": "focused",
+      "cwd": "server",
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--filter",
+        "FullyQualifiedName~Real_LOAD02_timeout_STOP_preserves_original_business_truth",
+        "--logger",
+        "trx;LogFileName=focused.trx",
+        "--results-directory",
+        "<new_focused_evidence>"
+      ]
+    },
+    {
+      "id": "C-SERVER",
+      "cwd": "server",
+      "argv": [
+        "dotnet",
+        "test",
+        "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+        "-c",
+        "Release",
+        "--no-build",
+        "--logger",
+        "trx;LogFileName=server.trx",
+        "--results-directory",
+        "<new_full_evidence>"
+      ]
+    },
+    {
+      "id": "C-PY",
+      "cwd": ".",
+      "argv": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/tests",
+        "-v"
+      ]
+    }
+  ],
+  "environment": {
+    "FANTASYCARD_TEST_POSTGRES": "<owned_connection_above>",
+    "FANTASYCARD_PROCESS_SERVER_DLL": "<new_private>/server/src/FantasyCard.Server/bin/Release/net10.0/FantasyCard.Server.dll",
+    "FANTASYCARD_PROCESS_EVIDENCE": "<unique_new_run_evidence>",
+    "FANTASYCARD_PROCESS_SOURCE_SHA": "dfb3f88a73efd85cc4ed12b8d49038bebbb1f953",
+    "A3GAME_GODOT_EXECUTABLE": "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64"
+  },
+  "expected": {
+    "focused": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "C-SERVER": {
+      "passed": 302,
+      "failed": 0,
+      "skipped": 0
+    },
+    "C-PY": {
+      "passed": 122,
+      "failed": 0,
+      "skipped": 0
+    },
+    "T01": "actual Godot exit1, original create_free_preparation=false/errors retained, failed1 and cancelled0",
+    "T02": "actual Godot exit0, original errors empty, cancelled1/completed0/failed0",
+    "T03": "PG acked1 but original busy/pendingACK at STOP, observer pending1; full actual Bootstrap authority then cancelled1, no completed/double assets"
+  },
+  "budgets_ms": {
+    "attempt": 10000,
+    "logical": 30000,
+    "cleanup": 22000,
+    "bot_fill": 30000,
+    "gate": 8000,
+    "fixture_outer": 180000
+  },
+  "provenance_boundary": "The added observer records original checks/process/session/context/finish and derives a one-cycle partition. It is not new LOAD03 production telemetry. Original production report remains primary outcome evidence.",
+  "authorization_boundary": "Only OFFLINE+POSTGRES, local raw; no LIVE/RENDER/deploy/UI/CI/Library upload here; S6 MAIN independent review pending."
+}

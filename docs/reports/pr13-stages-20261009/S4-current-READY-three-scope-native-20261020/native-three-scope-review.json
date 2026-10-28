@@ -1,0 +1,158 @@
+{
+  "checks": [
+    {
+      "name": "actual owned binary WebSocket opens",
+      "passed": true
+    },
+    {
+      "name": "cycle1 new verified scope resets spent read budget and pending start hint",
+      "passed": true
+    },
+    {
+      "name": "cycle1 actual verified READY writes",
+      "passed": true
+    },
+    {
+      "name": "cycle1 three preregistration reads preserve unresolved global cursor",
+      "passed": true
+    },
+    {
+      "name": "cycle1 matching start grants exactly fourth authority query",
+      "passed": true
+    },
+    {
+      "name": "cycle1 new query immutable ownership excludes previous room",
+      "passed": true
+    },
+    {
+      "name": "cycle1 duplicate start cannot amplify bounded reads",
+      "passed": true
+    },
+    {
+      "name": "cycle1 only correlated current snapshot releases recovery and promotes Store epoch",
+      "passed": true
+    },
+    {
+      "name": "cycle1 actual Store ACK clears route while preserving global cursor and login",
+      "passed": true
+    },
+    {
+      "name": "cycle2 new verified scope resets spent read budget and pending start hint",
+      "passed": true
+    },
+    {
+      "name": "cycle2 actual verified READY writes",
+      "passed": true
+    },
+    {
+      "name": "cycle2 three preregistration reads preserve unresolved global cursor",
+      "passed": true
+    },
+    {
+      "name": "cycle2 matching start grants exactly fourth authority query",
+      "passed": true
+    },
+    {
+      "name": "cycle2 new query immutable ownership excludes previous room",
+      "passed": true
+    },
+    {
+      "name": "cycle2 duplicate start cannot amplify bounded reads",
+      "passed": true
+    },
+    {
+      "name": "cycle2 late previous query cannot replace new route or consume pending current query",
+      "passed": true
+    },
+    {
+      "name": "cycle2 only correlated current snapshot releases recovery and promotes Store epoch",
+      "passed": true
+    },
+    {
+      "name": "cycle2 late old start consumes cursor without current room replacement",
+      "passed": true
+    },
+    {
+      "name": "cycle2 actual Store ACK clears route while preserving global cursor and login",
+      "passed": true
+    },
+    {
+      "name": "cycle3 new verified scope resets spent read budget and pending start hint",
+      "passed": true
+    },
+    {
+      "name": "cycle3 actual verified READY writes",
+      "passed": true
+    },
+    {
+      "name": "cycle3 three preregistration reads preserve unresolved global cursor",
+      "passed": true
+    },
+    {
+      "name": "cycle3 matching start grants exactly fourth authority query",
+      "passed": true
+    },
+    {
+      "name": "cycle3 new query immutable ownership excludes previous room",
+      "passed": true
+    },
+    {
+      "name": "cycle3 duplicate start cannot amplify bounded reads",
+      "passed": true
+    },
+    {
+      "name": "cycle3 late previous query cannot replace new route or consume pending current query",
+      "passed": true
+    },
+    {
+      "name": "cycle3 only correlated current snapshot releases recovery and promotes Store epoch",
+      "passed": true
+    },
+    {
+      "name": "cycle3 late old start consumes cursor without current room replacement",
+      "passed": true
+    },
+    {
+      "name": "cycle3 actual Store ACK clears route while preserving global cursor and login",
+      "passed": true
+    },
+    {
+      "name": "three complete controlled binding and actual Store ACK transitions no amplification",
+      "passed": true
+    }
+  ],
+  "ok": true,
+  "phases": [
+    {
+      "current_epoch": 1,
+      "cursor_after": 9,
+      "cursor_before": 1,
+      "cycle": 1,
+      "declared_HTTP_fixture_ACK": true,
+      "match_id": "current-offline-match-1",
+      "read_attempts": 4,
+      "room_id": "current-offline-room-1"
+    },
+    {
+      "current_epoch": 2,
+      "cursor_after": 19,
+      "cursor_before": 9,
+      "cycle": 2,
+      "declared_HTTP_fixture_ACK": true,
+      "match_id": "current-offline-match-2",
+      "read_attempts": 4,
+      "room_id": "current-offline-room-2"
+    },
+    {
+      "current_epoch": 3,
+      "cursor_after": 29,
+      "cursor_before": 19,
+      "cycle": 3,
+      "declared_HTTP_fixture_ACK": true,
+      "match_id": "current-offline-match-3",
+      "read_attempts": 4,
+      "room_id": "current-offline-room-3"
+    }
+  ],
+  "scope": "OFFLINE current actual Gateway binary WS, current Store ACK coroutine and monotonic clock across3 scopes, late previous immutable request/start callbacks, controlled ticket and HTTP receipt replies;0API/world/account,notoriginal fullrun3cycleLIVE/capacity/natural"
+}

@@ -1,4 +1,5 @@
 using Npgsql;
+using FantasyCard.Server.Common;
 
 namespace FantasyCard.Server.Persistence;
 
@@ -14,6 +15,7 @@ public sealed class PersistenceOptions
     public int ConnectionTimeoutSeconds { get; init; } = 5;
     public int CommandTimeoutSeconds { get; init; } = 10;
     public int KeepAliveSeconds { get; init; } = 30;
+    public bool OwnedTestPoolReuse { get; init; }
 }
 
 public static class PersistenceExtensions
@@ -29,12 +31,18 @@ public static class PersistenceExtensions
             .GetSection(PersistenceOptions.SectionName)
             .Get<PersistenceOptions>() ?? new PersistenceOptions();
         Validate(persistence);
+        var testBypass = configuration.GetValue<bool>("RequestLimits:OwnedTestBypass");
+        if (persistence.OwnedTestPoolReuse && !testBypass)
+            throw new InvalidOperationException("Owned test connection reuse requires the validated owned test bypass.");
 
         services.AddSingleton(_ =>
         {
             var connection = new NpgsqlConnectionStringBuilder(connectionString)
             {
-                MaxPoolSize = persistence.MaxPoolSize,
+                // Capacity tests retain connection reuse with the owned database's
+                // 256-connection budget; legacy unpooled profiles remain available.
+                Pooling = !testBypass || persistence.OwnedTestPoolReuse,
+                MaxPoolSize = persistence.OwnedTestPoolReuse ? 256 : persistence.MaxPoolSize,
                 MinPoolSize = persistence.MinPoolSize,
                 Timeout = persistence.ConnectionTimeoutSeconds,
                 CommandTimeout = persistence.CommandTimeoutSeconds,

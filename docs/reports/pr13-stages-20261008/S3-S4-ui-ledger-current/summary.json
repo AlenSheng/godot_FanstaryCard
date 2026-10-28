@@ -1,0 +1,32 @@
+{
+  "stages": [
+    "S3",
+    "S4-AUDIT"
+  ],
+  "status": "Partial",
+  "new_cases": 14,
+  "ui": {
+    "actual_native_cases": 11,
+    "passed": 11,
+    "profile": "OFFLINE; remaining RENDER"
+  },
+  "ledger": {
+    "actual_migrated_pg_cases": 3,
+    "passed": 3,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "actual_denial_sqlstate": "42501",
+    "owned_role_removed": true,
+    "owned_host_database_cleanup": true,
+    "asset_acceptance_inferred": false
+  },
+  "tool_tests": 187,
+  "native_previous_snapshot_pairs_replayed": 7,
+  "total_unique_cases": 101,
+  "required": 396,
+  "historical_recovery": false,
+  "remaining": "Other mandatory cases/layers, failed mixed-class baseline, formal capacity and human experience remain unfinished."
+}

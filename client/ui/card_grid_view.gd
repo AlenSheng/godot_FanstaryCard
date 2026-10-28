@@ -14,6 +14,14 @@ var _waiting_for_pool := false
 var _mounted_first := -1
 var _mounted_last := -1
 
+static func display_layout(host: Control, maximum_columns: int, authored_side: float, logical_width: float, horizontal_gap: float, minimum_card_pixels: float = 160.0) -> Dictionary:
+	var pixel_scale: float = float(host.get_window().size.x) / host.get_viewport().get_visible_rect().size.x
+	var columns_for_display: int = clampi(floori((logical_width + horizontal_gap) * pixel_scale / (minimum_card_pixels + horizontal_gap * pixel_scale)), 1, maximum_columns)
+	var side_for_display: float = authored_side
+	if columns_for_display != maximum_columns or pixel_scale < 1.0:
+		side_for_display = maxf(authored_side, floorf((logical_width - horizontal_gap * (columns_for_display - 1)) / columns_for_display))
+	return {"columns": columns_for_display, "side": side_for_display}
+
 func _exit_tree() -> void:
 	set_process(false)
 	if _host == null or not is_instance_valid(_host): return
@@ -120,7 +128,7 @@ func _sync_visible() -> void:
 		card.size = Vector2(218, 376)
 		card.scale = Vector2.ONE * _side / 218.0
 		if entry.has("tooltip"): card.tooltip_text = P.localized_text(str(entry.tooltip))
-		elif entry.has("tooltip_suffix"): card.tooltip_text = P.localized_text(card.tooltip_text + str(entry.tooltip_suffix))
+		elif entry.has("tooltip_suffix"): card.tooltip_text += P.localized_text(str(entry.tooltip_suffix))
 		mounted += 1
 		if card.get_meta("pool_rebuilt_on_acquire", false): rebuilt += 1
 	_waiting_for_pool = mounted < missing

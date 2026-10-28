@@ -1,0 +1,45 @@
+{
+  "source_sha": "76d7113d3888133a8d08fbd6338db838aa4cb01f",
+  "server_counts": {
+    "Passed": 296,
+    "Failed": 3,
+    "Skipped": 0
+  },
+  "cause": "Actual backend cancellation204 was followed by fixture Body.WriteAsync(empty); Kestrel threw and proxy aborted. Each client retried three times and could not confirm cancellation. ContentType415 hypothesis rejected by actual status204 exception.",
+  "errors": [
+    {
+      "receipt_line": 100,
+      "context": "recovered",
+      "outcome": "uncommitted-loss",
+      "errors": [
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpResponseStream.WriteAsync(ReadOnlyMemory`1 source, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context) in /workspace/pr13-takeover/a05-guard-2dda/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs:line 104",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpResponseStream.WriteAsync(ReadOnlyMemory`1 source, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context) in /workspace/pr13-takeover/a05-guard-2dda/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs:line 104",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpResponseStream.WriteAsync(ReadOnlyMemory`1 source, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context) in /workspace/pr13-takeover/a05-guard-2dda/server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs:line 104"
+      ]
+    },
+    {
+      "receipt_line": 115,
+      "context": "ordinary",
+      "outcome": "success",
+      "errors": [
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)"
+      ]
+    },
+    {
+      "receipt_line": 135,
+      "context": "recovered",
+      "outcome": "committed-loss",
+      "errors": [
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)",
+        "System.InvalidOperationException: Writing to the response body is invalid for responses with status code 204.\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.FirstWriteAsyncInternal(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.WritePipeAsync(ReadOnlyMemory`1 data, CancellationToken cancellationToken)\n   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05GuardRelay.HandleAsync(HttpContext context)"
+      ]
+    }
+  ],
+  "fix_source_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "production_changed": false,
+  "correctness_assertions_removed": false,
+  "old_raw_overwritten": false
+}

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nreport=pathlib.Path(sys.argv[1]); time.sleep(float(sys.argv[2]))\nrow=dict(client_id='owned',pid=os.getpid(),run_id='frozen-run',process_epoch='epoch-A',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id='frozen-run',client_id='owned',process_epoch='epoch-A',event_seq=1,type='http',\n at_unix_ms=row['now_unix_ms'],phase='playing',duration_ms=5,status=200,ok=True)\nrow.update(telemetry=[event],operations=[event])\npathlib.Path(str(report)+'.telemetry.jsonl').write_text(json.dumps(event)+'\\n')\npathlib.Path(str(report)+'.status.json').write_text(json.dumps(row))\nprint(json.dumps(dict(pid=os.getpid(),status_written=True)),flush=True)\nif sys.argv[3]!='none': raise SystemExit(int(sys.argv[3]))\ntime.sleep(15)\n",
+    "/workspace/pr13-takeover/offline-acceptance-f812/load01/run-03-sealed/LOAD-01.4-T01/client.json",
+    "0.15",
+    "none"
+  ],
+  "pid": 75713,
+  "started_wall_ms": 1790806518267,
+  "started_monotonic_ms": 25857768.957528
+}

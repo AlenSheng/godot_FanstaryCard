@@ -1,0 +1,180 @@
+{
+  "decisions": [
+    {
+      "authority": "MAIN",
+      "at_local": "2026-10-20T03:08:22.016464+08:00",
+      "task_id": "LOAD-04.3",
+      "state": "Accepted",
+      "reason": "三个必测案例所需层次完成：当前23Native364/真实WS有界读取与旧上下文拒绝，当前R3全Program/PG缺required和缺started真实恢复，当前R4旧snapshot拒绝后继续当前房间。原15秒截止、三次READY/普通三次快照＋匹配started最多第四次、当前身份和游标约束有实证。原失败和日志标签缺陷按原样保存、独立原字节解码及纯观察器修复分别限定。",
+      "required_case_profiles_complete": true,
+      "dependencies": {
+        "LOAD-04.2": "Accepted"
+      },
+      "source_identity": {
+        "base_head": "6f00f322952a104bb8d165687395a609def0781c",
+        "uncommitted_product_sources_explicit": true,
+        "client2147_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\ready-start-snapshot-reserve-r1\\after\\source-manifest.original.json",
+        "manifest_sha256": "813474ef8fe4a9d07e19c703d98b91af1cd37202d81ba1f679ff5ba2dd7d1beb",
+        "current_actual_core_sources": [
+          {
+            "path": "client/network/gateway.gd",
+            "sha256": "1741683c857b97c621baebf0fc192639533640c6bf8a9fe982148a39105a8592"
+          },
+          {
+            "path": "client/state/game_store.gd",
+            "sha256": "352cc5fcea0ea5eae902df43f9e19202b14bd4a2093c97071ca3add451c42723"
+          },
+          {
+            "path": "client/tests/gameplay_load_client.gd",
+            "sha256": "4e9f89960a70ca05c08a7f8fc72b52003f2d81ddbc36009942d00459b7180896"
+          },
+          {
+            "path": "client/network/protobuf.gd",
+            "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+          },
+          {
+            "path": "client/data/realtime_schema.json",
+            "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+          },
+          {
+            "path": "client/network/reusable_http_client.gd",
+            "sha256": "a8c3ad0219f0ae49732d9a006f129d90ac2811243f27d45ebb52b503e0232822"
+          }
+        ],
+        "runtime21_sha_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\current-ready-fault-matrix-r4\\control\\runtime-manifest.json",
+        "runtime_manifest_sha256": "012293658652df65317c026b40374eea3ca8d3dff200a52580fe70c1bf221cdf",
+        "current_Server_DLL": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "legacy_plan_lineage_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
+        "legacy_SHA_not_claimed_current_source": true
+      },
+      "functional_scope_only": true,
+      "no_UI_capacity_human_natural_or_wholegoal_acceptance": true,
+      "original_failed_whole_rounds_metadata_defects_and_unknown_rows_preserved": true,
+      "current_source_qualification_not_historical_SHA_relabel": true,
+      "new_real_worlds_or_accounts_this_MAIN_review": 0,
+      "no_business_criteria_or_deadlines_relaxed": true,
+      "rollback": "恢复父register可撤销本轮验收；原代码/数据/失败在G保管，当前未提交源按独立manifest审查，无生产部署。"
+    },
+    {
+      "authority": "MAIN",
+      "at_local": "2026-10-20T03:08:22.016464+08:00",
+      "task_id": "LOAD-04.4",
+      "state": "Accepted",
+      "reason": "三个必测案例及规格列出的重复/乱序、丢失＋重连、sendfalse/过期、实际Register失败、STOP、旧局与同UID三局第二次污染边界逐项复核；旧重复/false/secondroom原件重SHA和精确控制前缀/谓词限定复用，当前R3/R4真实故障与当前30项三scope状态/实际Store ACK补验，真实旧三局原计数与当前隔离变化来源联合证明。不是七种注入时序的笛卡尔积或新云三局。",
+      "required_case_profiles_complete": true,
+      "dependencies": {
+        "LOAD-04.3": "Accepted"
+      },
+      "source_identity": {
+        "base_head": "6f00f322952a104bb8d165687395a609def0781c",
+        "uncommitted_product_sources_explicit": true,
+        "client2147_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\ready-start-snapshot-reserve-r1\\after\\source-manifest.original.json",
+        "manifest_sha256": "813474ef8fe4a9d07e19c703d98b91af1cd37202d81ba1f679ff5ba2dd7d1beb",
+        "current_actual_core_sources": [
+          {
+            "path": "client/network/gateway.gd",
+            "sha256": "1741683c857b97c621baebf0fc192639533640c6bf8a9fe982148a39105a8592"
+          },
+          {
+            "path": "client/state/game_store.gd",
+            "sha256": "352cc5fcea0ea5eae902df43f9e19202b14bd4a2093c97071ca3add451c42723"
+          },
+          {
+            "path": "client/tests/gameplay_load_client.gd",
+            "sha256": "4e9f89960a70ca05c08a7f8fc72b52003f2d81ddbc36009942d00459b7180896"
+          },
+          {
+            "path": "client/network/protobuf.gd",
+            "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+          },
+          {
+            "path": "client/data/realtime_schema.json",
+            "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+          },
+          {
+            "path": "client/network/reusable_http_client.gd",
+            "sha256": "a8c3ad0219f0ae49732d9a006f129d90ac2811243f27d45ebb52b503e0232822"
+          }
+        ],
+        "runtime21_sha_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\current-ready-fault-matrix-r4\\control\\runtime-manifest.json",
+        "runtime_manifest_sha256": "012293658652df65317c026b40374eea3ca8d3dff200a52580fe70c1bf221cdf",
+        "current_Server_DLL": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "legacy_plan_lineage_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
+        "legacy_SHA_not_claimed_current_source": true
+      },
+      "functional_scope_only": true,
+      "no_UI_capacity_human_natural_or_wholegoal_acceptance": true,
+      "original_failed_whole_rounds_metadata_defects_and_unknown_rows_preserved": true,
+      "current_source_qualification_not_historical_SHA_relabel": true,
+      "new_real_worlds_or_accounts_this_MAIN_review": 0,
+      "no_business_criteria_or_deadlines_relaxed": true,
+      "rollback": "恢复父register可撤销本轮验收；原代码/数据/失败在G保管，当前未提交源按独立manifest审查，无生产部署。"
+    },
+    {
+      "authority": "MAIN",
+      "at_local": "2026-10-20T03:08:22.016464+08:00",
+      "task_id": "LOAD-05.4",
+      "state": "Accepted",
+      "reason": "当前实际完整原运行器四UID三真实局、12逻辑持久ACK/13物理尝试、第二局已提交回复真丢后同键重试、Pending保护、分区计数和资产账本逐项闭合。旧阶段playing原审计失败保留；当前ACK前纯context修复由负/正Native、实际协议局部结算补验与640项整项来源复核支持，未冒称新源云三局重跑。",
+      "required_case_profiles_complete": true,
+      "dependencies": {
+        "LOAD-05.3": "Accepted",
+        "LOAD-04.4": "Accepted"
+      },
+      "source_identity": {
+        "base_head": "6f00f322952a104bb8d165687395a609def0781c",
+        "uncommitted_product_sources_explicit": true,
+        "client2147_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\ready-start-snapshot-reserve-r1\\after\\source-manifest.original.json",
+        "manifest_sha256": "813474ef8fe4a9d07e19c703d98b91af1cd37202d81ba1f679ff5ba2dd7d1beb",
+        "current_actual_core_sources": [
+          {
+            "path": "client/network/gateway.gd",
+            "sha256": "1741683c857b97c621baebf0fc192639533640c6bf8a9fe982148a39105a8592"
+          },
+          {
+            "path": "client/state/game_store.gd",
+            "sha256": "352cc5fcea0ea5eae902df43f9e19202b14bd4a2093c97071ca3add451c42723"
+          },
+          {
+            "path": "client/tests/gameplay_load_client.gd",
+            "sha256": "4e9f89960a70ca05c08a7f8fc72b52003f2d81ddbc36009942d00459b7180896"
+          },
+          {
+            "path": "client/network/protobuf.gd",
+            "sha256": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67"
+          },
+          {
+            "path": "client/data/realtime_schema.json",
+            "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+          },
+          {
+            "path": "client/network/reusable_http_client.gd",
+            "sha256": "a8c3ad0219f0ae49732d9a006f129d90ac2811243f27d45ebb52b503e0232822"
+          }
+        ],
+        "runtime21_sha_manifest": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\current-ready-fault-matrix-r4\\control\\runtime-manifest.json",
+        "runtime_manifest_sha256": "012293658652df65317c026b40374eea3ca8d3dff200a52580fe70c1bf221cdf",
+        "current_Server_DLL": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "legacy_plan_lineage_sha": "497c97b0a777eb5ee88ecb1bd37cee4626fac495",
+        "legacy_SHA_not_claimed_current_source": true
+      },
+      "functional_scope_only": true,
+      "no_UI_capacity_human_natural_or_wholegoal_acceptance": true,
+      "original_failed_whole_rounds_metadata_defects_and_unknown_rows_preserved": true,
+      "current_source_qualification_not_historical_SHA_relabel": true,
+      "new_real_worlds_or_accounts_this_MAIN_review": 0,
+      "no_business_criteria_or_deadlines_relaxed": true,
+      "rollback": "恢复父register可撤销本轮验收；原代码/数据/失败在G保管，当前未提交源按独立manifest审查，无生产部署。"
+    }
+  ],
+  "global_gates_promoted": false,
+  "resolved_task_holds": [
+    {
+      "gate_id": "G2",
+      "task_acceptance_holds_resolved": [
+        "LOAD-04.4",
+        "LOAD-05.4"
+      ]
+    }
+  ]
+}

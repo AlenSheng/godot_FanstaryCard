@@ -1,0 +1,198 @@
+[
+  {
+    "name": "final-run-play-retry",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_play_retry.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-final-offline"
+    },
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 10.39886212348938
+  },
+  {
+    "name": "final-gameplay-load-parse",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_gameplay_load_parse.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-final-offline"
+    },
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.6826150417327881
+  },
+  {
+    "name": "final-lobby-race",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_lobby_race.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-final-offline"
+    },
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 0.6632556915283203
+  },
+  {
+    "name": "final-numerical-integration",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "res://tests/numerical_integration.tscn"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-final-offline"
+    },
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.0581951141357422
+  },
+  {
+    "name": "final-localization",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "res://tests/run_localization.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-final-offline"
+    },
+    "exit_code": 0,
+    "passed": true,
+    "seconds": 1.22593092918396
+  },
+  {
+    "name": "before-target-contract",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "/workspace/pr13-takeover/combat-client/run-baseline-target-contract.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-offline"
+    },
+    "exit_code": 1,
+    "log": "before-target-contract-final-fixture.log",
+    "note": "Before fixture expects failure; extended-client has one independently recorded tips-layout failure."
+  },
+  {
+    "name": "after-target-contract",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "/workspace/pr13-takeover/combat-client/run-target-contract.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-offline"
+    },
+    "exit_code": 0,
+    "log": "after-target-contract.log",
+    "note": ""
+  },
+  {
+    "name": "extended-client",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "/workspace/pr13-takeover/combat-client/run-extended-client.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-offline"
+    },
+    "exit_code": 1,
+    "log": "extended-client.log",
+    "note": "Before fixture expects failure; extended-client has one independently recorded tips-layout failure."
+  },
+  {
+    "name": "tips-diagnostic",
+    "command": [
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "client",
+      "--script",
+      "/workspace/pr13-takeover/combat-client/tips-diagnostic.gd"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "environment": {
+      "FANTASYCARD_SERVER_URL": "http://127.0.0.1:1",
+      "FANTASYCARD_LOAD_RUN_ID": "combat-client-offline"
+    },
+    "exit_code": 0,
+    "log": "tips-diagnostic.log",
+    "note": ""
+  },
+  {
+    "name": "preview-vectors",
+    "command": [
+      "python",
+      "tools/pr13_preview_checks.py",
+      "--godot",
+      "/workspace/relicround-env/godot/Godot_v4.7.2-stable_linux.x86_64",
+      "--output",
+      "/workspace/pr13-takeover/combat-client/preview-vectors"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "metadata": "preview-vectors/manifest.json",
+    "source_commit_at_execution": "73d4e41ca819d533c8d2ce80952c72c0fab6d6b6",
+    "source_tree_dirty": true
+  },
+  {
+    "name": "render-fixtures",
+    "command": [
+      "python",
+      "/workspace/pr13-takeover/combat-client/run-render.py"
+    ],
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "metadata": "render-command.json"
+  }
+]

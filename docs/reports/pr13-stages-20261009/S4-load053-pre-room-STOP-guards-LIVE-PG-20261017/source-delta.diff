@@ -1,0 +1,21 @@
+--- before-guards-current-source
++++ after-two-STOP-guards
+@@ -157,6 +157,10 @@
+ 	var class_deadline := Time.get_ticks_msec() + 30000
+ 	while Game._class_switch_request_active and Time.get_ticks_msec() < class_deadline and not stop_requested:
+ 		await _wait(0.1)
++	if stop_requested:
++		await _graceful_cleanup()
++		await _finish(false, "Coordinator cancelled class selection", 0)
++		return
+ 	if not _check(str(Game.lobby.get("player", {}).get("selectedClass", "")) == hero_profile, "hero_class_confirmed"):
+ 		await _graceful_cleanup()
+ 		await _finish(false, "Hero class was not confirmed")
+@@ -188,6 +192,7 @@
+ 	var deadline := Time.get_ticks_msec() + 30000
+ 	while Time.get_ticks_msec() < deadline and (Game.lobby.is_empty() or not Game.gateway.online) and not stop_requested:
+ 		await _wait(0.25)
++	if stop_requested: return
+ 	_check(Game.gateway.online, "realtime_connected")
+ 
+ func _run_expedition() -> void:

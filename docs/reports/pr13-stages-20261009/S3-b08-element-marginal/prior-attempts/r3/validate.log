@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/work/tools/pr13_element_marginals.py", line 86, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/work/tools/pr13_element_marginals.py", line 81, in main
+    result,rows=validate(args.input,args.expected_source)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/tools/pr13_element_marginals.py", line 45, in validate
+    digest.update(text);size+=len(text);require(size<=512*1024**2,'Original evidence bound exceeded');row=json.loads(text);validate_row(row)
+                                                                                                                           ^^^^^^^^^^^^^^^^^
+  File "/work/tools/pr13_element_marginals.py", line 23, in validate_row
+    require(row['AddedAliveControlUnionTicks']<=row['AdmittedControlTicks'] and row['ObservedAliveControlUnionTicks']<=row['AddedAliveControlUnionTicks'], 'Control overlap/window accounting differs')
+  File "/work/tools/pr13_element_marginals.py", line 12, in require
+    if not value: raise ValueError(reason)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Control overlap/window accounting differs

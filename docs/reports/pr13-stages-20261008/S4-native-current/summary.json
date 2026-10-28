@@ -1,0 +1,53 @@
+{
+  "stage": "S4",
+  "status": "Partial",
+  "runtime_review_sha": "40d51ae31cf4395c9faacc48b1d6b0fef27a4640",
+  "integration_source_sha": "97f1f0ccd28787954c01efb0291f3fa88fad42d2",
+  "ready_matrix": {
+    "passed": 15,
+    "executed": 15,
+    "synthetic_stale_packet": "SupportOnly; excluded from canonical counts"
+  },
+  "postgres": {
+    "passed": 10,
+    "executed": 10,
+    "skipped": 0,
+    "owned_databases_removed": true
+  },
+  "new_explicit_postgres_cases": 16,
+  "total_unique_explicit_cases": 87,
+  "required": 396,
+  "renderer": {
+    "screenshots": 126,
+    "resolutions": [
+      [
+        1920,
+        1080
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        960,
+        540
+      ]
+    ],
+    "fps": [
+      30,
+      60,
+      144
+    ],
+    "languages": [
+      "zh-CN",
+      "en"
+    ],
+    "passed": true,
+    "fixtures": "synthetic UI with actual renderer",
+    "human_acceptance": "待补"
+  },
+  "production_fix": "Request authoritative room snapshot after room.started when a prelaunch sequence-gap replay still holds recovery; no clearing recovery without authority. Retained native failure then fixed native full-matrix pass.",
+  "ui_fix": "Preview labels remain inside their own inset panel, with enough width for the English core title and bottom row.",
+  "unchanged": "Rules, published config bytes, rate limits, 15-second READY deadline and candidate defaults unchanged.",
+  "remaining": "Whole mixed-class LIVE, formal capacity, the other mandatory cases and human/render interaction gates remain separate."
+}

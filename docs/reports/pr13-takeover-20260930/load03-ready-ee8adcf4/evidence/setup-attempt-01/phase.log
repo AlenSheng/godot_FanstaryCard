@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/harness/phase_http.py", line 30, in <module>
+    try:run(mode,['--script','res://phase_probe.gd'],env)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/pr13-takeover/load03-ready-ee8adcf4-f812/harness/phase_http.py", line 13, in run
+    cmd=[godot,'--headless','--audio-driver','Dummy','--path',str(B/'fixture')]+extra;start=time.monotonic();r=subprocess.run(cmd,env=env,text=True,capture_output=True,timeout=20);(E/(stage+'.stdout.log')).write_text(r.stdout);(E/(stage+'.stderr.log')).write_text(r.stderr);commands.append({'stage':stage,'command':cmd,'exit_code':r.returncode,'elapsed_real_seconds':time.monotonic()-start});assert r.returncode==0
+                                                                                                                                                                                                                                                                                                                                                                                                               ^^^^^^^^^^^^^^^
+AssertionError

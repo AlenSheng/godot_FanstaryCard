@@ -1,0 +1,1 @@
+using FantasyCard.Domain.Combat; using FantasyCard.Domain.Players; var cards=Enumerable.Repeat("common-01",20).ToArray(); var state=new PlayerCombatState(HeroClass.Mage,cards,new Random(31),useConsumptionBasedFenxian:true);

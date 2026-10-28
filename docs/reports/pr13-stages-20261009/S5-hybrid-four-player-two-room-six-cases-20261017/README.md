@@ -1,0 +1,15 @@
+# 两个真实四人房间：enqueue回放与战斗上下文六案例
+
+R2在Windows本机运行当前真实Godot/GameStore/Gateway，在云端复用已核验源码编译完整Program，连接一次性PostgreSQL和独立Collector。四账号两次实际同房间READY、各房间真实出牌，随后声明的主动弃战与ACK。两个真实房间、四个真实账号、八次参与；不宣称八个独立match或自然胜局。R1与R2累计最多16次参与，未超过单项300场限制。
+
+三个enqueue案例：原请求/body/key在下一房间前后重放，保持原ticket/preparation/match；新preparation分配不同ticket/match；同键换成实际另一账号preparation返回明确Idempotency conflict 409。实际SQL确认四账号各两笔ticket、两份preparation、两次Settled成员关系、两份已ACK结算和两次ACK记录；主账号真实API购买的两瓶药水分别只保留一条数量1的准备资产，最终药水/待处理hold/装备锁均为0。历史Matched ticket仍可保留，不能把它当成活跃玩家占用。
+
+两个客户端上下文案例：第一房间的真实HTTP200生成原遥测事件后，控制层缓存该事件，在第二个真实房间开始后才交给实际LoadClient。延迟22.133秒，35个原字段逐项保持一致，包括旧cycle/match/battle/epoch、gdd-0.70-numerical-1配置版本、49ce83...配置包hash和实际默认policy。它是迟到消费的原生产者遥测事件，不宣称HTTP成功响应被阻塞到第二房间，也没有修改10秒attempt/30秒logical默认截止。未知battle seed保持null及not_published_by_authoritative_protocol，20260930仅作strategy seed。
+
+指标案例：只读MeterListener观察真实当前程序，同时经实际OTLP/Collector导出，核验fantasycard应用命名空间590条实际序列、56个系列名，未出现业务ID维度键或已知业务ID值；保留原始选中命名空间及完整HTTP响应hash。一个合法service-instance资源标签属于进程身份，不能误判成按match增长；exemplar与series label也分别处理。Meter measurement计数是回调次数，不是游戏/房间次数。原6000身份、六phase标签的组件原始TRX精确SHA仍在本地G盘，代码与当前相同，复用原件，不重跑已完成大样本。
+
+**R1整体不通过且不改成通过：五条原生断言虽报告Passed，但观察器预写battle ID跳过指标初始化产生引擎错误；HTTP延迟控制还自动超时，旧判据没有充分验证成功迟到。** R1全部33项云端原件、本机原件及真实SQL/指标保留。R2由实际_observe_battle初始化并在声明弃战前结束观测窗口；严格要求无引擎错误、真实旧HTTP200、原事件不变、实际第二房间之后投递及所有原字段一致。通过的是修正后有效控制，业务标准未放宽。
+
+生产源码上传0字节，本机211项当前输入哈希前后一致；云端328源码及固定包缓存始终只读。私有网络无公开宿主机端口，严格SSH只转发到本任务SDK。为消除四人功能测试中的配额噪声，私有Auth/Write/Read为100/200/500，指标导出1000ms；这些不是正式默认容量证明。当前goal预登记5%余量，实际磁盘最低约14.36%、内存约2.15GB；不宣称旧15%磁盘模板通过。生产镜像、环境hash和启动时刻未改，健康200。
+
+R2全部34项云端原件和本机原件逐SHA备份到本地G盘。两轮三个容器、各自内部网络及私密环境文件均清理，冻结输入与编译缓存保留。共六案例补EXPERIMENT层；OFFLINE/POSTGRES的精确原组件记录与选中源码等价已复核。无容量、性能收益、渲染或真人体验结论。

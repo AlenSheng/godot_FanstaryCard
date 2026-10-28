@@ -1,0 +1,12 @@
+{
+  "kind": "curated_record_of_observed_local_exception_original_partial_bytes_retained",
+  "exception_type": "EOFError",
+  "message": "Compressed file ended before the end-of-stream marker was reached",
+  "partial_archive_bytes": 1376256,
+  "partial_archive_sha256": "3f2a14fd1c6d067345924789dcc8d4aabaf8c40d8e8e6f3c7d0647f0dd468a3e",
+  "remote_exit": 0,
+  "game_execution_repeated": false,
+  "cause": "One-shot SSH helper ended when remote process exit was ready before all stdout frames arrived",
+  "correction": "R2 explicitly drains stdout through stream EOF; full archive328source21runtime each SHA checked",
+  "not_a_game_or_server_test_failure": true
+}

@@ -247,12 +247,18 @@ func stop_music() -> void:
 
 func _stop_music_tracks() -> void:
 	if is_instance_valid(_music_tween): _music_tween.kill()
-	for player in _music_players: player.stop()
+	_music_tween = null
+	for player in _music_players:
+		player.stop()
+		player.stream = null
 	music_context = ""
 
 func _stop_ambience_tracks() -> void:
 	if is_instance_valid(_ambience_tween): _ambience_tween.kill()
-	for player in _ambience_players: player.stop()
+	_ambience_tween = null
+	for player in _ambience_players:
+		player.stop()
+		player.stream = null
 	ambience_context = ""
 
 func play_cue(cue: String) -> bool:
@@ -281,7 +287,9 @@ func play_cue(cue: String) -> bool:
 	return true
 
 func stop_all() -> void:
-	for voice in _voices: voice.stop()
+	for voice in _voices:
+		voice.stop()
+		voice.stream = null
 	_last_played.clear()
 
 func set_volume(value: float, save: bool = true) -> void:

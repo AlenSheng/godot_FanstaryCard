@@ -1,0 +1,127 @@
+{
+  "ok": true,
+  "cases": [
+    {
+      "category": "domain-cases",
+      "case_id": "PR13-B09.4-T01",
+      "executed": true,
+      "status": "Passed",
+      "setup": "cap5关键牌改善但打断增",
+      "expected": "副作用单列",
+      "actual": {
+        "assertion_results": [
+          {
+            "method": "FantasyCard.Domain.Tests.Rooms.MonsterPoolDilutionTests.Capacity_five_keeps_key_draws_faster_than_ten_automatic_cards_but_requires_choices",
+            "name": "FantasyCard.Domain.Tests.Rooms.MonsterPoolDilutionTests.Capacity_five_keeps_key_draws_faster_than_ten_automatic_cards_but_requires_choices",
+            "outcome": "Passed",
+            "resource_ledger": [],
+            "marginal_observations": [],
+            "pool_observations": [
+              {
+                "seeds": 1000,
+                "seedStart": 100001,
+                "capacity": 5,
+                "cappedKeyDraws": 13.031,
+                "automaticKeyDraws": 15.791,
+                "decisionInterruptions": 10,
+                "automaticDecisionInterruptions": 0,
+                "observedHumanInterruptionMilliseconds": null,
+                "humanTimingUnavailableReason": "no_human_participation",
+                "productionActivation": false
+              }
+            ]
+          }
+        ],
+        "trx_sha256": "32172859c6cf838169c5fecac8b479302a9a946b11358048b053a53fef77761b"
+      },
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "scope": "Actual authoritative Domain/room tests. PostgreSQL, sampled experiments, renderer and live layers remain separate."
+    },
+    {
+      "category": "candidate",
+      "case_id": "PR13-B09.4-T03",
+      "executed": true,
+      "status": "Passed",
+      "setup": "cap无稳定收益",
+      "expected": "保留正式rule并NoChange",
+      "actual": {
+        "state": "NoChangeWithEvidence",
+        "reason": "no_supported_change_to_default",
+        "underlying_review": {
+          "state": "Inconclusive",
+          "reason": "benefit_not_identified_after_family_correction",
+          "point_improvement": 0,
+          "improvement_interval95": [
+            -0.03,
+            0.02
+          ],
+          "holm_adjusted_p": {
+            "gap": 0.06,
+            "tail": 0.08,
+            "secondary": 0.4
+          },
+          "drifts": {
+            "victory_rate": 0.0,
+            "resources_per_minute": 0.0
+          },
+          "risk_drift": {},
+          "production_defaults_retained": true,
+          "production_activation": false,
+          "capacity_acceptance": false,
+          "human_experience_acceptance": false
+        },
+        "uncertainty_retained": true,
+        "equivalence_claim": false,
+        "production_defaults_retained": true,
+        "production_activation": false
+      },
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "scope": "Actual decision/statistical code with declared controlled inputs; native scenes, sampled experiments, capacity and human layers remain separate; no MAIN acceptance"
+    },
+    {
+      "category": "native-experiment-guards-family13",
+      "case_id": "PR13-B09.4-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "OFFLINE"
+      ],
+      "setup": "偷库序",
+      "expected": "实验无效",
+      "actual": {
+        "label": "hidden-library-oracle",
+        "exit_code": 3762504530,
+        "output_created": false,
+        "source_config_unchanged": true,
+        "command": [
+          "dotnet",
+          "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-local-20261008\\S3\\native-experiment-guards\\build\\bin\\FantasyCard.Numerics\\release\\FantasyCard.Numerics.dll",
+          "--combat-experience",
+          "--samples",
+          "3",
+          "--seed-start",
+          "123001",
+          "--cutoff-seconds",
+          "60",
+          "--heroes",
+          "Mage",
+          "--groups",
+          "O1",
+          "--source-sha",
+          "9a65d44cb65a79dfd7337a4a5d7d425e701bcc17",
+          "--output",
+          "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\outputs\\pr13-local-20261008\\S3\\native-experiment-guards\\hidden-library-oracle",
+          "--strategies",
+          "hidden_library_oracle"
+        ]
+      },
+      "scope": "Actual compiled native experiment entry rejects nonwhitelisted O5 and hidden-library oracle before output; valid 3-seed control succeeds. Protected source config bytes unchanged. No complete experiment budget or benefit claim."
+    }
+  ],
+  "controlled1000shuffle_samples_historical_not_newgames": true,
+  "not_natural_expedition_benefit": true
+}

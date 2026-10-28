@@ -1,0 +1,416 @@
+{
+	"cases": [
+		{
+			"actual": {
+				"actual_first_effective_client_ms": 666,
+				"actual_request_sent_client_ms": 570,
+				"actual_result": {
+					"_command_action": "battle.play_cards",
+					"_command_result": "completed",
+					"_event_revision": 2,
+					"_origin_context": {
+						"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+						"battle_seed": null,
+						"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+						"client_id": "metric-boundary",
+						"config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+						"config_package_unavailable_reason": null,
+						"config_version": "gdd-0.70-numerical-1",
+						"config_version_source": "actual_domain_authority",
+						"cycle_id": "metric-boundary:1",
+						"effective_room_policy": {
+							"fenxian_policy": "CurrentRhythm",
+							"guardian_policy": "CurrentSteps",
+							"guardian_remainder_tenths": 0
+						},
+						"hero_class": "Priest",
+						"load_profile": "cyclic-gameplay",
+						"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+						"origin": "http://127.0.0.1:7961",
+						"phase": "playing",
+						"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+						"room_context_epoch": 1,
+						"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+						"run_id": "boundary-local-waits-610001",
+						"session_generation": 0,
+						"strategy": "baseline_all_hand",
+						"strategy_seed": 20260930
+					},
+					"_replayed": false,
+					"_request_id": "b325d8e14fa6f5d14e822833e5a432d0",
+					"_sequence": 3,
+					"attacker_id": "4631abfd-0d47-4e78-bab4-0bd3222e31fe",
+					"battle_ended": false,
+					"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+					"card_instance_ids": [
+						"01a145d3-ebdf-7e82-bf74-c67f9587b4cf"
+					],
+					"conflict_cancellation": "",
+					"conflict_pair_count": 0,
+					"core_count": 0,
+					"core_element": "",
+					"damage": 0,
+					"damage_segments": [],
+					"draw_block_seconds": "0",
+					"draw_block_speed_seconds": "",
+					"draw_charge": "0",
+					"draw_speed_modifier": "",
+					"draw_speed_seconds": "",
+					"heal": 2,
+					"health_cost": 0,
+					"hp_damage": 0,
+					"immediate_draw": 0,
+					"resonance_multiplier": "",
+					"shield_damage": 0,
+					"shield_gain": 0,
+					"source_id": "",
+					"stun_seconds": "0",
+					"target_defeated": false,
+					"target_id": "fire-bat-a"
+				},
+				"before_hp": 78,
+				"client_clock_origin": {
+					"clock": "Godot.Time.get_ticks_msec",
+					"host": "",
+					"process_epoch": "0490fb6533e8c922fc7fb9dba8372552"
+				},
+				"client_metrics": {
+					"actions": 1,
+					"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+					"cards_spent": 1,
+					"effective_actions": 1,
+					"first_effective_ms": 666,
+					"heal": 2,
+					"heal_overflow": null,
+					"heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+					"hp_damage": 0,
+					"longest_effective_gap_ms": 666,
+					"observed_cards_drawn": 0,
+					"shield_damage": 0,
+					"shield_gain": 0,
+					"zero_effective_actions": 0
+				},
+				"effective_maximum_hp": 80,
+				"producer_requested_heal_and_overflow_checked_separately": true
+			},
+			"case_id": "PR13-B01.3-T02",
+			"executed": true,
+			"profiles_executed": [
+				"EXPERIMENT"
+			],
+			"scope": "Actual current BattleRoom, official projection/protobuf and current native GameStore/LoadClient over real private WebSocket. Controlled legal encounter/effect inputs; no full Program/auth/PG/natural-route/capacity/render claim.",
+			"status": "Passed"
+		}
+	],
+	"combos": [
+		{
+			"_command_action": "battle.play_cards",
+			"_command_result": "completed",
+			"_event_revision": 2,
+			"_origin_context": {
+				"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+				"battle_seed": null,
+				"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+				"client_id": "metric-boundary",
+				"config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+				"config_package_unavailable_reason": null,
+				"config_version": "gdd-0.70-numerical-1",
+				"config_version_source": "actual_domain_authority",
+				"cycle_id": "metric-boundary:1",
+				"effective_room_policy": {
+					"fenxian_policy": "CurrentRhythm",
+					"guardian_policy": "CurrentSteps",
+					"guardian_remainder_tenths": 0
+				},
+				"hero_class": "Priest",
+				"load_profile": "cyclic-gameplay",
+				"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+				"origin": "http://127.0.0.1:7961",
+				"phase": "playing",
+				"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+				"room_context_epoch": 1,
+				"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+				"run_id": "boundary-local-waits-610001",
+				"session_generation": 0,
+				"strategy": "baseline_all_hand",
+				"strategy_seed": 20260930
+			},
+			"_replayed": false,
+			"_request_id": "b325d8e14fa6f5d14e822833e5a432d0",
+			"_sequence": 3,
+			"attacker_id": "4631abfd-0d47-4e78-bab4-0bd3222e31fe",
+			"battle_ended": false,
+			"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+			"card_instance_ids": [
+				"01a145d3-ebdf-7e82-bf74-c67f9587b4cf"
+			],
+			"conflict_cancellation": "",
+			"conflict_pair_count": 0,
+			"core_count": 0,
+			"core_element": "",
+			"damage": 0,
+			"damage_segments": [],
+			"draw_block_seconds": "0",
+			"draw_block_speed_seconds": "",
+			"draw_charge": "0",
+			"draw_speed_modifier": "",
+			"draw_speed_seconds": "",
+			"heal": 2,
+			"health_cost": 0,
+			"hp_damage": 0,
+			"immediate_draw": 0,
+			"resonance_multiplier": "",
+			"shield_damage": 0,
+			"shield_gain": 0,
+			"source_id": "",
+			"stun_seconds": "0",
+			"target_defeated": false,
+			"target_id": "fire-bat-a"
+		}
+	],
+	"command_send": [],
+	"info": {
+		"config_version": "gdd-0.70-numerical-1",
+		"elapsed_ms": 0.0,
+		"hand_count": 3.0,
+		"host": "YK-SHENGJIAHAO",
+		"id": "f5cb62604de54f10bd3e25768baa9bf6",
+		"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+		"monotonic_frequency": 10000000.0,
+		"player_hp": 78.0,
+		"player_id": "4631abfd-0d47-4e78-bab4-0bd3222e31fe",
+		"player_stun_ms": 0.0,
+		"process_epoch": "01f0aae2d82d433c9fec372c3046b96e",
+		"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+		"scenario": "partial",
+		"seed": 610001.0
+	},
+	"no_natural_route_or_auth_claim": true,
+	"ok": true,
+	"steps": [
+		{
+			"at_ms": 368,
+			"passed": true,
+			"step": "controlled transport session"
+		},
+		{
+			"at_ms": 369,
+			"passed": true,
+			"step": "actual WebSocket connect"
+		},
+		{
+			"at_ms": 453,
+			"passed": true,
+			"step": "actual official snapshot applied"
+		},
+		{
+			"at_ms": 454,
+			"passed": true,
+			"step": "first context has authoritative battle ID before tracker initialization"
+		},
+		{
+			"at_ms": 454,
+			"passed": true,
+			"step": "actual legal healing card level3"
+		},
+		{
+			"at_ms": 1136,
+			"passed": true,
+			"step": "actual healing resolution and acknowledgement"
+		},
+		{
+			"at_ms": 1136,
+			"passed": true,
+			"step": "actual first-command origin battle ID correct"
+		}
+	],
+	"telemetry": [
+		{
+			"at_unix_ms": 1792172879359,
+			"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+			"battle_seed": null,
+			"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+			"client_id": "metric-boundary",
+			"cycle_id": "metric-boundary:1",
+			"discard_count": 0,
+			"elapsed_ms": 0,
+			"event_seq": 1,
+			"event_type": "battle.observed",
+			"last_effective_age_ms": 0,
+			"library_count": 17,
+			"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+			"monotonic_ms": 454,
+			"monsters": [
+				{
+					"hp": 42,
+					"id": "fire-bat-a",
+					"shield": 0,
+					"stun_remaining_ms": 0
+				},
+				{
+					"hp": 42,
+					"id": "fire-bat-b",
+					"shield": 0,
+					"stun_remaining_ms": 0
+				}
+			],
+			"phase": "playing",
+			"player_hp": 78,
+			"player_shield": 0,
+			"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+			"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+			"run_id": "boundary-local-waits-610001",
+			"type": "battle_observation",
+			"waiting": {
+				"hand_count": 3,
+				"legal_opportunity": true,
+				"reason": "available",
+				"remaining_ms": 0
+			}
+		},
+		{
+			"action": "battle.play_cards",
+			"at_unix_ms": 1792172880025,
+			"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+			"battle_seed": null,
+			"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+			"client_id": "metric-boundary",
+			"config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+			"config_package_unavailable_reason": null,
+			"config_version": "gdd-0.70-numerical-1",
+			"config_version_source": "actual_domain_authority",
+			"cycle_id": "metric-boundary:1",
+			"duration_ms": 547,
+			"effective_room_policy": {
+				"fenxian_policy": "CurrentRhythm",
+				"guardian_policy": "CurrentSteps",
+				"guardian_remainder_tenths": 0
+			},
+			"event_seq": 2,
+			"event_type": "realtime",
+			"hero_class": "Priest",
+			"load_profile": "cyclic-gameplay",
+			"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+			"monotonic_ms": 1120,
+			"origin": "http://127.0.0.1:7961",
+			"phase": "playing",
+			"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+			"replayed": false,
+			"request_id": "b325d8e14fa6f5d14e822833e5a432d0",
+			"response_type": "battle.combo_resolved",
+			"result": "completed",
+			"room_context_epoch": 1,
+			"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+			"run_id": "boundary-local-waits-610001",
+			"session_generation": 0,
+			"strategy": "baseline_all_hand",
+			"strategy_seed": 20260930,
+			"type": "realtime"
+		},
+		{
+			"_origin_context": {
+				"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+				"battle_seed": null,
+				"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+				"client_id": "metric-boundary",
+				"config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+				"config_package_unavailable_reason": null,
+				"config_version": "gdd-0.70-numerical-1",
+				"config_version_source": "actual_domain_authority",
+				"cycle_id": "metric-boundary:1",
+				"effective_room_policy": {
+					"fenxian_policy": "CurrentRhythm",
+					"guardian_policy": "CurrentSteps",
+					"guardian_remainder_tenths": 0
+				},
+				"hero_class": "Priest",
+				"load_profile": "cyclic-gameplay",
+				"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+				"origin": "http://127.0.0.1:7961",
+				"phase": "playing",
+				"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+				"room_context_epoch": 1,
+				"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+				"run_id": "boundary-local-waits-610001",
+				"session_generation": 0,
+				"strategy": "baseline_all_hand",
+				"strategy_seed": 20260930
+			},
+			"at_unix_ms": 1792172880025,
+			"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+			"battle_seed": null,
+			"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+			"client_id": "metric-boundary",
+			"config_package_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+			"config_package_unavailable_reason": null,
+			"config_version": "gdd-0.70-numerical-1",
+			"config_version_source": "actual_domain_authority",
+			"cycle_id": "metric-boundary:1",
+			"effective_room_policy": {
+				"fenxian_policy": "CurrentRhythm",
+				"guardian_policy": "CurrentSteps",
+				"guardian_remainder_tenths": 0
+			},
+			"event_seq": 3,
+			"event_type": "battle.combo_resolved",
+			"hero_class": "Priest",
+			"load_profile": "cyclic-gameplay",
+			"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+			"monotonic_ms": 1120,
+			"origin": "http://127.0.0.1:7961",
+			"phase": "playing",
+			"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+			"request_id": "b325d8e14fa6f5d14e822833e5a432d0",
+			"room_context_epoch": 1,
+			"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+			"run_id": "boundary-local-waits-610001",
+			"session_generation": 0,
+			"strategy": "baseline_all_hand",
+			"strategy_seed": 20260930,
+			"type": "lifecycle"
+		},
+		{
+			"at_unix_ms": 1792172880042,
+			"battle_id": "01a145d3-ebf4-7992-ae0c-3a27bc6ab5d1",
+			"battle_seed": null,
+			"battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+			"client_id": "metric-boundary",
+			"cycle_id": "metric-boundary:1",
+			"discard_count": 1,
+			"elapsed_ms": 682,
+			"event_seq": 4,
+			"event_type": "battle.observed",
+			"last_effective_age_ms": 16,
+			"library_count": 17,
+			"match_id": "d3dd8ba9-8bda-4d15-8539-389bfa636eb5",
+			"monotonic_ms": 1136,
+			"monsters": [
+				{
+					"hp": 42,
+					"id": "fire-bat-a",
+					"shield": 0,
+					"stun_remaining_ms": 0
+				},
+				{
+					"hp": 42,
+					"id": "fire-bat-b",
+					"shield": 0,
+					"stun_remaining_ms": 0
+				}
+			],
+			"phase": "playing",
+			"player_hp": 80,
+			"player_shield": 0,
+			"process_epoch": "0490fb6533e8c922fc7fb9dba8372552",
+			"room_id": "a4acd36f-1b36-40a4-842e-2b6f0f8599ea",
+			"run_id": "boundary-local-waits-610001",
+			"type": "battle_observation",
+			"waiting": {
+				"hand_count": 2,
+				"legal_opportunity": true,
+				"reason": "available",
+				"remaining_ms": 0
+			}
+		}
+	]
+}

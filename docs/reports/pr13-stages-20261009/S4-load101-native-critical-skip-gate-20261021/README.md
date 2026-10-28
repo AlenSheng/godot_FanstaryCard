@@ -1,0 +1,15 @@
+# T03 原生关键环境跳过完整门禁：补LIVE与POSTGRES，整项仍Partial
+
+当前原生测试DLL／PDB与完整关键源文件匹配，使用相同Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification方法，先有真实隔离PG连接，再只移除FANTASYCARD_TEST_POSTGRES。新命令入口实际启动dotnet原生进程、读取它生成的TRX并执行原有assess_trx／assess_gate，保存真实进程和门禁结果。它没有把原生执行替换成模拟TRX，也没有修改C#断言、SkipUnless或原有两个判定函数。
+
+正常环境实际1Passed、native退出0，完整CLI输出ReadyForMainReview并返回0，acceptance仍false。缺失环境实际total1/executed0/passed0/NotExecuted1、native也退出0，但完整CLI输出Blocked并返回3，missing_assertion_rows保留该关键方法，未把跳过导出成Passed。这里是负例按预期阻止通过，底层缺失环境的方法正文并未执行。
+
+两次期间当前8eb真实Program的health200与实际client-info配置版本均一致，独立PG保持可用。正常组由PostgreSQL DDL原件证实实际创建并删除一个fc_runtime_test隔离schema，源方法中的资产整批回滚／通知约束断言真实执行；缺失组没有创建schema。宿主在两组后分别核对无残留测试schema，Program public表玩家、match、receipt、hold保持0，最终PG dump保留。31项独立原生方法、返回码、TRX计数／hash、环境存在标记、当前工具／DLL／PDB源身份、DDL及清理核对通过。
+
+新增tools/pr13_suite_coverage.py薄CLI复用原判定，输入为有界参数数组、明确必跑方法和来源，直接传播Ready／Blocked／Failed的0／3／1，始终不授任务验收。实际native进程无窗口且低优先级，环境只记录指定变量是否存在，不保存连接字符串。五个本地真实子进程／受控TRX单元边界覆盖Passed仅Ready、exit0跳过Blocked、真实失败Failed、exit0无TRX Blocked、旧来源Blocked；它们只证明CLI边界，不算PG或LIVE证据。PDB验证和本地native help也只检查元数据／命令，help原生退出2、没有运行测试正文。
+
+438成员G SHA／CRC封存新CLI前后源、原生程序集／PDB、实际TRX与进程日志、PG DDL／dump、输入及观察器；随后owner、175包文件SHA、unit PID0/inactive、自有容器不存在、生产身份／环境hash和health200一致后，精确清理临时云源码。云raw、本地全部代码和G保留。应用768MiB／1CPU，PG384MiB／0.5CPU，私有network-none及共享私有loopback，无host端口／生产volume。没有改变玩法、数值／血量、UI、协议、原断言、Git或生产部署；本地没有新增Godot／登录／PG／玩法对局，保持无感约定。
+
+本次两次原生调用仅正常组在自有schema建一个SQL match夹具／两个身份，schema随后删除；零在线玩法账号与玩家周期，按类别记录，不重置此前LOAD101三实际玩法世界／12周期及协议四身份／零世界，也不重置LOAD10238世界／72周期和其他旧预算。
+
+只补LOAD-10.1-T03的LIVE／POSTGRES两个层级，限定单个关键方法与执行门禁及其真实运行环境；不代表完整原生suite、CI、协议全矩阵或容量通过。T01/T02/T03各剩一个CAPACITY缺口，整项仍Partial。88 Accepted／36 Partial／8 Ready、44未整体验收保持，case/profile缺口168降至166，其他131任务和所有全局门不变。

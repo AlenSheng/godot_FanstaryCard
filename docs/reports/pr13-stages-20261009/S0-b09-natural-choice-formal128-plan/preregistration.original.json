@@ -1,0 +1,59 @@
+{
+  "attempt_family": "natural-choice-formal128-r1-20261012",
+  "source_release_base_sha": "700d237d8ffe155582a3bbd381257da2a688ad8d",
+  "actual_compiled_game_source_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "actual_harness_source_kind": "R3 cloud smoke frozen working tree bytes, SHA manifest, separately compiled on Tencent; original game code unchanged",
+  "immutable_input_root": "/home/ubuntu/pr13-acceptance-20261009/work/natural-choice-contract-smoke-r3-inputs",
+  "input_manifest_sha256": "34796938c860ee9b5e39be5aca5a6f625525fb6c48b7c7393145e7bdcf962168",
+  "heroes": [
+    "Mage",
+    "Priest",
+    "Guardian"
+  ],
+  "capacity_arms": [
+    0,
+    3,
+    5,
+    8
+  ],
+  "seed_start": 484001,
+  "seed_count_per_hero": 128,
+  "routes_per_hero": 512,
+  "all_required_routes": 1536,
+  "smoke_first16_seed_overlap_explicit": true,
+  "smoke_routes_not_added_as_independent_samples": true,
+  "fixed_simulated_seconds_budget": 1800,
+  "all_terminal_and_censored_and_error_outputs_retained": true,
+  "policy": "Published map BFS, legal spring channels, choose available healing when HP below max, external paired SkipFirst for even route indexes; fill visible pool then alternate replace/skip. No hidden order/card selection information or game state modification.",
+  "censor_reason_required": "Final phase and living monster count distinguish real continuing PVE from no reachable exploration or known exit",
+  "memory_floor_bytes": 500000000,
+  "SDK_memory_mib": 768,
+  "raw_output_tmpfs_mib": 384,
+  "root_floor_ratio": 0.15,
+  "each_hero_complete_G_backup_before_passed_output_cleanup_and_next_segment": true,
+  "original_36000_routes_and_NoChange_statistics_retained": true,
+  "strength_or_balance_inference_claimed": false,
+  "zero_coverage_branch_not_passed": true,
+  "all132_tasks_and396_cases_retained": true,
+  "MAIN_accepted": false,
+  "runners": [
+    {
+      "hero": "Mage",
+      "attempt": "natural-choice-formal128-mage-r1-20261012",
+      "runner_local_file": "natural_choice_formal128_mage_r1_cloud_runner.original.py",
+      "runner_sha256": "3937e435c75d13674d689422679754921333352689047027c5e2448e821fcb9a"
+    },
+    {
+      "hero": "Priest",
+      "attempt": "natural-choice-formal128-priest-r1-20261012",
+      "runner_local_file": "natural_choice_formal128_priest_r1_cloud_runner.original.py",
+      "runner_sha256": "dc82ede369a3188e468b03cc767f14ca27a0a221e610f76fc0f33b8682b7c2d9"
+    },
+    {
+      "hero": "Guardian",
+      "attempt": "natural-choice-formal128-guardian-r1-20261012",
+      "runner_local_file": "natural_choice_formal128_guardian_r1_cloud_runner.original.py",
+      "runner_sha256": "2a298765268da9036aac99d25692f6f44968e8a9a53730741b19d252c8c6e760"
+    }
+  ]
+}

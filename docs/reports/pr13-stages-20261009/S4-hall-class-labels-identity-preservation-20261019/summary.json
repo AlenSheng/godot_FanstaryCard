@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified offline current-product hall class-label UI fix;identity preservation controls",
+  "base_release": "a8e79597a3cb36fce8ad755a1f546df9382cb1d6",
+  "formal_source": "client/ui/reference_ui.gd",
+  "formal_changed_function": "ReferenceUI._hall",
+  "before_UI_SHA256": "91989e084a94414a74e8432321a359851fb99720831a27960136de257a5c3e9d",
+  "final_UI_SHA256": "aac052435d29061c537b4d5387c6879da22d2bc5c1586e0c10689aca2edfd04e",
+  "reproduced_defects": [
+    "English profession names double-localized to P/M/G",
+    "English friendly names squeezed into116px single line"
+  ],
+  "final_behavior": [
+    "Localize class labels once;render full Priest/Mage/Guardian",
+    "English friendly name/title on two20px lines",
+    "English text inside decorative-frame safe area;HP and profession row separate"
+  ],
+  "historical_nickname_translation_risk_reproduced": false,
+  "nickname_or_UID_source_fix_claim": false,
+  "identity_control": "Raw nickname preserved in both display helpers and both locales,including tokens matching translation entries;UID exact;synthetic player data unchanged",
+  "source_qualification": {
+    "current_inputs_verified": 2127,
+    "all_Root_inputs_equal_before_apply": true,
+    "private_overlay_only_extra_product_input": "project.godot switches Game to offline inherited fixture",
+    "private_candidate_differs_from_Root_only": "client/ui/reference_ui.gd",
+    "text_helper_header_Main_palette_equal": true,
+    "all_art_fonts_configuration_unchanged": true
+  },
+  "qualified": {
+    "label_checks": 40,
+    "nickname_samples": 9,
+    "display_helpers": 2,
+    "languages": 2,
+    "positive_static_translation_controls": 4,
+    "render_contexts": 18,
+    "reused_Chinese_contexts": 9,
+    "new_final_English_contexts": 9,
+    "all_contexts_agent_visually_reviewed": true,
+    "class_label_checks_per_frame": 6,
+    "minimum_class_label_font_size": 20,
+    "English_friendly_title_lines": 2,
+    "missing_identity_glyphs": 0,
+    "identity_visible_lines": 2,
+    "resolutions": [
+      [
+        960,
+        540
+      ],
+      [
+        1280,
+        720
+      ],
+      [
+        1920,
+        1080
+      ]
+    ],
+    "selected_classes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ]
+  },
+  "reuse_basis": "Reuse only saved40 helper checks and9Chinese frames fromNative4. Laterchanges confined to English-only name/spacing/stats parameters;Chinese values,helpers,header,Palette/Main byte exact. All9English frames rerun after final1px width repair.",
+  "actual_runtime": {
+    "Godot": "4.7.2.stable.official.ed1daf0bf",
+    "display_driver": "Windows",
+    "adapter": "NVIDIA GeForce GTX 1660",
+    "renderer": "gl_compatibility",
+    "headless": false,
+    "startup_hidden": true,
+    "audio_driver": "Dummy",
+    "final_exit": 0,
+    "final_script_engine_errors": 0,
+    "final_peak_owned_RSS_bytes": 349679616,
+    "final_minimum_available_memory_bytes": 5992382464,
+    "final_elapsed_seconds": 8.8792784
+  },
+  "all_attempts_preserved": [
+    {
+      "attempt": "preflight",
+      "native_starts": 0,
+      "result": "5percent local-memory self preflight failed;no cases;exact failure resource values not captured"
+    },
+    {
+      "native": 1,
+      "case_results": 0,
+      "images": 0,
+      "result": "Private override void/bool mismatch;Game autoload failed;controlled external stop after95.82s;not clean exit;not product defect"
+    },
+    {
+      "native": 2,
+      "images": 14,
+      "result": "Baseline hit512MiB ownedRSS watchdog at547155968B;no saved aggregate/assertion outcomes;14 images retained as visual evidence only"
+    },
+    {
+      "native": 3,
+      "case_results": 0,
+      "images": 0,
+      "result": "Private candidate reserved variable class_name caused parse failure;fast controlled stop;renamed hero_title"
+    },
+    {
+      "native": 4,
+      "images": 18,
+      "label_checks_passed": 40,
+      "Chinese_passed": 9,
+      "English_failed": 9,
+      "exit": 1,
+      "result": "TwoEnglish name lines but onlyone visible;whole run failed"
+    },
+    {
+      "native": 5,
+      "images": 9,
+      "automatic_English_passed": 9,
+      "exit": 0,
+      "final_visual_qualified": false,
+      "result": "Automatic text checks passed;agent visual review rejected tight top/right/bottom frame spacing"
+    },
+    {
+      "native": 6,
+      "images": 9,
+      "English_failed": 9,
+      "exit": 1,
+      "result": "Safe-area checks passed;Guardian font19 belowminimum20 in94px role rectangle"
+    },
+    {
+      "native": 7,
+      "images": 9,
+      "English_passed": 9,
+      "exit": 0,
+      "final_visual_qualified": true,
+      "result": "Restore1px role width95;all labels>=20,all safeareas pass;9images reviewed"
+    }
+  ],
+  "budget_revisions_explicit": {
+    "native_starts": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "PNG_operation_caps": [
+      18,
+      32,
+      41,
+      50,
+      59
+    ],
+    "actual_native_starts": 7,
+    "actual_PNG_operations": 59,
+    "distinct_final_qualified_contexts": 18,
+    "local_memory_preflight": "5percent ->1.5GiB absolute start;then1.75GiB beforecandidate",
+    "runtime_local_available_floor_bytes": 1073741824,
+    "owned_RSS_cap_bytes_before": 536870912,
+    "owned_RSS_cap_bytes_final": 671088640,
+    "reason": "Local UI fit/load/debug failures and real visual defects required bounded affected-only corrections. Eachrevision frozen beforelaunch. Previouslyqualified40checks/9Chinesecontexts not repeated.",
+    "correctness_criteria_lowered": false,
+    "font20_all_text_all_lines_identity_requirements_retained": true,
+    "cloud_disk_memory_5percent_unchanged": true,
+    "local_disk_5percent_unchanged": true
+  },
+  "GDD_v070_SHA256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+  "GDD_v070_priority_Priest80over70_legal_raw_display_unchanged": true,
+  "class_maximum_HP_80_70_100_not_an_overcap_health_experiment": true,
+  "new_accounts_worlds_HTTP_cloud_calls_uploads_deployments": 0,
+  "human_experience_in_scope": false,
+  "new_ImageGen_assets": 0,
+  "all_test_code_retained_locally": true,
+  "all7owned_Native_processes_terminal": true,
+  "canonical": {
+    "tasks": 132,
+    "cases": 396,
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "unaccepted": 77,
+    "register_gate_MAIN_changed": false,
+    "canonical_promotions": 0
+  },
+  "evidence_SHA256": {
+    "all40_helper_checks_and9Chinese_contexts_result": "9de913af3acbe7564f3e7bdec3999d424262e39360b39bcf159d0830d9c01e0d",
+    "final9English_contexts_result": "b64667e9bad19bfb5a72f324f502e40835cd80f7efc40d91b14e5cfb99d95225",
+    "final_Native_terminal": "c497883381af523634559ad572dc253acbf4314b4a472e3202e1a8587a62b30d",
+    "final_source_and_case_review": "d397a4e179dfeb1bc410f5b3de2ff23d23f409eeb2419ce4c75383e1bf192452",
+    "G_original_custody_manifest": "d7459f3bfa6a43b6b424dcabd302544596a5541b5015033faeb22840bd90e440"
+  },
+  "limits": [
+    "Offline synthetic UI only;no new authentication/gameplay/LIVE/PG/capacity claim",
+    "58qualified observation rows =40helper checks+18rendercontexts;not58new canonical cases",
+    "NineChinese frames and40checks reused on provedunchanged branch;not rerun on finalwholefile",
+    "Realplayer usability and live account identity persistence excluded",
+    "Prior capacity600 failure,WebCRC candidate and historicalAUDIT/MAIN gaps remain;no finalPR13acceptance"
+  ],
+  "whole_goal_complete": false
+}

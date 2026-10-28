@@ -1,0 +1,50 @@
+{
+  "ok": true,
+  "controls": [
+    {
+      "control": "missing_all_nine_formal_units",
+      "rejected": true,
+      "error": "ValueError",
+      "detail": "All nine formal native units required"
+    },
+    {
+      "control": "wrong_frozen_source",
+      "rejected": true,
+      "error": "ValueError",
+      "detail": "Wrong formal unit, source or smoke counted as formal"
+    },
+    {
+      "control": "actual_development_smoke_cannot_count_as_formal",
+      "rejected": true,
+      "error": "ValueError",
+      "detail": "Wrong formal unit, source or smoke counted as formal"
+    },
+    {
+      "control": "duplicate_seed_capacity_row",
+      "rejected": true,
+      "error": "ValueError",
+      "detail": "Duplicate or nonpreregistered route"
+    },
+    {
+      "control": "zero_discordance_is_Inconclusive_not_zero_population_effect",
+      "rejected": true,
+      "interval": {
+        "mean": 0.0,
+        "CI95": [
+          0.0,
+          0.0
+        ],
+        "CI_familywise95": [
+          0.0,
+          0.0
+        ],
+        "bootstrap_resamples": 10000,
+        "discordant_seed_pairs": 0,
+        "precision_insufficient": true,
+        "empirical_degenerate_interval_is_not_proof_of_zero_population_effect": true
+      }
+    }
+  ],
+  "native_formal_samples_added": 0,
+  "controls_not_game_results": true
+}

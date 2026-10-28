@@ -28,6 +28,35 @@ public sealed class PostgresRuntimeIntegrationTests
     public static bool HasTestDatabase => !string.IsNullOrWhiteSpace(
         Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES"));
 
+    [Theory(Skip = "Requires an owned PostgreSQL test database.", SkipUnless = nameof(HasTestDatabase))]
+    [InlineData(HeroClass.Mage, "MAG")]
+    [InlineData(HeroClass.Priest, "PRI")]
+    [InlineData(HeroClass.Guardian, "GUA")]
+    [Trait("Category", "PostgresIntegration")]
+    public async Task Actual_starter_deck_matches_published_twenty_white_level_zero_cards(HeroClass hero, string prefix)
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+        var now = DateTimeOffset.UtcNow; var ct = TestContext.Current.CancellationToken;
+        var player = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
+            "starter-source-" + Guid.NewGuid().ToString("N"), "Starter source",
+            TokenHash(Guid.NewGuid().ToString("N")), now, now.AddHours(1), ct);
+        var raw = await database.ScalarAsync<string>(
+            "SELECT jsonb_agg(dc.card_id ORDER BY dc.slot_index)::text FROM player_deck_cards dc JOIN player_decks d ON d.deck_id=dc.deck_id WHERE d.player_id=$1 AND d.hero_class=$2",
+            player.UserId, (short)hero);
+        var actual = JsonSerializer.Deserialize<string[]>(raw)!;
+        var expected = Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"{prefix}-{i:D2}")).ToArray();
+        Assert.Equal(expected, actual); Assert.Equal(20, actual.Distinct().Count());
+        foreach (var id in actual)
+        {
+            var card = GameConfigCatalog.Current.Cards.Single(c => c.CardId == id);
+            Assert.Equal("White", card.Quality); Assert.True(card.Enabled); Assert.True(card.InitiallyUnlocked);
+            Assert.True(card.HeroClass is null || card.HeroClass == hero);
+            Assert.Equal(0, await database.ScalarAsync<int>("SELECT level FROM player_cards WHERE player_id=$1 AND card_id=$2", player.UserId, id));
+        }
+        TestContext.Current.TestOutputHelper!.WriteLine("PR13_STARTER " + JsonSerializer.Serialize(new
+            { hero, publishedConfigVersion = GameConfigCatalog.Current.Version, cards = actual, rarity = "White", level = 0, actualDatabaseRead = true }));
+    }
+
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
         SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
@@ -943,6 +972,24 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.True(created.Created);
         Assert.False(replay.Created);
         Assert.Equal(created.SettlementId, replay.SettlementId);
+        // Durable receipt reads are owner-scoped, but a Pending asset hold
+        // must not permit ACK, notification, or a false client completion.
+        Assert.Equal(created.SettlementId,
+            (await repository.GetAsync(player.UserId, created.SettlementId, cancellationToken)).SettlementId);
+        await Assert.ThrowsAsync<SettlementNotReadyException>(() => repository.AcknowledgeAsync(
+            player.UserId, created.SettlementId, "before-assets-ready", cancellationToken));
+        Assert.Empty(await repository.GetReadyNotificationsAsync(player.UserId, cancellationToken));
+        Assert.Equal(0L, await database.ScalarAsync<long>(
+            "SELECT gold FROM player_wallets WHERE player_id=$1", player.UserId));
+        var otherPlayer = Guid.NewGuid();
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetAsync(
+            otherPlayer, created.SettlementId, cancellationToken));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetForMatchAsync(
+            otherPlayer, matchId, cancellationToken));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetForMatchAsync(
+            player.UserId, Guid.NewGuid(), cancellationToken));
+        Assert.Equal(assets.Length, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM settlement_asset_holds WHERE settlement_id=$1 AND state='Pending'", created.SettlementId));
         Assert.Equal(assets.Length, await repository.CommitHoldsAsync(created.SettlementId, cancellationToken));
         Assert.Equal(0, await repository.CommitHoldsAsync(created.SettlementId, cancellationToken));
         Assert.Equal(17L, await database.ScalarAsync<long>(
@@ -980,6 +1027,12 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Empty(await repository.GetReadyNotificationsAsync(player.UserId, cancellationToken));
         Assert.Equal(created.SettlementId,
             (await repository.GetForMatchAsync(player.UserId, matchId, cancellationToken)).SettlementId);
+        Assert.Equal(created.SettlementId,
+            (await repository.GetAsync(player.UserId, created.SettlementId, cancellationToken)).SettlementId);
+        await Assert.ThrowsAsync<SettlementNotFoundException>(() => repository.AcknowledgeAsync(
+            otherPlayer, created.SettlementId, "foreign-player-ack", cancellationToken));
+        Assert.Equal(17L, await database.ScalarAsync<long>(
+            "SELECT gold FROM player_wallets WHERE player_id=$1", player.UserId));
     }
 
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
@@ -1170,6 +1223,10 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.True(recovered.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
         Assert.Equal(beforeRestart.RandomStreams, recovered.RandomStreams);
 
+        // Actor commands complete before the asynchronous snapshot observer.
+        // Read the durable checkpoint only after this recovered revision is published.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM room_snapshots WHERE room_id=$1 AND revision >= $2", roomId, recovered.Revision);
         var persisted = Assert.IsType<BattleRoomSnapshot>(await snapshots.GetAsync(roomId, cancellationToken));
         Assert.Equal(RoomPlayerPhase.Dead, Assert.Single(persisted.Players).Phase);
         Assert.True(persisted.Elapsed >= beforeRestart.Elapsed + TimeSpan.FromSeconds(16));
@@ -1268,6 +1325,9 @@ public sealed class PostgresRuntimeIntegrationTests
             cancellationToken);
         var terminal = await actor.ExecuteAsync(new GetRoomSnapshotCommand(), cancellationToken);
         Assert.Equal(RoomPlayerPhase.Extracted, Assert.Single(terminal.Players).Phase);
+        // Actor command completion precedes the asynchronous persistence observer.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM match_settlements WHERE match_id=$1", matchId);
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_settlements WHERE match_id=$1", matchId));
         Assert.Equal(3L, await database.ScalarAsync<long>(
@@ -1402,6 +1462,9 @@ public sealed class PostgresRuntimeIntegrationTests
         Assert.Contains(relic.Items, item => item.ItemId == backpackEquipmentId.ToString("D"));
         Assert.Contains(relic.Items, item => item.ItemId == wornEquipmentId.ToString("D"));
 
+        // Actor command completion precedes the asynchronous persistence observer.
+        await database.WaitForScalarAsync(1L,
+            "SELECT count(*) FROM match_settlements WHERE match_id=$1 AND result='Dead'", matchId);
         Assert.Equal(1L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_settlements WHERE match_id=$1 AND result='Dead'", matchId));
         Assert.Equal(4L, await database.ScalarAsync<long>(
@@ -1567,6 +1630,25 @@ public sealed class PostgresRuntimeIntegrationTests
 
             if (index == 0)
             {
+                // A former match for this player must not leak into a queued ticket replay.
+                var historicalMatchId = Guid.NewGuid();
+                await using (var historicalMatch = database.DataSource.CreateCommand(
+                    "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',0,$3,'Completed',$4)"))
+                {
+                    historicalMatch.Parameters.AddWithValue(historicalMatchId);
+                    historicalMatch.Parameters.AddWithValue(Guid.NewGuid());
+                    historicalMatch.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
+                    historicalMatch.Parameters.AddWithValue(time.GetUtcNow());
+                    await historicalMatch.ExecuteNonQueryAsync(cancellationToken);
+                }
+                await using (var historicalPlayer = database.DataSource.CreateCommand(
+                    "INSERT INTO match_players(match_id,player_id,preparation_id,is_bot,state) VALUES($1,$2,$3,false,'Settled')"))
+                {
+                    historicalPlayer.Parameters.AddWithValue(historicalMatchId);
+                    historicalPlayer.Parameters.AddWithValue(prepared.PlayerId);
+                    historicalPlayer.Parameters.AddWithValue(Guid.NewGuid());
+                    await historicalPlayer.ExecuteNonQueryAsync(cancellationToken);
+                }
                 Assert.Null(await matchmaking.TryCreateMatchAsync(cancellationToken));
                 Assert.Equal(ticket, await matchmaking.EnqueueAsync(
                     prepared.PlayerId, "match-enqueue-0", new(prepared.PreparationId), cancellationToken));
@@ -1576,6 +1658,12 @@ public sealed class PostgresRuntimeIntegrationTests
         }
 
         var pending = Assert.IsType<PendingMatch>(await matchmaking.TryCreateMatchAsync(cancellationToken));
+        var replayedTicket = await matchmaking.EnqueueAsync(
+            players[0].PlayerId, "match-enqueue-0", new(players[0].PreparationId), cancellationToken);
+        Assert.Equal(pending.MatchId, replayedTicket.MatchId);
+        Assert.Equal(replayedTicket, await matchmaking.GetTicketAsync(
+            players[0].PlayerId, players[0].Ticket.TicketId, cancellationToken));
+        Assert.Equal(4L, await database.ScalarAsync<long>("SELECT count(*) FROM match_tickets"));
         Assert.Equal(4, pending.PlayerIds.Count);
         foreach (var player in players)
         {
@@ -1657,6 +1745,46 @@ public sealed class PostgresRuntimeIntegrationTests
     [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
         SkipUnless = nameof(HasTestDatabase))]
     [Trait("Category", "PostgresIntegration")]
+    public async Task Queued_STOP_cancellation_releases_assets_once_and_allows_next_preparation()
+    {
+        await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
+        var ct = TestContext.Current.CancellationToken;
+        var time = new MutableTimeProvider(DateTimeOffset.UtcNow);
+        using var metrics = new ServerMetrics();
+        var profile = await CreateIdentityRepository(database.DataSource).SignInLocalAsync(
+            $"stop-device-{Guid.NewGuid():N}", "Queued STOP", TokenHash($"stop-{Guid.NewGuid():N}"),
+            time.GetUtcNow(), time.GetUtcNow().AddHours(1), ct);
+        var progression = new ProgressionRepository(database.DataSource);
+        var deck = Assert.Single(await progression.GetDecksAsync(profile.UserId, ct), d => d.HeroClass == HeroClassDto.Mage);
+        var equipment = await database.InsertWornFeetAsync(profile.UserId, HeroClass.Mage, ct);
+        var loadout = (await progression.GetLoadoutAsync(profile.UserId, HeroClass.Mage, ct))!;
+        var preparations = new PreparationRepository(database.DataSource, time);
+        var input = new CreatePreparationRequest(HeroClassDto.Mage, deck.Version, loadout.EquipmentIds, BackpackTierDto.Free, [], 0, "Standard");
+        var first = await preparations.CreateAsync(profile.UserId, "stop-preparation", input, ct);
+        Assert.Equal(CreatePreparationStatus.Created, first.Status);
+        var matchmaking = new MatchmakingRepository(database.DataSource, time, metrics);
+        var ticket = await matchmaking.EnqueueAsync(profile.UserId, "stop-enqueue", new(first.Preparation!.PreparationId), ct);
+        Assert.Equal("Queued", ticket.Status);
+        await matchmaking.CancelAsync(profile.UserId, ticket.TicketId, "stop-cancel", ct);
+        await matchmaking.CancelAsync(profile.UserId, ticket.TicketId, "stop-cancel", ct);
+        Assert.Equal("Cancelled", (await matchmaking.GetTicketAsync(profile.UserId, ticket.TicketId, ct)).Status);
+        Assert.Equal("Cancelled", await database.ScalarAsync<string>("SELECT status FROM preparations WHERE preparation_id=$1", first.Preparation.PreparationId));
+        Assert.Equal("Equipped", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
+        Assert.Equal(1L, await database.ScalarAsync<long>("SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND reason='preparation.release'", equipment));
+        Assert.Equal(0L, await database.ScalarAsync<long>("SELECT count(*) FROM matches"));
+        var bootstrap = await CreateBootstrapRepository(database.DataSource, progression, time).GetAsync(profile, ct);
+        Assert.Null(bootstrap.UnfinishedMatch);
+        Assert.Null(bootstrap.ActivePreparation);
+        Assert.Null(bootstrap.UnfinishedSettlement);
+        var next = await preparations.CreateAsync(profile.UserId, "stop-next-preparation", input, ct);
+        Assert.Equal(CreatePreparationStatus.Created, next.Status);
+        Assert.Equal(CancelPreparationStatus.Cancelled, await preparations.CancelAsync(profile.UserId, next.Preparation!.PreparationId, "stop-next-cancel", ct));
+        Assert.Equal("Equipped", await database.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1", equipment));
+    }
+
+    [Fact(Skip = "Set FANTASYCARD_TEST_POSTGRES to an isolated PostgreSQL test database.",
+        SkipUnless = nameof(HasTestDatabase))]
+    [Trait("Category", "PostgresIntegration")]
     public async Task Match_timeout_removes_unready_human_and_fills_room_with_bots()
     {
         await using var database = await PostgresTestSchema.CreateAsync(migrate: true);
@@ -1665,6 +1793,7 @@ public sealed class PostgresRuntimeIntegrationTests
         using var metrics = new ServerMetrics();
         var matchmaking = new MatchmakingRepository(database.DataSource, time, metrics);
         var preparedPlayers = new List<(Guid PlayerId, Guid PreparationId)>();
+        var profiles = new List<PlayerProfile>();
 
         for (var index = 0; index < 2; index++)
         {
@@ -1675,6 +1804,7 @@ public sealed class PostgresRuntimeIntegrationTests
                 time.GetUtcNow(),
                 time.GetUtcNow().AddHours(1),
                 cancellationToken);
+            profiles.Add(profile);
             var progression = new ProgressionRepository(database.DataSource);
             var deck = Assert.Single(
                 await progression.GetDecksAsync(profile.UserId, cancellationToken),
@@ -1699,7 +1829,15 @@ public sealed class PostgresRuntimeIntegrationTests
         var pending = Assert.IsType<PendingMatch>(await matchmaking.TryCreateMatchAsync(cancellationToken));
         var readyPlayer = preparedPlayers[0];
         var removedPlayer = preparedPlayers[1];
+        var bootstrapRepository = CreateBootstrapRepository(
+            database.DataSource, new ProgressionRepository(database.DataSource), time);
+        // Merely being assigned a seat must not force combat reconnection at login.
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch);
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[1], cancellationToken)).UnfinishedMatch);
         await matchmaking.MarkReadyAsync(readyPlayer.PlayerId, time.GetUtcNow(), cancellationToken);
+        Assert.Equal(pending.MatchId,
+            (await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch?.MatchId);
+        Assert.Null((await bootstrapRepository.GetAsync(profiles[1], cancellationToken)).UnfinishedMatch);
         time.Advance(TimeSpan.FromSeconds(15));
 
         var snapshots = new RoomSnapshotRepository(database.DataSource, time, metrics);
@@ -1736,6 +1874,12 @@ public sealed class PostgresRuntimeIntegrationTests
             "SELECT count(*) FROM equipments e JOIN preparation_assets pa ON pa.asset_id=e.instance_id::text WHERE pa.preparation_id=$1 AND e.location='Equipped'", removedPlayer.PreparationId));
         Assert.Equal(3L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM match_players WHERE match_id=$1 AND is_bot=true AND state='Active'", pending.MatchId));
+        Assert.Equal(pending.MatchId,
+            (await bootstrapRepository.GetAsync(profiles[0], cancellationToken)).UnfinishedMatch?.MatchId);
+        var removedBootstrap = await bootstrapRepository.GetAsync(profiles[1], cancellationToken);
+        Assert.Null(removedBootstrap.UnfinishedMatch);
+        Assert.Null(removedBootstrap.ActivePreparation);
+        Assert.Null(removedBootstrap.UnfinishedSettlement);
     }
 
     private static BootstrapRepository CreateBootstrapRepository(
@@ -1850,6 +1994,28 @@ internal sealed class PostgresTestSchema : IAsyncDisposable
                 throw new InvalidOperationException("The test loadout is missing.");
         }
         return feetId;
+    }
+
+    public async Task WaitForScalarAsync(long expected, string sql, params object[] parameters)
+    {
+        using var timeout = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        timeout.CancelAfter(TimeSpan.FromSeconds(10));
+        long? actual = null;
+        try
+        {
+            while (true)
+            {
+                await using var command = DataSource.CreateCommand(sql);
+                foreach (var parameter in parameters) command.Parameters.AddWithValue(parameter);
+                actual = (long?)await command.ExecuteScalarAsync(timeout.Token);
+                if (actual == expected) return;
+                await Task.Delay(TimeSpan.FromMilliseconds(20), timeout.Token);
+            }
+        }
+        catch (OperationCanceledException) when (!TestContext.Current.CancellationToken.IsCancellationRequested)
+        {
+            Assert.Fail($"Persistence did not reach expected scalar {expected} within 10 seconds; last value {actual}. Query: {sql}");
+        }
     }
 
     public async Task<T> ScalarAsync<T>(string sql, params object[] parameters)

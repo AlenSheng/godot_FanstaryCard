@@ -13,7 +13,9 @@ public sealed class RoomActor : IAsyncDisposable
     private readonly Channel<ICommandWorkItem> _commands;
     private readonly CancellationTokenSource _shutdown = new();
     private readonly Task _reader;
-    private readonly Task? _ticker;
+    private Task? _ticker;
+    private readonly TimeProvider _timeProvider;
+    private readonly object _tickerGate = new();
     private readonly ServerMetrics? _metrics;
     private readonly Func<BattleRoomSnapshot, Task>? _snapshotObserver;
     private readonly Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? _combatObserver;
@@ -33,6 +35,7 @@ public sealed class RoomActor : IAsyncDisposable
     {
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
+        _timeProvider = timeProvider;
         _metrics = metrics;
         _snapshotObserver = snapshotObserver;
         _combatObserver = combatObserver;
@@ -46,11 +49,20 @@ public sealed class RoomActor : IAsyncDisposable
         _reader = RunReaderAsync(room, snapshotObserver, combatObserver);
         if (startTicker)
         {
-            _ticker = RunTickerAsync(timeProvider, _shutdown.Token);
+            StartTicker();
         }
     }
 
     public Guid RoomId { get; }
+
+    internal void StartTicker()
+    {
+        lock (_tickerGate)
+        {
+            ObjectDisposedException.ThrowIf(_shutdown.IsCancellationRequested, this);
+            _ticker ??= RunTickerAsync(_timeProvider, _shutdown.Token);
+        }
+    }
 
     public ValueTask<TResult> ExecuteAsync<TResult>(
         IRoomCommand<TResult> command, long expectedRevision, CancellationToken cancellationToken = default)
@@ -83,6 +95,7 @@ public sealed class RoomActor : IAsyncDisposable
         if (!_commands.Writer.TryWrite(workItem))
         {
             _metrics?.ObserveRoomActorQueueLength(Interlocked.Decrement(ref _queuedCommands));
+            if (_shutdown.IsCancellationRequested) throw new RoomActorClosedException(RoomId);
             throw new InvalidOperationException("The room actor command queue is full or closed.");
         }
         return new ValueTask<TResult>(workItem.Task);
@@ -119,7 +132,9 @@ public sealed class RoomActor : IAsyncDisposable
             _metrics?.ObserveRoomActorCommandWait(
                 command.CommandName,
                 Stopwatch.GetElapsedTime(command.EnqueuedAt));
-            var snapshot = command.Execute(room);
+            BattleRoomSnapshot? snapshot;
+            using (RuntimeTiming.Measure(_metrics, RuntimePhase.ActorExecute, command.EnqueueContext, room: RoomId.ToString("D")))
+                snapshot = command.Execute(room);
             var feedback = room.DrainCombatFeedback();
             if (command.NotifyObservers)
             {
@@ -236,6 +251,7 @@ public sealed class RoomActor : IAsyncDisposable
     {
         long EnqueuedAt { get; }
         string CommandName { get; }
+        ActivityContext EnqueueContext { get; }
         bool NotifyObservers { get; }
         BattleRoomSnapshot? Execute(BattleRoom room);
     }
@@ -250,6 +266,7 @@ public sealed class RoomActor : IAsyncDisposable
         public Task<TResult> Task => _completion.Task;
 
         public long EnqueuedAt { get; } = Stopwatch.GetTimestamp();
+        public ActivityContext EnqueueContext { get; } = Activity.Current?.Context ?? default;
         public string CommandName => command.GetType().Name;
         public bool NotifyObservers => command.NotifyObservers;
 
@@ -279,4 +296,9 @@ public sealed class RoomActor : IAsyncDisposable
             }
         }
     }
+}
+
+public sealed class RoomActorClosedException(Guid roomId) : Exception("The room actor has closed.")
+{
+    public Guid RoomId { get; } = roomId;
 }

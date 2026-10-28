@@ -1,0 +1,105 @@
+{
+  "scope": "CurrentNaturalR2ClosedFourMageCohortAudioExitRecurrence",
+  "task_id": "LOAD-10.2",
+  "state": "Partial",
+  "whole_task_or_current_round_accepted": false,
+  "actual_exited_Native4_OS0_genericcycles3_businesscleanupPassed": [
+    {
+      "client_id": "g001c0152b376",
+      "hero": "Mage",
+      "generic_cycles": 3,
+      "business_report_ok": true,
+      "business_cleanup": "Passed",
+      "report_SHA": "6dfe47fa3336b3666f179c0d160f09e234f0ca86e78d15c7aa63edeba16710e3",
+      "log_SHA": "3cb396c835c41fb29107575311b43437b976e3550bd6730b27b493c40731ab14",
+      "leaked_instances": [],
+      "resources_still_in_use": [],
+      "native_OS_exit": 0
+    },
+    {
+      "client_id": "g001c04864fb4",
+      "hero": "Mage",
+      "generic_cycles": 3,
+      "business_report_ok": true,
+      "business_cleanup": "Passed",
+      "report_SHA": "2ee11b7942e55a8a6b70cbf189819fa4d8bdea96d7e38a8296fd27dd08e532de",
+      "log_SHA": "423a8e7141a2301a7d0c95a36ceeb659b563444ad0b871f546fdda68cb6681b6",
+      "leaked_instances": [
+        "Leaked instance: AudioStreamWAV:9223372075794695693 - Reference count: 1",
+        "Leaked instance: AudioStreamPlaybackWAV:9223372769398359609 - Reference count: 1"
+      ],
+      "resources_still_in_use": [
+        "Resource still in use: res://assets/audio/death.wav (AudioStreamWAV)"
+      ],
+      "native_OS_exit": 0
+    },
+    {
+      "client_id": "g001c07bacfd0",
+      "hero": "Mage",
+      "generic_cycles": 3,
+      "business_report_ok": true,
+      "business_cleanup": "Passed",
+      "report_SHA": "f0476fc2589bf922747de28cae8e2ba17a745d77b599c5fcf0a26b602145eb17",
+      "log_SHA": "4702e421abf73e1ae320c7bc4b376c67cca3b1a941cf614620eafcb74caef75f",
+      "leaked_instances": [
+        "Leaked instance: AudioStreamWAV:9223372075794695693 - Reference count: 1",
+        "Leaked instance: AudioStreamPlaybackWAV:9223372815032387144 - Reference count: 1"
+      ],
+      "resources_still_in_use": [
+        "Resource still in use: res://assets/audio/death.wav (AudioStreamWAV)"
+      ],
+      "native_OS_exit": 0
+    },
+    {
+      "client_id": "g001c101ad32e",
+      "hero": "Mage",
+      "generic_cycles": 3,
+      "business_report_ok": true,
+      "business_cleanup": "Passed",
+      "report_SHA": "31197a1f351c2a00b2f6ccedce46bd094ef480771354d21126025e07e7db4dee",
+      "log_SHA": "e49a37f821941d82c3ae0713c42c456a15c7059604515c8e1b74e9a906778566",
+      "leaked_instances": [
+        "Leaked instance: AudioStreamWAV:9223372072607024634 - Reference count: 1",
+        "Leaked instance: AudioStreamWAV:9223372073781429761 - Reference count: 1",
+        "Leaked instance: AudioStreamWAV:9223372075794695693 - Reference count: 1",
+        "Leaked instance: AudioStreamPlaybackWAV:9223372669087385138 - Reference count: 1",
+        "Leaked instance: AudioStreamPlaybackWAV:9223372669120939585 - Reference count: 1",
+        "Leaked instance: AudioStreamPlaybackWAV:9223372669154494024 - Reference count: 1"
+      ],
+      "resources_still_in_use": [
+        "Resource still in use: res://assets/audio/monster_attack.wav (AudioStreamWAV)",
+        "Resource still in use: res://assets/audio/hit_metal.wav (AudioStreamWAV)",
+        "Resource still in use: res://assets/audio/death.wav (AudioStreamWAV)"
+      ],
+      "native_OS_exit": 0
+    }
+  ],
+  "actual_three_of_four_engine_exit_notclean": true,
+  "observed_classes": [
+    "AudioStreamWAV",
+    "AudioStreamPlaybackWAV"
+  ],
+  "observed_audio_files": [
+    "death.wav",
+    "monster_attack.wav",
+    "hit_metal.wav"
+  ],
+  "observed_audio_bus_orphan": "FantasyCard SFX",
+  "finding_state": "Open_ReproducedOnCurrentSource",
+  "mandatory_before_whole_acceptance": true,
+  "cause_qualification": "Objecttypes/resourcepaths areactualverboseevidence. Mixerretirement/exitordering is hypothesisuntilmatchedLinuxdiagnostic;no productfix/rootcauseclaim.",
+  "Windows10_zero_world_modes_allclean_not_Linux_fix": true,
+  "Linux10_zero_world_modes_installed_not_started_wait_original_natural_runterminal": true,
+  "natural_R2_all30_not_finished_oraccepted": true,
+  "actual_all10_run_continues_sameunit": "pr13-goal-load102-natural30-01a152f7-r2",
+  "natural_R2_handle_PID": 2234000,
+  "natural_R2_InvocationID": "ad0ee6b1a0644fa18ca9fd05f7204761",
+  "root_product_code_unchanged": true,
+  "G_beforefix_members": 116,
+  "G": "G:\\PR13Evidence\\load102-natural30-audio-exit-recurrence-20261021-r2-originals",
+  "archiveSHA": "e9736e91d6112f8e253f67635c86875164e947abe60b5dc6f208d15a6c796bfc",
+  "source_parent2148_natural_fixture_plus_current_source_reference": "ParentG3042 full source + naturalR2 preuploadG104 verified;Linuxaudio probe usesactualfrozenI2 inodes+2privateoverlays,notnewbusinessworlds.",
+  "cases_profiles_closed": 0,
+  "all_old_failed_runs_and_budgets_retained": true,
+  "human_experience_excluded_localheadlessDummy_CNO_BelowNormal": true
+}

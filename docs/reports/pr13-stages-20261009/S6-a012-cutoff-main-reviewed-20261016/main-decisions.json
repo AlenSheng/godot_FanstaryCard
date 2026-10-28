@@ -1,0 +1,22 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "task_decisions": [
+    {
+      "task_id": "PR13-A01.2",
+      "state": "Accepted",
+      "authority": "MAIN",
+      "at_local": "2026-10-16T19:55:48.966546+08:00",
+      "human_authorization": "本任务/goal继续自动测试和最终验收；本项已完成逐案例审查。",
+      "reason": "三个准确AUDIT案例分别验证STOP后ACK仅记drain、同一事件重复只计一次、最终状态声称完成但无ACK时保持Unknown。逐cutoff核对ACK总数=逐客户端ACK和=至少k次ACK人数之和，完成局数分布独立核算。依赖A01.1已验收，25份原件和9份精简证据全部重新核对。",
+      "source_equivalence": "三个执行依赖AST完全一致；runtime_evidence和cloud_load_test的字节差异仅为换行符，旧/当前hash均保留。没有把旧运行冒充新运行。",
+      "scope_limit": "只验收三截止点计数和Unknown合同；不宣称缺失历史raw恢复、86/90与130/139已对账、容量或自然多局通过。A01.3/A01.4和G3不自动升级。",
+      "original_observation_preserved": {},
+      "case_review": "docs/reports/pr13-stages-20261009/S6-a012-cutoff-main-reviewed-20261016/case-review.json",
+      "review_HEAD": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+      "original_cloud_execution_not_repeated": true,
+      "rollback": "回退本次独立验收入口；保留父register、原始控制输入、Unknown与所有历史缺口。"
+    }
+  ],
+  "all_other_task_and_gate_rows_unchanged": true
+}

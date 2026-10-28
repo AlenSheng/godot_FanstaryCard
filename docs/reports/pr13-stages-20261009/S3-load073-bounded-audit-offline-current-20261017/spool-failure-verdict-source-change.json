@@ -1,0 +1,11 @@
+{
+  "reason": "New off-heap analysis introduces owned temporary I/O; corruption/flush/cleanup failures must retain final invalid-evidence report after all workers stop, never escape without classification.",
+  "new_tests": 3,
+  "all_original_raw_archives_untouched": true,
+  "worlds": 0,
+  "files": {
+    "tools/gameplay_load_test.py": "52c4ef7d753afe248fbe30c2a9deda38398cdf55ec41b150b14859ebbede569f",
+    "tools/pr13_audit_archive.py": "6d5b746a96f180ed9f5b8588ad4bfa776675dc3f64a2cb8c1dba4005a5ec99f3",
+    "tools/tests/test_audit_archive.py": "d0c9ba34f92c7aeb93ee50ffe5c0b1444283e9bcbbc31535a55318285e53baad"
+  }
+}

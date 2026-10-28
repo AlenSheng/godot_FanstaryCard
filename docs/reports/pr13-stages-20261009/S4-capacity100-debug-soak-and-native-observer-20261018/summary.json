@@ -1,0 +1,228 @@
+{
+  "kind": "ReviewedFactsAndOfflineObserverFix;FullAcceptanceIncomplete",
+  "generated_at_ns": 1792335073912071600,
+  "source_base_release": "c21b62351eb8fee7dc58cec083feefae5c4ab86b",
+  "executed_capacity_client_logic_release": "a65dbe746fef106adeced979371b8bfe0946a847",
+  "executed_complete_client_inputs": 2140,
+  "executed_compiled_scripts": 177,
+  "executed_runtime_assets": 695,
+  "executed_PCK_SHA256": "b903f5f1ca9e010bc9d5f19b716160ec31943b848f7ed309be36e3b8b1ec7cee",
+  "complete_client_fidelity_not_reduced": true,
+  "engine_max_FPS": 0,
+  "primary_capacity_report_SHA256": "a5afc5f9c649d9d3e865b1e79d1745e090de0aa3932d9fa5916e12d4b3c516d0",
+  "primary_result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Passed",
+      "load": "Passed",
+      "gameplay": "NotApplicable",
+      "performance": "Unknown",
+      "cleanup": "Unknown"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "load",
+      "performance"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "original_strict100": {
+    "passed": false,
+    "window_seconds": 600.0,
+    "observed_seconds": 591.9489998817444,
+    "compliant_seconds": 0.0,
+    "coverage": 0.0,
+    "longest_continuous_seconds": 0.0,
+    "target_online": 100,
+    "target_active": 100,
+    "minimum_command_rate": 1.0,
+    "maximum_gap": 20.0,
+    "minimum_window": 600.0,
+    "minimum_continuous": 120.0,
+    "minimum_coverage": 0.95,
+    "evidence_errors": []
+  },
+  "preregistered90_joint": {
+    "passed": true,
+    "window_seconds": 600.0,
+    "observed_seconds": 591.9489998817444,
+    "compliant_seconds": 591.9489998817444,
+    "coverage": 0.986581666469574,
+    "longest_continuous_seconds": 591.9489998817444,
+    "target_online": 100,
+    "target_active": 90,
+    "minimum_command_rate": 1.0,
+    "maximum_gap": 20.0,
+    "minimum_window": 600.0,
+    "minimum_continuous": 120.0,
+    "minimum_coverage": 0.95,
+    "evidence_errors": []
+  },
+  "additional_last1800_joint": {
+    "passed": true,
+    "window_seconds": 1800.0,
+    "observed_seconds": 1791.9489998817444,
+    "compliant_seconds": 1752.0529999732971,
+    "coverage": 0.9733627777629429,
+    "longest_continuous_seconds": 1030.271999835968,
+    "target_online": 100,
+    "target_active": 90,
+    "minimum_command_rate": 1.0,
+    "maximum_gap": 20.0,
+    "minimum_window": 1800,
+    "minimum_continuous": 120.0,
+    "minimum_coverage": 0.95,
+    "evidence_errors": []
+  },
+  "fixed_duration_exposure": {
+    "passed": true,
+    "identities_valid": true,
+    "clocks_numeric": true,
+    "launches_ordered": true,
+    "launches_within_measurement": true,
+    "measurement_monotonic_seconds": 2400.188000000082,
+    "measurement_wall_seconds": 2400.2139072418213,
+    "full100_since_last_launch_monotonic_seconds": 2062.4849999998696,
+    "full100_since_last_launch_wall_seconds": 2062.508,
+    "maximum_wall_monotonic_disagreement_seconds": 0.025907241739332676,
+    "required_measurement_seconds": 2400,
+    "required_full100_exposure_seconds": 1800,
+    "drain_and_finalization_seconds_excluded": true,
+    "exposure_alone_is_not_valid_active_capacity": true
+  },
+  "overall_current100_passed": false,
+  "old50_and100_failures_not_relabelled": true,
+  "temporary_test_overrides_not_defaultquota_or_publicTLS_acceptance": true,
+  "actual_worlds": 180,
+  "actual_accounts": 100,
+  "worlds_Completed": 180,
+  "human_members_Settled": 720,
+  "bot_members": 0,
+  "settlements": 720,
+  "durable_ACKs": 718,
+  "unacknowledged_settlements": 2,
+  "pending_holds": 0,
+  "locked_equipment": 0,
+  "running_cycles": 621,
+  "drain_cycles": 0,
+  "running_ACKs": 621,
+  "drain_ACKs": 97,
+  "native_cleanup": {
+    "Passed": 81,
+    "Unknown": 19
+  },
+  "all100_Native_exit0": true,
+  "forced_capacity_Native_PIDs": [],
+  "distinct_rejected_requests": 14,
+  "affected_rejection_clients": 8,
+  "rejection_details": {
+    "Duel is not active in this room.": 11,
+    "A stunned player cannot play cards.": 2,
+    "A player can only move from the action bar.": 1
+  },
+  "all19_Unknown_last_bootstrap_HTTP500": true,
+  "PG_connection_limit_Fatal_UTC": "2026-10-18T13:11:18.744",
+  "PG_versions_from_original_log": [
+    "18.6"
+  ],
+  "Npgsql83_stack_headers_are_not_unique_requests_or_exact_request_causality": true,
+  "custody": {
+    "final_G_originals": 29,
+    "physical_members_SHA_verified": 1484,
+    "physical_archive_bytes": 259037025,
+    "physical_archive_SHA256": "ac40a624dae3a04bc4dff4e33d66d96b6b344d39e49217b698e2e859ba585a2f",
+    "logical_dump_SHA256": "71cce08e1215af327288b798f0bd0850b41bad332033f7cf59e328ad420be692",
+    "G_before_PG_cleanup": true,
+    "owned_containers_removed": 4,
+    "cloud_test_code_copies_deleted": 22,
+    "failed_cloud_raws_and_PG_bind_preserved": true,
+    "local_test_code_preserved": true,
+    "production_unchanged": true,
+    "transport": "NativeSSH_resumed_verified_prefix",
+    "resume_offset": 30343168,
+    "old_slow_partial_preserved": true
+  },
+  "local_PG_headroom_controls": {
+    "Windows_PG_version": "18.6",
+    "cases_passed": 2,
+    "synthetic_connection_attempts": 514,
+    "baseline256_allows_app256_but_rejects_observer1": true,
+    "candidate300_allows_app256_plus_observer1": true,
+    "new_worlds": 0,
+    "PG_owned_processes_stopped": true,
+    "minimum_local_available_bytes": 7492259840,
+    "candidate300_not_enabled_on_cloud_or_production": true,
+    "not_Linux_or_Npgsql_performance_qualification": true,
+    "R1_preparation_pipe_failure_preserved": true
+  },
+  "observer_fix": {
+    "sources": [
+      {
+        "path": "client/tests/gameplay_load_client.gd",
+        "bytes": 56355,
+        "sha256": "85679955ac16b632971bb56348660d2c22168ff9abc9b4af84360219227adb73"
+      },
+      {
+        "path": "client/tests/run_native_regressions.gd",
+        "bytes": 1919,
+        "sha256": "3dbf922990ab2bd1bd416cd689f9097ebf126fe79ad9bdcb977ea07630e16b8a"
+      },
+      {
+        "path": "client/tests/test_active_battle_observation.gd",
+        "bytes": 7417,
+        "sha256": "12188130e76c43148bac60fb6214de78ff842cd32754d0f5f25d6d677c5f2c8e"
+      },
+      {
+        "path": "client/tests/run_play_retry.gd",
+        "bytes": 806,
+        "sha256": "a208a860942a32246d406a90a42f642e36e4cbf07a0f203625730f5c8040d094"
+      }
+    ],
+    "baseline_original14_checks": {
+      "Passed": 5,
+      "Failed": 9
+    },
+    "new17_passed": true,
+    "affected5_suites_checks_passed": 56,
+    "standalone_cleanup_checks_passed": 85,
+    "unique_checks_passed": 158,
+    "new_game_worlds": 0,
+    "wall_observed_ms_retained": true,
+    "active_and_suspended_time_explicit": true,
+    "frozen_PVE_is_not_active_PVP": true,
+    "PVE_resume_counters_and_hand_preserved": true,
+    "STOP_suspended_PVE_censored": true,
+    "original_room_match_cycle_context_preserved": true,
+    "legal80_over70_HP_unchanged": true,
+    "original_combined_regression_launcher_failed_on_SceneTree_interface": true,
+    "completed5_results_preserved_then_only_sixth_run_separately": true,
+    "all_preparation_and_clock_fixture_failures_preserved": true,
+    "new_current_client_package_export_and_LIVE_profile_still_required": true,
+    "original100_battle_attribution_not_rewritten": true,
+    "existing_CI_entry_integrated": "client/tests/run_play_retry.gd",
+    "new_case_same_CI_SceneTree_initializer_Windows_passed17": true,
+    "Linux_CI_run_claimed": false
+  },
+  "phase_world_budget": {
+    "prior": 235,
+    "new": 180,
+    "current_conservative_total": 415,
+    "unknown120_reservation_kept": true,
+    "ceiling": 600,
+    "remaining": 185
+  },
+  "scope": {
+    "tasks": 132,
+    "cases": 396,
+    "human_experience_excluded": true,
+    "canonical_Accepted": 55,
+    "remaining_unaccepted": 77,
+    "register_gate_MAIN_changed": false,
+    "original716_bytes_preserved": true,
+    "whole_goal_complete": false,
+    "new_CI_pass_claimed": false
+  }
+}

@@ -1,0 +1,1874 @@
+{
+  "ok": true,
+  "source_files_verified": 372,
+  "original_business_files_unchanged": 370,
+  "exact_two_overrides_verified": [
+    "server/tools/FantasyCard.Numerics/CapEffectiveExperiment.cs",
+    "tools/pr13_cap_effective_experiment.py"
+  ],
+  "source_sha": "581cd9f74962dd61424e77c529b1259afbb39fe7",
+  "business_source_sha": "b0423bfe6fedc3f034ba12c8400df5ebb8713f32",
+  "instrumentation_source_sha": "66c7420532536431b906d1fdb1e68d6d3448e6b9",
+  "files": [
+    {
+      "path": "server/.dockerignore",
+      "original_sha256": "2a43600b929c5a87ffda1116d46f7524acaf24b636d5c9060fba1a589246fdc9",
+      "mixed_sha256": "2a43600b929c5a87ffda1116d46f7524acaf24b636d5c9060fba1a589246fdc9"
+    },
+    {
+      "path": "server/.env.cloud.template",
+      "original_sha256": "63a162cfd9b97e2a6fb41ca08ab2401dc3c61db38fc022bd3ade8f72887c7a6d",
+      "mixed_sha256": "63a162cfd9b97e2a6fb41ca08ab2401dc3c61db38fc022bd3ade8f72887c7a6d"
+    },
+    {
+      "path": "server/AGENTS.md",
+      "original_sha256": "82d923fb058de1b64f838b7011264ab7d3ca4eb03cf1757413347c5d58424b87",
+      "mixed_sha256": "82d923fb058de1b64f838b7011264ab7d3ca4eb03cf1757413347c5d58424b87"
+    },
+    {
+      "path": "server/Caddyfile",
+      "original_sha256": "cbb58816e0a24972446b0864ea612389159eea59665822598137c34687ce36d7",
+      "mixed_sha256": "cbb58816e0a24972446b0864ea612389159eea59665822598137c34687ce36d7"
+    },
+    {
+      "path": "server/Directory.Build.props",
+      "original_sha256": "02f7d1a231e5a2e265602e1cc802dea004d99c8c7f81ac63f21b093df895e1fe",
+      "mixed_sha256": "02f7d1a231e5a2e265602e1cc802dea004d99c8c7f81ac63f21b093df895e1fe"
+    },
+    {
+      "path": "server/Directory.Packages.props",
+      "original_sha256": "ed1c9e646dbb44ca07ea9d83fd2aff1ab08008cadf8e19d163a1293bd4356233",
+      "mixed_sha256": "ed1c9e646dbb44ca07ea9d83fd2aff1ab08008cadf8e19d163a1293bd4356233"
+    },
+    {
+      "path": "server/FantasyCard.Server.slnx",
+      "original_sha256": "5db18f931e9140eaab97683cb00dfe5e1923545f71d8f36c58dfcfde5eb7b578",
+      "mixed_sha256": "5db18f931e9140eaab97683cb00dfe5e1923545f71d8f36c58dfcfde5eb7b578"
+    },
+    {
+      "path": "server/NuGet.Config",
+      "original_sha256": "a4ce71b36bc74e1b0dcd4f744b10cf739f1ab91ed8104cde7eb37c50d979acb8",
+      "mixed_sha256": "a4ce71b36bc74e1b0dcd4f744b10cf739f1ab91ed8104cde7eb37c50d979acb8"
+    },
+    {
+      "path": "server/README.md",
+      "original_sha256": "9f569a5a9b2b3dd9b0215ab2ca0da138db682287b6768d57df162428c8e47b98",
+      "mixed_sha256": "9f569a5a9b2b3dd9b0215ab2ca0da138db682287b6768d57df162428c8e47b98"
+    },
+    {
+      "path": "server/assert-config-alignment.ps1",
+      "original_sha256": "1ce7688564eb74c4ebd3b50a390d0e6f9e8c5f64ed52507662506d2fab72b5af",
+      "mixed_sha256": "1ce7688564eb74c4ebd3b50a390d0e6f9e8c5f64ed52507662506d2fab72b5af"
+    },
+    {
+      "path": "server/backup-all-local-data.bat",
+      "original_sha256": "86277a1f3f3b3fc0c87791980ddaf3dbc9d086692bcfbf0061a502d29224fdfb",
+      "mixed_sha256": "86277a1f3f3b3fc0c87791980ddaf3dbc9d086692bcfbf0061a502d29224fdfb"
+    },
+    {
+      "path": "server/clear-local-database.bat",
+      "original_sha256": "53a1ab31ae9fd7d36423518684677925ec880ac5ca6fe1e96ecf4547135cb6ac",
+      "mixed_sha256": "53a1ab31ae9fd7d36423518684677925ec880ac5ca6fe1e96ecf4547135cb6ac"
+    },
+    {
+      "path": "server/cloud-env.example.bat",
+      "original_sha256": "9b039fb28462eee0c6646a3772259160cb5d6a8e9478a7df06185cb73aae78b9",
+      "mixed_sha256": "9b039fb28462eee0c6646a3772259160cb5d6a8e9478a7df06185cb73aae78b9"
+    },
+    {
+      "path": "server/cloud-status.bat",
+      "original_sha256": "f0d18c85e90bc808fc943deb31ec6f6b759ee61ebbda1f62ffef62872fb35d04",
+      "mixed_sha256": "f0d18c85e90bc808fc943deb31ec6f6b759ee61ebbda1f62ffef62872fb35d04"
+    },
+    {
+      "path": "server/cloud-update.bat",
+      "original_sha256": "b6ded7f44a3a6471adbc7b8fa2d50ac3775ae29e7d613d047947de19bce9c1a3",
+      "mixed_sha256": "b6ded7f44a3a6471adbc7b8fa2d50ac3775ae29e7d613d047947de19bce9c1a3"
+    },
+    {
+      "path": "server/compose.cloud.yaml",
+      "original_sha256": "f8b8a2b9fd2634324ef55a9c9694a3a1c7dd9d1353b7ba7b05bfbaa171b5662c",
+      "mixed_sha256": "f8b8a2b9fd2634324ef55a9c9694a3a1c7dd9d1353b7ba7b05bfbaa171b5662c"
+    },
+    {
+      "path": "server/compose.yaml",
+      "original_sha256": "952f8eb92d17a6d505835f63cea9f8ea26c177a513624b4755bae2b2940a1363",
+      "mixed_sha256": "952f8eb92d17a6d505835f63cea9f8ea26c177a513624b4755bae2b2940a1363"
+    },
+    {
+      "path": "server/config-alignment.ps1",
+      "original_sha256": "053bdc89b37b160a9bfce89bed3d993c858f046a0a3b30a60dfd071f9b700bf8",
+      "mixed_sha256": "053bdc89b37b160a9bfce89bed3d993c858f046a0a3b30a60dfd071f9b700bf8"
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.bytes",
+      "original_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87",
+      "mixed_sha256": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.sha256",
+      "original_sha256": "d32b4a4722dfbdcfcee1f5ef49f3642ff31eaf57f01ff6c536c6edd9bb6d034b",
+      "mixed_sha256": "d32b4a4722dfbdcfcee1f5ef49f3642ff31eaf57f01ff6c536c6edd9bb6d034b"
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.version.txt",
+      "original_sha256": "ee9adb394d381fe0fada88f94dc2e91cc77059b608c6bf302acf2e64ebe79794",
+      "mixed_sha256": "ee9adb394d381fe0fada88f94dc2e91cc77059b608c6bf302acf2e64ebe79794"
+    },
+    {
+      "path": "server/deploy/fantasycard-update.sh",
+      "original_sha256": "39162289db3bd8b78411711d9024b67b25c7ede9bc7857c9eb2c2062b0cfebe2",
+      "mixed_sha256": "39162289db3bd8b78411711d9024b67b25c7ede9bc7857c9eb2c2062b0cfebe2"
+    },
+    {
+      "path": "server/docker-env.bat",
+      "original_sha256": "c0af89db83ac34bc4b9f2f97fd8785c3f7e320c6fac26b0d7d3e61d6b1f59f67",
+      "mixed_sha256": "c0af89db83ac34bc4b9f2f97fd8785c3f7e320c6fac26b0d7d3e61d6b1f59f67"
+    },
+    {
+      "path": "server/docs/ADMIN.md",
+      "original_sha256": "b3b2858dc66d7b635ee25913737ad0f7dc9d799207604641dfcb2225574c656d",
+      "mixed_sha256": "b3b2858dc66d7b635ee25913737ad0f7dc9d799207604641dfcb2225574c656d"
+    },
+    {
+      "path": "server/docs/CLIENT_INTEGRATION.md",
+      "original_sha256": "4ecc361a59fe3a66515e2b00a0fe6233887aa18754f4cb63fa8598ee97fb90d9",
+      "mixed_sha256": "4ecc361a59fe3a66515e2b00a0fe6233887aa18754f4cb63fa8598ee97fb90d9"
+    },
+    {
+      "path": "server/docs/OPERATIONS_RUNBOOK.md",
+      "original_sha256": "4782f4c9ff4be20acaa06f931b11aa74bd659c7e9b026de0c659684a65eb43b3",
+      "mixed_sha256": "4782f4c9ff4be20acaa06f931b11aa74bd659c7e9b026de0c659684a65eb43b3"
+    },
+    {
+      "path": "server/docs/POSTGRES_TESTS.md",
+      "original_sha256": "070f6372c684a3496cc60b4f127d1db02bb7768cbdbd42d9b75a64eaeba4afc6",
+      "mixed_sha256": "070f6372c684a3496cc60b4f127d1db02bb7768cbdbd42d9b75a64eaeba4afc6"
+    },
+    {
+      "path": "server/docs/SECURITY_HARDENING.md",
+      "original_sha256": "f644ada3a395cca4166130538569888e038c653c65b96a0a9eda55741564b8cf",
+      "mixed_sha256": "f644ada3a395cca4166130538569888e038c653c65b96a0a9eda55741564b8cf"
+    },
+    {
+      "path": "server/global.json",
+      "original_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01",
+      "mixed_sha256": "cdcdf5cc17beb08d6736137a4fe5061ba955bc5c8acd91c5e244478e8f53ba01"
+    },
+    {
+      "path": "server/http/FantasyCard.Server.http",
+      "original_sha256": "6ce49a6c3f55d8ef119f63016e848d35ac34427a0f7f8cad4359a2542f2508cd",
+      "mixed_sha256": "6ce49a6c3f55d8ef119f63016e848d35ac34427a0f7f8cad4359a2542f2508cd"
+    },
+    {
+      "path": "server/local-backups/README.md",
+      "original_sha256": "13d758e847ac0af2e165368dee7972977be7a86f933328ea86ad0fddb5e4ec34",
+      "mixed_sha256": "13d758e847ac0af2e165368dee7972977be7a86f933328ea86ad0fddb5e4ec34"
+    },
+    {
+      "path": "server/local-backups/fantasycard-local_20260831-153721.dump",
+      "original_sha256": "50dd58b5e00a3f2c98a17c0d4549a72876a0a96ffee64d5c041aaf31ba1d96ab",
+      "mixed_sha256": "50dd58b5e00a3f2c98a17c0d4549a72876a0a96ffee64d5c041aaf31ba1d96ab"
+    },
+    {
+      "path": "server/local-backups/fantasycard-local_20260831-153721.dump.sha256",
+      "original_sha256": "43b8d1c38d4a11defc678064d0e63a747736d4ce07dca7b05e199934a00d8d1c",
+      "mixed_sha256": "43b8d1c38d4a11defc678064d0e63a747736d4ce07dca7b05e199934a00d8d1c"
+    },
+    {
+      "path": "server/local-server.ps1",
+      "original_sha256": "7ee83e899b5e33d6fa19cff65417afe9687c01d5df301115df116ea43e8f170b",
+      "mixed_sha256": "7ee83e899b5e33d6fa19cff65417afe9687c01d5df301115df116ea43e8f170b"
+    },
+    {
+      "path": "server/monitoring/grafana/dashboards/fantasycard-overview.json",
+      "original_sha256": "f77a19b30d46cf035bface64af70bb639a1922e5bce50ee377dd190852031dbb",
+      "mixed_sha256": "f77a19b30d46cf035bface64af70bb639a1922e5bce50ee377dd190852031dbb"
+    },
+    {
+      "path": "server/monitoring/grafana/provisioning/dashboards/fantasycard.yaml",
+      "original_sha256": "1c9500e53af7628f88727701c179272fced53234692a593bd842694b16792999",
+      "mixed_sha256": "1c9500e53af7628f88727701c179272fced53234692a593bd842694b16792999"
+    },
+    {
+      "path": "server/monitoring/grafana/provisioning/datasources/prometheus.yaml",
+      "original_sha256": "aaaead532b7b4562bfb20c04ca6a91291a0b6b1f2e81bdcf326fe2c5155f074e",
+      "mixed_sha256": "aaaead532b7b4562bfb20c04ca6a91291a0b6b1f2e81bdcf326fe2c5155f074e"
+    },
+    {
+      "path": "server/monitoring/otel-collector-config.yaml",
+      "original_sha256": "81f304f5e613a140cd377d00021efe81c1ccafae51bb3082b2245859546b7a66",
+      "mixed_sha256": "81f304f5e613a140cd377d00021efe81c1ccafae51bb3082b2245859546b7a66"
+    },
+    {
+      "path": "server/monitoring/prometheus/alerts.yml",
+      "original_sha256": "d3147d2f44486f4c63dbdb7529b886e204e2bd0948e5a7a9eba797c7999c9b03",
+      "mixed_sha256": "d3147d2f44486f4c63dbdb7529b886e204e2bd0948e5a7a9eba797c7999c9b03"
+    },
+    {
+      "path": "server/monitoring/prometheus/prometheus.yml",
+      "original_sha256": "7ca7fbd70400c9a67ac01bf0df6a650e42a3a2c576ea36fa1a13cec379ceb074",
+      "mixed_sha256": "7ca7fbd70400c9a67ac01bf0df6a650e42a3a2c576ea36fa1a13cec379ceb074"
+    },
+    {
+      "path": "server/protection/obfuscar.xml",
+      "original_sha256": "3efb9472b2c339a2ff8b8e81cd7002fe3b39be66032d6f58b2834bf6a90059e4",
+      "mixed_sha256": "3efb9472b2c339a2ff8b8e81cd7002fe3b39be66032d6f58b2834bf6a90059e4"
+    },
+    {
+      "path": "server/run-local-server.bat",
+      "original_sha256": "d03e20a4d0452e622dba0fc513364b975a7bf258a4e2256d84c3c8bce119ef9a",
+      "mixed_sha256": "d03e20a4d0452e622dba0fc513364b975a7bf258a4e2256d84c3c8bce119ef9a"
+    },
+    {
+      "path": "server/site/assets/classes/guardian.png",
+      "original_sha256": "0b653d095b860195f8420b60b86a97aaa411094cf692f4d4bac854f21cdea691",
+      "mixed_sha256": "0b653d095b860195f8420b60b86a97aaa411094cf692f4d4bac854f21cdea691"
+    },
+    {
+      "path": "server/site/assets/classes/mage.png",
+      "original_sha256": "5ea1502665e93833ba7803130b775b8cd9e79bb1ef77d135bc9ddb640b90afce",
+      "mixed_sha256": "5ea1502665e93833ba7803130b775b8cd9e79bb1ef77d135bc9ddb640b90afce"
+    },
+    {
+      "path": "server/site/assets/classes/priest.png",
+      "original_sha256": "12c338a431f3c92766e5c73b8c21b56ec2c9806ded96267c867340bb799612cc",
+      "mixed_sha256": "12c338a431f3c92766e5c73b8c21b56ec2c9806ded96267c867340bb799612cc"
+    },
+    {
+      "path": "server/site/assets/relicbound-hero.png",
+      "original_sha256": "55b8cda15ac182240148d67161d3ab8835bf603307734b7f9a48fbd0de314d2a",
+      "mixed_sha256": "55b8cda15ac182240148d67161d3ab8835bf603307734b7f9a48fbd0de314d2a"
+    },
+    {
+      "path": "server/site/assets/relicbound-icon-32.png",
+      "original_sha256": "70e7dfc44db4a213df68f55b690bc497b97f0ac8d5d78091b952040a38ecbcf8",
+      "mixed_sha256": "70e7dfc44db4a213df68f55b690bc497b97f0ac8d5d78091b952040a38ecbcf8"
+    },
+    {
+      "path": "server/site/assets/relicbound-icon.png",
+      "original_sha256": "92cdcbd50c1a33ac5b4c8a8d2673566d0c6da54f0b13d6cdb02c3405f61b2b1f",
+      "mixed_sha256": "92cdcbd50c1a33ac5b4c8a8d2673566d0c6da54f0b13d6cdb02c3405f61b2b1f"
+    },
+    {
+      "path": "server/site/assets/seasons/chaos-awakens-v1.jpg",
+      "original_sha256": "cb2a783cc7abfb625e806aaec4a88f84277a6cfd7a9515ca2b4d2d8e32003011",
+      "mixed_sha256": "cb2a783cc7abfb625e806aaec4a88f84277a6cfd7a9515ca2b4d2d8e32003011"
+    },
+    {
+      "path": "server/site/assets/seasons/element-earth-v1.jpg",
+      "original_sha256": "14beea13731b73a31140db949f96f8cdc865aa8dab5c9c030fa00933494416da",
+      "mixed_sha256": "14beea13731b73a31140db949f96f8cdc865aa8dab5c9c030fa00933494416da"
+    },
+    {
+      "path": "server/site/assets/seasons/element-fire-v1.jpg",
+      "original_sha256": "d5883ebdd19cf4586c78790d9bf28fbcda69cfb6c773a6684551182b10869c65",
+      "mixed_sha256": "d5883ebdd19cf4586c78790d9bf28fbcda69cfb6c773a6684551182b10869c65"
+    },
+    {
+      "path": "server/site/assets/seasons/element-metal-v1.jpg",
+      "original_sha256": "5c06ad305e5587a835aa804fd1d65b2872b861c53d50475748eba4ae9a694767",
+      "mixed_sha256": "5c06ad305e5587a835aa804fd1d65b2872b861c53d50475748eba4ae9a694767"
+    },
+    {
+      "path": "server/site/assets/seasons/element-water-v1.jpg",
+      "original_sha256": "cb107604498c371142cbd12c99ccc734ad5e11c53c9dcb54e6834258eddbfb3c",
+      "mixed_sha256": "cb107604498c371142cbd12c99ccc734ad5e11c53c9dcb54e6834258eddbfb3c"
+    },
+    {
+      "path": "server/site/assets/seasons/element-wood-v1.jpg",
+      "original_sha256": "3e10abbf2bf91961071c6d12b63f9ae65dc83f2acbc6cfc80fef038e88c7dab7",
+      "mixed_sha256": "3e10abbf2bf91961071c6d12b63f9ae65dc83f2acbc6cfc80fef038e88c7dab7"
+    },
+    {
+      "path": "server/site/assets/site.css",
+      "original_sha256": "04230c36309b02230173ad3a536a9ea47a36c9e7689d6e3b662250eb05731bfd",
+      "mixed_sha256": "04230c36309b02230173ad3a536a9ea47a36c9e7689d6e3b662250eb05731bfd"
+    },
+    {
+      "path": "server/site/assets/site.js",
+      "original_sha256": "7b5bc302a12894edd14891d0613d765c223940662c3fb3e4a501536e663b0ab2",
+      "mixed_sha256": "7b5bc302a12894edd14891d0613d765c223940662c3fb3e4a501536e663b0ab2"
+    },
+    {
+      "path": "server/site/classes.html",
+      "original_sha256": "5c96a85b4a19becc4d28aec1ac95956b8058432acddfb2a536469d613fbc31fd",
+      "mixed_sha256": "5c96a85b4a19becc4d28aec1ac95956b8058432acddfb2a536469d613fbc31fd"
+    },
+    {
+      "path": "server/site/favicon.ico",
+      "original_sha256": "4ad3ac88d3fd4cb5038096cdfa1d2e546c7d2881affdfc7508af5bc382674f4f",
+      "mixed_sha256": "4ad3ac88d3fd4cb5038096cdfa1d2e546c7d2881affdfc7508af5bc382674f4f"
+    },
+    {
+      "path": "server/site/index.html",
+      "original_sha256": "8fb7bbe7c6a84aabd6cace65e91f3fbbb0c9161047decc7583480879f02e4837",
+      "mixed_sha256": "8fb7bbe7c6a84aabd6cace65e91f3fbbb0c9161047decc7583480879f02e4837"
+    },
+    {
+      "path": "server/site/seasons.html",
+      "original_sha256": "f420a77e3bd0bd84bc8bbdb7679b3841e3dc9873918534bb9b2e0cd9a9ae3f6c",
+      "mixed_sha256": "f420a77e3bd0bd84bc8bbdb7679b3841e3dc9873918534bb9b2e0cd9a9ae3f6c"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Bootstrap/BootstrapContracts.cs",
+      "original_sha256": "b38fc8ebb4f2e8e085afc4e9cd75b7384e9b2683aecd3ac2094747493665c992",
+      "mixed_sha256": "b38fc8ebb4f2e8e085afc4e9cd75b7384e9b2683aecd3ac2094747493665c992"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj",
+      "original_sha256": "beb5d029044a31dfd7645869f2c577369bb6b0d5928eeccd7fad9fa65fa9fdf9",
+      "mixed_sha256": "beb5d029044a31dfd7645869f2c577369bb6b0d5928eeccd7fad9fa65fa9fdf9"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Http/HttpDtoMapper.cs",
+      "original_sha256": "a3ae396edfbceb5ce1c0c7e470e8ac08627300a20a1600d26369c8a834ac3177",
+      "mixed_sha256": "a3ae396edfbceb5ce1c0c7e470e8ac08627300a20a1600d26369c8a834ac3177"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Http/HttpProtocolRegistry.cs",
+      "original_sha256": "dbbb0881558489f824a0232d6a438fce24bc9029919d9b7938b3a7345eb42752",
+      "mixed_sha256": "dbbb0881558489f824a0232d6a438fce24bc9029919d9b7938b3a7345eb42752"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Identity/IdentityContracts.cs",
+      "original_sha256": "52f94f3201cb2e3511595b394b9b6de4e51a8e9bf64f96a62d3e30511a2a2259",
+      "mixed_sha256": "52f94f3201cb2e3511595b394b9b6de4e51a8e9bf64f96a62d3e30511a2a2259"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Mail/MailContracts.cs",
+      "original_sha256": "c3d4cd91976f8b647bf7bfccaf7ca7055035833f73e84b0658a715816f0108db",
+      "mixed_sha256": "c3d4cd91976f8b647bf7bfccaf7ca7055035833f73e84b0658a715816f0108db"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/MatchmakingContracts.cs",
+      "original_sha256": "6263c261849ea369a51730547b6a61dc5d166051cb7085ad13a0bdd70f65b0c3",
+      "mixed_sha256": "6263c261849ea369a51730547b6a61dc5d166051cb7085ad13a0bdd70f65b0c3"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/PreparationContracts.cs",
+      "original_sha256": "e6759587f8926427c3b74f8b9dd3f8fe06790c260adb7802c9070e0664763e23",
+      "mixed_sha256": "e6759587f8926427c3b74f8b9dd3f8fe06790c260adb7802c9070e0664763e23"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Matchmaking/SettlementContracts.cs",
+      "original_sha256": "f6f0b93118670fa157ea7c04696c3443a054a18c6d7d3b336bb78f2ae5a25aa4",
+      "mixed_sha256": "f6f0b93118670fa157ea7c04696c3443a054a18c6d7d3b336bb78f2ae5a25aa4"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Players/PlayerContracts.cs",
+      "original_sha256": "4df70bbf02fe24d6f3eee0395558d9e33c005c9fcd40fc0caff0d18b22f19ab7",
+      "mixed_sha256": "4df70bbf02fe24d6f3eee0395558d9e33c005c9fcd40fc0caff0d18b22f19ab7"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Progression/EconomyContracts.cs",
+      "original_sha256": "f82ff43d4ac03c84985f8df8b41d3c467ed685dcf42bfe3d21b3f2bfa743dc14",
+      "mixed_sha256": "f82ff43d4ac03c84985f8df8b41d3c467ed685dcf42bfe3d21b3f2bfa743dc14"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Progression/ProgressionContracts.cs",
+      "original_sha256": "ea7061dc553aa58e03b8373dd29ef323af31df3ed82fa86cf962e428ea3a6c70",
+      "mixed_sha256": "ea7061dc553aa58e03b8373dd29ef323af31df3ed82fa86cf962e428ea3a6c70"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs",
+      "original_sha256": "e5096ac5c9d95f4f89cbd94145b6f5122fcdd48a84dcf93c9e694cde4c79fa07",
+      "mixed_sha256": "e5096ac5c9d95f4f89cbd94145b6f5122fcdd48a84dcf93c9e694cde4c79fa07"
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs",
+      "original_sha256": "4e1063225b902effe9b7f8a8e0c8536e8b830884bfd817eeb028e31eb915615c",
+      "mixed_sha256": "4e1063225b902effe9b7f8a8e0c8536e8b830884bfd817eeb028e31eb915615c"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotDirector.cs",
+      "original_sha256": "afb8cd36b36a09f6c7a4a9ead692b8400976e995fc4f6884eb46faa72d984db3",
+      "mixed_sha256": "afb8cd36b36a09f6c7a4a9ead692b8400976e995fc4f6884eb46faa72d984db3"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotLootRules.cs",
+      "original_sha256": "1268cbe6df869f03170343d9209525f663f7cc6b7a3a89b7119620daff5b8ea8",
+      "mixed_sha256": "1268cbe6df869f03170343d9209525f663f7cc6b7a3a89b7119620daff5b8ea8"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Bots/BotRules.cs",
+      "original_sha256": "69bea4559b116aece1bbdac4c9b34950e7ea2b3d8fdfe4213c91e8f615d3c136",
+      "mixed_sha256": "69bea4559b116aece1bbdac4c9b34950e7ea2b3d8fdfe4213c91e8f615d3c136"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs",
+      "original_sha256": "379294a20bc039d0ca67c35f32571e033198991ea32b4c64c258e836aeccfa14",
+      "mixed_sha256": "379294a20bc039d0ca67c35f32571e033198991ea32b4c64c258e836aeccfa14"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/DeckRules.cs",
+      "original_sha256": "51996620b2b0ec669afa5ec8024faf9babd9293ec72c6ee836c317cacfa8e3d1",
+      "mixed_sha256": "51996620b2b0ec669afa5ec8024faf9babd9293ec72c6ee836c317cacfa8e3d1"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Cards/PairedDeckBudget.cs",
+      "original_sha256": "de6c00ba746d9bc9625077cc4a67f39ced2ecea73c7d51c3b2cb2fb05f2d8805",
+      "mixed_sha256": "de6c00ba746d9bc9625077cc4a67f39ced2ecea73c7d51c3b2cb2fb05f2d8805"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs",
+      "original_sha256": "c72dcd0365f27ffcd23fc763f7d1e817face54d9d1626e3fd2b6273b58630ef3",
+      "mixed_sha256": "c72dcd0365f27ffcd23fc763f7d1e817face54d9d1626e3fd2b6273b58630ef3"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatDeck.cs",
+      "original_sha256": "1ae3456856eea239696f28b3616ee27cfb495f916bda260de717f46bed9fdd76",
+      "mixed_sha256": "1ae3456856eea239696f28b3616ee27cfb495f916bda260de717f46bed9fdd76"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatRandom.cs",
+      "original_sha256": "4b8702ec8149b9a853f789cb151a173c75f4a304110bd7cdecdb0ee5fdcfde4f",
+      "mixed_sha256": "4b8702ec8149b9a853f789cb151a173c75f4a304110bd7cdecdb0ee5fdcfde4f"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatResolver.cs",
+      "original_sha256": "177278bd4affd7228a37cdcf2858fa882fb246ae290262c92f288ff8d78cbdbb",
+      "mixed_sha256": "177278bd4affd7228a37cdcf2858fa882fb246ae290262c92f288ff8d78cbdbb"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatTypes.cs",
+      "original_sha256": "842f198962410a4e6bc79cffb3217455008c67f2ac11a89e1e73d558aedae7e9",
+      "mixed_sha256": "842f198962410a4e6bc79cffb3217455008c67f2ac11a89e1e73d558aedae7e9"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/EquipmentCombatRules.cs",
+      "original_sha256": "bf6e163c47e821783e5d1158ea51dba5895b4426d325aba31497f71ea98a9240",
+      "mixed_sha256": "bf6e163c47e821783e5d1158ea51dba5895b4426d325aba31497f71ea98a9240"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/MonsterCombatState.cs",
+      "original_sha256": "05814fb33976ec766c803d510c18d29a4b30d5670b0ba593176a84d11d32fc69",
+      "mixed_sha256": "05814fb33976ec766c803d510c18d29a4b30d5670b0ba593176a84d11d32fc69"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs",
+      "original_sha256": "2a4abe0425b58cde5b193c793c65b098c769b2a250a1159a9e3d3197eceec4b8",
+      "mixed_sha256": "2a4abe0425b58cde5b193c793c65b098c769b2a250a1159a9e3d3197eceec4b8"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PveBattleFactory.cs",
+      "original_sha256": "2aec04f9dfdfd6b89e33855f4d2fa0b6c38676cab3da44da324b412208c5ecc0",
+      "mixed_sha256": "2aec04f9dfdfd6b89e33855f4d2fa0b6c38676cab3da44da324b412208c5ecc0"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PveBattleState.cs",
+      "original_sha256": "6e47ed29ce19ac506127576eb0638dc98b3f613712dbe9d07ec5fff9880dc106",
+      "mixed_sha256": "6e47ed29ce19ac506127576eb0638dc98b3f613712dbe9d07ec5fff9880dc106"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs",
+      "original_sha256": "c635eb3ed891817f236f79b31d5e38d74a0ababbf8b7ec2f78a0798764df260e",
+      "mixed_sha256": "c635eb3ed891817f236f79b31d5e38d74a0ababbf8b7ec2f78a0798764df260e"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/NumericalRules.cs",
+      "original_sha256": "1bfb4b44f523e9f84959bc14aab410d91e6b4075008b6360fd0754dbb3a84c09",
+      "mixed_sha256": "1bfb4b44f523e9f84959bc14aab410d91e6b4075008b6360fd0754dbb3a84c09"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/FantasyCard.Domain.csproj",
+      "original_sha256": "32f3c3dc899ba156cd13a0bb8d55530f85fede7c20e4654d30fb1ae10ed24711",
+      "mixed_sha256": "32f3c3dc899ba156cd13a0bb8d55530f85fede7c20e4654d30fb1ae10ed24711"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Matches/PreparationRules.cs",
+      "original_sha256": "49162bc5de4b70569e9a40e70dcff420cc7e09c8e3a4c9898f71c5c915e574de",
+      "mixed_sha256": "49162bc5de4b70569e9a40e70dcff420cc7e09c8e3a4c9898f71c5c915e574de"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/DomainValidationException.cs",
+      "original_sha256": "d80a80417068eef59c8dab2c1a2d1f65e5f255759851e029bc8ffbf8d11af52d",
+      "mixed_sha256": "d80a80417068eef59c8dab2c1a2d1f65e5f255759851e029bc8ffbf8d11af52d"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/HeroClass.cs",
+      "original_sha256": "512e27a1d19a9d8db6a4b0063abcbe573727b84dc091aacf0e854c659d34f1d7",
+      "mixed_sha256": "512e27a1d19a9d8db6a4b0063abcbe573727b84dc091aacf0e854c659d34f1d7"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Players/PlayerProfile.cs",
+      "original_sha256": "ff723be88c71b845958302dfd14ec6d3ad0ff2ea73c8b804a7c82509ea434685",
+      "mixed_sha256": "ff723be88c71b845958302dfd14ec6d3ad0ff2ea73c8b804a7c82509ea434685"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+      "original_sha256": "f25b4f8961dda2afe08846304ed0d0d789796e3e3c34cae7cd8cb06befd92f63",
+      "mixed_sha256": "f25b4f8961dda2afe08846304ed0d0d789796e3e3c34cae7cd8cb06befd92f63"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomCombatPreview.cs",
+      "original_sha256": "f590a11864c39da2c84cf6c63e2dbedb6f3d98508c449e6784161e066e73687c",
+      "mixed_sha256": "f590a11864c39da2c84cf6c63e2dbedb6f3d98508c449e6784161e066e73687c"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomInventory.cs",
+      "original_sha256": "d0807f19fcae223e24f48fce089723c0ad27f857914c22a858fdb8249107fadb",
+      "mixed_sha256": "d0807f19fcae223e24f48fce089723c0ad27f857914c22a858fdb8249107fadb"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomNumerics.cs",
+      "original_sha256": "9bf7c17c25973dc70c2cb2e6f176a7c4c463561d713b8e596ad1aa3f573f58c8",
+      "mixed_sha256": "9bf7c17c25973dc70c2cb2e6f176a7c4c463561d713b8e596ad1aa3f573f58c8"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/ChaosMap.cs",
+      "original_sha256": "acdabe5e2c2a9390a3ccd75168e105f8b98dc5c64e8eadd6ba7fec18e17b8683",
+      "mixed_sha256": "acdabe5e2c2a9390a3ccd75168e105f8b98dc5c64e8eadd6ba7fec18e17b8683"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/DuelRules.cs",
+      "original_sha256": "c8f1476c296ff30a43708f4dbbbb5484aead27d0f7481d1d4dcf7cab2697062d",
+      "mixed_sha256": "c8f1476c296ff30a43708f4dbbbb5484aead27d0f7481d1d4dcf7cab2697062d"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/ExplorationInventory.cs",
+      "original_sha256": "aebf1f8969240e4019057518a34b740249706394e4eaefee467c64979a9051ff",
+      "mixed_sha256": "aebf1f8969240e4019057518a34b740249706394e4eaefee467c64979a9051ff"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/MonsterCardPool.cs",
+      "original_sha256": "d0acfc0ac5ce93d84ac20dd0b810a079e03fa997c5b0c0811150a29fb6374c53",
+      "mixed_sha256": "d0acfc0ac5ce93d84ac20dd0b810a079e03fa997c5b0c0811150a29fb6374c53"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RelicPile.cs",
+      "original_sha256": "5afae63962b3cc0cf7c4eaa9fc27f93c5b811c0ef2815109b73ea1d85e4f91ab",
+      "mixed_sha256": "5afae63962b3cc0cf7c4eaa9fc27f93c5b811c0ef2815109b73ea1d85e4f91ab"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RewardChoice.cs",
+      "original_sha256": "d6b7cb482b34cacf48f0a88b651715504eee36222d5048495c86b8ab99d260a2",
+      "mixed_sha256": "d6b7cb482b34cacf48f0a88b651715504eee36222d5048495c86b8ab99d260a2"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/SettlementAssetClassifier.cs",
+      "original_sha256": "7452e9ae2f42df032498c38cf4e904f695ba52db6b51cfd2f6d8d93ae9ed5034",
+      "mixed_sha256": "7452e9ae2f42df032498c38cf4e904f695ba52db6b51cfd2f6d8d93ae9ed5034"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminEndpoints.cs",
+      "original_sha256": "c1153bc9dff279d61dfa4a9f3cd11665f125e9c13e7f2905eb4dad2976d96d09",
+      "mixed_sha256": "c1153bc9dff279d61dfa4a9f3cd11665f125e9c13e7f2905eb4dad2976d96d09"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/AdminRepository.cs",
+      "original_sha256": "5a7ffbd4057e9bc4b8c5e0cdd5103cc282131b4b342bc0e08fcb4d14f605b3fa",
+      "mixed_sha256": "5a7ffbd4057e9bc4b8c5e0cdd5103cc282131b4b342bc0e08fcb4d14f605b3fa"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/ClientSettingsEndpoints.cs",
+      "original_sha256": "d240dd66a708beebb77be5849fc50041e832b2abdbc34ce35117d3a95305aa73",
+      "mixed_sha256": "d240dd66a708beebb77be5849fc50041e832b2abdbc34ce35117d3a95305aa73"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/ClientSettingsRepository.cs",
+      "original_sha256": "f1667291454c89e6153340770496a598324d8fbd9db06ac55cb2c3a26920e99c",
+      "mixed_sha256": "f1667291454c89e6153340770496a598324d8fbd9db06ac55cb2c3a26920e99c"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Admin/admin.html",
+      "original_sha256": "bffac8ffce6cb3fbad211dfe94374efe51b3eb45b4815117a2882d4aaf9d3073",
+      "mixed_sha256": "bffac8ffce6cb3fbad211dfe94374efe51b3eb45b4815117a2882d4aaf9d3073"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Bootstrap/BootstrapEndpoints.cs",
+      "original_sha256": "82cd58891237c1a83475c89008d13a28a85cb74411c0c100e2adc5107380b5de",
+      "mixed_sha256": "82cd58891237c1a83475c89008d13a28a85cb74411c0c100e2adc5107380b5de"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Bootstrap/BootstrapRepository.cs",
+      "original_sha256": "20a77fc4fa2045539d68d984ae05131b8769fb338f135e56cb8fe385561342e1",
+      "mixed_sha256": "20a77fc4fa2045539d68d984ae05131b8769fb338f135e56cb8fe385561342e1"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/IdempotencyKeys.cs",
+      "original_sha256": "a838b80169c8f7e319bbef504a13e1c69b5da421a19df93e9b55963f524909a4",
+      "mixed_sha256": "a838b80169c8f7e319bbef504a13e1c69b5da421a19df93e9b55963f524909a4"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/LocalRuntimeDiagnostics.cs",
+      "original_sha256": "af179aca402814fe2150800450f48be156eb061de72e101cfe80b1d985baf35f",
+      "mixed_sha256": "af179aca402814fe2150800450f48be156eb061de72e101cfe80b1d985baf35f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/PersistentIdempotency.cs",
+      "original_sha256": "d9ee0625b281a26cb7f5e81b9be2b249e9397352d899a7b93e773dc53f2ba117",
+      "mixed_sha256": "d9ee0625b281a26cb7f5e81b9be2b249e9397352d899a7b93e773dc53f2ba117"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RequestLimits.cs",
+      "original_sha256": "8fa6cbf4a56b87d3a332fb811b957dbb6284563d74c0589092fcbc3f82248cf8",
+      "mixed_sha256": "8fa6cbf4a56b87d3a332fb811b957dbb6284563d74c0589092fcbc3f82248cf8"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RequestTraceMiddleware.cs",
+      "original_sha256": "4ee80b7232c7b7166bd3edb433d9a09ca29dbab24952b808d8faa54349495d2d",
+      "mixed_sha256": "4ee80b7232c7b7166bd3edb433d9a09ca29dbab24952b808d8faa54349495d2d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/RuntimeTiming.cs",
+      "original_sha256": "faf7bf328440a55c8c92c0f3d32b9eda01c4e2ae5845cab9b7bfebf95c216977",
+      "mixed_sha256": "faf7bf328440a55c8c92c0f3d32b9eda01c4e2ae5845cab9b7bfebf95c216977"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Common/ServerMetrics.cs",
+      "original_sha256": "a6cb87152e4bae8fba1c836a4da611a010755badab8eb63f95a34cda0e22ff06",
+      "mixed_sha256": "a6cb87152e4bae8fba1c836a4da611a010755badab8eb63f95a34cda0e22ff06"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Dockerfile",
+      "original_sha256": "a3f11021417ca47850cbc2620f0a0edf876b4ed0b0187960cd86ab82ddd2dfc1",
+      "mixed_sha256": "a3f11021417ca47850cbc2620f0a0edf876b4ed0b0187960cd86ab82ddd2dfc1"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/FantasyCard.Server.csproj",
+      "original_sha256": "810e5e1056076545efea03f9e4ddbd24f5d29bb12c108a750776e4c073811b96",
+      "mixed_sha256": "810e5e1056076545efea03f9e4ddbd24f5d29bb12c108a750776e4c073811b96"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/HttpContextAuthenticationExtensions.cs",
+      "original_sha256": "c5bdf62a269cdb818c98cc922837f40212658c4064453c44de58f62afb18332a",
+      "mixed_sha256": "c5bdf62a269cdb818c98cc922837f40212658c4064453c44de58f62afb18332a"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityEndpoints.cs",
+      "original_sha256": "c017a4877ef3364d9e9e089fdbd8d7bf724f4824e3a24419287d36baa5147d80",
+      "mixed_sha256": "c017a4877ef3364d9e9e089fdbd8d7bf724f4824e3a24419287d36baa5147d80"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityMaintenanceWorker.cs",
+      "original_sha256": "de0a1f59743b49cc51f7dd219251d857ed981513b86e2d3733b03dd66e9fc0e3",
+      "mixed_sha256": "de0a1f59743b49cc51f7dd219251d857ed981513b86e2d3733b03dd66e9fc0e3"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityOptions.cs",
+      "original_sha256": "db76ae696eafbaedc283746b4f0fd399dc3bdafa5e36a2810adb63c73ae2c694",
+      "mixed_sha256": "db76ae696eafbaedc283746b4f0fd399dc3bdafa5e36a2810adb63c73ae2c694"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityRepository.cs",
+      "original_sha256": "e2ca0e92d1e445265d2f970d817bcd7b89233bb4beae6d325a95f3846416d271",
+      "mixed_sha256": "e2ca0e92d1e445265d2f970d817bcd7b89233bb4beae6d325a95f3846416d271"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/IdentityService.cs",
+      "original_sha256": "96f68b01bd48b49e70f601f147e36323cf7de274feed2cbeeabc5a1694926100",
+      "mixed_sha256": "96f68b01bd48b49e70f601f147e36323cf7de274feed2cbeeabc5a1694926100"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/PlayerBannedException.cs",
+      "original_sha256": "af316f001273e465d5902d2d27e0bb6246242b55376b29ef095e144434005f17",
+      "mixed_sha256": "af316f001273e465d5902d2d27e0bb6246242b55376b29ef095e144434005f17"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/SessionToken.cs",
+      "original_sha256": "1b89875f7dd6aec331cae1d125112fa6d062e2d36cd2a691d600d2ffa0efdadd",
+      "mixed_sha256": "1b89875f7dd6aec331cae1d125112fa6d062e2d36cd2a691d600d2ffa0efdadd"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Identity/SteamTicketVerifier.cs",
+      "original_sha256": "62c1fa8501ca9985c97ee7676c1ce1b1af6066d0954d07c5310073a5d30b959f",
+      "mixed_sha256": "62c1fa8501ca9985c97ee7676c1ce1b1af6066d0954d07c5310073a5d30b959f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Mail/MailEndpoints.cs",
+      "original_sha256": "cce78fb22cb1929e06256f8f09b9216d49ee0029c167b1974d8bc3c2ec02be5d",
+      "mixed_sha256": "cce78fb22cb1929e06256f8f09b9216d49ee0029c167b1974d8bc3c2ec02be5d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Mail/MailRepository.cs",
+      "original_sha256": "97a7b68ac650485dd5d121ba22b5e28171aa3a8b3835ff16b754e686d2cce20e",
+      "mixed_sha256": "97a7b68ac650485dd5d121ba22b5e28171aa3a8b3835ff16b754e686d2cce20e"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakerWorker.cs",
+      "original_sha256": "31778c84d8869b4abd4a9da5ee884e45ee7516edee0d66274f8307a4b4790cf2",
+      "mixed_sha256": "31778c84d8869b4abd4a9da5ee884e45ee7516edee0d66274f8307a4b4790cf2"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingEndpoints.cs",
+      "original_sha256": "b06b400c12274a2bc82b5c90e83f0fc9de8befd789906db4db8ba3dfd0e11485",
+      "mixed_sha256": "b06b400c12274a2bc82b5c90e83f0fc9de8befd789906db4db8ba3dfd0e11485"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "original_sha256": "477f27434c94e40d0284c271dce2f7dd50790ee84a43e72c8d37b3bb772515af",
+      "mixed_sha256": "477f27434c94e40d0284c271dce2f7dd50790ee84a43e72c8d37b3bb772515af"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationEndpoints.cs",
+      "original_sha256": "0f6cbfcf24576c6aa9a0e6bdac30ecf79cd5915243c1bfb81bcb0b61c6c5d407",
+      "mixed_sha256": "0f6cbfcf24576c6aa9a0e6bdac30ecf79cd5915243c1bfb81bcb0b61c6c5d407"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs",
+      "original_sha256": "798cfd1959a3412c0cc5b8cc6e0ae9b1b32b612dd1e720e29607da8b37cc4cf9",
+      "mixed_sha256": "798cfd1959a3412c0cc5b8cc6e0ae9b1b32b612dd1e720e29607da8b37cc4cf9"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "original_sha256": "84e42f90264f4470934f2583b46da42840320c61f1873f31ac4547be8b214f4f",
+      "mixed_sha256": "84e42f90264f4470934f2583b46da42840320c61f1873f31ac4547be8b214f4f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/DatabaseMigrator.cs",
+      "original_sha256": "01ef3a720f032d235576eaca22800e48b8afee63e65c2666528b852576e5def7",
+      "mixed_sha256": "01ef3a720f032d235576eaca22800e48b8afee63e65c2666528b852576e5def7"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/MigrationChecksum.cs",
+      "original_sha256": "9576dc5482aac19f1ead0b012eaafed1f7a9b76e5d1f5c7a238a86969df0c8a3",
+      "mixed_sha256": "9576dc5482aac19f1ead0b012eaafed1f7a9b76e5d1f5c7a238a86969df0c8a3"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V001__identity.sql",
+      "original_sha256": "f6608279943f8fd223987858bd8371d3cd96c9f076edebc0a595a2574508132e",
+      "mixed_sha256": "f6608279943f8fd223987858bd8371d3cd96c9f076edebc0a595a2574508132e"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V002__player_progression.sql",
+      "original_sha256": "8c3898c58bcb1ff20fe4ef076f6112916bf66febe5c9388cf4b6b2792005bb5a",
+      "mixed_sha256": "8c3898c58bcb1ff20fe4ef076f6112916bf66febe5c9388cf4b6b2792005bb5a"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V003__inventory_preparation.sql",
+      "original_sha256": "c7407abc411b91561ee905655d47cb6473d94b1b163f9fca2e6b1f4598142a72",
+      "mixed_sha256": "c7407abc411b91561ee905655d47cb6473d94b1b163f9fca2e6b1f4598142a72"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V004__economy_audit.sql",
+      "original_sha256": "a57c1a480f20afb1703e4b64ce2ad9a959aa20c97d972d9e3ce60adb82eb2389",
+      "mixed_sha256": "a57c1a480f20afb1703e4b64ce2ad9a959aa20c97d972d9e3ce60adb82eb2389"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V005__shop_market.sql",
+      "original_sha256": "6d9f272d041f11f11dd8b989ca3a6640efec9632f788ec642122243b9f1f4d9f",
+      "mixed_sha256": "6d9f272d041f11f11dd8b989ca3a6640efec9632f788ec642122243b9f1f4d9f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V006__matchmaking.sql",
+      "original_sha256": "723ca48afce9f0e4ebd1935df80a53ff6ee92542b393393e9cbba18deeb45355",
+      "mixed_sha256": "723ca48afce9f0e4ebd1935df80a53ff6ee92542b393393e9cbba18deeb45355"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V007__rooms_relics_settlements.sql",
+      "original_sha256": "bd962cb5fa1fa38e4d4706836c947cfd5beccb8c8d6ad005f13c58803e2ca131",
+      "mixed_sha256": "bd962cb5fa1fa38e4d4706836c947cfd5beccb8c8d6ad005f13c58803e2ca131"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V008__equipment_attributes.sql",
+      "original_sha256": "8a1ac0da09dbb608be4583bf9a1c9fffa0016ce52fb27549ff296762d47d5b32",
+      "mixed_sha256": "8a1ac0da09dbb608be4583bf9a1c9fffa0016ce52fb27549ff296762d47d5b32"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V009__starter_equipment_combat_attributes.sql",
+      "original_sha256": "5d537a2434f2fdbd24ac17a1905a46f7876c6ab2be258d3cfe5cae4fb90ed447",
+      "mixed_sha256": "5d537a2434f2fdbd24ac17a1905a46f7876c6ab2be258d3cfe5cae4fb90ed447"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V010__match_ready_phase.sql",
+      "original_sha256": "03f083fc7576d53253ef9ce29967d3ae85033c98ec5025c24ea11462b07113bd",
+      "mixed_sha256": "03f083fc7576d53253ef9ce29967d3ae85033c98ec5025c24ea11462b07113bd"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V011__reward_refresh_saga.sql",
+      "original_sha256": "ad7aeace3c607f67682d9a980d50d003ea536b1789fa96f1f49314a767c0cefc",
+      "mixed_sha256": "ad7aeace3c607f67682d9a980d50d003ea536b1789fa96f1f49314a767c0cefc"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V012__settlement_notification_outbox.sql",
+      "original_sha256": "70e11816bb43b16387060841c3dcd5845d49498b57c1080f9f71aabdcb09b1e4",
+      "mixed_sha256": "70e11816bb43b16387060841c3dcd5845d49498b57c1080f9f71aabdcb09b1e4"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V013__canonical_card_catalog.sql",
+      "original_sha256": "b4087ac38befc0a53f61ea939f4a59f462f4f9c75183ed18c076f2a2a5bb3352",
+      "mixed_sha256": "b4087ac38befc0a53f61ea939f4a59f462f4f9c75183ed18c076f2a2a5bb3352"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V014__settlement_acknowledgement.sql",
+      "original_sha256": "d006ed6ed3e441d8913dccc493605e877a3851b798ae075e1784d8eaa173c4c0",
+      "mixed_sha256": "d006ed6ed3e441d8913dccc493605e877a3851b798ae075e1784d8eaa173c4c0"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V015__red_equipment_weekly_quota.sql",
+      "original_sha256": "ee0b82d2ec3f7670d357c722901f85544c0d76c2838fa95ef20ce0996dcd2053",
+      "mixed_sha256": "ee0b82d2ec3f7670d357c722901f85544c0d76c2838fa95ef20ce0996dcd2053"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V016__card_soul_currencies.sql",
+      "original_sha256": "72a5f67eafc93ef09f797d78d2a0c52ec4c010fd771fe8ceb108f9e81fef846b",
+      "mixed_sha256": "72a5f67eafc93ef09f797d78d2a0c52ec4c010fd771fe8ceb108f9e81fef846b"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V018__room_equipment_recycling.sql",
+      "original_sha256": "01b6b4fc45c47454f489845a69b7794b32361e8b8dcc208ff991fddfd6e3d457",
+      "mixed_sha256": "01b6b4fc45c47454f489845a69b7794b32361e8b8dcc208ff991fddfd6e3d457"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V019__unique_player_names.sql",
+      "original_sha256": "5820048312d7e860db96b6fbb787065b666980e48007d285fb3f47f6d48dd6d9",
+      "mixed_sha256": "5820048312d7e860db96b6fbb787065b666980e48007d285fb3f47f6d48dd6d9"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V020__mail.sql",
+      "original_sha256": "68b30eee3938e3b92c9bd6f947159430c6b9401217f706c25051f769d1f89f8d",
+      "mixed_sha256": "68b30eee3938e3b92c9bd6f947159430c6b9401217f706c25051f769d1f89f8d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V021__unique_owned_cards.sql",
+      "original_sha256": "e31f7467ebcf8804bf1e7089a9f0c1f76cc284e519756fa39fb3c1b3225c5638",
+      "mixed_sha256": "e31f7467ebcf8804bf1e7089a9f0c1f76cc284e519756fa39fb3c1b3225c5638"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V022__admin_operations.sql",
+      "original_sha256": "5b0aff08991b67ec73bde94758ff4273d0421ff78b58dc86159e00365e0d5594",
+      "mixed_sha256": "5b0aff08991b67ec73bde94758ff4273d0421ff78b58dc86159e00365e0d5594"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V023__client_settings.sql",
+      "original_sha256": "1a4ef1a16a76eaeb354e1aa03f5e7cd6744507b53b12a4bf541e022929f97b70",
+      "mixed_sha256": "1a4ef1a16a76eaeb354e1aa03f5e7cd6744507b53b12a4bf541e022929f97b70"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V024__shop_refresh_state.sql",
+      "original_sha256": "05c4e02fbdb40ce71837d4359c73c48bc7428b37feb103a05021c1d48a9bc6a5",
+      "mixed_sha256": "05c4e02fbdb40ce71837d4359c73c48bc7428b37feb103a05021c1d48a9bc6a5"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V027__economy_hot_path_indexes.sql",
+      "original_sha256": "d3f67396b6608cde2d3bd09d88200869e3e6004305c087bfe25020ca3ececed4",
+      "mixed_sha256": "d3f67396b6608cde2d3bd09d88200869e3e6004305c087bfe25020ca3ececed4"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V028__localized_admin_content.sql",
+      "original_sha256": "447ca708d3dbc0152ba93827eaa9f011c55ee9231c73d2722fe911738b6c87fe",
+      "mixed_sha256": "447ca708d3dbc0152ba93827eaa9f011c55ee9231c73d2722fe911738b6c87fe"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V029__market_listing_history.sql",
+      "original_sha256": "8b7392fb2d1c0823c0679a582f99fdbf6ed8bdfdfc666ed07e975df8061af4f8",
+      "mixed_sha256": "8b7392fb2d1c0823c0679a582f99fdbf6ed8bdfdfc666ed07e975df8061af4f8"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/PersistenceExtensions.cs",
+      "original_sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802",
+      "mixed_sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/PostgresHealthCheck.cs",
+      "original_sha256": "cf01bc5a45b2abdeaf2816889523330e0c62e03e983ff95e0f1c2caaf77c8e3b",
+      "mixed_sha256": "cf01bc5a45b2abdeaf2816889523330e0c62e03e983ff95e0f1c2caaf77c8e3b"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs",
+      "original_sha256": "14821f4584e4c74874e78e24b72bfc38290208162bcb00c3fe34b3727af53fb1",
+      "mixed_sha256": "14821f4584e4c74874e78e24b72bfc38290208162bcb00c3fe34b3727af53fb1"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerMappings.cs",
+      "original_sha256": "a0727b850fcfd953264cec4517c3ecfc87f71412a9f1d13b5d6be3842bbc73ae",
+      "mixed_sha256": "a0727b850fcfd953264cec4517c3ecfc87f71412a9f1d13b5d6be3842bbc73ae"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerNameConflictException.cs",
+      "original_sha256": "9bd1cc174ee49d886f44864722f4875a67ecb5d877e63a044fb907382d64ccae",
+      "mixed_sha256": "9bd1cc174ee49d886f44864722f4875a67ecb5d877e63a044fb907382d64ccae"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Players/PlayerRepository.cs",
+      "original_sha256": "df98d9f6decab70cceca0a3745e147d98201a5b917259cb07356c58b1c1cbede",
+      "mixed_sha256": "df98d9f6decab70cceca0a3745e147d98201a5b917259cb07356c58b1c1cbede"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Program.cs",
+      "original_sha256": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4",
+      "mixed_sha256": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/CardEconomyRepository.cs",
+      "original_sha256": "cf9e06d3b52489438c8d1f1f6ed15e257c1af684972cce689ec1f49d33f93aa3",
+      "mixed_sha256": "cf9e06d3b52489438c8d1f1f6ed15e257c1af684972cce689ec1f49d33f93aa3"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs",
+      "original_sha256": "2a9d56be22888a0a8f71b2ada8c95c1180fd329e3210e066710e7ef952ee7552",
+      "mixed_sha256": "2a9d56be22888a0a8f71b2ada8c95c1180fd329e3210e066710e7ef952ee7552"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyReconciliation.cs",
+      "original_sha256": "05ab117ec59386a86538290f5261fb5a2fee8e6c4062357dc81abc425c90bcc1",
+      "mixed_sha256": "05ab117ec59386a86538290f5261fb5a2fee8e6c4062357dc81abc425c90bcc1"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EconomyRepository.cs",
+      "original_sha256": "ccd8cc97e41053714b78131f9a80f56bca362f4a67cb8c8fea4c9a46c8009154",
+      "mixed_sha256": "ccd8cc97e41053714b78131f9a80f56bca362f4a67cb8c8fea4c9a46c8009154"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/EnhancementQuoteRepository.cs",
+      "original_sha256": "1fe8a5fa5a7212770c92f85f67d0d3e13c6554c4265237daa125f264d0a817f7",
+      "mixed_sha256": "1fe8a5fa5a7212770c92f85f67d0d3e13c6554c4265237daa125f264d0a817f7"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/PlayerProvisioningService.cs",
+      "original_sha256": "14b60f78cd0d96ef480b9f08aa4ee2c252cabe3044d768bc1439b2b160c4cb46",
+      "mixed_sha256": "14b60f78cd0d96ef480b9f08aa4ee2c252cabe3044d768bc1439b2b160c4cb46"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs",
+      "original_sha256": "d9969eb79a22efc0c754e58c70f6516614599494fb21d9d278e26e32ff4280d2",
+      "mixed_sha256": "d9969eb79a22efc0c754e58c70f6516614599494fb21d9d278e26e32ff4280d2"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs",
+      "original_sha256": "c682e80f9ad75852fe8dfd3df6d2e7cf7e351985605c0d3192bdb7f6024f1b94",
+      "mixed_sha256": "c682e80f9ad75852fe8dfd3df6d2e7cf7e351985605c0d3192bdb7f6024f1b94"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/RedEquipmentQuotaRepository.cs",
+      "original_sha256": "0b74790aa81d9ae428b2f0b9df71136a8d456570dcde755b771c29555b7abe40",
+      "mixed_sha256": "0b74790aa81d9ae428b2f0b9df71136a8d456570dcde755b771c29555b7abe40"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/RewardRefreshRecoveryWorker.cs",
+      "original_sha256": "d461e943228ec35b4eadbe504f2e6964ababe3077d606276a8e4c0e821c8dada",
+      "mixed_sha256": "d461e943228ec35b4eadbe504f2e6964ababe3077d606276a8e4c0e821c8dada"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Properties/AssemblyInfo.cs",
+      "original_sha256": "f206de280090e2fbdcf2fcbb5eedea9829370dfdc6f085fca2fcb68632be48f5",
+      "mixed_sha256": "f206de280090e2fbdcf2fcbb5eedea9829370dfdc6f085fca2fcb68632be48f5"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GameBody.cs",
+      "original_sha256": "bcfe3c2a97d8bd0c03c0ebe40a57f5b7c9697241266cd876f1b63f330192b409",
+      "mixed_sha256": "bcfe3c2a97d8bd0c03c0ebe40a57f5b7c9697241266cd876f1b63f330192b409"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GamePage.cs",
+      "original_sha256": "ab0297a5ec64a3d9df1eabfa21c8af80a010a77a73cac691d2854276dc99fe5e",
+      "mixed_sha256": "ab0297a5ec64a3d9df1eabfa21c8af80a010a77a73cac691d2854276dc99fe5e"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/GameResponseBudget.cs",
+      "original_sha256": "ef3e175845146f2736578f956edefa4fd8d64823e95d26773cb23de52c93057a",
+      "mixed_sha256": "ef3e175845146f2736578f956edefa4fd8d64823e95d26773cb23de52c93057a"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/ProtobufHttpMiddleware.cs",
+      "original_sha256": "6dda524e350d35f16735d52c18ec066a5cf1faa5f73a4d82bd9c367dbd1c4484",
+      "mixed_sha256": "6dda524e350d35f16735d52c18ec066a5cf1faa5f73a4d82bd9c367dbd1c4484"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/ProtobufHttp/ProtobufHttpResult.cs",
+      "original_sha256": "5496ac9db4110d3ee1c69e054f59b9c2045754bb7e9c2f5f95a815fc5e4fae6f",
+      "mixed_sha256": "5496ac9db4110d3ee1c69e054f59b9c2045754bb7e9c2f5f95a815fc5e4fae6f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/ConnectionRegistry.cs",
+      "original_sha256": "866657fe10608859507c6686012b41ab7b959b10373718044c304632bd73cf9a",
+      "mixed_sha256": "866657fe10608859507c6686012b41ab7b959b10373718044c304632bd73cf9a"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs",
+      "original_sha256": "572ad8b6df85105d3751e053b7648f8a3426a2c15abeaa7eb4c23df50017182d",
+      "mixed_sha256": "572ad8b6df85105d3751e053b7648f8a3426a2c15abeaa7eb4c23df50017182d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs",
+      "original_sha256": "3e9a1ef43b9bd82c17130d2ca572a07c7838c595d5d62a497a90b99006d4d525",
+      "mixed_sha256": "3e9a1ef43b9bd82c17130d2ca572a07c7838c595d5d62a497a90b99006d4d525"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeConnection.cs",
+      "original_sha256": "229d9a5ce45a96bc9f7cc48faf250bcc90acd9aa672888da9d7a25a4c1eb8914",
+      "mixed_sha256": "229d9a5ce45a96bc9f7cc48faf250bcc90acd9aa672888da9d7a25a4c1eb8914"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeEndpoints.cs",
+      "original_sha256": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d",
+      "mixed_sha256": "6b68e779bab4b3ebf0552bcbd6b4f0a312e8bed5e9102bf74e12e34f34f44d5d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeEventStore.cs",
+      "original_sha256": "493b6f1427c7f726c6efcd96548b098942e937f1a4b7c1e6fe1b691735d3bbdd",
+      "mixed_sha256": "493b6f1427c7f726c6efcd96548b098942e937f1a4b7c1e6fe1b691735d3bbdd"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeFrameReader.cs",
+      "original_sha256": "87b93aceecc173e29e9c14667b078c262b2616fbb7cca5f0f01e290cdf7f3fe0",
+      "mixed_sha256": "87b93aceecc173e29e9c14667b078c262b2616fbb7cca5f0f01e290cdf7f3fe0"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeMaintenanceWorker.cs",
+      "original_sha256": "8a6a5922ccd5b2243d0a4e58828aaf5f7ec40a6c712fed43f2100797b87a57e1",
+      "mixed_sha256": "8a6a5922ccd5b2243d0a4e58828aaf5f7ec40a6c712fed43f2100797b87a57e1"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeOptions.cs",
+      "original_sha256": "2ad87cfd8fce806f62f26bb122523ecc0a4a08be75f638be16a7a818513b8486",
+      "mixed_sha256": "2ad87cfd8fce806f62f26bb122523ecc0a4a08be75f638be16a7a818513b8486"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RealtimeTicketStore.cs",
+      "original_sha256": "62f4cd739bc84b61a0fc04a7976e44c5f35b12e9ba6ddc4eb0297912b8a96b75",
+      "mixed_sha256": "62f4cd739bc84b61a0fc04a7976e44c5f35b12e9ba6ddc4eb0297912b8a96b75"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs",
+      "original_sha256": "2eb9db6f4fc451a32fb88ae12f6089ee8537adf15883208b436bb6ae07955b50",
+      "mixed_sha256": "2eb9db6f4fc451a32fb88ae12f6089ee8537adf15883208b436bb6ae07955b50"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RoomTransitionEventPublisher.cs",
+      "original_sha256": "86041d3d8f4a5a7c77586df55fe805ef7cb2dac66abe2f99f9ceb8c621ba2e65",
+      "mixed_sha256": "86041d3d8f4a5a7c77586df55fe805ef7cb2dac66abe2f99f9ceb8c621ba2e65"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomActor.cs",
+      "original_sha256": "5c9e998047bccdbadebce402a2b4911dc9e78aa810512e9d41b637e79b9aa78a",
+      "mixed_sha256": "5c9e998047bccdbadebce402a2b4911dc9e78aa810512e9d41b637e79b9aa78a"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomCommands.cs",
+      "original_sha256": "4176c7eaf08d57d16b169ceef0bae2527e9ffa2fd538ef0bcce0770f0c3cd2ea",
+      "mixed_sha256": "4176c7eaf08d57d16b169ceef0bae2527e9ffa2fd538ef0bcce0770f0c3cd2ea"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomLifecycleMetricsTracker.cs",
+      "original_sha256": "cc2b1725516f2b4b1bc4eba061514bcb36ce3985bddaec5245df8b79309e2bc6",
+      "mixed_sha256": "cc2b1725516f2b4b1bc4eba061514bcb36ce3985bddaec5245df8b79309e2bc6"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomModuleExtensions.cs",
+      "original_sha256": "cb7707495407929b9f319f4498f995e93d3f49c7fe8eb747c686a6962722abca",
+      "mixed_sha256": "cb7707495407929b9f319f4498f995e93d3f49c7fe8eb747c686a6962722abca"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomPersistenceHealth.cs",
+      "original_sha256": "4bf004128b0a3f772627dd2e73b6093ed87aa025a826f1e33d80e6791abc712f",
+      "mixed_sha256": "4bf004128b0a3f772627dd2e73b6093ed87aa025a826f1e33d80e6791abc712f"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRecoveryHealth.cs",
+      "original_sha256": "573afa1a515b840190e9f0898c680139d6af5e1e22d68231d2e1dafa941ce5fa",
+      "mixed_sha256": "573afa1a515b840190e9f0898c680139d6af5e1e22d68231d2e1dafa941ce5fa"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRecoveryWorker.cs",
+      "original_sha256": "7afe8b96485e5c73dd8aa84dc96bb8dc642f50fdd992ac3e26b89fd55c9b6b3c",
+      "mixed_sha256": "7afe8b96485e5c73dd8aa84dc96bb8dc642f50fdd992ac3e26b89fd55c9b6b3c"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomRegistry.cs",
+      "original_sha256": "18ce62135a512269dde69d29edcf27c9fa03d4295f7d02b3973fea1c26eb1413",
+      "mixed_sha256": "18ce62135a512269dde69d29edcf27c9fa03d4295f7d02b3973fea1c26eb1413"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs",
+      "original_sha256": "0a2133af12944fd223cfc93bedf4880afc7d40d8a04877838a906b272fb465cb",
+      "mixed_sha256": "0a2133af12944fd223cfc93bedf4880afc7d40d8a04877838a906b272fb465cb"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementBatchProcessor.cs",
+      "original_sha256": "8ae3833770e3b62a9d79283be04ccf342ca127b82626b425cf59e981862c75ee",
+      "mixed_sha256": "8ae3833770e3b62a9d79283be04ccf342ca127b82626b425cf59e981862c75ee"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementCoordinator.cs",
+      "original_sha256": "57e8cca560095f79a6fd53c195bc381583440cfad8787271fb1e1469f58a7791",
+      "mixed_sha256": "57e8cca560095f79a6fd53c195bc381583440cfad8787271fb1e1469f58a7791"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementEndpoints.cs",
+      "original_sha256": "110c29962309de0be1a4515cf7daa311d39fe9ee7b886852dabddd67961b8447",
+      "mixed_sha256": "110c29962309de0be1a4515cf7daa311d39fe9ee7b886852dabddd67961b8447"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementEventPublisher.cs",
+      "original_sha256": "7922535fa9e614bdd664f938a403c8797ca668b8ca14c94a26ff31ae350e046d",
+      "mixed_sha256": "7922535fa9e614bdd664f938a403c8797ca668b8ca14c94a26ff31ae350e046d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementMaterialMapping.cs",
+      "original_sha256": "13035ba1365426e76c73f7af07e1bcb5291097de0b39b1cb81fe8445663416a9",
+      "mixed_sha256": "13035ba1365426e76c73f7af07e1bcb5291097de0b39b1cb81fe8445663416a9"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementNotificationBatchProcessor.cs",
+      "original_sha256": "aec1dedbf153302d046c7f10e7db0de857307ad171e839cdff84ada93bc92517",
+      "mixed_sha256": "aec1dedbf153302d046c7f10e7db0de857307ad171e839cdff84ada93bc92517"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRecoveryHealth.cs",
+      "original_sha256": "a551ad385836c7f9012c276ec8bc09d711005ad46d2fd7dc7e443bceefc9449d",
+      "mixed_sha256": "a551ad385836c7f9012c276ec8bc09d711005ad46d2fd7dc7e443bceefc9449d"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Settlement/SettlementRepository.cs",
+      "original_sha256": "c5a0ddb7e5602d0b4cb0c2eef94e26121fe81d3178008b67152c378bc0d132a0",
+      "mixed_sha256": "c5a0ddb7e5602d0b4cb0c2eef94e26121fe81d3178008b67152c378bc0d132a0"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/appsettings.Development.json",
+      "original_sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79",
+      "mixed_sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/appsettings.json",
+      "original_sha256": "8e5e47e5b7dbc7dd05bcbfae8aada11d1eba2796b0839b9df64b12c9f6088e8f",
+      "mixed_sha256": "8e5e47e5b7dbc7dd05bcbfae8aada11d1eba2796b0839b9df64b12c9f6088e8f"
+    },
+    {
+      "path": "server/start-server.bat",
+      "original_sha256": "92d4fb82524d0b4f86abe13d3ec11609676b84e5ff91f1212e290afd5ea3e1f2",
+      "mixed_sha256": "92d4fb82524d0b4f86abe13d3ec11609676b84e5ff91f1212e290afd5ea3e1f2"
+    },
+    {
+      "path": "server/stop-server.bat",
+      "original_sha256": "c5873f132f35b3b58d978e8e610f62eef190ac36875b5a0072abcb7d9ea8d005",
+      "mixed_sha256": "c5873f132f35b3b58d978e8e610f62eef190ac36875b5a0072abcb7d9ea8d005"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotDirectorTests.cs",
+      "original_sha256": "e28375b3988aecf36a67963ad9397a9142cbffed521590f0ad6a4b9a59b7edb5",
+      "mixed_sha256": "e28375b3988aecf36a67963ad9397a9142cbffed521590f0ad6a4b9a59b7edb5"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotRoomRuntimeTests.cs",
+      "original_sha256": "e8d0acc23779ec03f11ff6e824e087568984583d6de4629e45b6c62afd774e50",
+      "mixed_sha256": "e8d0acc23779ec03f11ff6e824e087568984583d6de4629e45b6c62afd774e50"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/BotRulesTests.cs",
+      "original_sha256": "08aed9131bcc2ed9587a6baec0a6396e603a31a099a8ff72d83ddb091fa498ab",
+      "mixed_sha256": "08aed9131bcc2ed9587a6baec0a6396e603a31a099a8ff72d83ddb091fa498ab"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Bots/NumericalBotLootTests.cs",
+      "original_sha256": "f680de5e65e022c6742be9b623b390d7ecfbe798e0b69610a17f6cfed247326b",
+      "mixed_sha256": "f680de5e65e022c6742be9b623b390d7ecfbe798e0b69610a17f6cfed247326b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/CardEconomyRulesTests.cs",
+      "original_sha256": "643630a7b9ad9e68fecee38535cde459976665d432fc96e3434a36ec64759248",
+      "mixed_sha256": "643630a7b9ad9e68fecee38535cde459976665d432fc96e3434a36ec64759248"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs",
+      "original_sha256": "b15c2a8b4785f0d4defff03516fb7f96b4969e996552305d36e700d05b39d83e",
+      "mixed_sha256": "b15c2a8b4785f0d4defff03516fb7f96b4969e996552305d36e700d05b39d83e"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Cards/DeckRulesTests.cs",
+      "original_sha256": "15dc24cbb41a1ae4614be8757434e54c2d3917ee25c151bbcfb9434f987b7996",
+      "mixed_sha256": "15dc24cbb41a1ae4614be8757434e54c2d3917ee25c151bbcfb9434f987b7996"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CapEffectiveContractTests.cs",
+      "original_sha256": "4bb08b1c5c524c28b8493902ebc590beccc210a47acf649efba12d0e00011600",
+      "mixed_sha256": "4bb08b1c5c524c28b8493902ebc590beccc210a47acf649efba12d0e00011600"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CombatAuthoritativeRulesTests.cs",
+      "original_sha256": "9354f97eaa5ebb7f98e97d31496db98f3e5e8e4874055224989f07e33ae14e21",
+      "mixed_sha256": "9354f97eaa5ebb7f98e97d31496db98f3e5e8e4874055224989f07e33ae14e21"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CombatRandomTests.cs",
+      "original_sha256": "d9999130a5b6ce26a2ebd5abe6b0f17f5dc3f3e5634f2b329cbbfc099c4634ec",
+      "mixed_sha256": "d9999130a5b6ce26a2ebd5abe6b0f17f5dc3f3e5634f2b329cbbfc099c4634ec"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/CurrentNumericalBaselineTests.cs",
+      "original_sha256": "2d1ff53427139c35d23b4ce00e398181181f60098b6ee37ce9a7ce39ac02c81e",
+      "mixed_sha256": "2d1ff53427139c35d23b4ce00e398181181f60098b6ee37ce9a7ce39ac02c81e"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/ElementMarginalAccountingTests.cs",
+      "original_sha256": "103e194c3b7587ffc414ac39df4641086a63448b36ae6ad5f3f0dac40c0a9a3c",
+      "mixed_sha256": "103e194c3b7587ffc414ac39df4641086a63448b36ae6ad5f3f0dac40c0a9a3c"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/EquipmentCombatRulesTests.cs",
+      "original_sha256": "3c87a89c347716824744156394e5ff0b82b4cb03e9de9d10180b2f4ba9e3f7cf",
+      "mixed_sha256": "3c87a89c347716824744156394e5ff0b82b4cb03e9de9d10180b2f4ba9e3f7cf"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/FenxianImmediateDrawPolicyTests.cs",
+      "original_sha256": "7db65dbb4f3482d72b5519130d9e66bd4c2c7a7dfc6fc0ff99b4f93d330f65a5",
+      "mixed_sha256": "7db65dbb4f3482d72b5519130d9e66bd4c2c7a7dfc6fc0ff99b4f93d330f65a5"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/GuardianShieldBonusPolicyTests.cs",
+      "original_sha256": "003e685b1dc4ea0d6596fb452ed6d7c6b451fb6309193d7c4030ba106adfdd9d",
+      "mixed_sha256": "003e685b1dc4ea0d6596fb452ed6d7c6b451fb6309193d7c4030ba106adfdd9d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/MonsterCombatDamageTests.cs",
+      "original_sha256": "fcbd31f3f3b61fbfa799d94a896e48ac4f97448c47247c34a734d17f085fd4ab",
+      "mixed_sha256": "fcbd31f3f3b61fbfa799d94a896e48ac4f97448c47247c34a734d17f085fd4ab"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/PausedDrawLedgerTests.cs",
+      "original_sha256": "d99d3993246d8244b1e00dd8fbc19ae9b84d872370d1acc2c8e53d154443053b",
+      "mixed_sha256": "d99d3993246d8244b1e00dd8fbc19ae9b84d872370d1acc2c8e53d154443053b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Combat/Pr13BoundaryContractTests.cs",
+      "original_sha256": "5cd7fd0d12e875f4ad17dfcdb0dc1e4bb21a59317fc52a5c4cbb4ea064d17567",
+      "mixed_sha256": "5cd7fd0d12e875f4ad17dfcdb0dc1e4bb21a59317fc52a5c4cbb4ea064d17567"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs",
+      "original_sha256": "b6e17a419e2ad8af190a2ee70cdd1353507792e6849f44dcb23ff1ded978a8cb",
+      "mixed_sha256": "b6e17a419e2ad8af190a2ee70cdd1353507792e6849f44dcb23ff1ded978a8cb"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj",
+      "original_sha256": "67d3f84262da6226516e694d465cad359af68e77e6464e857db8655b7d5ec853",
+      "mixed_sha256": "67d3f84262da6226516e694d465cad359af68e77e6464e857db8655b7d5ec853"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Matches/PreparationRulesTests.cs",
+      "original_sha256": "ab91a554773c0e752674a7850bda1d1a90f8851841573787e98438a2f4e26eb3",
+      "mixed_sha256": "ab91a554773c0e752674a7850bda1d1a90f8851841573787e98438a2f4e26eb3"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Players/PlayerProfileTests.cs",
+      "original_sha256": "1460d574673524bd25cb36f058be82e6fb3b689de5b2531d573c1ce328b3661b",
+      "mixed_sha256": "1460d574673524bd25cb36f058be82e6fb3b689de5b2531d573c1ce328b3661b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSnapshotTests.cs",
+      "original_sha256": "898f5608727012f8fb0159b44e8091d39f762885bf50570de1a7dfda0b4a2339",
+      "mixed_sha256": "898f5608727012f8fb0159b44e8091d39f762885bf50570de1a7dfda0b4a2339"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/BattleTargetSelectionTests.cs",
+      "original_sha256": "2ca4f218ef5bf7cb1427f11cdef53dc93227486a81939715f8c8da9bbe475980",
+      "mixed_sha256": "2ca4f218ef5bf7cb1427f11cdef53dc93227486a81939715f8c8da9bbe475980"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/ChaosMapTests.cs",
+      "original_sha256": "9ad4eaf048ffee3b4d4bd41a96f08d9e0f5118a45865e588f18cd6852bf665f8",
+      "mixed_sha256": "9ad4eaf048ffee3b4d4bd41a96f08d9e0f5118a45865e588f18cd6852bf665f8"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/CombatPreviewAndFeedbackTests.cs",
+      "original_sha256": "f59931760cfd156cf7f58c43691628d8829fbedcab2e37fb9007ffd6270465b6",
+      "mixed_sha256": "f59931760cfd156cf7f58c43691628d8829fbedcab2e37fb9007ffd6270465b6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/CombatSelectionOrderContractTests.cs",
+      "original_sha256": "15321b49e56bbfe87fdd28a4f8129994187619311e85a3b86dba4238ec509de7",
+      "mixed_sha256": "15321b49e56bbfe87fdd28a4f8129994187619311e85a3b86dba4238ec509de7"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/DuelRulesTests.cs",
+      "original_sha256": "c19224fb954a39f263f06a046d510ce0eeb7b25e2ab27ab23ee6eca8b5fee6d2",
+      "mixed_sha256": "c19224fb954a39f263f06a046d510ce0eeb7b25e2ab27ab23ee6eca8b5fee6d2"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/ExplorationInventoryTests.cs",
+      "original_sha256": "9d47d6ef84194583ee6458b673894a387393c8ada50244eb923c4cc7a204d4f0",
+      "mixed_sha256": "9d47d6ef84194583ee6458b673894a387393c8ada50244eb923c4cc7a204d4f0"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/HealthPotionTests.cs",
+      "original_sha256": "a939534bae8fc9100cb64ab5e70683f82f08805cd4d7af01791bb4c80ef5ed57",
+      "mixed_sha256": "a939534bae8fc9100cb64ab5e70683f82f08805cd4d7af01791bb4c80ef5ed57"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/LifeSpringTests.cs",
+      "original_sha256": "abd6f2381bbce7f56c976fcd9a64c091d75164f5357249d11371e66f9e1c9391",
+      "mixed_sha256": "abd6f2381bbce7f56c976fcd9a64c091d75164f5357249d11371e66f9e1c9391"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterCardPoolTests.cs",
+      "original_sha256": "1dd98af66ee10ffcc292153c5b44d3678c65b2548c534335826113bead37b136",
+      "mixed_sha256": "1dd98af66ee10ffcc292153c5b44d3678c65b2548c534335826113bead37b136"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/MonsterPoolDilutionTests.cs",
+      "original_sha256": "2f561be814181ba3826f12ce421d093ffd03a0ad9f64cff9f65c4dd462377739",
+      "mixed_sha256": "2f561be814181ba3826f12ce421d093ffd03a0ad9f64cff9f65c4dd462377739"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/NumericalPolicySnapshotTests.cs",
+      "original_sha256": "37fc0f032d8046d83a40eca9e30802701b1d3cf695a4b1c9451f605d7c715712",
+      "mixed_sha256": "37fc0f032d8046d83a40eca9e30802701b1d3cf695a4b1c9451f605d7c715712"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/PairedBuildBudgetTests.cs",
+      "original_sha256": "a9f319e9a10d04dbb85f90878ddb2c0d48bd499df420fdaf6380c7bb7e9fd20c",
+      "mixed_sha256": "a9f319e9a10d04dbb85f90878ddb2c0d48bd499df420fdaf6380c7bb7e9fd20c"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RelicPileTests.cs",
+      "original_sha256": "62a634c796948dd9cbfe5c5a965a54260a36caf0163e3639a968611dda6c4fff",
+      "mixed_sha256": "62a634c796948dd9cbfe5c5a965a54260a36caf0163e3639a968611dda6c4fff"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RewardChoiceTests.cs",
+      "original_sha256": "8f21f1c08b00f2bd7b2e4797708892a5ed61eab550ebf367f70bf107c6eb86ad",
+      "mixed_sha256": "8f21f1c08b00f2bd7b2e4797708892a5ed61eab550ebf367f70bf107c6eb86ad"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RoomInventoryMutationTests.cs",
+      "original_sha256": "1b34011dc79e4558bb1745aaa263423f99bc8981a2c33103f1fd2c4ccaea7b83",
+      "mixed_sha256": "1b34011dc79e4558bb1745aaa263423f99bc8981a2c33103f1fd2c4ccaea7b83"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RoomRandomStreamTests.cs",
+      "original_sha256": "4e716c952a3b01aa6381526b75837572f17f941867c0ba9dcf286488b6f1352f",
+      "mixed_sha256": "4e716c952a3b01aa6381526b75837572f17f941867c0ba9dcf286488b6f1352f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/RouteGeometryRegressionTests.cs",
+      "original_sha256": "14f61cbfdb73ef3e8ab98afc8800ec4eb8f0029173c44de15448557df3cb8919",
+      "mixed_sha256": "14f61cbfdb73ef3e8ab98afc8800ec4eb8f0029173c44de15448557df3cb8919"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/SettlementAssetClassifierTests.cs",
+      "original_sha256": "670d594be976813d4a15972127399dea09e7fadb4b844c6279bd8ec858d8efc3",
+      "mixed_sha256": "670d594be976813d4a15972127399dea09e7fadb4b844c6279bd8ec858d8efc3"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Rooms/TreasureEncounterTests.cs",
+      "original_sha256": "400124e32cd06617bf74eedc018ef7d3c67a10195c6ca22d416fed2f38634498",
+      "mixed_sha256": "400124e32cd06617bf74eedc018ef7d3c67a10195c6ca22d416fed2f38634498"
+    },
+    {
+      "path": "server/tests/FantasyCard.Domain.Tests/Usings.cs",
+      "original_sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359",
+      "mixed_sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Admin/AdminValidationTests.cs",
+      "original_sha256": "4eb7c600e7a6ba2ba996fd663851e2c135a905a51c94851830969e775ade6fc8",
+      "mixed_sha256": "4eb7c600e7a6ba2ba996fd663851e2c135a905a51c94851830969e775ade6fc8"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Admin/LocalizedContentContractTests.cs",
+      "original_sha256": "687c3a675e4d1fda61f1a25f56bef3dfc1b2c8cc7f9795a85ec082a073b5080e",
+      "mixed_sha256": "687c3a675e4d1fda61f1a25f56bef3dfc1b2c8cc7f9795a85ec082a073b5080e"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/HumanRoomMetricsTests.cs",
+      "original_sha256": "fb8235e7a486823b545bd561a4f849f30c9bfe9249784a6a50cb816a3bf52a66",
+      "mixed_sha256": "fb8235e7a486823b545bd561a4f849f30c9bfe9249784a6a50cb816a3bf52a66"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/IdempotencyKeysTests.cs",
+      "original_sha256": "7d28654865519874941aa7771498043bd20a6851fdec5075b19a3b74bd019b4a",
+      "mixed_sha256": "7d28654865519874941aa7771498043bd20a6851fdec5075b19a3b74bd019b4a"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/LocalRuntimeDiagnosticsTests.cs",
+      "original_sha256": "8fbafb0128c5a60159132847b5e0da2fdff14723c9cd379d27a859660fd8bc2c",
+      "mixed_sha256": "8fbafb0128c5a60159132847b5e0da2fdff14723c9cd379d27a859660fd8bc2c"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/PersistentIdempotencyTests.cs",
+      "original_sha256": "5dc02bda990df54d68d50b5b520646d98ea37868f66a9666a9c9aeee6f32f8ae",
+      "mixed_sha256": "5dc02bda990df54d68d50b5b520646d98ea37868f66a9666a9c9aeee6f32f8ae"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/RequestLimitTests.cs",
+      "original_sha256": "44ce8a89ddc4e301b084f2298e85cc89fb1cc9ae5f0dfc2a50f3011c059b06af",
+      "mixed_sha256": "44ce8a89ddc4e301b084f2298e85cc89fb1cc9ae5f0dfc2a50f3011c059b06af"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs",
+      "original_sha256": "10252c65cb9e0cdbb34d63da360cdd7c339f385d0ef5da2806c53acd446b3e8b",
+      "mixed_sha256": "10252c65cb9e0cdbb34d63da360cdd7c339f385d0ef5da2806c53acd446b3e8b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Common/ServerMetricsTests.cs",
+      "original_sha256": "33a6c4c0b4fde1f4d50ffae4fa4bdc35f0502ad6bfc541a8c2e07ff596fb7f21",
+      "mixed_sha256": "33a6c4c0b4fde1f4d50ffae4fa4bdc35f0502ad6bfc541a8c2e07ff596fb7f21"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Config/ConfigBundlePublisherTests.cs",
+      "original_sha256": "09664247703f6797795c7037b08c1d774150c3ed73854940e9aae164ae2a0ef1",
+      "mixed_sha256": "09664247703f6797795c7037b08c1d774150c3ed73854940e9aae164ae2a0ef1"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Config/ConfigCompilerTests.cs",
+      "original_sha256": "e5441cbb89fc062b903bce7e9bd81574b07a6644da2e40f50d520b120468b32d",
+      "mixed_sha256": "e5441cbb89fc062b903bce7e9bd81574b07a6644da2e40f50d520b120468b32d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Deploy/CaddyfileTests.cs",
+      "original_sha256": "3b569f6fa0438c5481b7c96cc2a371355dccfe6378ebaa7b0a5e9e9266eb6cc5",
+      "mixed_sha256": "3b569f6fa0438c5481b7c96cc2a371355dccfe6378ebaa7b0a5e9e9266eb6cc5"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Deploy/ProtobufPerimeterTests.cs",
+      "original_sha256": "bb63281762d1e3354dba2817474388de80960e68d4bf5b96b0886e8e258571ae",
+      "mixed_sha256": "bb63281762d1e3354dba2817474388de80960e68d4bf5b96b0886e8e258571ae"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AcceptanceTests.cs",
+      "original_sha256": "82c656598f8676c5bfe479303dfe3434f5502bd97909f837bde6fb87c038520e",
+      "mixed_sha256": "82c656598f8676c5bfe479303dfe3434f5502bd97909f837bde6fb87c038520e"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs",
+      "original_sha256": "c081f251afd1b662bc1c2a7bae878aeef622434471c36144cb9515a7f388de28",
+      "mixed_sha256": "c081f251afd1b662bc1c2a7bae878aeef622434471c36144cb9515a7f388de28"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AssetAudit.cs",
+      "original_sha256": "34a3b1045a0240f59adbe7829543208989cfa54007526477796420dbb890cbf9",
+      "mixed_sha256": "34a3b1045a0240f59adbe7829543208989cfa54007526477796420dbb890cbf9"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05CallbackRelay.cs",
+      "original_sha256": "9375776d163d140cb356f87689c957b57a7874aec82aa51dc590e208d6e287f3",
+      "mixed_sha256": "9375776d163d140cb356f87689c957b57a7874aec82aa51dc590e208d6e287f3"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05DatabaseRelay.cs",
+      "original_sha256": "45d93543f30ebe5be6da3903b71d757c304e02efb3a09d93129e0f622804491d",
+      "mixed_sha256": "45d93543f30ebe5be6da3903b71d757c304e02efb3a09d93129e0f622804491d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs",
+      "original_sha256": "ef3759e57f564a5609e663efaf880346b5c35eb8b7d266e65ee2610152b940ea",
+      "mixed_sha256": "ef3759e57f564a5609e663efaf880346b5c35eb8b7d266e65ee2610152b940ea"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardWindowTests.cs",
+      "original_sha256": "c6ae1c93e68a343e13e6a42026171c898282426fbc9bed9619b8f170b24366cb",
+      "mixed_sha256": "c6ae1c93e68a343e13e6a42026171c898282426fbc9bed9619b8f170b24366cb"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+      "original_sha256": "e45e7bdd2341e20f0cda920c44f09a493ae95d7a475af5b652d50aa3804cecc9",
+      "mixed_sha256": "e45e7bdd2341e20f0cda920c44f09a493ae95d7a475af5b652d50aa3804cecc9"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs",
+      "original_sha256": "fd1d154459ee107fa74ec89e086c2574cfb978417fd1346d369609804f4edd72",
+      "mixed_sha256": "fd1d154459ee107fa74ec89e086c2574cfb978417fd1346d369609804f4edd72"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLegacyRoomScopeRelay.cs",
+      "original_sha256": "509348acee59d313653f4fe6aa2f6f9e087af3adc7e5f1792c83a9826cfa6fad",
+      "mixed_sha256": "509348acee59d313653f4fe6aa2f6f9e087af3adc7e5f1792c83a9826cfa6fad"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopRelay.cs",
+      "original_sha256": "7bace29a54e033233c35ce062e2bb25339538408c3235894413447f21fb465a0",
+      "mixed_sha256": "7bace29a54e033233c35ce062e2bb25339538408c3235894413447f21fb465a0"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "original_sha256": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a",
+      "mixed_sha256": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+      "original_sha256": "8aef712ef55e6956ad5c939f704f5f95e2bed21e2f6d9f55a3db797ed8bb7d28",
+      "mixed_sha256": "8aef712ef55e6956ad5c939f704f5f95e2bed21e2f6d9f55a3db797ed8bb7d28"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs",
+      "original_sha256": "c9d2084bddbb28387eced61a94ffa81b53ff4d96db6b2f269febbf8d22248aa0",
+      "mixed_sha256": "c9d2084bddbb28387eced61a94ffa81b53ff4d96db6b2f269febbf8d22248aa0"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessRollbackBackupTests.cs",
+      "original_sha256": "af16ebce26d7e815630cb89b51f58ef49c567fa6dd24fddd76c0f8ff765902f1",
+      "mixed_sha256": "af16ebce26d7e815630cb89b51f58ef49c567fa6dd24fddd76c0f8ff765902f1"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessRuntimeLimitTests.cs",
+      "original_sha256": "354aabf61eacbd92a4b44de3a45c429d25875029c619d9eeb6b15f848e2a268a",
+      "mixed_sha256": "354aabf61eacbd92a4b44de3a45c429d25875029c619d9eeb6b15f848e2a268a"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkEndToEndTests.cs",
+      "original_sha256": "bbb6253cccb079c62e7e63af609ee2e440982a165fbaca1839e37975fcdfb12d",
+      "mixed_sha256": "bbb6253cccb079c62e7e63af609ee2e440982a165fbaca1839e37975fcdfb12d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkGameplayTests.cs",
+      "original_sha256": "f17f112330e55916d198690368c3b565e97a416fb1bac1796d1315f1264a5b1b",
+      "mixed_sha256": "f17f112330e55916d198690368c3b565e97a416fb1bac1796d1315f1264a5b1b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/RealNetworkNameIdentityTests.cs",
+      "original_sha256": "5ffc32d2989de97740d929d779041ced0addb7b2ebcbe5970525cf51f960f99f",
+      "mixed_sha256": "5ffc32d2989de97740d929d779041ced0addb7b2ebcbe5970525cf51f960f99f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "original_sha256": "41702736ca6f40e1514d5035eccc991476d71be99c669b6076ba0b751ecd97e9",
+      "mixed_sha256": "41702736ca6f40e1514d5035eccc991476d71be99c669b6076ba0b751ecd97e9"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Identity/LocalAuthPolicyTests.cs",
+      "original_sha256": "a8343a85c9ad392a431476f99c631f7ee0f979181d0b4ac3f5611fc1411d12ba",
+      "mixed_sha256": "a8343a85c9ad392a431476f99c631f7ee0f979181d0b4ac3f5611fc1411d12ba"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Identity/SteamTicketVerifierTests.cs",
+      "original_sha256": "30ab87473c522f0b5584720eb9ee3f0b63172ae14f8b492410ef38b3727b8861",
+      "mixed_sha256": "30ab87473c522f0b5584720eb9ee3f0b63172ae14f8b492410ef38b3727b8861"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Mail/MailClaimContractTests.cs",
+      "original_sha256": "683394e336102f2d9347cb3ce4b71a3dbd195d695b526f00863183e3ef5859f6",
+      "mixed_sha256": "683394e336102f2d9347cb3ce4b71a3dbd195d695b526f00863183e3ef5859f6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/PreparationContractTests.cs",
+      "original_sha256": "c53295210b5551010d4b76b4137a278e53b7394582541b987811a352bb0363c6",
+      "mixed_sha256": "c53295210b5551010d4b76b4137a278e53b7394582541b987811a352bb0363c6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/ReadyLobbyRulesTests.cs",
+      "original_sha256": "bee9c04451c134c193333d244dcbda75b0bd2fb9252c15ceb8b6e58d733d9bcf",
+      "mixed_sha256": "bee9c04451c134c193333d244dcbda75b0bd2fb9252c15ceb8b6e58d733d9bcf"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Matchmaking/ReadySendIsolationTests.cs",
+      "original_sha256": "b1020cfc2dc2f88ea7aae60a61905d58a89101aa23312e192df652d923b4336c",
+      "mixed_sha256": "b1020cfc2dc2f88ea7aae60a61905d58a89101aa23312e192df652d923b4336c"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/MigrationChecksumTests.cs",
+      "original_sha256": "fade026cc8bf9d5c3cffbcfef786564496b7b112f909a9924f339a64fcb573c3",
+      "mixed_sha256": "fade026cc8bf9d5c3cffbcfef786564496b7b112f909a9924f339a64fcb573c3"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresBootstrapBatchTests.cs",
+      "original_sha256": "a0a7760c9323e5fffd58a185e96fe28e961f09171696324c6a0e7737c3eb0a00",
+      "mixed_sha256": "a0a7760c9323e5fffd58a185e96fe28e961f09171696324c6a0e7737c3eb0a00"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCardEconomyTests.cs",
+      "original_sha256": "567bf15708072ecc650fbf760d8e0a860987e14d00c7a1bcbe21f0cdbaf474ad",
+      "mixed_sha256": "567bf15708072ecc650fbf760d8e0a860987e14d00c7a1bcbe21f0cdbaf474ad"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCardUpgradeTests.cs",
+      "original_sha256": "bea82ce711c0cf9538bcd2bcd23c1342ef1570de1dfbabab267a13e457a88dfc",
+      "mixed_sha256": "bea82ce711c0cf9538bcd2bcd23c1342ef1570de1dfbabab267a13e457a88dfc"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs",
+      "original_sha256": "87f6c9f97c1ecc9d1db91fec23852f08bcfb86a0ca42fcff07be7f2a2ce47b17",
+      "mixed_sha256": "87f6c9f97c1ecc9d1db91fec23852f08bcfb86a0ca42fcff07be7f2a2ce47b17"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresEnhancementQuoteTests.cs",
+      "original_sha256": "c067db1057ce97a2bf5cfa27435175597731d80cd5492bed67c457b4de0ae320",
+      "mixed_sha256": "c067db1057ce97a2bf5cfa27435175597731d80cd5492bed67c457b4de0ae320"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs",
+      "original_sha256": "23836e9e8c5b8d8f6ce3672da3534b51e1581aa3769f0495c63b03ac2675b31f",
+      "mixed_sha256": "23836e9e8c5b8d8f6ce3672da3534b51e1581aa3769f0495c63b03ac2675b31f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMailReaderLifetimeTests.cs",
+      "original_sha256": "0470e5d8509c315d5b955036194f074c39a022f3ff9bebe9763acac261dd3781",
+      "mixed_sha256": "0470e5d8509c315d5b955036194f074c39a022f3ff9bebe9763acac261dd3781"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMarketRelistingTests.cs",
+      "original_sha256": "87f400eb99ed02b531a13f3c2b92f5f2d396e20702fd68c357268c9a98b1fd83",
+      "mixed_sha256": "87f400eb99ed02b531a13f3c2b92f5f2d396e20702fd68c357268c9a98b1fd83"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresMigrationTests.cs",
+      "original_sha256": "1f59ab97cf4d6853dce74f2df3b69ba47cbb1d34559a59baa33b3fc312e5e5f7",
+      "mixed_sha256": "1f59ab97cf4d6853dce74f2df3b69ba47cbb1d34559a59baa33b3fc312e5e5f7"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNameIdentityTests.cs",
+      "original_sha256": "3cdf37fd4170b7ce297e99f73dc71dc82b04cd0b32f65b2915011dc6de183163",
+      "mixed_sha256": "3cdf37fd4170b7ce297e99f73dc71dc82b04cd0b32f65b2915011dc6de183163"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresNumericalContractTests.cs",
+      "original_sha256": "445eb56464e369fbcf1ce9ca57e89ba6e6d634753878e50f5877b11baf891543",
+      "mixed_sha256": "445eb56464e369fbcf1ce9ca57e89ba6e6d634753878e50f5877b11baf891543"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresOwnedPoolReuseTests.cs",
+      "original_sha256": "ed4e15399814a5f09cc3bbe1ff347778b8d4c4dbad71faed0d0459f7248a9203",
+      "mixed_sha256": "ed4e15399814a5f09cc3bbe1ff347778b8d4c4dbad71faed0d0459f7248a9203"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRedEquipmentQuotaTests.cs",
+      "original_sha256": "ef660ee61cf8be455a8b186bf047ef3826f7177d03876daee0610c9e2f9ee0ad",
+      "mixed_sha256": "ef660ee61cf8be455a8b186bf047ef3826f7177d03876daee0610c9e2f9ee0ad"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRoomEquipmentTests.cs",
+      "original_sha256": "0480588517d990ddf1d31e65300c92859fa77a19a60a2b64d695e01442ff328a",
+      "mixed_sha256": "0480588517d990ddf1d31e65300c92859fa77a19a60a2b64d695e01442ff328a"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs",
+      "original_sha256": "080546b36f7b5b854e8ccf7ef729ae40678f519d70036e76e2ec7a95db046b17",
+      "mixed_sha256": "080546b36f7b5b854e8ccf7ef729ae40678f519d70036e76e2ec7a95db046b17"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Persistence/PostgresTerminalContextTests.cs",
+      "original_sha256": "1bf163345418c96277e6e6d954ab3ed4a2cab496ac30b4dff6496558b7d72367",
+      "mixed_sha256": "1bf163345418c96277e6e6d954ab3ed4a2cab496ac30b4dff6496558b7d72367"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/EconomyReconciliationReportTests.cs",
+      "original_sha256": "a83cb65b86bf37963b5a2d837b445648a00a4ecc1fffe8bf7e825eaef24b15ee",
+      "mixed_sha256": "a83cb65b86bf37963b5a2d837b445648a00a4ecc1fffe8bf7e825eaef24b15ee"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/EconomyScheduleTests.cs",
+      "original_sha256": "525d61e33dc11eb0dcb155e531e33bd2e69ccf224c1bf766b1a4c195d15f46d6",
+      "mixed_sha256": "525d61e33dc11eb0dcb155e531e33bd2e69ccf224c1bf766b1a4c195d15f46d6"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Progression/RewardRefreshRecoveryWorkerTests.cs",
+      "original_sha256": "44721efb9ae6d51eb86d2675d3a364218f192c57d7e21f06c1487a00aa764b92",
+      "mixed_sha256": "44721efb9ae6d51eb86d2675d3a364218f192c57d7e21f06c1487a00aa764b92"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationBusinessTests.cs",
+      "original_sha256": "d0a3ea2c1605c0ef0202d2dacfc8cadd54ec7af3859117c9db06f9825416ea9b",
+      "mixed_sha256": "d0a3ea2c1605c0ef0202d2dacfc8cadd54ec7af3859117c9db06f9825416ea9b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs",
+      "original_sha256": "970943e1fb6f6a775c4de8afa5a6981e864f2ee262d9948386b01761160c6a70",
+      "mixed_sha256": "970943e1fb6f6a775c4de8afa5a6981e864f2ee262d9948386b01761160c6a70"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationTicketLifecycleTests.cs",
+      "original_sha256": "3d1e7a2526b9c93ff2f752b8ef637aea1b5a9435dd8ca62fac1be03619be0c95",
+      "mixed_sha256": "3d1e7a2526b9c93ff2f752b8ef637aea1b5a9435dd8ca62fac1be03619be0c95"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiBoundaryTests.cs",
+      "original_sha256": "4deab4a7e8864da7d6646786dc74483e34454175eb9cd33a89b678a69d2688cd",
+      "mixed_sha256": "4deab4a7e8864da7d6646786dc74483e34454175eb9cd33a89b678a69d2688cd"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/ServerApiDatabaseTests.cs",
+      "original_sha256": "df0eda39a91b31006a019b8d451bf9819a58f2195b46b7f1a17a7b74562eccd8",
+      "mixed_sha256": "df0eda39a91b31006a019b8d451bf9819a58f2195b46b7f1a17a7b74562eccd8"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/ProtobufHttp/SettlementEncodingTests.cs",
+      "original_sha256": "18dc5eca53049e0d08e8dd35ad5e0af42435333c6c176f2a6d1df85a7cce8a90",
+      "mixed_sha256": "18dc5eca53049e0d08e8dd35ad5e0af42435333c6c176f2a6d1df85a7cce8a90"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/ConnectionReplacementTests.cs",
+      "original_sha256": "94b4ab79b7b2e63862090a302a84b508f814d72560cc3199642ff972f80b43eb",
+      "mixed_sha256": "94b4ab79b7b2e63862090a302a84b508f814d72560cc3199642ff972f80b43eb"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/GameplayProtocolTests.cs",
+      "original_sha256": "b3bd71819970b7ac16d6fce38fbe90a726adf89f56419ea1f69fc54132078f42",
+      "mixed_sha256": "b3bd71819970b7ac16d6fce38fbe90a726adf89f56419ea1f69fc54132078f42"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/NumericalProtocolTests.cs",
+      "original_sha256": "4fd2a49f57083cd2b5eb4d2e59b9ea40cd937c5badc279ebb5e7e9c03c3d130f",
+      "mixed_sha256": "4fd2a49f57083cd2b5eb4d2e59b9ea40cd937c5badc279ebb5e7e9c03c3d130f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/OutboundSizeBoundaryTests.cs",
+      "original_sha256": "dfd23cca8a94a8bc5d6b40678565f7c5f4f63c892d416b16720fc1b90b96901f",
+      "mixed_sha256": "dfd23cca8a94a8bc5d6b40678565f7c5f4f63c892d416b16720fc1b90b96901f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/ProtobufTicketTests.cs",
+      "original_sha256": "9953b160bc4abb6efc31da2ccd2c708796e86eb03d0681a8c6928fb848c43a82",
+      "mixed_sha256": "9953b160bc4abb6efc31da2ccd2c708796e86eb03d0681a8c6928fb848c43a82"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeCommandRouterTests.cs",
+      "original_sha256": "6c0b0537c2735ce56cc5846382b08d8db4140346a294210ff5dac14f15fa26b5",
+      "mixed_sha256": "6c0b0537c2735ce56cc5846382b08d8db4140346a294210ff5dac14f15fa26b5"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeEventStoreTests.cs",
+      "original_sha256": "8b7b467b89a0d0647513cacff5d3a8711e3734c04433f72e2288c4a29a606fec",
+      "mixed_sha256": "8b7b467b89a0d0647513cacff5d3a8711e3734c04433f72e2288c4a29a606fec"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RealtimeProtobufCodecTests.cs",
+      "original_sha256": "972616c8c3bc68423c8860a8729fd1e7bf273ff7e20f182712e0f16e116dfb57",
+      "mixed_sha256": "972616c8c3bc68423c8860a8729fd1e7bf273ff7e20f182712e0f16e116dfb57"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/RoomTransitionEventPublisherTests.cs",
+      "original_sha256": "506b3f469eb34629c33fc02445795ba836a0c5a0566d07f04fcb003cca4cf187",
+      "mixed_sha256": "506b3f469eb34629c33fc02445795ba836a0c5a0566d07f04fcb003cca4cf187"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/SlowPresentationConnectionTests.cs",
+      "original_sha256": "5cd703d06fcad44fcb7f12b2c650ce644ac2f22acf432cb4ecc708e26f33087d",
+      "mixed_sha256": "5cd703d06fcad44fcb7f12b2c650ce644ac2f22acf432cb4ecc708e26f33087d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/TerminalCommandContextTests.cs",
+      "original_sha256": "f6b7f58cf5a96eeb4a3791d70fdd48ef7dcb1a54e8780fddc2d70a97a20b033f",
+      "mixed_sha256": "f6b7f58cf5a96eeb4a3791d70fdd48ef7dcb1a54e8780fddc2d70a97a20b033f"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/TuningRecoveryContractTests.cs",
+      "original_sha256": "e762ad38aca60802b16f177a8f7c28c9855afa339b8c6f669ffd063277335611",
+      "mixed_sha256": "e762ad38aca60802b16f177a8f7c28c9855afa339b8c6f669ffd063277335611"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomActorTests.cs",
+      "original_sha256": "62d206b89f03a35edb8e7fe692243b745e207172bea9bc453432a6d6a8ff9316",
+      "mixed_sha256": "62d206b89f03a35edb8e7fe692243b745e207172bea9bc453432a6d6a8ff9316"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomCheckpointPolicyTests.cs",
+      "original_sha256": "32e81d0a8ea72a7089ec5ef0ed4aa1e427e6faff861526ec27b8f37039de8398",
+      "mixed_sha256": "32e81d0a8ea72a7089ec5ef0ed4aa1e427e6faff861526ec27b8f37039de8398"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomLifecycleMetricsTrackerTests.cs",
+      "original_sha256": "ff5115a647408a57ec4fb3b2db38fafb259be485bc188eb13824b6f75a681952",
+      "mixed_sha256": "ff5115a647408a57ec4fb3b2db38fafb259be485bc188eb13824b6f75a681952"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomPersistenceHealthTests.cs",
+      "original_sha256": "da18e36d36dde75159531716f67fcfb89410138988f5b8a08ce8606762cf1066",
+      "mixed_sha256": "da18e36d36dde75159531716f67fcfb89410138988f5b8a08ce8606762cf1066"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomRecoveryHealthTests.cs",
+      "original_sha256": "501951d9abf2dc9594d61d1a9ae0eac91261f1a1197e85d8af355fdb6ff2fcec",
+      "mixed_sha256": "501951d9abf2dc9594d61d1a9ae0eac91261f1a1197e85d8af355fdb6ff2fcec"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Rooms/RoomRegistryLifecycleTests.cs",
+      "original_sha256": "c4371380351ff3c550bda5ef479efcc23b248273b46d1de54593ab49ab26d8eb",
+      "mixed_sha256": "c4371380351ff3c550bda5ef479efcc23b248273b46d1de54593ab49ab26d8eb"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementBatchProcessorTests.cs",
+      "original_sha256": "1736f416dbc976c412c52436e7379d43e427398539d112da4e91a742743867ea",
+      "mixed_sha256": "1736f416dbc976c412c52436e7379d43e427398539d112da4e91a742743867ea"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementMaterialMappingTests.cs",
+      "original_sha256": "c2df24662a5bc8ce22f1ced5a3f041cf4c302ed2867f12becd258f3b860ff98b",
+      "mixed_sha256": "c2df24662a5bc8ce22f1ced5a3f041cf4c302ed2867f12becd258f3b860ff98b"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementNotificationBatchProcessorTests.cs",
+      "original_sha256": "188f5fa3a42c228ad20b33425100ab06fa622b7262b4fed9d9bc5862a5b66866",
+      "mixed_sha256": "188f5fa3a42c228ad20b33425100ab06fa622b7262b4fed9d9bc5862a5b66866"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Settlement/SettlementRecoveryHealthTests.cs",
+      "original_sha256": "4382e1785d99807c9981508834ac1a3a8058889379409928faadbb273ef6aed0",
+      "mixed_sha256": "4382e1785d99807c9981508834ac1a3a8058889379409928faadbb273ef6aed0"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Usings.cs",
+      "original_sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359",
+      "mixed_sha256": "50436eb3a60162e0cfad749eddfb06f8908f821a90ca44532df946a53e071359"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/xunit.runner.json",
+      "original_sha256": "c1b53e63135e7ea6b2d0fd5243eede1e1378d42292cd7c2317d63996983d98c8",
+      "mixed_sha256": "c1b53e63135e7ea6b2d0fd5243eede1e1378d42292cd7c2317d63996983d98c8"
+    },
+    {
+      "path": "server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj",
+      "original_sha256": "36e3ff082fde4da1451c41bfa876cd388e573b9ec3070c631bdd76145265a895",
+      "mixed_sha256": "36e3ff082fde4da1451c41bfa876cd388e573b9ec3070c631bdd76145265a895"
+    },
+    {
+      "path": "server/tools/FantasyCard.ConfigExporter/Program.cs",
+      "original_sha256": "b210e774c3ad3cd46424b6ef290c101c75cc8053af9710bf43d4bb8466158de5",
+      "mixed_sha256": "b210e774c3ad3cd46424b6ef290c101c75cc8053af9710bf43d4bb8466158de5"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/CapEffectiveExperiment.cs",
+      "original_sha256": "1a749f72f7db794e3609516c719105c4c1425076d7ac29d665ce98dbadefeb38",
+      "mixed_sha256": "14cd5f866d0f6e0db68f7ffa6d0f7fd370c8dd91009a8c48904f51f1c7eaed15"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/CombatExperience.cs",
+      "original_sha256": "4cae647a26bef082b321bf416105dd942520a7231ae6480c864b30e10811879e",
+      "mixed_sha256": "4cae647a26bef082b321bf416105dd942520a7231ae6480c864b30e10811879e"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/ElementMarginalBoundaries.cs",
+      "original_sha256": "fa207e38f18683a69e7080cf19cbe176d727be48f1517b1f46393c54f3e98dca",
+      "mixed_sha256": "fa207e38f18683a69e7080cf19cbe176d727be48f1517b1f46393c54f3e98dca"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/ElementMarginals.cs",
+      "original_sha256": "99cea2edc886916611b26120a077224b697f4ae3b59654cb50dc5ed33136d34e",
+      "mixed_sha256": "99cea2edc886916611b26120a077224b697f4ae3b59654cb50dc5ed33136d34e"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/FantasyCard.Numerics.csproj",
+      "original_sha256": "352d76d01d7620c40459fc5c0831d3d93521c12521a394fb34fba9da53f557d2",
+      "mixed_sha256": "352d76d01d7620c40459fc5c0831d3d93521c12521a394fb34fba9da53f557d2"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/PreviewVectors.cs",
+      "original_sha256": "758ddd59cd1a1f78c99b9fffb40cefac7d1cf1283c2e3c772914c56e6c206bfc",
+      "mixed_sha256": "758ddd59cd1a1f78c99b9fffb40cefac7d1cf1283c2e3c772914c56e6c206bfc"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/Program.cs",
+      "original_sha256": "0bf48fc52118c8e582a832f4aaf8054cfab57f230502b1443c152e9ff74315b7",
+      "mixed_sha256": "0bf48fc52118c8e582a832f4aaf8054cfab57f230502b1443c152e9ff74315b7"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/README.md",
+      "original_sha256": "4e58cb9809f94d940f956f973ae7815658c6086ba5cbb6590c74da3527666d61",
+      "mixed_sha256": "4e58cb9809f94d940f956f973ae7815658c6086ba5cbb6590c74da3527666d61"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryExperiment.cs",
+      "original_sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43",
+      "mixed_sha256": "54f67e61d72e86875776964e83ea5eba2108f5a2700737b88e3985b3d72c5e43"
+    },
+    {
+      "path": "server/tools/FantasyCard.Numerics/TuningRecoveryOracle.cs",
+      "original_sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791",
+      "mixed_sha256": "d720f6433b8bd1afffb6b4112a5064b35de8caa12334969adf06b3afda240791"
+    },
+    {
+      "path": "server/tools/admin-smoke.sh",
+      "original_sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+      "mixed_sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3"
+    },
+    {
+      "path": "server/update_server.bat",
+      "original_sha256": "13d09589b253b397e15510499367c6fb03dcfe54bd8097064110a50254bc7769",
+      "mixed_sha256": "13d09589b253b397e15510499367c6fb03dcfe54bd8097064110a50254bc7769"
+    },
+    {
+      "path": "tools/pr13_cap_effective_experiment.py",
+      "original_sha256": "8ff3d6b37d76a71075c509738e7fcffc62f1591bf1179dadc54dc5766db5171d",
+      "mixed_sha256": "a4e2e0ffb529440a29f4b618b0be23e4d93816bf1efa9a084053187acbf9e34d"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+PR13-B01.2与B01.3的OFFLINE/EXPERIMENT逐案复核，MAIN Accepted。九个有效受控引擎/原生边界场景，加四诊断和一首动作回归共14；心跳不代替玩法进展、满血恢复0、三类等待、治疗10/2/8、控制union3s与跨时钟unavailable均验证。首次动作空battle ID测试驱动器缺口已修正并为B01.1补复核，原记录不删。当前33Accepted、83Partial、16Ready、99未验收，其他门禁不变。明确合成入场，无PG/认证/LIVE/自然远征/容量/渲染/真人结论。

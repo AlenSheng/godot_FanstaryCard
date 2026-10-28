@@ -1,0 +1,17 @@
+{
+  "task_id": "LOAD-05.1",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T13:30:04.828967+08:00",
+  "reason": "实际两场原_run_expedition、真实busy拒绝/三次同keyACK传输未提交失败恢复/精确旧receipt回放被原poll拒绝；两个真实成功ACK与PG唯一幂等记录一一关联，50不变量复核及当前40OFFLINE合同干净通过。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load051-actual-ACK-current-LIVE-PG-20261017/main-independent-review.json",
+  "human_authorization": "本goal自动补验与隔离云临时限制授权。",
+  "business_criteria_relaxed": false,
+  "product_source_changes": false,
+  "actual_matches": 2,
+  "conservative_player_room_starts": 8,
+  "scope": "Actual original expedition entry twice, originalStore ACK/poll, declared terminal wait/real cancel response consumer holds/threeattempt samekey transport drop/exact oldBootstrap data replay; manualfirstretry no loadcycle credit, secondactual sameMatch ACK scenario boolean success only. No full_run natural/capacity/human/renderer claim.",
+  "old15percent_capacity_resource_floor_unpassed": true,
+  "original_failures_preserved": true,
+  "rollback": "回到父register撤销此项裁决；本次无产品源码、后端、正式配置或生产服务变更。"
+}

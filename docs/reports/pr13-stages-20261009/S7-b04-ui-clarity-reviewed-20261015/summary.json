@@ -1,0 +1,59 @@
+{
+  "kind": "ReviewedUIClarityValidationSummary",
+  "date": "2026-10-15",
+  "baseline_commit": "6945d41739ac521058dec0e91a8726daeb3101de",
+  "source_file_SHA256": {
+    "client/ui/exploration_view.gd": "80e147e401690ce327d851ecfa5ee71be67ffeee92e385eaabd76e4037e829e7",
+    "client/ui/deck_builder_view.gd": "aa691f17d15d2c9df3c0ea8a0ed06585b46425f7d9809cbc55296601ff3ca095",
+    "client/data/localization_battle.json": "93348978ab5fbbc280fd1eb5cf3ae5f7a92bcd4405bf0e430d9992feadb38759"
+  },
+  "changes": [
+    "PVE signature panel moved fullyabove selected-cardpreview;title/body insets and icons retaincorrectaspect",
+    "Chinese/English fullhand andpendingbattle-state wording clarified",
+    "Full card name/effect retained in deckrow hover text",
+    "Qualityfilters fitted using actual Button font andlocal9slice padding;fullnames verified inbothlanguages at720p/540p"
+  ],
+  "validation": {
+    "prior504_native_assertions_passed": 504,
+    "prior42_original_screenshots_reviewed": 42,
+    "new_UI_gap_and_fix_rows_passed": 48,
+    "new_quality_filter_fix_rows_passed": 4,
+    "new_server_source_projection_frames": 12,
+    "new_originals_SHA_CRC_verified": true,
+    "new_screenshots_visually_reviewed": 52,
+    "new_battles": 0,
+    "new_PG_runs": 0,
+    "new_strength_statistics_runs": 0,
+    "older504_or_primary_projects_rerun": false,
+    "new_failed_filter_fixture_attempt_retained": {
+      "rows": 4,
+      "originals": "B04-filter-clarity-ui-r1-terminal-originals-20261015-r1/complete-original-custody-receipt.json",
+      "cause": "Missing production cardpool initialization in controlled lobby viewmodel;fixed through lobby.cards and bounded realpool wait;all originalfontcriteria kept;not relabeled aspass"
+    }
+  },
+  "original_custody": [
+    {
+      "phase": "new48",
+      "original_receipt": "B04-remaining-ui-r1-terminal-originals-20261015-r1/complete-original-custody-receipt.json",
+      "original_files": 113,
+      "archive_bytes": 59879527,
+      "archive_SHA256": "eb10aaf7f0c1ee2b9aed14ad00df442be52de6114d3427b115d27a51d373c1cb",
+      "gzip_CRC_and_all_member_SHA_verified": true
+    },
+    {
+      "phase": "final4",
+      "original_receipt": "B04-filter-clarity-ui-r2-terminal-originals-20261015-r1/complete-original-custody-receipt.json",
+      "original_files": 33,
+      "archive_bytes": 4070621,
+      "archive_SHA256": "cc4266de93074800f73b803e2c5697648d1b5cc33e450726028b5f3511fb86be",
+      "gzip_CRC_and_all_member_SHA_verified": true
+    }
+  ],
+  "originals_base": "outputs/pr13-tencent-20261009",
+  "existing_sprite_style_aspect_and_nine_slice_review": "Suitable; no generated replacement needed",
+  "register_SHA256": "37a8ca2b8994bab75ba5169ba10ded4b0bc5cd9d34a16e5b2dbbf92254d9fa70",
+  "register_or_gates_updated": false,
+  "candidate_activated": false,
+  "MAIN_accepted": false,
+  "deployment_performed": false
+}

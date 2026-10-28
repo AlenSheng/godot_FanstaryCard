@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified actual local HTTP/protobuf cleanup boundary;synthetic backend",
+  "base_release": "5670718c56069eb5d3897a9e6369714df3c58dbd",
+  "code_sha256": {
+    "client/tests/gameplay_load_client.gd": "17174f0f46afb1de41cb7da666f57ec2f801fb372d4ba97f85247876ea3c73aa",
+    "client/tests/test_cleanup_bootstrap_retry.gd": "1c8168f4d11ffe97f9bf40f6d39d6e12085500de28acf65dec9ddd5942c2aad6"
+  },
+  "problem": "Gateway pagination/transport failures can return ok=false without data;direct dictionary access in cleanup raised script error",
+  "negative_baseline": {
+    "actual_wire_case": "invalid_cursor",
+    "actual_HTTP_status": 200,
+    "higher_level_result_status": 0,
+    "requests": 1,
+    "Native_exit": 1,
+    "forced": false,
+    "missing_data_error_observed": true,
+    "report_sha256": "7d80552b90cced06ff244766042944c7708b6d511caa26dbc3f316d1242d62ea"
+  },
+  "unit_verification": {
+    "suites": [
+      {
+        "name": "test_cleanup_bootstrap_retry.gd",
+        "checks": 32,
+        "ok": true,
+        "failed": []
+      },
+      {
+        "name": "test_load_control_flow.gd",
+        "checks": 13,
+        "ok": true,
+        "failed": []
+      },
+      {
+        "name": "test_load_contexts.gd",
+        "checks": 6,
+        "ok": true,
+        "failed": []
+      },
+      {
+        "name": "test_load_progress.gd",
+        "checks": 14,
+        "ok": true,
+        "failed": []
+      }
+    ],
+    "checks": 65,
+    "engine_errors": 0,
+    "exit": 0,
+    "new_minimal_dictionary_controls": 3,
+    "report_sha256": "855ecf34e41a35b7d527fa2210eeb698f0db7586eaee49392dc760b80ff91b31"
+  },
+  "actual_wire_verification": {
+    "virtual_scenarios": 7,
+    "checks": 23,
+    "actual_Native_processes": 1,
+    "cleanup_states": {
+      "Passed": 2,
+      "Unknown": 5
+    },
+    "raw_records": 42,
+    "HTTP_logical_transactions": 14,
+    "transport_attempts_and_peer_requests": 16,
+    "logical_results": {
+      "error": 7,
+      "success": 6,
+      "cancelled": 1
+    },
+    "all_producer_logical_IDs_equal_peer_XTraceIDs": true,
+    "one_synthetic_ACK_idempotency_key_verified": true,
+    "drain_ACK_events": 1,
+    "completed_cycles": 0,
+    "audit_reader_errors": [],
+    "metric_schema_duration_invalid_counts": 0,
+    "report_sha256": "5f28a3fedc56eff0bd3557e4e31b65a78adebd033ee8c492b376ef1b2f8f15a5",
+    "consumer_proof_sha256": "cb1641c603a28960c7b388d9a21297e2cea17408b36ac7ced91b69cc2847466b"
+  },
+  "scope_limits": [
+    "Synthetic loopback peer validates actual Native/Store/Gateway/codec and existing Python collector;not real PostgreSQL asset ACK or LIVE/capacity proof",
+    "Seven virtual scenarios run in one Native process;not seven actual players",
+    "Counters describe high-level Native verification calls;ACK refresh causes3controllerGETs but4actualGETs",
+    "HTTP200 transport sample from invalid pagination is retained while higher-level verification staysUnknown;status0 does not mean zero latency",
+    "HTTP latency sample quality insufficient;no throughput window or performance benefit claimed",
+    "Existing22second verification window and2extra-read limits remain unchanged",
+    "Original100client2334.891second failed run and9unACK remain unchanged;register/gate/MAIN not changed"
+  ],
+  "new_real_accounts": 0,
+  "new_real_worlds": 0,
+  "cloud_calls": 0,
+  "all3_started_Native_processes_terminal": true,
+  "full17suite_replayed": false,
+  "full_acceptance_passed": false
+}

@@ -1,0 +1,122 @@
+{
+  "kind": "Actual full-native100 resource admission failed; complete100 capacity not reached",
+  "actual_source": "a3331bc3a83c2bbb1197f68fbdc0bb537f4f5050",
+  "prior50_or60for50_failure_retained": true,
+  "requested_native_clients": {
+    "windows": 50,
+    "cloud": 50
+  },
+  "actual_process_launches": {
+    "windows": 36,
+    "cloud": 30
+  },
+  "no_idle_or_protocol_bot_substitution": true,
+  "same_original_engine_editor_runtime_full_gameplay_scene": true,
+  "actual_worlds_including_separate_pilots": 16,
+  "world_budget": 300,
+  "cloud_rejected_next_launch": {
+    "schema_version": 1,
+    "run_id": "48441766e34e4a1ba2c81c18ad3e56d2",
+    "process_started": false,
+    "observed_at_monotonic_ns": 274222370529913,
+    "available_bytes": 748646400,
+    "floor_bytes": 500000000,
+    "start_budget_mib": 256,
+    "required_bytes": 768435456,
+    "next_client_number": 31,
+    "scheduled_group": 1,
+    "scheduled_index": 30,
+    "measurement_source": "psutil.virtual_memory().available at rejected admission"
+  },
+  "resource_meaning": "Available memory was still above500MB, but could not preserve500MB plus the original256MiB new-client startup budget. This is current-policy admission failure, not OOM or an absolute30-client ceiling.",
+  "actual_minimum_available_bytes": {
+    "windows": 7700234240,
+    "cloud": 680853504
+  },
+  "original_outcomes": {
+    "windows": {
+      "exit": 130,
+      "reason": "operator_stop_file",
+      "dimensions": {
+        "execution": "Passed",
+        "evidence": "Passed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Unknown"
+      }
+    },
+    "cloud": {
+      "exit": 3,
+      "reason": "invalid_evidence:generator_memory_low_before_launch",
+      "dimensions": {
+        "execution": "Passed",
+        "evidence": "Failed",
+        "load": "Failed",
+        "gameplay": "NotApplicable",
+        "performance": "Unknown",
+        "cleanup": "Passed"
+      }
+    }
+  },
+  "cleanup": {
+    "Windows_original_native_states": {
+      "Passed": 34,
+      "Unknown": 2
+    },
+    "Windows_Unknown_reasons": [
+      "cleanup_context_changed",
+      "cleanup_context_changed"
+    ],
+    "unknown_not_reclassified_as_pass": true,
+    "cloud_original_native_states": {
+      "Passed": 30
+    },
+    "forced_terminations_both_hosts": 0,
+    "cloud_OOMKilled": false,
+    "actual_final_server_humans": 0,
+    "actual_pending_holds": 0
+  },
+  "audit_evidence": {
+    "both_original_audit_read_errors_empty": true,
+    "partial_OS_process_snapshots_retained": "Both1,10,20,30 actual owned-process captures; no fabricated50 capture",
+    "original_joint_rejection": [
+      "cohort_count_mismatch"
+    ],
+    "not_a_lost_or_corrupt_native_archive_claim": true
+  },
+  "temporary_resource_settings": {
+    "native_cloud_container_upper_MiB": 3328,
+    "decoded_spool_tmpfs_upper_MiB": 512,
+    "spool_after_native_exit_only": "Final audit analysis uses the same bounded reader; raw segments remain on persistent owned storage",
+    "same_host_RAM_and_root_disk_monitors_active": true,
+    "same_generator_start_reserve_MiB": 256,
+    "same_local_memory_floor_bytes": 6442450944,
+    "same_cloud_memory_floor_bytes": 500000000,
+    "same_cloud_disk_floor_bytes": 3000000000,
+    "same_cloud_disk_floor_percent": 5,
+    "no_FPS_override": true,
+    "Windows_CNO_headless_Dummy_BelowNormal_last4": true
+  },
+  "actual_backup_restore": {
+    "G_original_files": 405,
+    "archive_SHA256": "3fb91533f5356157642cc00cf29f3c549a0e75ec8065c866d49f4426e4eeeb5c",
+    "restored_matches": 16,
+    "restored_settlements": 58,
+    "distinct_settled_participants": 58,
+    "pending_holds": 0,
+    "duplicate_match_player_settlements": 0,
+    "all_participants_match_original_backend": true,
+    "scratch_DB_dropped": true,
+    "owned_services_stopped": true,
+    "formal_identity_unchanged_ready200": true,
+    "formal_DB_not_cleared": true
+  },
+  "full100_shared_window": "NotReached_resource_admission_incomplete",
+  "performance": "Unknown_no_full100_SLO_claim",
+  "GDD_numbers_and_gameplay_rules_unchanged": true,
+  "resource100_admission": "NotPassed_current_resource_budget",
+  "capacity100_accepted": false,
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792914384636.0234
+}

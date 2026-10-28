@@ -1,0 +1,362 @@
+{
+  "kind": "StaticDevelopmentConfigurationRole_NotProductionSecretValidation",
+  "generated_at": "2026-10-23T03:53:02.712658+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "static_configuration_review": {
+    "kind": "TenExactStaticConfigRoles_DevelopmentFieldComparisonOnly",
+    "ok": true,
+    "objects_reviewed": 10,
+    "counts": {
+      "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval": 10,
+      "static_default_intent_bound_frozen_aliases": 637
+    },
+    "results": [
+      {
+        "sha256": "62b3cb8af12e36a543562f75a00bfaf56985434facf1eaa82cd1dc3c477e9e8d",
+        "bytes": 334,
+        "frozen_observation_aliases": 228,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "server/src/FantasyCard.Server/appsettings.Development.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": true,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "ff5ed769ed8608d4d05c8f407747c9c9e516e62085796dfd4c117fc2a63a18f4",
+        "bytes": 909,
+        "frozen_observation_aliases": 134,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "tools/engine-local/protected/server-z0qfbfh1/publish/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79",
+        "bytes": 318,
+        "frozen_observation_aliases": 119,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-verified-server-source-20261022-r3/server/src/FantasyCard.Server/appsettings.Development.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": true,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "5db2ae96b6ffbf1f6788cf075fb75658c74181d0d0265054e6b7c645b2e0eeb9",
+        "bytes": 691,
+        "frozen_observation_aliases": 101,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "tools/engine-local/protected/server-z0qfbfh1/publish/artifacts/validation-bin/Debug/net10.0/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "9c7a27e2fdf075d6e8dbfc6e75e1cfac640ad8580818294be18f8530555e940f",
+        "bytes": 663,
+        "frozen_observation_aliases": 20,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-all-verified-20261022-r1/server/tests/FantasyCard.Server.Tests/bin/gameplay-f7c461de53d54310923ecf6d9bbb23c1/artifacts/validation-bin/Debug/net10.0/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "b6a7c846210fa66b47e3c0d030755faec18e0d8639d278bbe463e77a1069778c",
+        "bytes": 871,
+        "frozen_observation_aliases": 20,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-all-verified-20261022-r1/server/tests/FantasyCard.Server.Tests/bin/Release/net10.0/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "94feb8fc7f7980e165f04a5d94787f4e3cf596b2b459274ccf94039a441829ee",
+        "bytes": 436,
+        "frozen_observation_aliases": 7,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "server/.artifacts/smoke-publish/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "addfeca0447d08490cc4ab1aac520404d3449c645858f7de99e4052270ba576a",
+        "bytes": 265,
+        "frozen_observation_aliases": 4,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-all-verified-20261022-r1/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/appsettings.Development.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": true,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "2d60dd2b60ad9ed46aa3bd33bc03075cc095303f65f031ba0a71b1b58f6791a4",
+        "bytes": 417,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "outputs/pr13-tencent-20261009/cap-ended-source-G-backup/attempt-1/server/.artifacts/smoke-publish/appsettings.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": false,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      },
+      {
+        "sha256": "c663276409ae0297881bc4b9f5af4a15bc42bcfa23231ad233f3a2fc4b9e9987",
+        "bytes": 278,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/appsettings.Development.json",
+          "public_report_text": false,
+          "reason": "Credential-like value in public evidence"
+        },
+        "role": "StaticApplicationConfig_ConsumerEnvironmentRequired",
+        "Postgres_field_exactly_matches_current_development_source": true,
+        "original_guard_rejection_retained": "Credential-like value in public evidence",
+        "Identity_EnableLocalAuth": true,
+        "production_runtime_equality_or_credential_freedom_not_checked_or_claimed": true,
+        "DSN_password_values_or_value_fingerprints_not_emitted": true,
+        "state": "ExactStaticDevelopmentDefaultFieldRoleBound_NotRuntimeSecretApproval"
+      }
+    ],
+    "consumer_sources": [
+      {
+        "role": "development-config",
+        "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\src\\FantasyCard.Server\\appsettings.Development.json",
+        "bytes": 334,
+        "sha256": "62b3cb8af12e36a543562f75a00bfaf56985434facf1eaa82cd1dc3c477e9e8d"
+      },
+      {
+        "role": "configuration-loader",
+        "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\src\\FantasyCard.Server\\Program.cs",
+        "bytes": 7558,
+        "sha256": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4"
+      },
+      {
+        "role": "persistence-consumer",
+        "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\src\\FantasyCard.Server\\Persistence\\PersistenceExtensions.cs",
+        "bytes": 3247,
+        "sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802"
+      },
+      {
+        "role": "environment-isolation-contract",
+        "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\server\\docs\\OPERATIONS_RUNBOOK.md",
+        "bytes": 7219,
+        "sha256": "8449d4dba1afc46a879978419378d07bbf10b2c577c395723df71e90b20df95f"
+      }
+    ],
+    "read_only_string_equality_no_database_or_host_started": true,
+    "actual_production_env_not_read_or_compared": true,
+    "development_credentials_not_authorized_for_StagingOrProduction": true,
+    "all_original_generic_rejections_retained": true,
+    "actual_values_or_low_entropy_value_hashes_not_emitted": true,
+    "source_or_current_project_configuration_changed": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "new_exact_intent_objects": 10,
+  "new_frozen_observation_aliases": 637,
+  "role_scope": "Exact field equality to the repository development configuration only. No assertion about deployed configuration, active credentials or runtime secrecy.",
+  "development_values_not_authorized_for_StagingOrProduction": true,
+  "DSN_password_or_low_entropy_value_hashes_not_published": true,
+  "original_strict_rejections_retained": true,
+  "combined_existing_intent_or_private_format_objects": 199,
+  "combined_existing_observation_aliases": 2988,
+  "original_frozen_content_objects": 679,
+  "original_frozen_path_observations": 8200,
+  "remaining_content_objects": 480,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "SourceLanguageExpressionIntent": 375,
+    "PrivateStructuredOrRuntimeContent": 85
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-static-configuration-role-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-review/executed-configuration-role-review-source.original.py",
+        "bytes": 4571,
+        "sha256": "f312a5779fba94295b3cc0fb8c9c2e58ce51893f44161e8cdafc3045a4194f15"
+      },
+      {
+        "path": "native-review/result.original.json",
+        "bytes": 11780,
+        "sha256": "889198e754b0e427f8fa697687c3a1456a3795410ddb1ff2784694db5ede4883"
+      },
+      {
+        "path": "consumer-contracts.private/appsettings.Development.json",
+        "bytes": 334,
+        "sha256": "62b3cb8af12e36a543562f75a00bfaf56985434facf1eaa82cd1dc3c477e9e8d"
+      },
+      {
+        "path": "consumer-contracts.private/OPERATIONS_RUNBOOK.md",
+        "bytes": 7219,
+        "sha256": "8449d4dba1afc46a879978419378d07bbf10b2c577c395723df71e90b20df95f"
+      },
+      {
+        "path": "consumer-contracts.private/PersistenceExtensions.cs",
+        "bytes": 3247,
+        "sha256": "29e02927289f7fa707fb4214d81b897293f5f10b9ad3bd308f31a3830cca3802"
+      },
+      {
+        "path": "consumer-contracts.private/Program.cs",
+        "bytes": 7558,
+        "sha256": "1709c78f396aa2d64e4552102f9ad468d79877621d5056e717e36efb4d5dd5e4"
+      },
+      {
+        "path": "exact-static-config-objects.private/62b3cb8af12e36a543562f75a00bfaf56985434facf1eaa82cd1dc3c477e9e8d.private-original.bin",
+        "bytes": 334,
+        "sha256": "62b3cb8af12e36a543562f75a00bfaf56985434facf1eaa82cd1dc3c477e9e8d"
+      },
+      {
+        "path": "exact-static-config-objects.private/ff5ed769ed8608d4d05c8f407747c9c9e516e62085796dfd4c117fc2a63a18f4.private-original.bin",
+        "bytes": 909,
+        "sha256": "ff5ed769ed8608d4d05c8f407747c9c9e516e62085796dfd4c117fc2a63a18f4"
+      },
+      {
+        "path": "exact-static-config-objects.private/41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79.private-original.bin",
+        "bytes": 318,
+        "sha256": "41b9f7b9b84073ed718cdcf185be875bba5c1d270377df3779ee687e6fbdec79"
+      },
+      {
+        "path": "exact-static-config-objects.private/5db2ae96b6ffbf1f6788cf075fb75658c74181d0d0265054e6b7c645b2e0eeb9.private-original.bin",
+        "bytes": 691,
+        "sha256": "5db2ae96b6ffbf1f6788cf075fb75658c74181d0d0265054e6b7c645b2e0eeb9"
+      },
+      {
+        "path": "exact-static-config-objects.private/9c7a27e2fdf075d6e8dbfc6e75e1cfac640ad8580818294be18f8530555e940f.private-original.bin",
+        "bytes": 663,
+        "sha256": "9c7a27e2fdf075d6e8dbfc6e75e1cfac640ad8580818294be18f8530555e940f"
+      },
+      {
+        "path": "exact-static-config-objects.private/b6a7c846210fa66b47e3c0d030755faec18e0d8639d278bbe463e77a1069778c.private-original.bin",
+        "bytes": 871,
+        "sha256": "b6a7c846210fa66b47e3c0d030755faec18e0d8639d278bbe463e77a1069778c"
+      },
+      {
+        "path": "exact-static-config-objects.private/94feb8fc7f7980e165f04a5d94787f4e3cf596b2b459274ccf94039a441829ee.private-original.bin",
+        "bytes": 436,
+        "sha256": "94feb8fc7f7980e165f04a5d94787f4e3cf596b2b459274ccf94039a441829ee"
+      },
+      {
+        "path": "exact-static-config-objects.private/addfeca0447d08490cc4ab1aac520404d3449c645858f7de99e4052270ba576a.private-original.bin",
+        "bytes": 265,
+        "sha256": "addfeca0447d08490cc4ab1aac520404d3449c645858f7de99e4052270ba576a"
+      },
+      {
+        "path": "exact-static-config-objects.private/2d60dd2b60ad9ed46aa3bd33bc03075cc095303f65f031ba0a71b1b58f6791a4.private-original.bin",
+        "bytes": 417,
+        "sha256": "2d60dd2b60ad9ed46aa3bd33bc03075cc095303f65f031ba0a71b1b58f6791a4"
+      },
+      {
+        "path": "exact-static-config-objects.private/c663276409ae0297881bc4b9f5af4a15bc42bcfa23231ad233f3a2fc4b9e9987.private-original.bin",
+        "bytes": 278,
+        "sha256": "c663276409ae0297881bc4b9f5af4a15bc42bcfa23231ad233f3a2fc4b9e9987"
+      },
+      {
+        "path": "remaining480-content-review-queue.private.original.jsonl",
+        "bytes": 1429915,
+        "sha256": "04069ad8b19d536f818e36044e8a27b259aae531af7e51165892bae7bf76a7c0"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 7143,
+        "sha256": "591473d0eadbeca61a0610a25b5c843804b2961e10006e3dd33f4a882c12375c"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 98065,
+        "sha256": "6fc07ac45a119cecd82345a20520ffcb67bdc453a0574eec4838f5b6565705f5"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

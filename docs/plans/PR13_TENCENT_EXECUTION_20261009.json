@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "authority": "Direct human instruction in this session, 2026-10-09",
+  "user_instruction": "除了真人体验测试，剩下未验收部分放到腾讯云服务器做测试，本地只模拟真实玩家客户端登录",
+  "deployment_instruction": "直接按照当前 release 远端代码更新云服务器代码保证前后端代码一致",
+  "deployment_authorized": true,
+  "remote_host": "ubuntu@43.172.70.182:22",
+  "remote_workspace": "/home/ubuntu/pr13-acceptance-20261009",
+  "source_initial_sha": "c351184f3598c3a591fef3e2e5171662161edea3",
+  "remaining_register": "docs/reports/pr13-stages-20261008/S6-current-after-live-control/register.json",
+  "scope": {
+    "remote": ["isolated current-source build", "native Domain and Server tests", "owned disposable PostgreSQL", "numerical paired experiments", "fault and recovery fixtures", "server CPU/RSS/GC/actor telemetry", "asset/source audit and rollback verification"],
+    "local": ["real Godot player clients", "login and authoritative network interactions", "rendered player interactions", "generator resources and per-client JSONL"],
+    "human_experience": "Pending; excluded from this execution request",
+    "live_application_and_database": "Update the existing cloud application to the frozen current remote release after source verification, database backup and candidate validation; preserve persistent data. Fault injection only in the task-owned test instance.",
+    "candidate_defaults": "Unchanged; experiments remain isolated",
+    "default_rate_limits": "Unchanged; clients behind one public address must retain actual auth limit and retry/backoff",
+    "delivery": "Local sanitized stage summaries committed and pushed directly to origin/release; no draft PR"
+  },
+  "budgets": "Reuse PR13_LOCAL_PROFILES_20261008.json deadlines, targets, hold windows and stop conditions; remote placement does not relax them",
+  "network": {
+    "initial_test_instance": "Remote loopback listener, reached by owned strict SSH forwarding from real local clients",
+    "application_tls": "Do not claim application TLS acceptance from SSH encryption; actual TLS evidence is a separate required layer",
+    "host_key": "Existing verified SSH known_hosts entry, StrictHostKeyChecking=yes; no unverified key scan"
+  },
+  "observed_remote_resources": {"logical_cores": 2, "memory_total_kib": 3747732, "memory_available_kib_at_preflight": 2666808},
+  "resource_policy": "Bound build/test containers and run heavy suites sequentially; cloud service resources and local generator resources are measured separately",
+  "all_accepted": false
+}

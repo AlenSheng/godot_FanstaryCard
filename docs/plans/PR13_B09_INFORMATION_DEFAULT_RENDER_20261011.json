@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B09.4",
+  "case_ids": ["PR13-B09.4-T02", "PR13-B09.4-T03"],
+  "scope": "Current GUI controlled information boundary and unchanged default, using original native typed baseline snapshots; no new natural experiment samples",
+  "native_source_sha": "feeb8ac2ee517945f235d8f5571f79cb713948f5",
+  "native_originals": "outputs/pr13-tencent-20261009/pool-baseline-local-verified/pool-baseline-delivery/attempt-5/outputs/wire",
+  "heroes": ["Mage", "Priest", "Guardian"],
+  "native_seeds": [450001, 451001, 452001],
+  "original_native_frames": 18,
+  "controlled_finishing_HP_boundary_is_not_natural_route_benefit": true,
+  "current_server_src_and_protocol_must_equal_native_source": true,
+  "T02": {
+    "original_optional_snapshots": 9,
+    "injection": "Actual hidden library instance IDs from the native audited after-state are appended as declared unknown Protobuf field 60000 inside the original room snapshot payload, preserving its original envelope metadata",
+    "requirements": [
+      "Actual current GameStore refuses room.library.read action and product command-schema boundary rejects it without a packet or pending mutation",
+      "Original and injected decoded public room/player state and rendered popup labels remain identical",
+      "Hidden library IDs and the injected field name never appear in public GameStore state",
+      "Injected bytes differ from original native frame; independent original-frame eligibility validator rejects these bytes",
+      "These controlled injected frames are never counted as formal natural experiment observations"
+    ]
+  },
+  "T03": {
+    "original_default_off_snapshots": 9,
+    "requirements": [
+      "Use the exact original native typed snapshot through current gateway and scoped snapshot-read context",
+      "No optional monster pool in authoritative player, no optional pool entry, and monster.choose unavailable",
+      "Original room rules and official optional-pool default remain unchanged",
+      "Existing complete 36000-route NoChange statistics retain their original source and uncertainty"
+    ]
+  },
+  "matrix": {
+    "locales": ["zh-CN", "en"],
+    "resolutions": [[1920,1080], [1280,720], [960,540]],
+    "frame_caps": [30,60,144],
+    "controlled_response_delay_ms": [0,250,1000],
+    "expected_observations": 972,
+    "expected_observations_per_locale": 486,
+    "capture_condition": "Seed 450001 for each hero, every resolution, frame cap 30, controlled delay 0; T02 original and injected variants plus T03 original",
+    "expected_original_PNGs": 54,
+    "capture_scope": "T02 captures the actual popup texture, including non-embedded windows; T03 captures the root viewport after deferred refreshes; whole-screen T02 inspection is not claimed",
+    "development_smoke": "All 18 original frames, en, 960x540, frame cap30 and delay0; excluded from formal matrix counts"
+  },
+  "guardrails": {
+    "cloud_only_native_execution": true,
+    "memory_floor_bytes": 500000000,
+    "root_free_ratio": 0.15,
+    "failed_sources_and_outputs_retained": true,
+    "all_raw_outputs_and_sources_G_verified_before_cleanup": true,
+    "human_experience_in_scope": false,
+    "hardware_FPS_or_WAN_claimed": false,
+    "MAIN_accepted": false
+  }
+}

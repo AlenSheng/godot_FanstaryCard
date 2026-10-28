@@ -1,0 +1,25 @@
+{
+  "task_id": "PR13-A03.2",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "classification": "当前原始回调/真实账号隔离通过，产品逻辑无需修改",
+  "new_case_profiles_closed": {
+    "PR13-A03.2-T01": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "PR13-A03.2-T02": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "PR13-A03.2-T03": [
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "reason": "Real original M/N sameSession+peer and advancingepochs; unchanged actual error and completedHTTP values consumed underN without statechanges; actual logout/loginB withnewUID/generation/peer andoldAresultdiscard; Native59checks/OS0,77independent checks,sevenPGphases3uniqueACKs.",
+  "original_R1_Failed_not_relabelled": true,
+  "business_criteria_relaxed": false,
+  "whole_project_or_globalgate_accepted": false,
+  "limits_and_failure": "docs/reports/pr13-stages-20261009/S5-A032-current-real-callback-isolation-20261021/limits-and-original-failure.json"
+}

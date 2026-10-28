@@ -1,0 +1,1 @@
+PR13-B01.4三案例的OFFLINE与EXPERIMENT逐项复核，MAIN Accepted。旧108实际Domain场景40正常胜利/68观察截止删失；新增1真实60秒兜底场景，实际执行弃战后只记ScriptFallback。18个分层小N的P99继续Unknown。不同研究只核对互斥分类，不混算TTK。34Accepted、82Partial、16Ready、98未验收；其他任务和全局门禁不变。

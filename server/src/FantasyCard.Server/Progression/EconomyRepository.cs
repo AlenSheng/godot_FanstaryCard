@@ -441,16 +441,18 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         return new WalletResponse(reader.GetInt64(0), reader.GetInt64(1));
     }
 
-    public async Task<IReadOnlyList<MarketListingResponse>> GetMarketAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<MarketListingResponse>> GetMarketAsync(CancellationToken cancellationToken, int limit = 200, int offset = 0)
     {
         await using var command = dataSource.CreateCommand(
             """
             SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
                    e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait
             FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
-            WHERE l.status='Active' AND l.expires_at > $1 ORDER BY l.created_at DESC
+            WHERE l.status='Active' AND l.expires_at > $1 ORDER BY l.created_at DESC,l.listing_id DESC LIMIT $2 OFFSET $3
             """);
         command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        command.Parameters.AddWithValue(limit);
+        command.Parameters.AddWithValue(offset);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var result = new List<MarketListingResponse>();
         while (await reader.ReadAsync(cancellationToken))

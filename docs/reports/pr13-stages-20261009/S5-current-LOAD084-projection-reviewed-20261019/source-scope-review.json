@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "checks": {
+    "all3preregistered_byte_SQL_receiptwait_positive": true,
+    "third_all_HTTP_duration_regression_not_hidden": true,
+    "all6functionalcases_currentRelease8eb": true,
+    "all298physicalHTTP_currenttrace_sourcechecks": true,
+    "all_source_GDD_schema_Domain_gameplay_unchanged": true,
+    "all2145current_candidate_product_inputs_still_match": true,
+    "current_runtime21_all713compiledinputs_match": true,
+    "real_current_foreign_match_Pending_ACK_noMutation_compat_gates": true,
+    "oldclient20c_currentServer_andnewclient_oldServer_actualnot_staticonly": true,
+    "actual4returningUIDs24newACK_noholds_noitems": true,
+    "all_queued_windows_measured0_not_totalOpenclaim": true,
+    "prior_R2mixed_and_R1latencyfailed_not_relabelled": true,
+    "new15plus6cap21_spent_not_resetB111or112": true,
+    "raw308beforePG313finalGcustody": true,
+    "integration_dependency_LOAD083_not_silently_accepted": true
+  },
+  "checked_invariants": 15,
+  "reviewed_case": "LOAD-08.4-T01/EXPERIMENT",
+  "case_recommendation": "Passed_scoped_completeReturningFourConnectionWorkloadThreePairs",
+  "core_metrics": "Whole responsebytes/explicitSQL/publicabandon-to-receiptwaitsum strictlyimprovedall3;preexistingpredicatekept. ThirdallHTTPserviceduration/makespanmixedexplicitlyretained.",
+  "scope_limits": [
+    "Three configuration-matched pairs,random world seeds not controlled.",
+    "Returning four actual accounts inoneheadlessOSprocess/fourStores,not freshauth299SQL nor capacity.",
+    "Only response protobuf body bytes,not HTTP headers/TLS/WSS bytes.",
+    "Npgsql operations are not explicitSQLstatement counts;transaction traffic excluded.",
+    "PG stat windows include real background/WSwork and do not isolate causal foreground effects.",
+    "Pool queued-request integral isallpooloverlap,not everyOpen or perendpointwait.",
+    "Summed foreground durations can overlap;union recorded separately.",
+    "Receipt wait is actual public abandon-to-receipt atclient sampling intervals,not human/UIrender response time."
+  ],
+  "integration_dependency": {
+    "id": "LOAD-08.3",
+    "state": "Partial",
+    "remaining": {
+      "LOAD-08.3-T01": [
+        "EXPERIMENT"
+      ],
+      "LOAD-08.3-T02": [
+        "EXPERIMENT"
+      ],
+      "LOAD-08.3-T03": [
+        "EXPERIMENT"
+      ]
+    }
+  },
+  "recommended_task_state": "ReadyForAcceptance_pending_dependency_MAIN_integration_review",
+  "whole_scope_or_globalG4_accepted": false,
+  "NoChange_or_criteria_relaxed": false,
+  "human_scope_excluded": true,
+  "local_GUI0": true,
+  "source_code_uncommitted_notdeployed": true,
+  "next": "Close current LOAD083 three actualretryexperiments,then review dependencychain andaccepteligible tasks;whole72goalpersists."
+}

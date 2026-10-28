@@ -1,0 +1,72 @@
+name: Numerical regression
+
+on:
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'config/**'
+      - 'protocol/**'
+      - 'tools/numerics/**'
+      - '.github/workflows/numerical-regression.yml'
+  push:
+    branches: ['release']
+    paths:
+      - 'server/**'
+      - 'config/**'
+      - 'protocol/**'
+      - 'tools/numerics/**'
+      - '.github/workflows/numerical-regression.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: numerical-regression-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  domain:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Record source and SDK
+        shell: pwsh
+        working-directory: server
+        run: |
+          git rev-parse HEAD
+          dotnet --info
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Domain regression
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj -c Release --logger 'trx;LogFileName=domain.trx' --results-directory ../test-results/numerics
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Build server test contract
+        shell: pwsh
+        working-directory: server
+        run: |
+          dotnet build tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verify tracked files were not modified
+        shell: pwsh
+        run: |
+          git diff --exit-code -- server/src config protocol ':(exclude)**/bin/**' ':(exclude)**/obj/**'
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: numerical-domain-${{ github.sha }}
+          path: test-results/numerics
+          retention-days: 7
+          if-no-files-found: ignore

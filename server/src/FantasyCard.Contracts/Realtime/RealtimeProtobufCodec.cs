@@ -41,6 +41,8 @@ public static class RealtimeProtobufCodec
                 w.String(2, payload.TargetId);
             }),
             "battle.abandon" when command.Payload is BattleAbandonCommandPayload => Message(_ => { }),
+            "monster.choose" when command.Payload is MonsterCardChooseCommandPayload payload => Message(w =>
+            { w.String(1, payload.CandidateId.ToString("D")); w.Bool(2, payload.Accept); w.String(3, payload.ReplaceInstanceId?.ToString("D")); }),
             "reward.choice.refresh" or "choice.refresh" when command.Payload is RewardChoiceRefreshCommandPayload => Message(_ => { }),
             "reward.choice.claim" or "choice.pick" when command.Payload is RewardChoiceClaimCommandPayload payload => Message(w => { w.String(1, payload.OptionId); w.String(2, payload.ReplaceItemId); w.Bool(3, payload.Equip); }),
             "inventory.move" when command.Payload is InventoryMoveCommandPayload payload => Message(w => { w.String(1, payload.ItemId); w.Int64(2, payload.TargetSlotIndex); }),
@@ -58,6 +60,8 @@ public static class RealtimeProtobufCodec
             _ when command.Payload is null => null,
             _ => throw new InvalidDataException($"No protobuf payload schema is registered for command '{command.Type}'.")
         });
+        writer.String(6, command.RoomId?.ToString("D"));
+        writer.String(7, command.MatchId?.ToString("D"));
         return writer.ToArray();
     }
 
@@ -77,6 +81,7 @@ public static class RealtimeProtobufCodec
             "battle.play_cards" or "combat.preview" => DecodeBattlePlayCards(payloadBytes),
             "battle.select_target" => DecodeBattleSelectTarget(payloadBytes),
             "battle.abandon" => new BattleAbandonCommandPayload(),
+            "monster.choose" => DecodeMonsterChoice(payloadBytes),
             "reward.choice.refresh" or "choice.refresh" => new RewardChoiceRefreshCommandPayload(),
             "reward.choice.claim" or "choice.pick" => DecodeRewardClaim(payloadBytes),
             "room.move" or "map.move" => DecodeRoomMove(payloadBytes),
@@ -94,7 +99,8 @@ public static class RealtimeProtobufCodec
             _ when payloadBytes.Length == 0 => null,
             _ => throw new InvalidDataException($"No protobuf payload schema is registered for command '{type}'.")
         };
-        return new ClientCommand(type, NullIfEmpty(envelope.String(3)), envelope.OptionalInt64(4), payload);
+        return new ClientCommand(type, NullIfEmpty(envelope.String(3)), envelope.OptionalInt64(4), payload,
+            ParseOptionalGuid(envelope.String(6), type), ParseOptionalGuid(envelope.String(7), type));
     }
 
     public static byte[] EncodeServer(ServerEvent message)
@@ -204,12 +210,13 @@ public static class RealtimeProtobufCodec
             w.String(2, value.TargetId);
         }),
         "room.snapshot" when message.Payload is RoomSnapshotEventPayload value => EncodeRoomSnapshot(value),
+        "map.player_count" when message.Payload is MapPlayerCountEventPayload value => Message(w => w.Int64(1, value.PlayerCount)),
         "reward.choice" when message.Payload is RewardChoiceEventPayload value => EncodeRewardChoice(value),
         "reward.choice_claimed" when message.Payload is RewardChoiceClaimedEventPayload value => Message(w => { w.String(1, value.OptionId); w.Int64(2, value.Applied); }),
         "room.moved" when message.Payload is RoomMovedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.Int64(2, value.Row); w.Int64(3, value.Column); }),
         "duel.leave_ack" when message.Payload is DuelLeaveEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.Bool(2, value.Completed); }),
         "duel.escape_started" or "duel.escape_interrupted" or "duel.escape_failed" when message.Payload is DuelEscapeEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Probability.ToString(System.Globalization.CultureInfo.InvariantCulture)); w.String(3, value.Status); }),
-        "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" when message.Payload is ActionExtractEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); }),
+        "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" when message.Payload is ActionExtractEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); w.String(3, value.RoomId?.ToString("D")); w.String(4, value.MatchId?.ToString("D")); }),
         "action.spring_started" or "action.spring_cancelled" or "action.spring_completed" when message.Payload is ActionSpringEventPayload value => Message(w => { w.String(1, value.Status); w.Int64(2, (long)value.Remaining.TotalMilliseconds); }),
         "action.potion_used" when message.Payload is ActionPotionEventPayload value => Message(w => { w.String(1, value.ItemId); w.Int64(2, value.Healed); }),
         "relic.taken" when message.Payload is RelicTakeEventPayload value => Message(w => { w.String(1, value.PileId.ToString("D")); w.String(2, value.ItemId); w.Int64(3, value.PileVersion); }),
@@ -224,7 +231,8 @@ public static class RealtimeProtobufCodec
         }),
         "duel.started" when message.Payload is DuelStartedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.FirstPlayerId.ToString("D")); w.String(3, value.LatePlayerId.ToString("D")); w.Int64(4, value.LatePlayerUnlockAtUnixMs); w.Int64(5, value.LeaveWindowEndsAtUnixMs); }),
         "duel.ended" when message.Payload is DuelEndedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Reason); w.String(3, value.WinnerId?.ToString("D")); w.Bool(4, value.SnapshotRequired); }),
-        "player.died" when message.Payload is PlayerDiedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.String(2, value.Cause); w.String(3, value.DuelId?.ToString("D")); }),
+        "player.died" when message.Payload is PlayerDiedEventPayload value => Message(w => { w.String(1, value.PlayerId.ToString("D")); w.String(2, value.Cause); w.String(3, value.DuelId?.ToString("D")); w.String(4, value.RoomId?.ToString("D")); w.String(5, value.MatchId?.ToString("D")); }),
+        "room.command_cancelled" when message.Payload is RoomCommandCancelledEventPayload value => Message(w => { w.String(1, value.RoomId.ToString("D")); w.String(2, value.MatchId.ToString("D")); w.String(3, value.CommandType); w.String(4, value.Reason); }),
         "error.invalid_message" when message.Payload is null => null,
         _ when message.Payload is null => null,
         _ => throw new InvalidDataException($"No protobuf payload schema is registered for event '{message.Type}'.")
@@ -248,6 +256,7 @@ public static class RealtimeProtobufCodec
             "settlement.ready" or "match.settled" => new SettlementReadyEventPayload(
                 ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), payload.String(3)),
             "room.snapshot" => DecodeRoomSnapshot(payload),
+            "map.player_count" => new MapPlayerCountEventPayload(checked((int)payload.Int64(1))),
             "error.command_rejected" => new CommandRejectedEventPayload(payload.String(1), payload.String(2)),
             "battle.combo_resolved" or "combat.previewed" or "combat.hit" => new BattleComboResolvedEventPayload(
                 ParseGuid(payload.String(1), type),
@@ -274,7 +283,7 @@ public static class RealtimeProtobufCodec
             "room.moved" => new RoomMovedEventPayload(ParseGuid(payload.String(1), type), (int)payload.Int64(2), (int)payload.Int64(3)),
             "duel.leave_ack" => new DuelLeaveEventPayload(ParseGuid(payload.String(1), type), payload.Bool(2)),
             "duel.escape_started" or "duel.escape_interrupted" or "duel.escape_failed" => new DuelEscapeEventPayload(ParseGuid(payload.String(1), type), double.Parse(payload.String(2), System.Globalization.CultureInfo.InvariantCulture), payload.String(3)),
-            "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" => new ActionExtractEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2))),
+            "action.extract_started" or "action.extract_cancelled" or "action.extract_completed" => new ActionExtractEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2)), ParseOptionalGuid(payload.String(3), type), ParseOptionalGuid(payload.String(4), type)),
             "action.spring_started" or "action.spring_cancelled" or "action.spring_completed" => new ActionSpringEventPayload(payload.String(1), TimeSpan.FromMilliseconds(payload.Int64(2))),
             "action.potion_used" => new ActionPotionEventPayload(payload.String(1), checked((int)payload.Int64(2))),
             "relic.taken" => new RelicTakeEventPayload(ParseGuid(payload.String(1), type), payload.String(2), payload.Int64(3)),
@@ -286,7 +295,8 @@ public static class RealtimeProtobufCodec
                 payload.OptionalInt64(4)),
             "duel.started" => new DuelStartedEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), ParseGuid(payload.String(3), type), payload.Int64(4), payload.Int64(5)),
             "duel.ended" => new DuelEndedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), payload.Bool(4)),
-            "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type)),
+            "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), ParseOptionalGuid(payload.String(4), type), ParseOptionalGuid(payload.String(5), type)),
+            "room.command_cancelled" => new RoomCommandCancelledEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), payload.String(3), payload.String(4)),
             _ => null
         };
     }
@@ -297,6 +307,13 @@ public static class RealtimeProtobufCodec
 
     private static Guid? ParseOptionalGuid(string value, string type) =>
         string.IsNullOrEmpty(value) ? null : ParseGuid(value, type);
+
+    private static MonsterCardChooseCommandPayload DecodeMonsterChoice(ReadOnlySpan<byte> bytes)
+    {
+        var fields = Fields.Read(bytes);
+        return new(ParseGuid(fields.String(1), "monster.choose"), fields.Bool(2),
+            string.IsNullOrEmpty(fields.String(3)) ? null : ParseGuid(fields.String(3), "monster.choose"));
+    }
 
     private static BattlePlayCardsCommandPayload DecodeBattlePlayCards(ReadOnlySpan<byte> bytes)
     {
@@ -464,6 +481,7 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(13, value.ExtractionRemainingMs);
         w.OptionalInt64(14, value.SpringRemainingMs);
         foreach (var action in value.AllowedActions) w.String(15, action);
+        w.Int64(16, value.MapPlayerCount);
     });
 
     private static byte[] EncodePosition(RoomPositionPayload value) =>
@@ -492,7 +510,43 @@ public static class RealtimeProtobufCodec
         foreach (var item in value.EquippedItems ?? []) w.Bytes(12, EncodeInventoryItem(item));
         w.Int64(13, value.WeaponLevel);
         if (value.BattleStatus is { } status) w.Bytes(14, EncodeBattleStatus(status));
+        w.Int64(15, value.StunRemainingMs);
+        w.Int64(16, value.DrawBlockRemainingMs);
+        w.Int64(17, value.DrawSpeedRemainingMs);
+        w.Int64(18, value.DrawBlockSpeedRemainingMs);
+        w.String(19, value.BaseDrawIntervalSeconds);
+        if (value.MonsterPool is { } pool) w.Bytes(20, Message(m =>
+        {
+            m.Int64(1, pool.Capacity);
+            foreach (var card in pool.Pending) m.Bytes(2, EncodePoolCard(card));
+            foreach (var card in pool.Active) m.Bytes(3, EncodePoolCard(card));
+        }));
+        if (value.NumericalState is { } numerics) w.Bytes(21, Message(n =>
+        { n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths); }));
     });
+
+    private static byte[] EncodePoolCard(RoomCardPayload card) => Message(c =>
+    { c.String(1, card.InstanceId.ToString("D")); c.String(2, card.CardId); c.Int64(3, card.Level); c.String(4, card.ElementOverride); });
+
+    private static RoomCardPayload DecodePoolCard(byte[] bytes)
+    {
+        var c = Fields.Read(bytes);
+        return new(ParseGuid(c.String(1), "monster.pool"), c.String(2), checked((int)c.Int64(3)), NullIfEmpty(c.String(4)));
+    }
+
+    private static RoomMonsterPoolPayload? DecodeMonsterPool(byte[] bytes)
+    {
+        if (bytes.Length == 0) return null;
+        var p = Fields.Read(bytes);
+        return new(checked((int)p.Int64(1)), p.RepeatedBytes(2).Select(DecodePoolCard).ToArray(), p.RepeatedBytes(3).Select(DecodePoolCard).ToArray());
+    }
+
+    private static RoomNumericalStatePayload? DecodeNumericalState(byte[] bytes)
+    {
+        if (bytes.Length == 0) return null;
+        var n = Fields.Read(bytes);
+        return new(n.String(1), n.String(2), checked((int)n.Int64(3)));
+    }
 
     private static byte[] EncodeBattleStatus(RoomBattleStatusPayload value) => Message(w =>
     {
@@ -569,6 +623,10 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(7, value.EscapeRemainingMs);
         w.String(8, value.OpponentClass); w.String(9, value.OpponentName); w.String(10, value.EscapeProbability);
         if (value.OpponentStatus is { } status) w.Bytes(11, EncodeBattleStatus(status));
+        w.Int64(12, value.OpponentStunRemainingMs);
+        w.Int64(13, value.OpponentDrawBlockRemainingMs);
+        w.Bool(14, value.SeparateLoot);
+        foreach (var item in value.SearchableLoot ?? []) w.Bytes(15, EncodeInventoryItem(item));
     });
 
     private static RoomSnapshotEventPayload DecodeRoomSnapshot(Fields payload)
@@ -604,7 +662,8 @@ public static class RealtimeProtobufCodec
             rewardBytes.Length == 0 ? null : DecodeRewardChoice(Fields.Read(rewardBytes)),
             payload.OptionalInt64(13),
             payload.OptionalInt64(14),
-            payload.RepeatedStrings(15));
+            payload.RepeatedStrings(15),
+            checked((int)payload.Int64(16)));
     }
 
     private static RoomPositionPayload DecodePosition(byte[] bytes)
@@ -637,7 +696,9 @@ public static class RealtimeProtobufCodec
         NullIfEmpty(value.RepeatedInt64(11).Select(index => checked((int)index)).ToArray()),
         NullIfEmpty(value.RepeatedBytes(12).Select(DecodeInventoryItem).ToArray()),
         checked((int)value.Int64(13)),
-        value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null);
+        value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
+        value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)),
+        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)));
 
     private static RoomPvePayload DecodePve(Fields value) => new(
         ParseGuid(value.String(1), "room.snapshot"),
@@ -658,7 +719,9 @@ public static class RealtimeProtobufCodec
         DecodeCombatant(value.Bytes(3)),
         value.Int64(4), value.Int64(5), value.Bool(6), value.OptionalInt64(7),
         NullIfEmpty(value.String(8)), NullIfEmpty(value.String(9)), NullIfEmpty(value.String(10)),
-        value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null);
+        value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null,
+        value.Int64(12), value.Int64(13), value.Bool(14),
+        NullIfEmpty(value.RepeatedBytes(15).Select(DecodeInventoryItem).ToArray()));
 
     private static byte[] Message(Action<ProtoWriter> action)
     {
@@ -701,7 +764,7 @@ public static class RealtimeProtobufCodec
     private sealed class Fields
     {
         private readonly Dictionary<int, ulong> _integers = [];
-        private readonly Dictionary<int, List<long>> _repeatedIntegers = [];
+        private readonly Dictionary<int, List<object>> _orderedValues = [];
         private readonly Dictionary<int, List<byte[]>> _bytes = [];
         public uint UInt32(int field) => checked((uint)Int64(field));
         public long Int64(int field) => unchecked((long)_integers.GetValueOrDefault(field));
@@ -718,11 +781,15 @@ public static class RealtimeProtobufCodec
         public byte[][] RepeatedBytes(int field) => _bytes.TryGetValue(field, out var values) ? values.ToArray() : [];
         public long[] RepeatedInt64(int field)
         {
-            var values = new List<long>(_repeatedIntegers.GetValueOrDefault(field) ?? []);
-            foreach (var packed in RepeatedBytes(field))
+            var values = new List<long>();
+            foreach (var item in _orderedValues.GetValueOrDefault(field) ?? [])
             {
-                var offset = 0;
-                while (offset < packed.Length) values.Add(unchecked((long)ReadVarint(packed, ref offset)));
+                if (item is long integer) values.Add(integer);
+                else if (item is byte[] packed)
+                {
+                    var offset = 0;
+                    while (offset < packed.Length) values.Add(unchecked((long)ReadVarint(packed, ref offset)));
+                }
             }
             return values.ToArray();
         }
@@ -742,9 +809,9 @@ public static class RealtimeProtobufCodec
                     case 0:
                         var integer = ReadVarint(source, ref offset);
                         result._integers[field] = integer;
-                        if (!result._repeatedIntegers.TryGetValue(field, out var integers))
-                            result._repeatedIntegers[field] = integers = [];
-                        integers.Add(unchecked((long)integer));
+                        if (!result._orderedValues.TryGetValue(field, out var orderedIntegers))
+                            result._orderedValues[field] = orderedIntegers = [];
+                        orderedIntegers.Add(unchecked((long)integer));
                         break;
                     case 1: Ensure(source, offset, 8); offset += 8; break;
                     case 2:
@@ -755,7 +822,11 @@ public static class RealtimeProtobufCodec
                             values = [];
                             result._bytes[field] = values;
                         }
-                        values.Add(source.Slice(offset, length).ToArray());
+                        var bytes = source.Slice(offset, length).ToArray();
+                        values.Add(bytes);
+                        if (!result._orderedValues.TryGetValue(field, out var orderedBytes))
+                            result._orderedValues[field] = orderedBytes = [];
+                        orderedBytes.Add(bytes);
                         offset += length;
                         break;
                     case 5: Ensure(source, offset, 4); offset += 4; break;
@@ -772,6 +843,7 @@ public static class RealtimeProtobufCodec
             {
                 Ensure(source, offset, 1);
                 var current = source[offset++];
+                if (shift == 63 && current > 1) throw new InvalidDataException("Overflowing protobuf varint.");
                 value |= (ulong)(current & 0x7F) << shift;
                 if ((current & 0x80) == 0) return value;
             }

@@ -1,0 +1,238 @@
+{
+  "kind": "ProtectedPrivateRawInputCustodyDispositions_ExportStillProhibited_NotCredentialFreedom",
+  "generated_at": "2026-10-23T18:02:16.398212+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "private_input_objects_reviewed": 36,
+  "private_custody_dispositions_classified": 30,
+  "tracked_reference_or_template_objects_remaining": 6,
+  "classified_private_kinds": {
+    "RetainedPrivateRawDiagnosticText": 12,
+    "RetainedCommandResponseEnvelope": 5,
+    "RetainedContainerEnvironmentSnapshot": 2,
+    "RetainedDiagnosticJournalObject": 5,
+    "PrivateCredentialShapedTicketInput": 1,
+    "RetainedContainerInspectSnapshot": 2,
+    "PrivateCredentialShapedTokenInput": 1,
+    "PrivateStructuredInput": 2
+  },
+  "classified_inputs_remain_potentially_sensitive_private_raw_material_and_are_not_publicly_sanitized_payloads": true,
+  "all36_original_declared_text_formats_still_rejected_by_unchanged_public_guard": true,
+  "original_format_rejection_counts_without_values": {
+    "CredentialLikeText": 33,
+    "SensitiveField": 3
+  },
+  "five_serialized_diagnostics_have_different_parsed_JSON_guard_outcome_preserved_without_relabelling_original_text_format": true,
+  "no_actual_credential_validity_false_positive_or_global_privacy_freedom_attestation": true,
+  "all30_selected_original_byte_versions_match_current_stable_sources_and_closed_native_lines": true,
+  "all_classified_workspace_aliases_are_ignored_and_absent_from_current_index_and_HEAD_tree": true,
+  "current_Git_index_HEAD_scope_is_not_all_Git_history_or_other_repositories": true,
+  "reference_documents_and_template_remain_pending_not_declared_secret_leaks_or_safe_examples": [
+    {
+      "sha256": "270d61c85631b1aeeb6ac9f775821b07e1bdd9fd81946689e1620db69b434d62",
+      "tracked_paths": [
+        "server/docs/CLIENT_INTEGRATION.md"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    },
+    {
+      "sha256": "2b43a6704083b9776bc03289e8a3b2181ade035742526bdb0fd3f40bf0854c0f",
+      "tracked_paths": [
+        "docs/SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    },
+    {
+      "sha256": "5caa5c46d2ef50efea890fc5d01d13e3507eaf459e51715a08ee6479e63da188",
+      "tracked_paths": [
+        "artifacts/shadowsocks-deploy/config.template.json"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    },
+    {
+      "sha256": "7c8a4fabaae7aba5246a5756fc6aaa4e1f294d178f0fff60c0b16a680161d704",
+      "tracked_paths": [
+        "docs/GOOGLE_PLAY_RELEASE_REFERENCE.md"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    },
+    {
+      "sha256": "9694fbf0d73e033e68b7144bba5348afabe1dd2415fd2bc3ee1e5c1d4a2af04b",
+      "tracked_paths": [
+        "server/docs/POSTGRES_TESTS.md"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    },
+    {
+      "sha256": "ca5d7346e53369fe09a987ea7eebaf8c79bbbaafb3f3a2fc579131aa6b38ade0",
+      "tracked_paths": [
+        "docs/network-protobuf-migration/realtime-report.md"
+      ],
+      "content_still_pending": true,
+      "no_actual_credential_leak_or_safe_placeholder_conclusion_granted": true
+    }
+  ],
+  "current_HEAD": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "private_Git_path_snapshots": {
+    "index": {
+      "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-publication-20261023-r114-originals\\publication-current-index-paths.private.original.zlist",
+      "bytes": 2031849,
+      "sha256": "8ea9897ceb32eb26a73e44e0403ce1440a3c6f9fc5de93ebdea469e93f7e269e"
+    },
+    "HEAD": {
+      "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-publication-20261023-r114-originals\\publication-HEAD-paths.private.original.zlist",
+      "bytes": 2031849,
+      "sha256": "8ea9897ceb32eb26a73e44e0403ce1440a3c6f9fc5de93ebdea469e93f7e269e"
+    },
+    "ignored_candidates": {
+      "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-publication-20261023-r114-originals\\publication-ignored-candidate-paths.private.original.zlist",
+      "bytes": 2179,
+      "sha256": "60179271d2ae6db4526d41be9c103bee6ce71490d2a5cd92c7142256cc7996a3"
+    }
+  },
+  "boundary_controls_passed": 15,
+  "controls": [
+    {
+      "name": "private G raw input",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "private H raw input",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "ignored workspace raw input",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "public alias count",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "explicit public alias",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "tracked reference remains pending",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "unignored workspace remains pending",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "unknown root",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "parent escape",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "absolute path",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "alternate separator",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "empty aliases",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "other content intent",
+      "actual": false,
+      "expected": false,
+      "passed": true
+    },
+    {
+      "name": "token JSON still rejected",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    },
+    {
+      "name": "raw assignment still rejected",
+      "actual": true,
+      "expected": true,
+      "passed": true
+    }
+  ],
+  "R112_native_assertion_failure_and_exact_source_preserved": true,
+  "R112_canonical_JSON_equals_original_text_assumption_corrected_without_changing_source_bytes_or_guard": true,
+  "raw_sensitive_values_not_emitted_to_public_reports_or_stdout": true,
+  "proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-20261023-r113-originals\\private-custody-disposition-proofs.private.original.jsonl",
+    "bytes": 90109,
+    "sha256": "a93f6339f9f423dea0754a1cbb1752387e46452e18928dd492aedaaeb1a2da6f",
+    "records": 30
+  },
+  "all_private_reviews": {
+    "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-20261023-r113-originals\\all36-private-input-custody-reviews.private.original.jsonl",
+    "bytes": 103192,
+    "sha256": "2445957092ade7a6d84fe3fd8a9c3daddd4fe540cb242ef949fd02a0e6832ea8",
+    "records": 36
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-publication-20261023-r114-originals\\verified-private-custody-dispositions.original.json",
+    "bytes": 25883,
+    "sha256": "5826d6239e701b84e187e3afd1b8fa1d5c93bad8b8116bb6ddd5d0588730d518"
+  },
+  "original_content_objects_before": 168,
+  "original_content_objects_after": 138,
+  "remaining_original_content_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-private-runtime-custody-20261023-r113-originals\\remaining-original-content-review.private.original.jsonl",
+    "bytes": 301509,
+    "sha256": "1dee22bd315cdd00f3c8053a5446391819e377f242c14be49f6663c30a413607",
+    "records": 138,
+    "remaining_objects": 138,
+    "remaining_aliases": 1006
+  },
+  "archive_content_objects_unchanged": 457,
+  "size_omitting_reference_records_unchanged": 8,
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_engine_or_cloud_operation": false
+}

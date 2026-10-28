@@ -1,0 +1,45 @@
+{
+  "kind": "A042ExactCurrentThreeLIVEcasesTwoOriginalCycles",
+  "tasks": [
+    "PR13-A04.2"
+  ],
+  "cases": {
+    "PR13-A04.2-T01": "Actual original READY loop returns local send=false twice; third calls original Gateway.send and real socket, exact [false,false,true], at most3 attempts perM.",
+    "PR13-A04.2-T02": "Capture actual M required payload. After actual M accepted, replace first actual M started envelope type/payload with earlier actual required type/payload, retaining current original outer sequence/request/revision. Native originalreceive andoriginalbusinessconsumers mustkeep accepted/currentM andnot resend. Actual M originalstarted archived; realauthority snapshot recovers.",
+    "PR13-A04.2-T03": "Capture original M started payload. In secondactual N substitute that oldpayload intoactual N started envelope withallotherouterfieldspreserved. OriginalGateway mustconsume sessioncursor butreject priorroom, unchanged entireNbusiness before/after; actualauthoritative snapshot recovers N, sameUID/session/peer andexact2completedACKs."
+  },
+  "budgets": {
+    "new_physical_worlds_max": 2,
+    "new_real_accounts_max": 1,
+    "new_initial_items": 0,
+    "Native_seconds": 210,
+    "service_seconds": 250,
+    "unit_seconds": 480,
+    "all_prior_samples_failures_preserved": true,
+    "no_reset_of_A04_history": true,
+    "additional_R2_worlds_max": 2,
+    "total_R1_R2_worlds_max": 4,
+    "why": "Fix actualUI confirmationrollback, preserve R1two finished worlds/ACKs; rerun exactsame two-cycle faultmatrix oncurrentSUT, no sample reset or standard waiver."
+  },
+  "criteria": "Original10/30HTTP,15READY,30botfill,3READYattempts unchanged. No serverbinary/GDD/runtime/Gateway/Store/productUI edits. Faults only declared consumer sendreturn and original envelope type/payload substitution; no ID/state/receipt/cursor assignments. All before/after native state, original and forwarded PB, full original audit, PG state/ACK/assets and original source required.",
+  "source": "Current2147 Root manifest plus privateautoloadfactory, Gateway observer, inheritedoriginalfullrunner and scene. Source manifest actualSHA, not HEADalone.",
+  "resources": "Onlyexistingcurrentcloudhost, APP1024MiB1.25CPU PG384MiB.25CPU. 500MB/5percent functional floors, not capacitySLO. Resourceinsufficient capacities stayunaccepted. No localGUI/fullscreen/focus/input, no localPG or real auth.",
+  "GDD": [
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "human_experience_in_scope": false,
+  "business_criteria_relaxed": false,
+  "state": "FrozenNotExecuted",
+  "no_newGitcommit_push_deploy": true,
+  "round": "R2",
+  "prior_R1_MAIN_Failed_UIrollback_preserved": true,
+  "current_Gateway_SHA": "46091076ad7e0a0da33228c916deda3bf8005486a588674146e28b13373db79f",
+  "additional_UI_requirement": "Full Native before/afterbusiness dict includingactualready_prompt unchanged for late_required, displayedconfirmed1/1 preserved; original actualUID/gen/epoch firstscope guard only."
+}

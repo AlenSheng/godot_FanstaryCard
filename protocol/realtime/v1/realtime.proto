@@ -1,5 +1,6 @@
 syntax = "proto3";
 package fantasycard.realtime.v1;
+option csharp_namespace = "FantasyCard.Contracts.Wire.Realtime.V1";
 
 // Each WebSocket binary message contains exactly one envelope.
 message ClientEnvelope {
@@ -8,6 +9,9 @@ message ClientEnvelope {
   string request_id = 3;
   optional int64 expected_revision = 4;
   bytes payload = 5;
+  // Optional for legacy clients; paired IDs scope an in-flight room operation.
+  string room_id = 6;
+  string match_id = 7;
 }
 
 message ServerEnvelope {
@@ -88,6 +92,10 @@ message RoomDuel {
   string opponent_name = 9;
   string escape_probability = 10;
   RoomBattleStatus opponent_status = 11;
+  int64 opponent_stun_remaining_ms = 12;
+  int64 opponent_draw_block_remaining_ms = 13;
+  bool separate_loot = 14;
+  repeated RoomInventoryItem searchable_loot = 15;
 }
 message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; repeated RoomRelicPile relic_piles = 5; }
 message RoomPlayer {
@@ -105,6 +113,13 @@ message RoomPlayer {
   repeated RoomInventoryItem equipped_items = 12;
   int32 weapon_level = 13;
   RoomBattleStatus battle_status = 14;
+  int64 stun_remaining_ms = 15;
+  int64 draw_block_remaining_ms = 16;
+  int64 draw_speed_remaining_ms = 17;
+  int64 draw_block_speed_remaining_ms = 18;
+  string base_draw_interval_seconds = 19;
+  RoomMonsterPool monster_pool = 20;
+  RoomNumericalState numerical_state = 21;
 }
 message RoomSnapshotEvent {
   string room_id = 1;
@@ -122,6 +137,7 @@ message RoomSnapshotEvent {
   optional int64 extraction_remaining_ms = 13;
   optional int64 spring_remaining_ms = 14;
   repeated string allowed_actions = 15;
+  int32 map_player_count = 16;
 }
 message RoomStartedEvent {
   string match_id = 1;
@@ -165,6 +181,9 @@ message BattleComboResolvedEvent {
   string draw_speed_seconds = 21;
   string draw_speed_modifier = 22;
   string draw_block_speed_seconds = 23;
+  string resonance_multiplier = 24;
+  int32 conflict_pair_count = 25;
+  string conflict_cancellation = 26;
 }
 message CombatDamageSegment { string kind = 1; int32 amount = 2; }
 message BattleSelectTargetCommand { string battle_id = 1; string target_id = 2; }
@@ -180,7 +199,7 @@ message RoomMovedEvent { string player_id = 1; int32 row = 2; int32 column = 3; 
 message DuelLeaveEvent { string duel_id = 1; bool completed = 2; }
 // Probability is an invariant-culture decimal string, matching the existing v1 wire encoding.
 message DuelEscapeEvent { string duel_id = 1; string probability = 2; string status = 3; }
-message ActionExtractEvent { string status = 1; int64 remaining_ms = 2; }
+message ActionExtractEvent { string status = 1; int64 remaining_ms = 2; string room_id = 3; string match_id = 4; }
 message ActionSpringEvent { string status = 1; int64 remaining_ms = 2; }
 message ActionPotionEvent { string item_id = 1; int32 healed = 2; }
 message RelicTakeEvent { string pile_id = 1; string item_id = 2; int64 pile_version = 3; }
@@ -228,4 +247,15 @@ message ActionPotionCommand {}
 message RelicTakeCommand { string pile_id = 1; string item_id = 2; int64 pile_version = 3; string replace_item_id = 4; }
 message DuelStartedEvent { string duel_id = 1; string first_player_id = 2; string late_player_id = 3; int64 late_player_unlock_at_unix_ms = 4; int64 leave_window_ends_at_unix_ms = 5; }
 message DuelEndedEvent { string duel_id = 1; string reason = 2; string winner_id = 3; bool snapshot_required = 4; }
-message PlayerDiedEvent { string player_id = 1; string cause = 2; string duel_id = 3; }
+message PlayerDiedEvent { string player_id = 1; string cause = 2; string duel_id = 3; string room_id = 4; string match_id = 5; }
+
+// The correlated intent was not applied because its own room already ended.
+// This is distinct from a successful mutation and from an invalid command.
+message RoomCommandCancelledEvent { string room_id = 1; string match_id = 2; string command_type = 3; string reason = 4; }
+
+message MapPlayerCountEvent { int32 player_count = 1; }
+
+// Numerical integration v1. Additive; no existing tag reuse.
+message MonsterCardChooseCommand { string candidate_id = 1; bool accept = 2; string replace_instance_id = 3; }
+message RoomMonsterPool { int32 capacity = 1; repeated RoomCard pending = 2; repeated RoomCard active = 3; }
+message RoomNumericalState { string fenxian_policy = 1; string guardian_policy = 2; int32 guardian_remainder_tenths = 3; }

@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/inputs/control/service.py", line 43, in <module>
+    assert len(paths)==1;request_path=paths[0];request=read(request_path);before=request['actual_before'];assert before['actual_gateway_online'] and before['user_id'] and before['room_id'];godot=live(before['native_PID'],'res://tests/A091_live_source_attribution.gd');host=hosts();dbA,dbApath=witness(number,'before',env);assert any(x['room_id']==before['room_id'] and x['match_id']==before['match_id'] for x in dbA['matches']);assert any(x['player_id']==before['user_id'] for x in dbA['assets']['wallets']);actual={}
+                                                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

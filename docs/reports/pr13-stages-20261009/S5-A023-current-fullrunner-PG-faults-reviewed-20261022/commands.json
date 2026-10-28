@@ -1,0 +1,296 @@
+{
+  "actual_original_coordinator_and_STOP_records": [
+    {
+      "mode": "bad_json",
+      "started": {
+        "PID": 57,
+        "start_ticks": "2482125",
+        "args": [
+          "python3",
+          "-B",
+          "/inputs/control/A023_fullrunner_finalization_fault.py",
+          "--smoke",
+          "--godot",
+          "/inputs/control/godot_Dummy_verbose",
+          "--server-url",
+          "http://127.0.0.1:5014",
+          "--smoke-clients",
+          "2",
+          "--smoke-cycles",
+          "1",
+          "--max-seconds",
+          "180",
+          "--cycle-limit-seconds",
+          "240",
+          "--load-profile",
+          "functional-cycles",
+          "--hero-class",
+          "Mage",
+          "--strategy",
+          "baseline_all_hand",
+          "--client-project",
+          "/repo/client",
+          "--client-max-fps",
+          "60",
+          "--local-resource-sampling",
+          "--local-server-metrics",
+          "/evidence/actual-Program-metrics.original.jsonl",
+          "--local-server-pid",
+          "26",
+          "--minimum-generator-memory-bytes",
+          "500000000",
+          "--minimum-cloud-memory-bytes",
+          "500000000",
+          "--minimum-cloud-disk-percent",
+          "5",
+          "--output",
+          "/evidence/bad_json/actual-coordinator"
+        ]
+      },
+      "terminal": {
+        "PID": 57,
+        "actual_exit": 3
+      },
+      "actual_original_STOP_boundary": {
+        "mode": "bad_json",
+        "STOP_started_at_ns": 1792662051832131557,
+        "STOP_finished_at_ns": 1792662051832313123,
+        "forced_owned_PIDs": [],
+        "processes": [
+          {
+            "client_id": "g001c01017848",
+            "PID": 90,
+            "actual_exit_before_STOP": 0,
+            "actual_exit_after_STOP": 0
+          },
+          {
+            "client_id": "g001c0281d6b4",
+            "PID": 97,
+            "actual_exit_before_STOP": 0,
+            "actual_exit_after_STOP": 0
+          }
+        ],
+        "original_stop_all_called": true,
+        "fault_changes": [
+          {
+            "path": "/evidence/bad_json/actual-coordinator/20261022-093941-ee9725/g001c01017848.json.status.json",
+            "original_backup": "/evidence/bad_json/immutable-before-fault-originals/g001c01017848.json.status.json",
+            "before_SHA": "a47d8b52de0f7ee213a2c1cfd21ba71e735ecf39ff32a337d6fbf5c7498db74c",
+            "after_SHA": "9fdf3638ec2c4fb40b12d4a69629dd76672e2e6561846a8617422bc7d05d9c2a",
+            "before_bytes": 396981,
+            "after_bytes": 21,
+            "change": "Actual terminal status file corrupted after original STOP/grace",
+            "native_final_document_unchanged_SHA": "3c45b253b2237951240d2b9e68b9cc26c7df1cf9eba7840e9db9280b27a040c9"
+          }
+        ]
+      }
+    },
+    {
+      "mode": "exit7",
+      "started": {
+        "PID": 214,
+        "start_ticks": "2489934",
+        "args": [
+          "python3",
+          "-B",
+          "/inputs/control/A023_fullrunner_finalization_fault.py",
+          "--smoke",
+          "--godot",
+          "/inputs/control/godot_Dummy_verbose",
+          "--server-url",
+          "http://127.0.0.1:5014",
+          "--smoke-clients",
+          "2",
+          "--smoke-cycles",
+          "1",
+          "--max-seconds",
+          "180",
+          "--cycle-limit-seconds",
+          "240",
+          "--load-profile",
+          "functional-cycles",
+          "--hero-class",
+          "Mage",
+          "--strategy",
+          "baseline_all_hand",
+          "--client-project",
+          "/repo/client",
+          "--client-max-fps",
+          "60",
+          "--local-resource-sampling",
+          "--local-server-metrics",
+          "/evidence/actual-Program-metrics.original.jsonl",
+          "--local-server-pid",
+          "26",
+          "--minimum-generator-memory-bytes",
+          "500000000",
+          "--minimum-cloud-memory-bytes",
+          "500000000",
+          "--minimum-cloud-disk-percent",
+          "5",
+          "--output",
+          "/evidence/exit7/actual-coordinator",
+          "--stop-file",
+          "/evidence/exit7/EXTERNAL_STOP"
+        ]
+      },
+      "terminal": {
+        "PID": 214,
+        "actual_exit": 3
+      },
+      "actual_original_STOP_boundary": {
+        "mode": "exit7",
+        "STOP_started_at_ns": 1792662136217963207,
+        "STOP_finished_at_ns": 1792662137218550997,
+        "forced_owned_PIDs": [],
+        "processes": [
+          {
+            "client_id": "g001c01dc4b96",
+            "PID": 252,
+            "actual_exit_before_STOP": null,
+            "actual_exit_after_STOP": 7
+          },
+          {
+            "client_id": "g001c0262b214",
+            "PID": 259,
+            "actual_exit_before_STOP": null,
+            "actual_exit_after_STOP": 0
+          }
+        ],
+        "original_stop_all_called": true,
+        "fault_changes": []
+      }
+    },
+    {
+      "mode": "missing_tail",
+      "started": {
+        "PID": 379,
+        "start_ticks": "2498489",
+        "args": [
+          "python3",
+          "-B",
+          "/inputs/control/A023_fullrunner_finalization_fault.py",
+          "--smoke",
+          "--godot",
+          "/inputs/control/godot_Dummy_verbose",
+          "--server-url",
+          "http://127.0.0.1:5014",
+          "--smoke-clients",
+          "2",
+          "--smoke-cycles",
+          "1",
+          "--max-seconds",
+          "180",
+          "--cycle-limit-seconds",
+          "240",
+          "--load-profile",
+          "functional-cycles",
+          "--hero-class",
+          "Mage",
+          "--strategy",
+          "baseline_all_hand",
+          "--client-project",
+          "/repo/client",
+          "--client-max-fps",
+          "60",
+          "--local-resource-sampling",
+          "--local-server-metrics",
+          "/evidence/actual-Program-metrics.original.jsonl",
+          "--local-server-pid",
+          "26",
+          "--minimum-generator-memory-bytes",
+          "500000000",
+          "--minimum-cloud-memory-bytes",
+          "500000000",
+          "--minimum-cloud-disk-percent",
+          "5",
+          "--output",
+          "/evidence/missing_tail/actual-coordinator"
+        ]
+      },
+      "terminal": {
+        "PID": 379,
+        "actual_exit": 3
+      },
+      "actual_original_STOP_boundary": {
+        "mode": "missing_tail",
+        "STOP_started_at_ns": 1792662234520322453,
+        "STOP_finished_at_ns": 1792662234520488220,
+        "forced_owned_PIDs": [],
+        "processes": [
+          {
+            "client_id": "g001c0107df63",
+            "PID": 411,
+            "actual_exit_before_STOP": 0,
+            "actual_exit_after_STOP": 0
+          },
+          {
+            "client_id": "g001c02eac8ce",
+            "PID": 418,
+            "actual_exit_before_STOP": 0,
+            "actual_exit_after_STOP": 0
+          }
+        ],
+        "original_stop_all_called": true,
+        "fault_changes": [
+          {
+            "path": "/evidence/missing_tail/actual-coordinator/20261022-094224-dbe136/g001c0107df63.json.telemetry.jsonl",
+            "original_backup": "/evidence/missing_tail/immutable-before-fault-originals/g001c0107df63.json.telemetry.jsonl",
+            "before_SHA": "caaeb5f28147faba04d066f62df9d1e954006f9b2c7917db9d481568bb554e65",
+            "after_SHA": "17365dfb90a90e2588ccb188111111d8d76a484ffacd2d9d2afc78bc59eb082c",
+            "before_bytes": 499840,
+            "after_bytes": 498632,
+            "change": "Exactly original last physical audit row removed after STOP/grace",
+            "removed_actual_event": {
+              "at_unix_ms": 1792662225240,
+              "battle_seed": null,
+              "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+              "cleanup": {
+                "active_preparation": null,
+                "bootstrap_last_http_status": 200,
+                "bootstrap_read_attempts": 1,
+                "bootstrap_read_failures": 0,
+                "bootstrap_read_retries": 0,
+                "reason": "server_state_clear",
+                "state": "Passed",
+                "unfinished_match": null,
+                "unfinished_settlement": null
+              },
+              "client_id": "g001c0107df63",
+              "cycle_id": "g001c0107df63:2",
+              "event_seq": 299,
+              "event_type": "cleanup.verified",
+              "gameplay_progress": false,
+              "gameplay_progress_age_ms": 80,
+              "gameplay_progress_reason": "cycle_acknowledged",
+              "match_id": "01a162fe-01d8-765c-87a7-c176504b7cd2",
+              "monotonic_ms": 81002,
+              "observation_phase": "active",
+              "observer_context": {
+                "client_id": "g001c0107df63",
+                "cycle_id": "g001c0107df63:2",
+                "match_id": "01a162fe-01d8-765c-87a7-c176504b7cd2",
+                "phase": "cleanup",
+                "process_epoch": "1ed1a398207c4d2ea6384fa8fc049b5c",
+                "room_id": "",
+                "run_id": "08eedbcdc315404783f72b5954b10c7a"
+              },
+              "origin_context_missing_fields": [],
+              "origin_context_state": "Local",
+              "phase": "cleanup",
+              "process_epoch": "1ed1a398207c4d2ea6384fa8fc049b5c",
+              "room_id": "",
+              "run_id": "08eedbcdc315404783f72b5954b10c7a",
+              "transport_progress": false,
+              "transport_progress_age_ms": 2,
+              "type": "lifecycle"
+            },
+            "declared_producer_event_seq_max_unchanged": 299,
+            "declared_producer_loss_unchanged": 0
+          }
+        ]
+      }
+    }
+  ],
+  "underlying_negative_exits3_not_replaced_with0": true
+}

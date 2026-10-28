@@ -1,0 +1,20 @@
+tools/tests/test_pr13_runtime_evidence.py:8:        self.assertTrue(sampling_integrity(rows,0,70000)['passed'])
+tools/tests/test_pr13_runtime_evidence.py:9:        result=sampling_integrity(rows,0,600000)
+tools/tests/test_pr13_runtime_evidence.py:16:        self.assertIn('wall_clock_discontinuity',sampling_integrity(rows,0,30000)['reasons'])
+tools/tests/test_pr13_runtime_evidence.py:22:        return coverage(rows, start=0, end=600, target_online=100, target_active=100)
+tools/tests/test_pr13_runtime_evidence.py:48:            coverage([], start=0, end=600, target_online=True, target_active=100)
+tools/tests/test_gameplay_load_sampling_contract.py:18:        return coverage(rows, **contract)
+tools/tests/test_gameplay_load_sampling_contract.py:30:        self.assertTrue(sampling_integrity(rows, 0, 600000)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:36:        sampled = sampling_integrity(rows, 0, 600000)
+tools/tests/test_gameplay_load_sampling_contract.py:45:        self.assertFalse(sampling_integrity(rows, 0, 600000)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:51:        self.assertFalse(sampling_integrity(rows, 0, 600000)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:61:                self.assertFalse(sampling_integrity(rows, 0, 600000)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:67:        self.assertFalse(sampling_integrity(rows, -600000, 0)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:68:        self.assertFalse(sampling_integrity(rows, 0, 600000)['passed'])
+tools/tests/test_gameplay_load_sampling_contract.py:74:            sampled = sampling_integrity(rows, 0, 600000)
+tools/tests/test_gameplay_load_sampling_contract.py:78:    def test_missing_tick_breaks_continuous_hold_at_same_coverage(self):
+tools/pr13_runtime_evidence.py:12:def sampling_integrity(samples, started_monotonic_ms, stop_monotonic_ms, maximum_gap_seconds=20):
+tools/pr13_runtime_evidence.py:32:def coverage(samples, *, start, end, target_online, target_active,
+tools/gameplay_load_test.py:248:    coverage([],start=0,end=1,**{k:v for k,v in contract.items() if k not in ('profile','acceptance_scope','launch_interval_seconds')})
+tools/gameplay_load_test.py:421:        load_coverage = coverage(samples,start=hold_start,end=max(hold_start+.001,hold_end),
+tools/gameplay_load_test.py:423:        sampling=sampling_integrity(samples,started_monotonic*1000,stop_issued_monotonic_ns/1000000,contract['maximum_gap'])

@@ -1,0 +1,259 @@
+{
+  "Accepted": false,
+  "scope": "Bounded OFFLINE+POSTGRES real Godot production load/store/gateway, full Program, owned Unix PostgreSQL, actual PB frame loss; no LIVE/full-game profile claim",
+  "commit_sha": "54e7452f971148db0fad313108c6fbdb6c1811ab",
+  "branch": "pr13-ready-response-loss",
+  "changed_files": [
+    "client/tests/ready_frame_proxy.py",
+    "client/tests/run_ready_stop_faults.gd",
+    "client/tests/run_ready_stop_faults.py"
+  ],
+  "worktree_clean_after_build_output_restore": true,
+  "restored_only_tracked_build_output_paths": 2377,
+  "production_sources": {
+    "client/tests/gameplay_load_client.gd": {
+      "sha256": "3126b2edb00c376f5b98ec5b2242d27b8841df69e07a2569ab6fa5148c87f8c9",
+      "identical_to_f93e32da": true
+    },
+    "client/state/game_store.gd": {
+      "sha256": "d374a50c004c0f3a506b407bfd5730daaae2e4d40786cebb17db52c17eff59c4",
+      "identical_to_f93e32da": true
+    },
+    "client/network/gateway.gd": {
+      "sha256": "964bd3e0eea3ff009b6c6ca493952bae14f691ce10e8c6f2f32a6e5ee8138eaf",
+      "identical_to_f93e32da": true
+    }
+  },
+  "runs": [
+    {
+      "directory": "/workspace/pr13-takeover/ready-response-loss-red-01",
+      "source_sha": "848fefc3b7a24aee9ff77002a9729ac8f36633b0",
+      "source_dirty_count": 3,
+      "runner_exit_code": 1,
+      "ok": false,
+      "case_count": 5,
+      "passed_case_count": 2,
+      "manifest_verified": true,
+      "manifest_entry_count": 160,
+      "manifest_sha256": "e388f79ed5718e2cd26f8acacd1ae4ea827884c97a9edc8fb8cd4c49eb46ee39",
+      "server_stopped": true,
+      "owned_postgres_stopped": true,
+      "proxy_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cases": [
+        {
+          "case": "ready_accepted_lost_resume",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_started_lost_reconnect",
+          "passed": false,
+          "postgres_passed": true,
+          "transport_passed": false,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_replies_lost_reconnect",
+          "passed": false,
+          "postgres_passed": true,
+          "transport_passed": false,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_all_lost_stop",
+          "passed": false,
+          "postgres_passed": false,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        }
+      ]
+    },
+    {
+      "directory": "/workspace/pr13-takeover/ready-response-loss-green-01",
+      "source_sha": "848fefc3b7a24aee9ff77002a9729ac8f36633b0",
+      "source_dirty_count": 2335,
+      "runner_exit_code": 0,
+      "ok": true,
+      "case_count": 8,
+      "passed_case_count": 8,
+      "manifest_verified": true,
+      "manifest_entry_count": 190,
+      "manifest_sha256": "fb7547903ec3482584389df95c3feef12dee988cde5c21be7332c82ac61dcfe2",
+      "server_stopped": true,
+      "owned_postgres_stopped": true,
+      "proxy_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cases": [
+        {
+          "case": "ready_accepted_lost_resume",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_started_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_replies_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_all_lost_stop",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "normal_ready",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "required_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "late_required_duplicate",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        }
+      ]
+    },
+    {
+      "directory": "/workspace/pr13-takeover/ready-response-loss-54e7452f-clean",
+      "source_sha": "54e7452f971148db0fad313108c6fbdb6c1811ab",
+      "source_dirty_count": 0,
+      "runner_exit_code": 0,
+      "ok": true,
+      "case_count": 5,
+      "passed_case_count": 5,
+      "manifest_verified": true,
+      "manifest_entry_count": 160,
+      "manifest_sha256": "ded6ece77a730cad54d4862c3128fe24530695bf4a5e14c7aa687e1e4b360e0c",
+      "server_stopped": true,
+      "owned_postgres_stopped": true,
+      "proxy_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cases": [
+        {
+          "case": "ready_accepted_lost_resume",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_started_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_replies_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_lost_reconnect",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        },
+        {
+          "case": "ready_send_all_lost_stop",
+          "passed": true,
+          "postgres_passed": true,
+          "transport_passed": true,
+          "exit_code": 0,
+          "coverage": "OFFLINE_POSTGRES_FULL_PROGRAM"
+        }
+      ]
+    }
+  ],
+  "red_fixture_failures": [
+    "Active legal state omitted from new response-drop predicate; actual client recovery/cleanup passed",
+    "All removed humans still launch owned bot room; incorrect expected zero room snapshot; actual deadline removal/release passed"
+  ],
+  "canonical_rows_copied_verbatim": [
+    "LOAD-04.4",
+    "PR13-A04.4",
+    "PR13-A03.4"
+  ],
+  "remaining": [
+    "LIVE",
+    "same-account three-cycle combinations in this fixture",
+    "old-cycle event combinations",
+    "independent human adjudication",
+    "integration SHA rerun by ROOT"
+  ],
+  "uploads": []
+}

@@ -1,0 +1,75 @@
+{
+  "scope": "PVP passive HUD layout only",
+  "status": "Passed for UI layout;PR13 whole acceptance remains unpassed",
+  "source_parent_release": "5164a490329d844ff18767ec2875de485527a2a7",
+  "product_file": "client/ui/exploration_view.gd",
+  "product_SHA256": "2c514216804d30fa28f511fb9ede8bd3536acd2f349c4c59b66e2a5a0d708c86",
+  "changes": [
+    "PVP hand heading raised to make room for passive panel",
+    "Passive panel enlarged and uses established inner padding",
+    "Priest attributes each keep their label and value together",
+    "Mage Core/Chain,Charge Level,and Signature Charge use complete rows"
+  ],
+  "current_cases": 12,
+  "automatic_layout_passed": 12,
+  "individual_visual_review_passed": 12,
+  "actual_Guardian_snapshot_replay_cases": 4,
+  "explicit_synthetic_Mage_Priest_layout_cases": 8,
+  "active_languages": [
+    "zhCN",
+    "en"
+  ],
+  "sizes": [
+    [
+      1920,
+      1080
+    ],
+    [
+      960,
+      540
+    ]
+  ],
+  "review_incremental_sources": {
+    "Guardian4": "reused unchanged branch from candidate-r2",
+    "Priest4": "reused unchanged branch from candidate-r3",
+    "Mage4": "retested final-r4"
+  },
+  "baseline12_failed_preserved": true,
+  "first_candidate6_clipped_preserved": true,
+  "Priest4_Dummy_audio_exit_warning_preserved": true,
+  "separate_existing_stop_API_cleanup_control": {
+    "checks": 4,
+    "passed": true,
+    "new_worlds": 0,
+    "audio_code_modified": false
+  },
+  "final_Mage_render_exit": 0,
+  "final_Mage_render_warning_count": 0,
+  "gameplay_values_actions_protocol_resources_changed": false,
+  "new_bitmap_assets": 0,
+  "ImageGen_needed": false,
+  "UI_profiles_new_worlds": 0,
+  "synthetic_effective_maximum_HP": "Inherited effective maximum is a layout fixture;no hero balance claim or numeric anomaly classification",
+  "80over70_not_clamped_or_flagged": true,
+  "canonical_register_gate_MAIN_changes": false,
+  "official_counts": {
+    "Accepted": 55,
+    "Partial": 67,
+    "Ready": 10,
+    "remaining": 77,
+    "tasks": 132,
+    "cases": 396
+  },
+  "full100_and_original_LIVE_profiles_not_promoted": true,
+  "thresholds_relaxed_for_this_UI_change": false,
+  "package_freshness": "Previous c843 full PCK remains immutable evidence for its source;rebuild the complete current package before later current-capacity claims",
+  "raw_pngs_and_private_controls_not_in_Git": true,
+  "evidence": {
+    "final12_review_SHA256": "2b45384ca9e9ce214be295f3b2288163228b3254c44eba1b165a2a1cf4021602",
+    "base_render_result_SHA256": "b0a8f28932719656db3da7ca2456ac48597783c6f8b07b25baf86211f88fe6ce",
+    "candidate_r2_result_SHA256": "c8e58e099b86ac67b0e19e43b88bff39a41ecc45c9f41648d1a8af081a006aaa",
+    "Priest_result_SHA256": "e398a87379de4f92c73b558b98d3978f5844aafb25651c103cd55f61b4d1b3c6",
+    "Mage_result_SHA256": "9b2cd0874fa5c850ec9dc8a19753d64179c2afdb3796cd683dcfd55d87c26de3",
+    "audio_stop_control_SHA256": "afe204f38c51574e196a6218183ed51e6f1a6bc39c05aee9be9ea77bbcfe6572"
+  }
+}

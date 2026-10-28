@@ -1,0 +1,14 @@
+{
+  "task_id": "LOAD-07.1",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T04:24:55.000487+08:00",
+  "human_authorization": "本goal继续自动云测试和验收；具体地址/合成载荷证据经自动审查复核允许，范围最多8个新客户端。",
+  "reason": "三规范案例OFFLINE/LIVE已逐项核对：20秒真实探测交付阻塞明确记录且无组追赶，2worker全占约6秒停止且不扩组，墙钟前跳仍按6秒单调组间隔。全部实际客户端/依赖/清理归属可查。额外UTC吞吐和分段错误已修复、120回归及真实审计保守重算，原错误报告不覆盖，当前调度段未改。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load071-current-LIVE-three-and-clock-fix-20261017/case-review.json",
+  "scope": "有界探测/单调组调度及证据时钟可靠性合同；原容量/自然周期/收益/真人/渲染不升级。",
+  "original_capacity_runs_passed": false,
+  "old15percent_disk_limit_passed": false,
+  "business_or_sampling_pass_criteria_relaxed": false,
+  "rollback": "切回父register撤销本项验收，保留所有原件和时钟缺陷修复；本地Python元数据修复可单独回退但会恢复错误RPS，正式环境未改。"
+}

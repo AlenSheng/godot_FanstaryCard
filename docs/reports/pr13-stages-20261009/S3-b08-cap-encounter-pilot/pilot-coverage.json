@@ -1,0 +1,1617 @@
+{
+  "ok": true,
+  "encounters": 720,
+  "units": 120,
+  "actual_casts": 33606,
+  "actual_ticks": 583820,
+  "aggregate_case_denominators": {
+    "BaselinePurple/all_casts": 16904,
+    "BaselinePurple/T03_no_shield": 13716,
+    "BaselinePurple/all_ticks": 293300,
+    "BaselinePurple/T01_below_cap_ticks": 154736,
+    "BaselinePurple/T02_equipment_floor_ticks": 293300,
+    "BaselinePurple/T02_card_speed_ticks": 145600,
+    "BaselinePurple/T02_PVE_conversion_ticks": 22575,
+    "BaselinePurple/T02_expiry_ticks": 2120,
+    "BaselinePurple/T03_positive_shield": 3188,
+    "SingleOrangeHead/all_casts": 16702,
+    "SingleOrangeHead/T03_no_shield": 13543,
+    "SingleOrangeHead/all_ticks": 290520,
+    "SingleOrangeHead/T01_below_cap_ticks": 153364,
+    "SingleOrangeHead/T02_equipment_floor_ticks": 290520,
+    "SingleOrangeHead/T02_card_speed_ticks": 145766,
+    "SingleOrangeHead/T02_PVE_conversion_ticks": 22221,
+    "SingleOrangeHead/T02_expiry_ticks": 2101,
+    "SingleOrangeHead/T03_positive_shield": 3159,
+    "BaselinePurple/T01_capped_ticks": 138564,
+    "SingleOrangeHead/T01_capped_ticks": 137156,
+    "BaselinePurple/T03_overflow": 1858,
+    "SingleOrangeHead/T03_overflow": 1854,
+    "BaselinePurple/T03_full_shield": 693,
+    "SingleOrangeHead/T03_full_shield": 676
+  },
+  "pilot_applicability_gaps": [
+    {
+      "unit": "Mage-O1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-O6-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-O6-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-E1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-E1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Mage-BOSS-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-O6-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-O6-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-E1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-E1-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Fire-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Wood-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Earth-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Metal-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L0",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5",
+      "arm": "BaselinePurple",
+      "predicate": "T03_overflow"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_full_shield"
+    },
+    {
+      "unit": "Priest-BOSS-Water-L5",
+      "arm": "SingleOrangeHead",
+      "predicate": "T03_overflow"
+    }
+  ],
+  "full_experiment_complete": false,
+  "main_acceptance_granted": false
+}

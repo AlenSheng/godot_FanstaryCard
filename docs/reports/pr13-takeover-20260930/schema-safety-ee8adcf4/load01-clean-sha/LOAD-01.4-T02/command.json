@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/workspace/relicround-env/venv/bin/python",
+    "-c",
+    "import json,os,pathlib,sys,time\nreport=pathlib.Path(sys.argv[1]); time.sleep(float(sys.argv[2]))\nrow=dict(client_id='owned',pid=os.getpid(),run_id='frozen-run',process_epoch='epoch-A',status_seq=1,\n now_unix_ms=int(time.time()*1000),online=True,room=True,last_progress_age_ms=0,event_seq_max=1)\nevent=dict(run_id='frozen-run',client_id='owned',process_epoch='epoch-A',event_seq=1,type='http',\n at_unix_ms=row['now_unix_ms'],phase='playing',duration_ms=5,status=200,ok=True)\nevents=[event]\nif sys.argv[4]=='lifecycle':\n events=[dict(event,type='lifecycle',event_type=kind,cycle_id='owned:1',match_id='M',event_seq=index)\n  for index,kind in enumerate(['cycle.started','settlement.acknowledged','cycle.completed'],1)]\n row.update(event_seq_max=3,cycles_completed=1)\nrow.update(telemetry=events,operations=[] if sys.argv[4]=='lifecycle' else [event])\npathlib.Path(str(report)+'.telemetry.jsonl').write_text(''.join(json.dumps(e)+'\\n' for e in events))\npathlib.Path(str(report)+'.status.json').write_text(json.dumps(row))\nprint(json.dumps(dict(pid=os.getpid(),status_written=True)),flush=True)\nif sys.argv[3]!='none': raise SystemExit(int(sys.argv[3]))\ntime.sleep(15)\n",
+    "/workspace/pr13-takeover/schema-safety-review/load01-final-clean-sha/LOAD-01.4-T02/client.json",
+    "0",
+    "7",
+    "http"
+  ],
+  "pid": 96315,
+  "started_wall_ms": 1790808811144,
+  "started_monotonic_ms": 28150646.249217
+}

@@ -1,0 +1,349 @@
+{
+  "kind": "Exact_PR13_CI_terminal_receipt",
+  "source_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+  "checkout_merge_sha": "36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+  "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+  "runs": [
+    {
+      "run_id": 36810322285,
+      "name": "PR13 specification checks",
+      "head_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+      "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-01T03:23:58Z",
+      "updated_at": "2026-10-01T03:25:09Z",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36810322285",
+      "jobs": [
+        {
+          "id": 110203731429,
+          "name": "specification",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:25:08Z",
+          "elapsed_seconds": 66
+        }
+      ],
+      "timing": {
+        "billable": {
+          "UBUNTU": {
+            "total_ms": 0,
+            "jobs": 1,
+            "job_runs": [
+              {
+                "job_id": 110203731429,
+                "duration_ms": 0
+              }
+            ]
+          }
+        },
+        "run_duration_ms": 71000
+      }
+    },
+    {
+      "run_id": 36810322289,
+      "name": "Numerical regression",
+      "head_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+      "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-01T03:23:58Z",
+      "updated_at": "2026-10-01T03:26:30Z",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36810322289",
+      "jobs": [
+        {
+          "id": 110203731598,
+          "name": "domain",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:26:29Z",
+          "elapsed_seconds": 147
+        }
+      ],
+      "timing": {
+        "billable": {
+          "WINDOWS": {
+            "total_ms": 0,
+            "jobs": 1,
+            "job_runs": [
+              {
+                "job_id": 110203731598,
+                "duration_ms": 0
+              }
+            ]
+          }
+        },
+        "run_duration_ms": 152000
+      }
+    },
+    {
+      "run_id": 36810322329,
+      "name": "Numerical client checks",
+      "head_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+      "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-01T03:23:58Z",
+      "updated_at": "2026-10-01T03:27:41Z",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36810322329",
+      "jobs": [
+        {
+          "id": 110203731557,
+          "name": "godot",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:27:40Z",
+          "elapsed_seconds": 218
+        }
+      ],
+      "timing": {
+        "billable": {
+          "UBUNTU": {
+            "total_ms": 0,
+            "jobs": 1,
+            "job_runs": [
+              {
+                "job_id": 110203731557,
+                "duration_ms": 0
+              }
+            ]
+          }
+        },
+        "run_duration_ms": 223000
+      }
+    },
+    {
+      "run_id": 36810322350,
+      "name": "Gameplay load offline checks",
+      "head_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+      "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-01T03:23:58Z",
+      "updated_at": "2026-10-01T03:42:46Z",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36810322350",
+      "jobs": [
+        {
+          "id": 110203731646,
+          "name": "client",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:27:46Z",
+          "elapsed_seconds": 224
+        },
+        {
+          "id": 110203731729,
+          "name": "server-postgres",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_at": "2026-10-01T03:24:38Z",
+          "completed_at": "2026-10-01T03:42:45Z",
+          "elapsed_seconds": 1087
+        },
+        {
+          "id": 110203731794,
+          "name": "server-contract",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:03Z",
+          "completed_at": "2026-10-01T03:26:33Z",
+          "elapsed_seconds": 150
+        },
+        {
+          "id": 110203731831,
+          "name": "accounting",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:25:02Z",
+          "elapsed_seconds": 60
+        }
+      ],
+      "timing": {
+        "billable": {
+          "UBUNTU": {
+            "total_ms": 0,
+            "jobs": 3,
+            "job_runs": [
+              {
+                "job_id": 110203731646,
+                "duration_ms": 0
+              },
+              {
+                "job_id": 110203731729,
+                "duration_ms": 0
+              },
+              {
+                "job_id": 110203731831,
+                "duration_ms": 0
+              }
+            ]
+          },
+          "WINDOWS": {
+            "total_ms": 0,
+            "jobs": 1,
+            "job_runs": [
+              {
+                "job_id": 110203731794,
+                "duration_ms": 0
+              }
+            ]
+          }
+        },
+        "run_duration_ms": 1128000
+      }
+    },
+    {
+      "run_id": 36810322290,
+      "name": "Numerical full acceptance",
+      "head_sha": "0d4ec7f23df806da7a86f9d954033a718349de7e",
+      "base_sha": "65361bcc27c51c28651c86c5dbba4f083a9b39e0",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-01T03:23:58Z",
+      "updated_at": "2026-10-01T03:42:39Z",
+      "url": "https://github.com/AlenSheng/godot_FanstaryCard/actions/runs/36810322290",
+      "jobs": [
+        {
+          "id": 110203732006,
+          "name": "acceptance",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-01T03:24:02Z",
+          "completed_at": "2026-10-01T03:42:39Z",
+          "elapsed_seconds": 1117
+        }
+      ],
+      "timing": {
+        "billable": {
+          "UBUNTU": {
+            "total_ms": 0,
+            "jobs": 1,
+            "job_runs": [
+              {
+                "job_id": 110203732006,
+                "duration_ms": 0
+              }
+            ]
+          }
+        },
+        "run_duration_ms": 1121000
+      }
+    }
+  ],
+  "workflow_results": {
+    "success": 4,
+    "failure": 1,
+    "cancelled": 0
+  },
+  "all_attempts": 1,
+  "reruns": 0,
+  "reason": "One automatic candidate CI following minimal Unix/TCP relay fix; no rerun of middle/history SHAs.",
+  "job_elapsed_seconds": 3069,
+  "job_elapsed_minutes": 51.15,
+  "billed_minutes": null,
+  "missing_reasons": {
+    "billed_minutes": "Timing API reports zero billable.total_ms; it does not establish actual billing/quota consumption. Actual job timestamp durations recorded without monetary inference."
+  },
+  "budgets_changed": false,
+  "scope": {
+    "production_changes": 0,
+    "UI_changes": 0,
+    "workflow_changes": 0
+  },
+  "suites": {
+    "acceptance_Domain": {
+      "Passed": 317,
+      "Failed": 0,
+      "Skipped": 0
+    },
+    "acceptance_Server": {
+      "Passed": 302,
+      "Failed": 0,
+      "Skipped": 0
+    },
+    "gameplay_Server_Postgres": {
+      "Passed": 301,
+      "Failed": 1,
+      "Skipped": 0
+    },
+    "gameplay_Server_offline_Windows": {
+      "Passed": 206,
+      "Failed": 0,
+      "Skipped": 96
+    },
+    "Python": {
+      "Passed": 122,
+      "Failed": 0
+    }
+  },
+  "relay_actual_transaction_cases": {
+    "acceptance": {
+      "Passed": 2,
+      "Failed": 0,
+      "Skipped": 0
+    },
+    "gameplay": {
+      "Passed": 2,
+      "Failed": 0,
+      "Skipped": 0
+    }
+  },
+  "new_failure": {
+    "test": "Real_LOAD02_timeout_STOP_preserves_original_business_truth(timeout-before-stop, LOAD-02.2-T01)",
+    "file": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+    "line": 60,
+    "error": "JsonReaderException: input contains no JSON tokens.",
+    "first_failed_read": "report.stop-observed.json",
+    "later_retained_file": {
+      "bytes": 1877,
+      "sha256": "1b2ed8848a9291b9bbdee51601fb897603bc613aa1f702d8707bdc5034a7a0ae",
+      "valid_json": true,
+      "partition": {
+        "started": 1,
+        "failed": 1,
+        "completed": 0,
+        "cancelled": 0,
+        "pending": 0,
+        "incomplete": 0
+      },
+      "stop_requested": true
+    },
+    "static_path": "GDScript _write_observation opens final path then writes/closes; C# waits only File.Exists before parsing. Actual initial empty read and final complete JSON establish a receipt publication/read window.",
+    "classification": "Harness receipt read/publication failure at new CI source; preserve failed unfiltered matrix. Does not change earlier MAIN original-source acceptance.",
+    "fix_applied": false,
+    "minimum_next_design": "Publish isolated harness observation to same-directory temporary path; close, then atomic rename to final path. Preserve current deadlines, assertions and first-failure/late evidence; separately reproduce and run real three PG/client windows."
+  },
+  "old_independent_A05_failure_closed": false,
+  "all132_accepted": false,
+  "gates_accepted": false,
+  "raw_artifacts": [
+    {
+      "id": 11138764870,
+      "name": "gameplay-load-postgres-36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+      "bytes": 3051268,
+      "sha256": "cd9e4fcfaa9de99351e9585efeeb061a88021ef1f3917d98662ad0ceaa041dc9",
+      "zip_entries": 1059,
+      "CRC_check": true,
+      "local_only": true
+    },
+    {
+      "id": 11139970644,
+      "name": "numerical-acceptance-36f0a7b7a17e22968f36d6be49fe9d110f8098d5",
+      "bytes": 3562464,
+      "sha256": "6345b91cf69c0e481f8a5a09b03b91aa7b055d766e9f731434a6b6270dfb3ad8",
+      "zip_entries": 1138,
+      "CRC_check": true,
+      "local_only": true
+    }
+  ]
+}

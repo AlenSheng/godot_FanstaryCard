@@ -1,3 +1,5 @@
+using FantasyCard.Contracts.Http;
+using FantasyCard.Server.ProtobufHttp;
 using System.Text.Json;
 using FantasyCard.Contracts.Mail;
 using FantasyCard.Server.Common;
@@ -7,34 +9,46 @@ namespace FantasyCard.Server.Mail;
 
 public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
 {
-    public async Task<MailListResponse> GetAsync(Guid playerId, CancellationToken cancellationToken)
+    public async Task<MailListResponse> GetAsync(Guid playerId, CancellationToken cancellationToken, int limit = 200, int offset = 0)
     {
-        await using var command = dataSource.CreateCommand(
-            """
-            SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text
-            FROM mail_messages
-            WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
-            ORDER BY sent_at DESC,mail_id DESC
-            """);
-        command.Parameters.AddWithValue(playerId);
-        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var items = new List<MailItemResponse>();
-        while (await reader.ReadAsync(cancellationToken))
+        // End the reader's scope before borrowing another connection. Npgsql reuses
+        // readers: an early Dispose followed by scope disposal can close a new borrower.
         {
-            items.Add(new MailItemResponse(
-                reader.GetGuid(0),
-                reader.GetString(1),
-                reader.GetString(2),
-                reader.GetString(3),
-                reader.GetFieldValue<DateTimeOffset>(4),
-                reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5),
-                !reader.IsDBNull(6),
-                !reader.IsDBNull(7),
-                ReadAttachments(reader.GetString(8))));
+            await using var command = dataSource.CreateCommand(
+                """
+                SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en
+                FROM mail_messages
+                WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
+                ORDER BY sent_at DESC,mail_id DESC LIMIT $3 OFFSET $4
+                """);
+            command.Parameters.AddWithValue(playerId);
+            command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            command.Parameters.AddWithValue(limit);
+            command.Parameters.AddWithValue(offset);
+            await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+            while (await reader.ReadAsync(cancellationToken))
+            {
+                items.Add(new MailItemResponse(
+                    reader.GetGuid(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetFieldValue<DateTimeOffset>(4),
+                    reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5),
+                    !reader.IsDBNull(6),
+                    !reader.IsDBNull(7),
+                    ReadAttachments(reader.GetString(8)),
+                    reader.GetString(9),
+                    reader.GetString(10)));
+            }
         }
 
-        return new MailListResponse(items, items.Count(item => !item.IsRead));
+        await using var unread = dataSource.CreateCommand("SELECT COUNT(*) FROM mail_messages WHERE player_id=$1 AND read_at IS NULL AND (expires_at IS NULL OR expires_at > $2)");
+        unread.Parameters.AddWithValue(playerId);
+        unread.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        var unreadCount = checked((int)(long)(await unread.ExecuteScalarAsync(cancellationToken))!);
+        return new MailListResponse(items, unreadCount);
     }
 
     public async Task<bool> MarkReadAsync(Guid playerId, Guid mailId, CancellationToken cancellationToken)
@@ -78,6 +92,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             connection, transaction, playerId, "mail.claim", requestId, requestHash, cancellationToken);
         if (replay is not null)
         {
+            GameResponseBudget.EnsureFits("MailClaimResponse", replay);
             await transaction.CommitAsync(cancellationToken);
             return replay;
         }
@@ -89,6 +104,8 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         }
 
         var attachments = ReadAttachments(payload);
+        var response = new MailClaimResponse(mailId, false, attachments);
+        GameResponseBudget.EnsureFits("MailClaimResponse", response);
         foreach (var attachment in attachments)
             await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
 
@@ -99,7 +116,6 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         update.Parameters.AddWithValue(mailId);
         update.Parameters.AddWithValue(playerId);
         await update.ExecuteNonQueryAsync(cancellationToken);
-        var response = new MailClaimResponse(mailId, false, attachments);
         await PersistentIdempotency.WriteAsync(
             connection, transaction, playerId, "mail.claim", requestId, requestHash, response, now, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
@@ -123,13 +139,14 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             connection, transaction, playerId, "mail.claim-all", requestId, requestHash, cancellationToken);
         if (replay is not null)
         {
+            GameResponseBudget.EnsureFits("MailClaimAllResponse", replay);
             await transaction.CommitAsync(cancellationToken);
             return replay;
         }
 
         var pending = new List<(Guid Id, string Payload)>();
         await using (var query = new NpgsqlCommand(
-            "SELECT mail_id,attachments_json::text FROM mail_messages WHERE player_id=$1 AND claimed_at IS NULL AND (expires_at IS NULL OR expires_at > $2) ORDER BY sent_at,mail_id FOR UPDATE",
+            "SELECT mail_id,attachments_json::text FROM mail_messages WHERE player_id=$1 AND claimed_at IS NULL AND (expires_at IS NULL OR expires_at > $2) ORDER BY sent_at,mail_id LIMIT 4097 FOR UPDATE",
             connection, transaction))
         {
             query.Parameters.AddWithValue(playerId);
@@ -139,25 +156,25 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                 pending.Add((reader.GetGuid(0), reader.GetString(1)));
         }
 
-        var attachmentCount = 0;
-        var claims = new List<MailClaimResponse>(pending.Count);
-        foreach (var mail in pending)
+        if (pending.Count > HttpProtocolRegistry.MaximumCollectionItems)
+            throw new BadHttpRequestException("Too many pending mails for one claim-all response. Claim individual mails first.", 413);
+        var claims = pending.Select(mail => new MailClaimResponse(mail.Id, false, ReadAttachments(mail.Payload))).ToList();
+        var attachmentCount = claims.Sum(claim => claim.Granted.Count);
+        var response = new MailClaimAllResponse(pending.Count, attachmentCount, claims);
+        GameResponseBudget.EnsureFits("MailClaimAllResponse", response);
+        foreach (var claim in claims)
         {
-            var attachments = ReadAttachments(mail.Payload);
-            foreach (var attachment in attachments)
+            foreach (var attachment in claim.Granted)
                 await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
-            attachmentCount += attachments.Count;
             await using var update = new NpgsqlCommand(
                 "UPDATE mail_messages SET claimed_at=$1,read_at=COALESCE(read_at,$1),version=version+1 WHERE mail_id=$2 AND player_id=$3",
                 connection, transaction);
             update.Parameters.AddWithValue(now);
-            update.Parameters.AddWithValue(mail.Id);
+            update.Parameters.AddWithValue(claim.MailId);
             update.Parameters.AddWithValue(playerId);
             await update.ExecuteNonQueryAsync(cancellationToken);
-            claims.Add(new MailClaimResponse(mail.Id, false, attachments));
         }
 
-        var response = new MailClaimAllResponse(pending.Count, attachmentCount, claims);
         await PersistentIdempotency.WriteAsync(
             connection, transaction, playerId, "mail.claim-all", requestId, requestHash, response, now, cancellationToken);
         await transaction.CommitAsync(cancellationToken);

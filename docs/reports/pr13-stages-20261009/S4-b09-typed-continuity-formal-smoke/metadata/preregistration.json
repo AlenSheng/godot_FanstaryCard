@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B09.4",
+  "status": "FormalPreregistered_CloudSmokePending",
+  "main_matrix": {
+    "heroes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "blocks": [
+      {
+        "block": 0,
+        "seed_start": 479001,
+        "seed_end": 480000,
+        "paired_seeds": 1000
+      },
+      {
+        "block": 1,
+        "seed_start": 480001,
+        "seed_end": 481000,
+        "paired_seeds": 1000
+      },
+      {
+        "block": 2,
+        "seed_start": 481001,
+        "seed_end": 482000,
+        "paired_seeds": 1000
+      }
+    ],
+    "profiles": [
+      "OfficialLegacy",
+      "OptionalCap3",
+      "OptionalCap5",
+      "OptionalCap8"
+    ],
+    "routes": 36000,
+    "paired_seeds_per_hero": 3000,
+    "units": 9,
+    "routes_per_unit": 4000,
+    "all_declared_strata_required": true
+  },
+  "simulation": {
+    "limit_seconds": 1800,
+    "tick_seconds": 0.1,
+    "raw_native_IsBot": false,
+    "maps_HP_monsters_and_offer_generation_unmodified": true,
+    "legal_unique_base20": "C01-C13 plus seven hero cards, level zero and weapon zero",
+    "draw_order": "server hand order preserved",
+    "policy": "Visible-only hold3/core2 unless HP<=25%; select all hand in existing order; preferred core from known initial deck composition; optional same-core positive elemental offers, visibly stronger replacement only; public legal inward moves; heal at HP<=50% or full bag, otherwise native fragment reward; extraction after three visited cells or low HP",
+    "controlled_choice_wait_seconds": 2,
+    "controlled_wait_is_human_timing": false,
+    "mortal_and_censored_outcomes_retained": true,
+    "library_order_permutation_and_information_access_rejection_per_route": true
+  },
+  "typed_wire": {
+    "actual_codec_decode_router_and_RoomActor_used": true,
+    "original_command_and_response_bytes_measured": true,
+    "trace_sha256_preserved_per_route": true,
+    "same_request_count_crosscheck_with_intents_required": true,
+    "public_snapshot_and_choice_wire_vectors_for_first_seed_per_unit": true,
+    "live_WSS_HTTP_latency_or_authentication_claimed": false,
+    "command_types": [
+      "battle.play_cards",
+      "monster.choose",
+      "reward.choice.claim",
+      "room.move",
+      "action.extract"
+    ]
+  },
+  "economy": {
+    "actual_native_inventory_kind_itemID_quantity_and_safe_flag_preserved": true,
+    "actual_retained_extract_or_safe_items_preserved": true,
+    "no_invented_currency_exchange_or_mark_to_market": true,
+    "no_permanent_account_asset_write_or_refund": true,
+    "death_relic_or_lost_assets_recorded_by_end_inventory_and_outcome": true
+  },
+  "primary_analysis": {
+    "unit": "paired seed within hero, all three nonoverlapping blocks retained",
+    "primary": "Extraction probability at common 1800 second observation horizon",
+    "contrasts": [
+      "cap3 minus official",
+      "cap5 minus official",
+      "cap8 minus official"
+    ],
+    "primary_family_hypotheses": 9,
+    "familywise_alpha": 0.05,
+    "multiplicity": "Bonferroni across three heroes and three capacities",
+    "paired_seed_cluster_bootstrap_resamples": 10000,
+    "bootstrap_seed": 482999,
+    "report_unadjusted_CI": 0.95,
+    "report_multiplicity_adjusted_CI": 0.9944444444444445,
+    "stable_benefit": "Adjusted lower bound of extraction improvement >0; insufficient precision or censoring gives Inconclusive, never forced benefit",
+    "secondary": [
+      "core available seconds/core casts, normalized by whole observation interval",
+      "native typed request and response counts/bytes",
+      "controlled choice waits and measured native command wall time",
+      "CPU/wall/resource minutes and cumulative process peak RSS",
+      "actual retained quantities by native economic item kind, no invented pricing",
+      "all-outcome extraction cumulative incidence at 90/180/600/1800 seconds"
+    ],
+    "side_effects_separate_from_benefits": true,
+    "NoChange": "Official default remains unchanged if stable benefit is unproven or side effects/validity are unacceptable; record reason and evidence, never relabel Inconclusive as proven no effect"
+  },
+  "negative_controls": {
+    "T01": "Cap5 core opportunity and interruption effects reported separately, even if benefits are conditional",
+    "T02": "Injected request for hidden library order invalidates experiment; visible decision invariant under detached hidden-order permutation",
+    "T03": "No stable benefit leaves official defaults and NoChange with evidence/precision limits"
+  },
+  "development_smoke": {
+    "heroes": [
+      "Mage",
+      "Priest",
+      "Guardian"
+    ],
+    "seed_start": 487001,
+    "seeds": 3,
+    "routes": 36,
+    "excluded_from_formal_counts": true
+  },
+  "runtime": {
+    "compiled_native_source_sha": "5b66fc0cb601a7bf7a3b2439daea1a3a9db0f438",
+    "assemblies_from_complete_G_verified_native_backup": [
+      {
+        "name": "FantasyCard.Contracts.dll",
+        "bytes": 780288,
+        "sha256": "a540545644b284926c125d1a3b2b5789c7fbc6a678a61345dabbcecfc649075b"
+      },
+      {
+        "name": "FantasyCard.Domain.dll",
+        "bytes": 522752,
+        "sha256": "844065af3158b40787699752915ed95befbd3c660c2b10dce501f9f4fc29e352"
+      },
+      {
+        "name": "FantasyCard.Server.dll",
+        "bytes": 1250304,
+        "sha256": "41bcae8847dce31a5fa92a2e1b4276690369441f8614bd57a056ca962a09ac7e"
+      },
+      {
+        "name": "Google.Protobuf.dll",
+        "bytes": 497304,
+        "sha256": "d792b92533fec450d21b9ac9e28b337fe25ac4982380eb932027b5fcc2036bf3"
+      },
+      {
+        "name": "Npgsql.dll",
+        "bytes": 1478656,
+        "sha256": "e2bcafe1660fe4543fe9dfcabed972ec8d32259e5ea8009462ce1de23c7034c2"
+      },
+      {
+        "name": "OpenTelemetry.Api.dll",
+        "bytes": 81408,
+        "sha256": "fb4853791d5052bdcced36355b513664c027cf7d5b4b18a8f98b9bee9adf1962"
+      },
+      {
+        "name": "OpenTelemetry.Api.ProviderBuilderExtensions.dll",
+        "bytes": 23552,
+        "sha256": "fc7d1f8703be185cf9f49b2da505876a63c09d401728725a1ffd333fc896f998"
+      },
+      {
+        "name": "OpenTelemetry.dll",
+        "bytes": 271360,
+        "sha256": "06f4ca5adbb36554a891aaa7c550c578988357c1588a87e8ce290dc19a4b0343"
+      },
+      {
+        "name": "OpenTelemetry.Exporter.OpenTelemetryProtocol.dll",
+        "bytes": 185856,
+        "sha256": "04983880521bd94f83e476e0cd1379ebc659a27ccf5ab251746eb4262df666cc"
+      },
+      {
+        "name": "OpenTelemetry.Extensions.Hosting.dll",
+        "bytes": 10752,
+        "sha256": "275f3250071cddb952df7acd3d0330eb7766bc25766100c04a8f9e0cccc40922"
+      },
+      {
+        "name": "OpenTelemetry.Instrumentation.AspNetCore.dll",
+        "bytes": 64512,
+        "sha256": "a68e37e3682a33d0302b940c253acadfad62c7265b50e4e91b9fef7510409a9c"
+      },
+      {
+        "name": "OpenTelemetry.Instrumentation.Runtime.dll",
+        "bytes": 26624,
+        "sha256": "d5fe7298830a7bcb74d7b2c950974ed7ed22fd8e77905947fa08eb659ebee531"
+      }
+    ],
+    "current_Server_Domain_Contracts_config_protocol_Git_equivalence_required": true
+  },
+  "cloud_guards": {
+    "memory_floor_bytes": 500000000,
+    "root_free_fraction": 0.15,
+    "container_memory_bytes": 1073741824,
+    "owned_output_tmpfs_bytes": 268435456,
+    "network": "none",
+    "single_original_native_lease": true,
+    "failed_originals_preserved": true
+  },
+  "remaining_render": [
+    "Native source vectors consumed by current product Gateway/GameStore",
+    "actual current choice UI command/timing/capture, both locales and required frame/width configurations",
+    "canonical command/exit/manifest deliverables and current integration provenance"
+  ],
+  "formal_main_statistics_not_yet_run": true,
+  "production_rule_changed": false,
+  "human_experience_in_scope": false,
+  "whole_task_accepted": false,
+  "source_files": [
+    {
+      "path": "tools/pr13_pool_continuity_formal/ContinuityFormal.csproj",
+      "sha256": "abfdd23fa246b939e7ee48ed64b6092168f6eb6410c4f6f2fa0ce0528af60446"
+    },
+    {
+      "path": "tools/pr13_pool_continuity_formal/NuGet.Config",
+      "sha256": "2142cfb2dfa2c7feefbe40fabcc68b0dfecadafa99a1db9b70239d977cf2a7ef"
+    },
+    {
+      "path": "tools/pr13_pool_continuity_formal/Program.cs",
+      "sha256": "744230d0e19d926349f532d5250e5577072d2edcfdf4be180f2c6e5b4a1f68b7"
+    },
+    {
+      "path": "tools/cloud/pr13/b09_continuity_formal_inner.py",
+      "sha256": "681fd85c8eb066e14decf6e543a00afb0ea7df1e41897830e8fc33bc5dded23d"
+    }
+  ]
+}

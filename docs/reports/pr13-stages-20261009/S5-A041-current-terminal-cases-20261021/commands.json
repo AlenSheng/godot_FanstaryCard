@@ -1,0 +1,54 @@
+{
+  "cases": {
+    "missing-ticket": {
+      "started": {
+        "PID": 31,
+        "command": [
+          "/control/godot_verbose",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--path",
+          "/repo/client",
+          "res://tests/A041_terminal.tscn"
+        ],
+        "expected_original_exit": 1,
+        "scope": "Actual inheritedoriginalfullrunner guard fails explicitly; fixture verdict separate; no completion credit"
+      },
+      "terminal": {
+        "PID": 31,
+        "actual_exit": 1,
+        "expected_original_exit1": true
+      }
+    },
+    "expired": {
+      "started": {
+        "PID": 48,
+        "command": [
+          "/control/godot_verbose",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--max-fps",
+          "60",
+          "--path",
+          "/repo/client",
+          "res://tests/A041_terminal.tscn"
+        ],
+        "expected_original_exit": 1,
+        "scope": "Actual inheritedoriginalfullrunner guard fails explicitly; fixture verdict separate; no completion credit"
+      },
+      "terminal": {
+        "PID": 48,
+        "actual_exit": 1,
+        "expected_original_exit1": true
+      }
+    }
+  },
+  "versions": "Godot4.7.2/currentProgram8eb/config49ce/PG18.6",
+  "scope": "Originalfullrunner expectednegative terminal, source/package108/client2151 exact; no natural/capacity/render/humanclaim",
+  "skips": [],
+  "inherited_dispatch_summary_label": "expected_dedicatedNative_actor0=true isunusedcopiedmetadata; preregistration, actual Native-started expected1 and actualservice assert child.returncode==1. Originalsummary retained; observed exits1 arethe intendedcontract."
+}

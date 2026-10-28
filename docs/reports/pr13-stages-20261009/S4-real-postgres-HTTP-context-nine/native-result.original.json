@@ -1,0 +1,160 @@
+{
+  "ok": true,
+  "production_source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+  "native_source_cache_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+  "MAIN_accepted": false,
+  "exit_code": 0,
+  "oom_killed": false,
+  "inner": {
+    "ok": true,
+    "MAIN_accepted": false,
+    "production_source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+    "arms": [
+      {
+        "arm": "per-request",
+        "native_exit_code": 0,
+        "native_rows": 13,
+        "native_case_ids": [
+          "LOAD-08.3-T01",
+          "LOAD-06.1-T01",
+          "PR13-A06.3-T02",
+          "LOAD-06.1-T02",
+          "PR13-A06.3-T01",
+          "LOAD-08.2-T01",
+          "LOAD-08.2-T03",
+          "PR13-A06.2-T02",
+          "LOAD-08.3-T02",
+          "PR13-A06.3-T03",
+          "LOAD-08.3-T03",
+          "LOAD-08.2-T02",
+          "LOAD-06.1-T03"
+        ],
+        "players": [
+          {
+            "gold_mail_claimed_via_production_API": true,
+            "initial_gold": 100000,
+            "side": "A",
+            "user_id": "01a12db6-c21f-768e-bc27-981c8e377994"
+          },
+          {
+            "gold_mail_claimed_via_production_API": true,
+            "initial_gold": 100000,
+            "side": "B",
+            "user_id": "01a12db6-c466-73b1-b784-487d3eae66e2"
+          }
+        ],
+        "lost_request_id": "godot-c4977619fad8ff13a8d4dff2b0e257e0",
+        "overlap_request_id": "godot-ca1ae228347c8fd0fdddd518cdac4351",
+        "actual_committed_responses_before_503": 1,
+        "final_PG_postconditions_still_required": true
+      },
+      {
+        "arm": "reusable",
+        "native_exit_code": 0,
+        "native_rows": 13,
+        "native_case_ids": [
+          "LOAD-08.3-T01",
+          "LOAD-06.1-T01",
+          "PR13-A06.3-T02",
+          "LOAD-06.1-T02",
+          "PR13-A06.3-T01",
+          "LOAD-08.2-T01",
+          "LOAD-08.2-T03",
+          "PR13-A06.2-T02",
+          "LOAD-08.3-T02",
+          "PR13-A06.3-T03",
+          "LOAD-08.3-T03",
+          "LOAD-08.2-T02",
+          "LOAD-06.1-T03"
+        ],
+        "players": [
+          {
+            "gold_mail_claimed_via_production_API": true,
+            "initial_gold": 100000,
+            "side": "A",
+            "user_id": "01a12db6-fabf-7f19-bde3-dcdc2798c167"
+          },
+          {
+            "gold_mail_claimed_via_production_API": true,
+            "initial_gold": 100000,
+            "side": "B",
+            "user_id": "01a12db6-fc2d-7f36-bac4-a85a2033603d"
+          }
+        ],
+        "lost_request_id": "godot-740f5dc0c9d65bca2b3a5a83307c0934",
+        "overlap_request_id": "godot-9829866118b259a88e36870f417856db",
+        "actual_committed_responses_before_503": 1,
+        "final_PG_postconditions_still_required": true
+      }
+    ],
+    "phases": [
+      {
+        "name": "restore",
+        "exit_code": 0
+      },
+      {
+        "name": "build",
+        "exit_code": 0
+      },
+      {
+        "name": "godot-import",
+        "exit_code": 0
+      }
+    ],
+    "frozen_executed_client_bytes_unchanged": true,
+    "final_PG_postconditions_still_required": true,
+    "owned_backend_stopped": true
+  },
+  "original_database_postconditions": [
+    {
+      "arm": "per-request",
+      "actual": {
+        "player_id": "01a12db6-c21f-768e-bc27-981c8e377994",
+        "profile_version": 2,
+        "selected_class": 2,
+        "gold": 99800,
+        "potions": 2,
+        "total_shop_rows": 2,
+        "total_price": 200,
+        "lost_rows": 1,
+        "lost_quantity": 1,
+        "lost_price": 100,
+        "lost_ledger_rows": 1,
+        "lost_ledger_delta": -100,
+        "overlap_rows": 1,
+        "other_gold": 100000,
+        "other_potions": 0
+      },
+      "all_original_database_postconditions_passed": true
+    },
+    {
+      "arm": "reusable",
+      "actual": {
+        "player_id": "01a12db6-fabf-7f19-bde3-dcdc2798c167",
+        "profile_version": 2,
+        "selected_class": 2,
+        "gold": 99800,
+        "potions": 2,
+        "total_shop_rows": 2,
+        "total_price": 200,
+        "lost_rows": 1,
+        "lost_quantity": 1,
+        "lost_price": 100,
+        "lost_ledger_rows": 1,
+        "lost_ledger_delta": -100,
+        "overlap_rows": 1,
+        "other_gold": 100000,
+        "other_potions": 0
+      },
+      "all_original_database_postconditions_passed": true
+    }
+  ],
+  "target_POSTGRES_profiles_verified": 9,
+  "owned_containers_removed": true,
+  "cleanup": {
+    "pr13-cap-real-pg-http-context-r2-20261012": true,
+    "pr13-cap-real-pg-http-context-r2-20261012-pg": true
+  },
+  "frozen_source_package_and_client_bytes_unchanged": true,
+  "all_original_outputs_retained_pending_G_backup": true
+}

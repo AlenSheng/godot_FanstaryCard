@@ -17,8 +17,8 @@ services:
 
   server:
     build:
-      context: .
-      dockerfile: src/FantasyCard.Server/Dockerfile
+      context: ..
+      dockerfile: server/src/FantasyCard.Server/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       Identity__EnableLocalAuth: "true"

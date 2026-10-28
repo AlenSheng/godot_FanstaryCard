@@ -1,0 +1,82 @@
+{
+  "kind": "LOAD064ThreeActualNativeLIVEEvidenceProfilesClosed",
+  "at_local": "2026-10-16T20:02:40.621962+08:00",
+  "task_id": "LOAD-06.4",
+  "case_profiles_closed": 3,
+  "task_state": "Partial",
+  "main_acceptance_granted": false,
+  "before_missing_profiles": {
+    "LOAD-06.4-T01": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "LOAD-06.4-T02": [
+      "LIVE",
+      "POSTGRES"
+    ],
+    "LOAD-06.4-T03": [
+      "LIVE"
+    ]
+  },
+  "after_missing_profiles": {
+    "LOAD-06.4-T01": [
+      "POSTGRES"
+    ],
+    "LOAD-06.4-T02": [
+      "POSTGRES"
+    ]
+  },
+  "actual_native_HTTP_rows": 98,
+  "native_input_snapshots": [
+    {
+      "client_id": "PR13NFG01",
+      "native_PID": 120632,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFG01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFG01.prefix128.original.jsonl",
+      "prefix_bytes": 127440,
+      "prefix_sha256": "f785431beabbac4dbf8e57c7a6a6c1fbaa6a990608d9c0f85865856f50f7aaa0",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 24,
+      "http_attempts": 24,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    },
+    {
+      "client_id": "PR13NFP01",
+      "native_PID": 99772,
+      "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\natural-followup-r1\\study\\run\\PR13NFP01\\player.original.json.telemetry.jsonl",
+      "snapshot": "inputs\\PR13NFP01.prefix128.original.jsonl",
+      "prefix_bytes": 127208,
+      "prefix_sha256": "afbe875dc5dcbf6ebd9c48f79f8c1b2c7d1693609978d6ceaff0c1ab49343daf",
+      "first_event_seq": 1,
+      "last_event_seq": 128,
+      "http_logical": 25,
+      "http_attempts": 25,
+      "capture_scope": "Immutable first128 complete actual native events,not full run or natural-cycle verdict"
+    }
+  ],
+  "external_health_or_curl_not_merged": true,
+  "DNS_TCP_TLS_without_hook_are_null_and_unavailable": true,
+  "sensitive_candidates_rejected": 3,
+  "actual_credentials_read_or_network_body_injected": false,
+  "synthetic_boundary_declared": true,
+  "new_gameplay_samples": 0,
+  "existing_native_study_continues_unchanged": true,
+  "counts_unchanged": {
+    "Accepted": 27,
+    "Partial": 87,
+    "Failed": 2,
+    "ReadyForAcceptance": 16
+  },
+  "remaining_unaccepted": 105,
+  "all_other_tasks_and_gates_unchanged": true,
+  "whole_scope_accepted": false,
+  "previous_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-a012-cutoff-main-reviewed-20261016/register.json",
+    "sha256": "baa9b1224a229f72f10504ea4825c6e1b5f13c6e797242b7ba81f0d421dac633"
+  },
+  "current_register": {
+    "path": "docs/reports/pr13-stages-20261009/S6-load064-current-LIVE-three-20261016/register.json",
+    "sha256": "ec02351006dd6302a800c305b5700124bc4e861002e4536054b72012ecbd79ec"
+  }
+}

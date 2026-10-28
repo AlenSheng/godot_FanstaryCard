@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "task_id": "PR13-B08.4",
+  "stage": "S0",
+  "date": "2026-10-10",
+  "source_plan": "docs/plans/PR13_ACCEPTANCE_DETAILS_20260930.md",
+  "dependency": "PR13-B08.3",
+  "development_may_proceed": true,
+  "integration_promotion_allowed": false,
+  "reason": "B08.3 contract and render matrices passed; its full encounter experiment is still running. Development proceeds under the human development-first decision without accepting the dependent task.",
+  "cases": {
+    "T01": "Current legal equipment: element resistance raw/effective/excess, 60 percent cap and zero further effective gain. Include all five elements and all three heroes.",
+    "T02": "Equipment-only interval clamp at 1.8 seconds, temporary card acceleration applied before clamp, PVE draw-block conversion applied after clamp; activation/expiry and authoritative natural draw charge are checked separately.",
+    "T03": "No numerical buff/nerf or candidate activation without reproduced marginal defect; class-inapplicable and inactive affixes must not be labeled capped excess. Shield requested/effective/overflow remains separate."
+  },
+  "known_development_findings": [
+    "Source inspection: non-Guardian Bulwark reduction currently sets effective to zero but places its raw value in excess, which can mislabel class inapplicability as a cap.",
+    "Source inspection: inactive affix values are similarly placed in excess; the equipment panel does not explain the separate PVE post-clamp acceleration stage. These findings still need native reproduction."
+  ],
+  "implementation_scope": ["client/ui/numerical_details.gd", "client/tests", "server/tests/FantasyCard.Domain.Tests/Combat", "tools evidence validators"],
+  "production_numerical_rules": "Unchanged",
+  "unsupported_red_unique_affixes": "Do not estimate or enable",
+  "native_execution_location": "Tencent cloud only",
+  "raw_storage": "Local G drive; each completed raw unit verified before cloud reclamation, direct archive streaming preferred",
+  "memory_floor_bytes": 500000000,
+  "disk_free_ratio": 0.15,
+  "formal_experiment_plan_pending": true,
+  "canonical_render_pending": true,
+  "human_experience_in_scope": false,
+  "capacity_tests_deferred": true,
+  "acceptance_states_unchanged": true,
+  "main_acceptance_granted": false
+}

@@ -1,0 +1,93 @@
+{
+  "kind": "A031ActualEntryCurrentProgramPGPreRunPlan",
+  "task_id": "PR13-A03.1",
+  "authority": "Existing fullgoal automatic functional verification; currentcloudonly, nohumanexperience",
+  "state": "FrozenNotExecuted",
+  "scope": "Three canonical A031 cases, one owned real target account/world; actual production GameStore/Gateway/codec/_on_event, no direct assignment to recoveryID/room/receipt/epoch/cursor or directfakeeventcall. Original full gameplay_load main isnot required by A031 and would count declared protocol faults as errors; dedicated Native functional actor must clearly label its scope.",
+  "existing_evidence_gap": "B112 prior realtwoNOTINROOM sentboth requests beforefirsterror; doesnot byitself prove firstBootstrapreturnednoreceipt THEN secondsameerror. Its 245265ff backend isnot current8eb. Keepalloldpositive/failed evidence, do not resetB11227world ceiling or claimwholecurrentSHA. LOAD052 oldHTTPconsumer isolation doesnot standin forlateBootstrap.",
+  "cases": [
+    {
+      "id": "PR13-A03.1-T01",
+      "expected": "Actual matched M terminal Pending with declared owned assetlock; sendTWO legitimate originalGateway snapshotreads whilecontextM valid; proxyonlydeclared outgoing room_id route corruption producesrealserverNOTINROOM. HoldSECOND realserverreply (and following WS stream bybounded readthreadpause) untilFIRST plainBootstrap actuallycompleted/consumed with no receipt. Then releasebyteexact secondreply, verify recoveryM remainsM androomempty. ReleaseonlyownedPGlock afterproof;ready-only Bootstrapreturns sameM/SID thenpublicACKonce.",
+      "ordering_required": [
+        "actualFirstNOTINROOM_consumed",
+        "first_plainBootstrap200_complete_applied_noReceipt",
+        "releaseSecondUnchangedNOTINROOM",
+        "actualSecondNOTINROOM_consumed",
+        "readyReceiptM_after_ownedunlock"
+      ]
+    },
+    {
+      "id": "PR13-A03.1-T02",
+      "expected": "Independently hold actual200 plainBootstrap consumer response triggered bysecondNOTINROOM fordeclared1s (<HTTP10s), observe sameM whileawaiting andafterexactresponse return; no result rewriting/IDfill. Originalrequestcontext/epoch/rawSHA frozen beforehold. LateHTTPphasepreserved, readyreceipt sameM. If not actuallylate/consumed, case staysunpassed."
+    },
+    {
+      "id": "PR13-A03.1-T03",
+      "expected": "While valid M exists before correlatederrors, send oneexplicit rawClientEnvelope readonlysnapshotrequest onactualownednativeWS withvalidwrongroom+wrongmatch pair andunique unregistered requestID, no pending_request/context registration. ActualserverNOTINROOM responsemustbe captured/forwardedunchanged andactualNativecursorconsumeit. CurrentGateway correctlyrejects missingorigin beforeStore, soM/route/effectiveRecoveryID stayvalid, no businessmutation. Explicitly stateStore eventnotdelivered; do not claimdirectStorebranchLIVE execution. ExistingOFFLINE guard separate, actualpipeline safety isthiscase. Neverclear validM orfabricate origin/response."
+    }
+  ],
+  "seams": [
+    "Explicit initial single bound White Feet0/Fire/DrawInterval for new Mage2 owner before realbinaryauth reply; not formalgrant/reward/economychanges. Current protobuf auth requestname2/responseplayer3/profileUID1name2; no JSONparsing.",
+    "Only exact own InMatchEquipped row islocked read-only in ownedPG transaction; recordbackend PID/backend_start/application_name beforeonlyowned cancellation; no changes toproduction orrowvalues.",
+    "Proxy parsesrealbinaryenvelopes/status, corruptsonly room_id of2declared outgoingreads; preservesNative immutable actualM origin andall serverreplybytes. No servermessage synthesis, no added/renumberedsequence, no drop ofrequiredframes. Holdsecondpacket in server_to_client pump outsideProxy.lock so independentHTTPthreads cancomplete; bounded5s thenfailurewithraw, noindefinite wait/hidden retry.",
+    "Private actor uses original Game.login/select_class/prepare/enqueue, actual verified ready ticket then originalGateway.sendREADY; direct public battle.abandon andACK, no nativeDriver statecounter credit. Read-only state, telemetry, timestamps, full raw packet/audit saved. No customGatewayresult substitution.",
+    "Delayed realHTTP replybyteexact; firstBootstrapconsume markerNative-derived fromactual currenttelemetry +postframe/lobbynoreceipt; not proxy merelysawbackend200. All originalHTTP10/30s/READY15s/botfill30s/defaultAuth10/write30/read120/RT30 preserved."
+  ],
+  "budgets": {
+    "additional_DBworlds_max": 1,
+    "additional_real_UIDs_max": 1,
+    "additional_declared_initial_items_max": 1,
+    "target_public_ACKs_max": 1,
+    "historical_and_cross_task_counts": "AllpreviousA03/B112/LOAD052 trialsretained; reuse0newworld, do not resetB112actual27/cap27. Thisisexplicit newA031 dedicated boundary1world, per-taskfewhundredceiling unchanged.",
+    "source_files_packet_counts_not_games": true
+  },
+  "resources": {
+    "only_current_cloud_host": true,
+    "APP_memory_MiB": 1024,
+    "APP_CPU": 1.25,
+    "PG_memory_MiB": 384,
+    "PG_CPU": 0.25,
+    "PG_tmpfs_MiB": 512,
+    "functional_minimum_MemAvailable_bytes": 500000000,
+    "disk_free_floor_percent": 5,
+    "not_capacity_SLO": true,
+    "Native_seconds": 180,
+    "service_seconds": 260,
+    "unit_seconds": 480,
+    "no_host_ports_or_prod_volumes": true,
+    "member_queries": "Filter human members; botmatch_players rows are legitimate andnot actualauthUIDs."
+  },
+  "mandatory_before_upload": [
+    "AllnewPythonASTvalid",
+    "Opaque/binarycodec/localrelay sequentialgates negativecontrols",
+    "GodotprivateActorparse-only headlessDummy60 CNO BelowNormal no login/localPG/world",
+    "Fullcurrentclientmanifest actualSHA/immutable runtime21/config/GDD",
+    "Beforeupload completeGcustody/sourcepackage/planmanifest",
+    "Verify currenthost prodidentityhealth200 andnootherownedactivejob; memory/diskfunctionalguard"
+  ],
+  "acceptance_evidence": [
+    "Actual1world1UID0duplicateassets andoneACK, declaredasset exact3moves toRelicPile expecteddeath, Pendingholdidentities/ownedrelease once",
+    "All3caseordering/context/state/invariant expectations actualvalues, realraw/Nativeconsumption/HTTPcompletion correlate",
+    "GameStore/Gateway original currentruntime sources SHA, no businessstate sourcepatches",
+    "No process errors/leaks/forcedkill; successfulOS exit0 alone insufficient",
+    "Freeze/source/raw/producer archives completeG SHA/CRC then exactownedCLOUDinputcleanup; local/shared/raw kept",
+    "Failedattempts/timinggaps/raw remain; no mandatory missing case changed toPassed"
+  ],
+  "GDD": [
+    {
+      "path": "GDD.md",
+      "bytes": 15047,
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "bytes": 271379,
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "rules": "Fullv0.70 main overridesv0.69base;legalMage70/Priest80 anduser80/70 boundary notclamped ormisreported. No numerical/asset/economicrulechange.",
+  "human_experience_in_scope": false,
+  "criteria_relaxed": false,
+  "no_new_Git_commit_push_or_deploy": true,
+  "not_yet_uploaded_or_executed": true
+}

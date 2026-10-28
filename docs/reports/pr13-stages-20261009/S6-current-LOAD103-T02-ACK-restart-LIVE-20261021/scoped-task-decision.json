@@ -1,0 +1,80 @@
+{
+  "task_id": "LOAD-10.3",
+  "case_id": "LOAD-10.3-T02",
+  "state": "Partial",
+  "new_case_profiles_closed": [
+    "LIVE"
+  ],
+  "actual": {
+    "original_coordinator_exit": 0,
+    "actual_Native_exits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "actual_worlds": 1,
+    "actual_UIDs": 4,
+    "actual_playercycles": 4,
+    "actual_PG_receipts": 4,
+    "actual_PG_ACKs": 4,
+    "selected_unique_ACK_ordinal": 4,
+    "first_real_backend_ACK200_response_delivered_bytes": 0,
+    "actual_Program_SIGKILL_then_restart_count": 1,
+    "actual_old_new_container_PIDs": [
+      6,
+      130
+    ],
+    "actual_target_attempts": [
+      {
+        "attempt_no": 1,
+        "status": 0,
+        "result": "transport_error",
+        "duration_ms": 4285
+      },
+      {
+        "attempt_no": 2,
+        "status": 200,
+        "result": "success",
+        "duration_ms": 83
+      }
+    ],
+    "samekey_same_original_response_bytes_first_acknowledgedAt": true,
+    "before_after_final_receipt_ACK_asset_rows_exact": true,
+    "actual_focused_table_rows": {
+      "receipts": 4,
+      "holds": 0,
+      "wallets": 4,
+      "materials": 4,
+      "ledger": 0,
+      "equipment": 0,
+      "movements": 0,
+      "ACKs": 4
+    },
+    "nonzero_ledger_hold_equipment_transfer_not_exercised": true,
+    "all_Native_cleanup_Passed_engine_clean": true,
+    "proxy_threads_sockets_final0": true,
+    "independent_checks": 65
+  },
+  "remaining_missing_case_profiles": {
+    "LOAD-10.3-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T02": [
+      "CAPACITY"
+    ],
+    "LOAD-10.3-T03": [
+      "CAPACITY",
+      "LIVE",
+      "POSTGRES"
+    ]
+  },
+  "capacity_othercases_wholeTask_notaccepted": true,
+  "G": "G:\\PR13Evidence\\load103-ACK-loss-restart-fullrunner-20261021-r1-originals",
+  "Gmembers": 591,
+  "archiveSHA": "56bf168d9aeef3db1d3ba9a404d4376006c54bb1812f78a43e353436de4eba4c",
+  "all103_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+  "production_unchanged": true,
+  "budget": "Additional1actualworld4UIDs4cycles and1ownedProgramrestart. Prior T01+1world4cycles and all historical LOAD103 usage retained, so new T01+T02 subtotal2world8cycles plus historical usage. LOAD1013 gameplayworld12cycles/SQLfixture1 and LOAD10238world72cycles/conservative63-world cap unchanged.",
+  "whole_project_accepted": false
+}

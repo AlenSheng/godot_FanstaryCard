@@ -1,0 +1,290 @@
+{
+	"Accepted": false,
+	"active_match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+	"case": "ready_started_lost_reconnect",
+	"checks": [
+		{
+			"at_unix_ms": 1790803035530,
+			"name": "realtime_connected",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803035580,
+			"name": "owned_equipment_fixture_seeded",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803035720,
+			"name": "login_and_bootstrap",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803035935,
+			"name": "hero_class_confirmed",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803036265,
+			"name": "create_free_preparation",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803036352,
+			"name": "enqueue_match",
+			"passed": true
+		},
+		{
+			"at_unix_ms": 1790803068345,
+			"name": "room_started",
+			"passed": true
+		}
+	],
+	"cleanup": {
+		"active_preparation": null,
+		"reason": "server_state_clear",
+		"state": "Passed",
+		"unfinished_match": null,
+		"unfinished_settlement": null
+	},
+	"client_preparation": {},
+	"client_ready_prompt": {},
+	"client_room": false,
+	"client_settlement": false,
+	"client_ticket": {},
+	"connected_count": 3,
+	"coverage": "OFFLINE_POSTGRES_FULL_PROGRAM",
+	"errors": [],
+	"expected_match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+	"expected_room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+	"local_terminal": true,
+	"message": "Coordinator cancelled current cycle",
+	"observed_match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+	"observed_room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+	"own_user_id": "01a0f42d-c0ff-71b9-a579-42cf5ae0166f",
+	"passed": true,
+	"ready_send_after_stop": 0,
+	"ready_send_count": 1,
+	"required_delivered": 1,
+	"required_dropped": false,
+	"resume_send_count": 1,
+	"route_probe_clear": true,
+	"route_probe_events": [
+		"pong"
+	],
+	"stop_boundary": "authority_recovered_room_started_then_stop",
+	"ticket_reads": 15,
+	"trace": [
+		{
+			"at_ms": 4114,
+			"event": "ticket_response",
+			"read_no": 1,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 6214,
+			"event": "ticket_response",
+			"read_no": 2,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 8381,
+			"event": "ticket_response",
+			"read_no": 3,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 10566,
+			"event": "ticket_response",
+			"read_no": 4,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 12764,
+			"event": "ticket_response",
+			"read_no": 5,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 14938,
+			"event": "ticket_response",
+			"read_no": 6,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 17087,
+			"event": "ticket_response",
+			"read_no": 7,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 19253,
+			"event": "ticket_response",
+			"read_no": 8,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 21420,
+			"event": "ticket_response",
+			"read_no": 9,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 23594,
+			"event": "ticket_response",
+			"read_no": 10,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 25761,
+			"event": "ticket_response",
+			"read_no": 11,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 27927,
+			"event": "ticket_response",
+			"read_no": 12,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 30111,
+			"event": "ticket_response",
+			"read_no": 13,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 32278,
+			"event": "ticket_response",
+			"read_no": 14,
+			"status": "Queued"
+		},
+		{
+			"at_ms": 34177,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_required",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 6,
+			"sequence_before": 5
+		},
+		{
+			"at_ms": 34177,
+			"event": "required_transport_boundary",
+			"ticket_inflight": false
+		},
+		{
+			"at_ms": 34444,
+			"event": "ticket_response",
+			"read_no": 15,
+			"status": "Matched"
+		},
+		{
+			"after_stop": false,
+			"at_ms": 34444,
+			"event": "room.ready.attempt",
+			"online": true
+		},
+		{
+			"at_ms": 34460,
+			"event": "actual_server_envelope",
+			"kind": "room.ready_accepted",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 7,
+			"sequence_before": 6
+		},
+		{
+			"at_ms": 35927,
+			"event": "session.resume.attempt",
+			"last_sequence": 7,
+			"room_id": "",
+			"room_revision": 0
+		},
+		{
+			"at_ms": 35928,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 10,
+			"sequence_before": 7
+		},
+		{
+			"at_ms": 35944,
+			"event": "actual_server_envelope",
+			"kind": "room.started",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 8,
+			"sequence_before": 10
+		},
+		{
+			"at_ms": 35945,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 10,
+			"sequence_before": 9
+		},
+		{
+			"at_ms": 35946,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 11,
+			"sequence_before": 10
+		},
+		{
+			"at_ms": 35961,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 12,
+			"sequence_before": 11
+		},
+		{
+			"at_ms": 36044,
+			"boundary": "authority_recovered_room_started_then_stop",
+			"event": "coordinator_stop"
+		},
+		{
+			"at_ms": 36079,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 14,
+			"sequence_before": 13
+		},
+		{
+			"at_ms": 36094,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 15,
+			"sequence_before": 14
+		},
+		{
+			"at_ms": 36477,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 16,
+			"sequence_before": 15
+		},
+		{
+			"at_ms": 36495,
+			"event": "actual_server_envelope",
+			"kind": "room.snapshot",
+			"match_id": "01a0f42e-3e71-7eef-8fbf-7ab57c3bfc3e",
+			"room_id": "01a0f42e-3e71-75a6-a492-daee340f3980",
+			"sequence": 18,
+			"sequence_before": 17
+		}
+	]
+}

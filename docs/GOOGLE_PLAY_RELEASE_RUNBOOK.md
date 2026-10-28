@@ -1,3 +1,5 @@
+> 2026-10-28 同步说明：当前分支已适配 release 的二进制 HTTP／WSS，Google 登录与注销请求使用 application/protobuf。旧 auth/ws-ticket、ws_ticket 名称兼容当前单次、会话绑定票据，按 30 秒有效期；原 SQL 迁移保留。先读 [分支合并验证报告](reports/release-branch-sync-20261028-r1/README.md)。本轮仅完成本机集成与多语言／分辨率验证，真实账号、插件、签名和商店发行仍按下文准备，不声明已执行。
+
 # Google Play 发布执行顺序
 
 本清单按 `GOOGLE_PLAY_RELEASE_REFERENCE.md` 的章节顺序组织。每项都必须有证据后才能勾选；仓库无法代替 Play Console、真实 Android 设备、签名服务和生产监控平台。

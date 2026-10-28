@@ -1,0 +1,75 @@
+{
+  "native_runs": [
+    {
+      "round": "after-r1",
+      "PID": 15136,
+      "exit": 1,
+      "forced": false,
+      "suite_count": 8,
+      "driver_ok": false,
+      "script_error_count": 0
+    },
+    {
+      "round": "after-r2",
+      "PID": 25668,
+      "exit": 0,
+      "forced": false,
+      "suite_count": 1,
+      "driver_ok": true,
+      "script_error_count": 0
+    },
+    {
+      "round": "after-r3",
+      "PID": 86492,
+      "exit": 0,
+      "forced": false,
+      "suite_count": 1,
+      "driver_ok": true,
+      "script_error_count": 0
+    },
+    {
+      "round": "before-r1",
+      "PID": 70388,
+      "exit": 1,
+      "forced": true,
+      "suite_count": 0,
+      "driver_ok": false,
+      "script_error_count": 6
+    },
+    {
+      "round": "before-r2",
+      "PID": 63928,
+      "exit": 1,
+      "forced": false,
+      "suite_count": 7,
+      "driver_ok": false,
+      "script_error_count": 0
+    }
+  ],
+  "actual_starts": 5,
+  "new_SUT_authority_worlds": 0,
+  "HTTP_login_requests": 0,
+  "server_build_and_CI_not_run": true,
+  "reused_before_sequence_source": {
+    "suite": {
+      "result": {
+        "checks": {
+          "duplicate_control_reason_trace_without_state_change": true,
+          "foreign_started_reason_preserves_route_and_recovery": true,
+          "guard_trace_has_no_auth_or_packet_payload": true,
+          "ordinary_duplicate_does_not_add_control_trace_volume": true,
+          "same_context_positive_control_still_delivered": true
+        },
+        "legacy_sequence_checks_passed": true,
+        "message": "Duplicate event ignored; sequence gap locks commands until authoritative snapshot; lifecycle rejection reasons remain trace-only",
+        "ok": true
+      },
+      "suite": "test_session_sequence.gd"
+    },
+    "original_stdout_SHA256": "d35e4a1b7698a33a0deaf16533ae751b578155f996e97b39931beb58497e4bf8",
+    "original_executed_source_SHA256": "36e662e45bb78a751c97441657a791bfe92d21199d9068edb3454eab8878f36f",
+    "original_whole_runner_still_failed": true,
+    "not_a_new_execution": true
+  },
+  "scope": "actual immutable run files;reused successful suites not recounted as new starts"
+}

@@ -1,0 +1,170 @@
+name: Numerical full acceptance
+on:
+  pull_request:
+    paths: ['server/**', 'config/**', 'protocol/**', 'client/**', 'tools/**', '.github/pr13-required-postgres-methods.json', '.github/workflows/numerical-acceptance.yml']
+  push:
+    branches: ['codex/numerical-integration-20260928']
+    paths: ['server/**', 'config/**', 'protocol/**', 'client/**', 'tools/**', '.github/pr13-required-postgres-methods.json', '.github/workflows/numerical-acceptance.yml']
+  workflow_dispatch:
+    inputs:
+      acceptance_round:
+        description: Optional current-version rebuild round ID; historical results remain separate
+        required: false
+        default: ''
+        type: string
+      route_samples:
+        description: Route samples per player-count profile; rebuild rounds require 1-300
+        required: false
+        default: 10000
+        type: number
+      focused_pg_recheck:
+        description: Only the declared nine PostgreSQL contracts and current-round rebuilt rollback
+        required: false
+        default: false
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: numerical-acceptance-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  acceptance:
+    if: ${{ !inputs.focused_pg_recheck }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: numerical_test
+          POSTGRES_PASSWORD: numerical_test_only
+          POSTGRES_DB: numerical_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U numerical_test -d numerical_test"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    env:
+      FANTASYCARD_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=numerical_test;Username=numerical_test;Password=numerical_test_only;Pooling=true
+      DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+      DOTNET_NOLOGO: '1'
+      ACCEPTANCE_ROUND_ID: ${{ inputs.acceptance_round || '' }}
+      ACCEPTANCE_ROUTE_SAMPLES: ${{ inputs.route_samples || 10000 }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: server/global.json
+      - name: Record and validate current-round sample policy
+        shell: python
+        run: |
+          import json, os, pathlib, re
+          round_id = os.environ['ACCEPTANCE_ROUND_ID']
+          samples = int(os.environ['ACCEPTANCE_ROUTE_SAMPLES'])
+          if round_id:
+              assert re.fullmatch(r'[a-z][a-z0-9-]{0,63}', round_id), 'Invalid acceptance round ID'
+              assert 1 <= samples <= 300, 'Current rebuild rounds are capped at 300 route samples'
+          else:
+              assert 1 <= samples <= 10000, 'Invalid legacy route sample count'
+          root = pathlib.Path('test-results/acceptance')
+          root.mkdir(parents=True, exist_ok=True)
+          (root / 'round-policy.json').write_text(json.dumps({
+              'round_id': round_id or None, 'source_sha': os.environ['GITHUB_SHA'],
+              'route_samples_per_players_profile': samples,
+              'legacy_history_and_unexecuted_fork_not_reclassified': True
+          }, indent=2) + '\n', encoding='utf-8')
+      - name: Install pinned Godot for real client and PostgreSQL fault checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot-pg" test-results/acceptance
+          curl --fail --location --retry 2 'https://downloads.godotengine.org/?version=4.7.2&flavor=stable&slug=linux.x86_64.zip&platform=linux.64' -o "$RUNNER_TEMP/godot-pg.zip"
+          unzip -q "$RUNNER_TEMP/godot-pg.zip" -d "$RUNNER_TEMP/godot-pg"
+          executable="$RUNNER_TEMP/godot-pg/Godot_v4.7.2-stable_linux.x86_64"
+          chmod +x "$executable"
+          "$executable" --version | tee test-results/acceptance/godot-pg-version.txt
+          grep -q '^4\.7\.2\.' test-results/acceptance/godot-pg-version.txt
+          sha256sum "$executable" > test-results/acceptance/godot-pg-sha256.txt
+          echo "A3GAME_GODOT_EXECUTABLE=$executable" >> "$GITHUB_ENV"
+          echo "FANTASYCARD_PROCESS_EVIDENCE=$GITHUB_WORKSPACE/test-results/acceptance/process-faults" >> "$GITHUB_ENV"
+      - name: Build solution and record baseline
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          mkdir -p ../test-results/acceptance
+          git rev-parse HEAD > ../test-results/acceptance/source.txt
+          dotnet --info > ../test-results/acceptance/dotnet.txt
+          dotnet build FantasyCard.Server.slnx -c Release 2>&1 | tee ../test-results/acceptance/build.log
+          find src tests -path '*/bin/Release/net10.0/*' -type f \( -name '*.dll' -o -name '*.pdb' \) -print0 | sort -z | xargs -0 sha256sum > ../test-results/acceptance/assemblies-sha256.txt
+      - name: Domain tests
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --no-build -c Release --logger 'trx;LogFileName=domain.trx' --results-directory ../test-results/acceptance 2>&1 | tee ../test-results/acceptance/domain.log
+      - name: Server and loopback integration tests on disposable PostgreSQL
+        if: ${{ !cancelled() }}
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          set +e
+          dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj -c Release --logger 'trx;LogFileName=server.trx' --results-directory ../test-results/acceptance 2>&1 | tee ../test-results/acceptance/server.log
+          statuses=("${PIPESTATUS[@]}")
+          set -e
+          printf '%s\n' "${statuses[0]}" > ../test-results/acceptance/server-native-exit.txt
+          if [ "${statuses[0]}" -ne 0 ]; then exit "${statuses[0]}"; fi
+          exit "${statuses[1]}"
+      - name: Verify mandatory PostgreSQL method coverage and exact source
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          python3 tools/pr13_ci_pg_artifact_gate.py --trx test-results/acceptance/server.trx --required-methods .github/pr13-required-postgres-methods.json --source-file test-results/acceptance/source.txt --expected-source "${{ github.sha }}" --native-exit-file test-results/acceptance/server-native-exit.txt --output test-results/acceptance/postgres-coverage.json
+      - name: Route samples using actual production map and loot lookup
+        if: ${{ !cancelled() }}
+        shell: bash
+        working-directory: server
+        run: |
+          set -euo pipefail
+          for players in 1 2 4; do
+            dotnet run --project tools/FantasyCard.Numerics -c Release -- --samples "$ACCEPTANCE_ROUTE_SAMPLES" --players "$players" --seed-start 0 > "../test-results/acceptance/routes-${players}.json"
+          done
+      - name: Verify isolated single-factor instrumentation and unchanged controls
+        if: ${{ !cancelled() }}
+        run: python tools/pr13_factor_matrix.py --samples 3 --workers 1 --output test-results/acceptance/o6-factors
+      - name: Verify published config parity and disabled candidate flags
+        if: ${{ !cancelled() }}
+        shell: python
+        run: |
+          import json,pathlib,hashlib,importlib.util
+          a=pathlib.Path('server/config/generated/fantasycard.config.bytes').read_bytes()
+          b=pathlib.Path('client/data/generated/fantasycard.config.bytes').read_bytes()
+          assert a==b,'Client/server config packages differ'
+          catalog=json.loads(pathlib.Path('client/data/catalog.json').read_text())
+          row=catalog['tables']['NumericalRules'][0]
+          for key in ('cards_spent_draw','fractional_guardian','optional_monster_pool','budgeted_bot_loot','mortal_bot_pve'):
+              assert row[key] is False,(key,row[key])
+          schema=json.loads(pathlib.Path('client/data/realtime_schema.json').read_text())
+          assert schema['sha256']==hashlib.sha256(pathlib.Path('protocol/realtime/v1/realtime.proto').read_bytes()).hexdigest()
+          spec=importlib.util.spec_from_file_location('catalog_export','tools/export_client_catalog.py')
+          module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+          assert module.typed_value(b'',4) is False
+          assert module.typed_value(b'',2)==0
+          assert module.typed_value(b'',3)==0.0
+          assert module.typed_value(b'',1)==''
+          assert module.typed_value(bytes([40,1]),4) is None
+          print('Config:',catalog['version'],'bytes:',len(a),'sha256:',hashlib.sha256(a).hexdigest())
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: numerical-acceptance-${{ github.sha }}
+          path: test-results/acceptance
+          if-no-files-found: error
+          retention-days: 7
+  rebuild-postgres-recheck:
+    if: ${{ inputs.focused_pg_recheck }}
+    uses: ./.github/workflows/pr13-rebuild-postgres.yml
+    with:
+      acceptance_round: ${{ inputs.acceptance_round }}

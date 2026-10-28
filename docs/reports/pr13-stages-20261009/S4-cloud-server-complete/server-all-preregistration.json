@@ -1,0 +1,37 @@
+{
+  "source_sha": "4dcfa846ee2ed972189868738720a245b6223ce4",
+  "execution_host": "Tencent cloud",
+  "scope": "Complete native Server suite on Tencent with actual Linux Godot fixture processes and retained 0cf43db binary. This is isolated component/network/fault verification, separate from local player-to-cloud LIVE/RENDER/CAPACITY sessions. Zero mandatory skips required; never use the production database.",
+  "started_at_unix": 1791510206.775177,
+  "ok": false,
+  "limits": {
+    "overall_seconds": 1800,
+    "memory_mib": 1400,
+    "cpus": 1,
+    "postgres_memory_mib": 192,
+    "cpu_redline_percent": 85,
+    "free_memory_redline_percent": 15,
+    "free_disk_redline_percent": 15,
+    "bad_windows_to_stop": 3
+  },
+  "container_ids": {
+    "pr13-tencent-server-all-pg": "e49bf340d396a0aedec03a99181f3d13ea2ec515ae9ba3bbf66bf5461b8288c0",
+    "pr13-tencent-server-all": "6976d67cb69f39155bb665c9cf55b7037f1b24962d0e11e2b5bf944a4ae326b4"
+  },
+  "command": [
+    "dotnet",
+    "test",
+    "server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+    "-c",
+    "Release",
+    "--artifacts-path",
+    "/work/server/.artifacts/pr13-tencent-server-all",
+    "--logger",
+    "trx;LogFileName=server.trx",
+    "--results-directory",
+    "/work/server/.artifacts/pr13-tencent-server-all/results",
+    "-p:UseSharedCompilation=false",
+    "-maxcpucount:1"
+  ],
+  "owned_database_name": "ready_stop_4067daceddb70c3bc50a5b72faaf6141"
+}

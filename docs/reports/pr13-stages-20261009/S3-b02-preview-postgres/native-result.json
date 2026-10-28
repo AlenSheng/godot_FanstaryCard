@@ -1,0 +1,131 @@
+{
+  "ok": true,
+  "execution_host": "Tencent cloud",
+  "source_base_sha": "3830f305339f61c7d97fc72444d4c6d1716497f2",
+  "layers": [
+    "POSTGRES",
+    "OFFLINE"
+  ],
+  "whole_scope_accepted": false,
+  "overlay_hashes": {
+    "server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatPreviewTests.cs": "a36a2748bb76fbbe207903b5a15a848f5b59d997114b3422ce2ffbd6630117fd",
+    "client/tests/pr13_postgres_preview_wire.gd": "3837beabe2da56b384171a4c42ac44642fe287e1e52d2d78bcaf3bd52c3930ae",
+    "client/tests/pr13_postgres_preview_wire.tscn": "eee519f8ceeea60b33944342d6580b7906eac53c25a98f9f7cf4fb0102fc54ad"
+  },
+  "server": {
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  "counters": {
+    "total": "6",
+    "executed": "6",
+    "passed": "6",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "rows": [
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Stale_preview_after_committed_checkpoint_is_rejected_without_overwriting_current_state",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Protocol_roundtrip_preserves_order_and_authoritative_core_after_database_restore",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Mage, fractional: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: True)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Guardian, fractional: False)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCombatPreviewTests.Repeated_preview_of_restored_checkpoint_is_pure_and_matches_commit(hero: Priest, fractional: False)",
+      "outcome": "Passed"
+    }
+  ],
+  "error": "RuntimeError",
+  "detail": "Owned command failed: sudo",
+  "remaining_schemas": "0",
+  "inputs_unchanged": true,
+  "cleanup": {
+    "pr13-b02-preview-pg-attempt3": true,
+    "pr13-b02-preview-pg-attempt3-database": true,
+    "pr13-b02-preview-client-continued": true
+  },
+  "elapsed_seconds": 100.728191614151,
+  "resources_after": {
+    "memory_available": 2957598720,
+    "disk_free": 9606643712,
+    "disk_fraction": 0.15178762577606508
+  },
+  "completion_flow": "Six passed PostgreSQL rows retained; independent native Godot continuation after mount-start failure",
+  "original_native_result_sha256": "67fc4216e28a4b1327a80c4acd0968cb64df1b675525449a613b8d35e5baeb1c",
+  "failed_mount_container_removed": true,
+  "client": {
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  "client_result": {
+    "checks": [
+      {
+        "case_id": "PR13-B02.3-T02",
+        "name": "native Protobuf order and core",
+        "passed": true
+      },
+      {
+        "case_id": "PR13-B02.3-T02",
+        "name": "current native preview accepted",
+        "passed": true
+      },
+      {
+        "case_id": "PR13-B02.3-T03",
+        "name": "delayed native preview cannot overwrite newer revision",
+        "passed": true
+      },
+      {
+        "case_id": "PR13-B02.3-T02",
+        "name": "native Protobuf order and core",
+        "passed": true
+      },
+      {
+        "case_id": "PR13-B02.3-T02",
+        "name": "current native preview accepted",
+        "passed": true
+      },
+      {
+        "case_id": "PR13-B02.3-T03",
+        "name": "delayed native preview cannot overwrite newer revision",
+        "passed": true
+      },
+      {
+        "message": "Golden wire, nested defaults, unknown fields and truncation passed",
+        "name": "res://tests/test_protobuf.gd",
+        "passed": true
+      },
+      {
+        "message": "Combat previews reject stale state, include printed direct damage, and preserve first-card core selection",
+        "name": "res://tests/test_combat_preview_state.gd",
+        "passed": true
+      }
+    ],
+    "ok": true
+  },
+  "cached_client_inputs_unchanged": true
+}

@@ -1,0 +1,174 @@
+{
+  "cases": [
+    {
+      "case_id": "LOAD-10.3-T01",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "setup": "Current2147 Native client/driver64475511,actual Program8eb/config49ce,owned PG; direct unchanged original gameplay_load_test.py entry launches4 processes for functional-cycles1. Loopback proxy drops every observed actual backend room.started payload; actual ready_accepted and room.snapshot forwarded byte-exact.",
+      "expected": "Accepted but no started must recover within scoped ticket bounds or fail boundedly; this run expects actual snapshot recovery, complete normal lifecycle and resource cleanup.",
+      "actual": {
+        "original_coordinator_exit": 0,
+        "actual_Native_exits": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "actual_worlds": 1,
+        "actual_UIDs": 4,
+        "actual_playercycles": 4,
+        "actual_PG_receipts": 4,
+        "actual_PG_ACKs": 4,
+        "actual_ready_accepted_delivered": 4,
+        "actual_started_dropped": 4,
+        "actual_started_delivered": 0,
+        "actual_started_replay_copies_observed": 0,
+        "accepted_to_adopted_snapshot_ms": [
+          1318,
+          1319,
+          1318,
+          1325
+        ],
+        "all_Native_cleanup_Passed_engine_clean": true,
+        "proxy_sockets_threads_final0": true,
+        "initial_actual_snapshot_NOT_IN_ROOM": 4,
+        "initial_rejections_retained_then_bounded_retry_success": true,
+        "independent_checks": 466
+      },
+      "source": {
+        "base_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+        "dirty_source_manifest_not_clean_HEAD_claim": true,
+        "client_inputs": 2147,
+        "source_package_files": 102,
+        "coordinator_Python_closure_current_unchanged": 10,
+        "ServerSHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "driverSHA": "64475511b13a3c998164573ac94f8ba438d3eb8329954ac66089392c3056369c",
+        "configSHA": "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87"
+      },
+      "scope": "One four-player functional world under permanent started-message loss with actual snapshot recovery/combat/settlement/ACK. No capacity/natural-victory/all fault variants/other cases/full task claim. No actual started replay occurred; local explicit vector verifies same drop predicate for replay bytes only.",
+      "business_criteria_relaxed": false,
+      "private_limits": "Original auth10/write30/read120/RT30/bypassfalse; no rate-limit raise. 500MB/5percent functional host floors, not formal capacity/SLO criteria.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load103-original-runner-started-loss-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD103-T01-started-loss-LIVE-20261021/scoped-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load103-started-loss-fullrunner-20261021-r1-originals",
+      "whole_task_accepted": false
+    }
+  ],
+  "decision": {
+    "task_id": "LOAD-10.3",
+    "case_id": "LOAD-10.3-T01",
+    "state": "Partial",
+    "new_case_profiles_closed": [
+      "LIVE"
+    ],
+    "actual": {
+      "original_coordinator_exit": 0,
+      "actual_Native_exits": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "actual_worlds": 1,
+      "actual_UIDs": 4,
+      "actual_playercycles": 4,
+      "actual_PG_receipts": 4,
+      "actual_PG_ACKs": 4,
+      "actual_ready_accepted_delivered": 4,
+      "actual_started_dropped": 4,
+      "actual_started_delivered": 0,
+      "actual_started_replay_copies_observed": 0,
+      "accepted_to_adopted_snapshot_ms": [
+        1318,
+        1319,
+        1318,
+        1325
+      ],
+      "all_Native_cleanup_Passed_engine_clean": true,
+      "proxy_sockets_threads_final0": true,
+      "initial_actual_snapshot_NOT_IN_ROOM": 4,
+      "initial_rejections_retained_then_bounded_retry_success": true,
+      "independent_checks": 466
+    },
+    "remaining_missing_case_profiles": {
+      "LOAD-10.3-T01": [
+        "CAPACITY"
+      ],
+      "LOAD-10.3-T02": [
+        "CAPACITY",
+        "LIVE"
+      ],
+      "LOAD-10.3-T03": [
+        "CAPACITY",
+        "LIVE",
+        "POSTGRES"
+      ]
+    },
+    "capacity_othercases_wholeTask_notaccepted": true,
+    "G": "G:\\PR13Evidence\\load103-started-loss-fullrunner-20261021-r1-originals",
+    "Gmembers": 536,
+    "archiveSHA": "7aa3d3b156dbae52e3231c62fa33549918d6b4bafa94fba699a41827fd5522db",
+    "all102_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+    "production_unchanged": true,
+    "budget": "Additional1actualworld4UIDs4playercycles. All prior LOAD103 budgets/failures retained without reset; LOAD1013 gameplayworld12cycles plus separate SQLfixture1 and LOAD10238world72cycles/conservative63-world cap unchanged.",
+    "whole_project_accepted": false
+  },
+  "initial_rejection_and_replay_scope": {
+    "ok": true,
+    "actual_initial_NOT_IN_ROOM_for_real_prelaunch_snapshot_reads": [
+      {
+        "code": "NOT_IN_ROOM",
+        "request_id": "ad038bec08de2d72d9c5a263839b6c1d",
+        "Native_client": "g001c01c60a8e",
+        "action": "room.snapshot.read",
+        "actual_rejected_not_success": true,
+        "monotonic_ms": 6708,
+        "proxy_at_unix_ms": 1792537811282,
+        "original_binary_SHA": "e5af6e54b243bcc63343230485ac9809608e2ae1d049870fd90853337d0e32d4"
+      },
+      {
+        "code": "NOT_IN_ROOM",
+        "request_id": "4ca591eb35479fd634dcf1430389cbc3",
+        "Native_client": "g001c02ae85c6",
+        "action": "room.snapshot.read",
+        "actual_rejected_not_success": true,
+        "monotonic_ms": 6759,
+        "proxy_at_unix_ms": 1792537811590,
+        "original_binary_SHA": "f746adb7e4e1af944c64f1ec354244b81c4a588a3e56365a2a9eb834cf19790b"
+      },
+      {
+        "code": "NOT_IN_ROOM",
+        "request_id": "d2050bb293323d9e2e6477a7870965b1",
+        "Native_client": "g001c032d9827",
+        "action": "room.snapshot.read",
+        "actual_rejected_not_success": true,
+        "monotonic_ms": 6553,
+        "proxy_at_unix_ms": 1792537811660,
+        "original_binary_SHA": "48dc8c9aec193d8aa5122d015167df7047cebbfd2dc10cd2eba3d76d91ac8752"
+      },
+      {
+        "code": "NOT_IN_ROOM",
+        "request_id": "146a9b5d61e7ec396cc4ec5e45f123b5",
+        "Native_client": "g001c04180954",
+        "action": "room.snapshot.read",
+        "actual_rejected_not_success": true,
+        "monotonic_ms": 6609,
+        "proxy_at_unix_ms": 1792537812014,
+        "original_binary_SHA": "6861be80aa0cf32074eef7f17bcd66d3e6533f3d72a07ff205651cf8ac54a7d3"
+      }
+    ],
+    "all_four_then_recovered_actual_complete_route_and_ACK": true,
+    "raw_results_retained_rejected_no_relabel": true,
+    "interpretation": "Snapshot reads raced the room becoming available after real ready accepted; NOT_IN_ROOM is retained actual server rejection, then scoped bounded retry gets actual room snapshot. Original main and current gateway classify these; this supplement changes no return or acceptance rule.",
+    "observed_actual_started4_replaycopies0": true,
+    "replay_drop_rule_covered_by_local_vector_only_not_live_replay": true
+  }
+}

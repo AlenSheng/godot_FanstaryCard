@@ -1,0 +1,112 @@
+{
+  "preregistration": {
+    "render_source_sha": "1e2b6561bd78f2d931800f937b4841ea8759371d",
+    "native_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+    "diagnostic_only": true,
+    "one_matrix_row": true,
+    "fixture_witnesses": 15,
+    "memory_floor_bytes": 500000000,
+    "disk_free_ratio": 0.15,
+    "expected_PNGs": 1,
+    "formal_experiment_pending": true
+  },
+  "result": {
+    "ok": false,
+    "render_source_sha": "1e2b6561bd78f2d931800f937b4841ea8759371d",
+    "native_source_sha": "8ff06ef8fff0ed592fae52facca680ddf9a5b8a7",
+    "diagnostic_only": true,
+    "syntax_exit_code": 0,
+    "execution": {
+      "ok": false,
+      "render_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+      "production_changed": false,
+      "scope": "Cloud software GPU rendered fixture; no hardware FPS, LIVE, human or capacity claim",
+      "exit_code": 137,
+      "native_ok": false,
+      "observations": 0,
+      "screenshots": 0,
+      "display_driver": null,
+      "adapter": null,
+      "native_clean": false,
+      "output_bytes": 7579,
+      "output_reservation_met": true,
+      "oom_killed": false,
+      "owned_container_removed": true,
+      "source_inputs_unchanged": true
+    },
+    "shutdown_resources_clean": true,
+    "whole_task_accepted": false
+  },
+  "outputs": [
+    {
+      "path": "parse.log",
+      "bytes": 638,
+      "sha256": "7c2e22f8900f2ee9dd9701087a17bb127165fd0400534de4d3de59019e76af8d",
+      "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\n\nSCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)\n          at: GDScript::reload (res://tests/pr13_cap_effective_render.gd:146)\nERROR: Failed to load script \"res://tests/pr13_cap_effective_render.gd\" with error \"Parse error\".\n   at: load (modules/gdscript/gdscript_resource_format.cpp:46)\nWARNING: res://main.tscn:3 - ext_resource, invalid UID: uid://b7n53ftpwyql6 - using text path instead: res://ui/main.gd\n     at: load (scene/resources/resource_format_text.cpp:501)\n"
+    },
+    {
+      "path": "resource-samples.jsonl",
+      "bytes": 132,
+      "sha256": "7761676e64f4964287e59b6324e3864dc850eb0bfdd6c09e3dee8fe54bc38d39"
+    },
+    {
+      "path": "PR13-B08.4-T01/result.json",
+      "bytes": 544,
+      "sha256": "e8172f1126c9131c3cefdfb2a1a988698121446298590a39939e1c2ffc724737",
+      "data": {
+        "ok": false,
+        "render_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+        "production_changed": false,
+        "scope": "Cloud software GPU rendered fixture; no hardware FPS, LIVE, human or capacity claim",
+        "exit_code": 137,
+        "native_ok": false,
+        "observations": 0,
+        "screenshots": 0,
+        "display_driver": null,
+        "adapter": null,
+        "native_clean": false,
+        "output_bytes": 7579,
+        "output_reservation_met": true,
+        "oom_killed": false,
+        "owned_container_removed": true,
+        "source_inputs_unchanged": true
+      }
+    },
+    {
+      "path": "PR13-B08.4-T01/engine.log",
+      "bytes": 1014,
+      "sha256": "73606f2ccc4d8d6eac27334f9bcc4a49b548a6ea0af11d911036e8e1f6011471",
+      "tail": "Godot Engine v4.7.2.stable.official.ed1daf0bf - https://godotengine.org\nWARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.\n     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)\nlibdbus-1.so.3: cannot open shared object file: No such file or directory\nOpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)\n\nSCRIPT ERROR: Parse Error: The variable type is being inferred from a Variant value, so it will be typed as Variant. (Warning treated as error.)\n          at: GDScript::reload (res://tests/pr13_cap_effective_render.gd:146)\nERROR: Failed to load script \"res://tests/pr13_cap_effective_render.gd\" with error \"Parse error\".\n   at: load (modules/gdscript/gdscript_resource_format.cpp:46)\nWARNING: res://main.tscn:3 - ext_resource, invalid UID: uid://b7n53ftpwyql6 - using text path instead: res://ui/main.gd\n     at: load (scene/resources/resource_format_text.cpp:501)\n"
+    },
+    {
+      "path": "PR13-B08.4-T01/preregistration.json",
+      "bytes": 638,
+      "sha256": "9ceea69c79291d7a91a5ca6454a205e57ac97ab3c4a8b26407f3ce094ba90baa",
+      "data": {
+        "mode": "render",
+        "image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+        "scene": "res://tests/pr13_cap_effective_mouse_probe.tscn",
+        "input_manifest_sha256": "7e17e7950173dac22fe093e712118400bc9ec55a50bfb642aca3e82b8fa0260d",
+        "expected_matrix_rows": 1,
+        "expected_screenshots": 1,
+        "network": "none",
+        "memory_limit_bytes": 1610612736,
+        "cpu_cores": 1,
+        "deadline_seconds": 300,
+        "reserved_output_bytes": 16777216,
+        "launch_resources": {
+          "at": 1791650601.4794965,
+          "memory_available_bytes": 2223763456,
+          "disk_available_bytes": 718000128,
+          "disk_total_bytes": 1918836736
+        }
+      }
+    },
+    {
+      "path": "PR13-B08.4-T01/resource-samples.jsonl",
+      "bytes": 5927,
+      "sha256": "9ca92262937ba6f02b231aa6e611217b5be818b588ed06c5f473a33601d9a799"
+    }
+  ],
+  "systemd": "MainPID=0\nActiveState=inactive\nSubState=dead\n"
+}

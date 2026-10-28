@@ -1,0 +1,69 @@
+{
+  "confirmed_defects": [
+    "English Fragment Enhancement clipped and then touched decorative border",
+    "Mage passive summary third line clipped; reproduced in Chinese and English from real R2 authority wire"
+  ],
+  "product_files": [
+    {
+      "path": "client/ui/reference_ui.gd",
+      "before_sha256": "27251d1b599d11db4933530789b979af44427f501a881d3aaae58b912f7fbfcd",
+      "after_sha256": "9bf6e84035b00cea54c354dc2ef03cb52454366a76d1bdced1499e500a372e37",
+      "bytes": 74255
+    },
+    {
+      "path": "client/ui/exploration_view.gd",
+      "before_sha256": "979c5145d72882de0919cf0fa1e006b16e494b4eda44fc41e9f20cea7e665b52",
+      "after_sha256": "80860e6580ca4f40ea9209237d360c7a40f71213235fd988a01b9fadfc2f6eca",
+      "bytes": 46255
+    }
+  ],
+  "baseline_contexts": 36,
+  "baseline_clipped_contexts": 15,
+  "first_fix_contexts": 36,
+  "first_fix_clipped_contexts": 15,
+  "line_metric_diagnostic_contexts": 2,
+  "second_fix_geometry_contexts": 36,
+  "second_fix_geometry_all_pass": true,
+  "second_fix_hall_style_rejected_and_retained": true,
+  "final_hall_only_contexts": 18,
+  "final_current_distinct_render_contexts": 36,
+  "final_all_visible_label_geometry_issues": 0,
+  "all_original_player_values_preserved": true,
+  "configured_caps": [
+    30,
+    60,
+    144
+  ],
+  "stable_fps_performance_claim": false,
+  "resolutions": [
+    [
+      960,
+      540
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      1920,
+      1080
+    ]
+  ],
+  "languages": [
+    "zh-CN",
+    "en"
+  ],
+  "all_three_heroes": true,
+  "actual_GPU": "NVIDIA GeForce GTX 1660, OpenGL compatibility",
+  "style_review": "Direct original-pixel inspection of R1/R2 authority waiting scenes, rejected intermediate fixes, final narrow/standard hall and battle pictures; existing gold frames, fonts and art retained",
+  "final_hall_icon_and_caption_fit_inside_decorative_frame": true,
+  "final_passive_frame_bottom": 513,
+  "unchanged_preview_top": 528,
+  "imagegen_needed": false,
+  "no_new_worlds_for_layout_revalidation": true,
+  "offline_projection_is_not_additional_LIVE_acceptance": true,
+  "final_evidence": [
+    "layout-fix/after2/*_battle_*.png",
+    "layout-fix/after3/*_hall_*.png"
+  ]
+}

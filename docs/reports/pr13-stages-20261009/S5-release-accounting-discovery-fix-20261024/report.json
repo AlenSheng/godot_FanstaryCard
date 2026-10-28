@@ -1,0 +1,32 @@
+{
+  "kind": "ActualHostedAccountingDiscoveryImportFix",
+  "source_before_commit": "29c17f0205d94ee761f531e5e3faa4032b414240",
+  "actual_run_id": 39996078609,
+  "actual_job_id": 120559835142,
+  "actual_prior_result": "Failed:356 tests attempted,one module import error",
+  "failure": "Relative import in test_native_final_report has no parent package under unittest discover -s tools/tests.",
+  "fix": "Use tools.tests absolute package import; every original primary-report assertion retained.",
+  "native_discovery_after_fix_Passed8": true,
+  "delta": {
+    "path": "tools/tests/test_native_final_report.py",
+    "before_bytes": 3734,
+    "before_sha256": "f949f90c0246196396ae5f0064bcf67c21492ce3c955653e4cf91e52b3160415",
+    "after_bytes": 3744,
+    "after_sha256": "244adc47f97f4b2c2d2266d72891cdc20f791d68595039acab313780e807b136",
+    "change": "Use repository absolute test-package import for package and discover entrypoints; all assertions retained"
+  },
+  "actual_failure_custody": {
+    "job_id": 120559835142,
+    "run_id": 39996078609,
+    "source_commit": "29c17f0205d94ee761f531e5e3faa4032b414240",
+    "log_bytes": 110046,
+    "log_sha256": "ea301c33246e23e985dfa48498d2cc7f64af03a5941cebd17cd914da83b843eb",
+    "cross_origin_redirect_followed_without_auth_header": true,
+    "token_or_signed_URL_not_saved": true
+  },
+  "old_failure_not_relabelled_passed": true,
+  "new_hosted_result_after_fix": "NotYetObserved",
+  "no_assertion_or_threshold_disabled": true,
+  "production_code_config_or_data_changed": false,
+  "whole_project_accepted": false
+}

@@ -1,0 +1,144 @@
+{
+  "kind": "TwoLargeReports200ExactSiblingInputReferences_NotIndependentCapacityOrGameProof",
+  "generated_at": "2026-10-23T11:48:56.834586+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "streamed_source_database": {
+    "path": "G:\\PR13Evidence\\LOAD112-manifest-discovery-presence-20261022-r1-originals\\large\\streamed-declared-lineage.private.sqlite3",
+    "bytes": 94208,
+    "sha256": "dc13174e43cbffe4eeb5bec7133f216ec295e572a2fb55842b59771b5dea073f",
+    "stable_open_handle_and_path": true
+  },
+  "parent_reports": [
+    {
+      "path": "G:\\PR13Evidence\\capacity-current100-debug-20261018-r2-originals\\actual-capacity100-debug-r2\\coordinator-output\\20261018-203104-ce2557\\report.json",
+      "bytes": 122684080,
+      "sha256": "a5afc5f9c649d9d3e865b1e79d1745e090de0aa3932d9fa5916e12d4b3c516d0",
+      "stable_open_handle_and_path": true
+    },
+    {
+      "path": "G:\\PR13Evidence\\capacity-command-state100-20261019-r1-originals\\actual-capacity-command-state100-r1\\coordinator-output\\20261019-041430-2b7325\\report.json",
+      "bytes": 128911557,
+      "sha256": "8aba0923bdc04954b5f6bdb1ac258b7d465751781bbf01823490a019537fff56",
+      "stable_open_handle_and_path": true
+    }
+  ],
+  "declaration_references": 200,
+  "parent_reports_with_references": 2,
+  "original_declared_size_omissions_preserved": 200,
+  "exact_sibling_input_files_bound": 200,
+  "unique_body_objects": 1,
+  "measured_unique_body_bytes": 545,
+  "all_actual_bodies_match_declared_SHA_and_frozen_physical_inventory": true,
+  "path_boundary_controls_passed": 10,
+  "path_boundary_controls": [
+    {
+      "name": "plain",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "parent",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "backslash-parent",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "absolute",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "drive-relative",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "alternate-stream",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "remote",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "empty",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "wrong-purpose",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "embedded-NUL",
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "private_proof_ledger": {
+    "path": "G:\\PR13Evidence\\LOAD112-large-manifest-sibling-bindings-20261023-r59-originals\\exact200-large-report-sibling-bindings.private.original.jsonl",
+    "bytes": 322986,
+    "sha256": "a14f73c862ed16de6bcc3d53fb3ffdcdb6598a403b63d9b931e97f59783c67a9",
+    "records": 200
+  },
+  "verified_private_custody": {
+    "path": "G:\\PR13Evidence\\LOAD112-large-manifest-binding-publication-20261023-r60-originals\\verified-binding-custody.original.json",
+    "bytes": 66979,
+    "sha256": "64f5f3b17d1048cb80060ca6a01cabacf44b5482682eb4788321a8289aa4793a"
+  },
+  "retained_first_R58_observer_failure": {
+    "ok": false,
+    "native_exit": 1,
+    "exception": "AssertionError",
+    "failed_line": 97,
+    "failed_assumption": "Digest-only capability declarations must overlap the earlier sized declaration key set",
+    "actual_scope_difference": "Original capability declarations omit size and are excluded from the prior sized key set",
+    "source_sha256": "1ee7cbccfc9347124e576ee8ac46163b41ff0318e85d9aa0bde33a54b0e56c43",
+    "unique_partial_body_copies_retained": 1,
+    "acceptance_or_public_pointer_changed": false,
+    "case_profiles_closed": 0
+  },
+  "R59_native_exit_observed": 0,
+  "failed_overlap_assumption_is_not_a_product_or_game_failure": true,
+  "old_declared_size_nulls_or_source_bytes_not_rewritten": true,
+  "no_game_acceptance_or_export_size_threshold_relaxed": true,
+  "new_measured_body_pair_outside_original_declared_size_scope": 1,
+  "original_declared_size_key_scope": 94969,
+  "combined_declared_and_measured_key_scope": 94970,
+  "regular_declared_size_unobserved_pairs_unchanged": 4844,
+  "regular_size_omitting_declarations_pending": 8929,
+  "regular_size_omitting_declaration_review_queue": {
+    "path": "G:\\PR13Evidence\\LOAD112-large-manifest-sibling-bindings-20261023-r59-originals\\regular8929-size-omitting-declaration-review.private.original.jsonl",
+    "bytes": 4532573,
+    "sha256": "ca72e6a15286559998b13b6249ca29697db02a43cbe6427527e1ca34d905adc8",
+    "records": 8929,
+    "unique_declared_digests": 2519
+  },
+  "counted_as_200_independent_contents_games_or_capacity_clients": false,
+  "actual_runtime_capacity_producer_execution_and_causality_not_inferred": true,
+  "source_databases_and_large_private_report_bytes_not_modified": true,
+  "original_content_review_queue_unchanged": 192,
+  "archive_delta_content_review_queue_unchanged": 497,
+  "structural_path_observations_pending_unchanged": 226,
+  "register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-annotation-20261023/register.json",
+  "register_sha256_unchanged": "bb5f21d73fc6a0abcf83e4cbade831954ec7f171e9d0281846a72c3d2a49718d",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "ReadyForAcceptance": 8,
+    "Failed": 0
+  },
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_accepted": false,
+  "new_Godot_or_cloud_operation": false
+}

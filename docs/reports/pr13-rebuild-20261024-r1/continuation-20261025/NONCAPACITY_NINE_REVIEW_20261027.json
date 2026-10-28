@@ -1,0 +1,334 @@
+{
+  "date": "2026-10-27",
+  "state": "EvidenceReviewCompleted_NineWholeTasksRemainUnaccepted_ExactGapsDocumented",
+  "current_source": "2076e7ee8aa0ae00c339d5601e287994e35c557e",
+  "capacity12_closeout": {
+    "state": "ClosedByUserAgreement",
+    "task_ids": [
+      "LOAD-10.1",
+      "LOAD-10.2",
+      "LOAD-10.3",
+      "LOAD-10.4",
+      "PR13-A02.1",
+      "PR13-A02.2",
+      "PR13-A02.3",
+      "PR13-A02.4",
+      "PR13-A10.1",
+      "PR13-A10.2",
+      "PR13-A10.3",
+      "PR13-A10.4"
+    ],
+    "count": 12,
+    "native100_retest": false,
+    "raw_failures_and_CPU4to24_records_retained": true,
+    "not_an_empirical100_or_default_strict_capacity_pass": true
+  },
+  "reviewed_noncapacity_tasks": 9,
+  "new_whole_task_acceptances": 0,
+  "own_existing_machine_layers_confirmed_passed": 5,
+  "remaining_whole_tasks": 9,
+  "remaining_original_states": {
+    "Partial": 8,
+    "ReadyForAcceptance": 1
+  },
+  "root_gap_task_ids": [
+    "LOAD-11.2",
+    "PR13-A01.3",
+    "PR13-A07.3",
+    "PR13-A08.1"
+  ],
+  "dependency_only_tasks": [
+    "PR13-A08.4",
+    "PR13-B12.1",
+    "PR13-B12.2",
+    "PR13-B12.3",
+    "PR13-B12.4"
+  ],
+  "records": [
+    {
+      "task_id": "LOAD-11.2",
+      "title": "全量manifest脱敏",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已存在的脱敏/父子身份控制用例通过；本轮80份公开元数据严格检查通过；563份已有内容副本再次验SHA通过。",
+      "original_dependencies": [
+        "LOAD-11.1",
+        "LOAD-06.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "原完整清单及original→derived递归父图未闭合；现有队列仍有3005个大小/摘要字节身份未补齐，其中1610属于已搜索的Sept29历史范围、1395为其它声明。",
+        "artifacts/shadowsocks-deploy/config.template.json有1项来源用途未证实；不把模板名当作安全占位符证据，也不认定为当前生产凭据。",
+        "现有563个相同字节提供者不是原位置或原执行身份的证明。本次release新增145个路径中11个大小候选（31,996字节）没有补出新匹配。"
+      ],
+      "minimum_evidence_needed": [
+        "能核对原声明大小和SHA的剩余字节资料及其真实父/派生关系、原相关执行上下文；对未确定模板提供可信来源与用途说明。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-G-Git-content-and-current-remaining-review-20261024/remaining-task-review.json",
+        "docs/reports/pr13-stages-20261009/S5-LOAD112-current-repo-roots-and-source-availability-20261024/report.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-A01.3",
+      "title": "差异逐事件解释",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "旧52个采样进程/77项账本映射及合成审计合同已有证据，本次未重跑。",
+      "original_dependencies": [
+        "PR13-A01.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "缺20260929-155805-888652/report.json原件：10,524,360字节，SHA256 113a3ca65f4b858c9933e3fd21d7ad799ba4fe75bfd6b85d0b2282509f4de780。",
+        "缺20260929-161746-51e014/report.json原件：19,743,677字节，SHA256 fe0e50f6cc6ae4801e23600e9c53840c5923e5626fca4c501a93b5e3b7cb71ee。",
+        "因此PR13-A01.3-T02/AUDIT所需86/90、130/139的逐client/cycle/event差额与准确STOP因果仍不能核对；新的正常运行不能替代这两次历史事件。"
+      ],
+      "minimum_evidence_needed": [
+        "上述指定原件及同一原运行审计/周期/停止记录，或能逐字节验证为同一原件的备份。现有已查G盘/云端/归档范围未找到，不重复同一全盘搜索。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-a013-actual-legacy-map-and-missing-originals-20261017/review.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-A07.3",
+      "title": "CI触发和证据",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "同仓push/READY-only触发和完整PG418/0跳过证据已有；它们的事件和仓库身份不等于外部fork PR。",
+      "original_dependencies": [
+        "PR13-A07.2"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "PR13-A07.3-T02/POSTGRES缺真实外部fork PR的执行身份、对应workflow/job/SHA与PG原始结果。",
+        "2026-10-24用户已明确“没有，保留该项未通过”；此决定未被后续容量放行覆盖。"
+      ],
+      "minimum_evidence_needed": [
+        "只有后续出现真实可用的fork来源及同一PR/运行的PG证据才能重审。当前不新增账号、组织、PR或工作流，不重复索要环境。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S6-A073-user-keeps-actual-fork-PR-unpassed-20261024/decision.json",
+        "docs/reports/pr13-stages-20261009/S6-current-hosted-CI-trigger-profile-20261024/case-profile-review.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-A08.1",
+      "title": "运行来源与历史基线",
+      "original_state": "ReadyForAcceptance",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "ReadyForAcceptance",
+      "own_registered_machine_layers_passed": false,
+      "own_evidence_finding": "已有9组DLL/PDB配对、429项编译文档校验及269个唯一源码字节体；42条有界启动来源已父链连接，1个container ID已正确排除；6组大报告与450条客户端启动回执已关联。",
+      "original_dependencies": [
+        "LOAD-11.1"
+      ],
+      "effective_unaccepted_direct_dependencies": [],
+      "concrete_gaps": [
+        "4次原editor客户端运行未记录各自原Godot引擎摘要；Group1原运行overlay摘要未记录，现有程序路径、镜像标签或嵌入配置hash不能补记当时实际执行身份。",
+        "13次Sept29声明运行的原始payload备份仍未找到，完整历史/新增run全集及source/config/image/有效环境与room策略的运行父链未整体裁定完成。",
+        "现有3份PG备份、8份环境/限制/控制文件和保留的旧回滚镜像是部分备份，不等于这13次原运行的原件或镜像/config关联证明。"
+      ],
+      "minimum_evidence_needed": [
+        "可与具体原run连接的当时引擎/overlay/源码/config/镜像/有效策略原始见证及完整run清单；现有有界字段归档不能扩展为全历史证明。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-A081-original-compiler-inputs-and-missing-image-symbols-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-last18-and-bounded42-startup-source-parents-20261024/report.json",
+        "docs/reports/pr13-stages-20261009/S5-A081-G-and-cloud-historical-backup-search-20261024/backup-search.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-A08.4",
+      "title": "交付来源与未完清单",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": true,
+      "own_evidence_finding": "自身3个案例的OFFLINE/POSTGRES/AUDIT层已齐；实际PG custom dump另库恢复、3个房间快照一致及资产核对已有。当前Git release交付2076e7ee可核对，没有冒称部署或生产回滚。",
+      "original_dependencies": [
+        "PR13-A08.3",
+        "PR13-B12.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [
+        "PR13-B12.4"
+      ],
+      "concrete_gaps": [
+        "直接前置PR13-B12.4仍Partial；它沿B12.2/B12.3→B12.1→A08.1受历史来源缺口阻塞。",
+        "因此交付事实与自身用例可确认通过，尚不能把全范围来源/依赖提升为整项Accepted。"
+      ],
+      "minimum_evidence_needed": [
+        "先完成上述B12.4依赖链的整项裁决；不需要重复已通过的备份/恢复或Git交付。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-A084-current-PG-backup-restore-delivery-20261022/summary.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-B12.1",
+      "title": "集成来源冻结",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": true,
+      "own_evidence_finding": "自身3例全部适用机器层已齐；源表变化、同版本异bytes、标签ON而实际OFF及反向对照已有实际导出/PG/渲染证据。",
+      "original_dependencies": [
+        "PR13-A08.1"
+      ],
+      "effective_unaccepted_direct_dependencies": [
+        "PR13-A08.1"
+      ],
+      "concrete_gaps": [
+        "唯一未通过的直接前置为PR13-A08.1；当前输入自身可追溯不替代A08.1要求的历史原运行来源闭合。"
+      ],
+      "minimum_evidence_needed": [
+        "补齐或另行明确裁决A08.1历史来源前置后再作整项验收；本次未删除该依赖，不重跑现有导出/策略矩阵。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B121-current-source-policy-experiment-render-20261022/summary.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-B12.2",
+      "title": "独立off/on和体验矩阵",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": true,
+      "own_evidence_finding": "自身3例机器层已齐，含独立off/on、PG和渲染反例分类；真人按用户要求排除，未称真人体验通过。",
+      "original_dependencies": [
+        "PR13-B12.1",
+        "PR13-A07.4",
+        "PR13-B03.4",
+        "PR13-B04.4",
+        "PR13-B05.4",
+        "PR13-B06.4",
+        "PR13-B07.4",
+        "PR13-B08.4",
+        "PR13-B09.4",
+        "PR13-B10.4",
+        "PR13-B11.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [
+        "PR13-B12.1"
+      ],
+      "concrete_gaps": [
+        "直接前置PR13-B12.1仍Partial；其它声明前置A07.4及B03.4至B11.4均已Accepted。",
+        "这些反例分类通过不代表候选收益已达到阈值、全部组合通过或候选正式启用。"
+      ],
+      "minimum_evidence_needed": [
+        "完成B12.1→A08.1来源前置裁决；保留候选收益Inconclusive及未启用状态，不追加体验或收益样本。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B122-independent-machine-review-PG-render-20261022/summary.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-B12.3",
+      "title": "配置生成与版本回滚",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": true,
+      "own_evidence_finding": "自身3例全部机器层已齐：相同源表双次导出、配置回滚/实际策略、正式候选guard；已有PG与原生/渲染证据。",
+      "original_dependencies": [
+        "PR13-B12.1",
+        "PR13-B02.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [
+        "PR13-B12.1"
+      ],
+      "concrete_gaps": [
+        "直接前置PR13-B12.1仍Partial；另一前置B02.4已Accepted。源/生成物自身用例通过不能替代该来源前置。"
+      ],
+      "minimum_evidence_needed": [
+        "完成B12.1→A08.1整项来源裁决；不重复配置生成/回滚用例，不激活价格/drop/冻结候选。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B123-current-same-source-export-experiment-render-20261022/summary.json",
+        "docs/reports/pr13-stages-20261009/S5-B123-current-policy-rollback-experiment-render-20261022/summary.json",
+        "docs/reports/pr13-stages-20261009/S5-B123-T03-current-formal-guard-experiment-render-20261022/summary.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    },
+    {
+      "task_id": "PR13-B12.4",
+      "title": "全量最终裁决",
+      "original_state": "Partial",
+      "whole_task_accepted_this_review": false,
+      "retained_whole_task_state": "Partial",
+      "own_registered_machine_layers_passed": true,
+      "own_evidence_finding": "自身3例全部机器层已齐，原G4未通过/未执行为Queued/账本异常为Blocked的裁决反例正确；原失败及账本异常均保留。",
+      "original_dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3",
+        "PR13-A10.4",
+        "PR13-A05.4"
+      ],
+      "effective_unaccepted_direct_dependencies": [
+        "PR13-B12.2",
+        "PR13-B12.3"
+      ],
+      "concrete_gaps": [
+        "容量前置PR13-A10.4本次按用户约定收口，已从有效阻塞依赖中移出。",
+        "剩余直接前置为PR13-B12.2和PR13-B12.3，二者都经B12.1追溯到A08.1。A05.4已Accepted。",
+        "因此自身最终裁决逻辑通过，但“全量方案均通过”或“候选收益通过/正式启用”仍没有成立条件。"
+      ],
+      "minimum_evidence_needed": [
+        "完成B12.2/B12.3→B12.1→A08.1的来源依赖裁决；不再以A10.4容量或100人补测作为下一步。"
+      ],
+      "existing_evidence_reports": [
+        "docs/reports/pr13-stages-20261009/S5-B124-current-final-decision-counterexamples-20261022/summary.json"
+      ],
+      "no_new_runtime_test_required_or_started_for_this_review": true
+    }
+  ],
+  "fresh_existing_evidence_verification": {
+    "LOAD112_exact_provider_copies": 563,
+    "exact_matches": 563,
+    "raw_manifests": 16,
+    "raw_manifest_member_rows": 1447,
+    "raw_member_bytes": 322069279,
+    "size_or_SHA_errors": 0,
+    "current_release_public_metadata_files": 80,
+    "strict_public_guard_findings": 0,
+    "new_release_delta_changed_paths": 145,
+    "new_release_delta_byte_provider_matches": 0,
+    "new_gameplay_Godot_PG_or_unit_tests": 0,
+    "existing_producer_check_counts_not_claimed_reexecuted": true
+  },
+  "original_register": {
+    "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S6-A094-current-whole-adjudication-accepted-20261024\\register.json",
+    "bytes": 17458066,
+    "sha256": "9ac429158cac97e00481becd1f1773096dd846eb07c12589bf561d92b26030a8",
+    "unchanged": true,
+    "original_task_state_counts": {
+      "Accepted": 111,
+      "Partial": 20,
+      "ReadyForAcceptance": 1
+    }
+  },
+  "original_failures_not_overwritten": true,
+  "do_not_repeat_same_historical_backup_search_without_new_input": true,
+  "no_extra_fork_account_environment_or_workflow_requested": true,
+  "no_auto_capacity_resume": true,
+  "no_production_or_rule_changes": true,
+  "private_reverification_evidence_root": "G:\\PR13Evidence\\current-version-rebuild-20261024-r1-originals\\noncapacity-nine-evidence-review-20261027-r1",
+  "reviewed_at": "2026-10-27T12:17:25.868690+08:00"
+}

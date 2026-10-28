@@ -1,0 +1,121 @@
+{
+  "kind": "Recorder authority-gap lifecycle fix reproduced and locally verified; fresh capacity required",
+  "base_release": "be3948aae4ebf764506d541592cfa3cf2f75bbe2",
+  "actual_original_recorder_Git_blob_source": "917deb16b0e817054a11dd751ac543e0f1a4af0a",
+  "actual_R10_evidence": "north-america50-r10-notpassed.json",
+  "defect": "A real write deadline clears room authority temporarily. The recorder closed the live battle as PhaseChanged, latched its ID as terminal and then ignored observations and effective actions after the same battle resumed.",
+  "change": [
+    "Keep battle counters, identity and original start clock while the actual store reports room-authority recovery",
+    "Never treat that network gap as suspended PVE time",
+    "Only consume effective own combo progress when current room, match, cycle and process identity still match the metric owner and authority is available",
+    "Continue existing termination and frozen-PVE behavior after genuine battle end, new room or completed duel"
+  ],
+  "counterfactual": {
+    "same_final_controlled_checks": 43,
+    "original_recorder_passed": 27,
+    "original_recorder_failed": 16,
+    "same_checks_on_fixed_recorder_passed": 43,
+    "real_store_expiry_branch_with_injected_expired_deadline": true,
+    "no_new_live_world_or_server_for_controlled_cases": true,
+    "all_original_failed_logs_and_used_sources_retained": true
+  },
+  "validation": {
+    "common_native_suites": 24,
+    "common_named_checks": 310,
+    "extended_native_suites": 24,
+    "extended_named_checks": 415,
+    "overlapping_suites_not_unique_sum": true,
+    "scope_and_negative_controls": [
+      "PVE and PVP recovery",
+      "unverified gap combo and pong or connection marker cannot invent progress",
+      "restored unchanged hand cannot invent draw progress",
+      "post-recovery positive own combo advances; zero-effect combo does not",
+      "a changed room cannot inherit prior metric progress before next poll",
+      "genuine terminal battle cannot reopen on late snapshot",
+      "duel recovery retains its frozen PVE provenance",
+      "network gap remains in battle duration",
+      "legal80over70HP remains unchanged"
+    ],
+    "no_unexpected_script_or_resource_diagnostic_in_final_runs": true
+  },
+  "unchanged": {
+    "initial_command_deadline_ms": 3000,
+    "stalled_native_deadline_ms": 90000,
+    "GDD_hashes": {
+      "GDD.md": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6",
+      "GDD_BASE_v0.69.md": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    },
+    "server_protocol_config_and_product_client_state_UI_resources": true,
+    "actual_capacity_latency_coverage_and_resource_guards": true,
+    "no_game_error_whitelist_or_old_failure_reclassification": true
+  },
+  "local_launch": {
+    "full_official_Godot": "4.7.2.stable.official.ed1daf0bf",
+    "headless_Dummy_CNO_BelowNormal_last4_CPUs": true,
+    "available_memory_floor_bytes": 6442450944,
+    "minimum_available_bytes": 9184276480,
+    "no_formal_or_cloud_native_world_started_for_this_regression": true
+  },
+  "tested_source_SHA256": {
+    "client/tests/gameplay_load_client.gd": "19c811ce9cf56b922bb8a5ecb1de73f65716b124a682dc776c56dd3655cad600",
+    "client/tests/test_active_battle_observation.gd": "5be5014e0558227f06ab5672593bdfc0fa0df1283ecc1a8e0b142b9fede91517"
+  },
+  "fresh_exact50_capacity": "Completed_NotPassed_see_recorder-fixed50-r14-notpassed.json",
+  "CI": "Completed_success_all4_jobs_actual418PG_no_skip",
+  "actual100_capacity": "NotExecuted",
+  "whole_project_accepted": false,
+  "at_unix_ms": 1792896472878.8542,
+  "cloud_followup": {
+    "source": "c655d1ba2702febb26bbf247c75e063349d26311",
+    "new_exact50_status": "Completed_NotPassed",
+    "actual_native_clients": {
+      "windows": 25,
+      "cloud": 25
+    },
+    "observed_both25_online_and_in_room": true,
+    "latency_profile": "north-america-5s-8s-10s-monitor10s",
+    "shared600second_window_and_full_adjudication_pending": true,
+    "same_prior_stall_latency_coverage_and_resource_thresholds": true,
+    "actual_Windows_visible_windows": 0,
+    "all25_BelowNormal_last4_CPUs": true,
+    "R10_prior_actual_DB_restore": {
+      "matches": 14,
+      "settlements": 54,
+      "pending_holds": 0,
+      "all54_participant_identities_match_original_backend_snapshot": true,
+      "scratch_database_dropped": true
+    },
+    "R10_owned_cleanup": {
+      "containers_removed": 6,
+      "old_network_and_root_removed": true,
+      "original_source_cache_moved_intact": true,
+      "nonGit_inputs_verified": 78,
+      "additional_freed_bytes": 222502912,
+      "disk_free_at_transition": 3882729472
+    },
+    "new_four_client_warmup_passed_separately": true,
+    "formal_identity_unchanged": true,
+    "formal_ready_HTTP": 200,
+    "formal_DB_not_cleared": true,
+    "new_source_CI": {
+      "run": 40155892481,
+      "passed_jobs": [
+        "accounting",
+        "client",
+        "server-contract"
+      ],
+      "PG_status": "Completed_success",
+      "Linux_common_suites": 24,
+      "Linux_named_checks": 310,
+      "tool_checks": 468,
+      "cloud_ownership_checks": 8,
+      "three_official_artifacts_G_verified": true,
+      "actual_PG_passed": 418,
+      "PG_skipped": 0,
+      "all4_official_artifacts_G_verified": true
+    },
+    "whole_project_accepted": false,
+    "at_unix_ms": 1792897468958.4229,
+    "failure_report": "recorder-fixed50-r14-notpassed.json"
+  }
+}

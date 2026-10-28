@@ -1,0 +1,107 @@
+[
+  {
+    "command": [
+      "dotnet",
+      "build",
+      "FantasyCard.Server.slnx",
+      "-c",
+      "Release",
+      "-v",
+      "minimal"
+    ],
+    "label": "fresh-build",
+    "cwd": "/workspace/godot_FanstaryCard/server",
+    "exit_code": 0,
+    "deadline_seconds": 240,
+    "duration_seconds": 23.875
+  },
+  {
+    "command": [
+      "initdb",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/development-01/pgdata",
+      "-U",
+      "ack_cycle_owner",
+      "--auth=trust",
+      "--no-locale",
+      "--encoding=UTF8"
+    ],
+    "label": "pg-init",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 1.125
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/development-01/pgdata",
+      "-l",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/development-01/pg.log",
+      "-o",
+      "-k /tmp/pr13-ack-cycles-eau6spew -h '' -p 5432",
+      "-w",
+      "start"
+    ],
+    "label": "pg-start",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.115
+  },
+  {
+    "command": [
+      "createdb",
+      "-h",
+      "/tmp/pr13-ack-cycles-eau6spew",
+      "-U",
+      "ack_cycle_owner",
+      "pr13_ack_cycles"
+    ],
+    "label": "pg-createdb",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.115
+  },
+  {
+    "command": [
+      "dotnet",
+      "test",
+      "tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj",
+      "-c",
+      "Release",
+      "--no-build",
+      "--filter",
+      "FullyQualifiedName~Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes",
+      "--logger",
+      "trx;LogFileName=targeted.trx",
+      "--results-directory",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/development-01/results",
+      "-v",
+      "normal"
+    ],
+    "label": "targeted-tests",
+    "cwd": "/workspace/godot_FanstaryCard/server",
+    "exit_code": 0,
+    "deadline_seconds": 1500,
+    "duration_seconds": 459.191
+  },
+  {
+    "command": [
+      "pg_ctl",
+      "-D",
+      "/workspace/pr13-takeover/cycle-ack-batch-20260930/development-01/pgdata",
+      "-m",
+      "fast",
+      "-w",
+      "stop"
+    ],
+    "label": "pg-stop",
+    "cwd": "/workspace/godot_FanstaryCard",
+    "exit_code": 0,
+    "deadline_seconds": 30,
+    "duration_seconds": 0.116
+  }
+]

@@ -1,0 +1,133 @@
+{
+  "baseline_sha": "2dda41b32ba89f06d5ea722ae8b9469004940c22",
+  "algorithm_version": "A05GuardProcess/1",
+  "profiles": [
+    "OFFLINE",
+    "POSTGRES",
+    "AUDIT"
+  ],
+  "case_ids": [
+    "PR13-A05.1-T01",
+    "PR13-A05.1-T02",
+    "PR13-A05.1-T03"
+  ],
+  "source_scope": "actual minimal git-archive copy, no .git/bin/obj/.godot/package cache",
+  "ownership": "own Unix PG55449 and schema UUID; loopback Program/PB HTTP/ticket WS and one production Godot process at a time",
+  "matrix": [
+    "same actual recovery M ACKawait old poll RED then fixed SHA GREEN",
+    "ordinary terminal without recovery M separate expected-negative control",
+    "precommit failure and retry",
+    "durable committed response lost same receipt",
+    "four Pending holds OSrestart blocks early ACK/next preparation",
+    "ACK not forwarded failure and authority bootstrap restore",
+    "committed ACK response lost authority bootstrap confirmation",
+    "new N route isolation from actual old callbacks",
+    "owned READ ONLY asset/receipt/holds/route audit"
+  ],
+  "causal_deadline_seconds": 90,
+  "canonical_entry_deadline_seconds": 180,
+  "godot_local_wait_seconds": 10,
+  "fault_controls": "owned wallet row transaction lock and PG/HTTP/WS relay; unchanged real authoritative response bytes; no production fault hook or business-field mock",
+  "defaults": "BotFill30s, Gateway logical30s/transport10s and limiter unchanged",
+  "sample_budget": "one baseline RED then one fixed SHA regression matrix; rerun only if a concrete fixture or production failure justifies it",
+  "S6": "pending MAIN; no Accepted signing",
+  "integration_sha": "62772be2a1bc28affffc3d057f259c8c5ded8e37",
+  "guard_sha": "7231c7499b7220b85c27be48ebbd127d7c0b7038",
+  "harness_files": [
+    {
+      "path": "client/tests/pr13_a05_ack_poll_causal.gd",
+      "bytes": 5167,
+      "sha256": "b88eda4cbb2363996f19c2e24b81f949381479a950a294ac21f9b97e946e54c7",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "client/tests/pr13_a05_healthy_old_room.gd",
+      "bytes": 5357,
+      "sha256": "06ce9a6d22694994a6f853de56f0ec2966ab36fa2905e96b245e0dc239339cda",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "client/tests/pr13_a05_pending_runtime.gd",
+      "bytes": 5327,
+      "sha256": "4c43f70d1966b4cc1b549b15d29a781e33b60980e54308ec7c9b6520bd07a474",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "client/tests/pr13_a05_persistence_fault.gd",
+      "bytes": 4013,
+      "sha256": "441b0c58dfcb042c0b987b50c8d84f5eeae54bd03f669da2c564dd72f5b83bff",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AcceptanceTests.cs",
+      "bytes": 32703,
+      "sha256": "9849628106fc3397114c09aa18900b5e489f873f8ab903e1eb8e49322902b4f3",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AckPollCausalTests.cs",
+      "bytes": 13738,
+      "sha256": "16b85b2cf61af2858d1b9905d8fd98a268edb34a4ad5b5abf5a6bb89ed37f6b2",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05AssetAudit.cs",
+      "bytes": 4924,
+      "sha256": "34a3b1045a0240f59adbe7829543208989cfa54007526477796420dbb890cbf9",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05CallbackRelay.cs",
+      "bytes": 8600,
+      "sha256": "9375776d163d140cb356f87689c957b57a7874aec82aa51dc590e208d6e287f3",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05DatabaseRelay.cs",
+      "bytes": 6450,
+      "sha256": "c8948f93b69bb1acbac7a4914ce23b7130de2289913666a2874ee9ef24cf31d2",
+      "change": "new actual source path from canonical docs harness"
+    },
+    {
+      "path": "client/tests/pr13_a05_guard_windows.gd",
+      "bytes": 5963,
+      "sha256": "b715e1dab4cb1f807f4750ee6c77b3b0ebc1ac7aaa74baa891dc9e186ebb6001",
+      "change": "new guard window harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardWindowTests.cs",
+      "bytes": 9457,
+      "sha256": "4ee3c4bf70c491e7f4644e59c473be7b9c8c9cb2fef8d952a46aa30b2fb68502",
+      "change": "new guard window harness"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleA05GuardRelay.cs",
+      "bytes": 10065,
+      "sha256": "17218ffcac63c60eda738404e727108e39b5cc8b0e34fcbad976697d169976b9",
+      "change": "new guard window harness"
+    }
+  ],
+  "canonical_case_mapping": {
+    "PR13-A05.1-T01": "A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(precommit)",
+    "PR13-A05.1-T02": "A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(committed-response-loss)",
+    "PR13-A05.1-T03": "A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion"
+  },
+  "runtime_budget": {
+    "original_canonical_entry_seconds": 180,
+    "causal_and_new_guard_entry_seconds": 90,
+    "controller_file_wait_seconds": 30,
+    "client_local_state_wait_seconds": 10,
+    "ack_completion_loop": "bounded by unchanged outer90s cancellation and runner kills actual Godot process; production logical30s/transport10s unchanged"
+  },
+  "population": {
+    "canonical_cases": 3,
+    "canonical_scenario_entries": 4,
+    "guard_regression_entries": 4,
+    "additional_full_suite_baseline_entries": "all present in fixed source; count from actual TRX, no filtered replacement"
+  },
+  "execution": "One final full Server suite with private PG+Godot enabled; no parallel Godot (existing maxParallelThreads1 unchanged)",
+  "authority_policy": "No fields mocked or synthesized; owned PG row lock and protocol gates delay/drop unchanged responses only",
+  "frozen_at_utc": "2026-10-01T01:12:20.932418+00:00",
+  "fixture_fix": "actual backend204 forwarded without ContentType/ContentLength/body-write; unchanged correctness/audit/cancel assertions",
+  "previous_failed_source_sha": "76d7113d3888133a8d08fbd6338db838aa4cb01f"
+}

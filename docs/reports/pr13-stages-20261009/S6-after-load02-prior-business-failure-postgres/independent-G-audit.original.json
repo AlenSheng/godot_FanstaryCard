@@ -1,0 +1,312 @@
+{
+  "ok": true,
+  "native_clean": true,
+  "owned_container_removed": true,
+  "source_inputs_match_git": true,
+  "implementation_source_sha": "398e8789f2858c17c86665a5950398466b27239b",
+  "all_G_original_members_rehashed": 3456,
+  "archive_SHA_and_CRC_reverified": true,
+  "exact_current_input_files": [
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleLoad02TimeoutStopTests.cs",
+      "sha256": "ce7dbe86f774d4ef01de0df9dec1e39571e8ba0bc296b4ee2653e2a5bc0dbe9a"
+    },
+    {
+      "path": "client/tests/gameplay_load_client.gd",
+      "sha256": "909a59e4a98915614f95db1c7bb39121d67ceb9f6cc507030665f370dbce7b99"
+    },
+    {
+      "path": "client/tests/pr13_load02_timeout_stop.gd",
+      "sha256": "6349627c8b71833051daa43efbd31e42758d2581c13910a7c463a941d97b90ad"
+    }
+  ],
+  "method": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+  "native_unskipped_variant_passed": true,
+  "native_total_rows": 29,
+  "original_failed_wrapper_retained": true,
+  "wrapper_pass_not_used": true,
+  "first_failure_monotonic_ms": 31605,
+  "STOP_observed_monotonic_ms": 31672,
+  "final_failed_count": 1,
+  "final_cancelled_count": 0,
+  "final_outcome": "failed",
+  "original_failure_errors_preserved": true,
+  "original_assets_unchanged": true,
+  "subsequent_prepare_cancel_retained_as_actual_owned_transition": true,
+  "final_equipment_version_and_preparation_row_not_erased": true,
+  "next_prepare_cancel_verified": true,
+  "original_receipt": {
+    "caseId": "LOAD-02.2-T01",
+    "recordedAt": "2026-10-11T19:24:29.5275436+00:00",
+    "evidence": {
+      "status": "Passed",
+      "mode": "timeout-before-stop",
+      "ProcessId": 1248,
+      "playerId": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+      "equipmentId": "01a12c6b-dd61-719c-9836-34b0af572180",
+      "fixture": "/evidence/process-evidence/ack-client-load02-timeout-before-stop-218e2bbbbf5d45f2aa4be92c4bae139e",
+      "before": {
+        "wallet": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "gold": 0,
+          "diamond": 0,
+          "version": 1
+        },
+        "consumables": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "health_potion_count": 0,
+          "advanced_bag_count": 0,
+          "top_bag_count": 0,
+          "version": 1
+        },
+        "equipment": {
+          "instance_id": "01a12c6b-dd61-719c-9836-34b0af572180",
+          "owner_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "slot": "Feet",
+          "quality": "White",
+          "level": 0,
+          "is_bound": false,
+          "location": "Equipped",
+          "version": 1,
+          "created_at": "2026-10-11T19:23:48.961249+00:00",
+          "element": "Fire",
+          "effect_affix": null,
+          "secondary_trait": "DrawInterval"
+        },
+        "settlements": [],
+        "holds": [],
+        "ledger": [],
+        "movements": [],
+        "preparations": [],
+        "tickets": []
+      },
+      "after": {
+        "wallet": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "gold": 0,
+          "diamond": 0,
+          "version": 1
+        },
+        "consumables": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "health_potion_count": 0,
+          "advanced_bag_count": 0,
+          "top_bag_count": 0,
+          "version": 1
+        },
+        "equipment": {
+          "instance_id": "01a12c6b-dd61-719c-9836-34b0af572180",
+          "owner_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "slot": "Feet",
+          "quality": "White",
+          "level": 0,
+          "is_bound": false,
+          "location": "Equipped",
+          "version": 1,
+          "created_at": "2026-10-11T19:23:48.961249+00:00",
+          "element": "Fire",
+          "effect_affix": null,
+          "secondary_trait": "DrawInterval"
+        },
+        "settlements": [],
+        "holds": [],
+        "ledger": [],
+        "movements": [],
+        "preparations": [],
+        "tickets": []
+      },
+      "finalAssets": {
+        "wallet": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "gold": 0,
+          "diamond": 0,
+          "version": 1
+        },
+        "consumables": {
+          "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "health_potion_count": 0,
+          "advanced_bag_count": 0,
+          "top_bag_count": 0,
+          "version": 1
+        },
+        "equipment": {
+          "instance_id": "01a12c6b-dd61-719c-9836-34b0af572180",
+          "owner_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+          "slot": "Feet",
+          "quality": "White",
+          "level": 0,
+          "is_bound": false,
+          "location": "Equipped",
+          "version": 3,
+          "created_at": "2026-10-11T19:23:48.961249+00:00",
+          "element": "Fire",
+          "effect_affix": null,
+          "secondary_trait": "DrawInterval"
+        },
+        "settlements": [],
+        "holds": [],
+        "ledger": [],
+        "movements": [
+          {
+            "movement_id": "01a12c6c-7b8b-7fcd-ac06-25547430a140",
+            "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+            "item_id": "01a12c6b-dd61-719c-9836-34b0af572180",
+            "from_location": "Equipped",
+            "to_location": "PreparationLocked",
+            "reason": "preparation.lock",
+            "request_id": "load02-next-prepare",
+            "created_at": "2026-10-11T19:24:29.392918+00:00"
+          },
+          {
+            "movement_id": "01a12c6c-7bae-7ea2-946a-8c46de4f25c4",
+            "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+            "item_id": "01a12c6b-dd61-719c-9836-34b0af572180",
+            "from_location": "PreparationLocked",
+            "to_location": "Equipped",
+            "reason": "preparation.release",
+            "request_id": "load02-next-cancel",
+            "created_at": "2026-10-11T19:24:29.476485+00:00"
+          }
+        ],
+        "preparations": [
+          {
+            "preparation_id": "01a12c6c-7b78-7c6f-8e3c-517e6ea5a1b7",
+            "player_id": "01a12c6b-dcdc-76aa-8896-673f25dd2221",
+            "request_id": "load02-next-prepare",
+            "request_hash": "fa0545b2d3ecca939c78b044031cbff48d16ba9f060c480f30b5b20a10745392",
+            "snapshot_json": {
+              "cardIds": [
+                "C01",
+                "C02",
+                "C03",
+                "C04",
+                "C05",
+                "C06",
+                "C07",
+                "C08",
+                "C09",
+                "C10",
+                "C11",
+                "C12",
+                "C13",
+                "MAG-01",
+                "MAG-02",
+                "MAG-03",
+                "MAG-04",
+                "MAG-05",
+                "MAG-06",
+                "MAG-07"
+              ],
+              "heroClass": "Mage",
+              "maximumHp": 70,
+              "cardLevels": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "difficulty": "Standard",
+              "potionCount": 0,
+              "backpackTier": "Free",
+              "equipmentIds": [
+                null,
+                null,
+                null,
+                null,
+                "01a12c6b-dd61-719c-9836-34b0af572180"
+              ],
+              "configVersion": "gdd-0.70-numerical-1",
+              "safeSlotIndexes": [],
+              "backpackCapacity": 20,
+              "classWeaponLevel": 0,
+              "equipmentSnapshots": [
+                {
+                  "slot": "Feet",
+                  "level": 0,
+                  "element": "Fire",
+                  "quality": "White",
+                  "instanceId": "01a12c6b-dd61-719c-9836-34b0af572180",
+                  "effectAffix": null,
+                  "secondaryTrait": "DrawInterval"
+                }
+              ]
+            },
+            "status": "Cancelled",
+            "config_version": "gdd-0.70-numerical-1",
+            "created_at": "2026-10-11T19:24:29.391812+00:00",
+            "expires_at": "2026-10-11T19:54:29.391812+00:00"
+          }
+        ],
+        "tickets": []
+      },
+      "partition": {
+        "cancelled": 0,
+        "completed": 0,
+        "failed": 1,
+        "incomplete": 0,
+        "pending": 0,
+        "started": 1
+      },
+      "authority": {
+        "ConfigVersion": "gdd-0.70-numerical-1",
+        "activePreparation": null,
+        "unfinishedMatch": null,
+        "unfinishedSettlement": null,
+        "responseBytes": 36207,
+        "responseSha256": "20e793374b18fc1e3bf9825ca9fa41976f326068b460f715ca3d17cee6890c3b",
+        "backendCompletedTick": 2132913047083443
+      },
+      "ConfigVersion": "gdd-0.70-numerical-1",
+      "nextPreparationId": "01a12c6c-7b78-7c6f-8e3c-517e6ea5a1b7",
+      "nextPrepareCancelVerified": true,
+      "profiles": "OFFLINE+POSTGRES",
+      "algorithm_version": "load02-observer-v1",
+      "productionTimeoutsMs": {
+        "attempt": 10000,
+        "logical": 30000,
+        "cleanup": 22000
+      },
+      "limitations": "legal extraction/abandon driver; not full Boss or three routes; S6 parent independent review pending"
+    }
+  },
+  "raw_originals": [
+    {
+      "source": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-load02-timeout-before-stop-218e2bbbbf5d45f2aa4be92c4bae139e\\load-result.json.first-failure.json",
+      "bytes": 2102,
+      "sha256": "ed019e4ed217c13d5ccbbba0be46c0029fd4f97477569c6a4e0b6811315d99f0"
+    },
+    {
+      "source": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-load02-timeout-before-stop-218e2bbbbf5d45f2aa4be92c4bae139e\\load-result.json.stop-observed.json",
+      "bytes": 2105,
+      "sha256": "e02732353d0759dd771ea1d935766259d9486201c4eb22c886f5676cea56979a"
+    },
+    {
+      "source": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-load02-timeout-before-stop-218e2bbbbf5d45f2aa4be92c4bae139e\\load-result.json",
+      "bytes": 37843,
+      "sha256": "9a19a84f109b4d41772607a04a2ca504c5f0cf43a83843d7fe0078ef9d7fe818"
+    },
+    {
+      "source": "G:\\PR13Evidence\\current-process27-r2\\native-output\\process-evidence\\ack-client-load02-timeout-before-stop-218e2bbbbf5d45f2aa4be92c4bae139e\\load-result.json.accounting.json",
+      "bytes": 2804,
+      "sha256": "31b981a5d9f741084d8f31b7549576325d392f999ad5f0249c8c9e6b5e80b7d2"
+    }
+  ],
+  "mapping": "Actual LOAD-02.2-T01 timeout-before-stop boundary also proves LOAD-02.1-T02 prior business failure preserved after manual STOP; POSTGRES only",
+  "MAIN_accepted": false
+}

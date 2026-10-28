@@ -1,0 +1,269 @@
+{
+  "kind": "ExactShellRuntimeFieldProjectionSyntaxIntent_NotRenderedCredentials",
+  "generated_at": "2026-10-23T03:08:26.951922+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "shell_review": {
+    "kind": "TwoExactShellByteObjects_RuntimeTokenProjectionIntent",
+    "ok": true,
+    "objects_reviewed": 2,
+    "results": [
+      {
+        "sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+        "bytes": 4626,
+        "frozen_observation_aliases": 50,
+        "actual_exact_source_alias": {
+          "root": "private-G",
+          "path": "working-projects/release-verified-server-source-20261022-r3/server/tools/admin-smoke.sh",
+          "public_report_text": false,
+          "reason": "Credential-like source text requires private classification"
+        },
+        "exact_LF_representation_sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+        "native_generic_matches_explained": [
+          {
+            "line": 47,
+            "kind": "ShellCommandSubstitution_RuntimeJSONFieldProjection",
+            "filter_subset": "Known token field selectors, fallback operator, empty output/string and parentheses only",
+            "literal_nonempty_output_value_not_allowed": true,
+            "input_comes_from_shell_variable_reference": true,
+            "actual_source_or_runtime_value_not_emitted": true
+          }
+        ],
+        "original_source_rule_hit_retained": true,
+        "runtime_output_or_credential_freedom_not_asserted": true
+      },
+      {
+        "sha256": "dc7abe78fd780dd4f0b8f90e1f8e207e88b767db9f330494a594e6a0e58afd45",
+        "bytes": 4722,
+        "frozen_observation_aliases": 2,
+        "actual_exact_source_alias": {
+          "root": "workspace",
+          "path": "server/tools/admin-smoke.sh",
+          "public_report_text": false,
+          "reason": "Credential-like source text requires private classification"
+        },
+        "exact_LF_representation_sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+        "native_generic_matches_explained": [
+          {
+            "line": 47,
+            "kind": "ShellCommandSubstitution_RuntimeJSONFieldProjection",
+            "filter_subset": "Known token field selectors, fallback operator, empty output/string and parentheses only",
+            "literal_nonempty_output_value_not_allowed": true,
+            "input_comes_from_shell_variable_reference": true,
+            "actual_source_or_runtime_value_not_emitted": true
+          }
+        ],
+        "original_source_rule_hit_retained": true,
+        "runtime_output_or_credential_freedom_not_asserted": true
+      }
+    ],
+    "frozen_observations_covered": 52,
+    "exact_original_LF_CRLF_variants_share_one_LF_body": true,
+    "only_shared_LF_representation_native_syntax_checked": true,
+    "raw_CRLF_bytes_not_claimed_directly_POSIX_executable": true,
+    "actual_filter_subset_controls": 9,
+    "native_shell_syntax_controls": [
+      {
+        "label": "no-execution-control",
+        "command": [
+          "C:\\Program Files\\Git\\bin\\bash.exe",
+          "--noprofile",
+          "--norc",
+          "-n",
+          "/g/PR13Evidence/LOAD112-shell-token-projection-20261023-r1-originals/no-execution-control.sh"
+        ],
+        "native_exit": 0,
+        "source_bytes": 121,
+        "source_sha256": "eca9a8a9379c9ea74634d72284e9705f44ccdc6b9a2f58f8a6a1f8434b0ed55a",
+        "syntax_only_no_script_execution": true
+      },
+      {
+        "label": "malformed-control",
+        "command": [
+          "C:\\Program Files\\Git\\bin\\bash.exe",
+          "--noprofile",
+          "--norc",
+          "-n",
+          "/g/PR13Evidence/LOAD112-shell-token-projection-20261023-r1-originals/malformed-control.sh"
+        ],
+        "native_exit": 2,
+        "source_bytes": 28,
+        "source_sha256": "4502c87a8781c088b6669661fa96159c61d59b60a60241e4e16157a67004614d",
+        "syntax_only_no_script_execution": true
+      }
+    ],
+    "native_actual_LF_syntax": {
+      "label": "shared-exact-LF-script",
+      "command": [
+        "C:\\Program Files\\Git\\bin\\bash.exe",
+        "--noprofile",
+        "--norc",
+        "-n",
+        "/g/PR13Evidence/LOAD112-shell-token-projection-20261023-r1-originals/shared-exact-LF-script.sh"
+      ],
+      "native_exit": 0,
+      "source_bytes": 4626,
+      "source_sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3",
+      "syntax_only_no_script_execution": true
+    },
+    "negative_control_side_effect_files_not_created": true,
+    "bash_profile_and_environment_startup_hooks_not_loaded": true,
+    "actual_admin_smoke_commands_HTTP_or_auth_not_executed": true,
+    "original_source_or_guard_expected_values_changed": false,
+    "public_export_or_credential_freedom_granted": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "new_exact_byte_intent_objects": 2,
+  "new_frozen_observation_aliases": 52,
+  "only_one_shared_LF_body_native_syntax_checked": true,
+  "source_representations_not_claimed_directly_POSIX_executable_when_CRLF": true,
+  "actual_admin_or_HTTP_auth_commands_executed": false,
+  "native_noexecution_side_effect_files_absent": true,
+  "filter_admits_field_projection_fallback_empty_only_no_nonempty_literal_output": true,
+  "original_source_rule_hits_still_present": true,
+  "source_or_runtime_credential_freedom_or_public_export_not_granted": true,
+  "initial_observer_positional_input_assumption_failure_retained": true,
+  "correction_supported_actual_here_string_before_double_quoted_runtime_variable": true,
+  "combined_existing_intent_objects": 141,
+  "combined_existing_intent_observations": 2173,
+  "original_frozen_objects": 679,
+  "original_frozen_observations": 8200,
+  "remaining_content_objects": 538,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 8,
+    "BoundedStreamingFormat": 29,
+    "SourceLanguageExpressionIntent": 375,
+    "PrivateStructuredOrRuntimeContent": 107
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-shell-token-projection-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-executions/executed-shell-review-source.original.py",
+        "bytes": 8010,
+        "sha256": "2ea83b1d7aa1ace4a4aa102cc12b17f9fe83525af0c2e74e100906c1f3aa87a7"
+      },
+      {
+        "path": "native-executions/malformed-control.stderr.original.log",
+        "bytes": 250,
+        "sha256": "28f34155ab06cfa44e9722c73e4d68e5991a7231ec244800b53dbbbf260ef4d0"
+      },
+      {
+        "path": "native-executions/malformed-control.stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/no-execution-control.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/no-execution-control.stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/result.original.json",
+        "bytes": 4592,
+        "sha256": "3e22ab04a40b50907560208db7f45d37b25d15fd20366a7836a4f3825df89b77"
+      },
+      {
+        "path": "native-executions/review-R1-input-form-failure.original.json",
+        "bytes": 302,
+        "sha256": "9be45059e9199c8aa5d53497f1e8a5d8d28bf586c5ee824584565a04c3b636f4"
+      },
+      {
+        "path": "native-executions/review-R1-source.original.py",
+        "bytes": 7879,
+        "sha256": "37c13d8a85146b749e86b9cec35527e3f3333c6a0739fde46d62e56a8f8e9932"
+      },
+      {
+        "path": "native-executions/shared-exact-LF-script.stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-executions/shared-exact-LF-script.stdout.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "preflight-role-probes/executed-probe-source.original.py",
+        "bytes": 2114,
+        "sha256": "4aa649ed5d63e77d210026d61a94964a02a820267a9861da53ccafbae0598886"
+      },
+      {
+        "path": "preflight-role-probes/executed-substitution-probe.original.py",
+        "bytes": 1982,
+        "sha256": "d4564000c64b09bcf1dece4f0a6a5fc674132e5540ad457daa5c01c9575cfa58"
+      },
+      {
+        "path": "preflight-role-probes/result.original.json",
+        "bytes": 561,
+        "sha256": "dea5ccfb2af0564a289492767b34ccd70e6af1442a8a9845e7cfd7597ecd0687"
+      },
+      {
+        "path": "preflight-role-probes/substitution-structure.original.json",
+        "bytes": 206,
+        "sha256": "96a79b8717de14f9370b9942ebd3a15144566f78b03915b9715b27fe013f6244"
+      },
+      {
+        "path": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3.private-original.sh",
+        "bytes": 4626,
+        "sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3"
+      },
+      {
+        "path": "dc7abe78fd780dd4f0b8f90e1f8e207e88b767db9f330494a594e6a0e58afd45.private-original.sh",
+        "bytes": 4722,
+        "sha256": "dc7abe78fd780dd4f0b8f90e1f8e207e88b767db9f330494a594e6a0e58afd45"
+      },
+      {
+        "path": "shared-exact-LF-script.sh",
+        "bytes": 4626,
+        "sha256": "caeb25b2a74000ded82ba1b79f42d8dbcdb963f18d15e2d909c872fd6c12a8b3"
+      },
+      {
+        "path": "no-execution-control.sh",
+        "bytes": 121,
+        "sha256": "eca9a8a9379c9ea74634d72284e9705f44ccdc6b9a2f58f8a6a1f8434b0ed55a"
+      },
+      {
+        "path": "malformed-control.sh",
+        "bytes": 28,
+        "sha256": "4502c87a8781c088b6669661fa96159c61d59b60a60241e4e16157a67004614d"
+      },
+      {
+        "path": "remaining538-content-review-queue.private.original.jsonl",
+        "bytes": 1646547,
+        "sha256": "0aee9ce5bf176ee73b46da186b6c45a05c854a59677553882efc14a4a3faadc0"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 7902,
+        "sha256": "9cecaf5f9ef8198018e222e67307a396a18d6843e5150cf0982bdb6d8fc555cd"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 95934,
+        "sha256": "6044588aa60e222c5491e409362e460e92098ea14c77424ce607e225130cf5b7"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

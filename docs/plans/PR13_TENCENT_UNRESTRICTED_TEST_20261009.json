@@ -1,0 +1,31 @@
+{
+  "authorization": "Human: 测试期间解除IP，并发限制来测试",
+  "base_source_sha": "493e3129858eaf97f875be7bc1ac35bf0337e1f0",
+  "execution_split": {
+    "server": "Tencent owned disposable instance",
+    "players": "local actual Godot"
+  },
+  "owned_test_bypass": true,
+  "default_limit_evidence_kept": true,
+  "first_profile": {
+    "clients": 10,
+    "cycles_per_client": 3,
+    "target_natural_cycles": 30,
+    "strategy": "baseline_all_hand",
+    "classes": "4 Mage, 3 Priest, 3 Guardian",
+    "launch_interval_seconds": 1.0,
+    "overall_seconds": 1800,
+    "cycle_limit_seconds": 600
+  },
+  "safety_stops": {
+    "cloud_cpu_percent": 85,
+    "cloud_free_memory_percent": 15,
+    "cloud_free_disk_percent": 15,
+    "actor_wait_p95_ms": 100,
+    "consecutive_bad_windows": 3,
+    "local_generator_min_free_gib": 2
+  },
+  "capacity_50_100": "Still deferred per human decision",
+  "human_6_by_3": "Still pending",
+  "claim_scope": "Unrestricted admission profile is separate from unchanged-limit historical acceptance; do not retroactively pass old failures"
+}

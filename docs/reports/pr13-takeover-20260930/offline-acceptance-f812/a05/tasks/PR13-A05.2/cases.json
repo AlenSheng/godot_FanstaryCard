@@ -1,0 +1,98 @@
+[
+  {
+    "task_id": "PR13-A05.2",
+    "case_id": "PR13-A05.2-T01",
+    "setup_and_injection": "旧snapshot继续",
+    "expected": "B正常/A的N route不删除",
+    "actual": "Healthy B retains M ActionBar and snapshot progresses revision20 to157 while A uses real prepare/enqueue/four-human READY to enter N. Actual A route/context remains N. B later extracts M normally and receives Gold23.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 139,
+        "record_id": "A05-healthy-M-and-N"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 144,
+        "record_id": "A05-healthy-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.2",
+    "case_id": "PR13-A05.2-T02",
+    "setup_and_injection": "恢复terminal A",
+    "expected": "不重新占旧route",
+    "actual": "SIGKILL actual host while terminal A belongs to new N and B is healthy in M. Cold replacement recovers A to N via production auto reconnect; B reconnects to M ActionBar, continues, and completes M. Old terminal A does not recapture route.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 144,
+        "record_id": "A05-healthy-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  },
+  {
+    "task_id": "PR13-A05.2",
+    "case_id": "PR13-A05.2-T03",
+    "setup_and_injection": "相同玩家新route",
+    "expected": "旧结算callback无权清",
+    "actual": "Hold unchanged actual successful M settlement GET, then deliver it after real N entry; resend the exact original ready frame three times with original EventId/Sequence. Production callbacks preserve A N. Later normal M removal does not clear N.",
+    "status": "Passed",
+    "executed": true,
+    "profiles": [
+      "OFFLINE",
+      "POSTGRES",
+      "AUDIT"
+    ],
+    "integration_sha": "f812879e4518fd09bf22656451cb563d62940298",
+    "profile_hash": "a899a814d27dc0c385c3f43d15dabe6dae69e4b6d9cf120136e5d2623b601f30",
+    "algorithm_version": "A05ProcessAcceptance/1",
+    "raw": [
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 134,
+        "record_id": "A05-old-callback-held"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 138,
+        "record_id": "A05-old-callback-released"
+      },
+      {
+        "path": "final-release/receipts.jsonl",
+        "line": 144,
+        "record_id": "A05-healthy-passed"
+      }
+    ],
+    "full_suite_TRX": "final-release/server.trx",
+    "accepted_by": null,
+    "scope_note": "Primary original case verdict; task full criterion is independently evaluated, including retained causal failure."
+  }
+]

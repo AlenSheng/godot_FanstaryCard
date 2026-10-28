@@ -1,0 +1,7 @@
+# PR13 A07旧真实PG套件不能冒充新版本CI来源
+
+原腾讯云真实PG九项全执行通过的TRX及原生结果保持原标签9555aa07，不改为当前release标签。完整2199原件及归档SHA/CRC重新复核，328执行源成员仍与当前Git内容相同。代码内容相同不允许靠改写旧报告的来源字段，把旧CI自动算作新head的同源结果。
+
+在腾讯云执行当前pr13_suite_coverage守卫，先确认原TRX九项完整通过，再以其原来源标签进入PostgresNumerical来源门禁。对当前新head应仅因stale_source_suites而Blocked；以原来源作为对照应ReadyForMainReview。所有对照均不能签署MAIN。
+
+此验证只覆盖真实PG套件的来源拒绝，不替代真实GitHub工作流触发、fork安全、其他适用套件或完整当前回归。没有新PG用例或数值样本；S0尚未执行来源门禁，不关闭用例。

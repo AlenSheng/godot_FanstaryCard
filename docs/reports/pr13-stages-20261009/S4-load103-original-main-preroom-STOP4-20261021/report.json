@@ -1,0 +1,181 @@
+{
+  "cases": [
+    {
+      "case_id": "LOAD-10.3-T03",
+      "executed": true,
+      "status": "Partial",
+      "stage_subset_status": "Passed",
+      "profiles_executed": [
+        "LIVE",
+        "POSTGRES"
+      ],
+      "full_case_profile_passed": false,
+      "new_missing_profiles_closed": [],
+      "setup": "Four serial direct original gameplay_load_test.py invocations,one actual Native each,current2147 driver64475511/Program8eb/config49ce/ownedPG. For each actual successful auth/preparation/enqueue/ticket reply, proxy preserves bytes/status, writes external STOP file, waits1s then releases same real result inside original transport deadline. No synthetic status/native process/main return/audit reader.",
+      "expected": "Intentional cancellation remains original main130 operator_stopped and Native0 cancelled, never accepted or completed; business cleanup and tail/context complete, actual late responses in drain retaining dispatch phase.",
+      "actual": {
+        "real_stage_subset_passed": [
+          "login",
+          "preparation",
+          "enqueue",
+          "ticket"
+        ],
+        "original_main_exits": [
+          130,
+          130,
+          130,
+          130
+        ],
+        "original_main_classification": "operator_stopped",
+        "original_main_passed_flags": [
+          false,
+          false,
+          false,
+          false
+        ],
+        "actual_Native_exits": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "actual_Native_outcomes": [
+          "cancelled",
+          "cancelled",
+          "cancelled",
+          "cancelled"
+        ],
+        "normal_cycles": 0,
+        "ACKs": 0,
+        "actual_worlds": 0,
+        "actual_UIDs": 4,
+        "cancelled_preparations": 3,
+        "cancelled_tickets": 2,
+        "locked_equipment": 0,
+        "all_late_HTTP_observation_phase": "drain",
+        "late_HTTP_original_phases": [
+          "login",
+          "initial",
+          "initial",
+          "matchmaking"
+        ],
+        "actual_backend_statuses": [
+          200,
+          201,
+          202,
+          200
+        ],
+        "all_audio_drain_ms": 164,
+        "engine_scripts_and_exit_resources_clean": true,
+        "proxy_threads_sockets_final0": true,
+        "independent_checks": 101,
+        "login_Native_own_user_id_empty_retained_actual_PG_cohort_identity_separate": true
+      },
+      "source": {
+        "base_HEAD": "6f00f322952a104bb8d165687395a609def0781c",
+        "dirty_source_manifest_not_clean_HEAD_claim": true,
+        "client_inputs": 2147,
+        "source_package_files": 103,
+        "coordinator_closure_unchanged_files": 10,
+        "ServerSHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "driverSHA": "64475511b13a3c998164573ac94f8ba438d3eb8329954ac66089392c3056369c"
+      },
+      "scope": "Current original full coordinator+Native+PG STOP/tail chain at four pre-room phases only. Other required ready/gameplay/settlement/Pending/ACK/between phases are not freshly completed by this run, full LIVE/POSTGRES/CAPACITY remain missing. Legacy twelve-await and current2146 evidence retained with their original scope, not declared whole-file current.",
+      "Pending_audio_long_shutdown": "Current extra audio wait may matter at35s long-drain boundary; not yet measured here. Old Pending observer performs manual recovery before parent _finish, so that complete observer duration cannot prove the original coordinator grace. No deadline changed, no bug declared or fixed based on hypothesis.",
+      "observer_correction": "Initial independent join compared Godot integer HTTP method to proxy string, resulting empty join; actual diagnosis matched POST2 and GET0 with same trace/path/status/size. Corrected observer mapping; old source/error record retained. No raw/SUT change or rerun.",
+      "business_criteria_relaxed": false,
+      "private_limits": "Original auth10/write30/read120/RT30/bypassfalse; no raise,500MB/5percent functional floors not capacitySLO.",
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load103-original-main-preroom-STOP4-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD103-T03-original-main-STOP4-partial-20261021/scoped-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load103-original-main-preroom-STOP4-20261021-r1-originals",
+      "whole_task_accepted": false
+    }
+  ],
+  "decision": {
+    "task_id": "LOAD-10.3",
+    "case_id": "LOAD-10.3-T03",
+    "state": "Partial",
+    "actual_stage_subset": {
+      "real_stage_subset_passed": [
+        "login",
+        "preparation",
+        "enqueue",
+        "ticket"
+      ],
+      "original_main_exits": [
+        130,
+        130,
+        130,
+        130
+      ],
+      "original_main_classification": "operator_stopped",
+      "original_main_passed_flags": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "actual_Native_exits": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "actual_Native_outcomes": [
+        "cancelled",
+        "cancelled",
+        "cancelled",
+        "cancelled"
+      ],
+      "normal_cycles": 0,
+      "ACKs": 0,
+      "actual_worlds": 0,
+      "actual_UIDs": 4,
+      "cancelled_preparations": 3,
+      "cancelled_tickets": 2,
+      "locked_equipment": 0,
+      "all_late_HTTP_observation_phase": "drain",
+      "late_HTTP_original_phases": [
+        "login",
+        "initial",
+        "initial",
+        "matchmaking"
+      ],
+      "actual_backend_statuses": [
+        200,
+        201,
+        202,
+        200
+      ],
+      "all_audio_drain_ms": 164,
+      "engine_scripts_and_exit_resources_clean": true,
+      "proxy_threads_sockets_final0": true,
+      "independent_checks": 101,
+      "login_Native_own_user_id_empty_retained_actual_PG_cohort_identity_separate": true
+    },
+    "new_case_profiles_closed": [],
+    "remaining_missing_case_profiles": {
+      "LOAD-10.3-T01": [
+        "CAPACITY"
+      ],
+      "LOAD-10.3-T02": [
+        "CAPACITY"
+      ],
+      "LOAD-10.3-T03": [
+        "CAPACITY",
+        "LIVE",
+        "POSTGRES"
+      ]
+    },
+    "whole_case_profile_or_task_notaccepted": true,
+    "G": "G:\\PR13Evidence\\load103-original-main-preroom-STOP4-20261021-r1-originals",
+    "Gmembers": 294,
+    "archiveSHA": "8bbac3e6cd789867af7e74d0bba629e19b292c4c77c7ffd0f93abfaff643abf1",
+    "all103_package_and2147_client_inputs_verified_thenexactownedcleanup": true,
+    "production_unchanged": true,
+    "budget": "Additional4actualNative/coordinator invocations,4newrealUIDs,0worlds/0cycles/0ACKs. Prior T01+T02 subtotal2world8cycles plus all historical LOAD103 remains; all LOAD101/102 andother budgets unchanged.",
+    "whole_project_accepted": false
+  }
+}

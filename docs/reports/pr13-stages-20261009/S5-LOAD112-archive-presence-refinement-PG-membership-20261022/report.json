@@ -1,0 +1,275 @@
+{
+  "kind": "ExtendedNativeArchivePresenceAndReceiptBoundPGMembership_NoCausalPromotion",
+  "generated_at": "2026-10-22T23:56:38.312451+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "refreshed_native_member_index": {
+    "kind": "NativeArchiveMemberPrefixRefresh_NotCausalAcceptance",
+    "ok": true,
+    "counts": {
+      "unique_member_nodes": 141746,
+      "actual_member_occurrences": 141786,
+      "repeated_identical_occurrences": 40
+    },
+    "cursors": [
+      {
+        "epoch": "archive-members-20261022-r1",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r1\\member-identities.private.original.jsonl",
+        "captured_limit": 86959321,
+        "consumed_complete_prefix_bytes": 86959321,
+        "rows": 127530,
+        "prefix_sha256": "0bc750d913039bb21be12e037f90c0cd34190e1b1e06d518c917326dffc8b0d4",
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r2",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r2\\member-identities.private.original.jsonl",
+        "captured_limit": 3056100,
+        "consumed_complete_prefix_bytes": 3056100,
+        "rows": 4187,
+        "prefix_sha256": "a375b32d53e08832a2ab88731606d3953b2f44d8f798952d2b30a687af0e0a7c",
+        "live_prefix": false
+      },
+      {
+        "epoch": "archive-members-20261022-r3",
+        "source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\LOAD112-full-related-inventory-20261022-r2\\archive-members-20261022-r3\\member-identities.private.original.jsonl",
+        "captured_limit": 17866150,
+        "consumed_complete_prefix_bytes": 17866150,
+        "rows": 25147,
+        "prefix_sha256": "c91c723de2702f19f3806b03eccf90b1a8f9286410dd580ef2f9854ed64cfdf2",
+        "live_prefix": true
+      }
+    ],
+    "prior_unobserved_pairs": 7294,
+    "newly_observed_in_extended_archive_prefixes": 521,
+    "remaining_unobserved_in_these_indexes": 6773,
+    "remaining_not_automatically_missing_or_corrupt": true,
+    "complete_live_archive_queue_not_yet_done": true,
+    "source_payloads_rerun_or_modified": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false,
+    "elapsed_seconds": 87.68700000000536
+  },
+  "prior_unobserved_digest_pairs": 7294,
+  "newly_observed_native_archive_digest_pairs": 521,
+  "remaining_unobserved_digest_pairs": 6773,
+  "remaining_not_classified_missing_or_corrupt": true,
+  "actual_receipt_bound_PG_membership": {
+    "kind": "ReceiptBoundPGDATAWholeMembership_NoCrossSnapshotInference",
+    "ok": true,
+    "objects_reviewed": 14,
+    "results": [
+      {
+        "manifest_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "7260dd63643d49d19a8f6410bbcc5c9d9785c71e3c0618d4792618bc6f2bc0c2",
+        "archive_path": "capacity-command-state100-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "a94205a949bbea90037cefcaccb9ce4c718c404a53dbe983ce857080fd8f0277",
+        "receipt_sha256": "979c16a4449dde975cacc81b3c0a53bd9f6b105cf253ee68f5ac871e31fa74cb",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "dc9a298ff88c442e94f714c5e2be5c0094991960508fe5ac611d8f160a4be456",
+        "archive_path": "capacity-current-ramp50-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "60086507d42058d16a275bf2e3b38890f3485e4679fd6091408072391ca0ca8d",
+        "receipt_sha256": "ab51d69bca0230355f953b1d1c1ed597781df32c533a4aa672f91dfb138c2f96",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "e52160ef23cdf7b9e2e4839e2ff8e31cd9f7c083d617fb12b281111e5c03d7b5",
+        "archive_path": "capacity-current100-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "66abeb6e4324c56af27f95fef28f1d6d0d15e81ad93308e4590e89248630f1ba",
+        "receipt_sha256": "92eaeb88af3f158d11e1158f01b8115b1cf3c4c83f284afe0d35e95d260eeae0",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "78bf9bb8d51af3954383cea02df7d4f980cebb70710a15b1a0033ba28ab8fcfe",
+        "archive_path": "capacity-current100-debug-20261018-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ac40a624dae3a04bc4dff4e33d66d96b6b344d39e49217b698e2e859ba585a2f",
+        "receipt_sha256": "0e8c2858c3a3a38d6c091bd636b56793ec00f55c458727bebe98b9e06ca01209",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "c92e4bd7eecc7d41a0d7083b74b135352b322bb6deea93bf3bb3dfbc002dfe68",
+        "archive_path": "coordinator-native-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "8fad8059b3442f2e1643488c409f56873677ba487a9ebfaad35fbf96a16ce933",
+        "receipt_sha256": "9e447bf8c8bad7a6f023fa55ebcc90d19faf4bed9de5d4e88fff290bb9376a71",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "0c00bd7365adf1569453005de69165aaef341e2e694abd0e1fae2d44189484a7",
+        "archive_path": "coordinator-observer-package-smoke-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "9399f361c78181cc4856b46d51066fee186d26b15ec9eba419d3327057df5820",
+        "receipt_sha256": "72d4b19fba35f9082861ae8702ba192a83dfecc3ab133944ad6a9fb99958384b",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "native-gameplay-memory-pair-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "0ffdc648858efa7f85e0ac46ecc254c2195f141594f6b63ac2312366a198086d",
+        "archive_path": "native-gameplay-memory-pair-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "1aff6c8a70347bafeb0f537f440f0dd9652de17cce8c70b3b0c86e9574ce4055",
+        "receipt_sha256": "3e0e0e5be6d217a812cb879b001bd0ef3c3dc701c014c93ee6947e92e0a4ae7e",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "242b483a40549d08bb6b1847b4117933bdf05d26a43ccac71da78bf5b98c0654",
+        "archive_path": "natural4-pvp-observer-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "988a293497c42241acf1aca552afce334f40f3815a618ca18b8c0314e8965dd2",
+        "receipt_sha256": "9540389f5669b61359c8b1b01aff18078bec3a6b96780617f083719b9a52dfde",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "manifest_sha256": "c6e9299e08fef3ffe1c90902682c9f2d5fd0a0ffc837ec12823610e03b1619c2",
+        "archive_path": "pg-atomic-budget-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "f35450553cde12a23cdf7adfbb3e119a4a0219dd0ad54ab22271e36b6b4a158b",
+        "receipt_sha256": "190665d85982cf273deb15af6875846d8b4ecbab2dc833435a129b46686b1ab1",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "manifest_sha256": "c749c4aeb4970562f6a56529a6cc54727c68853fc36c708c045a74a4a9084d4e",
+        "archive_path": "pg-atomic-budget600-cloud-20261018-r1-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "66caa6bd7a9cafae90d96105ad103ef50eac7a83892e76c6535de4ed0caa7ab8",
+        "receipt_sha256": "376138400041cf9e7b34d6c1ebe9f5c043a5d8ca9b5b4af512e7141f615360ee",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_root": "private-G",
+        "manifest_path": "pg-custody-cloud-negative-20261018-r3-originals/cloud-originals-before-PG-cleanup/physical-data-manifest.private-original.json",
+        "manifest_sha256": "70b26e0452e045d670c525f895681462c41352cfba413815bab0eeafa549dd8d",
+        "archive_path": "pg-custody-cloud-negative-20261018-r3-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz",
+        "archive_sha256": "17f2bf0344bc6c0b9a2412c37edae87bda880a47de16606248d93f122d051b8e",
+        "archive_bytes": 6804498,
+        "archive_receipt_path": "pg-custody-cloud-negative-20261018-r3-originals/cloud-originals-before-PG-cleanup/archive-ready.original.json",
+        "archive_receipt_sha256": "53ce4b2ff30fbdcb57ef7f6cdf90947eb967b6f9ab2fef39458ad4c8d2ba8cfd",
+        "status": "ExactReceiptBoundSiblingMembershipVerified",
+        "expected_files": 1278,
+        "actual_files": 1278,
+        "missing_paths": [],
+        "extra_paths": [],
+        "different_hash_paths": [],
+        "invalid_paths": [],
+        "PG_restore_or_gameplay_acceptance_granted": false
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "0193c6445bf356a1b2fb0bcbea506783faf6258b49b265920c5755a5f9aceb35",
+        "archive_path": "pvp-visible-full-source-20261019-r1-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ffe4ac5a7733f368e149be2f4f83a0a28f71a033e1d1a757d6e46a6e74945b6d",
+        "receipt_sha256": "922d4c18ab41b63fec845d36b23f33d52d8081bc7e3ebdc73261ee2f4f461ae8",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "0586c0974ef72027be219af7230f54ad46fe173bb120c1cda8883c9f790073a3",
+        "archive_path": "pvp-visible-full-source-20261019-r2-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "b3eb546bddfc211d41605f53c59c6ea80a25cbad8da24e8432e99667efcf086b",
+        "receipt_sha256": "d8999e184a3aa0b5e72f2ec7fd4533d2e4db01c374befc1f64982a8f4b91c869",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      },
+      {
+        "manifest_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PG-data-manifest.private-original.json",
+        "manifest_sha256": "8e3b1db83ffc10dad848d56de0f0f3bc8441ff22dadf8285002fb7d785c8cad8",
+        "archive_path": "pvp-visible-full-source-20261019-r3-originals/cloud-originals-before-PG-cleanup/physical-PGDATA.private-original.tar.gz",
+        "archive_sha256": "ab936d196ea96ebdafcc679d796620337300f7d5d0787876c21db1d2e8bee106",
+        "receipt_sha256": "048540747d19136bf4a115bd4c221377796856dc4123d851075c8fa0703e47ce",
+        "status": "AwaitingSameReceiptArchiveCompletedNativeInspection"
+      }
+    ],
+    "status_counts": {
+      "AwaitingSameReceiptArchiveCompletedNativeInspection": 13,
+      "ExactReceiptBoundSiblingMembershipVerified": 1
+    },
+    "file_locators_and_byte_hashes_verified": 1278,
+    "first_R1_sibling_name_assumption_retained_as_unresolved_not_missing": true,
+    "source_payloads_replayed_or_originals_modified": false,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false
+  },
+  "verified_PG_regular_file_locators": 1278,
+  "manifest_and_archive_SHA_explicitly_bound_by_the_same_existing_receipt": true,
+  "original_R1_assumed_sibling_name_result_preserved": true,
+  "no_cross_database_snapshot_parent_inferred_from_equal_config_hashes": true,
+  "PG_restore_or_gameplay_acceptance_granted": false,
+  "current_archives_not_in_earlier_snapshot_remain_pending": true,
+  "known_original_A013_history_targets_remain_unproven_not_replaced_with_new_run": true,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-presence-refinement-PG-membership-20261022-r1-originals",
+    "items": [
+      {
+        "path": "refresh/result.original.json",
+        "bytes": 2248,
+        "sha256": "55d11dadabc47a5a275079ab9f9bacf5e3171d274b1306ab5d3d0eddff536e9b"
+      },
+      {
+        "path": "refresh/archive-content.private.sqlite3",
+        "bytes": 149585920,
+        "sha256": "f0da84611be7e99a1a84bf1a4fdd37e0f38bc4e13899258c03b2fc1126f8afae"
+      },
+      {
+        "path": "refresh/prior-unobserved-digest-refinement.private.original.jsonl",
+        "bytes": 1847706,
+        "sha256": "1414b64edaa1adef6268987c4c5c84d5c2522e135e09fc81238cd472d42d5b69"
+      },
+      {
+        "path": "refresh/remaining-unobserved.private.original.json",
+        "bytes": 769895,
+        "sha256": "ced4884a95106ab3cf81f7ac9503fa796340109e0a4db858411f2fa0534896da"
+      },
+      {
+        "path": "refresh/executed-refresh-source.original.py",
+        "bytes": 4887,
+        "sha256": "d90d5c7106515f783cffedfff691ccbad4b8e4e348af5788a2f7ebf0846eb38f"
+      },
+      {
+        "path": "filename-assumption-R1/executed-binding-source.original.py",
+        "bytes": 5731,
+        "sha256": "b4e50f5f3622c3d21887713b3ab1fed0f4594ef4ee7c51a0d7c296a6697913cc"
+      },
+      {
+        "path": "filename-assumption-R1/result.original.json",
+        "bytes": 4317,
+        "sha256": "c3a7b3a500f55138e132641e43a68acc5750edbcf9952674b77abb1056869916"
+      },
+      {
+        "path": "receipt-binding/result.original.json",
+        "bytes": 10368,
+        "sha256": "cb6a7b2832a97ba069a66c0e7333a902ed900c775de0dd3f3f8c803d6a26dab6"
+      },
+      {
+        "path": "receipt-binding/executed-receipt-binding-source.original.py",
+        "bytes": 5714,
+        "sha256": "45711748001c210eec7854e2b6d2d310ac6a9963a6e818b5eb00e2a2deb32262"
+      },
+      {
+        "path": "exact-source-manifest/physical-data-manifest.private-original.json",
+        "bytes": 201890,
+        "sha256": "70b26e0452e045d670c525f895681462c41352cfba413815bab0eeafa549dd8d"
+      },
+      {
+        "path": "exact-source-receipt/archive-ready.original.json",
+        "bytes": 1516,
+        "sha256": "53ce4b2ff30fbdcb57ef7f6cdf90947eb967b6f9ab2fef39458ad4c8d2ba8cfd"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 5469,
+        "sha256": "992411d492a9f8d89021ccf86c97fa5033445a36ffb821362f82ddd1c271c6c5"
+      }
+    ],
+    "actual_original_PG_archive_retained_at_existing_G_path": "pg-custody-cloud-negative-20261018-r3-originals/cloud-originals-before-PG-cleanup/PGDATA.private-original.tar.gz"
+  },
+  "source_input_bytes_modified_or_game_samples_executed": false,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

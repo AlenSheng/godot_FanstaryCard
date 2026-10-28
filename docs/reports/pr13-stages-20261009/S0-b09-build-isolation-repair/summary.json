@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "stage": "S0-b09-build-isolation-repair",
+  "task_id": "PR13-B09.3",
+  "failed_attempt": "b09-legal-route-r1-20261011",
+  "failure_cause": "Tracked historical server bin/obj were included and hardlinked as immutable inputs; actual build modified caches and invalidated isolation",
+  "all_56_detected_changed_input_paths_are_generated_build_artifacts": true,
+  "exact_19_cloud_checkout_generated_artifacts_detached_and_restored": true,
+  "failed_source_build_log_and_modified_artifact_copies_preserved": true,
+  "production_API_not_redeployed": true,
+  "server_bin_obj_migration_archives_excluded_from_next_source": true,
+  "server_inputs_detached_copies_for_next_attempt": true,
+  "no_server_source_hardlinks_for_next_attempt": true,
+  "terminal_result_written_even_if_input_verification_fails": true,
+  "next_attempt": "b09-legal-route-r2-20261011",
+  "new_native_tests_passed": false,
+  "native_business_case_execution_in_failed_attempt": 0,
+  "MAIN_accepted": false,
+  "LIVE_accepted": false
+}

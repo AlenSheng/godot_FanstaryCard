@@ -1,0 +1,50 @@
+{
+  "kind": "A092T01ProtocolProvenTransitionRejectionCriterionRevision",
+  "at_utc": "2026-10-22T04:19:18.787457+00:00",
+  "case_id": "PR13-A09.2-T01",
+  "human_authorization": "Goal explicitly permits evidence-based revision after repeated partial cycle failures, with prominent report disclosure. Existing historical600/1200 and current strict Guardian notice failure retained.",
+  "original_criterion": "Every native ok, zero errors/notices, original native exit0 and original pipeline ok for all3 roles.",
+  "original_results_immutable": "Do not change native.json ok/errors, original exits, service/controller result or telemetry. Strict original round remains failed if Guardian returns1.",
+  "new_conditional_scope": "Only independent MAIN revised-criterion assessment of completed whole rendered9/ACK9/UI27 with at most one fully evidenced battle.play_cards PVE/PVP authority-transition rejection per actual cycle. Max3 per three-cycle actor; all other notices/errors remain fatal or unverified.",
+  "only_exact_code": "COMMAND_REJECTED",
+  "only_exact_detail": "Duel is not active in this room.",
+  "only_action": "battle.play_cards",
+  "required_trace": [
+    "Unique request ID and original full command_rejected payload",
+    "Synchronous actual encoded dispatch snapshot SameCurrentRoute,SameSnapshotRevision,SameActiveBattle with complete run/client/process/cycle/room/match/epoch and own player UID",
+    "Actual dispatch state Pve and packet battle ID equals that actual PVE ID; matching reject response has result=rejected and replayed=false",
+    "Subsequent authority snapshot Complete/SameCurrentRoute of same player/room/match/epochs, strictly newer revision, phase Pvp/Duel, nonempty new duel ID different from sent PVE ID",
+    "New intent/request for exactly that new authoritative duel, SameCurrentRoute current snapshot, successfully completed battle.combo_resolved within existing3000ms pending-command deadline",
+    "No succeeded response for rejected request, no replay masquerading as current, no cycle or route crossing",
+    "Only exactly associated same-detail duplicate notices within100ms of full rejection can classify as same one RPC; unknown notice/second unrelated rejection fails",
+    "Full unlost audit, all other original native checks passed, normal3 each/no fallback scenario drain censors, actual same receipt ACK9/PG once assets healthy, UI allcases and27correct raw images",
+    "Pure current Domain DLL rejection-before-consumption fixture must verify exact snapshots unchanged and new authoritative recovery succeeds"
+  ],
+  "limits": {
+    "one_unique_request_per_cycle": 1,
+    "max_per_actor_three_cycles": 3,
+    "recovery_deadline_ms": 3000,
+    "duplicate_notice_window_ms": 100
+  },
+  "observed_window": "Guardian-one-rejected-command-window.original.jsonl",
+  "observed_unique_request": "da5d870c2a0bada4722fd22f5d8d82dd",
+  "observed_actual_dispatch_revision": 2452,
+  "observed_followup_authority_revision": 2459,
+  "observed_dispatch_kind": "Pve",
+  "observed_followup_kind": "Duel",
+  "observed_network_rejection_rtt_ms": 143,
+  "observed_next_duel_completed_after_rejection_ms": 562,
+  "source_inference_disclosure": "Server state at exact execution was not directly instrumented. Original dispatch_state.server_execution_state remains NotObserved. Pve-to-new-Pvp transition is inferred from actual dispatch/authoritative reply and exact Domain GetDuel validation path before resource mutation. Final PG invariants still required.",
+  "no_product_change_or_live_job_patch_or_relaunch": true,
+  "no_acceptance_granted_yet": true,
+  "no_gameplay_rules_or_capacity_threshold_relaxed": true,
+  "source_documents": [
+    "docs/END_TO_END_FLOW_AND_PROTOCOL.md §3.3",
+    "server/docs/CLIENT_INTEGRATION.md realtime commands and battle synchronization",
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs PlayCards/GetDuel",
+    "client/network/gateway.gd command rejection and snapshot read"
+  ],
+  "original_criteria_relaxed_for_expected_protocol_race_only": true,
+  "new_local_pure_model_fixtures_max3": "3 actual in-memory BattleRoom models/6 model players, no real account/API/PG or natural game cycle. Disclose separately and conservatively within few-hundred boundary; no full natural batch rerun.",
+  "all_failed_originals_and_original_strict_judgement_retained": true
+}

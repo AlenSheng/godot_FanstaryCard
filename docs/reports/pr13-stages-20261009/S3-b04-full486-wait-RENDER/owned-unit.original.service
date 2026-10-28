@@ -1,0 +1,9 @@
+[Unit]
+Description=PR13 B04 full controlled wait boundary pixel matrix
+[Service]
+Type=exec
+User=root
+WorkingDirectory=/opt/fantasycard-github
+ExecStart=/usr/bin/python3 /home/ubuntu/pr13-acceptance-20261009/evidence/B04-wait-boundary-render-r8-20261012/runner.original.py
+RuntimeMaxSec=7200
+Restart=no

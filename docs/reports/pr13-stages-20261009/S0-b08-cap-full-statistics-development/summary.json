@@ -1,0 +1,78 @@
+{
+  "ok": true,
+  "stage": "S0_B08_CAP_FULL_STATISTICS_DEVELOPMENT",
+  "task_id": "PR13-B08.4",
+  "scope": "Statistics tool development, synthetic metadata/storage controls and five representative original-metadata gates only",
+  "statistics_tools_implemented": true,
+  "tool_files": [
+    {
+      "path": "tools/pr13_cap_full_statistics.py",
+      "bytes": 50596,
+      "sha256": "9482825398f23f9a2961afb1090032b11ffaff5429cdd6acc7b9e0dda7ac4f5e"
+    },
+    {
+      "path": "tools/cloud/pr13/cap_full_statistics.py",
+      "bytes": 21908,
+      "sha256": "593eca991a24f9ec482d9b3f97fb39771e47bce620d77d65b0861eb223cdbbe0"
+    },
+    {
+      "path": "docs/plans/PR13_B08_CAP_FULL_STATISTICS_20261011.json",
+      "bytes": 7910,
+      "sha256": "42eea62ea9eb46242a51c4489c6d5ddad88fb4a20296356416dedc9196a64ae1"
+    }
+  ],
+  "metadata_negative_controls_passed": 20,
+  "synthetic_storage_status_controls_passed": 10,
+  "actual_representative_metadata_gates_passed": 5,
+  "actual_representative_metadata_units": [
+    "Mage-O1-Fire-L0-B0",
+    "Mage-E1-Water-L5-B0",
+    "Mage-E1-Water-L5-B1",
+    "Mage-E1-Water-L5-B2",
+    "Mage-BOSS-Fire-L0-B0"
+  ],
+  "original_archive_CRC_reused_from_existing_G_proofs": true,
+  "new_outer_or_event_gzip_CRC_run_in_this_stage": false,
+  "new_native_executions": 0,
+  "new_logical_G_verified_units": 0,
+  "new_statistical_encounters": 0,
+  "full_dataset_required": {
+    "logical_units": 360,
+    "strata": 120,
+    "blocks_per_stratum": 3,
+    "encounters": 720000,
+    "pairs": 360000,
+    "successful_native_executions": 361,
+    "original_B042_logical_units": 90,
+    "new_mixed_logical_units": 270
+  },
+  "full_dataset_complete": false,
+  "full_statistics_executed": false,
+  "full_statistics_result_published": false,
+  "full_cloud_runner_executed": false,
+  "cloud_runtime_or_performance_verified_in_this_stage": false,
+  "formal_case_applicability_and_coverage_complete": false,
+  "zero_or_missing_actual_predicates_remain_Gap": true,
+  "statistical_inference": false,
+  "candidate_or_card_value_changes": false,
+  "descriptive_statistics_implementation_is_not_a_successful_full_statistics_run": true,
+  "full_EXPERIMENT_accepted": false,
+  "required_cases_accepted": false,
+  "integration_promotion_allowed": false,
+  "MAIN_accepted": false,
+  "LIVE_accepted": false,
+  "whole_task_accepted": false,
+  "capacity_50_100_tests_accepted_by_this_stage": false,
+  "human_experience_accepted_by_this_stage": false,
+  "master_acceptance_register_unchanged": true,
+  "raw_archives_published": false,
+  "no_native_business_or_statistics_executed_locally": true,
+  "cloud_mutations_in_this_stage": false,
+  "committed_byte_policy": "docs/reports/pr13-stages-20261009/** -text",
+  "limitations": [
+    "All 360 original logical units and their G/source/validator proofs must be complete before cloud statistics",
+    "Synthetic gates do not test encounter effects or the cloud computation/runtime",
+    "Five reused metadata units are representative gates, not additional native samples or whole-dataset acceptance",
+    "No full statistical output exists; T01/T02/T03 formal case closure, EXPERIMENT/MAIN, capacity and human acceptance remain outside this development scope"
+  ]
+}

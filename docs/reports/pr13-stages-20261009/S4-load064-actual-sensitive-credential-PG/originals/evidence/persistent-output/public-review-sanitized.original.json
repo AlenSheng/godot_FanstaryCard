@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "actual_sensitive_candidates_rejected": [
+    {
+      "path": "actual-session-token.json",
+      "bytes": 55,
+      "sha256": "6167e35cad95d155584b53f8dfd782889020354493401e4f00b678433c3c4960",
+      "actual_rejection_messages": [
+        "Sensitive field in public evidence: token",
+        "Sensitive field in public evidence: token"
+      ],
+      "original_sensitive_candidate_preserved": true
+    },
+    {
+      "path": "actual-realtime-ticket.json",
+      "bytes": 60,
+      "sha256": "22dda796ce2702169c5d04efbd74994a9e5b7a96d2ac49f76a3f42203cae2042",
+      "actual_rejection_messages": [
+        "Sensitive field in public evidence: ticketbody",
+        "Sensitive field in public evidence: ticketbody"
+      ],
+      "original_sensitive_candidate_preserved": true
+    }
+  ],
+  "production_credentials_used": false,
+  "generated_ephemeral_test_credentials_only": true
+}

@@ -1,0 +1,23 @@
+# 通信与玩法进度、拒绝与未知超时：真实云端验收
+
+LOAD-06.2按独立三案完成当前LIVE/POSTGRES验收。修复了真实指标缺口：原驱动每条零效果combo也刷新通用进度，实际新抽牌只更新局部战斗时钟；命令实际超时分支没有单独遥测。现在通信与玩法各有本机单调时钟和原因；原last_progress_age_ms继续供协调器读取，语义明确为玩法。准备、排队、ticket权威等待、READY接受、started、战斗确认/抽牌/控制等待和结算ACK阶段可定位。发送、拒绝、未知超时独立，未确认不能算成功； confirmed但状态缺失另为state_timeout，不自动重发。现有原子重试、序号/房间守卫、序列化与默认期限保持。只增加Gateway成功发送trace、Store超时trace及原origin留存、负载观察/时钟字段和针对性回归，未改后端/公式/HP/协议/资源。
+
+**三轮实际状态：R1失败，R2失败，R3通过。前两轮没有改写为通过。** 每轮四个真实开发自动账号、真实完整Program缓存/独立PG、一个四客户端match；累计3match、保守12个玩家启动，在原6房间/40启动和goal300上限内。自然完整周期、默认限制容量、真人体验、平衡强弱均为0新增结论。三个parse和两个本地回归也正常结束，共8个本轮原生进程均已终止；本地六套针对性回归两版均通过，覆盖负例、正例、真实Store期限分支、原恢复行为和合法牧师80/70不变。
+
+T01：实际云端room.snapshot和真实ping/pong。将真实快照的相同payload在消费者以仅抬高外层sequence重放，未来真实包外层sequence+1以保持连续。不是服务端重新发布快照，不修改玩法payload或客户端room。实际房间玩法投影保持，玩法时钟前后相等，通信时钟推进，真实pong增加。快照源帧与原payloadSHA、序号及接缝明确记录。
+
+T02：使用真实Priest账号、合法默认牌和现有Game命令进入PVE，手动单牌故障探针执行；权威产生HP/盾伤害均0的实际combo，随后自然抽牌的新实例在当前相同battle/match/cycle上被观测为new_draw_opportunity，玩法时钟合法推进。实际治疗/护盾等其他效果按原值报告，**零伤害不被偷换为所有效果均0**；客户端没有赋值HP、手牌或蓄能。全零效果仍不续命的严格边界另由OFFLINE正负例检查，不能将该夹具说成LIVE全零效果。相同手牌第二次观察不重复记新机会。当前源仍保留80/70，不钳制、不重写上限。
+
+T03：向真实当前房间发送格式合法但非当前账号持有的卡牌GUID，真实error.command_rejected与request_id对应，记录rejected，通信推进、玩法不推进。另用真实GameStore发送一次真实持有卡的命令，在消费者暂扣服务端相同request_id的实际combo和快照反馈，保留两帧SHA/大小/序号；源服务实际执行并发出combo，不靠客户端超时推断服务端失败。原3000ms期限约3016ms到期，Store独立发出一次command.timeout/unknown，玩法/通信进度均不被此超时刷新，没有自动重发。之后释放原反馈并按正常权威恢复；历史timeout保持unknown，后到反馈另存，不把timeout改成成功。同期真正发生的玩法变化不被故障测试冻结。新发事件保留phase/cycle/match/room/battle/session origin，等待状态与命令结果分开。
+
+R3最终四个账号每人一个真实非机器人成员、一份Settled准备/成员/结算、历史Matched票据、一份实际ACK，所有资产锁/待处理扣留0；使用4次真实受控abandon及ACK退出，不是自然胜负。R1/R2在第三案夹具失败时终止，**不声称前两轮已完成玩家层drain或ACK**；各自独立临时服务与数据库随后全部删除，未连接生产资产。三轮共6个所属容器、3个内部网络和3个私密env已删除并再次只读核对，隧道关闭，生产容器ID/镜像/启动时间/环境摘要与健康200持续不变。原始失败SQL的活动成员保持原样，没有删改为清零。
+
+**失败原因和缺失证据重点披露。** R1测试用了非GUID的“not-an-owned-card”字符串；正式codec在命令路由前将GUID解析失败作为error.invalid_message，夹具却等待带原request_id的error.command_rejected，8秒后失败。源码RealtimeProtobufCodec的ParseGuid/DecodeBattlePlayCards与RealtimeFrameReader明确说明此路径。R2改为合法非持有GUID后收到真实命令拒绝；但夹具监听Gateway.telemetry，Store实际期限通过Store.network_telemetry发出的timeout没有进入等待条件，18秒后测试失败。R2原始80行审计已经有27361ms发送、30378ms未知超时＝3017ms，产品当时已正确运行；R3将录制器接到真实Store信号，不改产品代码或超时。R1失败时未flush尾部审计，缺失部分不补造；从R2起失败前flush并保存全部观测。R1探针class默认Mage标签与实际Priest不一致，R2/R3改为Priest；R1/R2默认baseline_all_hand标签只是旧探针元数据，真实工作负载为手动控制，不能作为默认策略性能证据；R3明确manual_progress_fault_probe。所有原失败、旧源、日志、数据库原件与修正计划保存。没有放宽业务或验收标准。
+
+独立审阅器另外两次KeyError来自错误假定字段位置：新draw生命周期行没有直接hero_class，按相同battle/match/cycle关联的权威combo origin核实职业与手动策略；PG职业实际在preparations.snapshot_json.heroClass，不是hero_class列。原数据不改，按实际schema四账号均Priest验证，增加场次0。最终51项独立不变量通过。字段缺失不填伪值，也不把审阅器误读当游戏错误。
+
+当前2125产品文件逐SHA与实际三个副本相同，原project.godot所有autoload保持，仅测试Gateway构造工厂/原始消费者帧故障为声明接缝；每版两份测试覆盖源单独冻结。当前328服务端源码与缓存资格逐项相同，21个实际运行库各轮前后重校，完整328+21原字节通过已有G原档的NTFS硬链接再次SHA保留，无游戏源码上传、无重建或stub替代。完整三轮云原件分别22/22/23项，原生/回归/解析/失败/审阅日志、协议/源码备份及完整当前客户端ZIP保存，ZIP CRC和每个源SHA复核。auth userdata、私密env及导入缓存不复制。
+
+仍按既有goal5%资源余量执行，磁盘约14.18%，旧容量15%门未通过；Auth/写/读100/200/500只为私有功能测试余量，PG与服务资源384/512MiB、内部网络无主机端口，OTel出口仅在私有实例关闭。这些不能变成默认限制容量通过。
+
+本项关闭6个缺失profile，由49Accepted/83未验收到50Accepted/82未验收，71Partial/11Ready；全部全局门不变。后续LOAD-07.3/07.4仍需依赖与逐项MAIN复核，不从本项自动通过。

@@ -1,0 +1,72 @@
+{
+  "kind": "Actual client ambiguous-write timeout fix and native regression results; full capacity remains unpassed",
+  "base_release": "125f1f32e1d68e3d1e91f14289dadc88d08f00a1",
+  "problem": "Unconfirmed room write timeout previously discarded the pending record while leaving its old room usable for a new request. A missing ACK does not prove the server write failed.",
+  "resulting_behavior": [
+    "Unknown and confirmed-without-state write expiry recover authority without replaying the uncertain write",
+    "Expire writes before flushing queued latest-wins actions",
+    "Capture room session and epoch before synchronous send callbacks; an obsolete timeout cannot reset another room/session/epoch",
+    "Remove stale room action data and preserve only match ownership for a receipt arriving during recovery",
+    "Late ACK and transport-connected marker alone cannot authorize old hand or actions; fresh scoped authority is required",
+    "Clear recovery ownership on new room authority, acknowledged settlement or logout"
+  ],
+  "unchanged_limits": {
+    "initial_write_deadline_ms": 3000,
+    "explicit_revision_conflict_retry_only_once": true,
+    "no_business_error_whitelist_or_capacity_latency_threshold_relaxed": true,
+    "GDD_server_protocol_and_numerical_rules_unchanged": true
+  },
+  "counterfactual_original_store": {
+    "controlled_final_tests": 42,
+    "passed": 19,
+    "failed": 23,
+    "real_loopback3second_tests": 7,
+    "passed_wire": 3,
+    "failed_wire": 4,
+    "same_new_tests_used_against_actual_old_Git_store_blob": true,
+    "raw_failed_originals_and_source_snapshots_preserved": true
+  },
+  "fixed_store_validation": {
+    "controlled_timeout_context_and_recovery_checks_passed": 42,
+    "actual_local_binary_WebSocket_real3second_timer_checks_passed": 7,
+    "common_native_suites_passed": 24,
+    "common_named_checks": 278,
+    "extended_native_suites_passed": 24,
+    "extended_named_checks": 389,
+    "overlapping_suites_not_added_as_unique_coverage": true,
+    "old_fixture_failure": {
+      "suite": "test_load_progress",
+      "reason": "Manually constructed confirmed pending row omitted actual current-room/session/epoch ownership. Updated to current ownership and added obsolete-confirmed refusal case.",
+      "original_failed_report_retained": true
+    },
+    "legal70_80_HP_and_frozen_snapshot_sentinels_not_reclassified": true
+  },
+  "local_launch": {
+    "official_full_Godot": "4.7.2.stable.official.ed1daf0bf",
+    "headless_Dummy_CNO_BelowNormal_last4_CPUs": true,
+    "minimum_available_memory_bytes_final_common": 9779560448,
+    "reserve_bytes": 6442450944,
+    "separate_private_worktree": "G:\\PR13Evidence\\work\\t7",
+    "no_cloud_or_formal_gameplay_started_for_this_local_regression": true
+  },
+  "CI_change": "Native client test still runs in a fresh isolated network namespace; only its loopback interface is brought up for the real wire fixture.",
+  "validated_worktree_source_SHA256": {
+    "client/state/game_store.gd": "3a16e8f1f8a6178c00a8a1b86419405103a3cba099c4be5063890a12f309a49c",
+    "client/tests/run_play_retry.gd": "23d3333118cba1088a39308eb72fdb8e31eea95ef7407863123ee4808caef132",
+    "client/tests/test_confirmation_snapshot.gd": "4bc2df63e0004d6c2760c3d63db3535eef8cf7639eb5d536c30f1487a3c4ac0c",
+    "client/tests/test_load_progress.gd": "0adfa2108b16fee5e1304fc82c502d487a7666146b153a5e8dace7c2fd447be6",
+    "client/tests/test_pending_timeout_recovery.gd": "a2bbc410d202aacc2bcd9cda3ed32a9c1db47159766beb103e7ac5f724af63f2",
+    "client/tests/test_pending_timeout_wire.gd": "c309cdf73d849dd7094b1863a76b3d72ab6ef1ffda27e404aa09237b12d9b787",
+    "client/tests/test_pending_timeout_recovery.gd.uid": "2f57c1764e1b9536316677d648bb09c9cbad9c018e856a5eaf128fea662fae75",
+    "client/tests/test_pending_timeout_wire.gd.uid": "633bdd1d56c2af8e325faafd2ecf4710908f953913088cc465735bd04dda94e4",
+    ".github/workflows/gameplay-load.yml": "b0e698a438177ca64c66d0eb7c484775208eaf6d1a87310b62fb06fcce5fb7b9"
+  },
+  "limitations": [
+    "This proves a reproducible client-side stale-intent path; does not prove that it explains all22 historical R5/R6 rejections",
+    "Actual cloud natural gameplay and50/100capacity of the corrected client are not yet executed",
+    "Earlier UI screenshot coverage refers to earlier version; timeout UI has not been newly rendered here"
+  ],
+  "whole_project_accepted": false,
+  "capacity_acceptance": false,
+  "at_unix_ms": 1792886839885.9219
+}

@@ -1,0 +1,407 @@
+{
+  "ok": true,
+  "case_reviews": [
+    {
+      "case": "LOAD-08.1-T01",
+      "actual": "Complete262163B close/delayedFIN150ms and262158B immediateclose exactSHA succeed; each followingrequest actualnewTLSsocket succeeds. Oldrealnextrequestfailed exit1 kept.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    },
+    {
+      "case": "LOAD-08.1-T02",
+      "actual": "ContentLength+100/halfchunk/missingterminalzero returnnonzero,publicstatus0andemptybody; validchunkpositive exactSHA.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    },
+    {
+      "case": "LOAD-08.1-T03",
+      "actual": "Untrustedroot andwrongSAN eachTLSreject/noHTTP; 2097153B/rawandgzip-expansion rejected2MiB bound. No verificationbypass.",
+      "profiles": [
+        "EXPERIMENT"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "name": "fixed Native actualexit0 all29checks",
+      "passed": true
+    },
+    {
+      "name": "original real failure remains exit1",
+      "passed": true
+    },
+    {
+      "name": "old implementation succeeded complete body then failed next request",
+      "passed": true
+    },
+    {
+      "name": "independent socket ID proves sequential reuse",
+      "passed": true
+    },
+    {
+      "name": "close header forces new TLS socket before delayedFIN",
+      "passed": true
+    },
+    {
+      "name": "immediate server close also reconnects",
+      "passed": true
+    },
+    {
+      "name": "keep-first independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "keep-second independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "full-close-late independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "after-close-late independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "full-close independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "after-close independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "chunk-valid independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "credential-a independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "credential-b independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "session-next independent sent-wire exact length/hash",
+      "passed": true
+    },
+    {
+      "name": "length-cut not partial successful body",
+      "passed": true
+    },
+    {
+      "name": "chunk-cut not partial successful body",
+      "passed": true
+    },
+    {
+      "name": "chunk-no-end not partial successful body",
+      "passed": true
+    },
+    {
+      "name": "oversize not partial successful body",
+      "passed": true
+    },
+    {
+      "name": "gzip-bomb not partial successful body",
+      "passed": true
+    },
+    {
+      "name": "untrusted TLS rejection observed before HTTP",
+      "passed": true
+    },
+    {
+      "name": "wrong_name TLS rejection observed before HTTP",
+      "passed": true
+    },
+    {
+      "name": "a/origin-session-a actual credential header isolation",
+      "passed": true
+    },
+    {
+      "name": "b/origin-session-b actual credential header isolation",
+      "passed": true
+    },
+    {
+      "name": "b/origin-session-next actual credential header isolation",
+      "passed": true
+    },
+    {
+      "name": "Gateway shared sequential same actual TLS socket",
+      "passed": true
+    },
+    {
+      "name": "Gateway perrequest rollback different actual TLS sockets",
+      "passed": true
+    },
+    {
+      "name": "actual overlapping Gateway calls fallback separate sockets",
+      "passed": true
+    },
+    {
+      "name": "actual21HTTP 14acceptedTLS and2rejectedhandshakes",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "engine ERROR occurs only intentional invalid certificate",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "engine ERROR occurs only intentional invalid certificate",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "no unexpected script/leak/fixture empty-hash errors",
+      "passed": true
+    },
+    {
+      "name": "exact two expectedTLS diagnostics not blanket log whitelist",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/gateway.gd",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/gateway.gd.uid",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/http_protocol.gd",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/http_protocol.gd.uid",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/protobuf.gd",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/protobuf.gd.uid",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/reusable_http_client.gd",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/network/reusable_http_client.gd.uid",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/data/http_schema.json",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/data/http_endpoints.json",
+      "passed": true
+    },
+    {
+      "name": "native TLS exact current source client/data/realtime_schema.json",
+      "passed": true
+    },
+    {
+      "name": "scheme HTTPS default validation and2MiB unchanged in source",
+      "passed": true
+    },
+    {
+      "name": "all four owned loopback servers closed",
+      "passed": true
+    }
+  ],
+  "checked_invariants": 90,
+  "native_checks": 29,
+  "actual_HTTP_requests": 21,
+  "accepted_TLS_connections": 14,
+  "rejected_TLS_handshakes": 2,
+  "expected_negative_certificate_errors": [
+    "untrusted-ca",
+    "wrong-hostname"
+  ],
+  "original_round_failed_retained": true,
+  "fixture_only_repairs": [
+    "normalizeWindowsCApath",
+    "doNotHashUpdateEmptyBuffer"
+  ],
+  "analysis_correction": "Original independent analyzer guessed13acceptedTLS; raw provesA13plusB1 equals14. Old analyzer retained, no execution rerun.",
+  "criteria_relaxed": false,
+  "private_CA_not_systemtrust_change": true,
+  "new_worlds_accounts0": true,
+  "noGUI_cloud_production_or_UI_changes": true
+}

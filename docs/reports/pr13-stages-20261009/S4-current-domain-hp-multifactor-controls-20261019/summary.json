@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "kind": "Qualified actual currentDomain functional HP factor controls;not performance or fullEXPERIMENT closure",
+  "base_release": "ec3402ffe7746f38395557406ab073a2b029cb8d",
+  "related_guard_fix_commit": "ec3402ffe7746f38395557406ab073a2b029cb8d",
+  "case_focus": [
+    "PR13-B05.2-T02 actualcombinedHP/attack/windupnegative",
+    "PR13-B05.2-T01 partialsinglefactorcontrol",
+    "PR13-B05.2-T03 wrongwhitelistpartialcontrol"
+  ],
+  "actual_execution": {
+    "private_probe_builds": 1,
+    "product_source_rebuilds": 0,
+    "native_starts": 1,
+    "native_exit": 0,
+    "native_forced": false,
+    "runtime": ".NET 10.0.11",
+    "base_domain_rooms": 6,
+    "restored_domain_rooms": 12,
+    "total_controlled_arms": 18,
+    "seeds": [
+      750101,
+      750201,
+      750301
+    ],
+    "groups": [
+      "E4",
+      "O1"
+    ],
+    "hero": "Guardian",
+    "default_deck_cards": 20,
+    "weapon_level": 0,
+    "equipment": "empty",
+    "source_current328_input_bytes_verified_before_after": true,
+    "Domain_DLL_SHA256": "57ba955abc21b45153349aa203193c3f185b089c392eacde150460b70e396e0c",
+    "private_probe_DLL_SHA256": "55f5899e19de20a523006eb0d3f9179eb9941399298c6e3246b290b0e48fe8dd",
+    "actual_loaded_Domain_SHA256_matches": true,
+    "native_assertions": 203,
+    "native_assertions_passed": 203,
+    "actual_PreviewCards_PlayCards_per_arm": 1,
+    "per_arm_Advance_calls_after_cast": 10,
+    "per_call_simulated_milliseconds": 100,
+    "per_arm_simulated_aftercast_seconds": 1,
+    "tick_execution": "Manual domainAdvance calls;no backgroundActorTickerorLIVE/wallclockholdclaim",
+    "peak_owned_RSS_bytes": 50262016,
+    "minimum_available_memory_bytes": 8677683200,
+    "elapsed_wall_seconds": 0.4706515
+  },
+  "E4_candidate": "95percentHP withpermonsterfloor;validcontrol leavesotherfields unchanged. NegativealsoraisesactualAttack/Directintentvaluesby1andpositivefirstwindupby250ms.",
+  "O1_control": "ActualRestore unchanged controlandwrongwhitelist95percentHPnegative;reportedexactpairedinvariants",
+  "independent_full_snapshot_checks": [
+    "All36before/afterfileSHA256matchactualrecord",
+    "OnlypreregisteredpermonsterHP/intentValue/windupfields differ beforecasting;allnonPveplayer/map/randomstream/policyfields exact",
+    "Attackintentlistnonempty;no vacuous allcheck",
+    "Actualconsumedhandinstance found indiscard;castattacker/battleidsmatchsnapshot",
+    "Actualelapsedaftercast1seconds;all18playersaliveandPve",
+    "NonHPfingerprint independentlyrecomputed fromactualmonsterstate",
+    "All203incrementalJSONLchecks equalaggregateresult"
+  ],
+  "guard_entrypoint": "Currentproduction validate_hp_candidate_inputs calleddirectlyonactualCapture-derivedopeningfields;load_run integration inheritedfromqualified ec3402ff tests;nofake60secondmetricsmanufactured",
+  "guard_cases": [
+    {
+      "seed": 750101,
+      "case": "valid-single-factor",
+      "expected_accept": true,
+      "accepted": true,
+      "passed": true,
+      "reason": null,
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750101,
+      "case": "mixed-HP-attack-windup",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "HP candidate also changed first windup: ('Guardian', 0, 'default', 'E4', 'controlled-one-card', 750101)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750101,
+      "case": "outside-whitelist",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "Non-whitelisted HP control changed: ('Guardian', 0, 'default', 'O1', 'controlled-one-card', 750101)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750201,
+      "case": "valid-single-factor",
+      "expected_accept": true,
+      "accepted": true,
+      "passed": true,
+      "reason": null,
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750201,
+      "case": "mixed-HP-attack-windup",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "HP candidate also changed first windup: ('Guardian', 0, 'default', 'E4', 'controlled-one-card', 750201)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750201,
+      "case": "outside-whitelist",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "Non-whitelisted HP control changed: ('Guardian', 0, 'default', 'O1', 'controlled-one-card', 750201)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750301,
+      "case": "valid-single-factor",
+      "expected_accept": true,
+      "accepted": true,
+      "passed": true,
+      "reason": null,
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750301,
+      "case": "mixed-HP-attack-windup",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "HP candidate also changed first windup: ('Guardian', 0, 'default', 'E4', 'controlled-one-card', 750301)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    },
+    {
+      "seed": 750301,
+      "case": "outside-whitelist",
+      "expected_accept": false,
+      "accepted": false,
+      "passed": true,
+      "reason": "Non-whitelisted HP control changed: ('Guardian', 0, 'default', 'O1', 'controlled-one-card', 750301)",
+      "guard_entry_point": "Currentproduction validate_hp_candidate_inputs directly;load_run integration alreadytested in ec3402ff;no statistical metrics fabricated"
+    }
+  ],
+  "guard_valid_controls_accepted": 3,
+  "guard_actual_multifactor_rejected": 3,
+  "guard_actual_wrongwhitelist_rejected": 3,
+  "raw_outcomes": {
+    "Pve_at_declared_one_second_cutoff": 18,
+    "guard_input_Outcome": "Censored",
+    "player_deaths": 0,
+    "natural_full_battle_completions": 0,
+    "intentional_controlledcutoff_not_battlecompletion_failure_orcleanupclaim": true,
+    "all_original_snapshots_and_censors_retained": true
+  },
+  "budget": {
+    "maximum_arms": 18,
+    "actual_arms": 18,
+    "maximum_native_starts": 1,
+    "actual_native_starts": 1,
+    "maximum_private_builds": 2,
+    "actual_private_builds": 1,
+    "actual_product_rebuilds": 0,
+    "local5percent_memory_disk_preserved": true,
+    "restriction_relaxations": [],
+    "three1seedfunctionalblocks_not_three1000pairedstatisticalblocks": true,
+    "old432000encounters_and37unitmethods_not_reexecuted": true
+  },
+  "source_SHA256": {
+    "Domain_DLL": "57ba955abc21b45153349aa203193c3f185b089c392eacde150460b70e396e0c",
+    "guard": "704ec5c5579c00e96547a2ce36c68785122032e0867ce2fbe5c3f8919e569c4b",
+    "private_probe_source": "5212575ab7956142f18fd5018141e1caaeaf689c477e9723949b7ba6434a9ff9"
+  },
+  "evidence_SHA256": {
+    "preregistered": "0997382c6b43938d281165075afa82ceabb67c8032b2ded3131c7baae65179ab",
+    "private_build": "88f607a444a59c55bbd03e976f53d5eb522b8850ea913894a1ec4d75bfc74e43",
+    "native_result": "4c3448090ce4713e595b9e0338a415d8b00b44f660c373dc6a27d6ec07f1a3fe",
+    "native_terminal": "a67bd511d0a3c79aa43bce8dbd9a32c045e24b5caa7b8d936d29258667adc190",
+    "incremental203assertions": "72e46889763770ead8fabbf83c9dbaa741246f4e4cf8dfa261bf66e0cf5af8d3",
+    "independent18snapshot9guardreview": "83c7e7e2caf6f9a0a6693ce5fea2a2eb5574e8d835f0686507adcbfdb09cd07a"
+  },
+  "build_diagnostics": "0compilerwarnings/0errors;onefirst-run tasklocaldotnettool-PATH advisoryretained;no globalPATH orconfigchanged",
+  "limitations": [
+    "Controlledsynthetic encounterentry;currentrealDomain/Resolver/Deck/Restoreexecution,notlegalfullrouteorserverAPI",
+    "Preview/onecast/10manualdomainTicksperarm;notnaturalstrength,throughputorbackgroundworkerproof",
+    "NoPVP/economy/nonemptyreward/LIVE/POSTGRES/CAPACITYorhumanexperienceclaim",
+    "18rawPveCensoredoutcomes retained;nofullbattleterminationorassetsettlementclaim",
+    "Three1seedblocks establishfunctionalnegativecontrols only;do notmeetfullEXPERIMENT benefitstatisticalbudget",
+    "T02 actualcounterexample proofadded;canonicalcase/profile/taskstatesnotpromoted"
+  ],
+  "new_database_matches_player_accounts_HTTP_cloud_calls_uploads_deployments": 0,
+  "product_code_config_art_UI_changes": 0,
+  "all_local_test_code_retained": true,
+  "GDD_v070_priority_legal80over70_effectiveHP_interpretation_unchanged": true,
+  "human_experience_in_scope": false,
+  "original716_status_SHA_preserved": true,
+  "canonical": {
+    "tasks": 132,
+    "cases": 396,
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "unaccepted": 77,
+    "register_gate_MAIN_changed": false,
+    "canonical_promotions": 0
+  },
+  "full_B052_EXPERIMENT_profile_closed": false,
+  "whole_goal_complete": false
+}

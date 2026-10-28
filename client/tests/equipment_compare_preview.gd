@@ -1,12 +1,20 @@
 extends Node
 
-const OUTPUT := "res://evidence/equipment-comparison"
+var output := "res://evidence/equipment-comparison"
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
 var errors: Array[String] = []
 var direct_equip_calls := 0
 
 func _ready() -> void:
+	var evidence_directory := OS.get_environment("FANTASYCARD_ART_EVIDENCE")
+	if not evidence_directory.is_empty(): output = evidence_directory
+	Sound.persist_settings = false
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	Sound._headless_runtime = true
+	Sound.set_process(false)
 	Game.gateway.set_process(false)
 	Game.gateway.persist_session = false
 	Game.gateway.online = true
@@ -29,7 +37,7 @@ func _ready() -> void:
 		$UI.inventory.equipments.append(_gear("scroll-item-%02d" % index, slots[index % slots.size()], "Blue", elements[index % elements.size()], "Piercing"))
 	$UI.gear_draft = ["head-current", "chest-current", "hands-current", "legs-current", null]
 	$UI.screen = "gear"
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	await _capture(selected, Vector2i(1920, 1080))
 	await _capture(selected, Vector2i(1280, 720))
 	await _verify_null_affix_hidden()
@@ -37,8 +45,12 @@ func _ready() -> void:
 	await _verify_zero_quantity_hidden()
 	await _verify_inventory_drag_and_draft()
 	var report := {"ok": errors.is_empty(), "errors": errors, "screenshots": 4, "direct_equip_calls": direct_equip_calls}
-	FileAccess.open(OUTPUT + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
+	FileAccess.open(output + "/report.json", FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	print(JSON.stringify(report))
+	Sound.stop_all()
+	Sound.set_music_context("")
+	Sound.stop_music()
+	await get_tree().create_timer(0.35).timeout
 	get_tree().quit(0 if report.ok else 1)
 
 func _capture(selected: Dictionary, resolution: Vector2i) -> void:
@@ -75,7 +87,7 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 		set_scroll.scroll_vertical = 0
 		await get_tree().process_frame
 	RenderingServer.force_draw(false)
-	get_viewport().get_texture().get_image().save_png(OUTPUT + "/equipment_summary_%s.png" % resolution.x)
+	get_viewport().get_texture().get_image().save_png(output + "/equipment_summary_%s.png" % resolution.x)
 	$UI._show_equipment_details(selected, _direct_equip, "确认穿戴")
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -85,7 +97,7 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 		errors.append("Missing comparison dialog at %s" % resolution.x)
 		return
 	var text := _all_text(dialog)
-	for expected in ["紫火头部 +0", "橙水头部 +0", "火元素增伤", "水元素增伤", "载壁", "破击", "3/3 已激活", "2/2 已激活", "+27%"]:
+	for expected in ["载壁·紫火头部 +0", "破击·橙水头部 +0", "火元素增伤", "水元素增伤", "载壁", "破击", "3/3 已激活", "2/2 已激活", "+27%"]:
 		if not text.contains(expected): errors.append("Missing %s at %s" % [expected, resolution.x])
 	if text.contains("+7%") or text.contains("+4%"):
 		errors.append("Cross-element stats were incorrectly subtracted at %s" % resolution.x)
@@ -103,7 +115,7 @@ func _capture(selected: Dictionary, resolution: Vector2i) -> void:
 	if shell == null or not Rect2(Vector2.ZERO, Vector2(1920, 1080)).encloses(shell.get_rect()):
 		errors.append("Comparison shell outside logical canvas at %s" % resolution.x)
 	RenderingServer.force_draw(false)
-	get_viewport().get_texture().get_image().save_png(OUTPUT + "/equipment_compare_%s.png" % resolution.x)
+	get_viewport().get_texture().get_image().save_png(output + "/equipment_compare_%s.png" % resolution.x)
 	dialog.queue_free()
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -170,7 +182,7 @@ func _verify_inventory_drag_and_draft() -> void:
 	if selected.instanceId not in $UI.gear_draft:
 		errors.append("Selected equipment was not stored in the local draft")
 	var selected_entry: Button = $UI._reference.find_child("EquipmentEntry_" + selected.instanceId, true, false)
-	if selected_entry == null or not selected_entry.text.begins_with("已选"):
+	if selected_entry == null or not selected_entry.text.begins_with(load("res://ui/palette.gd").localized("equipment_worn_prefix")):
 		errors.append("Draft equipment is missing its selected treatment")
 	if _all_text($UI._reference).contains("当前没有词缀套装"):
 		errors.append("Draft equipment did not update the reserved set summary")

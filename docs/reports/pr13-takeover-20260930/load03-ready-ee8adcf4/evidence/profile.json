@@ -1,0 +1,26 @@
+{
+  "profiles": [
+    "OFFLINE"
+  ],
+  "integration_sha": "ee8adcf40be9aebb1330156a3524910c08225ebc",
+  "business_runtime_sha": "f812879e4518fd09bf22656451cb563d62940298",
+  "canonical_cases": 6,
+  "sequence": "real owned writer processes with model event payloads; actual file reads/audit/aggregation",
+  "main_verdict": "model clock/metrics/telemetry; actual coordinator main/report/exit and owned child STOP; no capacity claim",
+  "Gateway": "actual f812 Gateway and HTTP_SCHEMA protobuf encode/decode, owned loopback only",
+  "budgets_seconds": {
+    "writer_exit": 5,
+    "each_Godot": 20,
+    "loopback_release": 5,
+    "phase_probe_completion": 5,
+    "coordinator_fixture": 60,
+    "production_STOP_grace": 35
+  },
+  "production_HTTP_limits_unchanged": {
+    "attempt_ms": 10000,
+    "logical_deadline_ms": 30000
+  },
+  "phase_delay_seconds": 0.2,
+  "full_C_PY_reused": 119,
+  "no_PG_LIVE_CI_capacity_UI_required": true
+}

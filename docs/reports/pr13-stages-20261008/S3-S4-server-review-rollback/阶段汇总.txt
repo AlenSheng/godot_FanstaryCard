@@ -1,0 +1,1 @@
+本轮新增26条细则用例：回放/排队STOP/ready隔离/actor顺序8条，分段测量3条，发送保护1条，历史/交付/候选/真人判定11条，房间策略冻结与回滚3条。Domain326条、当前server213条、READY15场景、PG结算恢复16条、A05/timeoutSTOP10条、分段3条、发送保护2条均通过且零跳过。修复慢玩家拖住其他三人的READY/started投递：同房最多四路，每玩家found/required保序。新测量把连接获取、SQL、actor、发送分开；数据库内部lock wait未独立测量为null，不写0。业务ID只进trace，指标phase标签有界。历史数字不是当前执行，缺真人来源文件不能升级验收。

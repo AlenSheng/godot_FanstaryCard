@@ -1,0 +1,60 @@
+{
+  "review_scope": "MAIN_current_R2_LIVE_case_evidence_prior_failure_stillmandatory",
+  "task_id": "LOAD-10.2",
+  "case_id": "LOAD-10.2-T03",
+  "state": "Partial",
+  "whole_task_accepted": false,
+  "new_supported_case_profiles": {
+    "LOAD-10.2-T03": [
+      "LIVE"
+    ]
+  },
+  "remaining_missing_case_profiles": {
+    "LOAD-10.2-T01": [
+      "CAPACITY"
+    ],
+    "LOAD-10.2-T02": [
+      "CAPACITY",
+      "LIVE"
+    ],
+    "LOAD-10.2-T03": [
+      "CAPACITY"
+    ]
+  },
+  "actual_R2_Native4_verbose_clean_230audit_PG_ACK4normal0": true,
+  "coordinator1_expectedincomplete_notnormalpass": true,
+  "R1_resourcefinding_stillOpen_mandatory_before_whole_acceptance": {
+    "id": "LOAD102-R1-NativeExitObjectRefs",
+    "state": "Open",
+    "mandatory_before_whole_acceptance": true,
+    "observed_clients": 1,
+    "total_clients": 4,
+    "observed": "NativeOSexit0 andbusinesscleanupPassed butObjectDB2/resources1atexit",
+    "runtime_log_SHA": "2813f2bc06ff753874cbda4ae84666570684ef91fc4bf4dc94e6843b9b149d30",
+    "client_id": "g001c015ff744",
+    "scope": "VMexitreferencecleanupfinding;notyetproofpersistentservermemoryleak; no data-lossorledgerfailure observed",
+    "next": "Useverboseisolatedno-login/zero-worldshutdownprobe,diagnoseactualclasses;preserveR1anddo notblindlyrerunmatchedbusinesscases.",
+    "investigation": {
+      "updated_at_local": "2026-10-21T02:59:06.874394+08:00",
+      "zero_world_probes": 18,
+      "Windows": 6,
+      "Linux": 12,
+      "controlled_conditions": "PendingHTTP,timer,smallbootstrapcleanup,40470Bbackgrounddecodeand4parallelcleanup",
+      "all_probes_no_VM_exit_warning": true,
+      "R2_actual_world1_players4_verbose_clean": true,
+      "source_fix_applied": false,
+      "cause_unresolved": true,
+      "original_R1_warning_kept": true,
+      "conclusion": "R2andprobesdidnotreproduce; do notmarkfixedorclosethismandatoryfinding.",
+      "next": "ContinueactualACKdeadlinefaultcoveragewithverboseenabledandwatchrecurrence; ifrecurscaptureexactresourceclasses. Avoidspeculativeteardownpatchfromnegativeprobes."
+    }
+  },
+  "series_allclean": false,
+  "code_fix_or_cause_claim": false,
+  "diagnostic_repeat_reason": "OriginalfailedLIVEobjectidentificationneededafter18no-worldtargetedprobes; only1additionalworld4cycles,cumulative2/20world8/80cycles.",
+  "no_limits_relaxed_or_old_failure_erasure": true,
+  "full_current_sources_parent3042_neworiginals546_SHA_CRC": true,
+  "owned_three_input_roots_removed_raw_local_sharedcache_kept": true,
+  "production_identity_health200_unchanged": true,
+  "whole_project_accepted": false
+}

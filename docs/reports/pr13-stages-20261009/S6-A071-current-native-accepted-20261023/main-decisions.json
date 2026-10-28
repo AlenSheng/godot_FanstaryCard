@@ -1,0 +1,42 @@
+{
+  "authority": "MAIN",
+  "stage": "S6",
+  "integration_source_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "task_decisions": [
+    {
+      "task_id": "PR13-A07.1",
+      "state": "Accepted",
+      "runtime_review_sha": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+      "reason": "MAIN inspected current native compiler/API/default receipts: CS1739/CS1061 remain expected rejections, every obsolete assertion maps to the current enum or tenths member, default policy1 and explicit candidate policy2 remain separate. The three required cases have actual OFFLINE and isolated POSTGRES coverage (9/9 native,skip0; unfiltered Domain388/388). LOAD10.1 supplies the minimum suite/input/fail-closed artifacts required for this subtask; its CAPACITY acceptance is not a prerequisite under the canonical minimum-child dependency rule. Full Server20 skips, earlier failures/retries, observer exit1 and hosted CI prestart failure remain explicit and do not cover this task's three passing mandatory cases or become passed themselves.",
+      "evidence": [
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A071-current-native-contracts-20261023/report.json",
+          "bytes": 28376,
+          "sha256": "70f274371357f68d68312a6d69dcf4f4e22178a44704608cd7df00e0e5b55485"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A071-current-native-contracts-20261023/cases.jsonl",
+          "bytes": 2894,
+          "sha256": "a2a12bcaf3826f4e3e866dfcbaf90bcc5671aebb285571b3841535cd42e519ac"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A071-current-native-contracts-20261023/commands.json",
+          "bytes": 8048,
+          "sha256": "b75f6978bd4aaa07907c19739eb42c9fec7710e2834109052ed5ea510b9df4a0"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A071-current-native-contracts-20261023/native-receipt-observations.json",
+          "bytes": 82102,
+          "sha256": "5e5dd039f025b1d758b62c8058c9456c5c37773a47c654b401263499c9e35b39"
+        },
+        {
+          "path": "docs/reports/pr13-stages-20261009/S5-A071-current-native-contracts-20261023/manifest.json",
+          "bytes": 1018,
+          "sha256": "551f2351b2df36989308c2eae6f6a7c2f03f7a39f84099cc9f429b1c8ccba358"
+        }
+      ],
+      "rollback": "No production behavior/default/config/data change was made. Revert only the four reviewed test visibility/fixture deltas if necessary using retained exact before copies; preserve original failures, current numerical source rollback receipts and all database audit history.",
+      "scope_limit": "Only PR13-A07.1. No whole Server/CI/LOAD10.1 capacity/global-gate acceptance. HEAD labels production inputs, with exact uncommitted test deltas recorded separately."
+    }
+  ]
+}

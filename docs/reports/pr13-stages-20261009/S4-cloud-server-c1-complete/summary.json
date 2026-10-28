@@ -1,0 +1,1747 @@
+{
+  "source_sha": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+  "execution_host": "Tencent cloud",
+  "scope": "Complete native Server suite on Tencent with actual Linux Godot fixture processes and retained 0cf43db binary. This is isolated component/network/fault verification, separate from local player-to-cloud LIVE/RENDER/CAPACITY sessions. Zero mandatory skips required; never use the production database.",
+  "started_at_unix": 1791516050.198122,
+  "limits": {
+    "overall_seconds": 1800,
+    "memory_mib": 1400,
+    "cpus": 1,
+    "postgres_memory_mib": 192,
+    "cpu_redline_percent": 85,
+    "free_memory_redline_percent": 15,
+    "free_disk_redline_percent": 15,
+    "bad_windows_to_stop": 3
+  },
+  "exit_code": 0,
+  "counters": {
+    "total": "337",
+    "executed": "337",
+    "passed": "337",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "observed_row_counts": {
+    "Passed": 337,
+    "NotExecuted": 0,
+    "Failed": 0
+  },
+  "trx": {
+    "bytes": 1105906,
+    "sha256": "bc908cd87fea435cc517b253fb0a2b518f8164665c39b8f00bc112c3c762be33"
+  },
+  "named_outcomes": [
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_health_check_must_verify_the_public_domain_certificate",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012294"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000499"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_writes_identical_bundle_to_server_and_client",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018417"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.LocalRuntimeDiagnosticsTests.Native_process_receipt_records_rss_allocations_and_never_overwrites_prior_process",
+      "outcome": "Passed",
+      "duration": "00:00:01.0415269"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot",
+      "outcome": "Passed",
+      "duration": "00:00:00.9781432"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000239"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ResumeGapReturnsSessionAndRoomSnapshots",
+      "outcome": "Passed",
+      "duration": "00:00:00.0056072"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.Monster_decision_roundtrips_identity_choice_and_replacement(accept: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0028139"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_releases_only_expired_entries",
+      "outcome": "Passed",
+      "duration": "00:00:00.0032943"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"fantasycard\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001856"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Failed_rooms_keep_readiness_unhealthy",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014706"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Matchmaking.ReadySendIsolationTests.One_slow_player_cannot_hold_three_ready_notifications_and_each_player_replay_stays_ordered",
+      "outcome": "Passed",
+      "duration": "00:00:00.0108676"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomCheckpointPolicyTests.Reward_relic_extraction_and_disconnect_markers_are_critical",
+      "outcome": "Passed",
+      "duration": "00:00:00.0041173"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ClientResume_RoundTripsTypedPayload",
+      "outcome": "Passed",
+      "duration": "00:00:00.0017113"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 403)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0208719"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RewardRefreshReceiptPreventsDuplicateSpendAfterRouterRestart",
+      "outcome": "Passed",
+      "duration": "00:00:00.0086833"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRegistryLifecycleTests.SettledPlayerCanJoinNextRoomWhileTeammatesRemainInFormerRoom",
+      "outcome": "Passed",
+      "duration": "00:00:00.0025094"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_PreservesFalseLogicalValueAsPresentEmptyMessage",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005886"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-before-commit\")",
+      "outcome": "Passed",
+      "duration": "00:00:44.7632070"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity",
+      "outcome": "Passed",
+      "duration": "00:00:01.1042356"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Concurrent_commands_are_serialized_by_single_reader",
+      "outcome": "Passed",
+      "duration": "00:00:00.0051731"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.FullBackpackAndOnDemandRelicStayWithinBinaryMessageLimit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0060294"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Orange\", element: \"Water\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003479"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.1878574"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Hands\", quality: \"Blue\", element: \"Earth\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0090167"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Staging\", configured: True, expected: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002049"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Inventory_and_class_loadout_reads_return_complete_lobby_assets",
+      "outcome": "Passed",
+      "duration": "00:00:01.0946079"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.V013_upgrades_legacy_card_ids_and_allows_orange_rarity",
+      "outcome": "Passed",
+      "duration": "00:00:01.1016615"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"committed-unknown-stop\", caseId: \"LOAD-02.2-T03\")",
+      "outcome": "Passed",
+      "duration": "00:00:50.2819759"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomPersistenceHealthTests.Failed_snapshot_is_unhealthy_until_a_later_success",
+      "outcome": "Passed",
+      "duration": "00:00:00.0050181"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "outcome": "Passed",
+      "duration": "00:00:03.2220720"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets",
+      "outcome": "Passed",
+      "duration": "00:00:01.2184626"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"https\", key: null, expected: 503)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005241"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ABC\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008350"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Market_list_projects_the_actual_equipment_attributes",
+      "outcome": "Passed",
+      "duration": "00:00:01.0907735"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"feet\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002612"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"contains\\ncontrol\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000210"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Class_weapon_quotes_never_require_a_material_and_cap_at_five",
+      "outcome": "Passed",
+      "duration": "00:00:01.1246733"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.BattleComboResolved_RoundTripsTypedPayload",
+      "outcome": "Passed",
+      "duration": "00:00:00.0038241"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"ordinary\", outcome: \"success\")",
+      "outcome": "Passed",
+      "duration": "00:00:16.7962775"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_worker_restart_recovers_pending_holds_exactly_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.6956193"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomLifecycleMetricsTrackerTests.Pve_duration_counts_active_time_but_excludes_pvp_freeze",
+      "outcome": "Passed",
+      "duration": "00:00:00.0028785"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Red_equipment_enhancement_rejects_orange_and_consumes_red_material",
+      "outcome": "Passed",
+      "duration": "00:00:01.1064572"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: True)",
+      "outcome": "Passed",
+      "duration": "00:00:01.0903600"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Concurrent_same_item_listing_has_one_active_owner_and_same_key_replays",
+      "outcome": "Passed",
+      "duration": "00:00:01.1285945"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Invalid_final_loadout_rolls_back_generated_equipment_gold_and_all_holds",
+      "outcome": "Passed",
+      "duration": "00:00:01.3563814"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection",
+      "outcome": "Passed",
+      "duration": "00:00:14.8775356"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.1746752"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 409)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0314564"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_rejects_overflow_within_one_second",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002442"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002068"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRegistryLifecycleTests.RecoveredTerminalPlayerDoesNotReserveAnActiveRoomRoute",
+      "outcome": "Passed",
+      "duration": "00:00:00.0042013"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.ReadAfter_ReportsGapWhenBufferRolledOver",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007491"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Duel_death_publishes_ended_to_both_and_died_to_loser_once",
+      "outcome": "Passed",
+      "duration": "00:00:00.0055889"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002619"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ResumeUsesRoomRevisionToAvoidUnnecessarySnapshot",
+      "outcome": "Passed",
+      "duration": "00:00:00.0041069"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed\")",
+      "outcome": "Passed",
+      "duration": "00:00:14.5997786"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry",
+      "outcome": "Passed",
+      "duration": "00:00:01.1252236"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001988"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 401)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0293165"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.TicketConsumptionIsAtomicAndBoundToSession",
+      "outcome": "Passed",
+      "duration": "00:00:00.0115894"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ticket-expiry\")",
+      "outcome": "Passed",
+      "duration": "00:00:33.2146918"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomSnapshot_RoundTripsTypedPayloadWithinMessageLimit(bossPhase: 2)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008301"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Priest, column: \"priest_soul\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0010164"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_prelogged_account_still_observes_default_economy_write_limit",
+      "outcome": "Passed",
+      "duration": "00:00:02.6197159"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.MarketDelta_RoundTripsWithoutChangingLegacyInventoryEvent",
+      "outcome": "Passed",
+      "duration": "00:00:00.0047114"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply",
+      "outcome": "Passed",
+      "duration": "00:00:01.1764906"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.Create_AssignsMonotonicSequenceAndSupportsReplay",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004484"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Extraction_applies_worn_reward_unequipped_armor_and_recycling_in_one_replay_safe_transaction",
+      "outcome": "Passed",
+      "duration": "00:00:01.1250762"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"admin\", bypass: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0210672"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-uncommitted-loss\")",
+      "outcome": "Passed",
+      "duration": "00:01:50.3007271"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.InventoryAndPreviewCommandsPreserveIdentityRevisionAndReplacementSemantics",
+      "outcome": "Passed",
+      "duration": "00:00:00.0031806"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Recovery_downtime_replays_the_same_authoritative_ticks",
+      "outcome": "Passed",
+      "duration": "00:00:00.0457898"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RoomReadyReturnsPersistedLobbyProgress",
+      "outcome": "Passed",
+      "duration": "00:00:00.0046029"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RejectsRequestIdReusedForDifferentCommand",
+      "outcome": "Passed",
+      "duration": "00:00:00.0019114"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"Black\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000544"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Equipment\", amount: 1, itemId: \"invalid|Fire|Head\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004228"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_CanLaunchFourBotRoomWhenNobodyReadies",
+      "outcome": "Passed",
+      "duration": "00:00:00.0041896"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Optional_tail_result_sets_advance_correctly_and_filter_pending_acknowledged_and_other_players",
+      "outcome": "Passed",
+      "duration": "00:00:01.8716371"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+      "outcome": "Passed",
+      "duration": "00:00:08.5081662"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Mage, prefix: \"MAG\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.1945775"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"cycles-middle-response-loss\")",
+      "outcome": "Passed",
+      "duration": "00:01:54.7045316"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.ExpiredReissuedAndMalformedTicketsAreRejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018992"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000101"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Json_requires_explicit_compatibility_and_never_replays_a_bad_body",
+      "outcome": "Passed",
+      "duration": "00:00:00.0221738"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"broken\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002566"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"postgres\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002339"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf\", legacy: False, expected: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0055932"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Real_http_binds_binary_and_preserves_int64_errors_and_empty_responses",
+      "outcome": "Passed",
+      "duration": "00:00:00.0900080"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.1925439"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again",
+      "outcome": "Passed",
+      "duration": "00:00:01.0860920"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.LocalizedContentContractTests.PublicClientInfoIncludesBothAnnouncementLanguages",
+      "outcome": "Passed",
+      "duration": "00:00:00.0025216"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomSnapshot_RoundTripsTypedPayloadWithinMessageLimit(bossPhase: 1)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0055178"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Cloud_compose_must_fail_closed_in_production",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012005"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Unknown_class_assets_do_not_guess_an_account",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002182"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.Route_PingReturnsPongWithSequence",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003194"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Revision_check_rejects_future_versions_after_prior_writes",
+      "outcome": "Passed",
+      "duration": "00:00:00.0081273"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T19:59:59Z\", expected: \"2026-12-31\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000257"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches",
+      "outcome": "Passed",
+      "duration": "00:00:00.8990983"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementNotificationBatchProcessorTests.Failed_delivery_is_not_marked_published",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014235"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRoomEquipmentTests.Looter_cannot_create_the_victims_pending_reward_and_can_equip_it_after_custody_commits",
+      "outcome": "Passed",
+      "duration": "00:00:01.2910226"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ConcurrentDuplicateExecutesRoomMutationOnceAndReplaysFullResponse",
+      "outcome": "Passed",
+      "duration": "00:00:00.0065244"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0013362"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"timeout-before-stop\", caseId: \"LOAD-02.2-T01\")",
+      "outcome": "Passed",
+      "duration": "00:00:41.5726074"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Recovery_is_unhealthy_until_first_scan_completes",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009094"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_cold_start_commits_durable_pending_holds_once",
+      "outcome": "Passed",
+      "duration": "00:00:04.4143519"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity",
+      "outcome": "Passed",
+      "duration": "00:00:00.0026943"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RuntimeTimingTests.Blocked_socket_send_keeps_actor_execution_separate_in_the_same_request_trace",
+      "outcome": "Passed",
+      "duration": "00:00:00.1676012"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-uncommitted\")",
+      "outcome": "Passed",
+      "duration": "00:00:18.4088415"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T19:59:59Z\", expected: \"2026-09-04\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004303"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_default_protobuf_preparation_ready_and_room_entry",
+      "outcome": "Passed",
+      "duration": "00:00:04.6839749"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.LocalRuntimeDiagnosticsTests.Native_metric_windows_keep_real_waits_bounded_and_no_business_labels",
+      "outcome": "Passed",
+      "duration": "00:00:00.0338722"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ZZ\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000176"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Match_timeout_removes_unready_human_and_fills_room_with_bots",
+      "outcome": "Passed",
+      "duration": "00:00:01.9082117"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.OutboundSizeBoundaryTests.Exactly_16KiB_sends_but_one_byte_more_closes_before_socket_write",
+      "outcome": "Passed",
+      "duration": "00:00:00.0766005"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Empty_contract_validates_supplied_body_before_mutation",
+      "outcome": "Passed",
+      "duration": "00:00:00.0204495"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002549"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"HealthPotion\", amount: 3, itemId: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002475"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"combat.previewed\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001522"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"None\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011250"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_trims_valid_value",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003921"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Historical_numeric_strings_keep_the_original_numeric_tags",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003111"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"https\", key: \"abcdefghijklmnopqrstuvwxyz0123456789\", expected: 200)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005699"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.LegacyRoomMonsterWithoutBossPhaseDefaultsToFirstStage",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003029"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"Unknown\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000488"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Head\", quality: \"White\", element: \"Fire\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002923"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"development\", configured: True, expected: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000085"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000079"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RuntimeTimingTests.Thousands_of_business_ids_never_create_metric_identity_labels",
+      "outcome": "Passed",
+      "duration": "00:00:00.0516000"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.PersistentIdempotencyTests.Hash_IsStableForSameRequest",
+      "outcome": "Passed",
+      "duration": "00:00:00.0028577"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week",
+      "outcome": "Passed",
+      "duration": "00:00:01.0319631"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.AuthoritativeSnapshotAndRelicBudgetMeasured",
+      "outcome": "Passed",
+      "duration": "00:00:00.2607108"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"market-read\", bypass: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0193863"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_restores_server_bundle_when_client_commit_fails",
+      "outcome": "Passed",
+      "duration": "00:00:00.0116992"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_binary_business_equipment_cards_market_mail_matchmaking",
+      "outcome": "Passed",
+      "duration": "00:00:03.6776179"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies",
+      "outcome": "Passed",
+      "duration": "00:00:01.1982382"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomEvents_PreservePayloadAndEnvelope",
+      "outcome": "Passed",
+      "duration": "00:00:00.0105367"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"committed-loss\")",
+      "outcome": "Passed",
+      "duration": "00:00:22.2130870"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementNotificationBatchProcessorTests.Offline_notifications_remain_pending_and_online_success_is_marked",
+      "outcome": "Passed",
+      "duration": "00:00:00.0043902"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Production\", configured: True, expected: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000076"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Development\", configured: True, managed: False, expected: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004289"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.BattlePlayCards_RoundTripsAllCardInstanceIds",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012479"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"combat.hit\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0020480"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Equipment_enhancement_rolls_back_failure_and_consumes_bound_material_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.1022691"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"Weapon\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000525"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomCheckpointPolicyTests.Ordinary_combat_is_throttled_but_critical_state_changes_save_immediately",
+      "outcome": "Passed",
+      "duration": "00:00:00.0011704"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"stalled-close\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.5006732"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+      "outcome": "Passed",
+      "duration": "00:00:15.4308808"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic",
+      "outcome": "Passed",
+      "duration": "00:00:01.2002369"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Guard_accepts_owned_test_and_keeps_disabled_production_configuration_valid",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005791"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Forward_migration_preserves_sold_history_and_resale_replays_without_double_transfer",
+      "outcome": "Passed",
+      "duration": "00:00:01.3136943"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+      "outcome": "Passed",
+      "duration": "00:00:09.9581206"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Mail.MailClaimContractTests.Claim_all_reports_exact_grants_and_accepts_legacy_replays",
+      "outcome": "Passed",
+      "duration": "00:00:00.0139797"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Gold\", amount: 1, itemId: \"ignored\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000843"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_IsDeterministicAndEmbedsHash",
+      "outcome": "Passed",
+      "duration": "00:00:00.0047276"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)",
+      "outcome": "Passed",
+      "duration": "00:00:01.2296404"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room",
+      "outcome": "Passed",
+      "duration": "00:00:01.7920213"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.Monster_decision_roundtrips_identity_choice_and_replacement(accept: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003156"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.TypedDamageAndAuxiliaryEffectsPreserveTheirWireValues(type: \"battle.combo_resolved\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004385"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementBatchProcessorTests.Failed_settlement_does_not_starve_later_settlements",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014138"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)",
+      "outcome": "Passed",
+      "duration": "00:00:01.2716369"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"market-read\", bypass: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0389265"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Equipment\", amount: 2, itemId: \"White|Fire|Head\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0077557"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_DuelLeaveRequiresBothParticipants",
+      "outcome": "Passed",
+      "duration": "00:00:00.0041935"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"Equipment\", amount: 1, itemId: \"Purple|Water|Feet\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001162"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_SelectTargetUpdatesAuthoritativePveTarget",
+      "outcome": "Passed",
+      "duration": "00:00:00.0045360"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0016951"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Matchmaking.PreparationContractTests.Legacy_snapshot_without_equipment_details_remains_readable",
+      "outcome": "Passed",
+      "duration": "00:00:00.0192017"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Scan_failure_keeps_readiness_unhealthy_without_exposing_message",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007755"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Mage, column: \"mage_soul\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004124"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Matchmaking.PreparationContractTests.Equipment_snapshot_round_trips_as_an_additive_optional_field",
+      "outcome": "Passed",
+      "duration": "00:00:00.0108983"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Failed_settlements_are_deduplicated_without_exposing_exception_messages",
+      "outcome": "Passed",
+      "duration": "00:00:00.0016636"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.SlowPresentationConnectionTests.StalledFeedbackSendAbortsOnlyItsConnectionAndReleasesTheCaller(replaceWhileSending: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.2550391"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Red\", element: \"Fire\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002130"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE different (\\n    id integer PRIMARY K\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000090"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.NumericalProtocolTests.New_snapshot_fields_roundtrip_and_do_not_replace_existing_tags",
+      "outcome": "Passed",
+      "duration": "00:00:00.0091988"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000142"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T20:00:00Z\", expected: \"2026-09-07\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006736"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Typed_equipment_names_use_the_same_wire_adapter",
+      "outcome": "Passed",
+      "duration": "00:00:00.0023037"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.Cancelling_a_blocked_batch_releases_reader_and_small_pool_for_next_bootstrap",
+      "outcome": "Passed",
+      "duration": "00:00:01.2248455"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Valid_ticket_uses_official_parameters_and_returns_verified_steam_id",
+      "outcome": "Passed",
+      "duration": "00:00:00.0022328"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades",
+      "outcome": "Passed",
+      "duration": "00:00:01.6949621"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Production\", configured: False, managed: False, expected: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003612"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Extracted\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0022396"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.Server_close_preserves_receive_until_ack_or_bounded_deadline(acknowledge: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0010816"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ReadyCommandAndEvents_RoundTripTypedPayloads",
+      "outcome": "Passed",
+      "duration": "00:00:00.0050260"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002304"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "outcome": "Passed",
+      "duration": "00:00:10.2929817"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Low_level_or_locked_equipment_cannot_consume_an_unrequested_material",
+      "outcome": "Passed",
+      "duration": "00:00:01.1034911"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomLifecycleMetricsTrackerTests.Pvp_duration_uses_authoritative_duel_start_time",
+      "outcome": "Passed",
+      "duration": "00:00:00.0013626"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012317"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Running_room_restart_restores_actor_and_compensates_snapshot_downtime",
+      "outcome": "Passed",
+      "duration": "00:00:00.9828880"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Disposed_reader_alias_can_close_a_subsequent_pool_borrowers_reader",
+      "outcome": "Passed",
+      "duration": "00:00:00.1652555"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_replaces_existing_files_on_both_sides",
+      "outcome": "Passed",
+      "duration": "00:00:00.0040974"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T20:00:00Z\", expected: \"2026-09-05\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0100255"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.MalformedFrameFloodConsumesBudgetAndBoundsErrorResponses",
+      "outcome": "Passed",
+      "duration": "00:00:00.0021656"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.ServerPong_RoundTripsTypedPayload",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004992"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.SlowPresentationConnectionTests.StalledFeedbackSendAbortsOnlyItsConnectionAndReleasesTheCaller(replaceWhileSending: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.2506442"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"http\", supplied: \"\", expected: 403)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008696"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"registry\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.1989764"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "outcome": "Passed",
+      "duration": "00:01:21.2763249"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T20:00:00Z\", expected: \"2027-01-01\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000492"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Actual_default_single_IP_auth_limit_is_separate_from_capacity",
+      "outcome": "Passed",
+      "duration": "00:00:04.1126082"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.CaddyfileTests.Domain_sites_must_not_share_the_ip_self_signed_certificate",
+      "outcome": "Passed",
+      "duration": "00:00:00.0058922"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery(context: \"recovered\", outcome: \"uncommitted-loss\")",
+      "outcome": "Passed",
+      "duration": "00:00:21.7005133"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0, */*;q=1\", legacy: False, expected: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000810"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality",
+      "outcome": "Passed",
+      "duration": "00:00:01.1843303"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomPersistenceHealthTests.Failure_snapshot_is_sorted_and_deduplicated",
+      "outcome": "Passed",
+      "duration": "00:00:00.0038728"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+      "outcome": "Passed",
+      "duration": "00:00:17.0915974"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-20T00:00:00Z\", expected: \"2026-09-20\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006533"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMailReaderLifetimeTests.Concurrent_mail_reads_complete_with_a_single_pooled_connection",
+      "outcome": "Passed",
+      "duration": "00:00:01.2054954"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Realtime_limiter_requires_a_positive_limit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009084"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-all-committed\")",
+      "outcome": "Passed",
+      "duration": "00:00:16.8998625"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Development\", configured: False, expected: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000041"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.Owned_test_frame_bypass_keeps_protobuf_validation",
+      "outcome": "Passed",
+      "duration": "00:00:00.0092842"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"98bd25c14eb0a9e8576f036f87e1fb1c872d9b53c4b4890f7c\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000160"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.HumanRoomMetricsTests.Human_routes_exclude_bots_and_ignore_old_terminal_snapshot_after_rejoin",
+      "outcome": "Passed",
+      "duration": "00:00:00.0106624"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://localhost:28081;http://0.0.0.0:8080\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018172"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "outcome": "Passed",
+      "duration": "00:00:19.9767192"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_ticket_lifecycle_rejects_expiry_and_idle_ban(scenario: \"ban-idle\")",
+      "outcome": "Passed",
+      "duration": "00:00:08.2843411"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementMaterialMappingTests.Actual_pve_drop_and_legacy_identifier_map_to_same_class_account(heroClass: Guardian, column: \"guardian_soul\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0363311"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth(mode: \"drop-first-committed-restart\")",
+      "outcome": "Passed",
+      "duration": "00:00:17.1955209"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Preparation_create_replay_conflict_and_cancel_release_are_atomic",
+      "outcome": "Passed",
+      "duration": "00:00:01.3670287"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0014171"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_SnapshotAllowsSelectingLastSurvivorAfterTargetDies",
+      "outcome": "Passed",
+      "duration": "00:00:00.0045814"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"player-route\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.1867404"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"auth\", bypass: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0198078"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes(mode: \"stop-after-commit\")",
+      "outcome": "Passed",
+      "duration": "00:00:44.5074583"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "outcome": "Passed",
+      "duration": "00:00:25.7679732"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Unsupported\", amount: 1, itemId: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000251"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Extraction_settlement_commits_all_assets_once_and_releases_notification",
+      "outcome": "Passed",
+      "duration": "00:00:01.1140130"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Priest, prefix: \"PRI\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.0785400"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.PendingSendLimitAbortsSlowPeer",
+      "outcome": "Passed",
+      "duration": "00:00:00.0105970"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Read_only_commands_do_not_enqueue_persistence_snapshots",
+      "outcome": "Passed",
+      "duration": "00:00:00.0050165"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Actual_starter_deck_matches_published_twenty_white_level_zero_cards(hero: Guardian, prefix: \"GUA\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.0196270"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ProtobufTicketTests.FragmentedReceiveKeepsTheCumulativeLimit",
+      "outcome": "Passed",
+      "duration": "00:00:00.0086816"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.GameplayProtocolTests.PreviewIsPureAndMatchesTheFollowingAuthoritativePlay",
+      "outcome": "Passed",
+      "duration": "00:00:00.0081327"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresEnhancementQuoteTests.Armor_quote_matches_actual_cost_and_counts_only_available_same_quality_materials",
+      "outcome": "Passed",
+      "duration": "00:00:01.0944791"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: \"snapshot\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.1893921"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T19:59:59Z\", expected: \"2026-09-07\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003548"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ActionSpringStartsAuthoritativeReadBar",
+      "outcome": "Passed",
+      "duration": "00:00:00.0365918"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/json\", legacy: False, expected: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0007641"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001192"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Invalid_or_unsupported_attachments_are_rejected(kind: \"Gold\", amount: 0, itemId: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000140"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BattleAbandonSettles_the_active_battle_as_dead",
+      "outcome": "Passed",
+      "duration": "00:00:00.0033051"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_concurrent_card_upgrade_retries_spend_once",
+      "outcome": "Passed",
+      "duration": "00:00:02.7850376"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Actor_round_trips_complete_duel_snapshot",
+      "outcome": "Passed",
+      "duration": "00:00:00.0062325"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Recovery_is_unhealthy_until_scan_completes",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006217"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Admin_page_is_embedded_in_server_assembly",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001313"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.3708876"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Slow_observers_do_not_block_authoritative_commands_and_snapshots_coalesce",
+      "outcome": "Passed",
+      "duration": "00:00:00.0121459"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.LocalizedContentContractTests.MailResponseIncludesBothLanguagesAndMigration",
+      "outcome": "Passed",
+      "duration": "00:00:00.0036440"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Escape_attempt_transition_publishes_failed_to_both_players",
+      "outcome": "Passed",
+      "duration": "00:00:00.0083412"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Real_LOAD02_timeout_STOP_preserves_original_business_truth(mode: \"normal-wait-stop\", caseId: \"LOAD-02.2-T02\")",
+      "outcome": "Passed",
+      "duration": "00:00:43.8043598"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_deck_writes_allow_one_version_winner_and_replay_its_response",
+      "outcome": "Passed",
+      "duration": "00:00:01.1225944"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Validate_RejectsDuplicatePrimaryKey",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003778"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.Server_close_preserves_receive_until_ack_or_bounded_deadline(acknowledge: False)",
+      "outcome": "Passed",
+      "duration": "00:00:02.0040901"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"admin\", bypass: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0631343"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"disposed\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0028702"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresMarketRelistingTests.Cancelled_or_expired_history_does_not_block_new_listing(expire: False)",
+      "outcome": "Passed",
+      "duration": "00:00:01.0935376"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it",
+      "outcome": "Passed",
+      "duration": "00:00:01.2043822"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T20:00:00Z\", expected: \"2026-09-14\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000259"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id bigint PRIMARY KEY\\\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003145"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets",
+      "outcome": "Passed",
+      "duration": "00:00:01.1775405"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-19T23:59:59Z\", expected: \"2026-09-19\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003810"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Queued_STOP_cancellation_releases_assets_once_and_allows_next_preparation",
+      "outcome": "Passed",
+      "duration": "00:00:01.7127268"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.ServerMetricsTests.Core_operational_measurements_are_published",
+      "outcome": "Passed",
+      "duration": "00:00:00.0070660"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\r    id integer PRIMARY KEY\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002648"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000081"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0.1, application/json;q=0.9\", legacy: True, expected: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0010830"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"https\", supplied: \"wrong-key\", expected: 401)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0035244"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "outcome": "Passed",
+      "duration": "00:00:05.4064749"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Admin.AdminValidationTests.Supported_mail_attachments_can_be_claimed(kind: \"Gold\", amount: 100, itemId: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000141"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Chest\", quality: \"Green\", element: \"Wood\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0005761"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0015460"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T19:59:59Z\", expected: \"2026-08-31\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000544"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Mutual_leave_publishes_a_non_death_duel_end",
+      "outcome": "Passed",
+      "duration": "00:00:00.0017843"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Legacy_identity_tables_upgrade_and_existing_player_is_provisioned_idempotently",
+      "outcome": "Passed",
+      "duration": "00:00:01.1684170"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Class_weapon_enhancement_rolls_back_and_replays_without_material_consumption",
+      "outcome": "Passed",
+      "duration": "00:00:01.1031348"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout",
+      "outcome": "Passed",
+      "duration": "00:00:01.0899080"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"economy-write\", bypass: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.5445256"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_ReplacesEveryMissingSeatAndPreservesReadyHumans",
+      "outcome": "Passed",
+      "duration": "00:00:00.0034244"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_api_keeps_authentication_and_private_headers(scheme: \"https\", supplied: \"abcdefghijklmnopqrstuvwxyz0123456789\", expected: 200)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003416"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Steam_error_payload_is_not_accepted",
+      "outcome": "Passed",
+      "duration": "00:00:00.0010067"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "outcome": "Passed",
+      "duration": "00:02:13.8877190"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Disabled_verifier_never_calls_external_service",
+      "outcome": "Passed",
+      "duration": "00:00:00.0037425"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once",
+      "outcome": "Passed",
+      "duration": "00:00:01.4831454"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_http_switching_names_registers_distinct_uids_and_relogin_restores_the_original_account",
+      "outcome": "Passed",
+      "duration": "00:00:03.1276584"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Application_connection_pool_ceiling_is_removed_only_in_owned_test_profile(bypass: False)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0010472"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.RoomAndRewardCommands_RoundTripTypedPayloads",
+      "outcome": "Passed",
+      "duration": "00:00:00.0057891"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BattlePlayCardsExecutesInsideRegisteredRoom",
+      "outcome": "Passed",
+      "duration": "00:00:00.0094833"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification",
+      "outcome": "Passed",
+      "duration": "00:00:01.3062590"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Deploy.ProtobufPerimeterTests.Admin_page_retains_security_headers_on_success_and_rejection(scheme: \"http\", key: null, expected: 403)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0008824"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeProtobufCodecTests.DecodeClient_RejectsWrongProtocolVersion",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003478"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.RoomActor_extraction_commits_settlement_and_removes_terminal_room",
+      "outcome": "Passed",
+      "duration": "00:00:01.2171909"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000474"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementRecoveryHealthTests.Successful_scan_restores_readiness",
+      "outcome": "Passed",
+      "duration": "00:00:00.0024617"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Dead\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004789"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"auth\", bypass: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0450582"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomActorTests.Dispose_drains_commands_that_were_already_accepted",
+      "outcome": "Passed",
+      "duration": "00:00:00.0031721"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_ActionPotionConsumesAndHealsImmediately",
+      "outcome": "Passed",
+      "duration": "00:00:00.0058167"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_first_sign_in_provisions_one_complete_player_aggregate",
+      "outcome": "Passed",
+      "duration": "00:00:01.4201575"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Owned_test_realtime_bypass_accepts_burst_without_raising_default_limits",
+      "outcome": "Passed",
+      "duration": "00:00:00.0018085"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity",
+      "outcome": "Passed",
+      "duration": "00:00:01.3127020"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.PersistentIdempotencyTests.Hash_ChangesWhenTargetChanges",
+      "outcome": "Passed",
+      "duration": "00:00:00.0063820"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Production\", urls: \"http://127.0.0.1:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001870"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_pvp_relic_replay_and_extraction_survive_forced_restart",
+      "outcome": "Passed",
+      "duration": "00:00:09.5215095"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Real_same_IP_requests_observe_policy_bypass_only_when_enabled(policy: \"economy-write\", bypass: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0196501"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Local_auth_requires_development_and_explicit_configuration(environment: \"Development\", configured: True, expected: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003336"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"healthy\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0009708"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Protobuf_real_database_login_bootstrap_profile_deck_and_cross_format_purchase",
+      "outcome": "Passed",
+      "duration": "00:00:03.6920787"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.RemoveInactive_DropsOnlyStreamsOlderThanCutoff",
+      "outcome": "Passed",
+      "duration": "00:00:00.0032583"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.Route_StateCommandWithoutRequestIdIsRejected",
+      "outcome": "Passed",
+      "duration": "00:00:00.0006256"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation(conflict: \"room-id\")",
+      "outcome": "Passed",
+      "duration": "00:00:01.2110306"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Unsafe_bypass_configuration_fails_before_host_starts(environment: \"Development\", urls: \"http://0.0.0.0:28081\", host: \"127.0.0.1\", database: \"pr13_tencent_live_0123456789abcdef\", session: \"pr13-tencent-20261009\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002011"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.ConnectionReplacementTests.OldPeerCannotPreventReplacementFromSendingConnected(failure: \"stalled-send\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.5003723"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_missing_or_invalid_values(value: \"short\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0002765"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.Create_RemembersResponseByRequestId",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012853"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_BossPhaseChangesOnlyAfterTheAuthoritativeStepCompletes",
+      "outcome": "Passed",
+      "duration": "00:00:00.0062268"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: null)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000141"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories",
+      "outcome": "Passed",
+      "duration": "00:00:00.0004631"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.LocalAuthPolicyTests.Managed_test_server_switch_is_separate_from_development_configuration(environment: \"Production\", configured: False, managed: True, expected: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000286"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RequestLimitTests.Application_connection_pool_ceiling_is_removed_only_in_owned_test_profile(bypass: True)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0068943"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"···, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"···)",
+      "outcome": "Passed",
+      "duration": "00:00:00.0000086"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Settlement.SettlementBatchProcessorTests.Cancellation_stops_the_batch_instead_of_being_reported_as_failure",
+      "outcome": "Passed",
+      "duration": "00:00:00.0032133"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Legs\", quality: \"Purple\", element: \"Metal\")",
+      "outcome": "Passed",
+      "duration": "00:00:00.0070366"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account",
+      "outcome": "Passed",
+      "duration": "00:00:01.2785580"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeEventStoreTests.ReadAfter_RefreshesStreamActivity",
+      "outcome": "Passed",
+      "duration": "00:00:00.0003900"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.RuntimeTimingTests.Actual_pool_acquisition_wait_is_separate_from_replay_SQL_execution",
+      "outcome": "Passed",
+      "duration": "00:00:01.3354398"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark",
+      "outcome": "Passed",
+      "duration": "00:00:08.8995528"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Common.IdempotencyKeysTests.Read_rejects_value_over_maximum_length",
+      "outcome": "Passed",
+      "duration": "00:00:00.0001237"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresBootstrapBatchTests.All_result_sets_map_distinct_values_and_preserve_nullable_equipment_slots",
+      "outcome": "Passed",
+      "duration": "00:00:01.3055445"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RoomTransitionEventPublisherTests.Extraction_transition_publishes_completion_once",
+      "outcome": "Passed",
+      "duration": "00:00:00.0051221"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Rooms.RoomRecoveryHealthTests.Completed_scan_without_failures_is_healthy",
+      "outcome": "Passed",
+      "duration": "00:00:00.0012561"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Real_process_supports_login_bootstrap_and_websocket_ping",
+      "outcome": "Passed",
+      "duration": "00:00:02.8787385"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level",
+      "outcome": "Passed",
+      "duration": "00:00:01.1042861"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RoomSnapshotReturnsOnlyPlayerProjectionAndAllowedActions",
+      "outcome": "Passed",
+      "duration": "00:00:00.0285954"
+    }
+  ],
+  "cleanup": {
+    "pr13-tencent-server-c1": true,
+    "pr13-tencent-server-c1-pg": true
+  },
+  "elapsed_seconds": 1188.4762935638428,
+  "remaining_fixture_schemas": "0",
+  "ok": true,
+  "acceptance_of_132_tasks": false,
+  "component_suite_complete": true,
+  "new_native_test_cases": 20,
+  "retained_previous_suite_cases": 317,
+  "current_production_runtime_revision": "c1f4212b72eef84b9846b3da6db182c6be98c132",
+  "actual_prior_binary_sha256": "87e323557fe609a58a7a4cb227c70d40dd45a9bb6f72f6d2af19d20baa4ce844",
+  "local_player_unrestricted_baseline": "18/30, failed; evidence remains separate",
+  "capacity_50_100": "Deferred by human",
+  "human_experience": "Pending"
+}

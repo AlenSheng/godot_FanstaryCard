@@ -1,0 +1,90 @@
+{
+  "candidate_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+  "production_behavior_baseline": "f93e32dac07608e8375e709cd357c4793bdcc41a",
+  "cohorts": [
+    {
+      "name": "source-candidate",
+      "actual_tested_sha": "0cabf2695b26881b8958eb1ec6989ec57104414d",
+      "input_scope": [
+        "client/tests/pr13_ack_stop_cycles.gd",
+        "client/tests/gameplay_load_client.gd",
+        "client/network",
+        "client/state",
+        "client/data",
+        "client/platform",
+        "client/ui",
+        "server/src",
+        "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+        "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs",
+        "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRecoveryTests.cs",
+        "server/tests/FantasyCard.Server.Tests/Deploy"
+      ],
+      "candidate_input_diff": [],
+      "scope_equal_to_candidate": true,
+      "registration_subcases_superseded": "3 registration cases retain original0cab receipt; current source is separately revalidated on Unix and loopback TCP at38c2cacc."
+    },
+    {
+      "name": "ready-clean",
+      "actual_tested_sha": "54e7452f971148db0fad313108c6fbdb6c1811ab",
+      "input_scope": [
+        "server/src",
+        "client/tests/gameplay_load_client.gd",
+        "client/tests/run_ready_stop_faults.py",
+        "client/tests/run_ready_stop_faults.gd",
+        "client/tests/ready_frame_proxy.py",
+        "client/tests/fixture_runtime.py",
+        "client/network",
+        "client/state",
+        "client/data",
+        "client/platform",
+        "client/ui",
+        "protocol"
+      ],
+      "candidate_input_diff": [],
+      "scope_equal_to_candidate": true
+    },
+    {
+      "name": "loopback-tcp-nodelay-candidate",
+      "actual_tested_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+      "git_dirty_preserved": true,
+      "source_dirty_excludes_report_and_generated_paths": [],
+      "dirty_fact": "Derived report and/or tracked generated build output only; exact committed runtime/test source. Not presented as globally clean checkout.",
+      "registration_source_sha256": "8b1bf79461a69eb65f1f1e463dea2c87bccb5d7ed40b266c1e5a795b2fa39d68"
+    },
+    {
+      "name": "unix-final-relay-candidate",
+      "actual_tested_sha": "38c2caccb5f8327f52d97dffb3b9f9303360dd46",
+      "git_dirty_preserved": true,
+      "source_dirty_excludes_report_and_generated_paths": [],
+      "dirty_fact": "Derived report and/or tracked generated build output only; exact committed runtime/test source. Not presented as globally clean checkout.",
+      "registration_source_sha256": "8b1bf79461a69eb65f1f1e463dea2c87bccb5d7ed40b266c1e5a795b2fa39d68"
+    }
+  ],
+  "no_claim_all_tests_ran_at_single_candidate_sha": true,
+  "production_paths": [
+    "server/src",
+    "client/network",
+    "client/state",
+    "client/platform",
+    "client/data",
+    "client/ui",
+    "client/main.gd",
+    "protocol"
+  ],
+  "production_diff_vs_f93": [],
+  "production_runtime_changes_vs_de1157fd": [
+    "client/network/gateway.gd",
+    "client/state/game_store.gd",
+    "client/tests/gameplay_load_client.gd"
+  ],
+  "new_files_vs_f93_docs_head": [
+    "client/tests/pr13_ack_stop_cycles.gd",
+    "client/tests/ready_frame_proxy.py",
+    "client/tests/run_ready_stop_faults.gd",
+    "client/tests/run_ready_stop_faults.py",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckResponseLossTests.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs"
+  ],
+  "prior_candidate_sha": "d2106eb0039699a9e6f6d70ea8e5d38db5d3076b"
+}

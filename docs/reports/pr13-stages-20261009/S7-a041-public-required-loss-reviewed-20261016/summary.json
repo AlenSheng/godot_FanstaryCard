@@ -1,0 +1,40 @@
+{
+  "kind": "ReviewedPublicRequiredNotificationLossCase",
+  "source_release": "69f6794721354cd6e57f4445a2d33fe929909959",
+  "case_id": "PR13-A04.1-T01",
+  "new_profile": "LIVE",
+  "functional_case_pass": true,
+  "setup": "One real Windows Godot first-party client; task-owned loopback loss relay to certificate-verified www.relicbound.cn HTTPS/WSS; every actual ready_required message and replay discarded",
+  "actual": {
+    "dropped_original_required_PB": 2,
+    "forwarded_required_PB": 0,
+    "raw_events_contiguous": 74,
+    "same_match_READY_accepted_started_snapshot_and_SQL": true,
+    "SQL_room_and_member_unique": true,
+    "pending_holds_and_locked_equipment": 0,
+    "cleanup_settlement_and_ACK_idempotency_rows": 1,
+    "production_cleanup": "Passed",
+    "normal_cycles_claimed": 0
+  },
+  "validation": {
+    "independent_decoder": "google.protobuf known-field schema from current realtime.proto",
+    "frozen61_product_and_harness_sources_verified": true,
+    "original_report_SHA256": "b6bfca636b17cb6087d8464a4966ec652eac2f11943e1852eb7ebaab0bbe3f34",
+    "complete_G_archive_files": 148,
+    "complete_G_archive_SHA256": "e6ef7e8bf6cbce74a92048d49c62a812acc22cb918b0ffca26ba20c583e1b7ea",
+    "all_members_SHA_and_gzip_CRC_verified": true,
+    "raw_original_report_ok_false_reason": "Declared functional boundary STOP;original native report remains false;independentREADYcasepass doesnotclaim naturalcompletion",
+    "previous_attempts": "R1 TLS foundation failed beforelogin;R2 external account-selector guard STOP;both raw archives retained and neither counted passing"
+  },
+  "scope_limits": [
+    "Only PR13-A04.1-T01 LIVE functional behavior",
+    "HTTP timing through the declared relay is not a default-path performance or CAPACITY claim",
+    "Headless;no RENDER or human-experience evidence",
+    "T02/T03,fullA04 and tenaccounts-threecycles remain separate",
+    "No automatic acceptance/register/gate/MAIN changes"
+  ],
+  "public_service_restarted_or_deployed": false,
+  "server_environment_changed": false,
+  "resource_floor_fraction": 0.05,
+  "MAIN_accepted": false
+}

@@ -65,6 +65,11 @@ func run_test() -> Dictionary:
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(service.settings_path))
 	restored.free()
 	service.stop_music()
+	checks["Stopping releases loop player streams"] = service._music_players.all(func(player): return not player.playing and player.stream == null) and service._ambience_players.all(func(player): return not player.playing and player.stream == null)
+	service.stop_all()
+	checks["Stopping releases effect player streams"] = service._voices.all(func(player): return not player.playing and player.stream == null)
+	checks["Music restarts after stop"] = service.play_music_for_context("battle") and service.play_ambience_for_context("battle")
+	service.stop_music()
 	service.free()
 	checks["Private test bus is removed"] = AudioServer.get_bus_index(&"FantasyCard Test SFX") == -1
 	return {"ok": not checks.values().has(false), "message": "Bundled cue playback, loop context crossfade, bounded voices, three mix levels, mute persistence and button routing", "checks": checks}

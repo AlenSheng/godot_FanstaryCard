@@ -1,0 +1,20 @@
+{
+  "authority": "MAIN",
+  "at_local": "2026-10-19T20:39:25.343995+08:00",
+  "task_id": "LOAD-08.4",
+  "case_id": "LOAD-08.4-T03",
+  "profiles_closed": [
+    "EXPERIMENT"
+  ],
+  "task_state": "Partial",
+  "whole_task_accepted": false,
+  "reason": "真实历史20c38ec6完整客户端2124输入，对接现行完整Program/PG；真实Pending/ACK409/空Bootstrap，旧重试仍待资产。仅丢弃主连接真实收据通知以覆盖无ID路径，原始17帧由当前官方Google.Protobuf再解码；释放本测试行锁后旧Bootstrap获得同一收据并ACK，零单项GET，12业务表未被读取或409改写，资产一次提交。",
+  "explicit_scope": "2026-10-16的这一完整历史客户端，协议树/编解码器/schema与当前相同；不声称所有旧客户端版本、旧JSON、旧认证、全部功能或容量兼容。",
+  "original_performance_mixed_remains_notpassed": true,
+  "NoChange_granted": false,
+  "criteria_relaxed": false,
+  "budget_revision": "旧7场保持，预先声明新1场历史兼容实验，累计8；没有重跑原6成本局，B11121/B11227不重置。",
+  "synthetic_initial_item1_declared_before_start": "私有复制库一个绑定白脚装备，仅用于实际行锁/hold；无HP、金币或规则覆盖。",
+  "local_launch": "单个CREATE_NO_WINDOW/BELOW_NORMAL/headless/Dummy原生进程、4独立Store/HTTP/WS连接，无窗口或桌面输入。",
+  "rollback": "Current pointer可退回父register；无产品或生产修改。"
+}

@@ -1,0 +1,129 @@
+{
+  "kind": "cloud_software_render_functional_validation",
+  "date": "2026-10-10",
+  "implementation_source_sha": "fa27e3f46cfc015ebf2e50bf69fa148b40474869",
+  "execution_source_base_sha": "715b144056530753ad6e6098f7a278f17bc51a8b",
+  "execution_used_explicit_source_overlays": true,
+  "execution_host": "Tencent cloud",
+  "actual_frame_rows": 48,
+  "actual_frame_rows_passed": 48,
+  "screenshots": [
+    {
+      "name": "fallback_inflight_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 812126,
+      "sha256": "8302df70e672afbf0bf47c548a2f3d50cec56b9820f063e86a1c289df1ac7eb0"
+    },
+    {
+      "name": "fallback_queued_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 812108,
+      "sha256": "eca1c552d79f3a2179213ff4d5130bda52d651ee0ec08baa8389724f21669fa4"
+    },
+    {
+      "name": "manual_inflight_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 812830,
+      "sha256": "d1baa6f7b509f321a12210e9ddc706f6e825c2514f40a8c5f39f7147264f8a59"
+    },
+    {
+      "name": "manual_queued_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 812778,
+      "sha256": "e9b8cf123f9036c30d91702be02ade4fb55ebae35a80ed38de7cd4123821bfc8"
+    },
+    {
+      "name": "play_submitted_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 813290,
+      "sha256": "25222d46e02769fcd3f1523177fda709404483b0238a71f5e935d67dc0ef07fc"
+    },
+    {
+      "name": "recovering_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 812432,
+      "sha256": "90497052d472f304baf05a4068059875c917b44dc6ee0fe050f6bce93ef3894c"
+    },
+    {
+      "name": "stunned_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 813838,
+      "sha256": "331e385b9f1a4256a05527a66ba613984d2725b554195d16a764f18985a8ca78"
+    },
+    {
+      "name": "unrelated_read_en_960.png",
+      "dimensions": [
+        960,
+        540
+      ],
+      "bytes": 810659,
+      "sha256": "5e54eabf69bdd35bfca10fe50b0af971505b68bf98e8e462cef8fa1f6d64964a"
+    }
+  ],
+  "display_driver": "X11",
+  "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "render_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "renderer_packages": "libgl1-mesa-dri 25.2.8-0ubuntu0.24.04.4\nlibglx-mesa0 25.2.8-0ubuntu0.24.04.4\nxauth 1:1.1.2-1build1\nxvfb 2:21.1.12-1ubuntu1.8\n",
+  "native_runtime_unit_tests": 4,
+  "native_runtime_unit_skips": 0,
+  "actual_project_scene_boot_passed": true,
+  "source_client_inputs_verified_against_implementation_git": 2064,
+  "executed_tool_hashes": {
+    "tools/cloud/pr13/render_runtime.py": "43b278d8adae8ea8338a82a352af25daae9517752c93d0833a848c971da69929",
+    "tools/cloud/pr13/render.Dockerfile": "ce23b439476af81b564519bd51072fbff2a9a196cc2a5ddd2b016c33e801c778",
+    "tools/tests/test_pr13_cloud_render_runtime.py": "d9b5e7a30c01ecfaef04cd59fa53cd4bfada738e2b7e30d7ab47593ae799b93b"
+  },
+  "owned_container_removed": true,
+  "oom_killed": false,
+  "production_health_after": true,
+  "original_failures_retained": true,
+  "storage_dedup": {
+    "ok": true,
+    "all_original_files_and_bytes_retained": true,
+    "existing_source_inputs_verified_before_and_after": 10305,
+    "binary_inputs_verified_before_and_after": 6604,
+    "duplicate_file_copies_shared": 5276,
+    "actual_available_bytes_recovered": 7121903616,
+    "before_disk": {
+      "total_bytes": 63290032128,
+      "available_bytes": 3297693696
+    },
+    "after_disk": {
+      "total_bytes": 63290032128,
+      "available_bytes": 10419597312
+    },
+    "available_ratio_after": 0.1646325173437586,
+    "raw_results_logs_and_config_not_modified": true,
+    "production_not_modified": true
+  },
+  "hardware_fps_live_capacity_human_acceptance": false,
+  "whole_scope_accepted": false,
+  "formal_register_states_and_missing_profiles_unchanged": true,
+  "visual_followup": "Selected-card preview visually intersects monster target buttons in narrow screenshot; bounds and real pointer interactions require the next focused development phase.",
+  "archive": {
+    "bytes": 13890307,
+    "sha256": "d9477b2a150069c9e3633069acc7c18f8ed1552836c6a314a62226769d23d019",
+    "verified_files": 56
+  }
+}

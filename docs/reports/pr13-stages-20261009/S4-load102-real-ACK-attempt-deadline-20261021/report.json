@@ -1,0 +1,73 @@
+{
+  "summary": {
+    "kind": "LOAD102ActualACKAttemptDeadlineRecoveryLIVE_CurrentR3",
+    "counts": {
+      "Accepted": 88,
+      "Partial": 36,
+      "ReadyForAcceptance": 8,
+      "Failed": 0
+    },
+    "remaining_unaccepted": 44,
+    "missing_case_profile_pairs": 170,
+    "previous_gaps171_closed1": true,
+    "LOAD102_state": "Partial",
+    "actual_timeout_ms": 10016,
+    "actual_logical_success_ms": 11232,
+    "actual_proxy_close_after_ms": 12515.009024,
+    "physical5_logical4_durable4_PGexact_once": true,
+    "R3Native4clean_no_R1fixclaim": true,
+    "R1_VM_exitfindingOpen_mandatory": true,
+    "cumulative_worlds3of20_playercycles12of80": true,
+    "G367_parent3042_raw_source_saved_cleanupcomplete_produnchanged": true,
+    "other131_tasks_allgates_unchanged": true,
+    "whole_project_accepted": false
+  },
+  "cases": [
+    {
+      "case_id": "LOAD-10.2-T02",
+      "executed": true,
+      "status": "Passed",
+      "profiles_executed": [
+        "LIVE"
+      ],
+      "new_missing_profiles_closed": [
+        "LIVE"
+      ],
+      "setup": "ProxyforwardsfirstselectedrealACKtoProgram/PG,200committedandPGcheckedbeforeclientreply; withholdsallheaders/body12.5swithoutclosingfirstsocket. ActualunmodifiedGateway10sattemptdeadline,retrywithsamekey/trace/body;samePGcheckpointreadagain.",
+      "expected": "ActualACKdeadlinefailure recovers withone logical completion andonepersistent confirmation,retainingphysicalretry",
+      "actual": {
+        "actual_world1_currentProgram8eb_PG4users_4realMage_originalrun_andcoordinator": true,
+        "actual_first_native_HTTP_attempt_timeout_ms": 10016,
+        "actual_logical_ACK_success_elapsed_ms": 11232,
+        "actual_proxy_first_connection_close_age_ms": 12515.009024,
+        "actual_native_timeout_before_proxyclose": true,
+        "physicalACK5_logical4_durable4": true,
+        "target2physicalsame_key_trace_body_actual_binaryACKresponses_identical": true,
+        "actualPGreceipt_andpersistent_idempotency_record_before_after_EXACT": true,
+        "actualtargetcycle_ACK_completed_each1": true,
+        "allPG4Deadreceipts_ACKed_holds0_unACKed0_items0": true,
+        "actualNative4verboseclean_R3": true,
+        "coordinator1_expectedfallback4normal0_notnaturalpass": true,
+        "R1_VM_exit_resource_finding_notclosed": true
+      },
+      "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+      "source": {
+        "Server_SHA": "8ebfaebfcc7a593488f727a84a70131958ff71af3c0aecc9f699819fcbe291d6",
+        "client_original2147_parent_logic_unchanged": true,
+        "privatefixture_same_R1_stagnationage_only": "Providescontrolledterminal,notnaturalgameplay",
+        "coordinator_current_actual_main": true,
+        "proxy_source_SHA": "3429c7f28d9fefbf8b6902b08a953803bb573755810e0b7f3d5dc3e9ebdfa8bf",
+        "Gateway_attempt10000_logical30000ms_unchanged": true,
+        "fullsource_G_parent3042_reference": true
+      },
+      "evidence": [
+        "docs/reports/pr13-stages-20261009/S4-load102-real-ACK-attempt-deadline-20261021/report.json",
+        "docs/reports/pr13-stages-20261009/S5-load102-ACK-deadline-LIVE-R1-issue-open-20261021/scoped-review.json",
+        "docs/reports/pr13-stages-20261009/S6-current-LOAD102-ACK-deadline-LIVE-20261021/scoped-task-decision.json"
+      ],
+      "private_originals": "G:\\PR13Evidence\\load102-actual-ACK-deadline-20261021-r3-originals",
+      "scope": "RealLIVEattemptdeadlineandPGidempotence boundary; notEOFfaultrelabeled,nottotal30slogicaldeadlineexhaustion,nocapacityornatural30claim.",
+      "whole_task_accepted": false
+    }
+  ]
+}

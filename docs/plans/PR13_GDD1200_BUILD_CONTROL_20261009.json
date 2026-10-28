@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "state": "Preregistered",
+  "kind": "separate_real_cloud_strategy_control",
+  "basis": "baseline_all_hand 在原 600 秒完成 18/30，独立 GDD1200 完成 22/30；石卫 HP095/090 隔离实验尚不足解决完整对局长尾。用已实现的 build 策略验证合法保牌与凑核，原失败不回写。",
+  "source_decisions": [
+    "docs/plans/PR13_AUTOMATED_COMPLETION_SCOPE_20261009.json",
+    "docs/plans/PR13_GDD_EXPEDITION_BUDGET_20261009.json",
+    "docs/reports/pr13-stages-20261009/S5-cloud-gdd1200-baseline/summary.json",
+    "docs/reports/pr13-stages-20261009/S5-cloud-e4-hp-complete/summary.json"
+  ],
+  "profile": {
+    "clients": 10,
+    "hero_class": "4 Mage, 3 Priest, 3 Guardian",
+    "strategy": "build",
+    "strategy_components": ["current visible-hand subset and main-core order selection", "legal equipment reward choice and equip; observed progression is retained"],
+    "strategy_seed": 20260930,
+    "load_profile": "cyclic-gameplay",
+    "cycles_per_client": 3,
+    "natural_cycle_target": 30,
+    "cycle_limit_seconds": 1200,
+    "overall_limit_seconds": 3900,
+    "cleanup_seconds": 120,
+    "launch_interval_seconds": 1,
+    "owned_cloud_test_bypass": true
+  },
+  "invariants": {
+    "actual_local_godot_players_to_tencent_cloud": true,
+    "same_actual_client_and_application_input_bytes_as_baseline": true,
+    "same_default_starter_decks_and_quality_budget": true,
+    "same_route_generation_and_evacuation_policy": true,
+    "no_hidden_route_or_future_deck_access": true,
+    "production_combat_and_enemy_rules_unchanged": true,
+    "in_run_legal_equipment_progression_not_falsely_labelled_fixed_weapon_level": true,
+    "enemy_hp_candidates_disabled": true,
+    "no_further_gdd_budget_increase": true,
+    "original_failed_profiles_retained": true,
+    "normal_ack_and_cleanup_ack_separate": true,
+    "fallback_not_natural_completion": true,
+    "read_only_asset_audit_and_exact_process_cleanup_required": true,
+    "resource_guards_retained": true
+  },
+  "acceptance_limits": [
+    "A build success does not make the original all-hand baseline pass",
+    "Not a paired performance claim: stochastic server route draws must be reported as observed",
+    "No 50/100 capacity, prepared Boss or PVP acceptance from ten-player cycles",
+    "Guardian timeout resolution requires actual per-encounter evidence and full-scope review"
+  ],
+  "accepted": false,
+  "human_experience_in_scope": false
+}

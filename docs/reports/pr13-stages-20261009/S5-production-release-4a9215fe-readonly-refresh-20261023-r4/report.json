@@ -1,0 +1,71 @@
+{
+  "kind": "CurrentProductionReleaseReadiness_SpecificLegacyExceptionPending",
+  "state": "RequiredHumanLegacyDataExceptionPending",
+  "observed_UTC": "2026-10-22T23:59:38.956706+00:00",
+  "source_commit": "4a9215fee6f8c50da79e9895e408717fbd9118de",
+  "cloud_checkout_tracked_clean": true,
+  "candidate_image": "sha256:e647601a9fa6dd7e1934907699f7d9c58c0965da2116b1325b826ba458ee6a3e",
+  "previously_completed_canary_checks": 30,
+  "canary_rerun_in_this_observation": false,
+  "backup_sha256": "3027eacdd03d7e9c200b500445c48ae56104eaa414887e1e874e9b25a98d5a84",
+  "production_current_image": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+  "production_current_source_revision": "d2805757db7330ede4ff0bad1972697fe397e90b",
+  "production_current_container": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+  "postgres_container": "e140d6f8ab9fbe129bdce6556ea8d1e15836619a92cf8bd6172cb4bf8340bab6",
+  "production_health_exit": 0,
+  "production_application_switched": false,
+  "existing_ledger_mismatches": 1,
+  "existing_ledger_fingerprint": "191672b44d6e24d52fa40c10334093f8",
+  "specific_exception_received": false,
+  "general_update_permission_already_received": true,
+  "pending_human_choice": "Application update with the historical anomaly retained as unpassed and without asset or ledger repair.",
+  "runbook": {
+    "path": "server/docs/OPERATIONS_RUNBOOK.md",
+    "sha256": "8449d4dba1afc46a879978419378d07bbf10b2c577c395723df71e90b20df95f",
+    "lines": [
+      23,
+      28
+    ]
+  },
+  "OS_boot_id": "4eab2634-08f1-4535-96d6-6ad1a54b1b3d",
+  "prior_requested_single_OS_reboot_already_completed": true,
+  "OS_reboot_performed_in_this_refresh": false,
+  "environment_file_sha256": "b6447257f742989ad27f1ba583432800424c50febd46904e9bd627ae089d8987",
+  "production_data_written": false,
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\production-release-update-20261023-readonly-r4-originals",
+    "items": [
+      {
+        "path": "stdout.original.json",
+        "bytes": 1523,
+        "sha256": "d26146b09bbf5dae19171811d3527ff607a436956e1c3c4b3e2cdeb5c0909f46"
+      },
+      {
+        "path": "stderr.original.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "native-exit.original.json",
+        "bytes": 163,
+        "sha256": "0967198f9de1a643c0fc771365539b79840e8c4cd9e89cfd6694ca4d3b944ee3"
+      },
+      {
+        "path": "production_release_readonly_refresh_20261023_r4.py",
+        "bytes": 4430,
+        "sha256": "e637c848b38f322418403658ef982984f04f22db5542ff93280954f758444b07"
+      },
+      {
+        "path": "publish_production_readonly_refresh_20261023_r4.py",
+        "bytes": 4310,
+        "sha256": "0c54e7eb11c956081a74e4e350145db783b2e3c1d358395115b9ca34eded5ba3"
+      },
+      {
+        "path": "OPERATIONS_RUNBOOK.exact-copy.md",
+        "bytes": 7219,
+        "sha256": "8449d4dba1afc46a879978419378d07bbf10b2c577c395723df71e90b20df95f"
+      }
+    ]
+  },
+  "whole_project_acceptance_granted": false
+}

@@ -1,0 +1,36 @@
+{
+  "checked_at_utc": "2026-09-30T23:22:34.787943+00:00",
+  "host_starts": 50,
+  "host_stops": 50,
+  "host_pid_sets_equal": true,
+  "all_host_exit137": true,
+  "all_recorded_host_or_godot_stops": 100,
+  "alive_recorded_owned_processes": [],
+  "PG": {
+    "transport": "Unix socket only; owned port55447",
+    "before_stop_test_schema_count": 0,
+    "before_stop_other_connection_count": 0,
+    "before_stop_query_output_provenance": "Original read-only shell SQL result witnessed before pg_ctl stop; output was not separately saved as raw.",
+    "pg_stop_command": "pg_ctl -D /tmp/pr13-a05-f812-pg -m fast stop",
+    "pg_stop_confirmed_by": "pg.log: database system is shut down",
+    "data_directory_exists": false,
+    "socket_directory_exists": false
+  },
+  "owned_relay_temp_directories": [
+    "/tmp/fc-a05-relay-7a7486ca9ca14db3ad1af14eb48b6d79",
+    "/tmp/fc-a05-relay-58cb99b752f24ec1875e4dd741bc37ab",
+    "/tmp/fc-a05-relay-3d9570d3268741538f8ba839f4f46f80",
+    "/tmp/fc-a05-relay-937d5c898e62441cb6887a601614b005",
+    "/tmp/fc-a05-relay-74b1130df5c14324962ef5792c8a1afb",
+    "/tmp/fc-a05-relay-fb99c6fefef54781bfeda4c09ad1a7a0",
+    "/tmp/fc-a05-relay-010fd50b46c448f4ba97edff3971cc44",
+    "/tmp/fc-a05-relay-2b609f6e5f1b4ab6a4dd31a66419e940"
+  ],
+  "owned_relay_remaining": [],
+  "original_source_proof_or_authoritative_raw_deleted": false,
+  "fixture_cleanup": "Completed A05 fixture cleanup removes copied .godot/assets/user-* directories; child stdout/stderr client.log, control reports, source manifests, authority PB, SQL and TRX are preserved.",
+  "upload_count": 0,
+  "online_or_remote_actions": 0,
+  "production_changes": 0,
+  "business_balance_or_ledger_repairs": 0
+}

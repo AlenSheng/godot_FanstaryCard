@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+[ext_resource type="Script" path="res://tests/pr13_pool_capacity_render.gd" id="1"]
+[ext_resource type="PackedScene" path="res://main.tscn" id="2"]
+[node name="PoolCapacityProbe" type="Node"]
+script = ExtResource("1")
+pool_probe = true
+pool_hero = "Guardian"
+pool_capacity = 8
+pool_case = "PR13-B09.2-T02"
+[node name="UI" parent="." instance=ExtResource("2")]

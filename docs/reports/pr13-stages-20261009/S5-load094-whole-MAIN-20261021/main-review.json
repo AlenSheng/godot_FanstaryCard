@@ -1,0 +1,153 @@
+{
+  "ok": true,
+  "independent_checks": 11,
+  "checks": [
+    {
+      "name": "Independent actualPG trace actor rollback auditpassed",
+      "passed": true
+    },
+    {
+      "name": "NoChange scopednobenefit notactivationorequivalence",
+      "passed": true
+    },
+    {
+      "name": "R1fullfailure source873G SHA andcleanup afterG",
+      "passed": true
+    },
+    {
+      "name": "Actualfailure1/1/24 kept",
+      "passed": true
+    },
+    {
+      "name": "R2localactualfullsnapshot repositoryJSONpolicyvalidated",
+      "passed": true
+    },
+    {
+      "name": "AllsameSQLplans andcontrolledrounds",
+      "passed": true
+    },
+    {
+      "name": "Canonicaldependencies LOAD063 LOAD074 Accepted",
+      "passed": true
+    },
+    {
+      "name": "Exactfive gaps identified",
+      "passed": true
+    },
+    {
+      "name": "ExistingOFFLINE andT01PG retained profilesexact",
+      "passed": true
+    },
+    {
+      "name": "TwofullGDDpinned GDD.md",
+      "passed": true
+    },
+    {
+      "name": "TwofullGDDpinned GDD_BASE_v0.69.md",
+      "passed": true
+    }
+  ],
+  "task_id": "LOAD-09.4",
+  "MAIN_candidate": "Accepted",
+  "all9_case_profile_supports_existing4_new5": true,
+  "canonical_dependencies": [
+    "LOAD-06.3",
+    "LOAD-07.4"
+  ],
+  "actual3paired_rounds": [
+    {
+      "round": 0,
+      "seed": 763001,
+      "baseline_allterminal_ms": 209.229,
+      "candidate_allterminal_ms": 205.9383,
+      "candidate_minus_baseline_ms": -3.2907000000000153,
+      "baseline_acquire_ms": 204.1549,
+      "candidate_acquire_ms": 200.6862,
+      "actual_SQL_responseBytes": 24746,
+      "actual_serialization_bytes": 39504
+    },
+    {
+      "round": 1,
+      "seed": 763101,
+      "baseline_allterminal_ms": 206.3488,
+      "candidate_allterminal_ms": 204.5916,
+      "candidate_minus_baseline_ms": -1.7572000000000116,
+      "baseline_acquire_ms": 200.6102,
+      "candidate_acquire_ms": 200.6036,
+      "actual_SQL_responseBytes": 24754,
+      "actual_serialization_bytes": 39512
+    },
+    {
+      "round": 2,
+      "seed": 763201,
+      "baseline_allterminal_ms": 205.1285,
+      "candidate_allterminal_ms": 205.0812,
+      "candidate_minus_baseline_ms": -0.047300000000007,
+      "baseline_acquire_ms": 200.6811,
+      "candidate_acquire_ms": 200.565,
+      "actual_SQL_responseBytes": 24757,
+      "actual_serialization_bytes": 39515
+    }
+  ],
+  "actual6PGmatches12actorstates150commands_successfulR2": true,
+  "actual_R1failure1match1state24commands_included": true,
+  "cumulative_matches7of20_actorstates13of80_commands174of300": true,
+  "actualsinglewriter_before24_afterrollback25_all6arms": true,
+  "candidate": "PrivateNpgsqlminimum4+prewarm4 vsdefault0,sameMax4; onlylocalizedDatabaseAcquire;wrongActorpathBlocked",
+  "NoChangeWithEvidence": {
+    "state": "NoChangeWithEvidence",
+    "reason": "no_supported_change_to_default",
+    "underlying_review": {
+      "state": "Inconclusive",
+      "reason": "Threecontrolledpairs_no_identified10ms_benefit_not_equivalence",
+      "actual_pairs": [
+        {
+          "round": 0,
+          "seed": 763001,
+          "baseline_allterminal_ms": 209.229,
+          "candidate_allterminal_ms": 205.9383,
+          "candidate_minus_baseline_ms": -3.2907000000000153,
+          "baseline_acquire_ms": 204.1549,
+          "candidate_acquire_ms": 200.6862,
+          "actual_SQL_responseBytes": 24746,
+          "actual_serialization_bytes": 39504
+        },
+        {
+          "round": 1,
+          "seed": 763101,
+          "baseline_allterminal_ms": 206.3488,
+          "candidate_allterminal_ms": 204.5916,
+          "candidate_minus_baseline_ms": -1.7572000000000116,
+          "baseline_acquire_ms": 200.6102,
+          "candidate_acquire_ms": 200.6036,
+          "actual_SQL_responseBytes": 24754,
+          "actual_serialization_bytes": 39512
+        },
+        {
+          "round": 2,
+          "seed": 763201,
+          "baseline_allterminal_ms": 205.1285,
+          "candidate_allterminal_ms": 205.0812,
+          "candidate_minus_baseline_ms": -0.047300000000007,
+          "baseline_acquire_ms": 200.6811,
+          "candidate_acquire_ms": 200.565,
+          "actual_SQL_responseBytes": 24757,
+          "actual_serialization_bytes": 39515
+        }
+      ]
+    },
+    "uncertainty_retained": true,
+    "equivalence_claim": false,
+    "production_defaults_retained": true,
+    "production_activation": false
+  },
+  "scope": "Injectedfullpoolhold200ms, actualServerboundaries SQL PG checkpoints actor restore, notProgramrequest capacity/WAN/productionhotspot diagnosis or general statistical equivalence.",
+  "SQLplan_resourcecaps_responsebytes_same": true,
+  "actual_perprocess_CPU_RSS_GC_cgroup_andhostpercorecontext": "Hostcorejiffies notprocesscoreattribution; serializationprivateStopwatch notnewServerRuntimePhase",
+  "R1_observer_schema_error_retained_fixed_exactactualrepositorypolicy": "No businesscriteria or data/limits relaxed, no productfix claim",
+  "new_schema": "Onlyownedbudgettrigger;productmigrations identical,no productionDDL",
+  "whole_project_accepted": false,
+  "business_criteria_relaxed": false,
+  "production_changes": false,
+  "local_Godot_UI_PG_sockets0": true
+}

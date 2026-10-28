@@ -1,0 +1,533 @@
+{
+  "kind": "LOAD053RemainingAwaitCasesIndependentReview",
+  "task_id": "LOAD-05.3",
+  "whole_task_official_state": "Partial",
+  "official_register_MAIN_gate_changes": false,
+  "counts_unchanged": {
+    "Accepted": 55,
+    "Partial": 67,
+    "ReadyForAcceptance": 10,
+    "Failed": 0
+  },
+  "remaining_unaccepted": 77,
+  "between": {
+    "round": 10,
+    "PID": 9060,
+    "UID": "01a1492b-30a3-7efd-8450-dfe8d8528885",
+    "match_id": "01a1492b-675c-7d94-aaaf-5a21e0a46df3",
+    "run_outcome": "cancelled",
+    "already_completed_cycles": 1,
+    "no_second_preparation_or_room": true,
+    "original_observations": [
+      {
+        "at_ms": 37384,
+        "checks": [
+          {
+            "at_unix_ms": 1792228933878,
+            "name": "realtime_connected",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228933878,
+            "name": "login_and_bootstrap",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228935161,
+            "name": "hero_class_confirmed",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228936429,
+            "name": "create_free_preparation",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228937678,
+            "name": "enqueue_match",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228959560,
+            "name": "room_started",
+            "passed": true
+          },
+          {
+            "at_unix_ms": 1792228964650,
+            "name": "settlement_acknowledged",
+            "passed": true
+          }
+        ],
+        "cycles_completed": 1,
+        "stage": "between_matches",
+        "stop_requested": false
+      },
+      {
+        "at_ms": 37392,
+        "cycles_completed": 1,
+        "receipt_empty": true,
+        "room_empty": true,
+        "stage": "between_matches",
+        "stop_requested": true
+      }
+    ],
+    "source": "Passed companion case inside original whole failed R10; no whole-round relabel"
+  },
+  "battle": {
+    "round": 11,
+    "PID": 1932,
+    "UID": "01a14934-0acc-7820-b4ba-3ccb7ba275b7",
+    "match_id": "01a14934-474c-76ee-914a-08d12d81861a",
+    "equipment_id": "37cb6320-6cd6-4289-9485-d66077eeb3d0",
+    "outcome": "cancelled",
+    "cycles_completed": 0,
+    "cleanup": "Passed",
+    "original_STOP_observation": {
+      "at_ms": 22027,
+      "cycles_completed": 0,
+      "room_match_id": "01a14934-474c-76ee-914a-08d12d81861a",
+      "room_phase": "Pve",
+      "stage": "playing",
+      "stop_requested": true,
+      "wait_active": true,
+      "wait_remaining_ms": 386,
+      "wait_serial": 77,
+      "wait_stage": "playing"
+    },
+    "original_cleanup_exit": [
+      {
+        "action": "battle.abandon",
+        "at_unix_ms": 1792229528963,
+        "battle_seed": null,
+        "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+        "client_id": "pending-battle",
+        "cycle_id": "pending-battle:1",
+        "event_seq": 37,
+        "event_type": "cleanup.exit_requested",
+        "gameplay_progress": false,
+        "gameplay_progress_age_ms": 666,
+        "gameplay_progress_reason": "room.started",
+        "match_id": "01a14934-474c-76ee-914a-08d12d81861a",
+        "monotonic_ms": 22427,
+        "phase": "cleanup",
+        "process_epoch": "5e031ea1c8231710dc77a9c70329bad6",
+        "room_id": "01a14934-474c-72b4-81b4-08da1cde4574",
+        "run_id": "load053-battle-r11-pending",
+        "transport_progress": false,
+        "transport_progress_age_ms": 666,
+        "type": "lifecycle"
+      }
+    ],
+    "original_drain_ACK": [
+      {
+        "at_unix_ms": 1792229535417,
+        "battle_seed": null,
+        "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+        "client_id": "pending-battle",
+        "completion_stage": "drain_ack_only",
+        "cycle_id": "pending-battle:1",
+        "event_seq": 56,
+        "event_type": "settlement.acknowledged",
+        "gameplay_progress": false,
+        "gameplay_progress_age_ms": 4586,
+        "gameplay_progress_reason": "match.settled",
+        "match_id": "01a14934-474c-76ee-914a-08d12d81861a",
+        "monotonic_ms": 28880,
+        "phase": "cleanup",
+        "process_epoch": "5e031ea1c8231710dc77a9c70329bad6",
+        "room_id": "",
+        "run_id": "load053-battle-r11-pending",
+        "transport_progress": false,
+        "transport_progress_age_ms": 3,
+        "type": "lifecycle"
+      }
+    ],
+    "durable_ACK_records": [
+      {
+        "scope": "settlement.acknowledge",
+        "player_id": "01a14934-0acc-7820-b4ba-3ccb7ba275b7",
+        "created_at": "2026-10-17T09:32:13.227639+00:00",
+        "expires_at": "2026-10-24T09:32:13.227639+00:00",
+        "request_id": "godot-decb0251847aa5d5a8cfa6022141c6e6",
+        "request_hash": "ff3e2c70a82ec2be6e62dede5ae63aa82790cb5117377cef61c63a59ea3f663d",
+        "response_json": {
+          "SettlementId": "01a14934-5930-73a7-8177-c44b844f5f72",
+          "AcknowledgedAt": "2026-10-17T09:32:13.2268306+00:00"
+        }
+      }
+    ]
+  },
+  "entering": {
+    "round": 12,
+    "PID": 15980,
+    "UID": "01a14939-f526-7b0d-bf8b-a3cefb1166a0",
+    "match_id": "01a1493a-2999-7452-a13e-c6ba8a3fced9",
+    "decoded_real_ticket": {
+      "matchId": "01a1493a-2999-7452-a13e-c6ba8a3fced9",
+      "preparationId": "01a1493a-2380-7d70-8669-9d3e290f6d04",
+      "queuedAt": "2026-10-17T09:38:30.4522530+00:00",
+      "status": "Matched",
+      "ticketId": "01a1493a-27b6-7a51-8174-8497b3f4519e"
+    },
+    "outcome": "cancelled",
+    "cycles_completed": 0,
+    "cleanup": "Passed",
+    "ticket_history": "Matched retained",
+    "member": "Removed",
+    "preparation": "Cancelled",
+    "initial_item_restored": "Equipped",
+    "old_whole_original_result": false,
+    "independent_corrected_contract_support": true,
+    "no_runtime_rerun_or_old_result_overwrite": true
+  },
+  "rounds": [
+    {
+      "round": 9,
+      "whole_original_ok": false,
+      "processes": [
+        {
+          "PID": 110460,
+          "exit": 1,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 18.968000000109896
+        },
+        {
+          "PID": 60880,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 43.609999999869615
+        },
+        {
+          "PID": 5264,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 43.59400000004098
+        },
+        {
+          "PID": 104576,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 43.59400000004098
+        }
+      ],
+      "actual_match": "01a14924-a7a2-7785-ae77-f13195e6b0d8",
+      "players": [
+        "01a14924-763a-72ef-9830-afb26816b80f",
+        "01a14924-7717-79f0-8023-ee3c410b3909",
+        "01a14924-771a-7ac7-94fe-68603d1c8f27",
+        "01a14924-771a-7bb9-9dd4-87ac19d70bd0"
+      ],
+      "original_failure": {
+        "error_type": "AssertionError",
+        "detail": "Main boundary setup failed; preserve original, no follow-up world"
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "f80e2532a23d2008e16b9015cc8103613ccca79fc6352dc75f58090d68d5d734",
+        "bytes": 130813,
+        "members_verified": 25,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      }
+    },
+    {
+      "round": 10,
+      "whole_original_ok": false,
+      "processes": [
+        {
+          "PID": 122100,
+          "exit": 1,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 37.687000000150874
+        },
+        {
+          "PID": 9060,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 41.09400000004098
+        },
+        {
+          "PID": 32124,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 41.09400000004098
+        },
+        {
+          "PID": 131936,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 41.07799999997951
+        }
+      ],
+      "actual_match": "01a1492b-675c-7d94-aaaf-5a21e0a46df3",
+      "players": [
+        "01a1492b-30a3-7efd-8450-dfe8d8528885",
+        "01a1492b-3185-7f1d-8096-5839e72972b5",
+        "01a1492b-3186-774a-a29e-ee32a7d48d00",
+        "01a1492b-32ce-74de-98e6-62bfac9d9979"
+      ],
+      "original_failure": {
+        "error_type": "AssertionError",
+        "detail": "Main boundary setup failed; preserve original, no follow-up world"
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "79cbf4065b8202adecdb101638aee2e301ef3d667be18723164f59f8941dae94",
+        "bytes": 131279,
+        "members_verified": 25,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      }
+    },
+    {
+      "round": 11,
+      "whole_original_ok": true,
+      "processes": [
+        {
+          "PID": 1932,
+          "exit": 0,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 34.34400000004098
+        },
+        {
+          "PID": 125596,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 34.375
+        },
+        {
+          "PID": 122184,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 34.360000000102445
+        },
+        {
+          "PID": 76352,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 34.360000000102445
+        }
+      ],
+      "actual_match": "01a14934-474c-76ee-914a-08d12d81861a",
+      "players": [
+        "01a14934-098d-732c-a5db-003505e7f008",
+        "01a14934-0991-754f-89b6-eb3a4f3fa89b",
+        "01a14934-0997-7d71-8ddd-114185ae8e6b",
+        "01a14934-0acc-7820-b4ba-3ccb7ba275b7"
+      ],
+      "original_failure": null,
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "61664c1ef1f5e0f24f8de5e2ccaaed55f2fd3454ccbf3dfc34c8d3f56da83a39",
+        "bytes": 131925,
+        "members_verified": 26,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      }
+    },
+    {
+      "round": 12,
+      "whole_original_ok": false,
+      "processes": [
+        {
+          "PID": 15980,
+          "exit": 0,
+          "mode": "pending",
+          "terminal": true,
+          "seconds": 33.686999999918044
+        },
+        {
+          "PID": 70416,
+          "exit": 0,
+          "mode": "helper1",
+          "terminal": true,
+          "seconds": 39.063000000081956
+        },
+        {
+          "PID": 56044,
+          "exit": 0,
+          "mode": "helper2",
+          "terminal": true,
+          "seconds": 39.063000000081956
+        },
+        {
+          "PID": 120924,
+          "exit": 0,
+          "mode": "helper3",
+          "terminal": true,
+          "seconds": 39.061999999918044
+        }
+      ],
+      "actual_match": "01a1493a-2999-7452-a13e-c6ba8a3fced9",
+      "players": [
+        "01a14939-f50e-7fbf-8e50-8c189e04ffe4",
+        "01a14939-f515-7bf2-ba6d-bb13949f5621",
+        "01a14939-f519-738a-a2f5-9065ecc48de2",
+        "01a14939-f526-7b0d-bf8b-a3cefb1166a0"
+      ],
+      "original_failure": {
+        "error_type": "AssertionError",
+        "detail": "Independent post-exit PG did not confirm original cleanup"
+      },
+      "cloud_originals": {
+        "ok": true,
+        "archive_sha256": "bcc9693d9bf892d587452fa317303a24858dcc7c0a3755136eae222c0f2a533b",
+        "bytes": 132589,
+        "members_verified": 26,
+        "private_environment_included": false,
+        "terminal_cleanup_rechecked": true
+      }
+    }
+  ],
+  "actual_new_matches": 4,
+  "new_conservative_starts": 16,
+  "whole_LOAD053_actual_matches": 9,
+  "whole_LOAD053_conservative_starts": 36,
+  "old_self_match_cap": 8,
+  "revised_self_match_cap": 10,
+  "user_goal_cap": 300,
+  "self_budget_revision": {
+    "kind": "LOAD053GoalSelfBudgetRevision",
+    "original_self_matches_cap": 8,
+    "revised_self_matches_cap": 10,
+    "original_conservative_starts_cap": 32,
+    "revised_conservative_starts_cap": 40,
+    "user_default_cap_unchanged": 300,
+    "confirmed_actual_matches_before_R11": 7,
+    "R11_actual_matches": 1,
+    "actual_so_far": 8,
+    "R12_planned_actual_matches": 1,
+    "expected_actual_after_R12": 9,
+    "reason": "Two additional entering observer/setup failures retained. Preserve original full await scope rather than omit last entering boundary. Only self-imposed execution volume cap revised, not READY15s, botfill30s, HTTP10/30s, cleanup or acceptance/asset identity criteria.",
+    "all_failed_rounds_and_old8_cap_plans_retained": true,
+    "no_register_gate_MAIN_change": true,
+    "at_ns": 1792229750958789000
+  },
+  "new_SUT_changes": false,
+  "current_load_client_sha256": "6d75f801bb241ce395219b8628cba9d8e36fd396db5778a07700770e1da34b5c",
+  "all_product2127_inputs_unchanged": true,
+  "all_owned_processes_tunnels_private_containers_network_env_terminal": true,
+  "production_identity_and_health_unchanged": true,
+  "cloud_resource_minimum": {
+    "disk_free_fraction": 0.14151611334129105,
+    "memory_available_fraction": 0.5897508146260192
+  },
+  "old15percent_capacity_disk_unpassed": true,
+  "source_upload_bytes": 0,
+  "runtime_rebuilt": false,
+  "human_or_capacity_or_natural_gameplay_acceptance": false,
+  "old_whole_failed_rounds9_10_12_preserved": true,
+  "criteria_corrections_disclosed": [
+    "R9 uppercase control label rejected before STOP; originalFailed",
+    "R10 pre-execution actual SQL ticket has no match_id, member/preparation join correction; original auxiliary pre-STOP request still returned no parsed success,20s consumer hold expired past real15s READY, correct ready_deadline_expired guard/no STOP; wholeFailed; helper1 real between-wait casePassed extracted separately",
+    "R12 moved auxiliary SQL after actual native exit; clientPassed but original independent predicate falsely required historical Matched ticket Cancelled, wholeFailed. Current docs/compiled source preserve history; Removed membership/Cancelled preparation/empty bootstrap/unlocked exact item prove release. Same original data reviewed correctly, no game rerun, no old verdict overwrite."
+  ],
+  "business_deadlines_or_asset_unique_criteria_relaxed": false,
+  "source_anchors": [
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs",
+      "cloud_actual_sha256": "477f27434c94e40d0284c271dce2f7dd50790ee84a43e72c8d37b3bb772515af",
+      "local_actual_sha256": "e522ce90f21eedf362f15d4dd3177b349635359826da8ad15b0239f039b91ee4",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/PreparationRepository.cs",
+      "cloud_actual_sha256": "798cfd1959a3412c0cc5b8cc6e0ae9b1b32b612dd1e720e29607da8b37cc4cf9",
+      "local_actual_sha256": "85508021c826310865d0485608bb8a2451c2c363190221b24a32bc8cb4116e9f",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "cloud_actual_sha256": "84e42f90264f4470934f2583b46da42840320c61f1873f31ac4547be8b214f4f",
+      "local_actual_sha256": "aa33f7c1a03cf99f01bd18365e54f1a015d0ee9b328093176fd245795b98a26a",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V006__matchmaking.sql",
+      "cloud_actual_sha256": "723ca48afce9f0e4ebd1935df80a53ff6ee92542b393393e9cbba18deeb45355",
+      "local_actual_sha256": "388a5910240722d485fbc4f5834b0ee89bd58a24342b86f77526d2fc80acaa9e",
+      "qualification": "text_CRLF_only",
+      "current_SHA_verified": true
+    }
+  ],
+  "G_originals": "G:\\PR13Evidence\\load053-final-awaits-LIVE-PG-20261017-originals",
+  "whole_await_runtime_scope_now_supported": [
+    "login",
+    "class_save",
+    "prepare",
+    "enqueue",
+    "ticket_query",
+    "queued_wait",
+    "Matched_entering_before_READY",
+    "active_Pve_original_wait",
+    "Pending_settlement_effective_recovery_ID",
+    "ACK_before_commit",
+    "ACK_after_commit",
+    "between_matches_wait"
+  ],
+  "still_required": "Final aggregate per-case/source/profile review. No automatic MAIN/register/gate promotion; whole132 goal not achieved.",
+  "independent_review_checks": 554,
+  "G_members_reverified": 495,
+  "closeout_extra_checks": [
+    {
+      "case": "load053-entering-between-r10/helper1",
+      "audit_events": 70,
+      "no_loss_and_contiguous": true
+    },
+    {
+      "case": "load053-active-battle-r11/pending",
+      "audit_events": 59,
+      "no_loss_and_contiguous": true
+    },
+    {
+      "case": "load053-entering-r12/pending",
+      "audit_events": 44,
+      "no_loss_and_contiguous": true
+    },
+    {
+      "self_budget_registered_before_all_actual_R12_processes": true,
+      "revision_at_ns": 1792229750958789000,
+      "earliest_actual_native_start_ns": 1792229894926028100,
+      "frozen_cloud_plan_cap": 10
+    }
+  ],
+  "local_disks_free_fraction": {
+    "C": 0.05215661533143037,
+    "G": 0.21488232276705305
+  },
+  "parent_evidence": [
+    {
+      "kind": "pre-room",
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S4-load053-pre-room-STOP-guards-LIVE-PG-20261017",
+      "manifest_sha256": "cc4d5de2c669d9a18561b7455e9912d5f3e495ce66a00e58de0197ab051b25be"
+    },
+    {
+      "kind": "ACK",
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S4-load053-ACK-inflight-STOP-LIVE-PG-20261017",
+      "manifest_sha256": "eac1e5d05c503ca1ccc347aeb5c374382a5fda45aa47d48e316a726c3f7f56a0"
+    },
+    {
+      "kind": "Pending",
+      "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\docs\\reports\\pr13-stages-20261009\\S4-load053-Pending-terminal-checkpoint-LIVE-PG-20261017",
+      "manifest_sha256": "4a834693a9f09e750803a3803556e2fa0f7dffb0997ef363448143d85277eaa3"
+    }
+  ],
+  "runtime_await_scope_support_complete": true,
+  "official_task_still_Partial": true,
+  "canonical_profile_recommendations": "case-profile-recommendations.json"
+}

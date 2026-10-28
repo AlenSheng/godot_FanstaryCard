@@ -1,0 +1,1373 @@
+{
+  "accepted": false,
+  "whole_scope_accepted": false,
+  "source_sha": "4c5b9043fc287b831c67d55a21b83b7fca76124e",
+  "runtime_revision": "da845cac10fc83fc36d71c7f2d18507eb979e8d9",
+  "target_clients": 10,
+  "target_natural_cycles": 30,
+  "normal_cycles": 23,
+  "acknowledgement_stages": {
+    "normal": 23,
+    "drain_ack_only": 4
+  },
+  "cycle_cutoffs": {
+    "running": {
+      "acknowledgements": 24,
+      "completed_cycles": 23,
+      "cycles_by_client": {
+        "g001c012afb9c": 3,
+        "g001c02b3bb61": 2,
+        "g001c034d65a3": 2,
+        "g001c04caf6f0": 3,
+        "g001c054b9499": 3,
+        "g001c06a01724": 1,
+        "g001c078c5396": 3,
+        "g001c0827a5f2": 3,
+        "g001c10a979e5": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c012afb9c": 3,
+        "g001c02b3bb61": 2,
+        "g001c034d65a3": 2,
+        "g001c04caf6f0": 3,
+        "g001c054b9499": 3,
+        "g001c06a01724": 1,
+        "g001c078c5396": 3,
+        "g001c0827a5f2": 3,
+        "g001c0942fa7f": 1,
+        "g001c10a979e5": 3
+      },
+      "distribution": {
+        "1": 1,
+        "2": 2,
+        "3": 6
+      },
+      "fallback_cycles": 0
+    },
+    "drain": {
+      "acknowledgements": 3,
+      "completed_cycles": 0,
+      "cycles_by_client": {},
+      "acknowledgements_by_client": {
+        "g001c02b3bb61": 1,
+        "g001c034d65a3": 1,
+        "g001c06a01724": 1
+      },
+      "distribution": {},
+      "fallback_cycles": 0
+    },
+    "final": {
+      "acknowledgements": 27,
+      "completed_cycles": 23,
+      "cycles_by_client": {
+        "g001c012afb9c": 3,
+        "g001c02b3bb61": 2,
+        "g001c034d65a3": 2,
+        "g001c04caf6f0": 3,
+        "g001c054b9499": 3,
+        "g001c06a01724": 1,
+        "g001c078c5396": 3,
+        "g001c0827a5f2": 3,
+        "g001c10a979e5": 3
+      },
+      "acknowledgements_by_client": {
+        "g001c012afb9c": 3,
+        "g001c02b3bb61": 3,
+        "g001c034d65a3": 3,
+        "g001c04caf6f0": 3,
+        "g001c054b9499": 3,
+        "g001c06a01724": 2,
+        "g001c078c5396": 3,
+        "g001c0827a5f2": 3,
+        "g001c0942fa7f": 1,
+        "g001c10a979e5": 3
+      },
+      "distribution": {
+        "0": 1,
+        "1": 1,
+        "2": 2,
+        "3": 6
+      },
+      "fallback_cycles": 0
+    },
+    "zero_cycle_clients": [
+      "g001c0942fa7f"
+    ],
+    "zero_cycle_reason": null,
+    "evidence_errors": [],
+    "stop_ms": 1791555551637,
+    "final_ms": 1791555558056
+  },
+  "stop_reason": "invalid_evidence:workload_or_generator_failure",
+  "all_triggers": [
+    "command_rejections_10pct",
+    "final_business_failure",
+    "invalid_evidence:workload_or_generator_failure",
+    "post_stop_process_failure",
+    "workload_or_generator_failure"
+  ],
+  "result_dimensions": {
+    "dimensions": {
+      "execution": "Failed",
+      "evidence": "Failed",
+      "load": "Failed",
+      "gameplay": "Failed",
+      "performance": "NotApplicable",
+      "cleanup": "Failed"
+    },
+    "applicable": [
+      "cleanup",
+      "evidence",
+      "execution",
+      "gameplay",
+      "load"
+    ],
+    "all_applicable_passed": false,
+    "full_acceptance_passed": false
+  },
+  "coordinator_exit_code": 3,
+  "original_process_cleanup_complete": false,
+  "original_business_cleanup_verified": true,
+  "original_cleanup_complete": false,
+  "cloud_closeout": {
+    "audit": {
+      "actual": {
+        "pending_holds": 0,
+        "active_match_players": 0,
+        "settlements": 27,
+        "ledger_rows": 8
+      },
+      "read_only": true,
+      "execution_host": "Tencent cloud"
+    },
+    "database_session_statistics": {
+      "sessions": 53,
+      "transactions_committed": 92110,
+      "transactions_rolled_back": 5,
+      "sessions_fatal": 0,
+      "sessions_killed": 0
+    },
+    "cleanup": {
+      "server": true,
+      "prometheus": true,
+      "otel": true,
+      "postgres": true
+    },
+    "all_test_service_containers_removed": true,
+    "private_archive_bytes": 148413,
+    "private_archive_sha256": "b031c5a3ca4f1744c436f6c441ab64a4d3001ab45ef68645a5e3dfd7293ed9f2"
+  },
+  "ssh_cleanup": true,
+  "clients": [
+    {
+      "client_id": "g001c012afb9c",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 635542,
+      "checks": [
+        {
+          "at_unix_ms": 1791554276426,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554276426,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554278290,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554278752,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554279656,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554292504,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554463618,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554466340,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554467498,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554482755,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554691943,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554694568,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554695728,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554723846,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554905726,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c02b3bb61",
+      "hero_class": "Priest",
+      "cycles_completed": 2,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "elapsed_ms": 1282129,
+      "checks": [
+        {
+          "at_unix_ms": 1791554280250,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554280250,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554281285,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554281913,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554282838,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554292284,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554655058,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554658104,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554659242,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554692550,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555314658,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555317484,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555318864,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555350004,
+          "name": "room_started",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c034d65a3",
+      "hero_class": "Guardian",
+      "cycles_completed": 2,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "elapsed_ms": 1279596,
+      "checks": [
+        {
+          "at_unix_ms": 1791554283000,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554283000,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554283725,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554284297,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554286077,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554292280,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554898764,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554901162,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554902363,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554934669,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555515298,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555517723,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555518959,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555551473,
+          "name": "room_started",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c04caf6f0",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 484331,
+      "checks": [
+        {
+          "at_unix_ms": 1791554286255,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554286255,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554286980,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554287497,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554288415,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554292534,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554445253,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554447643,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554448582,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554482655,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554588701,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554591837,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554593037,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554624861,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554763822,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c054b9499",
+      "hero_class": "Priest",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 1223160,
+      "checks": [
+        {
+          "at_unix_ms": 1791554288443,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554288443,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554289271,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554289816,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554291010,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305569,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554686839,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554689269,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554690808,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554723846,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555232016,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555234483,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555236732,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555243143,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555504615,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c06a01724",
+      "hero_class": "Guardian",
+      "cycles_completed": 1,
+      "ok": false,
+      "message": "Coordinator cancelled current cycle",
+      "elapsed_ms": 1269828,
+      "checks": [
+        {
+          "at_unix_ms": 1791554291012,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554291012,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554291737,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554292496,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554294235,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305571,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555205528,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555208167,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555209050,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555243164,
+          "name": "room_started",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c078c5396",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 568618,
+      "checks": [
+        {
+          "at_unix_ms": 1791554294337,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554294337,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554294854,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554295813,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554297656,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305812,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554513738,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554516612,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554517829,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554537019,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554665257,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554667709,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554668910,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554692682,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554857718,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c0827a5f2",
+      "hero_class": "Priest",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 1110789,
+      "checks": [
+        {
+          "at_unix_ms": 1791554300218,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554300218,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554300943,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554301771,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554302992,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305593,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554451848,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554454308,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554455591,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554482654,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554819596,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554823849,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554830328,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554862697,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791555403094,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c0942fa7f",
+      "hero_class": "Guardian",
+      "cycles_completed": 0,
+      "ok": false,
+      "message": "Expedition did not reach acknowledged settlement",
+      "elapsed_ms": 1249470,
+      "checks": [
+        {
+          "at_unix_ms": 1791554301480,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554301480,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554301790,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554302398,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554303550,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554335656,
+          "name": "room_started",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "client_id": "g001c10a979e5",
+      "hero_class": "Mage",
+      "cycles_completed": 3,
+      "ok": true,
+      "message": "Requested smoke cycles completed",
+      "elapsed_ms": 537346,
+      "checks": [
+        {
+          "at_unix_ms": 1791554303562,
+          "name": "realtime_connected",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554303562,
+          "name": "login_and_bootstrap",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554304597,
+          "name": "hero_class_confirmed",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305067,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554305957,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554335661,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554502402,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554504924,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554506076,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554537017,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554675771,
+          "name": "settlement_acknowledged",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554678183,
+          "name": "create_free_preparation",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554679362,
+          "name": "enqueue_match",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554692514,
+          "name": "room_started",
+          "passed": true
+        },
+        {
+          "at_unix_ms": 1791554835786,
+          "name": "settlement_acknowledged",
+          "passed": true
+        }
+      ],
+      "cleanup": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    }
+  ],
+  "cutoff_guardian_battles": [
+    {
+      "actions": 17,
+      "battle_id": "01a120f5-b260-7be4-9e34-8e61b12e209f",
+      "cards_spent": 19,
+      "effective_actions": 17,
+      "first_effective_ms": 401,
+      "heal": 4,
+      "heal_overflow": null,
+      "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+      "hp_damage": 78,
+      "longest_effective_gap_ms": 6065,
+      "observed_cards_drawn": 16,
+      "observed_ms": 64729,
+      "outcome": "Victory",
+      "shield_damage": 0,
+      "shield_gain": 45,
+      "zero_effective_actions": 0
+    },
+    {
+      "actions": 20,
+      "battle_id": "01a120f6-b7d5-7e6a-9aac-d14616bc2683",
+      "cards_spent": 20,
+      "effective_actions": 20,
+      "first_effective_ms": 4955,
+      "heal": 0,
+      "heal_overflow": null,
+      "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+      "hp_damage": 96,
+      "longest_effective_gap_ms": 47520,
+      "observed_cards_drawn": 34,
+      "observed_ms": 121046,
+      "outcome": "Victory",
+      "shield_damage": 6,
+      "shield_gain": 44,
+      "zero_effective_actions": 0
+    },
+    {
+      "actions": 87,
+      "battle_id": "01a120f8-9d89-7872-bba2-2fb0b8919f24",
+      "cards_spent": 88,
+      "effective_actions": 87,
+      "first_effective_ms": 5535,
+      "heal": 32,
+      "heal_overflow": null,
+      "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+      "hp_damage": 200,
+      "longest_effective_gap_ms": 36929,
+      "observed_cards_drawn": 99,
+      "observed_ms": 384107,
+      "outcome": "Victory",
+      "shield_damage": 216,
+      "shield_gain": 184,
+      "zero_effective_actions": 0
+    },
+    {
+      "actions": 74,
+      "battle_id": "01a120fe-83fe-716c-8992-9b22131afc33",
+      "cards_spent": 74,
+      "effective_actions": 74,
+      "first_effective_ms": 5962,
+      "heal": 24,
+      "heal_overflow": null,
+      "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+      "hp_damage": 200,
+      "longest_effective_gap_ms": 7604,
+      "observed_cards_drawn": 74,
+      "observed_ms": 297429,
+      "outcome": "Victory",
+      "shield_damage": 180,
+      "shield_gain": 192,
+      "zero_effective_actions": 0
+    },
+    {
+      "actions": 81,
+      "battle_id": "01a12103-15ee-7d86-b9de-ecb900e43bec",
+      "cards_spent": 81,
+      "effective_actions": 81,
+      "first_effective_ms": 5451,
+      "heal": 40,
+      "heal_overflow": null,
+      "heal_overflow_unavailable_reason": "not_published_by_authoritative_event",
+      "hp_damage": 240,
+      "longest_effective_gap_ms": 7913,
+      "observed_cards_drawn": 81,
+      "observed_ms": 322966,
+      "outcome": "Censored",
+      "shield_damage": 122,
+      "shield_gain": 262,
+      "zero_effective_actions": 0
+    }
+  ],
+  "cutoff_guardian_last_observation": {
+    "at_unix_ms": 1791555535331,
+    "battle_id": "01a12103-15ee-7d86-b9de-ecb900e43bec",
+    "battle_seed": null,
+    "battle_seed_unavailable_reason": "not_published_by_authoritative_protocol",
+    "client_id": "g001c0942fa7f",
+    "cycle_id": "g001c0942fa7f:1",
+    "discard_count": 1,
+    "elapsed_ms": 322559,
+    "event_seq": 4497,
+    "event_type": "battle.observed",
+    "last_effective_age_ms": 814,
+    "library_count": 23,
+    "match_id": "01a120f5-ab7e-7dd6-83f8-dff747f0e1cf",
+    "monotonic_ms": 1239627,
+    "monsters": [
+      {
+        "hp": 40,
+        "id": "annihilation-core",
+        "shield": 0,
+        "stun_remaining_ms": 0
+      }
+    ],
+    "phase": "playing",
+    "player_hp": 81,
+    "player_shield": 10,
+    "process_epoch": "2ea02e519e26486593ca969b8175624b",
+    "room_id": "01a120f5-ab7e-7cd0-9cf4-0a6c8f9823cc",
+    "run_id": "b49554ad1b8040e99f742847d8081320",
+    "type": "battle_observation",
+    "waiting": {
+      "hand_count": 1,
+      "legal_opportunity": false,
+      "reason": "confirming",
+      "remaining_ms": 0
+    }
+  },
+  "cutoff_observation_not_a_balance_defect_proof": true,
+  "numeric_changes_made": false,
+  "resource_guard_stop": null,
+  "sampling_integrity": {
+    "passed": true,
+    "reasons": [],
+    "tail_gap_seconds": 1.14,
+    "maximum_observed_gap_seconds": 10.219
+  },
+  "memory_floor_bytes": 500000000,
+  "http_p95_limit_ms": 5000,
+  "command_p95_limit_ms": 8000,
+  "health_limit_ms": 10000,
+  "monitor_timeout_seconds": 10,
+  "cycle_limit_seconds": 1200,
+  "application_pool_limit": 256,
+  "cpu_quotas_removed": true,
+  "ledger_row_count_is_not_chain_reconciliation": true,
+  "financial_chain_validation": "Unknown: this closeout preserved the aggregate eight ledger rows, not a full row-level ledger/balance export before disposable database removal.",
+  "private_local_files": {
+    "cloud-resource-guard.jsonl": {
+      "bytes": 34306,
+      "sha256": "4d21653a3150730f3ea094a310b60c6d83d4ccd3386a66469c95931fdcdbdba6"
+    },
+    "coordinator.private.log": {
+      "bytes": 463371,
+      "sha256": "e06158d965ff3df56a6d3049668629afa04c12cc5800d75a7b6023b58d09cf46"
+    },
+    "execution.json": {
+      "bytes": 4103,
+      "sha256": "4884ed107e5b37eb6b5800a880363c637d88f09a77c39f5d520ddc28f1c1d80a"
+    },
+    "ssh.private.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "load/20261009-215750-ff665f/g001c012afb9c.json": {
+      "bytes": 460686,
+      "sha256": "ff3e3d3101b03517c66863c55913fd9ec0681a0e068fec2a3a3eabd7291d49b3"
+    },
+    "load/20261009-215750-ff665f/g001c012afb9c.json.status.json": {
+      "bytes": 384074,
+      "sha256": "60bbf7e41d46c5e6005109b7cf72ab9b14bca2c9b980db06b8e4a10b87deca22"
+    },
+    "load/20261009-215750-ff665f/g001c012afb9c.json.telemetry.jsonl": {
+      "bytes": 2299717,
+      "sha256": "6a1709e0efd31f2e7484c46435f7bd3c12510dda437df5a1f9159dc4381579c6"
+    },
+    "load/20261009-215750-ff665f/g001c012afb9c.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c02b3bb61.json": {
+      "bytes": 463755,
+      "sha256": "67c685a8c56d0ec47717637671e08910143cc6d730b01df4cabb54b847540149"
+    },
+    "load/20261009-215750-ff665f/g001c02b3bb61.json.status.json": {
+      "bytes": 386296,
+      "sha256": "9b691c474343cdcadf50d584b8e54382f601f7bb2fb05366b2940061e24d80f4"
+    },
+    "load/20261009-215750-ff665f/g001c02b3bb61.json.telemetry.jsonl": {
+      "bytes": 4500612,
+      "sha256": "86715403c6290b43ba7e8eeb1c0d165f0c8678d9733319164fffd86857552250"
+    },
+    "load/20261009-215750-ff665f/g001c02b3bb61.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c034d65a3.json": {
+      "bytes": 442086,
+      "sha256": "7b0a35b05526a7cab00a75ec560f60315c59cbc137bca69312c31114c84a9559"
+    },
+    "load/20261009-215750-ff665f/g001c034d65a3.json.status.json": {
+      "bytes": 373333,
+      "sha256": "6b65dd353163c75f0a7c6a324595a3e396c2c8f031f865570e6380c2e2cd1e55"
+    },
+    "load/20261009-215750-ff665f/g001c034d65a3.json.telemetry.jsonl": {
+      "bytes": 4479252,
+      "sha256": "cde1b55ac316425eff2db283a18371125bd2e3199a469b84410c3e42a6b8b000"
+    },
+    "load/20261009-215750-ff665f/g001c034d65a3.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c04caf6f0.json": {
+      "bytes": 462726,
+      "sha256": "43cd8e25cf482de203a5338e841f3894689348214b2932a7cce67d4f787fe043"
+    },
+    "load/20261009-215750-ff665f/g001c04caf6f0.json.status.json": {
+      "bytes": 385938,
+      "sha256": "4e1241ff5e9a417cf87cd74fe36723fb292dadb991d3ed268df568e17424b6f4"
+    },
+    "load/20261009-215750-ff665f/g001c04caf6f0.json.telemetry.jsonl": {
+      "bytes": 1677173,
+      "sha256": "353fc19d86ba75921936a7ab9d85889e70d972050eeea1301f6d9479131bac69"
+    },
+    "load/20261009-215750-ff665f/g001c04caf6f0.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c054b9499.json": {
+      "bytes": 454005,
+      "sha256": "58f86a1a0cc48949a4a6d99cdbe97d923da776bcee81e1fbef891bb16cb50f79"
+    },
+    "load/20261009-215750-ff665f/g001c054b9499.json.status.json": {
+      "bytes": 378142,
+      "sha256": "068fb7e4061848a62624e75eade149993af7fcfc24ad117c6bd3e7ec6eef0801"
+    },
+    "load/20261009-215750-ff665f/g001c054b9499.json.telemetry.jsonl": {
+      "bytes": 4359020,
+      "sha256": "ce2edde0249d1bde46e827447480b079e0bce11263762c61487ba4c300d416eb"
+    },
+    "load/20261009-215750-ff665f/g001c054b9499.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c06a01724.json": {
+      "bytes": 436331,
+      "sha256": "007acbffdfb01c138a56d47903b4d32921ca1d0e07f43cff4c04971063351237"
+    },
+    "load/20261009-215750-ff665f/g001c06a01724.json.status.json": {
+      "bytes": 362963,
+      "sha256": "6a75010bac9712b6c7f41cd41b29ac5ceb340132e748b8949f7b86f73305e2ee"
+    },
+    "load/20261009-215750-ff665f/g001c06a01724.json.telemetry.jsonl": {
+      "bytes": 4579009,
+      "sha256": "f1a426dbcadd0c087b4e5f966eaf9fc7dcf32236f5311c1b1c43655dbb2245c2"
+    },
+    "load/20261009-215750-ff665f/g001c06a01724.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c078c5396.json": {
+      "bytes": 456775,
+      "sha256": "1f9b16f711b6237038cff800aad7c52def19f3dcf05c2b31a7659cd9e1c0deb3"
+    },
+    "load/20261009-215750-ff665f/g001c078c5396.json.status.json": {
+      "bytes": 380608,
+      "sha256": "2c57c08fdd461dd410aa33dde3b71bd5f76fb4ed581d78c89156ee9e0cdc32b7"
+    },
+    "load/20261009-215750-ff665f/g001c078c5396.json.telemetry.jsonl": {
+      "bytes": 2064880,
+      "sha256": "761d22eaefd5efb825a1efaa3c667dc153cddb27be236e18ea28cea48ffb545e"
+    },
+    "load/20261009-215750-ff665f/g001c078c5396.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c0827a5f2.json": {
+      "bytes": 432080,
+      "sha256": "3e6478b6c85def94f334953293a3e62b573f4bfb272c692ddd10c0b381362d50"
+    },
+    "load/20261009-215750-ff665f/g001c0827a5f2.json.status.json": {
+      "bytes": 362740,
+      "sha256": "cf08211d35b3695f17f03696ce0a6dc9505a4782037e4991ee4ded16b79a5964"
+    },
+    "load/20261009-215750-ff665f/g001c0827a5f2.json.telemetry.jsonl": {
+      "bytes": 3897622,
+      "sha256": "5e3bb08ecc38ac2aea6fbdad8cdfc923c20814affc0563492f45097ea1145ac9"
+    },
+    "load/20261009-215750-ff665f/g001c0827a5f2.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c0942fa7f.json": {
+      "bytes": 400571,
+      "sha256": "29cb9af97edae2bd176901c5444025b088841576ad5a5f28b4e636c3b84ff512"
+    },
+    "load/20261009-215750-ff665f/g001c0942fa7f.json.status.json": {
+      "bytes": 336377,
+      "sha256": "2231456141777ce27486a4320b97f4ffe8b50c74aa531d5f47eeeb4dbefbfa92"
+    },
+    "load/20261009-215750-ff665f/g001c0942fa7f.json.telemetry.jsonl": {
+      "bytes": 4434410,
+      "sha256": "5e9f87d41780ac1f4c47695bfabfcfbb99ff1b02ad0ec20f1272955a8009a389"
+    },
+    "load/20261009-215750-ff665f/g001c0942fa7f.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/g001c10a979e5.json": {
+      "bytes": 468208,
+      "sha256": "b0cffd2813ab330484e1be43ce084e2ce597b6a5dfbf0a7a5deb0e4ebcd300f2"
+    },
+    "load/20261009-215750-ff665f/g001c10a979e5.json.status.json": {
+      "bytes": 390670,
+      "sha256": "7237bbc9dbf69349278308dfd2d8ef3cd76d906c582d9a29ff7ba5c07f768656"
+    },
+    "load/20261009-215750-ff665f/g001c10a979e5.json.telemetry.jsonl": {
+      "bytes": 1890308,
+      "sha256": "d978641faa60fe6f267d589250c6c600e0b111c5300bf78d23eba3de7d34fd73"
+    },
+    "load/20261009-215750-ff665f/g001c10a979e5.log": {
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    "load/20261009-215750-ff665f/launch-manifest.json": {
+      "bytes": 286859,
+      "sha256": "edaddcdf43e8968e4e3dbeaa35f83b03fdfc749039b052c8d6b43a8b6dd71772"
+    },
+    "load/20261009-215750-ff665f/load-contract.json": {
+      "bytes": 997,
+      "sha256": "5af70e36f2c6b53e918983f8836865b93399f1c0b1833ba62e2d7a7e9d784b95"
+    },
+    "load/20261009-215750-ff665f/report.json": {
+      "bytes": 6674326,
+      "sha256": "24b1ec4280e0ac143529134f09ace7b4172ceb13e7482793555c2f3476e79b8d"
+    },
+    "load/20261009-215750-ff665f/samples.jsonl": {
+      "bytes": 461873,
+      "sha256": "07f2e0949e09eb207cb8d5d046011a35758e0adc81e3fb65e6b155d5c18397b0"
+    },
+    "load/20261009-215750-ff665f/state.json": {
+      "bytes": 6188,
+      "sha256": "5318254b2e9a19f778920760334c24b79bdfcbe0bacd34676f869a4b6b021d7f"
+    },
+    "load/20261009-215750-ff665f/STOP": {
+      "bytes": 4,
+      "sha256": "6c45cb72a36e63d522aa54ed8adbd7a29a989474f2f77e0458af8800564ef3cb"
+    },
+    "runtime/roaming/Godot/app_userdata/Relicbound/logs/godot.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime/roaming/Godot/app_userdata/Relicbound/logs/godot2026-10-09T21.58.09.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime/roaming/Godot/app_userdata/Relicbound/logs/godot2026-10-09T21.58.12.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime/roaming/Godot/app_userdata/Relicbound/logs/godot2026-10-09T21.58.15.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    "runtime/roaming/Godot/app_userdata/Relicbound/logs/godot2026-10-09T21.58.18.log": {
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    }
+  }
+}

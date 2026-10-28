@@ -1,0 +1,52 @@
+{
+  "attempt": "dual-boundary-GUI-smoke-r8-20261012",
+  "runner_sha256": "a1e1446bc8c734c180846959a79d0f684d5284aefda122414e72c9ea820839b9",
+  "source_release_base_sha": "f5b0dcef0aa8dba67ec9a28506643c7af74b318e",
+  "original_vector_source_sha": "2a1d7e649f61aa1dc04bf50899f7cc32bb553d26",
+  "hero": "Mage",
+  "locale": "en",
+  "resolution": [
+    960,
+    540
+  ],
+  "frame_cap": 30,
+  "operations_per_capacity": [
+    "foreign",
+    "choice-replay",
+    "pvp-state"
+  ],
+  "candidate_capacity_arms": [
+    3,
+    5,
+    8
+  ],
+  "native_seed": 484001,
+  "expected_render_observations": 9,
+  "expected_original_PNGs": 12,
+  "development_smoke": true,
+  "PVP_leave_button_input_not_claimed_due_original_epoch_timestamps": true,
+  "foreign_candidate_UI_click_not_claimed": true,
+  "original_checkpoint_event_stream_reset_explicit": true,
+  "full_RENDER_matrix_not_claimed": true,
+  "memory_floor_bytes": 500000000,
+  "SDK_render_memory_mib": 1536,
+  "raw_output_tmpfs_mib": 128,
+  "root_floor_ratio": 0.15,
+  "MAIN_accepted": false,
+  "revision": "Render hand exactly once via common battle path; remove duplicate duel hand render; all authority, font, rectangle and original-hand card count gates retained",
+  "dirty_fixture_bytes_frozen_explicitly": true,
+  "first_and_replayed_original_full_player_and_revision_required": true,
+  "choice_pending_registration_and_clearance_required": true,
+  "foreign_transport_context_required_without_UI_click": true,
+  "return_original_full_player_and_revision_required": true,
+  "failed_R4_originals_retained": true,
+  "dirty_product_and_fixture_paths": [
+    "client/tests/pr13_dual_pool_boundaries_render.gd",
+    "client/ui/card_view.gd",
+    "client/ui/exploration_view.gd"
+  ],
+  "all_monster_name_glyphs_fit_required": true,
+  "waiting_and_opponent_stats_nonoverlap_required": true,
+  "R6_failed_originals_G_and_cloud_preserved": true,
+  "R7_original_actual_visible_duplicate_hand_paths_retained": true
+}

@@ -1,0 +1,612 @@
+{
+  "kind": "MalformedPrivateArtifactProducerIntent_NotValidJSONOrSUTPass",
+  "generated_at": "2026-10-23T03:22:43.622027+08:00",
+  "task_id": "LOAD-11.2",
+  "state": "Partial",
+  "producer_intent_review": {
+    "kind": "EightExactMalformedPrivateArtifactProducerIntentReview",
+    "ok": true,
+    "content_objects_reviewed": 8,
+    "counts": {
+      "intent_bound_content_objects": 7,
+      "intent_bound_frozen_aliases": 62,
+      "OwnedPreexistingForeignArchiveSentinel_ExpectedNonJSON": 1,
+      "context_or_format_still_unqualified_content_objects": 1,
+      "ZeroBytePrivateCapture_FormatAndCommandVerdictStillUnqualified": 1,
+      "PlainTextPrivateIntentNote_JSONExtension_NotExecutionApproval": 2,
+      "DeclaredA093FinalStatusCorruption_RequiresPerAliasReceipt": 1,
+      "OwnedExistingFinishPathSentinel_ExpectedNonJSON": 1,
+      "ActualPrimaryFinalJSONNegativeInjection_OriginalFailureRetained": 1,
+      "ActualA023PostSTOPStatusNegativeInjection_OriginalFailureRetained": 1
+    },
+    "results": [
+      {
+        "sha256": "8be403d1ff677170d89531bdcd65c30e891a4e48b617c605207a50e4c0ffaa76",
+        "bytes": 18,
+        "frozen_observation_aliases": 30,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "reward-claim-confirmation-20261018-r1-originals/final-suite/owned-fixtures/foreignexisting.json.telemetry.jsonl",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "OwnedPreexistingForeignArchiveSentinel_ExpectedNonJSON",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "foreign",
+        "source_assertion_independently_checks_bytes_preserved": true
+      },
+      {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "frozen_observation_aliases": 20,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "load042-bounded-ready-current-LIVE-20261017-originals/all-runs/R3/cloud-preparation.stdout.original.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "ZeroBytePrivateCapture_FormatAndCommandVerdictStillUnqualified",
+        "all_alias_contexts_bound": false,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "empty_capture_not_assumed_command_success": true
+      },
+      {
+        "sha256": "d7f314deeac6c969383bffbd8fc9bd3348dcb15e5864cbe95ad1b5ba0f3aea13",
+        "bytes": 75,
+        "frozen_observation_aliases": 15,
+        "actual_exact_alias": {
+          "root": "private-H",
+          "path": "load103-pending-only-current-main-20261021-r3/recursive-raw-fetch.intent.original.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "PlainTextPrivateIntentNote_JSONExtension_NotExecutionApproval",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "fetch_note",
+        "actual_platform_writer_reproductions": [
+          {
+            "role": "fetch_note",
+            "line": 10,
+            "actual_platform_write_text_bytes": 75,
+            "actual_platform_write_text_sha256": "d7f314deeac6c969383bffbd8fc9bd3348dcb15e5864cbe95ad1b5ba0f3aea13"
+          }
+        ],
+        "note_content_never_treated_as_user_authorization": true
+      },
+      {
+        "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96",
+        "bytes": 1,
+        "frozen_observation_aliases": 8,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "A093-rendered-ACK-final-status-20261022-r2-originals/producer-before-input-cleanup/writer-only-selftest/selftest-native.json.status.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "DeclaredA093FinalStatusCorruption_RequiresPerAliasReceipt",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "bad_status",
+        "actual_alias_receipts": [
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "A093-rendered-ACK-final-status-20261022-r2-originals/producer-before-input-cleanup/writer-only-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-rendered-ACK-final-status-20261022-r2-originals\\producer-before-input-cleanup\\writer-only-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "ebb5c860e6bd89b5d5938f7d655dc01f8a94c63c1ffcc706c5570b3ed3b04b78",
+            "preserved_good_bytes": 1344,
+            "preserved_good_sha256": "09fa082dfc51b2a52119e9afd19e4772a5bdeeaa66749dd0657d3c2183aaf36a",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "A093-rendered-ACK-final-status-20261022-r2-originals/cloud-originals/raw/actual-coordinator/20261021-163356-71c27c/g001c0182bd9e.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-rendered-ACK-final-status-20261022-r2-originals\\cloud-originals\\raw\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "406eb142edaea964cb4a36006a18cacd2bb1081e3a87f532d46e7e3f5f4a633f",
+            "preserved_good_bytes": 525914,
+            "preserved_good_sha256": "0a4f1e78e9ab6075fa69ea35640a966dd86ab24e163f0fbcd3f01bee4cd8434f",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "A093-rendered-ACK-final-status-20261021-r1-originals/producer-before-input-cleanup/writer-only-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-rendered-ACK-final-status-20261021-r1-originals\\producer-before-input-cleanup\\writer-only-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "9577632ce6282f973951b93768e735416ceca16d6b54e2150147c39767eaef24",
+            "preserved_good_bytes": 1344,
+            "preserved_good_sha256": "cb13301a8ad8e2d72e016f17bb095d3eabd49c6cba106e72e1173dd8a9d7bf6a",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "A093-current-nonzero-ACK-final-status-20261021-r1-originals/local-originals/local-validation/writer-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-current-nonzero-ACK-final-status-20261021-r1-originals\\local-originals\\local-validation\\writer-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "6d235ca060e2a78d9458bff5d3458109fe1e6e07d8c2e09c97008723a6db16ce",
+            "preserved_good_bytes": 1358,
+            "preserved_good_sha256": "af5551cc35b0fc1005090ee6edf5b6573c9d6745ebd6a44afddef3ae136fa884",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "A093-current-nonzero-ACK-final-status-20261021-r1-originals/cloud-originals/runs/r4/actual-coordinator/20261021-124734-9984e8/g001c03b14be9.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-current-nonzero-ACK-final-status-20261021-r1-originals\\cloud-originals\\runs\\r4\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "809bc5b5e3e20c7fb963f8a5b584687fa0b7af17f2adf27eebfe074894c43fe6",
+            "preserved_good_bytes": 524948,
+            "preserved_good_sha256": "0f48c5fe8202c89b0c0201619bb911906e4a5de8004955670c9640fdc488b9e6",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-H",
+              "path": "A093-rendered-ACK-final-status-20261021-r2/writer-only-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-rendered-ACK-final-status-20261022-r2-originals\\producer-before-input-cleanup\\writer-only-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "ebb5c860e6bd89b5d5938f7d655dc01f8a94c63c1ffcc706c5570b3ed3b04b78",
+            "preserved_good_bytes": 1344,
+            "preserved_good_sha256": "09fa082dfc51b2a52119e9afd19e4772a5bdeeaa66749dd0657d3c2183aaf36a",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-H",
+              "path": "A093-rendered-ACK-final-status-20261021-r1/writer-only-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-rendered-ACK-final-status-20261021-r1-originals\\producer-before-input-cleanup\\writer-only-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "9577632ce6282f973951b93768e735416ceca16d6b54e2150147c39767eaef24",
+            "preserved_good_bytes": 1344,
+            "preserved_good_sha256": "cb13301a8ad8e2d72e016f17bb095d3eabd49c6cba106e72e1173dd8a9d7bf6a",
+            "controlled_corruption_after_original_writer": true
+          },
+          {
+            "alias": {
+              "root": "private-H",
+              "path": "A093-current-nonzero-ACK-restart-and-final-status-20261021-r1/local-validation/writer-selftest/selftest-native.json.status.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "actual_receipt_path": "G:\\PR13Evidence\\A093-current-nonzero-ACK-final-status-20261021-r1-originals\\local-originals\\local-validation\\writer-selftest\\actual-final-status-fault-injected.original.json",
+            "actual_receipt_sha256": "6d235ca060e2a78d9458bff5d3458109fe1e6e07d8c2e09c97008723a6db16ce",
+            "preserved_good_bytes": 1358,
+            "preserved_good_sha256": "af5551cc35b0fc1005090ee6edf5b6573c9d6745ebd6a44afddef3ae136fa884",
+            "controlled_corruption_after_original_writer": true
+          }
+        ]
+      },
+      {
+        "sha256": "6ca7ea2feefc88ecb5ed6356ed963f47dc9137f82526fdd25d618ea626d0803f",
+        "bytes": 4,
+        "frozen_observation_aliases": 4,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "b113-cost-observer-20261018-r1-originals/local-test-source-final/cost-observer-control-and-originals/local-finish-controls-r1/existing-finish.request.json/finish.request.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "OwnedExistingFinishPathSentinel_ExpectedNonJSON",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "finish",
+        "source_assertion_independently_checks_bytes_preserved": true
+      },
+      {
+        "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73",
+        "bytes": 7,
+        "frozen_observation_aliases": 3,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "load074-current-terminal-matrix-LIVE-20261017-originals/all-current-runs/BAD_FINAL_JSON/run/20261017-115147-c589e7/g001c0164f68f.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "ActualPrimaryFinalJSONNegativeInjection_OriginalFailureRetained",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "bad_final",
+        "actual_alias_receipts": [
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "load074-current-terminal-matrix-LIVE-20261017-originals/all-current-runs/BAD_FINAL_JSON/run/20261017-115147-c589e7/g001c0164f68f.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "receipt_path": "G:\\PR13Evidence\\load074-current-terminal-matrix-LIVE-20261017-originals\\all-current-runs\\BAD_FINAL_JSON\\run\\20261017-115147-c589e7\\g001c0164f68f.json.final-fault.original.json",
+            "receipt_sha256": "4a834f0256bfdfc2714fef1bf17d54718c8cbd56851a411c2dcdc8f4c06ded1c",
+            "actual_STOP_and_before_fault_copy_observed": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "live-final-faults-and-primary-JSON-fix-20261017-originals/R2/BAD_FINAL_JSON/run/20261017-053426-563548/g001c01d00ec3.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "receipt_path": "G:\\PR13Evidence\\live-final-faults-and-primary-JSON-fix-20261017-originals\\R2\\BAD_FINAL_JSON\\run\\20261017-053426-563548\\g001c01d00ec3.json.final-fault.original.json",
+            "receipt_sha256": "9a0d125127123b1d237aed56939aff2131df2e8bb54bb9103de90041a227c374",
+            "actual_STOP_and_before_fault_copy_observed": true
+          },
+          {
+            "alias": {
+              "root": "private-G",
+              "path": "live-final-faults-and-primary-JSON-fix-20261017-originals/R1/BAD_FINAL_JSON/run/20261017-052854-f13eca/g001c01b1115e.json",
+              "public_report_text": false,
+              "reason": "Malformed public evidence JSON"
+            },
+            "receipt_path": "G:\\PR13Evidence\\live-final-faults-and-primary-JSON-fix-20261017-originals\\R1\\BAD_FINAL_JSON\\run\\20261017-052854-f13eca\\g001c01b1115e.json.final-fault.original.json",
+            "receipt_sha256": "b55121f62d9df084138c6707c0293a0fc936b015366dc0001437c3a16bd889c3",
+            "actual_STOP_and_before_fault_copy_observed": true
+          }
+        ]
+      },
+      {
+        "sha256": "9fdf3638ec2c4fb40b12d4a69629dd76672e2e6561846a8617422bc7d05d9c2a",
+        "bytes": 21,
+        "frozen_observation_aliases": 1,
+        "actual_exact_alias": {
+          "root": "private-G",
+          "path": "A023-current-fullrunner-PG-20261022-r3-originals/RAM-native-originals/raw/bad_json/actual-coordinator/20261022-093941-ee9725/g001c01017848.json.status.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "ActualA023PostSTOPStatusNegativeInjection_OriginalFailureRetained",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "A023",
+        "actual_fault_receipt": {
+          "path": "G:\\PR13Evidence\\A023-current-fullrunner-PG-20261022-r3-originals\\RAM-native-originals\\raw\\bad_json\\actual-original-STOP-and-fault-boundary.original.json",
+          "sha256": "c92e972cd25af615e1a90c09ca479d547c24e45b5bd82228693460fc4a9e12da",
+          "before_sha256": "a47d8b52de0f7ee213a2c1cfd21ba71e735ecf39ff32a337d6fbf5c7498db74c",
+          "after_sha256": "9fdf3638ec2c4fb40b12d4a69629dd76672e2e6561846a8617422bc7d05d9c2a",
+          "before_bytes": 396981,
+          "after_bytes": 21
+        }
+      },
+      {
+        "sha256": "bc7e05170a68d5098d119c9f3e289bfa5a8a8b2eaf610e46b7293fb69b6832fe",
+        "bytes": 98,
+        "frozen_observation_aliases": 1,
+        "actual_exact_alias": {
+          "root": "private-H",
+          "path": "A033-A034-current-threecycle-20261021-r1/stale-upload-stop.intent.original.json",
+          "public_report_text": false,
+          "reason": "Malformed public evidence JSON"
+        },
+        "original_strict_format_rejection_retained": "Malformed public evidence JSON",
+        "classification": "PlainTextPrivateIntentNote_JSONExtension_NotExecutionApproval",
+        "all_alias_contexts_bound": true,
+        "source_or_case_execution_outcome_not_inferred": true,
+        "private_original_not_rewritten_or_exported": true,
+        "producer_role": "stop_note",
+        "actual_platform_writer_reproductions": [
+          {
+            "role": "stop_note",
+            "actual_platform_write_text_bytes": 98,
+            "actual_platform_write_text_sha256": "bc7e05170a68d5098d119c9f3e289bfa5a8a8b2eaf610e46b7293fb69b6832fe",
+            "already_generated_original_fixture_re_read": true
+          }
+        ],
+        "note_content_never_treated_as_user_authorization": true
+      }
+    ],
+    "producer_sources": [
+      {
+        "role": "foreign",
+        "path": "G:\\Program Files\\GodotFiles\\godot_FanstaryCard\\client\\tests\\test_load_audit_storage.gd",
+        "bytes": 5994,
+        "sha256": "727d644b471a5f529de453cf40bb734446d9dec7bd536ac0d9ae5995f99b7add",
+        "source_not_executed": true
+      },
+      {
+        "role": "finish",
+        "path": "G:\\PR13Evidence\\b113-cost-observer-20261018-r1-originals\\local-test-source-final\\test_b113_atomic_finish.py",
+        "bytes": 2776,
+        "sha256": "45f425a22c44ff8f82cd651c08359199cf1232c8466a3e9c30f121c4bd127e54",
+        "source_not_executed": true
+      },
+      {
+        "role": "bad_final",
+        "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\load_final_fault_live.gd",
+        "bytes": 2067,
+        "sha256": "653164d96a0fc84460634e0bfbdf38dab9ac2fc326abfe689c3c5af1a44b4de3",
+        "source_not_executed": true
+      },
+      {
+        "role": "bad_status",
+        "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\A093_joint_client.gd",
+        "bytes": 4146,
+        "sha256": "727f5ada323c591df76dad1df720ed0fd74c94af17033880fa67bc94c4f29204",
+        "source_not_executed": true
+      },
+      {
+        "role": "A023",
+        "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\A023_fullrunner_finalization_fault.py",
+        "bytes": 5140,
+        "sha256": "d9fd5195b7f5af14934e8bf8cb192649554043a9040e35071a0ecce64b052d3e",
+        "source_not_executed": true
+      },
+      {
+        "role": "fetch_note",
+        "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\fetch_A031_originals.py",
+        "bytes": 3705,
+        "sha256": "35bc1de50ee72968557c07c7413ee14ba52cf70f7c2fbf9f78237fb3dfb7c1d4",
+        "source_not_executed": true
+      },
+      {
+        "role": "stop_note",
+        "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\stop_owned_ACK3_stale_upload_writer.py",
+        "bytes": 2154,
+        "sha256": "f463b38252f91468a9a9c0653172a5f00ef0566b16c1df2b028601aa722c58a3",
+        "source_not_executed": true
+      }
+    ],
+    "original_91_format_rejection_observations_retained": true,
+    "no_raw_expected_hash_or_SUT_case_outcome_modified": true,
+    "no_native_game_fault_or_remote_command_replayed": true,
+    "no_intent_note_used_as_user_approval": true,
+    "new_game_samples": 0,
+    "case_profiles_closed": 0,
+    "whole_LOAD112_accepted": false,
+    "prior_R1_observer_cache_loop_limitation_retained": "R1 generated both write_text fixtures while reviewing the first note, then skipped an existing fixture rather than comparing it during the second note. Existing98-byte fixture and real producer constant match exactly; no input or expected value changed.",
+    "current_batch_observation_aliases": 82
+  },
+  "current_batch_content_objects": 8,
+  "current_batch_frozen_observation_aliases": 82,
+  "new_intent_bound_content_objects": 7,
+  "new_intent_bound_observations": 62,
+  "empty_capture_content_object_still_unqualified": 1,
+  "empty_capture_path_observations_still_unqualified": 20,
+  "original_full_physical_epoch_malformed_observations": 91,
+  "original_format_rejections_retained_for_all_current_objects": true,
+  "actual_negative_fault_receipts_bound_without_rerunning_cases": true,
+  "original_failed_case_outcomes_or_expected_hashes_not_changed": true,
+  "plain_text_notes_never_treated_as_human_approval": true,
+  "old_R1_fixture_cache_skip_and_correcting_exact98byte_hash_evidence_retained": true,
+  "combined_existing_intent_objects": 148,
+  "combined_existing_intent_observations": 2235,
+  "original_frozen_content_objects": 679,
+  "original_frozen_path_observations": 8200,
+  "remaining_content_objects": 531,
+  "remaining_priorities": {
+    "EncodingIntent": 19,
+    "StructuredFormatIntent": 1,
+    "BoundedStreamingFormat": 29,
+    "SourceLanguageExpressionIntent": 375,
+    "PrivateStructuredOrRuntimeContent": 107
+  },
+  "raw_G_custody": {
+    "directory": "G:\\PR13Evidence\\LOAD112-malformed-artifact-intent-20261023-r1-originals",
+    "items": [
+      {
+        "path": "native-executions/executed-marker-binding-completion.original.py",
+        "bytes": 3384,
+        "sha256": "862ecdf0b26ca0b5f2f41b71e906290149e104d0c623ceadb5c58c90b16dbbc1"
+      },
+      {
+        "path": "native-executions/executed-producer-intent-review-source.original.py",
+        "bytes": 11239,
+        "sha256": "2fdbe26e18578b70e196f84a6c081f4156ac5bef9964dc633d4e1c2302e2c2aa"
+      },
+      {
+        "path": "native-executions/result-r2-marker-corrected.original.json",
+        "bytes": 21059,
+        "sha256": "25a9070ec4d698daf6496e277c02e55cb60c75cc3ca87a1481c682cec64f8de2"
+      },
+      {
+        "path": "native-executions/result.original.json",
+        "bytes": 20291,
+        "sha256": "edf3fb50829577ccaf3290867e367ccdaa4829cbab9786b23659383d1002ff46"
+      },
+      {
+        "path": "producer-sources/A023/A023_fullrunner_finalization_fault.py",
+        "bytes": 5140,
+        "sha256": "d9fd5195b7f5af14934e8bf8cb192649554043a9040e35071a0ecce64b052d3e"
+      },
+      {
+        "path": "producer-sources/bad_final/load_final_fault_live.gd",
+        "bytes": 2067,
+        "sha256": "653164d96a0fc84460634e0bfbdf38dab9ac2fc326abfe689c3c5af1a44b4de3"
+      },
+      {
+        "path": "producer-sources/bad_status/A093_joint_client.gd",
+        "bytes": 4146,
+        "sha256": "727f5ada323c591df76dad1df720ed0fd74c94af17033880fa67bc94c4f29204"
+      },
+      {
+        "path": "producer-sources/fetch_note/fetch_A031_originals.py",
+        "bytes": 3705,
+        "sha256": "35bc1de50ee72968557c07c7413ee14ba52cf70f7c2fbf9f78237fb3dfb7c1d4"
+      },
+      {
+        "path": "producer-sources/finish/test_b113_atomic_finish.py",
+        "bytes": 2776,
+        "sha256": "45f425a22c44ff8f82cd651c08359199cf1232c8466a3e9c30f121c4bd127e54"
+      },
+      {
+        "path": "producer-sources/foreign/test_load_audit_storage.gd",
+        "bytes": 5994,
+        "sha256": "727d644b471a5f529de453cf40bb734446d9dec7bd536ac0d9ae5995f99b7add"
+      },
+      {
+        "path": "producer-sources/stop_note/stop_owned_ACK3_stale_upload_writer.py",
+        "bytes": 2154,
+        "sha256": "f463b38252f91468a9a9c0653172a5f00ef0566b16c1df2b028601aa722c58a3"
+      },
+      {
+        "path": "exact-native-byte-objects.private/8be403d1ff677170d89531bdcd65c30e891a4e48b617c605207a50e4c0ffaa76.private-original.bin",
+        "bytes": 18,
+        "sha256": "8be403d1ff677170d89531bdcd65c30e891a4e48b617c605207a50e4c0ffaa76"
+      },
+      {
+        "path": "exact-native-byte-objects.private/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.private-original.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "exact-native-byte-objects.private/d7f314deeac6c969383bffbd8fc9bd3348dcb15e5864cbe95ad1b5ba0f3aea13.private-original.bin",
+        "bytes": 75,
+        "sha256": "d7f314deeac6c969383bffbd8fc9bd3348dcb15e5864cbe95ad1b5ba0f3aea13"
+      },
+      {
+        "path": "exact-native-byte-objects.private/021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96.private-original.bin",
+        "bytes": 1,
+        "sha256": "021fb596db81e6d02bf3d2586ee3981fe519f275c0ac9ca76bbcf2ebb4097d96"
+      },
+      {
+        "path": "exact-native-byte-objects.private/6ca7ea2feefc88ecb5ed6356ed963f47dc9137f82526fdd25d618ea626d0803f.private-original.bin",
+        "bytes": 4,
+        "sha256": "6ca7ea2feefc88ecb5ed6356ed963f47dc9137f82526fdd25d618ea626d0803f"
+      },
+      {
+        "path": "exact-native-byte-objects.private/be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73.private-original.bin",
+        "bytes": 7,
+        "sha256": "be302461cda285db3ed2d45fb767b23e08ca8808b35a638009937df22b332d73"
+      },
+      {
+        "path": "exact-native-byte-objects.private/9fdf3638ec2c4fb40b12d4a69629dd76672e2e6561846a8617422bc7d05d9c2a.private-original.bin",
+        "bytes": 21,
+        "sha256": "9fdf3638ec2c4fb40b12d4a69629dd76672e2e6561846a8617422bc7d05d9c2a"
+      },
+      {
+        "path": "exact-native-byte-objects.private/bc7e05170a68d5098d119c9f3e289bfa5a8a8b2eaf610e46b7293fb69b6832fe.private-original.bin",
+        "bytes": 98,
+        "sha256": "bc7e05170a68d5098d119c9f3e289bfa5a8a8b2eaf610e46b7293fb69b6832fe"
+      },
+      {
+        "path": "actual-case-receipts/0.private-original.json",
+        "bytes": 882,
+        "sha256": "ebb5c860e6bd89b5d5938f7d655dc01f8a94c63c1ffcc706c5570b3ed3b04b78"
+      },
+      {
+        "path": "actual-case-receipts/1.private-original.json",
+        "bytes": 685,
+        "sha256": "406eb142edaea964cb4a36006a18cacd2bb1081e3a87f532d46e7e3f5f4a633f"
+      },
+      {
+        "path": "actual-case-receipts/2.private-original.json",
+        "bytes": 882,
+        "sha256": "9577632ce6282f973951b93768e735416ceca16d6b54e2150147c39767eaef24"
+      },
+      {
+        "path": "actual-case-receipts/3.private-original.json",
+        "bytes": 964,
+        "sha256": "6d235ca060e2a78d9458bff5d3458109fe1e6e07d8c2e09c97008723a6db16ce"
+      },
+      {
+        "path": "actual-case-receipts/4.private-original.json",
+        "bytes": 685,
+        "sha256": "809bc5b5e3e20c7fb963f8a5b584687fa0b7af17f2adf27eebfe074894c43fe6"
+      },
+      {
+        "path": "actual-case-receipts/5.private-original.json",
+        "bytes": 882,
+        "sha256": "ebb5c860e6bd89b5d5938f7d655dc01f8a94c63c1ffcc706c5570b3ed3b04b78"
+      },
+      {
+        "path": "actual-case-receipts/6.private-original.json",
+        "bytes": 882,
+        "sha256": "9577632ce6282f973951b93768e735416ceca16d6b54e2150147c39767eaef24"
+      },
+      {
+        "path": "actual-case-receipts/7.private-original.json",
+        "bytes": 964,
+        "sha256": "6d235ca060e2a78d9458bff5d3458109fe1e6e07d8c2e09c97008723a6db16ce"
+      },
+      {
+        "path": "actual-case-receipts/8.private-original.json",
+        "bytes": 417,
+        "sha256": "4a834f0256bfdfc2714fef1bf17d54718c8cbd56851a411c2dcdc8f4c06ded1c"
+      },
+      {
+        "path": "actual-case-receipts/9.private-original.json",
+        "bytes": 416,
+        "sha256": "9a0d125127123b1d237aed56939aff2131df2e8bb54bb9103de90041a227c374"
+      },
+      {
+        "path": "actual-case-receipts/10.private-original.json",
+        "bytes": 416,
+        "sha256": "b55121f62d9df084138c6707c0293a0fc936b015366dc0001437c3a16bd889c3"
+      },
+      {
+        "path": "actual-case-receipts/11.private-original.json",
+        "bytes": 1155,
+        "sha256": "c92e972cd25af615e1a90c09ca479d547c24e45b5bd82228693460fc4a9e12da"
+      },
+      {
+        "path": "fetch_note-actual-default-write-text.txt",
+        "bytes": 75,
+        "sha256": "d7f314deeac6c969383bffbd8fc9bd3348dcb15e5864cbe95ad1b5ba0f3aea13"
+      },
+      {
+        "path": "stop_note-actual-default-write-text.txt",
+        "bytes": 98,
+        "sha256": "bc7e05170a68d5098d119c9f3e289bfa5a8a8b2eaf610e46b7293fb69b6832fe"
+      },
+      {
+        "path": "remaining531-content-review-queue.private.original.jsonl",
+        "bytes": 1628785,
+        "sha256": "07d8a7f97be4d7ffca9a200125cbb9d643eb566ac0c8b1009fd9d0e1de9a3fad"
+      },
+      {
+        "path": "publication-source.original.py",
+        "bytes": 8960,
+        "sha256": "e34cf39bbad97d0d1e2ddab46869627f7692e892b1ddc14484f6b04543cf1c88"
+      },
+      {
+        "path": "pointer-before.exact-copy.json",
+        "bytes": 96408,
+        "sha256": "9c1b4d697795c87387036f3b273dbd0b1d3524ac045d693131cbac0ed60bbe21"
+      }
+    ]
+  },
+  "current_register": "docs/reports/pr13-stages-20261009/S6-current4a-CI-observation-20261022/register.json",
+  "task_counts_unchanged": {
+    "Accepted": 100,
+    "Partial": 24,
+    "Ready": 8
+  },
+  "whole_tasks_unaccepted": 32,
+  "missing_case_profile_pairs": 47,
+  "new_game_samples": 0,
+  "case_profiles_closed": 0,
+  "whole_LOAD112_accepted": false,
+  "whole_project_acceptance_granted": false,
+  "production_application_switch_performed": false
+}

@@ -1,0 +1,586 @@
+{
+  "source_sha": "1b35004db44251a35270eb61f2eb10cfdee8d34c",
+  "execution_host": "Tencent cloud",
+  "matrix": {
+    "source_sha": "1b35004db44251a35270eb61f2eb10cfdee8d34c",
+    "state": "Completed",
+    "checks": [
+      {
+        "name": "elite-e4-hp095-seed100001",
+        "exit_code": 0,
+        "elapsed_seconds": 293.46029617101885,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "797ed30916a336793a2dc84bafcaceb3d025c7f0cfbc2e0125b49ebb1f324558"
+      },
+      {
+        "name": "elite-e4-hp095-seed101001",
+        "exit_code": 0,
+        "elapsed_seconds": 295.5958231969271,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "7a82aa9e97a5da9f06f2fba8e4816ad16d15477776c316a86ee66b238eb3e94b"
+      },
+      {
+        "name": "elite-e4-hp095-seed102001",
+        "exit_code": 0,
+        "elapsed_seconds": 302.0486201229505,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "ea3168e711a0a5b7339228ed803ed4cf53a3f8805c47fbb2e91b106d10d7606c"
+      },
+      {
+        "name": "elite-e4-hp090-seed100001",
+        "exit_code": 0,
+        "elapsed_seconds": 325.05632591689937,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "e1fac18e7d22103960b5338b117652839a67ce4939276bf6e39239636769978e"
+      },
+      {
+        "name": "elite-e4-hp090-seed101001",
+        "exit_code": 0,
+        "elapsed_seconds": 322.98541085305624,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "bfb0cfa2b7f46140e1f3849868f481b081c16b2ef114b06e7ddcafc15b3fcc62"
+      },
+      {
+        "name": "elite-e4-hp090-seed102001",
+        "exit_code": 0,
+        "elapsed_seconds": 326.09599915216677,
+        "encounters": 72000,
+        "errors": 0,
+        "raw_sha256": "4cef867aa8530dbbd94fa3c171c0c8bf61cac0bc8c0ea56e4ed8ee4874c6a6aa"
+      }
+    ],
+    "ok": true,
+    "candidate_activation": false,
+    "current_phase": "elite-e4-hp090-seed102001",
+    "input_bytes_unchanged": true,
+    "source_dirty": "",
+    "elapsed_seconds": 1865.5814687369857
+  },
+  "original_encounters": 432000,
+  "exact_non_whitelisted_pairs": 162000,
+  "descriptive_effects": {
+    "elite-e4-hp095": [
+      {
+        "baseline": "Guardian/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Guardian/0/default/E4/baseline_all_hand/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": 392.1,
+        "candidate_p95_seconds": 380.1,
+        "p95_relative_improvement": 0.030604437643458327,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.05067255078956445,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Guardian/0/default/E4/basic/Baseline",
+        "candidate": "Guardian/0/default/E4/basic/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": 432.1,
+        "candidate_p95_seconds": 412.1,
+        "p95_relative_improvement": 0.04628558204119415,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.05450455834573886,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Guardian/0/default/E4/build/Baseline",
+        "candidate": "Guardian/0/default/E4/build/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": 380.1,
+        "candidate_p95_seconds": 364.1,
+        "p95_relative_improvement": 0.042094185740594536,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.051757662796608095,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Mage/0/default/E4/baseline_all_hand/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 3000
+        },
+        "candidate_outcomes": {
+          "Death": 2999,
+          "Victory": 1
+        },
+        "unchanged_reward_time_rate_proxy": 3.6729131911661383e-05,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/basic/Baseline",
+        "candidate": "Mage/0/default/E4/basic/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2993,
+          "Victory": 7
+        },
+        "candidate_outcomes": {
+          "Death": 2989,
+          "Victory": 11
+        },
+        "unchanged_reward_time_rate_proxy": 0.0002004941799362836,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/build/Baseline",
+        "candidate": "Mage/0/default/E4/build/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2940,
+          "Victory": 60
+        },
+        "candidate_outcomes": {
+          "Death": 2901,
+          "Victory": 99
+        },
+        "unchanged_reward_time_rate_proxy": 0.0016060802322774848,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Priest/0/default/E4/baseline_all_hand/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 3000
+        },
+        "candidate_outcomes": {
+          "Death": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.0,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/basic/Baseline",
+        "candidate": "Priest/0/default/E4/basic/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2918,
+          "Victory": 82
+        },
+        "candidate_outcomes": {
+          "Death": 2728,
+          "Victory": 272
+        },
+        "unchanged_reward_time_rate_proxy": 0.003209464969897269,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/build/Baseline",
+        "candidate": "Priest/0/default/E4/build/TargetedE4Hp095",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2583,
+          "Victory": 417
+        },
+        "candidate_outcomes": {
+          "Death": 2175,
+          "Victory": 825
+        },
+        "unchanged_reward_time_rate_proxy": 0.011847806525423943,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      }
+    ],
+    "elite-e4-hp090": [
+      {
+        "baseline": "Guardian/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Guardian/0/default/E4/baseline_all_hand/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": 392.1,
+        "candidate_p95_seconds": 364.1,
+        "p95_relative_improvement": 0.07141035450140265,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.10114030545703678,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Guardian/0/default/E4/basic/Baseline",
+        "candidate": "Guardian/0/default/E4/basic/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": 432.1,
+        "candidate_p95_seconds": 392.1,
+        "p95_relative_improvement": 0.0925711640823883,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.10842277190404204,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Guardian/0/default/E4/build/Baseline",
+        "candidate": "Guardian/0/default/E4/build/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": 380.1,
+        "candidate_p95_seconds": 344.1,
+        "p95_relative_improvement": 0.09471191791633782,
+        "baseline_outcomes": {
+          "Victory": 3000
+        },
+        "candidate_outcomes": {
+          "Victory": 3000
+        },
+        "unchanged_reward_time_rate_proxy": 0.10477562608585123,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Mage/0/default/E4/baseline_all_hand/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 3000
+        },
+        "candidate_outcomes": {
+          "Death": 2997,
+          "Victory": 3
+        },
+        "unchanged_reward_time_rate_proxy": 8.179545025921442e-05,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/basic/Baseline",
+        "candidate": "Mage/0/default/E4/basic/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2993,
+          "Victory": 7
+        },
+        "candidate_outcomes": {
+          "Death": 2980,
+          "Victory": 20
+        },
+        "unchanged_reward_time_rate_proxy": 0.0004955019596586396,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Mage/0/default/E4/build/Baseline",
+        "candidate": "Mage/0/default/E4/build/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2940,
+          "Victory": 60
+        },
+        "candidate_outcomes": {
+          "Death": 2831,
+          "Victory": 169
+        },
+        "unchanged_reward_time_rate_proxy": 0.004170939243878458,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/baseline_all_hand/Baseline",
+        "candidate": "Priest/0/default/E4/baseline_all_hand/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 3000
+        },
+        "candidate_outcomes": {
+          "Death": 2999,
+          "Victory": 1
+        },
+        "unchanged_reward_time_rate_proxy": 4.618443344428513e-06,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/basic/Baseline",
+        "candidate": "Priest/0/default/E4/basic/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2918,
+          "Victory": 82
+        },
+        "candidate_outcomes": {
+          "Victory": 596,
+          "Death": 2404
+        },
+        "unchanged_reward_time_rate_proxy": 0.010345433624000755,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      },
+      {
+        "baseline": "Priest/0/default/E4/build/Baseline",
+        "candidate": "Priest/0/default/E4/build/TargetedE4Hp090",
+        "n": 3000,
+        "baseline_p95_seconds": null,
+        "candidate_p95_seconds": null,
+        "p95_relative_improvement": null,
+        "baseline_outcomes": {
+          "Death": 2583,
+          "Victory": 417
+        },
+        "candidate_outcomes": {
+          "Victory": 1362,
+          "Death": 1638
+        },
+        "unchanged_reward_time_rate_proxy": 0.03314158761052144,
+        "proxy_is_not_measured_economy": true,
+        "actual_full_route_or_production_approval": false
+      }
+    ]
+  },
+  "errors": 0,
+  "private_archive_sha256": "4e1919bb4ebe929eef1de7264b68ba60f33cf95807f94893d51c8d307d77592e",
+  "private_archive_bytes": 21669021,
+  "raw_files": {
+    "result.json": {
+      "bytes": 1830,
+      "sha256": "c7f9366f2fea84f2ee2c602e62d4f23734fa638b10a170cd50a02e4a0019cefc"
+    },
+    "preregistration.json": {
+      "bytes": 6344,
+      "sha256": "274028f9c5d8b32aaae75a448e3aaddb379cf39686731dea040b201e20e9f25a"
+    },
+    "elite-e4-hp095-seed101001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "85b4e6aab695a6ea78a2c7c4483b4d1c5494a07f03358ad75b3c4882425f04e6"
+    },
+    "elite-e4-hp095-seed101001/encounters.jsonl": {
+      "bytes": 78213699,
+      "sha256": "7a82aa9e97a5da9f06f2fba8e4816ad16d15477776c316a86ee66b238eb3e94b"
+    },
+    "elite-e4-hp095-seed101001/summary.json": {
+      "bytes": 149311,
+      "sha256": "640c49389c012f6068e6b8a7c29bbad8cef16c7826b39f2e086d414e193b3718"
+    },
+    "elite-e4-hp090-seed100001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "adbd41b338f2bf29cbe4e752434acd5e600717c2581c51c6173df9b8e3e68dd3"
+    },
+    "elite-e4-hp090-seed100001/encounters.jsonl": {
+      "bytes": 78208656,
+      "sha256": "e1fac18e7d22103960b5338b117652839a67ce4939276bf6e39239636769978e"
+    },
+    "elite-e4-hp090-seed100001/summary.json": {
+      "bytes": 149692,
+      "sha256": "5dd4c5e6bda572631a3dedb9c3b0914ec0065a1970fe1d269a13c0a0cde0469a"
+    },
+    "elite-e4-hp095-seed102001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "b5199a089a60aa0f14bc4e08afe610ab70552a0af17edd5eb0689879993a64f2"
+    },
+    "elite-e4-hp095-seed102001/encounters.jsonl": {
+      "bytes": 78208279,
+      "sha256": "ea3168e711a0a5b7339228ed803ed4cf53a3f8805c47fbb2e91b106d10d7606c"
+    },
+    "elite-e4-hp095-seed102001/summary.json": {
+      "bytes": 149204,
+      "sha256": "72420d6874cf6806ac9cba4a3da5982d88a3635926420c7b3f0fcb4a4f996611"
+    },
+    "analysis/result.json": {
+      "bytes": 184506,
+      "sha256": "a4c7762b6ef2d1175bb2eefc13b2514aa2ea418c34664b0b609ab8518e442770"
+    },
+    "elite-e4-hp090-seed102001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "a9fd743c2cd7affe3313224bd6407a958e72c1f7a157eaf04c02a0a882ab0b04"
+    },
+    "elite-e4-hp090-seed102001/encounters.jsonl": {
+      "bytes": 78207154,
+      "sha256": "4cef867aa8530dbbd94fa3c171c0c8bf61cac0bc8c0ea56e4ed8ee4874c6a6aa"
+    },
+    "elite-e4-hp090-seed102001/summary.json": {
+      "bytes": 149666,
+      "sha256": "88739a9548a9e9e16cea0a76c6b4cbc0661002f01dcaef9a0e664f19cbf4ffb4"
+    },
+    "elite-e4-hp095-seed100001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "77f89fac8401502e14df3af11c605630a9c266a1788384216b6eddeff9546675"
+    },
+    "elite-e4-hp095-seed100001/encounters.jsonl": {
+      "bytes": 78209651,
+      "sha256": "797ed30916a336793a2dc84bafcaceb3d025c7f0cfbc2e0125b49ebb1f324558"
+    },
+    "elite-e4-hp095-seed100001/summary.json": {
+      "bytes": 149597,
+      "sha256": "5e90f823d748e229aa8ba50bd480fefd44d0e682c9758cd9cb88a23d117d7641"
+    },
+    "elite-e4-hp090-seed101001/manifest.json": {
+      "bytes": 19987,
+      "sha256": "c2bd97af822562315caa81a8bad54efa239b0905c7007fa95ead203ffbb9834b"
+    },
+    "elite-e4-hp090-seed101001/encounters.jsonl": {
+      "bytes": 78213176,
+      "sha256": "bfb0cfa2b7f46140e1f3849868f481b081c16b2ef114b06e7ddcafc15b3fcc62"
+    },
+    "elite-e4-hp090-seed101001/summary.json": {
+      "bytes": 149274,
+      "sha256": "0e143bdb187cca077eacf6da5ac780cead20cde8e67a6edaf3ffde48d6a30d14"
+    },
+    "analysis/elite-e4-hp090-e4-seed101001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "a67140245396f57d68e34abe363e339e00cc802cde6d0a3d1c9ab548c3e3c5e7"
+    },
+    "analysis/elite-e4-hp090-e4-seed101001/encounters.jsonl": {
+      "bytes": 19637944,
+      "sha256": "5796df47d5e571095e99ccb1a690b5aaab3354ff81008443576384f907d1b93a"
+    },
+    "analysis/elite-e4-hp090-e4-seed101001/summary.json": {
+      "bytes": 182,
+      "sha256": "d6e4723e60c88c3fbbdf78ee81fa0228187ef498c51588514a88f25803c85953"
+    },
+    "analysis/elite-e4-hp090-e4-seed100001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "5f109337eb9de935668dcf45c34a866d705d1fb99adb2ec52a9b662f025be7a3"
+    },
+    "analysis/elite-e4-hp090-e4-seed100001/encounters.jsonl": {
+      "bytes": 19637976,
+      "sha256": "b2cb2222b082f3ba676e4e8eab0d8f0b7a6cbe2ba78aaa9c005dda5acfad9821"
+    },
+    "analysis/elite-e4-hp090-e4-seed100001/summary.json": {
+      "bytes": 182,
+      "sha256": "4743a86b72d34cf946eb6c2772cda35b09f932b3081cc51d113bddb87cce91f2"
+    },
+    "analysis/elite-e4-hp090-e4-seed102001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "7a6e21f1faef32881830c6983d622b8a31372f1373240329606c9ac12049288b"
+    },
+    "analysis/elite-e4-hp090-e4-seed102001/encounters.jsonl": {
+      "bytes": 19638770,
+      "sha256": "f8f33d38a623583eda46e3745c18acd1fdffb08242a2d8ee23a2e0b490bfe263"
+    },
+    "analysis/elite-e4-hp090-e4-seed102001/summary.json": {
+      "bytes": 182,
+      "sha256": "519f4489253e9fdd1f6c7c1250560df976933b81b2af48f9dfd3935951c6d15e"
+    },
+    "analysis/elite-e4-hp095-e4-seed101001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "4c1ab67c38858d9c79d310a81a5b26aee60146bebc31731d87dc2322fc4c5d41"
+    },
+    "analysis/elite-e4-hp095-e4-seed101001/encounters.jsonl": {
+      "bytes": 19638467,
+      "sha256": "6fd4bde424611404fe0ea2046484c03bf26a4d6520964748cdbf562b575fa59b"
+    },
+    "analysis/elite-e4-hp095-e4-seed101001/summary.json": {
+      "bytes": 182,
+      "sha256": "b389106653f57577df9e4860fd6e724ce9393206a7533949c16e481e51dce848"
+    },
+    "analysis/elite-e4-hp090-report/report.md": {
+      "bytes": 3747,
+      "sha256": "98414a817718501bda1fae69b5924dcfe6ace66c051fd5c94ebb46c8c3e578c0"
+    },
+    "analysis/elite-e4-hp090-report/report.json": {
+      "bytes": 70277,
+      "sha256": "4369bf5bad9ea98ba0ea9464cfe754916736e295a7c452b71bb6a2740eaa172c"
+    },
+    "analysis/elite-e4-hp095-e4-seed100001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "41983aac912fefbd364aaf2188ae60c874e904109a3afb978aa60b98b5f9a8f8"
+    },
+    "analysis/elite-e4-hp095-e4-seed100001/encounters.jsonl": {
+      "bytes": 19638971,
+      "sha256": "b01ccfdf1e66e9a20cf99ff12fc8b9ad210e9a3870fa759bc3ba1f0ce96366aa"
+    },
+    "analysis/elite-e4-hp095-e4-seed100001/summary.json": {
+      "bytes": 182,
+      "sha256": "1b020bceb0f2cac250cd756aac274ec587fb816132f50898fbb1eca7a7fc216f"
+    },
+    "analysis/elite-e4-hp095-e4-seed102001/manifest.json": {
+      "bytes": 20108,
+      "sha256": "f78b15dc649c990a634435655952d2c769401024b5affcd3f367c91661bc7736"
+    },
+    "analysis/elite-e4-hp095-e4-seed102001/encounters.jsonl": {
+      "bytes": 19639895,
+      "sha256": "1ca1d00cbad0a368627913218d717c52ad6d866d4e4d65b1594ea5a0d0a77c96"
+    },
+    "analysis/elite-e4-hp095-e4-seed102001/summary.json": {
+      "bytes": 182,
+      "sha256": "b4e3a36c3f92982cc66926a7ef13017a7521c66783dbbdcccd6d99d0ffd0f0a9"
+    },
+    "analysis/elite-e4-hp095-report/report.md": {
+      "bytes": 3741,
+      "sha256": "4ef21cef757661efb9330ffcd24d6473b8f7c992e5f37bb7e35cf980166c3df4"
+    },
+    "analysis/elite-e4-hp095-report/report.json": {
+      "bytes": 70044,
+      "sha256": "2e494438da9c640c2e650ff58b2a4dd569da2e0d47b28ae96be420a4365bd26c"
+    }
+  },
+  "exact_matrix_sdk_removed": true,
+  "exact_analysis_sdk_removed": true,
+  "production_activation": false,
+  "whole_scope_accepted": false,
+  "formal_candidate_recommendation": "NotEvaluated; primary multiplicity plan absent and full legal route/PVP/economy evidence still separate",
+  "limits": [
+    "Isolated native encounters, not actual full expeditions or player input",
+    "Time-rate proxy is not measured economy",
+    "No preregistered primary multiplicity scheme for production recommendation",
+    "Guardian GDD1200 22/30 natural-cycle failure remains unresolved",
+    "Full legal route, prepared Boss, PVP, economy, render and capacity are separate gates"
+  ]
+}

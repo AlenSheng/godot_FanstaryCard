@@ -1,0 +1,87 @@
+{
+  "kind": "CurrentBoundedJSONLWholeScopeGapRepairedOFFLINEPendingLIVE",
+  "production_accepted": false,
+  "task_state": "Partial",
+  "python_final_tests": 159,
+  "native_suites": 7,
+  "new_native_IO_checks": 11,
+  "actual_native_to_reader_cases": 6,
+  "new_authority_worlds": 0,
+  "new_LIVE_profiles": 0,
+  "synthetic_IO_rows": 20000,
+  "raw_IO_fixture_bytes": 89307841,
+  "spool_analysis_tracemalloc_peak_bytes": 8427039,
+  "not_process_RSS_or100client_memory_claim": true,
+  "full_original_segments_preserved": true,
+  "native_R1_certificate_store_error_preserved_not_clean_accepted": true,
+  "native_R2_and_terminal_clean": true,
+  "python_R2_158pass_1fixture_report_key_error_preserved_then159pass": true,
+  "initial_partial_apply_assertion_before_existing_Python_mutation_preserved": true,
+  "all_owned_processes_terminal": [
+    {
+      "round": "python-existing-r1",
+      "PID": 130008,
+      "exit": 0
+    },
+    {
+      "round": "python-boundary-r1",
+      "PID": 106492,
+      "exit": 0
+    },
+    {
+      "round": "python-boundary-r2",
+      "PID": 16592,
+      "exit": 1
+    },
+    {
+      "round": "python-boundary-r3",
+      "PID": 44004,
+      "exit": 0
+    },
+    {
+      "round": "native-boundary-r1",
+      "PID": 99984,
+      "exit": 0
+    },
+    {
+      "round": "native-boundary-r2",
+      "PID": 95236,
+      "exit": 0
+    },
+    {
+      "round": "native-terminal-r1",
+      "PID": 63020,
+      "exit": 0
+    }
+  ],
+  "source_hashes": {
+    "client/tests/gameplay_load_client.gd": "412d3862db50db1dc58debcfe60b1922f80fa80a91f16c8d855470292a701e22",
+    "client/tests/test_load_audit_storage.gd": "727d644b471a5f529de453cf40bb734446d9dec7bd536ac0d9ae5995f99b7add",
+    "tools/gameplay_load_test.py": "52c4ef7d753afe248fbe30c2a9deda38398cdf55ec41b150b14859ebbede569f",
+    "tools/gameplay_load_validation.py": "37d4b91f444412d189fa0bdaef44be65e7004f2da7d40e51bbd664b03309ba80",
+    "tools/pr13_runtime_evidence.py": "f0e8d33ad379f0893ba7e5ec9b1d8ee0a7f0a05ce1b0f9cea9a887826a639e0a",
+    "tools/pr13_audit_archive.py": "6d5b746a96f180ed9f5b8588ad4bfa776675dc3f64a2cb8c1dba4005a5ec99f3",
+    "tools/tests/test_audit_archive.py": "ba16e74b17de2340ff95d34a3239cf818237a102928906c5acde64dbccd89565"
+  },
+  "native_five_lifecycle_methods_exactly_unchanged": [
+    "_ready",
+    "_run",
+    "_run_expedition",
+    "_graceful_cleanup",
+    "_process"
+  ],
+  "coordinator_main_execution_STOP_and_worker_drain_prefix_exactly_unchanged": true,
+  "coordinator_prefix_sha256": "f44dca3b7c0b66c22a9f41da243aa9058650fc7ff4a2d70ee0312f6603feaeb3",
+  "memory_run_source_qualification": "Reader and analytics normal paths tested before new spool-corruption/failure handling; OwnedAuditEvents/compact analysis normal methods unchanged; final159 also revalidate all legitimate paths. Full prior byte versions retained.",
+  "native_session_and_gameplay_or_HP_or_UI_or_protocol_rules_unchanged": true,
+  "current_LIVE_revalidation_required_cases": [
+    "LOAD-07.3-T01",
+    "LOAD-07.3-T02",
+    "LOAD-07.3-T03"
+  ],
+  "old_LIVE_originals_preserved_as_historical_source_scope": true,
+  "new_cloud_dispatched": false,
+  "new_source_uploaded_bytes": 0,
+  "global_gates_unchanged": true,
+  "current_register_parent": "docs/reports/pr13-stages-20261009/S6-load062-main-reviewed-20261017/register.json"
+}

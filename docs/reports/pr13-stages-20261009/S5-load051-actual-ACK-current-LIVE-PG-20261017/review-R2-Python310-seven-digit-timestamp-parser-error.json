@@ -1,0 +1,9 @@
+{
+  "review_exit": 1,
+  "exception": "ValueError Invalid isoformat string 2026-10-17T05:24:12.5787663+00:00",
+  "cause": "Python3.10 datetime.fromisoformat does not accept .NET seven-digit fraction; original JSON time has100ns resolution while PostgreSQL stored timestamp has microseconds.",
+  "raw_response_time": "2026-10-17T05:24:12.5787663+00:00",
+  "raw_PG_time": "2026-10-17T05:24:12.578766+00:00",
+  "correction": "Parse ISO fraction explicitly and compare at actual stored PG6digit microsecond precision, preserving all original7digit strings; no tolerance/ACK identity or business criteria changed",
+  "game_or_fixture_rerun": false
+}

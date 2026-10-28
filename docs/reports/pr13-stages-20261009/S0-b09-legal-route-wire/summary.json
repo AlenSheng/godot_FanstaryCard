@@ -1,0 +1,81 @@
+{
+  "ok": true,
+  "stage": "S0-b09-legal-route-wire",
+  "task_id": "PR13-B09.3",
+  "development_implemented": true,
+  "scope": "Legal 20-card deck -> native finishing action -> actual sourced candidate -> typed choice/replay/restore/PVP return/terminal events -> product Godot Gateway/GameStore",
+  "planned_fixtures": 9,
+  "planned_original_Godot_commands": 63,
+  "planned_native_routes_including_replays": 99,
+  "planned_native_event_rows": 72,
+  "planned_original_native_frames": 189,
+  "planned_replay_frames": 45,
+  "actual_cloud_compile_passed": false,
+  "actual_cloud_native_Godot_execution_passed": false,
+  "confirmed_product_event_key_fixed": "duel.leave_ack -> DuelLeaveEvent",
+  "request_duel_leave_command_mapping_preserved": true,
+  "production_monster_pool_default_not_changed": true,
+  "source_files": [
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Realtime/MonsterPoolLegalRouteWireTests.cs",
+      "original_working_bytes": 35002,
+      "original_working_sha256": "bdc226b844730eb36ca7035123166b67e7fca01576dd081effbf55053719f7ff",
+      "canonical_Git_LF_sha256": "bdc226b844730eb36ca7035123166b67e7fca01576dd081effbf55053719f7ff"
+    },
+    {
+      "path": "client/tests/run_monster_pool_legal_route_vectors.gd",
+      "original_working_bytes": 897,
+      "original_working_sha256": "ed464d244094f421215655cf03acf3cf62564d59dcb7970af12897c800efb45d",
+      "canonical_Git_LF_sha256": "ed464d244094f421215655cf03acf3cf62564d59dcb7970af12897c800efb45d"
+    },
+    {
+      "path": "client/tests/test_monster_pool_legal_route_vectors.gd",
+      "original_working_bytes": 15248,
+      "original_working_sha256": "7b18af455281ac16e8919c9c4f878fa23a4cab9a50fd58ebd0de80cd82d4fbff",
+      "canonical_Git_LF_sha256": "7b18af455281ac16e8919c9c4f878fa23a4cab9a50fd58ebd0de80cd82d4fbff"
+    },
+    {
+      "path": "docs/plans/PR13_B09_LEGAL_ROUTE_WIRE_20261011.json",
+      "original_working_bytes": 6087,
+      "original_working_sha256": "08fefc4b6a16ab02ce65b90461759f8ee2ea38d43e8326b9362326efd5983093",
+      "canonical_Git_LF_sha256": "08fefc4b6a16ab02ce65b90461759f8ee2ea38d43e8326b9362326efd5983093"
+    }
+  ],
+  "original_staged_bytes_preserved": [
+    {
+      "path": "MonsterPoolLegalRouteWireTests.cs.original",
+      "bytes": 35002,
+      "sha256": "bdc226b844730eb36ca7035123166b67e7fca01576dd081effbf55053719f7ff"
+    },
+    {
+      "path": "run_monster_pool_legal_route_vectors.gd.original",
+      "bytes": 897,
+      "sha256": "ed464d244094f421215655cf03acf3cf62564d59dcb7970af12897c800efb45d"
+    },
+    {
+      "path": "test_monster_pool_legal_route_vectors.gd.original",
+      "bytes": 15248,
+      "sha256": "7b18af455281ac16e8919c9c4f878fa23a4cab9a50fd58ebd0de80cd82d4fbff"
+    },
+    {
+      "path": "fixture-integration-plan.json.original",
+      "bytes": 6087,
+      "sha256": "08fefc4b6a16ab02ce65b90461759f8ee2ea38d43e8326b9362326efd5983093"
+    }
+  ],
+  "B08_native_lifecycle_prerequisite_G_closed": true,
+  "MAIN_accepted": false,
+  "LIVE_accepted": false,
+  "whole_task_accepted": false,
+  "human_experience_in_scope": false,
+  "capacity_failures_deferred": true,
+  "B08_passed_tmpfs_G_verified_cleanup_completed": true,
+  "full_cloud_Nuget_cache_files_verified": 1157,
+  "full_cloud_Nuget_cache_directories_verified": 777,
+  "full_cloud_Nuget_original_UID_GID_modes_restored": true,
+  "prior_empty_failed_Nuget_restore_preserved": true,
+  "cloud_compile_driver_sources": [
+    "tools/cloud/pr13/b09_legal_route_inner.py",
+    "tools/cloud/pr13/b09_legal_route_runner.py"
+  ]
+}
