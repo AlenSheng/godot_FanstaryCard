@@ -21,7 +21,6 @@ const CatalogIndex = preload("res://data/catalog_index.gd")
 const CellIndex = preload("res://ui/cell_index.gd")
 const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
-const RANDOM_NAMES_PATH := "res://data/random_names.json"
 const CLOUD_SERVER_URL := "https://www.relicbound.cn"
 const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
 const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
@@ -59,7 +58,6 @@ var _pointer_render_context: Array = []
 var _combat_feedback_context: Array = []
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
-var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
 var _combat_panels: Dictionary = {}
@@ -105,8 +103,6 @@ var _draw_charge_initialized := false
 func _ready() -> void:
 	theme = P.theme()
 	cards = CatalogIndex.cards()
-	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
-	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
 	_card_pool = CardPool.new()
 	_card_pool.name = "CardPool"
@@ -453,8 +449,6 @@ func _sync_account_session() -> void:
 		_shop_inventory_ready = not inventory.is_empty()
 	if Game.lobby.get("shop") is Dictionary: shop = Game.lobby.shop
 	if Game.lobby.get("market") is Array: listings = Game.lobby.market
-	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
-		_login_name = Game.gateway.local_account_name
 	if not _card_prewarm_started and not Game.lobby.is_empty() and lobby_cards is Array:
 		_card_prewarm_started = true
 		_card_pool.begin_prewarm(cards, owned, func(id): return _card_text(id))
@@ -747,28 +741,8 @@ func _steam_unavailable_reason() -> String:
 
 func _enter_steam() -> void:
 	if Game.busy: return
-	# The account is selected by the verified Steam identity, never this nickname.
-	# Existing Steam profiles keep their name; a fresh attempt generates a valid
-	# game nickname without restoring a manual account field to the entry screen.
-	_login_name = _random_login_name(_login_name)
 	var address := str(ProjectSettings.get_setting("platform/server_url", CLOUD_SERVER_URL)).strip_edges().trim_suffix("/")
-	await Game.login_steam(address, _login_name)
-
-func _random_login_name(previous: String = "") -> String:
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))
-	var language_key := "zh-CN" if P.language() == "zh-CN" else "en"
-	var names: Array = []
-	if parsed is Dictionary:
-		var available: Variant = parsed.get("languages", {}).get(language_key, [])
-		if available is Array: names = available
-	if names.is_empty(): names = ["旅人"] if language_key == "zh-CN" else ["Wanderer"]
-	var random := RandomNumberGenerator.new()
-	random.randomize()
-	var candidate := previous
-	for _attempt in 4:
-		candidate = "%s#%04d" % [str(names[random.randi_range(0, names.size() - 1)]), random.randi_range(0, 9999)]
-		if candidate != previous: return candidate
-	return candidate
+	await Game.login_steam(address)
 
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()

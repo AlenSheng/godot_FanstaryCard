@@ -2,7 +2,7 @@
 
 `release_steam` preparation (2026-10-28): the entry page contains shared public
 modules and a single Enter button. It uses Steam tickets against the configured
-cloud service, creates a game nickname internally, and disables local login in
+cloud service, submits the Steam persona for server-side nickname allocation, and disables local login in
 this branch. AppID/native Steam and cloud credentials are still unconfigured.
 See [Steam preparation](../../docs/STEAM_RELEASE_PREPARATION.md) before real integration.
 
@@ -65,3 +65,9 @@ the game in `licenses/`.
 `python client/tests/session_http_fixture.py` exercises
 authentication against an isolated temporary local HTTP server without touching
 game accounts or overwriting gameplay evidence.
+
+Steam nicknames are allocated by the server on first registration as
+`persona#four_digits` (up to ten attempts), followed by a Unix-millisecond
+suffix if the random candidates collide. The database's normalized unique
+index claims the name atomically. Existing profiles retain their name.
+The adapter requires `getPersonaName` in addition to the ticket APIs.

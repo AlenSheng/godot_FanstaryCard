@@ -14,6 +14,7 @@ class SteamFixture extends Node:
 	func steamInitEx(_app_id: int, _callbacks: bool) -> Dictionary: return {"status": 0}
 	func getAppID() -> int: return 480
 	func loggedOn() -> bool: return true
+	func getPersonaName() -> String: return "Unity"
 	func cancelAuthTicket(handle: int) -> void: cancelled.append(handle)
 	func getAuthTicketForWebApi(_identity: String) -> int:
 		pending = true
@@ -85,7 +86,7 @@ func _run() -> void:
 		checks["entry targets the configured cloud"] = request.origin == fixture_server and request.origin.begins_with("https://")
 		checks["entry does not use local authentication"] = request.path == "/api/v1/auth/steam" and request.method == HTTPClient.METHOD_POST
 		checks["only the callback ticket and game nickname are submitted"] = request.data.ticket == "0102" and request.data.has("displayName") and not request.data.has("steamId") and not request.data.has("deviceId")
-		checks["automatic nickname is valid without an account field"] = str(request.data.displayName).length() >= 2 and str(request.data.displayName).length() <= 20
+		checks["Steam persona is submitted without a client-generated suffix"] = request.data.displayName == "Unity"
 	checks["rejected cloud attempt cancels the Steam ticket"] = api.cancelled == [7] and adapter._ticket_handle == 0
 	api.result_code = 2
 	var failed: Dictionary = await adapter.request_login_ticket()

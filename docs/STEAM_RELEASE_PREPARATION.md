@@ -6,7 +6,7 @@
 
 登录页保留标题、背景、公告、设置、版本信息和一个“进入／Enter”按钮。没有账号输入、随机名按钮、本地登录、Google 登录或登录方式选择。客户端本地认证开关为 false。
 
-点击进入后从 Steam SDK 取得 Web API 票据，再向 `https://www.relicbound.cn/api/v1/auth/steam` 提交 Protobuf 请求。游戏昵称内部生成；昵称和客户端提交的任何信息都不能决定 Steam 账号，账号由服务器校验票据后取得的 SteamID 映射。已有 Steam 角色不会被本次昵称覆盖。若首次注册恰好遇到昵称冲突，再次进入会生成新昵称。
+点击进入后从 Steam SDK 取得 Web API 票据，再向 `https://www.relicbound.cn/api/v1/auth/steam` 提交 Protobuf 请求。客户端读取 Steam persona，首次注册由服务端分配“Steam名#四位随机数”；最多 10 次随机尝试，冲突耗尽后使用 Unix 毫秒时间戳。名称在数据库唯一索引处原子占用；长 Steam 名按现有 20 字符上限截短前缀，后缀保留。昵称不决定 Steam 账号，账号仍由服务器校验后的 SteamID 映射；已有角色不会被本次昵称覆盖。详见 [昵称分配验证](reports/steam-naming-20261028-r1/README.md)。
 
 客户端等待 `get_ticket_for_web_api` 回调，不把 SDK 返回的句柄当作票据；只发送有效范围内的票据字节的十六进制表示。失败回调、HTTP 登录结束、超时及被替换的登录上下文会取消票据。会话仍通过原有服务端鉴权、内存 token 和单次 WebSocket 票据链路建立，不回退到本地认证。
 

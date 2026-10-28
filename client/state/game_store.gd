@@ -342,7 +342,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 			var ticket_result: Dictionary = {"ok": true}
 			if steam_login:
 				ticket_result = await platform.request_login_ticket()
-				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
+				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": ticket_result.display_name}
 			if generation != gateway.session_generation:
 				if steam_login: platform.release_ticket()
 				return

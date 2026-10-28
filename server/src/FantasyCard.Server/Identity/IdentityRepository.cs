@@ -18,8 +18,10 @@ public sealed record ExpiredDataCleanupResult(
 
 public sealed class IdentityRepository(
     NpgsqlDataSource dataSource,
-    PlayerProvisioningService provisioningService)
+    PlayerProvisioningService provisioningService,
+    SteamDisplayNameGenerator? steamDisplayNames = null)
 {
+    private readonly SteamDisplayNameGenerator _steamDisplayNames = steamDisplayNames ?? new();
     private static readonly string[] TestEquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     public async Task<PlayerProfile> SignInLocalAsync(
         string deviceId,
@@ -34,14 +36,24 @@ public sealed class IdentityRepository(
             "local-name", displayName, displayName, tokenHash, now, expiresAt, cancellationToken);
     }
 
-    public async Task<PlayerProfile> SignInExternalAsync(
+    public Task<PlayerProfile> SignInExternalAsync(
         string provider,
         string externalSubject,
         string displayName,
         byte[] tokenHash,
         DateTimeOffset now,
         DateTimeOffset expiresAt,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken) =>
+        SignInAsync(provider, externalSubject, displayName, tokenHash, now, expiresAt, false, cancellationToken);
+
+    public Task<PlayerProfile> SignInSteamAsync(
+        string verifiedSteamId, string personaName, byte[] tokenHash,
+        DateTimeOffset now, DateTimeOffset expiresAt, CancellationToken cancellationToken) =>
+        SignInAsync("steam", verifiedSteamId, personaName, tokenHash, now, expiresAt, true, cancellationToken);
+
+    private async Task<PlayerProfile> SignInAsync(
+        string provider, string externalSubject, string displayName, byte[] tokenHash,
+        DateTimeOffset now, DateTimeOffset expiresAt, bool allocateSteamName, CancellationToken cancellationToken)
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
@@ -71,8 +83,13 @@ public sealed class IdentityRepository(
         var created = profile is null;
         if (profile is null)
         {
-            profile = PlayerProfile.Create(Guid.CreateVersion7(), displayName, now);
-            await InsertPlayerAsync(connection, transaction, profile, provider, externalSubject, cancellationToken);
+            if (allocateSteamName)
+                profile = await CreateSteamPlayerAsync(connection, transaction, externalSubject, displayName, now, cancellationToken);
+            else
+            {
+                profile = PlayerProfile.Create(Guid.CreateVersion7(), displayName, now);
+                await InsertPlayerAsync(connection, transaction, profile, provider, externalSubject, cancellationToken);
+            }
         }
 
         await using (var ban = new NpgsqlCommand("SELECT 1 FROM player_bans WHERE player_id=$1", connection, transaction))
@@ -294,6 +311,37 @@ public sealed class IdentityRepository(
         return await reader.ReadAsync(cancellationToken) ? ReadProfile(reader) : null;
     }
 
+    private async Task<PlayerProfile> CreateSteamPlayerAsync(
+        NpgsqlConnection connection, NpgsqlTransaction transaction, string steamId,
+        string personaName, DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        for (var attempt = 0; attempt < SteamDisplayNameGenerator.RandomAttempts + SteamDisplayNameGenerator.TimestampAttempts; attempt++)
+        {
+            var name = attempt < SteamDisplayNameGenerator.RandomAttempts
+                ? _steamDisplayNames.RandomName(personaName)
+                : _steamDisplayNames.TimestampName(personaName, now);
+            var profile = PlayerProfile.Create(Guid.CreateVersion7(), name, now);
+            // The generated NFKC/lowercase key is checked and claimed atomically.
+            // DO NOTHING leaves the transaction usable after a concurrent name collision.
+            await using var insert = new NpgsqlCommand(
+                """
+                INSERT INTO players(user_id,display_name,selected_class,version,created_at,updated_at)
+                VALUES ($1,$2,NULL,$3,$4,$5)
+                ON CONFLICT (display_name_key) DO NOTHING
+                RETURNING user_id
+                """, connection, transaction);
+            insert.Parameters.AddWithValue(profile.UserId);
+            insert.Parameters.AddWithValue(profile.DisplayName);
+            insert.Parameters.AddWithValue(profile.Version);
+            insert.Parameters.AddWithValue(profile.CreatedAt);
+            insert.Parameters.AddWithValue(profile.UpdatedAt);
+            if (await insert.ExecuteScalarAsync(cancellationToken) is null) continue;
+            await InsertExternalIdentityAsync(connection, transaction, profile, "steam", steamId, cancellationToken);
+            return profile;
+        }
+        throw new PlayerNameConflictException("A unique Steam nickname could not be allocated. Please retry sign-in.");
+    }
+
     private static async Task InsertPlayerAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
@@ -329,6 +377,13 @@ public sealed class IdentityRepository(
             }
         }
 
+        await InsertExternalIdentityAsync(connection, transaction, profile, provider, externalSubject, cancellationToken);
+    }
+
+    private static async Task InsertExternalIdentityAsync(
+        NpgsqlConnection connection, NpgsqlTransaction transaction, PlayerProfile profile,
+        string provider, string externalSubject, CancellationToken cancellationToken)
+    {
         await using (var identityCommand = new NpgsqlCommand(
             """
             INSERT INTO external_identities(provider, external_subject, player_id, created_at)

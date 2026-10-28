@@ -20,7 +20,7 @@ func login_unavailable_reason() -> String:
 	var steam := _steam_api()
 	if steam == null:
 		return I18n.t("当前客户端未安装 Steam 接入组件")
-	for method in ["steamInitEx", "getAuthTicketForWebApi", "cancelAuthTicket", "run_callbacks", "getAppID", "loggedOn"]:
+	for method in ["steamInitEx", "getAuthTicketForWebApi", "cancelAuthTicket", "run_callbacks", "getAppID", "loggedOn", "getPersonaName"]:
 		if not steam.has_method(method): return I18n.t("Steam 接入组件版本不支持当前登录方式")
 	if not steam.has_signal("get_ticket_for_web_api"):
 		return I18n.t("Steam 接入组件不支持网页登录票据回调")
@@ -41,6 +41,9 @@ func request_login_ticket() -> Dictionary:
 		return {"ok": false, "error": I18n.t("Steam 游戏身份与客户端配置不一致")}
 	if not bool(_steam.call("loggedOn")):
 		return {"ok": false, "error": I18n.t("请先登录 Steam")}
+	var persona_name := str(_steam.call("getPersonaName")).strip_edges()
+	if persona_name.is_empty():
+		return {"ok": false, "error": I18n.t("暂时无法读取 Steam 昵称，请稍后重试。")}
 	release_ticket()
 	_ticket_pending = true
 	_ticket_result = {}
@@ -56,7 +59,8 @@ func request_login_ticket() -> Dictionary:
 		release_ticket()
 		return {"ok": false, "error": I18n.t("获取 Steam 登录票据超时，请重试")}
 	var result := _ticket_result.duplicate()
-	if not bool(result.get("ok", false)): release_ticket()
+	if bool(result.get("ok", false)): result["display_name"] = persona_name
+	else: release_ticket()
 	return result
 
 func _process(_delta: float) -> void:
