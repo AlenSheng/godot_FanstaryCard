@@ -704,27 +704,18 @@ func _login() -> void:
 	var panel_frame: Control = panel.get_parent()
 	panel_frame.size_flags_stretch_ratio = 0.32
 	panel_frame.custom_minimum_size.x = 340
-	_label(panel, "启程", 40)
-	_label(panel, P.localized("nickname"), 22, P.MUTED)
-	var name_input := LineEdit.new()
-	name_input.text = _login_name
-	name_input.placeholder_text = P.localized_text("输入唯一账号名称")
-	name_input.max_length = 20
-	name_input.text_changed.connect(func(value): _login_name = value)
-	panel.add_child(name_input)
-	var randomize_button := _button(panel, P.localized("random_name"), func():
-		_login_name = _random_login_name(_login_name)
-		name_input.text = _login_name
-	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
-	randomize_button.tooltip_text = P.localized("random_name_hint")
-	if OS.is_debug_build():
-		var local_button := _button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
-		local_button.tooltip_text = P.localized_text("本地服仅用于开发联调；原有入口连接腾讯云外网服务器。")
-	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
-	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
-	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, "Steam 登录", func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
-	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
+	var top_space := Control.new()
+	top_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(top_space)
+	var steam_reason := _steam_unavailable_reason()
+	var enter := _button(panel, I18n.t("进入"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
+	enter.name = "EnterGameButton"
+	enter.custom_minimum_size.y = 100
+	if not steam_reason.is_empty():
+		_label(panel, I18n.t("Steam 登录暂未就绪，请稍后重试。"), 20, P.MUTED)
+	var bottom_space := Control.new()
+	bottom_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(bottom_space)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var center_space := Control.new()
@@ -750,6 +741,18 @@ func _login() -> void:
 	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
+
+func _steam_unavailable_reason() -> String:
+	return Game.platform.login_unavailable_reason()
+
+func _enter_steam() -> void:
+	if Game.busy: return
+	# The account is selected by the verified Steam identity, never this nickname.
+	# Existing Steam profiles keep their name; a fresh attempt generates a valid
+	# game nickname without restoring a manual account field to the entry screen.
+	_login_name = _random_login_name(_login_name)
+	var address := str(ProjectSettings.get_setting("platform/server_url", CLOUD_SERVER_URL)).strip_edges().trim_suffix("/")
+	await Game.login_steam(address, _login_name)
 
 func _random_login_name(previous: String = "") -> String:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))

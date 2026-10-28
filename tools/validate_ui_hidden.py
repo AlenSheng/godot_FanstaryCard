@@ -280,7 +280,7 @@ if __name__ == "__main__":
     parser.add_argument("--locale", choices=["zh-CN", "en"], default="zh-CN")
     parser.add_argument("--width", type=int, choices=[960, 1280, 1920], default=960)
     parser.add_argument("--screens", default="", help="Comma-separated screen families; empty means all")
-    parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe", "ui_branch_sync_preview"], default="ui_visual_review")
+    parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe", "ui_branch_sync_preview", "ui_steam_entry_review"], default="ui_visual_review")
     parser.add_argument("--wait-seconds", type=int, default=0, help="Admission wait; does not reduce the fixed memory reserve")
     parser.add_argument("--verbose", action="store_true", help="Keep native verbose diagnostics in evidence logs")
     options = parser.parse_args()

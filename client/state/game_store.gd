@@ -311,7 +311,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if not (address.begins_with("http://") or address.begins_with("https://")):
 		_reject_login("请输入 http:// 或 https:// 服务器地址")
 		return
-	if not OS.is_debug_build() and not address.begins_with("https://"):
+	if (steam_login or not OS.is_debug_build()) and not address.begins_with("https://"):
 		_reject_login("正式客户端需要 HTTPS 服务器地址")
 		return
 	if not steam_login and not platform.local_login_enabled():
@@ -335,7 +335,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
 		var capability := "identity.steam" if steam_login else "identity.local"
 		if capability not in server_info.get("capabilities", []):
-			authentication_reason = "此服务器未启用 Steam 登录" if steam_login else "此服务器未启用本地开发登录"
+			authentication_reason = I18n.t("此服务器未启用 Steam 登录") if steam_login else "此服务器未启用本地开发登录"
 			notice.emit(authentication_reason)
 		else:
 			var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}
@@ -343,7 +343,9 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 			if steam_login:
 				ticket_result = await platform.request_login_ticket()
 				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
-			if generation != gateway.session_generation: return
+			if generation != gateway.session_generation:
+				if steam_login: platform.release_ticket()
+				return
 			if ticket_result.ok:
 				var result: Dictionary = await gateway.request("/api/v1/auth/steam" if steam_login else "/api/v1/auth/local", HTTPClient.METHOD_POST, sign_in)
 				if steam_login: platform.release_ticket()

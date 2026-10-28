@@ -1,0 +1,8 @@
+# Opt-in overlay for the Steam branch. Secrets come from the private env file.
+services:
+  server:
+    environment:
+      Identity__Steam__Enabled: ${STEAM_AUTH_ENABLED:-false}
+      Identity__Steam__AppId: ${STEAM_APP_ID:-0}
+      Identity__Steam__PublisherKey: ${STEAM_PUBLISHER_KEY:-}
+      Identity__Steam__Identity: ${STEAM_WEB_API_IDENTITY:-}

@@ -1,5 +1,11 @@
 # Platform login and Windows packaging
 
+`release_steam` preparation (2026-10-28): the entry page contains shared public
+modules and a single Enter button. It uses Steam tickets against the configured
+cloud service, creates a game nickname internally, and disables local login in
+this branch. AppID/native Steam and cloud credentials are still unconfigured.
+See [Steam preparation](../../docs/STEAM_RELEASE_PREPARATION.md) before real integration.
+
 Local login is available only in a debug build with
 `platform/development/local_auth=true` and a server that advertises
 `identity.local`. Release builds use the Steam login path; they never replace a
