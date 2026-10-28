@@ -1,0 +1,96 @@
+{
+  "ok": true,
+  "SQL_outside_HTTP_window_1ms_tolerance": [],
+  "route_summary": [
+    {
+      "route": "/api/v1/auth/local",
+      "n": 24,
+      "statements_min": 299,
+      "statements_max": 299,
+      "maximum_HTTP_ms": 726.649019,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/bootstrap",
+      "n": 93,
+      "statements_min": 19,
+      "statements_max": 24,
+      "maximum_HTTP_ms": 411.761809,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 2261.827719
+    },
+    {
+      "route": "/api/v1/client-info",
+      "n": 24,
+      "statements_min": 1,
+      "statements_max": 1,
+      "maximum_HTTP_ms": 73.125157,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/inventory",
+      "n": 24,
+      "statements_min": 3,
+      "statements_max": 3,
+      "maximum_HTTP_ms": 57.065655,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/matches/enqueue",
+      "n": 24,
+      "statements_min": 9,
+      "statements_max": 9,
+      "maximum_HTTP_ms": 45.112967,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/matches/tickets/{ticketId:guid}",
+      "n": 84,
+      "statements_min": 2,
+      "statements_max": 2,
+      "maximum_HTTP_ms": 34.225004,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/players/me",
+      "n": 24,
+      "statements_min": 6,
+      "statements_max": 6,
+      "maximum_HTTP_ms": 46.609663,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/preparations",
+      "n": 24,
+      "statements_min": 13,
+      "statements_max": 13,
+      "maximum_HTTP_ms": 93.496616,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/realtime/ticket",
+      "n": 24,
+      "statements_min": 1,
+      "statements_max": 1,
+      "maximum_HTTP_ms": 13.317605,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/settlements/{settlementId:guid}",
+      "n": 9,
+      "statements_min": 2,
+      "statements_max": 2,
+      "maximum_HTTP_ms": 64.293655,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    },
+    {
+      "route": "/api/v1/settlements/{settlementId:guid}/acknowledge",
+      "n": 24,
+      "statements_min": 5,
+      "statements_max": 5,
+      "maximum_HTTP_ms": 62.81306,
+      "queued_request_ms_sum_overlapping_HTTP_windows": 0.0
+    }
+  ],
+  "HTTP_timeout_count": 0,
+  "HTTP_trace_SQL_is_not_whole_PG_window": true
+}

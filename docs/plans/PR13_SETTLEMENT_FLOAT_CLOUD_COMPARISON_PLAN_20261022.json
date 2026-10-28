@@ -1,0 +1,81 @@
+{
+  "kind": "SettlementFloatActualXvfbOldNewComparison",
+  "at_utc": "2026-10-22T06:44:29.609872+00:00",
+  "owner": "01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3",
+  "run": "goal-settlement-float-UI-01a152f7-r3-20261022",
+  "base": "/home/ubuntu/pr13-acceptance-20261009/work/goal-A092T02-current30-01a152f7-r1-20261022-inputs/client",
+  "runtime_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "production_before": {
+    "id": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+    "image": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+    "started_at": "2026-10-22T02:46:10.441748235Z",
+    "environment_sha256": "a50d16851ede044a93abd7df8e9ece899700292ba5c287a0433622dde6de20ec",
+    "health": 200
+  },
+  "matrix": "2 locales x3 actual resolutions x2 source variants x3 frames=36",
+  "scope": "Frozen actual U01 cycle2 room/settlement replay plus controlled UI Wood4 feedback. Actual renderer only;0 new accounts/matches/PG/ACK; not all30 new LIVE or capacity proof.",
+  "no_new_gameplay_samples": true,
+  "prerequisite": "Original A092T02 owned cohort terminal,full G custody and containers removed; keep shared readonly base input source for this replay",
+  "preserve_failed_or_passed_RAM_originals_before_ACK": true,
+  "exact_old_main_SHA": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002",
+  "exact_candidate_main_SHA": "426257e57e714b2edd22811b206606cef8405fca424a4130cc5d0728868c9fe8",
+  "files": [
+    {
+      "path": "base-source.original.json",
+      "bytes": 416341,
+      "sha256": "fbbd9879f5bfa912d9f8fb9fedde92345cb13cb639cf8359db25b4d443dc0fac"
+    },
+    {
+      "path": "baseline-main.gd",
+      "bytes": 91569,
+      "sha256": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002"
+    },
+    {
+      "path": "candidate-main.gd",
+      "bytes": 92843,
+      "sha256": "426257e57e714b2edd22811b206606cef8405fca424a4130cc5d0728868c9fe8"
+    },
+    {
+      "path": "controller.py",
+      "bytes": 5400,
+      "sha256": "7094c35528a9785fd00f6fc64e2a70aa7eab397c0338a60eb0425e5df83127dd"
+    },
+    {
+      "path": "owner.identity.json",
+      "bytes": 107,
+      "sha256": "124403d8388d63868622c1f755aa103f15e9bae4f7cac7d8f668c1cb7afbc3a4"
+    },
+    {
+      "path": "replay.gd",
+      "bytes": 5019,
+      "sha256": "186e74d8fa44228498846fc9387ca0e303988d9e3b89c82ca17c21287dcfea09"
+    },
+    {
+      "path": "selected-actual.original.json",
+      "bytes": 6568,
+      "sha256": "da209eb79931e3c1c32f3b1ef3be33310d72832bbd9c674f25b7e7cd88fb9f56"
+    },
+    {
+      "path": "service.py",
+      "bytes": 5680,
+      "sha256": "40e5e05bd4fcf6ee18115f748f0bd49a6a79e33b3094471acdce7d50e59f3e30"
+    },
+    {
+      "path": "settlement-actual.original.json",
+      "bytes": 8510,
+      "sha256": "799a09108fa717df2bec8f3be97b20590de44bb735a4c92d653d1cdb98f0f194"
+    }
+  ],
+  "resource_guards": "MemAvailable>500MB,disk free>3GB,fraction>=4.9%,permanent production same container/image/start/env/health200",
+  "container": "private networknone/read-only root/1664MiB/CPU.75/tmp256MiB/output128MiB; child240s; custody900s",
+  "human_in_scope": false,
+  "gameplay_GDD_HP_outcomes_and_production_unchanged": true,
+  "admission_attempt": 3,
+  "original_R1_admission_failed_before_APP_or_native_launch": true,
+  "original_R1_G_host_records6_preserved": true,
+  "resource_recovery": "Only3 expired upload archive hardlinks,14.139MB,matched G SHA fe68fdbceb5edcf92dcc52cda949457e1741d182fc8ad23bc3d3835be377e5db; runtime/source/raw failures kept",
+  "original_R2_native_exit_minus9_and_cgroup_OOM1_peak512MiB_frames15_preserved": true,
+  "renderer_private_limit_revision": "512MiB to1664MiB single renderer,existing host only; host MemAvailable>500MB guard unchanged; no gameplay or performance criterion relaxed",
+  "safety_floors_unchanged": true,
+  "no_new_natural_matches_or_task_budget_reset": true
+}

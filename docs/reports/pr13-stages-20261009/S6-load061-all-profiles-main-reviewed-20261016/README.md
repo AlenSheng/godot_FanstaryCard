@@ -1,0 +1,1 @@
+LOAD-06.1三个案例的OFFLINE/POSTGRES/LIVE已逐案复核，MAIN Accepted。修正旧GET一次重试冒充两次写重试的覆盖映射和runner漏检引擎错误；当前双HTTP分支24/24干净通过，真实PG三次购买请求只一笔购买/扣款，旧PG T02/T03限定等价路径复用。原失败、缺失日志限制与旧15%/本轮5%资源口径差异保留。当前29Accepted、87Partial、16Ready、103未验收，其他任务和全局门禁不变。

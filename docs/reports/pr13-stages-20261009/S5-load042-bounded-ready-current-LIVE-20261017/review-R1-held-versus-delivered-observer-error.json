@@ -1,0 +1,11 @@
+{
+  "original_review_exit": 1,
+  "failed_assertion": "T02_one_actual_READY_accepted_before_late_required_no_resend_1300ms",
+  "cause": "Review selected first kind=room.started, which is trace of a HELD frame, instead of actual_server_lifecycle delivery event",
+  "actual_held_at_ms": 39894,
+  "actual_late_required_at_ms": 39894,
+  "actual_delivered_started_at_ms": 41194,
+  "exact_delivered_observation_ms": 1300,
+  "fix": "Filter actual_server_lifecycle for delivered started; no fixture/game rerun or assertion threshold change",
+  "raw_run_unchanged": true
+}

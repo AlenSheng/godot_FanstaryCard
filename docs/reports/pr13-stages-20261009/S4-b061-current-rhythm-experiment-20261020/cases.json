@@ -1,0 +1,106 @@
+[
+  {
+    "case_id": "PR13-B06.1-T01",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+    "actual_source": {
+      "actualDomainDLL": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+      "full_current_files12_match_runtime713": true,
+      "SUT_not_rebuilt": true
+    },
+    "actual": {
+      "requests_first5": [
+        0,
+        0,
+        1,
+        1,
+        2
+      ],
+      "charge_weapon0": [
+        0.18,
+        0.3,
+        0.42,
+        0.5,
+        0.5
+      ],
+      "charge_weapon5": [
+        0.26,
+        0.38,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "real_BattleRoom_PlayCards_216": true,
+      "real_empty_library_shuffle_observed": true,
+      "independent_python_xorshift_shuffle_anddraw_replay": true
+    },
+    "scope": "Real authoritative Domain PlayCards with legal20 unique initial zero-unlock white cards, controlled order andpassive synthetic target. Actual resources andRNG verified; not natural battle/player/network/capacity evidence.",
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/report.json",
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/independent-experiment-whole-main-review.json",
+      "docs/reports/pr13-stages-20261009/S6-current-B061-accepted-20261020/main-task-decision.json"
+    ],
+    "private_originals": "G:\\PR13Evidence\\b061-current-rhythm-20261020-originals"
+  },
+  {
+    "case_id": "PR13-B06.1-T02",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+    "actual_source": {
+      "actualDomainDLL": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+      "full_current_files12_match_runtime713": true,
+      "SUT_not_rebuilt": true
+    },
+    "actual": {
+      "fullhand_before_actual_play": 5,
+      "single_play_frees1_slot": true,
+      "requestedImmediate": 2,
+      "actualImmediate_if_no_charge_draw": 1,
+      "actualImmediate_if_charge_draw_fills_hand": 0,
+      "fullhand_direct_requested2_no_mutation": true,
+      "all20_existing_identities_exactlyonce": true
+    },
+    "scope": "Real authoritative Domain PlayCards with legal20 unique initial zero-unlock white cards, controlled order andpassive synthetic target. Actual resources andRNG verified; not natural battle/player/network/capacity evidence.",
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/report.json",
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/independent-experiment-whole-main-review.json",
+      "docs/reports/pr13-stages-20261009/S6-current-B061-accepted-20261020/main-task-decision.json"
+    ],
+    "private_originals": "G:\\PR13Evidence\\b061-current-rhythm-20261020-originals"
+  },
+  {
+    "case_id": "PR13-B06.1-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "EXPERIMENT"
+    ],
+    "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+    "actual_source": {
+      "actualDomainDLL": "c825018a513d027d784bb75e734556fe2b98a221c709b0a9c902e80f481ecd30",
+      "full_current_files12_match_runtime713": true,
+      "SUT_not_rebuilt": true
+    },
+    "actual": {
+      "actual_semanticpairs_equal": 18,
+      "implicit_ctor_NumericalRulesLegacy_matches_explicit_config_CardsSpentDrawfalse": true,
+      "all_formal_candidates_remain_off": true,
+      "no_global_config_mutation": true
+    },
+    "scope": "Real authoritative Domain PlayCards with legal20 unique initial zero-unlock white cards, controlled order andpassive synthetic target. Actual resources andRNG verified; not natural battle/player/network/capacity evidence.",
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/report.json",
+      "docs/reports/pr13-stages-20261009/S4-b061-current-rhythm-experiment-20261020/independent-experiment-whole-main-review.json",
+      "docs/reports/pr13-stages-20261009/S6-current-B061-accepted-20261020/main-task-decision.json"
+    ],
+    "private_originals": "G:\\PR13Evidence\\b061-current-rhythm-20261020-originals"
+  }
+]

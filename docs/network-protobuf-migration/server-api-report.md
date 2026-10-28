@@ -34,7 +34,7 @@ Test-development failures were not counted as passes: attempted local account re
 
 - Independent full integration/performance and Godot end-to-end gates belong to batch-three QA; this report does not claim them passed.
 - This task tested representative success/error/write/read paths. Real Steam platform verification was not executed; provider request format remains unchanged.
-- Inventory is domain-bounded: the read includes only Inventory/Equipped, 50 storage slots plus at most 15 equipped slots (three classes ¡Á five). Its snapshot does not need pagination merely to satisfy the network migration. Transport ceilings remain defense in depth for corrupt/out-of-band data.
+- Inventory is domain-bounded: the read includes only Inventory/Equipped, 50 storage slots plus at most 15 equipped slots (three classes with five slots each). Its snapshot does not need pagination merely to satisfy the network migration. Transport ceilings remain defense in depth for corrupt/out-of-band data.
 - Offset paging is not a transactionally frozen snapshot across requests: concurrent market/mail inserts or removal can shift later pages. Stable ordering avoids tie nondeterminism but a future cursor/snapshot contract would improve consistency.
 - LocalAuthPolicy's pre-existing managed-login exception was retained; no identity/security behavior was silently redefined during serialization migration.
 

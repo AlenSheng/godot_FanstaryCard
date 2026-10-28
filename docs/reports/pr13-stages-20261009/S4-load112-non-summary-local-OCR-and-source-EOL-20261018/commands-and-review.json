@@ -1,0 +1,180 @@
+{
+  "current_distinct_pure_controls": 9,
+  "controls": [
+    {
+      "module": "test_load112_format_privacy.py",
+      "tests": 6,
+      "exit": 0,
+      "chunk_id": "652557"
+    },
+    {
+      "module": "test_load112_mixed_eol_reconstruction.py",
+      "tests": 3,
+      "exit": 0,
+      "chunk_id": "10765c"
+    }
+  ],
+  "actual_OCR_array_smoke2": {
+    "exit": 0,
+    "chunk_id": "79ac41"
+  },
+  "observed_failures_preserved": [
+    {
+      "name": "OCR capability one-liner",
+      "reason": "Outer PowerShell expanded $_; .LanguageTag was not a command. Shell exit0 did not prove readiness."
+    },
+    {
+      "name": "OCR R1 batch",
+      "PID": 49420,
+      "child_PID": 83964,
+      "exit": 1,
+      "chunk_id": "616973",
+      "reason": "JSON array wrapped as one PowerShell record; Python received list ID. Only one reused smoke row, no new completed images. Owned child killed/reaped by exception cleanup."
+    }
+  ],
+  "completed_jobs": [
+    {
+      "name": "local_git_store",
+      "PID": 22360,
+      "exit": 0,
+      "chunk_id": "863465"
+    },
+    {
+      "name": "all_non_summary_formats",
+      "PID": 97472,
+      "exit": 0,
+      "chunk_id": "a1533e"
+    },
+    {
+      "name": "mixed_EOL_source",
+      "PID": 104740,
+      "exit": 0,
+      "chunk_id": "433227"
+    },
+    {
+      "name": "OCR_R2",
+      "PID": 78472,
+      "child_PID": 59508,
+      "exec_session": 73532,
+      "exit": 0,
+      "chunk_id": "e62c61"
+    }
+  ],
+  "no_completed_gameplay_statistics_or_previous_suites_reexecuted": true,
+  "OCR_reused_completed_images": 3,
+  "OCR_new_r2_images": 770,
+  "input_array_fix_only_reader_change_verified": true,
+  "raw_OCR_text_never_persisted_or_echoed": true,
+  "no_correctness_or_resource_threshold_relaxation": true,
+  "reader_source": [
+    {
+      "name": "inspect_load112_last_original_context.py",
+      "bytes": 2431,
+      "sha256": "d0c41bbf25f442156a46363f1ad25950decf106d2116dc45551ebf7230b7c961"
+    },
+    {
+      "name": "audit_load112_last_versions_in_git_store.py",
+      "bytes": 5400,
+      "sha256": "763687e67cd82ddf3580f93c69f26ac4774dcbe0a94e53923fa20497cfde06fc"
+    },
+    {
+      "name": "inspect_load112_non_summary_format_inputs.py",
+      "bytes": 714,
+      "sha256": "6a58d6b7dc3832cbb694699bd138e6d56bf4623407284c7a54c468ec6cd92b37"
+    },
+    {
+      "name": "load112_format_privacy.py",
+      "bytes": 5243,
+      "sha256": "c1760d146846886b5921939cd144dd03af0d6124666397474a812b9b471d4dfe"
+    },
+    {
+      "name": "test_load112_format_privacy.py",
+      "bytes": 1998,
+      "sha256": "a88c57e40d84b92020ec050b75d9c8ae7806223c547eadd451082b84314024db"
+    },
+    {
+      "name": "audit_load112_all_non_summary_formats.py",
+      "bytes": 6376,
+      "sha256": "bdbb952acea5536286b803b6e1783d2929cc0e0fb3fb56f8fd46a6a23c5e309a"
+    },
+    {
+      "name": "load112_mixed_eol_reconstruction.py",
+      "bytes": 1585,
+      "sha256": "ff68ebabb3e09ee3f71067d430eb4c9f36374cc3b3291642d298c9ba1c88a8d9"
+    },
+    {
+      "name": "test_load112_mixed_eol_reconstruction.py",
+      "bytes": 1047,
+      "sha256": "2cc6500b4fc37966c691778b756ddb3ad267181c47157ffd04baa415e452bde7"
+    },
+    {
+      "name": "reconstruct_load112_last_source_eol_layout.py",
+      "bytes": 5399,
+      "sha256": "d1487bf3d785cd6a5ca2e394173ba4501129ee23e0836777c8bfa50782eb36e3"
+    },
+    {
+      "name": "triage_load112_non_summary_patterns.py",
+      "bytes": 2319,
+      "sha256": "c7f915f833e32d3f45e26b6c08411035ae384417bbdcadc827b3b34433ab0e99"
+    },
+    {
+      "name": "inspect_load112_pattern_expression_shapes.py",
+      "bytes": 1042,
+      "sha256": "c3449ac74d15710dc1418db7c2821bff1a4123abf98077a803b73adfeafabcfc"
+    },
+    {
+      "name": "review_load112_all_non_summary_pattern_roles.py",
+      "bytes": 4225,
+      "sha256": "499590ef9f3bff6bdef87906faf0ae66db53a5e1a235952b8d773d971af4620d"
+    },
+    {
+      "name": "check_load112_local_ocr.ps1",
+      "bytes": 369,
+      "sha256": "128405287985b4115343b5d7dc8e33101da6225d8be524d067876fc7764da2f3"
+    },
+    {
+      "name": "read_load112_images_with_local_ocr.ps1",
+      "bytes": 3513,
+      "sha256": "2bce8a1e6b5142cfd50b9a6b16a1475011c87b147b39440aff65941a2477d232"
+    },
+    {
+      "name": "smoke_load112_local_image_ocr.py",
+      "bytes": 1676,
+      "sha256": "4c0c8dec985e5f12a6da2fcdc7b93c4b602230fefa4a4f6e2300599f62916124"
+    },
+    {
+      "name": "audit_load112_existing_pngs_with_local_ocr.py",
+      "bytes": 5542,
+      "sha256": "593b337b306b6c7e4f75918bf1d6ec7b22d7165c7f6bf334a466d2e9bbf0e5a1"
+    },
+    {
+      "name": "smoke_load112_local_ocr_array_r2.py",
+      "bytes": 1910,
+      "sha256": "43cb0eb9dc67019fa0940705fee9b8b26d2b03f37675f34b88665dcc4c41d577"
+    },
+    {
+      "name": "audit_load112_existing_pngs_with_local_ocr_r2.py",
+      "bytes": 5833,
+      "sha256": "0e823488770e9b4608829754929437c3f81fe4849d0c462c7d6e9adbe26e5c2c"
+    },
+    {
+      "name": "prepare_load112_formats_report.py",
+      "bytes": 16601,
+      "sha256": "a0ec762a0442a8b2f4c4ad47c9bb30dde267142a63e5c7b6a400870cf3804ad6"
+    }
+  ],
+  "complete_GDD_identity": [
+    {
+      "path": "GDD.md",
+      "bytes": 15047,
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "bytes": 271379,
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "base_git_sha": "eae492038ab6af7599b8c07225fa95cf4aff0234",
+  "no_new_integration_or_CI_claim": true
+}

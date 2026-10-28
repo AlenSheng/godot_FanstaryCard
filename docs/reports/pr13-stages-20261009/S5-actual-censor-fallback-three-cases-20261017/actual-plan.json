@@ -1,0 +1,20 @@
+{
+  "task": "PR13-B01.4",
+  "case": "PR13-B01.4-T02",
+  "profile": "EXPERIMENT",
+  "real_wait_ms_minimum": 60000,
+  "native_deadline_seconds": 85,
+  "worlds": 1,
+  "seed": 610001,
+  "scenario": "fallback",
+  "synthetic_legal_encounter": true,
+  "no_gameplay_progress_control": "ActualDomainclock paused; decision-layer ordinary plays withheld; realSocket pongs/repeated actual snapshots remain",
+  "normal_load_profile": "cyclic-gameplay",
+  "same_actual_production_fallback_method": true,
+  "gameplay_or_client_clock_not_faked": true,
+  "fallback_operation": "Actual GameStore.command -> actual Gateway/officialcodec -> actual BattleRoom.AbandonBattle",
+  "natural_win_or_capacity_or_PG_or_auth_claim": false,
+  "max_new_worlds": 1,
+  "old_failed_evidence_retained": true,
+  "source_scope": "CurrentactualDomain/official projection/protobuf/current native observer and shared60s fallback branch; frozen authority clock and withheld ordinary decisions are declared fault inputs"
+}

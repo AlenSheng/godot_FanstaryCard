@@ -1,0 +1,410 @@
+{
+  "kind": "Guardian2400ThreeNaturalCyclesAndCombinedThreeClassNineReview",
+  "guardian_profile": "current-Guardian-natural3-budget2400-r2",
+  "guardian_native_exit": 0,
+  "guardian_three_normal_cycles_pass": true,
+  "guardian_cases": [
+    {
+      "client": "PR13NFG02",
+      "hero": "Guardian",
+      "native_PID": 27332,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFG02:1",
+          "match_id": "01a1449f-fc21-7ddd-9eef-11d4752675a5",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144aa-03e8-7074-9832-9ba78509fd5b",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 1548,
+          "actual_realtime_rows": 666
+        },
+        {
+          "cycle_id": "PR13NFG02:2",
+          "match_id": "01a144aa-945b-71d9-b644-9b2f7af04460",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144ba-6e01-7875-a6a2-f536d95498ea",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 2440,
+          "actual_realtime_rows": 1075
+        },
+        {
+          "cycle_id": "PR13NFG02:3",
+          "match_id": "01a144ba-fe10-767e-bcad-71a380b838cd",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144d1-5ea6-7a96-a628-aa95d2a000d7",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 3452,
+          "actual_realtime_rows": 1521
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 12056,
+      "raw_SHA256": "b4ba544c3dde6c70ea744d477717d47ae8489f2d6aeef9be9c99379173473bd4",
+      "report_SHA256": "9737f7fc469773858aed8ad95ec46e0d4f2aaa34961043d8c36b21b04cadb215",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 12,
+        "ledger_rows": 12,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "GuardianSoul": 43,
+          "EquipmentFragments": 62,
+          "Gold": 430,
+          "WarriorSoul": 85
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 430,
+          "WarriorSoul": 85,
+          "PriestSoul": 0,
+          "MageSoul": 0,
+          "GuardianSoul": 43,
+          "EquipmentFragments": 62
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 43
+      },
+      "observed_playing_spans": [
+        {
+          "cycle_id": "PR13NFG02:1",
+          "match_id": "01a1449f-fc21-7ddd-9eef-11d4752675a5",
+          "observed_playing_span_lower_bound_ms": 658810,
+          "over_original600s": true,
+          "over_previous1200s": false,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        },
+        {
+          "cycle_id": "PR13NFG02:2",
+          "match_id": "01a144aa-945b-71d9-b644-9b2f7af04460",
+          "observed_playing_span_lower_bound_ms": 1040796,
+          "over_original600s": true,
+          "over_previous1200s": false,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        },
+        {
+          "cycle_id": "PR13NFG02:3",
+          "match_id": "01a144ba-fe10-767e-bcad-71a380b838cd",
+          "observed_playing_span_lower_bound_ms": 1468629,
+          "over_original600s": true,
+          "over_previous1200s": true,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        }
+      ]
+    }
+  ],
+  "guardian_raw_events_verified": 12056,
+  "guardian_original_manifest_files_verified": 16,
+  "guardian_positive_asset_credits_verified": 12,
+  "guardian_observed_playing_spans": [
+    {
+      "cycle_id": "PR13NFG02:1",
+      "match_id": "01a1449f-fc21-7ddd-9eef-11d4752675a5",
+      "observed_playing_span_lower_bound_ms": 658810,
+      "over_original600s": true,
+      "over_previous1200s": false,
+      "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+    },
+    {
+      "cycle_id": "PR13NFG02:2",
+      "match_id": "01a144aa-945b-71d9-b644-9b2f7af04460",
+      "observed_playing_span_lower_bound_ms": 1040796,
+      "over_original600s": true,
+      "over_previous1200s": false,
+      "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+    },
+    {
+      "cycle_id": "PR13NFG02:3",
+      "match_id": "01a144ba-fe10-767e-bcad-71a380b838cd",
+      "observed_playing_span_lower_bound_ms": 1468629,
+      "over_original600s": true,
+      "over_previous1200s": true,
+      "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+    }
+  ],
+  "monotonic_lower_bound_cycles_over1200s": 1,
+  "combined_three_class_normal_cycles": 9,
+  "combined_class_accounts": [
+    {
+      "client": "PR13NFP01",
+      "hero": "Priest",
+      "native_PID": 99772,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFP01:1",
+          "match_id": "01a14486-603f-7edd-ad09-b5a3b989044d",
+          "SQL_result": "Dead",
+          "settlement_id": "01a1448c-daf4-74d9-9299-1f79789e8e1c",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 1007,
+          "actual_realtime_rows": 430
+        },
+        {
+          "cycle_id": "PR13NFP01:2",
+          "match_id": "01a1448d-6a0d-7222-82c9-53c86fcf0811",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a14493-46f6-7822-b7ba-5044a3bc87da",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 889,
+          "actual_realtime_rows": 397
+        },
+        {
+          "cycle_id": "PR13NFP01:3",
+          "match_id": "01a14493-d89e-7615-9198-8add103de0d2",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a14499-2fa8-7961-8ca2-f3eba791c637",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 817,
+          "actual_realtime_rows": 359
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 4518,
+      "raw_SHA256": "a18c03aa8ef729879d682ee6cad4dca88f35a4e21c64994bbc7a9f5611b5c841",
+      "report_SHA256": "40adfe41806b9daa282fec56958d7be93e2ed1730b265e020f6852f7b1680d5c",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 8,
+        "ledger_rows": 8,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "PriestSoul": 10,
+          "EquipmentFragments": 16,
+          "Gold": 100,
+          "WarriorSoul": 20
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 100,
+          "WarriorSoul": 20,
+          "PriestSoul": 10,
+          "MageSoul": 0,
+          "GuardianSoul": 0,
+          "EquipmentFragments": 16
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 15,
+        "Terminal": 1
+      }
+    },
+    {
+      "client": "PR13NFM01",
+      "hero": "Mage",
+      "native_PID": 76700,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFM01:1",
+          "match_id": "01a14499-5bc4-7d1d-a8b2-30a9eab70ec6",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a1449a-dab5-7422-9aee-8893578620a6",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 218,
+          "actual_realtime_rows": 112
+        },
+        {
+          "cycle_id": "PR13NFM01:2",
+          "match_id": "01a1449b-680d-7a1e-9008-bbe4032ba416",
+          "SQL_result": "Dead",
+          "settlement_id": "01a1449e-2327-7042-9dee-254d048c46d4",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 418,
+          "actual_realtime_rows": 205
+        },
+        {
+          "cycle_id": "PR13NFM01:3",
+          "match_id": "01a1449e-b00f-7bbf-8d74-9a7edb9cde77",
+          "SQL_result": "Dead",
+          "settlement_id": "01a144a1-4e14-7574-a331-a4e8166094ed",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 398,
+          "actual_realtime_rows": 202
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 1935,
+      "raw_SHA256": "b464ec98544f3bcbbf75f5db8fceccb6417d3e0f0eddd8ba7b605deeb55f1689",
+      "report_SHA256": "6be8a5de91f8c3164cfd77cc83b63aaa3522e7f161a2f4a7db814ef50e33180d",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 4,
+        "ledger_rows": 4,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "MageSoul": 2,
+          "EquipmentFragments": 4,
+          "Gold": 20,
+          "WarriorSoul": 4
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 20,
+          "WarriorSoul": 4,
+          "PriestSoul": 0,
+          "MageSoul": 2,
+          "GuardianSoul": 0,
+          "EquipmentFragments": 4
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 8,
+        "Terminal": 2
+      }
+    },
+    {
+      "client": "PR13NFG02",
+      "hero": "Guardian",
+      "native_PID": 27332,
+      "original_report_ok": true,
+      "normal_cycles_verified": 3,
+      "cycles": [
+        {
+          "cycle_id": "PR13NFG02:1",
+          "match_id": "01a1449f-fc21-7ddd-9eef-11d4752675a5",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144aa-03e8-7074-9832-9ba78509fd5b",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 1548,
+          "actual_realtime_rows": 666
+        },
+        {
+          "cycle_id": "PR13NFG02:2",
+          "match_id": "01a144aa-945b-71d9-b644-9b2f7af04460",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144ba-6e01-7875-a6a2-f536d95498ea",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 2440,
+          "actual_realtime_rows": 1075
+        },
+        {
+          "cycle_id": "PR13NFG02:3",
+          "match_id": "01a144ba-fe10-767e-bcad-71a380b838cd",
+          "SQL_result": "Extracted",
+          "settlement_id": "01a144d1-5ea6-7a96-a628-aa95d2a000d7",
+          "normal_ACK_before_completion": true,
+          "actual_battle_observations": 3452,
+          "actual_realtime_rows": 1521
+        }
+      ],
+      "full_three_normal_cycles_pass": true,
+      "raw_events": 12056,
+      "raw_SHA256": "b4ba544c3dde6c70ea744d477717d47ae8489f2d6aeef9be9c99379173473bd4",
+      "report_SHA256": "9737f7fc469773858aed8ad95ec46e0d4f2aaa34961043d8c36b21b04cadb215",
+      "raw_sequence_contiguous": true,
+      "audit_lost_count": 0,
+      "drain_ACK_count": 0,
+      "cleanup_abandon_count": 0,
+      "asset_once_review": {
+        "committed_holds": 12,
+        "ledger_rows": 12,
+        "each_hold_exactly_one_ledger_credit": true,
+        "ledger_matches_exact_settlement_items": true,
+        "positive_asset_totals": {
+          "GuardianSoul": 43,
+          "EquipmentFragments": 62,
+          "Gold": 430,
+          "WarriorSoul": 85
+        },
+        "actual_wallet_and_material_balances": {
+          "Gold": 430,
+          "WarriorSoul": 85,
+          "PriestSoul": 0,
+          "MageSoul": 0,
+          "GuardianSoul": 43,
+          "EquipmentFragments": 62
+        },
+        "exact_balance_match": true,
+        "ACK_idempotency_records": 3,
+        "pending_holds": 0,
+        "locked_equipment": 0
+      },
+      "battle_summary_outcomes": {
+        "Victory": 43
+      },
+      "observed_playing_spans": [
+        {
+          "cycle_id": "PR13NFG02:1",
+          "match_id": "01a1449f-fc21-7ddd-9eef-11d4752675a5",
+          "observed_playing_span_lower_bound_ms": 658810,
+          "over_original600s": true,
+          "over_previous1200s": false,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        },
+        {
+          "cycle_id": "PR13NFG02:2",
+          "match_id": "01a144aa-945b-71d9-b644-9b2f7af04460",
+          "observed_playing_span_lower_bound_ms": 1040796,
+          "over_original600s": true,
+          "over_previous1200s": false,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        },
+        {
+          "cycle_id": "PR13NFG02:3",
+          "match_id": "01a144ba-fe10-767e-bcad-71a380b838cd",
+          "observed_playing_span_lower_bound_ms": 1468629,
+          "over_original600s": true,
+          "over_previous1200s": true,
+          "source_clock": "Same-client monotonic; starts at first actual battle observation,so conservative lower bound"
+        }
+      ]
+    }
+  ],
+  "combined_revised_lifecycle_pass": true,
+  "observation_budgets_seconds": {
+    "Mage": 1200,
+    "Priest": 1200,
+    "Guardian": 2400
+  },
+  "combined_positive_asset_credits_verified": 24,
+  "config_package_hashes_observed": {
+    "49ce83c0aacbe18f57f84a5b58d682b08c452026de5588dbd7c6be89eac48a87": 4215
+  },
+  "exact_client_source_manifest_equal_to_old_successful_two_classes": true,
+  "raw_source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\guardian-natural3-budget2400-r2\\study\\run",
+  "asset_ledger_source": {
+    "path": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\completed-Guardian2400-assets.original.json",
+    "sha256": "bbd93da582e7027ac46258d29b7353c2baaa0cb082b5f0739d86b514fcfa5521"
+  },
+  "original30_strict_pass": false,
+  "previous1200_nine_profile_pass": false,
+  "original_Guardian1200_censored_failure_retained": true,
+  "monitor": {
+    "samples": 326,
+    "max_gap_seconds": 10.202999999979511,
+    "CPU_max_percent": 12.222222222222223,
+    "max_global_active_accounts": 2,
+    "all5pct_resource_floors_passed": true
+  },
+  "all_owned_gameplay_processes_terminal": true,
+  "all_owned_human_routes_clear": true,
+  "cloud_environment_changed": false,
+  "no_capacity_RENDER_human_or_strength_claim": true,
+  "full_tasks_not_automatically_accepted": true
+}

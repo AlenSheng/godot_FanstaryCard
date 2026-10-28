@@ -1,0 +1,19 @@
+{
+  "task_id": "PR13-B11.3",
+  "case_id": "PR13-B11.3-T02",
+  "authority": "MAIN",
+  "at_local": "2026-10-19T19:31:33.550450+08:00",
+  "case_decision": "NoChangeWithEvidence",
+  "task_state": "Accepted",
+  "reason": "现存有ID路径已是213B/2SQL低成本读取，三个同档位配对轮均保持同一真实收据语义、无池排队/超时；没有再引入接口或优化候选的必要证据。无ID现有Bootstrap承担排除Pending资产和同match恢复，不能用返回200的详情接口绕过。当前单飞/2500ms限频和原真实hold/ACK/等待/恢复原图保持。",
+  "NoChange_contract": "按原state_contract.no_change_rule提交已完成剖析/配对、现行正确性、无需修改原因及MAIN裁决；不是以缺数据或资源不足代替NoChange。",
+  "bounded_scope": "单读取者、真实资产已完成未ACK收据、当前完整Program/客户端、原有私有100/200/500档位；不代表系统或并发无热点。",
+  "request_count_reduction_or_new_gain_claim": false,
+  "LOAD084_full_per_room_gain_not_discharged": true,
+  "no_new_endpoint_or_candidate_deployed": true,
+  "human_authorization": "本goal自动验收授权；真人体验排除。",
+  "old_source_and_local_failed_rounds_retained": true,
+  "game_business_rules_or_correctness_relaxed": false,
+  "no_product_source_UI_art_or_production_change": true,
+  "rollback": "将current pointer退回父register；无产品或生产回滚事项。"
+}

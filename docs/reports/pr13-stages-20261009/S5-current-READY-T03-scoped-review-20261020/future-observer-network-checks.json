@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "old-snapshot actual ownedWSupgrade",
+      "passed": true
+    },
+    {
+      "name": "old-snapshot firstsnapshot actualhistoric payload then untouched realcurrent",
+      "passed": true
+    },
+    {
+      "name": "current sequence requestID trace envelope unchanged",
+      "passed": true
+    },
+    {
+      "name": "current metadata labels follow official snapshot schema",
+      "passed": true
+    },
+    {
+      "name": "historic metadata labels follow official snapshot schema",
+      "passed": true
+    },
+    {
+      "name": "old-snapshot drop recorded distinctly from originalpacket capture",
+      "passed": true
+    },
+    {
+      "name": "old-snapshot no unexpectedproxy errors",
+      "passed": true
+    },
+    {
+      "name": "old-snapshot ownedrelayclosed",
+      "passed": true
+    }
+  ],
+  "actual_local_network_WSrelays1": true,
+  "actual_saved_packet_types_required_started_snapshot": true,
+  "source_server_packets_replayed_only_in_synthetic_localcontrol": true,
+  "new_real_worlds_accounts0": true,
+  "cloud_SUT_case_not_claimed": true
+}

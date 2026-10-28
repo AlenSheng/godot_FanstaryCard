@@ -1,0 +1,45 @@
+{
+  "kind": "CurrentRuntimeCaseProfileRecommendationsOnly",
+  "apply_to_register": false,
+  "MAIN_gate_state_changed": false,
+  "official_task_state": "Partial",
+  "historical_OFFLINE_POSTGRES_passes_retained_not_rerun": true,
+  "current_profiles_supported": [
+    "LIVE",
+    "POSTGRES"
+  ],
+  "canonical_cases": [
+    {
+      "case_id": "LOAD-05.3-T01",
+      "current_LIVE_support": "Passed",
+      "evidence": [
+        "pre-room R2/R3",
+        "R12 current original entering cancellation independently reviewed"
+      ],
+      "qualification": "Original R1/R9/R10/R12 whole failures preserved. R12 correct case support uses actual contract historicalMatched + Removed/Cancelled/no locks; no old result overwrite."
+    },
+    {
+      "case_id": "LOAD-05.3-T02",
+      "current_LIVE_support": "Passed",
+      "evidence": [
+        "R5 before-commit and after-commit real ACK STOP"
+      ],
+      "qualification": "Unknown while client has no authoritative result; eventual one durable ACK and no cycle credit."
+    },
+    {
+      "case_id": "LOAD-05.3-T03",
+      "current_LIVE_support": "Passed",
+      "evidence": [
+        "R8 actual Pending hold/restart/valid effectiveM/Unknown and eventual recovery"
+      ],
+      "qualification": "Current owned terminal room is legitimate recoveryM representation. Separate empty-room recovery flag path not claimed."
+    }
+  ],
+  "whole_task_additional_await_support": [
+    "R11 active battle original cleanup",
+    "R10 helper1 original between-cycle stop"
+  ],
+  "proposed_runtime_evidence_ready_for_MAIN_review": true,
+  "whole132_goal_complete": false,
+  "whole_old_round_failures_relabelled": false
+}

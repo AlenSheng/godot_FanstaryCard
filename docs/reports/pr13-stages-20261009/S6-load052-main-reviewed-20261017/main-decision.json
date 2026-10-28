@@ -1,0 +1,19 @@
+{
+  "task_id": "LOAD-05.2",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T14:06:49.292189+08:00",
+  "reason": "原完整_run真实同会话三局ACK及游标递增，实际M1旧HTTP/WS在M2拒绝；独立真实带装备ACK失败恢复与PG死亡资产不回滚、非空缓存OFFLINE6项，66不变量复核通过。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load052-three-session-and-equipment-LIVE-PG-20261017/main-independent-review.json",
+  "human_authorization": "本goal自动补验与隔离云临时测试授权。",
+  "business_criteria_relaxed": false,
+  "product_source_changes": false,
+  "actual_matches": 4,
+  "conservative_player_room_starts": 16,
+  "original_full_run_functional_cycles": 3,
+  "natural_cycles_claimed": 0,
+  "original_R1_failed_preserved": true,
+  "scope": "Current LIVE/PG, declared old-frame outer-sequence+1 and already-completed HTTP consumer hold; full original3functional controlledabandon cycles, separate equipped negative ACK, nonempty command cache onlyOFFLINE. Actual equipment identity restored in preparation snapshot, physical death asset remainsRelicPile.",
+  "old15percent_capacity_resource_floor_unpassed": true,
+  "rollback": "回到父register撤销本项裁决；本次无产品源码、正式配置或生产服务变更，隔离PG装备夹具随临时环境清理。"
+}

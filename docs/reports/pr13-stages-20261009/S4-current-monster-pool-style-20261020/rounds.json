@@ -1,0 +1,68 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "mode": "smoke",
+      "contexts": 1,
+      "native_exit": 0,
+      "passed": true
+    },
+    {
+      "round": 1,
+      "mode": "matrix",
+      "contexts": 4,
+      "native_exit": 1,
+      "passed": false
+    },
+    {
+      "round": 2,
+      "mode": "matrix",
+      "contexts": 9,
+      "native_exit": -15,
+      "passed": false,
+      "reason": "unsupported locale assertion then exact operator stop"
+    },
+    {
+      "round": 3,
+      "mode": "matrix",
+      "contexts": 18,
+      "native_exit": 0,
+      "passed": true
+    },
+    {
+      "round": 4,
+      "mode": "matrix",
+      "contexts": 4,
+      "native_exit": 0,
+      "passed": true,
+      "pixel_followups_required": true
+    },
+    {
+      "round": 5,
+      "mode": "matrix",
+      "contexts": 1,
+      "native_exit": 1,
+      "passed": false
+    },
+    {
+      "round": 6,
+      "mode": "matrix",
+      "contexts": 2,
+      "native_exit": 1,
+      "passed": false
+    },
+    {
+      "round": 7,
+      "mode": "matrix",
+      "contexts": 18,
+      "native_exit": 0,
+      "passed": true
+    }
+  ],
+  "total": 57,
+  "all_attempts_counted": true,
+  "old_failures_not_rewritten": true,
+  "R2_service_wrapper_failed_separate_from_native_operator_exit": true,
+  "R5_inherited_sameproduct_labels_stale_actual_manifest_authoritative": true,
+  "R7_transfer10054_partial_preserved_resume_same_archive_no_rerun": true
+}

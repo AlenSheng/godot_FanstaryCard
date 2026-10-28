@@ -1,0 +1,93 @@
+{
+  "kind": "A06CurrentRealGodotHTTPBoundaryContextAndPairedExperiment",
+  "tasks": [
+    "PR13-A06.1",
+    "PR13-A06.2",
+    "PR13-A06.3",
+    "PR13-A06.4"
+  ],
+  "profiles": [
+    "OFFLINE",
+    "EXPERIMENT"
+  ],
+  "scope": "ActualGodot4.7.2 HTTPClient/Gateway/originalLoadTelemetry withownedloopbackTCP/TLS only; controlledfixture contexts/tokens areinputs, notactualgame/PG/asset orcapacityevidence. No publicserver/auth/database/UI/render orhuman.",
+  "boundaries": [
+    "length",
+    "close-length",
+    "close-body",
+    "chunked",
+    "chunk-close",
+    "empty",
+    "head",
+    "truncated-length",
+    "truncated-chunk",
+    "wire-limit",
+    "gzip",
+    "deflate",
+    "gzip-empty",
+    "deflate-empty",
+    "bad-gzip",
+    "gzip-crc",
+    "gzip-truncated-empty",
+    "bad-deflate",
+    "gzip-expand-limit",
+    "unknown-encoding",
+    "slow",
+    "untrusted-TLS"
+  ],
+  "current_suite_rounds": 3,
+  "context_cases": [
+    "idleclose nextlogicalbounded sameID perattempt",
+    "warmprimary overlap separateconnections/bodies",
+    "pendingoldHTTP originA endsession/tokenB/originB no oldresult/header leak",
+    "cycle1slowresponse aftercycle2 originaldispatchfields",
+    "retry503->200 afterstagechange retainalloriginalIDs/phase",
+    "STOPwhileactualbodypending ->drain observer vsoriginalbusinesscontext andcancelleddata, missingasynccontext Unknown negative"
+  ],
+  "paired": {
+    "round_orders": [
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "A": "currentNative per-request originaloneoff path",
+    "B": "currentNative reusable path",
+    "warmup_per_arm": 1,
+    "measured_per_arm": 20,
+    "mix": "same20 GET /api/v1/players/me?case=bench&slot=0..19, opaquePBbodyconstant, samefixturepolicy/newisolatedprocess eacharm",
+    "negative_correctness": "separateactual20slow-control requests vs20bad-fast; oneinvalidPB atslot7, successesfaster butunexpectedfailure+1 ->mustFailed regardlessothermismatch, nevercausalbenefitclaim",
+    "negative_bytes": "separate20different-byteprofile requests vsround1baseline ->DiagnosticOnly no causalclaim",
+    "measured_requests_total": 180,
+    "statistics": "alllaunched success/failure/pending; actualattempts/reuse/connections/bodySHA. 3pairedroundcluster exact27bootstrap/8signflip; insufficientprecision remainsInconclusive, existingdefaults unchanged."
+  },
+  "bounds": {
+    "Native_seconds_per_suite": 100,
+    "Native_seconds_per_benchmark": 30,
+    "single_task_new_games": 0,
+    "single_task_new_HTTP_requests_fewhundred": true,
+    "logical_HTTP10_30_unchanged": true,
+    "direct_boundary_slow_timeout_ms": 100,
+    "body_limit_bytes": 2097152,
+    "no_failed_round_hidden_or_reset": true
+  },
+  "source_hash_definition": "Currentcore/config inputbytes+fixtureversion and actualconditionrecipe excluding onlycontrolledtransportarm; mixhash actualorderedpath/method. Body/framingprofile hash excludesdynamicrequestIDs, includes actualpayloadSHA/length/status/encoding andframing. Deliberatebad/differentconditions explicitlydifferent nevercausal.",
+  "user_constraints": "LocalallGodotheadless/Dummy60/CNO/BelowNormal noGUI/fullscreen/focus/input; onlyoneNativeprocessatonce. NoPG/heavycapacity/localrealaccount. Existingcloudhostonly forremainingcloudtests; resourceinsufficientCAPremainNotAccepted.",
+  "GDD": [
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "health_semantics": "Mage70/Priest80/Guardian100/legal80/70 are not changed orvalidatedbytransportfixtures; noHP clamp.",
+  "human_experience_in_scope": false,
+  "production_activation": false,
+  "performance_acceptance": false,
+  "capacity_acceptance": false,
+  "criteria_relaxed": false,
+  "no_newGitcommit_push_deploy": true,
+  "state": "FrozenNotExecuted"
+}

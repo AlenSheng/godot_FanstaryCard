@@ -1,0 +1,21 @@
+{
+  "all84_candidate_files_reviewed": true,
+  "counts_by_matched_expression": {
+    "PrivateEnvironmentFilePathVariable_NotCredentialValue": 53,
+    "RuntimeRandomPasswordGeneration_NotStoredLiteral": 50,
+    "ConnectionStringRuntimeInterpolation_NotEmbeddedPassword": 53,
+    "ControlledFakeGatewayLiteral_NotProductionCredential": 2,
+    "TestCancellationToken_NotAuthenticationToken": 1,
+    "PrivateRuntimeEnvironmentReadReference_NotEmbeddedValue": 3,
+    "EmptyTypedTokenDefault": 17,
+    "FunctionTypeAnnotation_NotAStoredToken": 19,
+    "RuntimeTokenParameterForwarding": 17,
+    "RuntimeSessionTokenGeneration_NotStoredLiteral": 11,
+    "TypedTupleOrNullDefault_NotCredentialLiteral": 2
+  },
+  "unresolved_candidates": [],
+  "no_confirmed_production_credential_leak_from_reviewed_patterns": true,
+  "no_validator_whitelist_or_original_file_change": true,
+  "broader_regex_false_negatives_and_opaque_semantics_not_proved_absent": true,
+  "ledger_sha256": "38eb143871ffaa4a91678d5140aaf4f4bf3570cc2ee0ec052484cdde2dfd816f"
+}

@@ -1,0 +1,130 @@
+{
+  "authority": "MAIN",
+  "task_decisions": [
+    {
+      "task_id": "LOAD-10.2",
+      "authority": "MAIN",
+      "state": "Partial",
+      "at_local": "2026-10-16T21:17:38.633363+08:00",
+      "human_authorization": "如果遇见多次周期测试有部分失败整体验收不通过，多次可以放宽限制，并在报告中重点说明。",
+      "reason": "用户授权后的三职业各账号三自然局修订生命周期9/9已由原件、SQL和24笔入账复核；旧600/1200秒和原十账号30局失败保留。当前未覆盖的故障注入/数据库/渲染/容量案例层仍缺失，因此只转为Partial，不验收整项。",
+      "original_pass_criteria_preserved": "每局匹配/settlement/ack可关联且DB资产一次；30局目标缺一正常终态即不能称全通过。",
+      "original_failed_observation_preserved": {
+        "task_id": "LOAD-10.2",
+        "state": "Failed",
+        "stage": "S5",
+        "reason": "Original 600/1200-second real-client trials remain failed/censored. Human accepts long Guardian combat; an observation cutoff does not prove deadlock or overpower. Full natural routes and remaining LIVE/EXPERIMENT profiles are still required.",
+        "evidence": "docs/reports/pr13-stages-20261009/S5-cloud-gdd1200-baseline/summary.json",
+        "next_action": "Verify effective combat progress and terminal reachability across legal full routes, preserving censored samples. Propose card/deck changes only from demonstrated balance evidence.",
+        "separate_legal_build_control": {
+          "state": "FailedFunctionalControl",
+          "natural_cycles": 21,
+          "target": 30,
+          "evidence": "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+          "original_baseline_failure_not_superseded": true
+        },
+        "duration_decision": "docs/plans/PR13_GUARDIAN_DURATION_BALANCE_DECISION_20261009.json"
+      },
+      "effective_natural_cycle_criterion": {
+        "accounts": 3,
+        "heroes": [
+          "Mage",
+          "Priest",
+          "Guardian"
+        ],
+        "normal_cycles_each": 3,
+        "total": 9,
+        "cycle_observation_seconds": {
+          "Mage": 1200,
+          "Priest": 1200,
+          "Guardian": 2400
+        },
+        "normal_endpoints_only": true,
+        "same_match_ACK_and_once_assets_required": true
+      },
+      "remaining_case_profiles_unchanged": {
+        "LOAD-10.2-T01": [
+          "CAPACITY"
+        ],
+        "LOAD-10.2-T02": [
+          "CAPACITY",
+          "LIVE"
+        ],
+        "LOAD-10.2-T03": [
+          "CAPACITY",
+          "LIVE",
+          "POSTGRES"
+        ]
+      },
+      "no_faultcase_runtime_profiles_closed_by_normal_loops": true,
+      "original30_strict_pass": false,
+      "source_report": "docs/reports/pr13-stages-20261009/S5-three-class-revised-nine-current-reviewed-20261016/summary.json",
+      "full_task_accepted": false,
+      "gates_promoted": false
+    },
+    {
+      "task_id": "PR13-A09.2",
+      "authority": "MAIN",
+      "state": "Partial",
+      "at_local": "2026-10-16T21:17:38.633363+08:00",
+      "human_authorization": "如果遇见多次周期测试有部分失败整体验收不通过，多次可以放宽限制，并在报告中重点说明。",
+      "reason": "用户授权后的三职业各账号三自然局修订生命周期9/9已由原件、SQL和24笔入账复核；旧600/1200秒和原十账号30局失败保留。当前未覆盖的故障注入/数据库/渲染/容量案例层仍缺失，因此只转为Partial，不验收整项。",
+      "original_pass_criteria_preserved": "同match ack/DB实例/终态可关联，玩法可恢复且统计守恒。",
+      "original_failed_observation_preserved": {
+        "task_id": "PR13-A09.2",
+        "state": "Failed",
+        "reason": "Original 600/1200-second real-client trials remain failed/censored. Human accepts long Guardian combat; an observation cutoff does not prove deadlock or overpower. Full natural routes and remaining LIVE/EXPERIMENT profiles are still required.",
+        "evidence": "docs/reports/pr13-stages-20261009/S5-cloud-gdd1200-baseline/summary.json",
+        "next_action": "Verify effective combat progress and terminal reachability across legal full routes, preserving censored samples. Propose card/deck changes only from demonstrated balance evidence.",
+        "separate_legal_build_control": {
+          "state": "FailedFunctionalControl",
+          "natural_cycles": 21,
+          "target": 30,
+          "evidence": "docs/reports/pr13-stages-20261008/S5-build-strategy-live-control/summary.json",
+          "original_baseline_failure_not_superseded": true
+        },
+        "duration_decision": "docs/plans/PR13_GUARDIAN_DURATION_BALANCE_DECISION_20261009.json"
+      },
+      "effective_natural_cycle_criterion": {
+        "accounts": 3,
+        "heroes": [
+          "Mage",
+          "Priest",
+          "Guardian"
+        ],
+        "normal_cycles_each": 3,
+        "total": 9,
+        "cycle_observation_seconds": {
+          "Mage": 1200,
+          "Priest": 1200,
+          "Guardian": 2400
+        },
+        "normal_endpoints_only": true,
+        "same_match_ACK_and_once_assets_required": true
+      },
+      "remaining_case_profiles_unchanged": {
+        "PR13-A09.2-T01": [
+          "LIVE",
+          "POSTGRES",
+          "RENDER"
+        ],
+        "PR13-A09.2-T02": [
+          "LIVE",
+          "POSTGRES",
+          "RENDER"
+        ],
+        "PR13-A09.2-T03": [
+          "POSTGRES",
+          "RENDER"
+        ]
+      },
+      "no_faultcase_runtime_profiles_closed_by_normal_loops": true,
+      "original30_strict_pass": false,
+      "source_report": "docs/reports/pr13-stages-20261009/S5-three-class-revised-nine-current-reviewed-20261016/summary.json",
+      "full_task_accepted": false,
+      "gates_promoted": false
+    }
+  ],
+  "other_tasks_and_gate_rows_unchanged": true,
+  "whole_scope_accepted": false
+}

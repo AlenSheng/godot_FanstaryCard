@@ -1,0 +1,11 @@
+{
+  "path": "tools/tests/test_gameplay_load_stop.py",
+  "before_sha256": "d9cc04ce79809afe68f16266286c2673660e2637b3418f745a37ba289556a7f6",
+  "after_sha256": "02521eaf0a6aba8c83ce5985c643ff7800bdebf202253717b995852265ec29b0",
+  "original_11test_round_failed": true,
+  "four_fixture_methods_only_mocked_read_text_on_nonexistent_client.json": "Current pre-read size stat therefore took FileNotFound branch before intended PermissionError/corrupt UTF8/foreign status.",
+  "correction": "Create real small owned status file in unique TemporaryDirectory before original read_text mocks. All original expectations/retry counts/ownership/cache/timing assertions retained.",
+  "product_source_changed": false,
+  "original_failures_preserved": true,
+  "new_gameplay_worlds": 0
+}

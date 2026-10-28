@@ -1,0 +1,29 @@
+{
+  "scope": "Independent audit/tool errors retained, not SUT failures",
+  "original_versions": [
+    "audit-before-buildcache-scope-correction.original.py",
+    "audit-before-current-Domain-resource-extraction.original.py",
+    "audit-before-English-original-location-correction.original.py"
+  ],
+  "issues": [
+    {
+      "issue": "git ls-tree included149 tracked old bin/obj cache artifacts in Domain tree; cache digest differs",
+      "correction": "Exclude bin/obj from gameplay-source equality, independently retain actual current runtime21 identities. No historical assembly SHA equivalence asserted."
+    },
+    {
+      "issue": "Old Python validator Path.read_text defaultGBK failed on UTF8catalog",
+      "correction": "Run verifier with actual Python -X utf8, no product or validator changes."
+    },
+    {
+      "issue": "English PNGs not duplicated in public en/originals report directory",
+      "correction": "Use actual G workspace outputs/information-default-render-full972-r2/en/verified/outputs, check all nine original PNG SHA against original witness."
+    },
+    {
+      "issue": "Prior resource extractor ran old57ba Domain, not currentc825",
+      "correction": "Fresh hidden BelowNormal reflection-only read of actual c825 confirms120495B/49ce config, runtime21 hashes unchanged. Old57ba andcurrentc825 remain distinct."
+    }
+  ],
+  "no_new_worlds_UI_or_cloud_calls": true,
+  "actual_metadata_reader_PID71612_exit0": true,
+  "no_acceptance_criteria_or_sampling_relaxed": true
+}

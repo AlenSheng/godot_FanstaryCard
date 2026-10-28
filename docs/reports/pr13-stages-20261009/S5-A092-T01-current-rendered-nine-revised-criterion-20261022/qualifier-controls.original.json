@@ -1,0 +1,217 @@
+{
+  "ok": true,
+  "actual_tests": 12,
+  "actual_captured_trace_source": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\19\\01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3\\A092T01-current-rendered-three-20261022-r1\\compact-observation-1792642250073839600.original.json",
+  "trace_raw_SHA": "fdc6eab66f916c9f755cc7753c411de12f8d07bc3a2895a8b5beb2c288f77826",
+  "qualifier_SHA": "ce75d9e0d2a404b9bfc4c5c16132525afeaf3e9e2e991c44ab13a0e4fd34cddd",
+  "rows": [
+    {
+      "name": "actual_frozen_trace_positive",
+      "expected_qualified": true,
+      "actual": {
+        "trace_qualified": true,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [
+          {
+            "request_id": "da5d870c2a0bada4722fd22f5d8d82dd",
+            "cycle_id": "N3Guardian:1",
+            "room_id": "01a161c8-68b2-7eff-af53-ab35df0b280d",
+            "match_id": "01a161c8-68b2-7f78-833d-8ad177a2bba8",
+            "old_PVE_id": "01a161cb-1343-7513-8a91-6746761a345c",
+            "new_duel_id": "01a161cc-0074-787b-921d-f78150ff5de9",
+            "rejection_at": 1792642122039,
+            "recovered_request_id": "c21bb0a4e94bb408ee1c36db7be75dc5",
+            "recovery_ms": 562,
+            "original_error_index": 0,
+            "full_error_at": 1792642122040,
+            "dispatch_revision": 2452,
+            "new_revision": 2459
+          }
+        ],
+        "unique_qualified_rejections": 1,
+        "original_notice_records": 3,
+        "reasons": [],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "missing_authority",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "new_authority_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "unknown_notice_retained",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 4,
+        "reasons": [
+          "unclassified_or_ambiguous_notice"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "wrong_dispatch_phase",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "dispatch_not_current_complete_PVE"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "packet_not_local_battle",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "dispatch_not_current_complete_PVE"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "authority_wrong_owner",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "new_authority_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "authority_not_newer",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "new_authority_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "replayed_recovery",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "successful_current_recovery_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "recovery_missing",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "successful_current_recovery_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "recovery_late",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "successful_current_recovery_not_proved"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "rejected_request_succeeded",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "rejected_request_later_succeeded"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    },
+    {
+      "name": "unassociated_duplicate_notice",
+      "expected_qualified": false,
+      "actual": {
+        "trace_qualified": false,
+        "scope": "Prerecorded trace exception only. Original native failures retained; full native checks, normal cycles, PG and render must be independently assessed.",
+        "request_proofs": [],
+        "unique_qualified_rejections": 0,
+        "original_notice_records": 3,
+        "reasons": [
+          "unclassified_or_ambiguous_notice"
+        ],
+        "native_report_or_errors_modified": false,
+        "acceptance": false
+      }
+    }
+  ],
+  "only_readonly_frozen_trace_no_real_gameplay_or_model_or_PG_rerun": true,
+  "final_guardian_and_asset_and_render_assessment_still_pending": true
+}

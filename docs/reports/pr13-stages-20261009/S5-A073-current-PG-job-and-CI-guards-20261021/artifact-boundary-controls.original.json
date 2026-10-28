@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "actual_CLI_controls": [
+    {
+      "case": "old_full_parser_control",
+      "actual_exit": 0,
+      "state": "CoveredForMainReview",
+      "expected_exit": 0
+    },
+    {
+      "case": "required_skip",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "false_counters",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "duplicate_execution",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "missing_eight",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "wrong_source",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "native_nonzero",
+      "actual_exit": 1,
+      "state": "Failed",
+      "expected_exit": 1
+    },
+    {
+      "case": "missing_TRX",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    },
+    {
+      "case": "malformed_TRX",
+      "actual_exit": 3,
+      "state": "Blocked",
+      "expected_exit": 3
+    }
+  ],
+  "old_native_TRX_SHA": "994db81696ea88e9b2728151fc06c5c31423ff3ae93a1483384aa9c192196275",
+  "old_TRX_used_only_as_parser_control_not_current_execution": true,
+  "derived_invalid_vectors_explicitly_not_native_raw": true,
+  "workflow_policy_evaluation_only_not_hosted_fork_trigger_or_token_test": true,
+  "AST_validation_of_controller_runner_helper": true,
+  "actual_PG_or_Godot_or_gameplay_executions": 0
+}

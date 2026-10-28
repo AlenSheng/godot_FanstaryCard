@@ -1,0 +1,1449 @@
+{
+  "pairs": [
+    {
+      "pair": 1,
+      "baseline_case": "p1-baseline",
+      "candidate_case": "p1-r2",
+      "baseline": {
+        "response_body_bytes": 476051,
+        "client_duration_ms": 4586,
+        "server_http_ms": 1524.7024570000003,
+        "Npgsql_operations": 358,
+        "explicit_SQL_statements": 423,
+        "SQL_activity_sum_ms": 2343.6090000000004,
+        "HTTP_requests": 51,
+        "whole_HTTP_union_ms": 1337.786418,
+        "first_to_last_HTTP_ms": 4776.344401,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 1484,
+        "receipt_wait_max_ms": 1033,
+        "PG_background_inclusive_SQL_calls": 1205
+      },
+      "candidate": {
+        "response_body_bytes": 295145,
+        "client_duration_ms": 2983,
+        "server_http_ms": 435.194103,
+        "Npgsql_operations": 289,
+        "explicit_SQL_statements": 329,
+        "SQL_activity_sum_ms": 653.2657000000003,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 405.474257,
+        "first_to_last_HTTP_ms": 2530.58304,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 418,
+        "receipt_wait_max_ms": 129,
+        "PG_background_inclusive_SQL_calls": 942
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": 180906,
+        "client_duration_ms": 1603,
+        "server_http_ms": 1089.5083540000003,
+        "Npgsql_operations": 69,
+        "explicit_SQL_statements": 94,
+        "SQL_activity_sum_ms": 1690.3433,
+        "HTTP_requests": 2,
+        "whole_HTTP_union_ms": 932.3121609999998,
+        "first_to_last_HTTP_ms": 2245.7613610000003,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 1066,
+        "receipt_wait_max_ms": 904,
+        "PG_background_inclusive_SQL_calls": 263
+      },
+      "byte_SQL_receipt_wait_all_improved": true,
+      "random_world_seeds_not_matched": true
+    },
+    {
+      "pair": 2,
+      "baseline_case": "p2-baseline",
+      "candidate_case": "p2-r2",
+      "baseline": {
+        "response_body_bytes": 439305,
+        "client_duration_ms": 3221,
+        "server_http_ms": 615.5877680000001,
+        "Npgsql_operations": 337,
+        "explicit_SQL_statements": 397,
+        "SQL_activity_sum_ms": 1015.8995,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 583.582605,
+        "first_to_last_HTTP_ms": 3244.982489,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 618,
+        "receipt_wait_max_ms": 179,
+        "PG_background_inclusive_SQL_calls": 1120
+      },
+      "candidate": {
+        "response_body_bytes": 295145,
+        "client_duration_ms": 2964,
+        "server_http_ms": 474.298755,
+        "Npgsql_operations": 289,
+        "explicit_SQL_statements": 329,
+        "SQL_activity_sum_ms": 641.622,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 428.803754,
+        "first_to_last_HTTP_ms": 2653.362208,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 417,
+        "receipt_wait_max_ms": 128,
+        "PG_background_inclusive_SQL_calls": 948
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": 144160,
+        "client_duration_ms": 257,
+        "server_http_ms": 141.28901300000007,
+        "Npgsql_operations": 48,
+        "explicit_SQL_statements": 68,
+        "SQL_activity_sum_ms": 374.27750000000003,
+        "HTTP_requests": 0,
+        "whole_HTTP_union_ms": 154.77885099999992,
+        "first_to_last_HTTP_ms": 591.620281,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 201,
+        "receipt_wait_max_ms": 51,
+        "PG_background_inclusive_SQL_calls": 172
+      },
+      "byte_SQL_receipt_wait_all_improved": true,
+      "random_world_seeds_not_matched": true
+    },
+    {
+      "pair": 3,
+      "baseline_case": "p3-baseline",
+      "candidate_case": "p3-r2",
+      "baseline": {
+        "response_body_bytes": 439956,
+        "client_duration_ms": 3380,
+        "server_http_ms": 654.315692,
+        "Npgsql_operations": 339,
+        "explicit_SQL_statements": 399,
+        "SQL_activity_sum_ms": 1115.921,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 627.40086,
+        "first_to_last_HTTP_ms": 2851.667425,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 614,
+        "receipt_wait_max_ms": 176,
+        "PG_background_inclusive_SQL_calls": 1120
+      },
+      "candidate": {
+        "response_body_bytes": 295350,
+        "client_duration_ms": 3313,
+        "server_http_ms": 739.6365870000002,
+        "Npgsql_operations": 291,
+        "explicit_SQL_statements": 331,
+        "SQL_activity_sum_ms": 912.3004,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 705.243574,
+        "first_to_last_HTTP_ms": 2998.36003,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 418,
+        "receipt_wait_max_ms": 128,
+        "PG_background_inclusive_SQL_calls": 1008
+      },
+      "baseline_minus_candidate": {
+        "response_body_bytes": 144606,
+        "client_duration_ms": 67,
+        "server_http_ms": -85.32089500000018,
+        "Npgsql_operations": 48,
+        "explicit_SQL_statements": 68,
+        "SQL_activity_sum_ms": 203.62060000000008,
+        "HTTP_requests": 0,
+        "whole_HTTP_union_ms": -77.842714,
+        "first_to_last_HTTP_ms": -146.69260499999973,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 196,
+        "receipt_wait_max_ms": 48,
+        "PG_background_inclusive_SQL_calls": 112
+      },
+      "byte_SQL_receipt_wait_all_improved": true,
+      "random_world_seeds_not_matched": true
+    }
+  ],
+  "worlds": [
+    {
+      "case": "p1-baseline",
+      "pair": 1,
+      "variant": "baseline",
+      "match_id": "01a1548e-b89b-72af-ab8a-b56f8cfd0ef7",
+      "totals": {
+        "response_body_bytes": 476051,
+        "client_duration_ms": 4586,
+        "server_http_ms": 1524.7024570000003,
+        "Npgsql_operations": 358,
+        "explicit_SQL_statements": 423,
+        "SQL_activity_sum_ms": 2343.6090000000004,
+        "HTTP_requests": 51,
+        "whole_HTTP_union_ms": 1337.786418,
+        "first_to_last_HTTP_ms": 4776.344401,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 1484,
+        "receipt_wait_max_ms": 1033,
+        "PG_background_inclusive_SQL_calls": 1205
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 13,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "/api/v1/settlements/{settlementId:guid}": 1,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420002485,
+          "actor": 1,
+          "hall_utc_ms": 1792420003690,
+          "receipt_ready_utc_ms": 1792420003518,
+          "receipt_wait_ms": 1033
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420003690,
+          "actor": 2,
+          "hall_utc_ms": 1792420003990,
+          "receipt_ready_utc_ms": 1792420003835,
+          "receipt_wait_ms": 145
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420003990,
+          "actor": 3,
+          "hall_utc_ms": 1792420004323,
+          "receipt_ready_utc_ms": 1792420004151,
+          "receipt_wait_ms": 161
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420004323,
+          "actor": 0,
+          "hall_utc_ms": 1792420004642,
+          "receipt_ready_utc_ms": 1792420004468,
+          "receipt_wait_ms": 145
+        }
+      ]
+    },
+    {
+      "case": "p1-r2",
+      "pair": 1,
+      "variant": "candidate-r3",
+      "match_id": "01a1548e-d06d-7004-ab26-a48ad5a07b97",
+      "totals": {
+        "response_body_bytes": 295145,
+        "client_duration_ms": 2983,
+        "server_http_ms": 435.194103,
+        "Npgsql_operations": 289,
+        "explicit_SQL_statements": 329,
+        "SQL_activity_sum_ms": 653.2657000000003,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 405.474257,
+        "first_to_last_HTTP_ms": 2530.58304,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 418,
+        "receipt_wait_max_ms": 129,
+        "PG_background_inclusive_SQL_calls": 942
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 8,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "settlement-projection": 4,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-d06d-7004-ab26-a48ad5a07b97",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-d06d-7004-ab26-a48ad5a07b97",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-d06d-7004-ab26-a48ad5a07b97",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-d06d-7004-ab26-a48ad5a07b97",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420008262,
+          "actor": 1,
+          "hall_utc_ms": 1792420008518,
+          "receipt_ready_utc_ms": 1792420008362,
+          "receipt_wait_ms": 100
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420008518,
+          "actor": 2,
+          "hall_utc_ms": 1792420008750,
+          "receipt_ready_utc_ms": 1792420008612,
+          "receipt_wait_ms": 94
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420008750,
+          "actor": 3,
+          "hall_utc_ms": 1792420009034,
+          "receipt_ready_utc_ms": 1792420008879,
+          "receipt_wait_ms": 129
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420009034,
+          "actor": 0,
+          "hall_utc_ms": 1792420009284,
+          "receipt_ready_utc_ms": 1792420009129,
+          "receipt_wait_ms": 95
+        }
+      ]
+    },
+    {
+      "case": "p2-r2",
+      "pair": 2,
+      "variant": "candidate-r3",
+      "match_id": "01a1548e-e438-7c1c-9f93-bfe17c711112",
+      "totals": {
+        "response_body_bytes": 295145,
+        "client_duration_ms": 2964,
+        "server_http_ms": 474.298755,
+        "Npgsql_operations": 289,
+        "explicit_SQL_statements": 329,
+        "SQL_activity_sum_ms": 641.622,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 428.803754,
+        "first_to_last_HTTP_ms": 2653.362208,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 417,
+        "receipt_wait_max_ms": 128,
+        "PG_background_inclusive_SQL_calls": 948
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 8,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "settlement-projection": 4,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-e438-7c1c-9f93-bfe17c711112",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-e438-7c1c-9f93-bfe17c711112",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-e438-7c1c-9f93-bfe17c711112",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548e-e438-7c1c-9f93-bfe17c711112",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420013302,
+          "actor": 1,
+          "hall_utc_ms": 1792420013558,
+          "receipt_ready_utc_ms": 1792420013402,
+          "receipt_wait_ms": 100
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420013558,
+          "actor": 2,
+          "hall_utc_ms": 1792420013807,
+          "receipt_ready_utc_ms": 1792420013652,
+          "receipt_wait_ms": 94
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420013807,
+          "actor": 3,
+          "hall_utc_ms": 1792420014057,
+          "receipt_ready_utc_ms": 1792420013902,
+          "receipt_wait_ms": 95
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420014058,
+          "actor": 0,
+          "hall_utc_ms": 1792420014340,
+          "receipt_ready_utc_ms": 1792420014186,
+          "receipt_wait_ms": 128
+        }
+      ]
+    },
+    {
+      "case": "p2-baseline",
+      "pair": 2,
+      "variant": "baseline",
+      "match_id": "01a1548e-f7ef-758b-ae44-9bd3c828bc98",
+      "totals": {
+        "response_body_bytes": 439305,
+        "client_duration_ms": 3221,
+        "server_http_ms": 615.5877680000001,
+        "Npgsql_operations": 337,
+        "explicit_SQL_statements": 397,
+        "SQL_activity_sum_ms": 1015.8995,
+        "HTTP_requests": 49,
+        "whole_HTTP_union_ms": 583.582605,
+        "first_to_last_HTTP_ms": 3244.982489,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 618,
+        "receipt_wait_max_ms": 179,
+        "PG_background_inclusive_SQL_calls": 1120
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 12,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420018338,
+          "actor": 1,
+          "hall_utc_ms": 1792420018660,
+          "receipt_ready_utc_ms": 1792420018488,
+          "receipt_wait_ms": 150
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420018660,
+          "actor": 2,
+          "hall_utc_ms": 1792420018959,
+          "receipt_ready_utc_ms": 1792420018805,
+          "receipt_wait_ms": 145
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420018959,
+          "actor": 3,
+          "hall_utc_ms": 1792420019294,
+          "receipt_ready_utc_ms": 1792420019138,
+          "receipt_wait_ms": 179
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420019294,
+          "actor": 0,
+          "hall_utc_ms": 1792420019593,
+          "receipt_ready_utc_ms": 1792420019438,
+          "receipt_wait_ms": 144
+        }
+      ]
+    },
+    {
+      "case": "p3-baseline",
+      "pair": 3,
+      "variant": "baseline",
+      "match_id": "01a1548f-0da2-7114-8086-ae320548236a",
+      "totals": {
+        "response_body_bytes": 439956,
+        "client_duration_ms": 3380,
+        "server_http_ms": 654.315692,
+        "Npgsql_operations": 339,
+        "explicit_SQL_statements": 399,
+        "SQL_activity_sum_ms": 1115.921,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 627.40086,
+        "first_to_last_HTTP_ms": 2851.667425,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 614,
+        "receipt_wait_max_ms": 176,
+        "PG_background_inclusive_SQL_calls": 1120
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 12,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4,
+        "/api/v1/settlements/{settlementId:guid}": 1
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420023888,
+          "actor": 1,
+          "hall_utc_ms": 1792420024194,
+          "receipt_ready_utc_ms": 1792420024038,
+          "receipt_wait_ms": 150
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420024194,
+          "actor": 2,
+          "hall_utc_ms": 1792420024496,
+          "receipt_ready_utc_ms": 1792420024338,
+          "receipt_wait_ms": 144
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420024496,
+          "actor": 3,
+          "hall_utc_ms": 1792420024844,
+          "receipt_ready_utc_ms": 1792420024672,
+          "receipt_wait_ms": 176
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420024844,
+          "actor": 0,
+          "hall_utc_ms": 1792420025160,
+          "receipt_ready_utc_ms": 1792420024988,
+          "receipt_wait_ms": 144
+        }
+      ]
+    },
+    {
+      "case": "p3-r2",
+      "pair": 3,
+      "variant": "candidate-r3",
+      "match_id": "01a1548f-257c-7644-9be5-a29255a19c84",
+      "totals": {
+        "response_body_bytes": 295350,
+        "client_duration_ms": 3313,
+        "server_http_ms": 739.6365870000002,
+        "Npgsql_operations": 291,
+        "explicit_SQL_statements": 331,
+        "SQL_activity_sum_ms": 912.3004,
+        "HTTP_requests": 50,
+        "whole_HTTP_union_ms": 705.243574,
+        "first_to_last_HTTP_ms": 2998.36003,
+        "pool_queued_request_ms": 0.0,
+        "receipt_wait_sum_ms": 418,
+        "receipt_wait_max_ms": 128,
+        "PG_background_inclusive_SQL_calls": 1008
+      },
+      "route_counts": {
+        "/api/v1/client-info": 5,
+        "/api/v1/auth/local": 4,
+        "/api/v1/bootstrap": 8,
+        "/api/v1/realtime/ticket": 4,
+        "/api/v1/preparations": 4,
+        "/api/v1/inventory": 4,
+        "/api/v1/matches/enqueue": 4,
+        "/api/v1/matches/tickets/{ticketId:guid}": 8,
+        "settlement-projection": 4,
+        "/api/v1/settlements/{settlementId:guid}/acknowledge": 4,
+        "/api/v1/settlements/{settlementId:guid}": 1
+      },
+      "Bootstrap_public_callers": [
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548f-257c-7644-9be5-a29255a19c84",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 0,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548f-257c-7644-9be5-a29255a19c84",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 1,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548f-257c-7644-9be5-a29255a19c84",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 2,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "_login",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap?settlementMatchId=01a1548f-257c-7644-9be5-a29255a19c84",
+          "caller_functions": [
+            "request",
+            "_poll_ready_settlement",
+            "_process"
+          ]
+        },
+        {
+          "actor": 3,
+          "path": "/api/v1/bootstrap",
+          "caller_functions": [
+            "request",
+            "refresh_lobby",
+            "acknowledge_settlement",
+            "request",
+            "request",
+            "_request_page",
+            "_request_http_transport",
+            "request"
+          ]
+        }
+      ],
+      "receipt_wait_by_actor": [
+        {
+          "abandon_dispatched_utc_ms": 1792420029960,
+          "actor": 1,
+          "hall_utc_ms": 1792420030265,
+          "receipt_ready_utc_ms": 1792420030060,
+          "receipt_wait_ms": 100
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420030265,
+          "actor": 2,
+          "hall_utc_ms": 1792420030548,
+          "receipt_ready_utc_ms": 1792420030360,
+          "receipt_wait_ms": 95
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420030548,
+          "actor": 3,
+          "hall_utc_ms": 1792420030832,
+          "receipt_ready_utc_ms": 1792420030643,
+          "receipt_wait_ms": 95
+        },
+        {
+          "abandon_dispatched_utc_ms": 1792420030832,
+          "actor": 0,
+          "hall_utc_ms": 1792420031151,
+          "receipt_ready_utc_ms": 1792420030960,
+          "receipt_wait_ms": 128
+        }
+      ]
+    }
+  ]
+}

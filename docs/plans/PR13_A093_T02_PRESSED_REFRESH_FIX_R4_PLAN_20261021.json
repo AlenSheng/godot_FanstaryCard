@@ -1,0 +1,82 @@
+{
+  "kind": "A093T02R4PressedControlSurvivesSameContextRender",
+  "case_id": "PR13-A09.3-T02",
+  "layer_candidates": [
+    "LIVE",
+    "RENDER"
+  ],
+  "original_method": "A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+  "method_source_SHA": "3d743b1f2a67511e4a616796d2aa0f929fd6a7d30839045c796fd7594dba9841",
+  "original_GD_source_SHA": "03706e4d5029a853ceaae59a791ff1bd9ac53881b44dfdea0b51b13f36714d68",
+  "test_assembly_SHA": "201b00dea646e981d1b7692dbfbb58a2339d7ab7a79a9f53a3136029938c1dab",
+  "Server_DLL_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+  "runtime": "CurrentSDK180/net10/Godot4.7.2, privatePG18.6, nativeXvfb/Mesa. Original CSharp test/PG assertions unchanged. Private Godot copy adds only UI observation and cleanup; original callback/route assertions and commands retained.",
+  "render_matrix": "4actual stages x2locales x3sizes=24PNG, phase Pve/Pvp uses actual card selection+restore; ActionBar uses actual map open/return; no state or callback projection",
+  "budget": {
+    "test_rows": 1,
+    "rooms_max": 2,
+    "UIDs_max": 5,
+    "initial_equipment": 1,
+    "native_runtime_invocations": 1,
+    "native_import_invocations": 1,
+    "native_test_deadline_seconds": 180,
+    "outer_seconds": 300,
+    "APP_MiB": 1536,
+    "PG_MiB": 384,
+    "APP_CPU": 1.25,
+    "PG_CPU": 0.25,
+    "render_contexts_max": 24,
+    "new_natural_or_capacity_samples": 0,
+    "cumulative_rooms_max": 8,
+    "cumulative_UIDs_max": 20,
+    "cumulative_initial_equipment": 4,
+    "prior_r1_rooms2_UID5_item1_retained": true,
+    "prior_r1_r2_rooms4_UID10_items2_retained": true,
+    "prior_r1_r2_r3_rooms6_UID15_items3_retained": true
+  },
+  "artifact_adapter": "Original minimal fixture import with byte-identical missing dependency supplement. Actual run uses complete current project plus explicit instrumented GD, privateuserdata and same owned server control. Requested and actual argv/hash recorded.",
+  "only_existing_current_cloud_host": true,
+  "local_only_headless_Dummy60_CNO_BelowNormal_parse_import_noPG_UI": true,
+  "no_positive_layer_promotion_before_actual_tests_and_pixels": true,
+  "criteria_relaxed": false,
+  "all_original_failures_preserved": true,
+  "GDD": [
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "r1_failure_retained": "TRX1Failed, new N Starting,14 oldM PNG, no final reports",
+  "product_fix": "Normal point GET has existing2500ms grace; stalled detail permits bounded ready-only same-match projection; manual retry unchanged; session/context/load epochs unchanged.",
+  "local_qualification": {
+    "baseline4_expected_failed_checks": true,
+    "targeted12_passed": true,
+    "current24_native_suites_passed": true,
+    "private_render_parse_exit0": true,
+    "real_UI_world_PG0": true
+  },
+  "R2_actual_results": {
+    "original_CSharp_TRX1Passed0Skip_exit0": true,
+    "native_Godot19checks_passed": true,
+    "actual_new_N_Pve_all24_map_probe_inapplicable_kept_failed": true,
+    "service_controller1_kept": true
+  },
+  "R3_actual_results": {
+    "native_TRX_pass1_skip0_exit0": true,
+    "render22_of24_passed2_restore_failed_kept": true,
+    "controller_service1_kept": true,
+    "raw_G_files135_SHA": "cc7a08655a4df0dbf071522f8258209eac966a5d07311d9e6c11ad7d80bfaf09"
+  },
+  "formal_UI_fix": {
+    "file": "client/ui/main.gd",
+    "sha256": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002",
+    "root_cause": "Full view rebuild while native button is pressed cancels its release click. Deterministic real headless viewport control reproduces loss.",
+    "behavior": "Coalesce same-context redraw until mouse release; session/room/phase/terminal/settlement changes and focus loss bypass/release wait.",
+    "local_actual_validation": "6edge controls plus24suites388checks passed0, baseline click1/0 retained, private failed parse/boundary-probe logs retained.",
+    "local_real_render_network_UID_world_PG0": true
+  }
+}

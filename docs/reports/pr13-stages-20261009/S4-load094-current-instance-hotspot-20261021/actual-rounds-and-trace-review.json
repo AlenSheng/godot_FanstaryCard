@@ -1,0 +1,317 @@
+{
+  "actual_pairs": [
+    {
+      "round": 0,
+      "seed": 763001,
+      "baseline_allterminal_ms": 209.229,
+      "candidate_allterminal_ms": 205.9383,
+      "candidate_minus_baseline_ms": -3.2907000000000153,
+      "baseline_acquire_ms": 204.1549,
+      "candidate_acquire_ms": 200.6862,
+      "actual_SQL_responseBytes": 24746,
+      "actual_serialization_bytes": 39504
+    },
+    {
+      "round": 1,
+      "seed": 763101,
+      "baseline_allterminal_ms": 206.3488,
+      "candidate_allterminal_ms": 204.5916,
+      "candidate_minus_baseline_ms": -1.7572000000000116,
+      "baseline_acquire_ms": 200.6102,
+      "candidate_acquire_ms": 200.6036,
+      "actual_SQL_responseBytes": 24754,
+      "actual_serialization_bytes": 39512
+    },
+    {
+      "round": 2,
+      "seed": 763201,
+      "baseline_allterminal_ms": 205.1285,
+      "candidate_allterminal_ms": 205.0812,
+      "candidate_minus_baseline_ms": -0.047300000000007,
+      "baseline_acquire_ms": 200.6811,
+      "candidate_acquire_ms": 200.565,
+      "actual_SQL_responseBytes": 24757,
+      "actual_serialization_bytes": 39515
+    }
+  ],
+  "actual_phase_reviews": [
+    {
+      "scope": "R0-baseline",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 203.9441,
+        "SqlExecution": 2.7839
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 203.9441,
+          "SqlExecution": 2.7839
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 203.9441,
+          "SqlExecution": 2.7839
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    },
+    {
+      "scope": "R0-prewarm",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 200.477,
+        "SqlExecution": 2.9675
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.477,
+          "SqlExecution": 2.9675
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.477,
+          "SqlExecution": 2.9675
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    },
+    {
+      "scope": "R1-prewarm",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 200.392,
+        "SqlExecution": 2.3798
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.392,
+          "SqlExecution": 2.3798
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.392,
+          "SqlExecution": 2.3798
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    },
+    {
+      "scope": "R1-baseline",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 200.4086,
+        "SqlExecution": 2.3571
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.4086,
+          "SqlExecution": 2.3571
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.4086,
+          "SqlExecution": 2.3571
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    },
+    {
+      "scope": "R2-baseline",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 200.4649,
+        "SqlExecution": 2.6927
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.4649,
+          "SqlExecution": 2.6927
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.4649,
+          "SqlExecution": 2.6927
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    },
+    {
+      "scope": "R2-prewarm",
+      "actual_measured_phases": {
+        "DatabaseAcquire": 200.3189,
+        "SqlExecution": 2.5075
+      },
+      "DBtarget": {
+        "state": "EligibleForDiagnostics",
+        "target_phase": "DatabaseAcquire",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.3189,
+          "SqlExecution": 2.5075
+        },
+        "reason": "candidate_targets_observed_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      },
+      "wrongActorTarget": {
+        "state": "Blocked",
+        "target_phase": "ActorExecute",
+        "observed_largest_phase": "DatabaseAcquire",
+        "measured_phase_ms": {
+          "DatabaseAcquire": 200.3189,
+          "SqlExecution": 2.5075
+        },
+        "reason": "candidate_targets_unlocalized_path",
+        "production_activation": false,
+        "service_tail_improvement_proven": false,
+        "retain_default": true
+      }
+    }
+  ],
+  "actualSQLcounts": {
+    "players": 24,
+    "preparations": 24,
+    "matches": 6,
+    "members": 24,
+    "snapshots": 6,
+    "match_rows": [
+      {
+        "match_id": "01a15a31-06b8-78e1-b41d-5861e11b9ef5",
+        "room_id": "01a15a31-06b8-7a3b-9957-9a39d000bf60",
+        "seed": 763001,
+        "status": "Running"
+      },
+      {
+        "match_id": "01a15a31-0bd1-7acf-bc0e-72b7c759ebeb",
+        "room_id": "01a15a31-0bd1-7cf1-8ded-0dd32973f014",
+        "seed": 763001,
+        "status": "Running"
+      },
+      {
+        "match_id": "01a15a31-0f61-7184-95bd-95df9ac11bc6",
+        "room_id": "01a15a31-0f61-767d-9379-d8a90223c654",
+        "seed": 763101,
+        "status": "Running"
+      },
+      {
+        "match_id": "01a15a31-12e1-76c2-ad9b-4850bd7a43b5",
+        "room_id": "01a15a31-12e1-7832-8346-ac97450ec11c",
+        "seed": 763101,
+        "status": "Running"
+      },
+      {
+        "match_id": "01a15a31-1681-74f2-b673-58a4f500a306",
+        "room_id": "01a15a31-1681-7a7b-8387-b24584f201fb",
+        "seed": 763201,
+        "status": "Running"
+      },
+      {
+        "match_id": "01a15a31-1a52-7160-88db-a9fc4c7c6d5d",
+        "room_id": "01a15a31-1a52-734a-938c-13f33507ac17",
+        "seed": 763201,
+        "status": "Running"
+      }
+    ],
+    "checkpoint_rows": [
+      {
+        "room_id": "01a15a31-06b8-7a3b-9957-9a39d000bf60",
+        "revision": 26,
+        "snapshot_bytes": 24746
+      },
+      {
+        "room_id": "01a15a31-0bd1-7cf1-8ded-0dd32973f014",
+        "revision": 26,
+        "snapshot_bytes": 24746
+      },
+      {
+        "room_id": "01a15a31-0f61-767d-9379-d8a90223c654",
+        "revision": 26,
+        "snapshot_bytes": 24754
+      },
+      {
+        "room_id": "01a15a31-12e1-7832-8346-ac97450ec11c",
+        "revision": 26,
+        "snapshot_bytes": 24754
+      },
+      {
+        "room_id": "01a15a31-1681-7a7b-8387-b24584f201fb",
+        "revision": 26,
+        "snapshot_bytes": 24757
+      },
+      {
+        "room_id": "01a15a31-1a52-734a-938c-13f33507ac17",
+        "revision": 26,
+        "snapshot_bytes": 24757
+      }
+    ]
+  },
+  "independent_review_SHA": "95823e4be3c10c822532498301d1ac994ba5c74be6882a4f90febbc6e928a8c9",
+  "independent_checks": 91,
+  "controlled_only_notproductionperformance_orcapacity": true
+}

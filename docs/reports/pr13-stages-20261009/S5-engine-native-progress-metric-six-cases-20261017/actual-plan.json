@@ -1,0 +1,60 @@
+{
+  "kind": "CurrentEngineOfficialCodecNativeMetricBoundaryExperiment",
+  "profiles": [
+    "EXPERIMENT"
+  ],
+  "seeds": [
+    610001,
+    610002,
+    610003
+  ],
+  "scenarios": [
+    "waits",
+    "partial",
+    "control"
+  ],
+  "maximum_actual_domain_encounters": 9,
+  "simulated_domain_clock_explicit": true,
+  "initial_deck": "Actual legal20 starter card IDs; PRI-01 level3,others0; only hand/library reorder preserving exact instance multiset",
+  "initial_class": "Priest",
+  "equipment": "Empty",
+  "weapon_level": 0,
+  "target_group": "O6",
+  "interventions": [
+    "Unchanged actual snapshots and real WebSocket ping/pong at frozen Domain time",
+    "Full effectiveHP actual healing command with500ms ACK delay",
+    "Remaining legal hand spent by real command",
+    "Actual PlayerCombat.ApplyStun1500ms then actual clock advance4s",
+    "Actual TakeDamage2 initial condition then requested10/actual2",
+    "Two actual target control effects then30actual100ms advances to measure union"
+  ],
+  "no_native_room_or_pending_assignment": true,
+  "no_gameplay_formulas_or_default_config_changed": true,
+  "scope_excludes": [
+    "Full Program auth",
+    "PostgreSQL",
+    "LIVE",
+    "Capacity",
+    "Natural expedition",
+    "Rendering",
+    "Human experience"
+  ],
+  "case_targets": [
+    "PR13-B01.2-T01",
+    "PR13-B01.2-T02",
+    "PR13-B01.2-T03",
+    "PR13-B01.3-T01",
+    "PR13-B01.3-T02",
+    "PR13-B01.3-T03"
+  ],
+  "cross_host_case_requires_actual_cloud_authority": true,
+  "source_upload_bytes": 0,
+  "per_task_encounter_cap": 300,
+  "standalone_metric_measurements_not_counted_as_game_encounters": true,
+  "formal_N_or_precision_claim": false,
+  "maximum_total_including_bounded_diagnostics": 14,
+  "actual_post_stun_advance_seconds": 6,
+  "advance_step_ms": 100,
+  "diagnostic_R4_no_draw_after4s_is_expected_1_5s_stun_pause": true,
+  "additional_actual_regression": "One partial world validates first-command origin.battle_id directly from authoritative snapshot after confirmed metadata bug fix"
+}

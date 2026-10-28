@@ -1,0 +1,46 @@
+[
+  {
+    "case_id": "LOAD-06.3-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "LIVE"
+    ],
+    "source_sha": "6f00f322952a104bb8d165687395a609def0781c",
+    "actual_source": "Unmodified full Program8eb/current runtime21, actualHTTP/protobuf binaryWS, same104-row isolatedPG, officialPrometheus3.13.4 and opaqueOTLP relay",
+    "actual": {
+      "distinct_actual_persisted_contexts": 100,
+      "actual_authoritative_negative_replies": 100,
+      "actual_complete_backendseries_before": 36,
+      "actual_complete_backendseries_after": 36,
+      "same_complete_series_keys": true,
+      "SocketSend_count_before": 1,
+      "SocketSend_count_after": 101,
+      "actualOTLP_batches_r2": 5,
+      "OTLP_phase_attributes": "phase only",
+      "observed_phases": [
+        "SocketGateWait",
+        "SocketSend"
+      ],
+      "producer_closed_enum_maximum": 6,
+      "backend_label_names": [
+        "__name__",
+        "instance",
+        "job",
+        "le",
+        "phase"
+      ],
+      "fixed_infrastructure_instance_retained": true,
+      "new_worlds": 0,
+      "rolling_total_worldrows": 104,
+      "rolling_totalcommands": 292
+    },
+    "evidence": [
+      "docs/reports/pr13-stages-20261009/S4-load063-actual-Prometheus-boundary-20261020/report.json",
+      "docs/reports/pr13-stages-20261009/S4-load063-actual-Prometheus-boundary-20261020/independent-boundary-review.json",
+      "docs/reports/pr13-stages-20261009/S6-current-LOAD063-accepted-20261020/main-task-decision.json"
+    ],
+    "private_originals": "G:\\PR13Evidence\\load063-actual-prometheus-boundary-20261020-originals",
+    "scope": "Actual exporter/receiver/query boundary for same100 persisted identity fixtures; not100 natural battles, no capacity/performance/human claim."
+  }
+]

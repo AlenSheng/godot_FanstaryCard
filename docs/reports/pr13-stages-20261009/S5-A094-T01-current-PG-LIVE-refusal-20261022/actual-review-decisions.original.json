@@ -1,0 +1,158 @@
+{
+  "ok": true,
+  "records": [
+    {
+      "state": "enabled",
+      "actual_UI_usable": true,
+      "actual_PG_probe_exit": 0,
+      "actual_native_UI_exit": 0,
+      "actual_current_policy": "ReadyForAcceptance",
+      "expected": "ReadyForAcceptance",
+      "passed": true,
+      "original_record": {
+        "executed": true,
+        "status": "Passed",
+        "profiles_executed": [
+          "OFFLINE",
+          "LIVE",
+          "POSTGRES",
+          "RENDER"
+        ],
+        "actual_script_exit": 0,
+        "actual_UI": {
+          "UI_online_flag_controlled_not_auth": true,
+          "actual_native_HTTP_health": {
+            "PID": 45,
+            "actual_HTTP_result": 0,
+            "actual_HTTP_status": 200,
+            "actual_body_SHA": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee",
+            "actual_body_utf8": "Healthy",
+            "actual_native_HTTP_not_fixture": true,
+            "state": "enabled"
+          },
+          "actual_tip": "Fill all 20 slots before saving",
+          "button_disabled": false,
+          "button_visible": true,
+          "capture_tips_hidden": true,
+          "contract_observation_ok": true,
+          "image": "en-960-enabled.webp",
+          "locale": "en",
+          "native_RGBA8_pixel_SHA": "332100b48701603f6047a3b93943462bb8d262869d9bada85d19a03892d9394a",
+          "native_lossy_argument": false,
+          "original_SaveDeck_callback_local_tip_only": true,
+          "pressed_delta": 1,
+          "resolution": [
+            960,
+            540
+          ],
+          "state": "enabled"
+        },
+        "actual_PG_marker_SHA": "3410c51832762c7a8ddfa4a1d9e91bbc7f3ea36878e40c8e0753d12dec6b7062"
+      }
+    },
+    {
+      "state": "disabled-fault",
+      "actual_UI_usable": false,
+      "actual_PG_probe_exit": 0,
+      "actual_native_UI_exit": 0,
+      "actual_current_policy": "Failed",
+      "expected": "Failed",
+      "passed": true,
+      "original_record": {
+        "executed": true,
+        "status": "Failed",
+        "profiles_executed": [
+          "OFFLINE",
+          "LIVE",
+          "POSTGRES",
+          "RENDER"
+        ],
+        "actual_script_exit": 0,
+        "actual_UI": {
+          "UI_online_flag_controlled_not_auth": true,
+          "actual_native_HTTP_health": {
+            "PID": 45,
+            "actual_HTTP_result": 0,
+            "actual_HTTP_status": 200,
+            "actual_body_SHA": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee",
+            "actual_body_utf8": "Healthy",
+            "actual_native_HTTP_not_fixture": true,
+            "state": "disabled-fault"
+          },
+          "actual_tip": "",
+          "button_disabled": true,
+          "button_visible": true,
+          "capture_tips_hidden": true,
+          "contract_observation_ok": true,
+          "image": "en-960-disabled-fault.webp",
+          "locale": "en",
+          "native_RGBA8_pixel_SHA": "0b2ea4244f8956f8fd6c89c07d316fa7928e9bf48345ffa47ed47231ecbb07a1",
+          "native_lossy_argument": false,
+          "original_SaveDeck_callback_local_tip_only": true,
+          "pressed_delta": 0,
+          "resolution": [
+            960,
+            540
+          ],
+          "state": "disabled-fault"
+        },
+        "actual_PG_marker_SHA": "3410c51832762c7a8ddfa4a1d9e91bbc7f3ea36878e40c8e0753d12dec6b7062"
+      }
+    },
+    {
+      "state": "restored",
+      "actual_UI_usable": true,
+      "actual_PG_probe_exit": 0,
+      "actual_native_UI_exit": 0,
+      "actual_current_policy": "ReadyForAcceptance",
+      "expected": "ReadyForAcceptance",
+      "passed": true,
+      "original_record": {
+        "executed": true,
+        "status": "Passed",
+        "profiles_executed": [
+          "OFFLINE",
+          "LIVE",
+          "POSTGRES",
+          "RENDER"
+        ],
+        "actual_script_exit": 0,
+        "actual_UI": {
+          "UI_online_flag_controlled_not_auth": true,
+          "actual_native_HTTP_health": {
+            "PID": 45,
+            "actual_HTTP_result": 0,
+            "actual_HTTP_status": 200,
+            "actual_body_SHA": "7f1e323b6272c6209a590fe8684bc64142a226cc9f73783bc027befede0ea0ee",
+            "actual_body_utf8": "Healthy",
+            "actual_native_HTTP_not_fixture": true,
+            "state": "restored"
+          },
+          "actual_tip": "Fill all 20 slots before saving",
+          "button_disabled": false,
+          "button_visible": true,
+          "capture_tips_hidden": true,
+          "contract_observation_ok": true,
+          "image": "en-960-restored.webp",
+          "locale": "en",
+          "native_RGBA8_pixel_SHA": "332100b48701603f6047a3b93943462bb8d262869d9bada85d19a03892d9394a",
+          "native_lossy_argument": false,
+          "original_SaveDeck_callback_local_tip_only": true,
+          "pressed_delta": 1,
+          "resolution": [
+            960,
+            540
+          ],
+          "state": "restored"
+        },
+        "actual_PG_marker_SHA": "3410c51832762c7a8ddfa4a1d9e91bbc7f3ea36878e40c8e0753d12dec6b7062"
+      }
+    }
+  ],
+  "actual_policy_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1",
+  "new_profile_scope": [
+    "LIVE",
+    "POSTGRES"
+  ],
+  "not_whole_task_acceptance": true
+}

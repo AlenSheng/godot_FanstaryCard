@@ -10,6 +10,7 @@ __pycache__/
 /outputs/pr13-tencent-20261009/
 /server/.artifacts/
 /server/.env
+/server/.env.before-*
 /server/cloud-env.local.bat
 /server/local-backups/*.dump
 /server/local-backups/*.dump.sha256
@@ -23,3 +24,7 @@ __pycache__/
 /protocol/tests/bin/
 /protocol/tests/obj/
 /server/tests/**/TestResults/
+
+# Generated full-ledger snapshots are preserved in the verified lossless archive.
+# Existing tracked snapshots remain tracked; new historical copies stay private.
+/docs/reports/pr13-stages-20261009/**/register.json

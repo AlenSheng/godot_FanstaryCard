@@ -1,0 +1,440 @@
+{
+  "case_id": "PR13-A04.1-T03",
+  "profile": "LIVE",
+  "case_pass": true,
+  "checks": [
+    {
+      "name": "native and relay exit cleanly without forced termination",
+      "passed": true,
+      "actual": {
+        "actual_execution_complete": true,
+        "driver_control_ok": true,
+        "case_boundary_observed": true,
+        "case_independent_review_pending": true,
+        "case_id": "PR13-A04.1-T03",
+        "reason": null,
+        "errors": [],
+        "forced_owned_PIDs": [],
+        "client_exit": 0,
+        "relay_exit": 0,
+        "original_native_report_ok": true,
+        "normal_cycles_not_claimed": true,
+        "server_environment_not_changed": true,
+        "automatic_retry": false,
+        "register_gate_MAIN_changed": false,
+        "MAIN_accepted": false
+      }
+    },
+    {
+      "name": "all14 native case checks pass with no error",
+      "passed": true,
+      "actual": {
+        "checks": 14,
+        "errors": []
+      }
+    },
+    {
+      "name": "natural cycles are not claimed",
+      "passed": true,
+      "actual": 0
+    },
+    {
+      "name": "every retained protobuf frame matches original SHA size type and sequence",
+      "passed": true,
+      "actual": 30
+    },
+    {
+      "name": "real identical replay markers occur without resume amplification",
+      "passed": true,
+      "actual": {
+        "duplicates": [
+          {
+            "connection": 3,
+            "sequence": 8,
+            "identical_deliveries": 2,
+            "resumes_on_connection": 1
+          },
+          {
+            "connection": 4,
+            "sequence": 12,
+            "identical_deliveries": 2,
+            "resumes_on_connection": 1
+          }
+        ],
+        "resume_commands_by_connection": {
+          "3": 1,
+          "4": 1
+        }
+      }
+    },
+    {
+      "name": "no READY frame sent on this expiry route",
+      "passed": true,
+      "actual": {
+        "wire_ready": 0,
+        "blocked_entry_calls": 3
+      }
+    },
+    {
+      "name": "only declared real pong or snapshots lost before release",
+      "passed": true,
+      "actual": [
+        {
+          "type": "pong",
+          "sequence": 7
+        },
+        {
+          "type": "pong",
+          "sequence": 7
+        }
+      ]
+    },
+    {
+      "name": "missing original pong forwarded after fault release",
+      "passed": true,
+      "actual": "b0ae6d03592da9005384fc6bfe15faed"
+    },
+    {
+      "name": "real SQL deadline and case ticket identity agree",
+      "passed": true,
+      "actual": {
+        "deadline_seconds": 15.0,
+        "match_id": "01a1447c-556e-7556-94aa-77cfcf410107"
+      }
+    },
+    {
+      "name": "own human member removed and preparation cancelled",
+      "passed": true,
+      "actual": {
+        "member_states": [
+          "Removed"
+        ],
+        "preparation_states": [
+          "Cancelled"
+        ],
+        "match_states": [
+          "Running"
+        ],
+        "ticket_states": [
+          "Matched"
+        ]
+      }
+    },
+    {
+      "name": "no locked assets pending holds settlement or ACK",
+      "passed": true,
+      "actual": {
+        "locked_equipment": 0,
+        "pending_holds": 0,
+        "ACK_idempotency": 0,
+        "settlements": []
+      }
+    },
+    {
+      "name": "production cleanup reports authoritative terminal",
+      "passed": true,
+      "actual": {
+        "active_preparation": null,
+        "reason": "server_state_clear",
+        "state": "Passed",
+        "unfinished_match": null,
+        "unfinished_settlement": null
+      }
+    },
+    {
+      "name": "same public container image and original environment retained",
+      "passed": true,
+      "actual": {
+        "container": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+        "image": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2"
+      }
+    },
+    {
+      "name": "original monitoring cadence and resource floors retained",
+      "passed": true,
+      "actual": {
+        "samples": 8,
+        "max_gap_seconds": 10.063000000081956,
+        "max_CPU_percent": 9.211111111152515
+      }
+    },
+    {
+      "name": "public TLS verified and relay closes all owned handles",
+      "passed": true,
+      "actual": {
+        "event": "relay_stopped",
+        "at_unix_ms": 1792150397916,
+        "monotonic_ms": 1932901609,
+        "remaining_connections": 0,
+        "synthetic_messages": 0
+      }
+    },
+    {
+      "name": "native logs contain no engine diagnostics",
+      "passed": true,
+      "actual": 75
+    }
+  ],
+  "new_functional_cases": 1,
+  "natural_cycles": 0,
+  "human_experience_in_scope": false,
+  "original_preflight_transport_failure_preserved": "C:\\Users\\SHENGJIAHAO\\.codex\\visualizations\\2026\\10\\16\\01a14470-1d10-7713-b3b0-f7c2aa729040\\pr13-continuation\\live-controls\\LIVE-A041-deadline-replayfix-r2\\run\\driver-result.original.json",
+  "criteria_relaxed": false,
+  "capacity_claim": false,
+  "register_or_gate_promoted": false,
+  "source_manifest_sha256": "245935f14e7f38d4b90e804372be8fcc71d0197fe94b71824112a794e5a29c0c",
+  "candidate_gateway_sha256": "4761c4781e209abe0e41c1931305c10c37142e2dc326d7e2f1ce3ea91787740e",
+  "canonical_match_and_ticket_status_not_reinterpreted_as_active_own_member": true,
+  "artifact_manifest": [
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\after-cloud-account-SQL.original.json",
+      "bytes": 4116,
+      "sha256": "37e364e3489eda08fb513476fd1709bc20aab5bda1a394468d337e09f8e58a27"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\before-cloud.original.json",
+      "bytes": 992,
+      "sha256": "0135e91c8c9e3892a7eac5e5450720014a1b3423842bbe3676507492834c6b42"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\client.engine.original.log",
+      "bytes": 75,
+      "sha256": "83cf0b082206af2aa236c83064fbcfa76be1e00a4aa3558574b2f65965d9481c"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\client.native.original.log",
+      "bytes": 73,
+      "sha256": "6d1c065383a27c36804949b6ffa4b09714470b112e5dacc0bd5aeb7b9c147c4e"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\cloud-monitor.original.jsonl",
+      "bytes": 9019,
+      "sha256": "e91e3f14cf9c36132712aa7ee1d26481a2fd0e8200d454a3dffae2829c3c39b1"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\current-metric-instance-proof.original.json",
+      "bytes": 261,
+      "sha256": "3fb3d3248feb4924b3493554d025aa6c49fd17f213ff1b794335d0859220b70d"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\deadline-case-observed.original.json",
+      "bytes": 938,
+      "sha256": "40ca87d682ff026796dc0249e6f9f7408a23cf367de5d496a3db80c3a472ab63"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\deadline-fault-arm.original.json",
+      "bytes": 131,
+      "sha256": "e1f5eacc374f21f09850e785ce36ed8bfee98797f12993c5e5a8a73bff355247"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\deadline-fault-release.original.json",
+      "bytes": 60,
+      "sha256": "0e5c8811a58f47c7c0dd7c3b03d26270f15f1956d9e84223036d913fba5da673"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\dispatch-intent.original.json",
+      "bytes": 164,
+      "sha256": "982e6ee1eef1954ed576656ac702105fd74f366ba938eff5cd18822837d706f5"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\driver-result.original.json",
+      "bytes": 504,
+      "sha256": "000f28fed01a48505c71f11e1550417a456ef298729eaae855d0cc823112dff4"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\native-started.original.json",
+      "bytes": 1260,
+      "sha256": "d1ee701d54ff3dbecbb8bb6116075f074fd38c20d5e55946328cd82419ac602b"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\player.original.json",
+      "bytes": 75194,
+      "sha256": "c35ce00fc19ab2513589eb8859d8210caed64264f83ed08f8150898e7927ad32"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\player.original.json.status.json",
+      "bytes": 63827,
+      "sha256": "0d8cfdc1d0e7757b4cd88c8d1cbc3e40be7c822918ffb42b077f1a690a4dd428"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\player.original.json.telemetry.jsonl",
+      "bytes": 45684,
+      "sha256": "8b5a66052053e757e2efb24955aa3f0c2bcad97b951baaca64c3c116de9c7a41"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\preflight-metric-observations.original.jsonl",
+      "bytes": 6876,
+      "sha256": "9ad1b748b547c5d8a3ab9a039624c02e4f41e172d1932318de9e85ba4e172c8e"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00001-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "f3d04f7d9c86300c6db56f2f0525bafe22b237a9c8d2eabecdd74a3f7243e372"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00002-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "809cc1ad9f07d084410c981d245186969b17705538f5180d4ce0374306ae02ef"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00003-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "02cd81570e4db0cef02e9cb887853f38ca352f082fc42f2b578fa8fb6f58d344"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00004-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "8264e5e1dd63b9cd9829aed82dc2cadf32ba5f74095033221b7c54a0a971e323"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00005-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "725e01ee7fa8f543870536b48ea5654c52cf57989aef4577b897433ca9dbef03"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00006-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "638effb342a47cf71539a1424f65db455c8b6f33ddd68f57221ba2204cdff313"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00007-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "80f6aca0efb57eab2c540059aaa030948ad8d83f689f27c166a5ed587beac620"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00008-server_to_client-match.found.original.pb",
+      "bytes": 155,
+      "sha256": "a9a6cf74091ce5c6e8edd527b292bfda8753fed5f37bb508d6fde9b3d50f84c8"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00009-server_to_client-room.ready_required.original.pb",
+      "bytes": 167,
+      "sha256": "b70d43c43f59a9bb3710d07f9c0a74b10a33b0ae906e84a6a7591aeab9fa8259"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00010-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "610205483b1a50241a53525470274508a39a05f453fdb83c46f17e0ec69051d2"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00011-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "7974f9e324255d981dcc7c8ce03cc506bf19556ae04ad9407c9eae13c6c0e65c"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00012-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "d24c36b0d8bdb6c38d9598c16bcb0889475274a0633ee8529753875ae35a65da"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00013-server_to_client-room.ready_required.original.pb",
+      "bytes": 189,
+      "sha256": "a21b6c8f7d796f029eab097cf652d6aa75f4431a5998cb153473bfbae28b42d7"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00014-client_to_server-session.resume.original.pb",
+      "bytes": 60,
+      "sha256": "082e6d3d377ff9bff2a187c3d6d1d7a6c1a8bf624beb545fb3be29266d264322"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00015-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "7974f9e324255d981dcc7c8ce03cc506bf19556ae04ad9407c9eae13c6c0e65c"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00016-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "d24c36b0d8bdb6c38d9598c16bcb0889475274a0633ee8529753875ae35a65da"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00017-server_to_client-room.ready_required.original.pb",
+      "bytes": 189,
+      "sha256": "a21b6c8f7d796f029eab097cf652d6aa75f4431a5998cb153473bfbae28b42d7"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00018-server_to_client-room.ready_removed.original.pb",
+      "bytes": 135,
+      "sha256": "29f75bec145ff19416f9cf65c0732cfb4b782ac156082406d0ed62af52c40a1e"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00019-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "14b4f8300883507a39cbb7d66256af83ef87c78e96f4cc04ce64e389e5804ae4"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00020-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "8d667fe7715f3491cd2962af1e3dc0665af9c0048ef7bc240e941e52aa97afb1"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00021-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "086bb7bc25fa5f3a1c7c04da9882f7d06d0b746fdb440d7086d3808fd659d42d"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00022-client_to_server-session.resume.original.pb",
+      "bytes": 60,
+      "sha256": "a6bedfc45105a6d5e49aa5b740558021d029172ea09b75b2673c5f1afd2633b0"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00023-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "7974f9e324255d981dcc7c8ce03cc506bf19556ae04ad9407c9eae13c6c0e65c"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00024-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "d24c36b0d8bdb6c38d9598c16bcb0889475274a0633ee8529753875ae35a65da"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00025-server_to_client-room.ready_required.original.pb",
+      "bytes": 189,
+      "sha256": "a21b6c8f7d796f029eab097cf652d6aa75f4431a5998cb153473bfbae28b42d7"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00026-server_to_client-room.ready_removed.original.pb",
+      "bytes": 135,
+      "sha256": "29f75bec145ff19416f9cf65c0732cfb4b782ac156082406d0ed62af52c40a1e"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00027-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "8d667fe7715f3491cd2962af1e3dc0665af9c0048ef7bc240e941e52aa97afb1"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00028-server_to_client-session.connected.original.pb",
+      "bytes": 138,
+      "sha256": "086bb7bc25fa5f3a1c7c04da9882f7d06d0b746fdb440d7086d3808fd659d42d"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00029-client_to_server-ping.original.pb",
+      "bytes": 42,
+      "sha256": "ae7ac3ed871e74170ae607a6f9c91b045d617fa679d3b61f28447156ddd32114"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\00030-server_to_client-pong.original.pb",
+      "bytes": 128,
+      "sha256": "1b6562c0c1a265942d17c2ab1538590c68b63310e7cdcf8b9a7ef516211003bd"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\ready.original.json",
+      "bytes": 16,
+      "sha256": "3b588020e77efb7e9257d9faed2b4bba981ac86b5fbdbebf3b4b541857ff9783"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\STOP",
+      "bytes": 21,
+      "sha256": "230c5f95cbbfd45d0db09e1a89ef6fef61febd5b207c0557c5877fedd5fd8b12"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay\\trace.original.jsonl",
+      "bytes": 18439,
+      "sha256": "18b3251258585c6f4066ff6ed1e62cb941affbab182058e49510fad1cdc48c27"
+    },
+    {
+      "path": "live-controls-r4\\LIVE-A041-deadline-replayfix-r4\\run\\relay.engine.original.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

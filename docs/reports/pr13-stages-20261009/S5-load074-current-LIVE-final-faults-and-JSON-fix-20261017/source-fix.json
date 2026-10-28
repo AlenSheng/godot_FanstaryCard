@@ -1,0 +1,29 @@
+{
+  "real_live_bug_reproduced": true,
+  "old_evidence_dimension_incorrectly_passed": true,
+  "files": [
+    {
+      "path": "tools/gameplay_load_test.py",
+      "before_sha256": "02869e93f7d42c8028a250ed0f8b5999c65a5289a93b1893480c9fd5024675e8",
+      "after_sha256": "a0397f5201dbb36c8e1b36798861bb3d44208c2f233ff4fbd862bb2d4ebfddbf"
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_finalization.py",
+      "before_sha256": "577c00452ba53ebda3b3c30bb4b62ea9438250f35b554a284d6a87c21363d835",
+      "after_sha256": "2be23fc1651b54cbdf6aa21115adbd84f6bdd15221a0a20e0276e4d130a5c6ef"
+    },
+    {
+      "path": "tools/tests/test_gameplay_load_sampling_contract.py",
+      "before_sha256": "832167681c4f27d8e3b58666bdba93f136de10698b700b55e9e2c8119c6500f2",
+      "after_sha256": "5c23163ab7753f49fc2564eb19ca715e19359e7ed949941298e93c3f442d3e93"
+    },
+    {
+      "path": "tools/tests/test_native_final_report.py",
+      "before_sha256": null,
+      "after_sha256": "a3ab8f0d827eba4295f4bce5480e79f5643399099d5f58b1bed885ed95c05a61"
+    }
+  ],
+  "native_report_bytes_limit": 8388608,
+  "source_scope": "Python final evidence checks and actualterminal testfixtures only; no scheduling/cleanup/native/game/server changes",
+  "no_originals_overwritten": true
+}

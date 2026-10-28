@@ -1,0 +1,44 @@
+{
+  "task": "LOAD-05.3",
+  "status": "design_only_not_executed",
+  "whole_task_match_cap": 8,
+  "current_actual_matches": 0,
+  "goal_cap": 300,
+  "original_ready_15s_and_bot_fill_30s_and_HTTP_10s_30s_unchanged": true,
+  "must_read_sources": [
+    "client/tests/pr13_ack_stop_cycles.gd",
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleAckStopAndCycleTests.cs",
+    "client/tests/pr13_a05_guard_windows.gd",
+    "server/src/FantasyCard.Server/Persistence/SettlementRepository.cs"
+  ],
+  "T02": {
+    "modes": [
+      "actual_ack_request_received_before_backend_commit_then_filesystem_STOP",
+      "actual_ack_backend_committed_200_response_not_delivered_then_filesystem_STOP"
+    ],
+    "must_keep": [
+      "actual original full runner and public terminal action",
+      "real ACK in flight / busy pending ID and no response observed at STOP",
+      "PG before-beforeCommit ACK0, afterCommit ACK1, final ACK1",
+      "cycles0 at stop and terminal; original primary cancelled/exit0; no duplicate inventory movements",
+      "same real request ID matched across wire, receipt and durable ACK record",
+      "nonempty owned initial equipment fixture if claiming asset movement invariants, exact seed intent and public bootstrap qualification"
+    ],
+    "no_synthetic_ACK_or_Game_state_assignment": true
+  },
+  "T03": {
+    "method_candidate": "Real owned equipment SELECT FOR UPDATE lock held by a separately owned PG transaction before a public legal terminal action, so actual settlement creates durable Pending holds but worker cannot commit; inspect exact source and canonical runtime test before freezing.",
+    "must_keep": [
+      "actual Pending hold and IDs ledger recorded before STOP",
+      "bootstrap/ready cannot imply committed asset before hold transition",
+      "client recovery ownership preserved while pending; cleanup Unknown if still pending",
+      "release only owned DB lock then actual authoritative commit/recovery/ACK once",
+      "cleanup must never delete hold ledger or forcibly mark readiness",
+      "possible original GameStore recoveryMatch route gap remains unproven, test before fixing"
+    ]
+  },
+  "other_awaits": [
+    "Review actual entering/READY wait cancellation and playing/settlement recovery waits before declaring all-await scope complete"
+  ],
+  "not_a_dispatched_plan": true
+}

@@ -1,0 +1,97 @@
+{
+  "kind": "SettlementFeedbackV3ActualOldNew48FrameVisualReview",
+  "at_utc": "2026-10-22T07:29:12.149533+00:00",
+  "owner": "01a152f7-f2a2-7b12-a4c5-a22b38ee9cd3",
+  "run": "goal-settlement-float-UI-01a152f7-r5-20261022",
+  "base": "/home/ubuntu/pr13-acceptance-20261009/work/goal-A092T02-current30-01a152f7-r1-20261022-inputs/client",
+  "runtime_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "production_before": {
+    "id": "a2c72aff2a7cf7eb5fa785a1e062b0b5cc9082547e2aee3668f0d14f8284b6c2",
+    "image": "sha256:7c13e8ebbfec9a554dfd20a8d78ee223e15a4286c4875606ae82e7d46d226ef2",
+    "started_at": "2026-10-22T02:46:10.441748235Z",
+    "environment_sha256": "a50d16851ede044a93abd7df8e9ece899700292ba5c287a0433622dde6de20ec",
+    "health": 200
+  },
+  "matrix": "2locales x3resolutions x2pairedsourcevariants x4states=48 real frames; active battle warning/settlement first/late feedback/original notice expired",
+  "scope": "Actual frozen U01 cycle2 state plus controlled damage and existing battle warning; no new accounts/games/settlementACK/PG,not LIVE or capacity/hardwareFPS proof. Deferred loopback client-info request is cancelled/drained through original session lifecycle before any UI; no fake server truth.",
+  "baseline_source_control": "Old main only redirects original tips import to original frozen tips resource. Both original files preserved. Candidate independently changes main float ownership/notice anchor and TipsOverlay layer translation.",
+  "baseline_canonical_main_SHA": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002",
+  "baseline_import_redirect_main_SHA": "958f5832314fd34d402fb7d1a8decefc213327d882bdd30c99484642d7a068e0",
+  "baseline_tips_SHA": "6ae3c6dcecf098e20897e07a7251c6d0ce2450f6f56da914d406a416f8ff07e3",
+  "candidate_main_SHA": "21b7e76537845468a32989369d2f079a72101adaa50c7bd7c284b85476cf3977",
+  "candidate_tips_SHA": "6b0762ed3800e139abad3bf591fdce134c4b662606122055a36ce5f1acaacdcf",
+  "local_qualified": "132 notice oldnegative/newpositive/lifetime checks,57 combat lifecycle,24 existing native+6related suites,132 dry controls/48records,all native clean. Prior parse/drain-harness failures retained.",
+  "prior_attempts_preserved": "R1 disk guard pre-APP failed; R2 512MiB OOM1/native-9/15frames; R3 1664MiB native0/36frames but actual visual title-toast obstruction,wholevisualunaccepted. All originals G.",
+  "why_new_attempt": "V3 fixes source-confirmed old toast position across context transition while preserving text,Tween,serial,expiry; no acceptance criterion softened,no new natural games or task budget reset",
+  "files": [
+    {
+      "path": "base-source.original.json",
+      "bytes": 416341,
+      "sha256": "fbbd9879f5bfa912d9f8fb9fedde92345cb13cb639cf8359db25b4d443dc0fac"
+    },
+    {
+      "path": "baseline-canonical-main.gd",
+      "bytes": 91569,
+      "sha256": "6735b3d746e7fd340a3f4e1fbeda37d05f9048055cccae2e2007280f277fa002"
+    },
+    {
+      "path": "baseline-main.gd",
+      "bytes": 91576,
+      "sha256": "958f5832314fd34d402fb7d1a8decefc213327d882bdd30c99484642d7a068e0"
+    },
+    {
+      "path": "baseline-tips.gd",
+      "bytes": 4449,
+      "sha256": "6ae3c6dcecf098e20897e07a7251c6d0ce2450f6f56da914d406a416f8ff07e3"
+    },
+    {
+      "path": "candidate-main.gd",
+      "bytes": 92951,
+      "sha256": "21b7e76537845468a32989369d2f079a72101adaa50c7bd7c284b85476cf3977"
+    },
+    {
+      "path": "candidate-tips.gd",
+      "bytes": 4846,
+      "sha256": "6b0762ed3800e139abad3bf591fdce134c4b662606122055a36ce5f1acaacdcf"
+    },
+    {
+      "path": "controller.py",
+      "bytes": 5409,
+      "sha256": "da688f7c87b87db7c90589eba1b6fc1e725aa7d5f4d343d7c3348b9bc7fec714"
+    },
+    {
+      "path": "owner.identity.json",
+      "bytes": 107,
+      "sha256": "3c00d2d3767cc9f8724370a108d9cb219ba086ecba85474dff1c4a4841a252b4"
+    },
+    {
+      "path": "replay.gd",
+      "bytes": 9505,
+      "sha256": "a6f1e45f7a32fb4972964f5930d0a38de0152e00f966a744208a44a91e21e537"
+    },
+    {
+      "path": "selected-actual.original.json",
+      "bytes": 6568,
+      "sha256": "da209eb79931e3c1c32f3b1ef3be33310d72832bbd9c674f25b7e7cd88fb9f56"
+    },
+    {
+      "path": "service.py",
+      "bytes": 6206,
+      "sha256": "da167c3a35f7fe83a632c435669a823b0e145dbe8b610eb142b3fc22f1d5061a"
+    },
+    {
+      "path": "settlement-actual.original.json",
+      "bytes": 8510,
+      "sha256": "799a09108fa717df2bec8f3be97b20590de44bb735a4c92d653d1cdb98f0f194"
+    }
+  ],
+  "resource_guards": "MemAvailable>500MB,disk free>3GB,fraction>=4.9%,permanent production same container/image/start/env/health200 unchanged",
+  "container": "networknone/read-only root/1664MiB/CPU.75/tmp256MiB/output128MiB; native240s;custody900s",
+  "new_natural_games0": true,
+  "human_in_scope": false,
+  "preserve_RAM_originals_before_G_ACK": true,
+  "original_R4_native1_and16failed_wall_expiry_checks_preserved": true,
+  "expiry_clock_revision": "Original source2.0seconds remains. Read-only Tween.get_total_elapsed_time frame deltas,plus separately observed wall time;20s wall safetybound only. No custom_step/speed/time_scale/hide manipulation. R4 originalfailed not relabelled.",
+  "primary_clock_contract": "https://docs.godotengine.org/en/stable/classes/class_tween.html#class-tween-method-get-total-elapsed-time",
+  "source_main_and_tips_identical_to_R4": true
+}

@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "layer": "Independent analyzer assertion, not Native or product failure",
+  "assertion": "p1-ref_main_HTTP_drained",
+  "original_assumption": "public request lifecycle count must equal physical HTTP telemetry count",
+  "observed": "16 public request starts and16 completions;15 physical HTTP requests. Existing Bootstrap singleflight can join callers.",
+  "no_native_or_game_trial_replayed": true,
+  "correction_required": "Validate all public call completion indices separately and correlate physical HTTP independently. Preserve coalescing and full route-count variation in cost results; do not attribute full-room deltas solely to named call."
+}

@@ -1,0 +1,19 @@
+{
+  "ok": true,
+  "audit_tool_issues_not_SUT_failures": [
+    {
+      "issue": "First path selected original R1 native215e while final report binds finalR2 source0d409",
+      "correction": "Consulted stage README, use explicit pool-capacity-local-verified-r2/pool-capacity-delivery-r2; firstR1 raw andsha unchanged."
+    },
+    {
+      "issue": "Callback selector assumed old UI buttons appended to new actions container",
+      "correction": "Compare entire pressed callback through original dialog.queue_free closure, independent of oldbox/newactions layout. Actual command/payload/selection callback bytes identical."
+    }
+  ],
+  "original_failed_auditor_sources_retained": [
+    "audit-before-callback-container-selector-fix.original.py",
+    "audit-before-explicit-R2-domain-parent.original.py"
+  ],
+  "new_native_gameplay_UI_cloud0": true,
+  "no_criteria_or_source_relabelling": true
+}

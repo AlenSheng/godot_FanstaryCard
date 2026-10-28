@@ -1,0 +1,9 @@
+{
+  "ok": false,
+  "layer": "Independent analyzer, not Native or game failure",
+  "assertion": "p1-baseline_every_request_single_attempt",
+  "wrong_assumption": "Every logical HTTP terminal telemetry record must be oktrue/status2xx.",
+  "actual": "Startup client-info generation0 physically returnedHTTP200/149B, but login changed session and correctly discarded old generation; logical terminal is cancelled/status0 and public completion401. Actual attempt and server start/stop proveHTTP200. Nativewholeflowsallpassed.",
+  "correction": "Qualify only this exact startupclient-info cancellation against physical attempt status/bodybytes and currentservertrace;count physical bytes149 rather than logicaldiscarded0. Keep public lifecycle completion assertions separate from business success.",
+  "no_world_or_Native_replayed": true
+}

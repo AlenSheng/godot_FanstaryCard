@@ -154,7 +154,7 @@ class Handler(BaseHTTPRequestHandler):
             if plan is not None:
                 plan["started"] = True
             record = {"case_id": self.server.case_id, "path": self.path, "started_ns": time.monotonic_ns(),
-                      "paused": bool(plan and plan.get("paused")), "authorization": self.headers.get("Authorization"),
+                      "paused": bool(plan and plan.get("paused")),
                       "trace_id": self.headers.get("X-Trace-Id"), "request_media": self.headers.get("Accept")}
             self.server.records.append(record)
         if plan is None:

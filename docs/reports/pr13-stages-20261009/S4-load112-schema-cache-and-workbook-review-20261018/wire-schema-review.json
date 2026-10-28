@@ -1,0 +1,83 @@
+{
+  "wire_job": {
+    "PID": 39808,
+    "terminal": true,
+    "all220_wire_records_and29_runtime_caches": true,
+    "wire_status_counts": {
+      "AllEncodedFieldsMappedAndCredentialPatternScanned": 219,
+      "SchemaCoverageWithUnknownOrOpaqueFields": 1
+    },
+    "kind_counts": {
+      "room.ready": 25,
+      "session.connected": 45,
+      "room.ready_required": 18,
+      "room.ready_accepted": 18,
+      "room.started": 21,
+      "session.resume": 9,
+      "room.snapshot": 75,
+      "battle.play_cards": 4,
+      "combat.preview": 4,
+      "ConfigBundle": 1
+    },
+    "known_field_nodes": 61571,
+    "decoded_string_fields": 8427,
+    "unknown_field_count": 0,
+    "opaque_bytes_field_count": 0,
+    "credential_pattern_or_sensitive_field_candidate_files": 0,
+    "actual_runtime_cache_export_rejections": 29,
+    "schema_coverage_not_runtime_or_identifier_privacy_proof": true,
+    "cache_binary_semantics_not_claimed": true,
+    "ledger_sha256": "e2e26e7895caa0d573351c0ce9e03cb50fd437d71a1315d4bcd676a693775fd6",
+    "seconds": 0.23400000017136335,
+    "no_gameplay_statistics_cloud_or_original_changes": true
+  },
+  "final_ConfigBundle_review": {
+    "PID": 134648,
+    "terminal": true,
+    "source_sha256_before_and_after": "2eb2ab3fa7b4a86a5c61b1d70cb33c1c3098cc75ea04b8fbae3f71ac1bc9840b",
+    "tables": 13,
+    "rows": 1599,
+    "value_role_counts": {
+      "ExplicitTypedValue": 14735,
+      "ExplicitNull": 835,
+      "KnownLogicalFalseDefault": 1308
+    },
+    "unknown_fields": [],
+    "opaque_bytes_fields": [],
+    "prior_false_positive_count": 1308,
+    "original_1308_empty_logical_values_corrected_by_actual_project_contract": true,
+    "credential_pattern_result_reused_not_rescanned": true,
+    "all220_encoded_schema_coverage_complete": true,
+    "not_runtime_or_human_identifier_privacy_acceptance": true,
+    "no_source_originals_or_official_states_changed": true
+  },
+  "identifier_field_occurrences_not_origin_classified": 141,
+  "contract_sources": [
+    {
+      "path": "client/data/realtime_schema.json",
+      "sha256": "421a99d4f69e3656204d57b02bc4fdee680bdf3ad6dee35dd3f58bd742b1b3cd"
+    },
+    {
+      "path": "client/network/gateway.gd",
+      "sha256": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637"
+    },
+    {
+      "path": "protocol/config/v1/config_bundle.proto",
+      "sha256": "07aad79d62134058c4c8870ac5101b3c622205dd424d28970a21c1f25add4a7d"
+    },
+    {
+      "path": "server/tools/FantasyCard.ConfigExporter/Program.cs",
+      "sha256": "aa0ceff2d3804407726ba2542e3b450308f980693735c4122fbe7a835c3191e3"
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs",
+      "sha256": "6ca893ca00ad8de7393beb2bc7ef487626d3552ad365666882fd998d236e5e2d"
+    },
+    {
+      "path": "server/tests/FantasyCard.Server.Tests/Config/ConfigCompilerTests.cs",
+      "sha256": "1f04ca87d0aa8fe38be33fd1be120535d4044b1088cc392f11bb2dc957dedded"
+    }
+  ],
+  "no_decoded_payload_values_retained_or_published": true,
+  "no_runtime_or_full_privacy_acceptance": true
+}

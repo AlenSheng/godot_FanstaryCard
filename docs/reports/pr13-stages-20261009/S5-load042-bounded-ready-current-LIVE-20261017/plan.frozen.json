@@ -1,0 +1,106 @@
+{
+  "task": "LOAD-04.2",
+  "canonical_cases": [
+    "LOAD-04.2-T01",
+    "LOAD-04.2-T02",
+    "LOAD-04.2-T03"
+  ],
+  "planned_new_accounts": 1,
+  "planned_real_matches": 1,
+  "maximum_matches_including_diagnostics": 7,
+  "maximum_conservative_player_room_starts": 28,
+  "goal_task_cap": 300,
+  "native_deadline_seconds": 240,
+  "service_deadline_seconds": 600,
+  "unit_deadline_seconds": 1200,
+  "unchanged_botfill_seconds": 30,
+  "unchanged_READY_deadline_seconds": 15,
+  "unchanged_HTTP_timeout_ms": 10000,
+  "T01": "Original load loop3attempts allcontrolledfalse at send entry/no socket; original exhausted falsecheck retained and actual authority release/PG",
+  "T02": "Actualaccepted andheldactualstarted, originalrealrequiredpacket directreplay thenonlyouterseq+1lift consumer fault, futureactualheaders+1; accepted/sendsstable1.3s,release actualstarted, originalcleanup/ACK",
+  "T03": "Actual alreadycompleted Matched ticket HTTP result body/metadata unchanged; awaitconsumerdelivery untilreal originaldeadline+150ms; WS remainsnormal; original readydeadline known via real required, no READY or attemptafterexpiry; actual removed/PG andfinite originalnegativecheck",
+  "no_game_room_ticket_HP_or_response_body_assignment": true,
+  "original_Store_ready_factory_wiring_only": true,
+  "probe_autorun_disabled_original_run_expedition_and_graceful_cleanup_used": true,
+  "expected_negative_Notices_and_checks_preserved": true,
+  "no_new_natural_capacity_RENDER_human_claim": true,
+  "server_Source_and_runtime_cached_complete_no_rebuild": true,
+  "source_upload_bytes": 0,
+  "source_hashes": {
+    "client/tests/gameplay_load_client.gd": "f9073e62f463d143963f8f6b5ca076690b5cceb103ec372aaf73bdb1f646108a",
+    "client/network/gateway.gd": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637",
+    "client/state/game_store.gd": "5a5ca76967ca5ae550829da6b6634c53934987d97f35e01d74caf4f397a25c7a",
+    "tools/gameplay_load_test.py": "dc9da16689bc82bb433584230e871fba2ec6c135c176812baf84736893d012fa",
+    "tools/pr13_audit_archive.py": "6d5b746a96f180ed9f5b8588ad4bfa776675dc3f64a2cb8c1dba4005a5ec99f3"
+  },
+  "alignment_before_dispatch": "Actual reused environment service/runner already600/1200; local supervisory estimates corrected to match before upload; native240/HTTP10/READY15/botfill30 remain unchanged",
+  "R2_fixture_correction": {
+    "original_R1_whole_failed": true,
+    "original_R1_T01_passed_and_PGRemoved": true,
+    "original_R1_T02_unintended_sendfalse": true,
+    "confirmed_source": "client/tests/gameplay_load_client.gd:413-414 original graceful cleanup sets reconnect_enabled=false and closes socket",
+    "fix": "Test controller now awaits actual public Store.reconnect and observed online/nonrecovering/OPEN between terminal cases; no direct route,token,sequence or gameplay state assignment",
+    "execution_order": [
+      "T01_ALL_FALSE",
+      "T03_EXPIRED",
+      "T02_LATE_REQUIRED"
+    ],
+    "reason_for_order": "Only T02 intentionally lifts controlled sequence headers; run that case last to avoid transferring its cursor seam through an unrelated reconnect",
+    "product_source_changes": false,
+    "server_HTTP_or_READY_deadlines_changed": false,
+    "R1_actual_matches": 2,
+    "R2_planned_matches": 3,
+    "cumulative_planned_matches": 5,
+    "original_max_matches_including_diagnostics": 6,
+    "cumulative_conservative_player_starts": 20,
+    "max_player_starts": 24,
+    "original_R1_all_logs_SQL_and_cleanup_retained": true
+  },
+  "R3_real_bug_fix": {
+    "actual_R2_failure": "Real ready_removed at original15s; actual unchanged Matched HTTP results delivered199ms afterdeadline, then source client socket wrote2READY before ready_ticket_missing. Original rawtrace/SQL retained.",
+    "before": {
+      "client/tests/gameplay_load_client.gd": "412d3862db50db1dc58debcfe60b1922f80fa80a91f16c8d855470292a701e22",
+      "client/network/gateway.gd": "29f57994d646ac8473589880a196c86afefea4c7153a6a0448cda0199661974d"
+    },
+    "after": {
+      "client/tests/gameplay_load_client.gd": "f9073e62f463d143963f8f6b5ca076690b5cceb103ec372aaf73bdb1f646108a",
+      "client/network/gateway.gd": "1622b28ff98e0be7b75bb3ae8cf89c8d2cbab3877f6d924cc85301f6020e6637"
+    },
+    "fix": "Keep bounded8match immutable-earliest authority deadlines independently of UIhint and recheck on every Matched result; Gateway always requires current verified unexpired prelaunch for READY.",
+    "new_original_failure_code": "ready_deadline_expired",
+    "server_deadline_HTTP_timeout_or_protocol_fields_changed": false,
+    "no_HP_or_numeric_or_UI_or_backend_changes": true,
+    "all_original_failures_retained": true,
+    "new_LIVE_pending": true
+  },
+  "current_cases_executed": [
+    "LOAD-04.2-T03"
+  ],
+  "T01_scope": "Prior R1/R2 actual 3false before deadline retained; current 8native regression suites and no changed allfalse-counter conditions/sourcequalification, not a new third R3fullrun",
+  "R3_cursor_translation": "Declared consumer +1header offset carries through actual Store.reconnect; outgoing session.resume cursor translated back to original server cursor only in test gateway. No production protocol/sequence modifications.",
+  "prior_R1_actual_matches": 2,
+  "prior_R2_actual_matches": 2,
+  "cumulative_planned_matches": 7,
+  "cumulative_max6_matches_preserved": false,
+  "cumulative_conservative_starts": 28,
+  "execution_order": [
+    "EXPIRED"
+  ],
+  "prior_R3_actual_matches": 1,
+  "R4_scope": "Only unexecuted expiry LIVE case; R3 T02 raw real accepted/late required/no resend/real started/cleanup ACK and independently collected final PG retained. R3 whole native Failed after business checks because checkpoint label accepted-required-after-ACK failed lowercase-only fixture regex before SSH/SQL; no waiver of business correctness.",
+  "R3_whole_run_remains_failed": true,
+  "R3_T02_reconstruction_requires_independent_review": true,
+  "R4_no_header_lift_or_resume_translation_executed": true,
+  "prior_R4_actual_matches": 1,
+  "R5_planned_matches": 1,
+  "R5_exact_race": "Completed real Matched HTTP reply waits for actual ready_removed to finish all original Store/probe consumers and clear prompt, then exact unchanged reply delivered after original15s deadline; bounded consumer hold20s, actual transport timeout10s unchanged.",
+  "cap_revision": {
+    "old_self_imposed_max_matches": 6,
+    "new_self_imposed_max_matches": 7,
+    "old_max_player_starts": 24,
+    "new_max_player_starts": 28,
+    "human_goal_task_cap": 300,
+    "reason": "R4 zero READY passed but real ready_removed arrived216ms AFTER old result return, so exact R2 cleared-hint-first failure order needs one additional current real match. All6 old actual matches retained; business correctness/server deadlines not relaxed.",
+    "declared_before_R5_dispatch": true
+  }
+}

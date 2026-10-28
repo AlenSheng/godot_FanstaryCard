@@ -1,0 +1,21 @@
+{
+  "task_id": "LOAD-07.4",
+  "authority": "MAIN",
+  "state": "Accepted",
+  "at_local": "2026-10-17T12:00:53.306122+08:00",
+  "reason": "上游完成后整体复核，当前有界分段/终局读者真实三项LIVE复跑：坏主JSON拒绝、真实exit7仍cleanupFailed、35.219s仅所属PID强退且外部哨兵存活；当前170OFFLINE与53独立不变量及SQL/资源清理通过。",
+  "source_review": "docs/reports/pr13-stages-20261009/S5-load074-current-terminal-matrix-LIVE-20261017/main-independent-review.json",
+  "human_authorization": "本goal剩余自动测试、修复与最终效果验收授权。",
+  "criteria_relaxed": false,
+  "old_R1_real_missed_detection_and_new_fixture_failures_preserved": true,
+  "actual_run_exits": [
+    3,
+    3,
+    3
+  ],
+  "actual_exit7_and_forcedhang_cleanup_dimensions_remain_Failed": true,
+  "scope": "Current functional fault detection, not capacity/performance/natural/human/RENDER",
+  "old15percent_capacity_unpassed": true,
+  "new_actual_native_clients": 3,
+  "rollback": "可切回父register撤销本项裁决；本项只修四个旧测试的实际文件前提，旧源和全部原件保留，无生产/后端变更。"
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "A094T02PrivateCursorCoordinateCorrectionWithoutNativeRerun",
+  "case_id": "PR13-A09.4-T02",
+  "original_R4_native_exit": 1,
+  "original_R4_passed_rows": 4,
+  "original_R4_failed_rows": 2,
+  "original_R4_service_and_controller_failure_retained": true,
+  "reason": "Input.warp_mouse2,2 uses window coordinates; project canvas_items base1920x1080 yields viewport4,4 at960x540;3,3 at1280x720;2,2 at1920x1080. Private test incorrectly required all viewport coordinates near2,2.",
+  "actual_project_config_SHA": "3b6b98a106322f71bee784ae418aa1eac40be97fbfafc48aef2206e966dfc2cb",
+  "source_lines": "client/project.godot24-31",
+  "correct_derived_window_position": [
+    2,
+    2
+  ],
+  "derived_viewport_positions": {
+    "960x540": [
+      4,
+      4
+    ],
+    "1280x720": [
+      3,
+      3
+    ],
+    "1920x1080": [
+      2,
+      2
+    ]
+  },
+  "all_original_UI_pressed_delta1_and_actual_tip_match": true,
+  "original_images_and_raw_statuses_unchanged": true,
+  "independent_render_review_still_required": true,
+  "native_business_test_reruns0": true,
+  "new_worlds_accounts_DB0": true,
+  "business_and_DB_or_pixel_acceptance_criteria_not_relaxed": true,
+  "whole_native_pipeline_not_passed": true,
+  "actual_human_accepted": false
+}

@@ -1,3 +1,5 @@
+> **正式文件整合（2026-10-28）：** 本地及云端验收环境的遗漏正式材料已整理，历史候选与失败按原身份保留；新分支基线与整合清单见[核查报告](../../release-formal-audit-20261028-r1/README.md)。当前120 Accepted＋12按约定收口、待验收0，容量补测保持结束。
+
 > **本轮最终验收完成（2026-10-27）：按用户明确指令，LOAD-11.2、A01.3、A07.3、A08.1以本机模拟口径完成当前版本验收。当前台账120 Accepted＋12按约定收口，待验收0项；本轮结束、目标complete。历史原件／旧运行身份和真实外部fork未实测缺口单列保留未通过，当前不阻塞。此前五项、容量12项、全部原始失败与CPU调整记录不变，不再自动补测100人。见[最终四项通过报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_VERSION_FOUR_LOCAL_SIM_ACCEPTED_20261027.md>)及[当前132项处置层](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/CURRENT_TASK_DISPOSITIONS_LOCAL_SIM_ACCEPTED_20261027.json>)。下方未通过／blocked描述均为此前口径的历史快照。**
 
 > **本机补缺模拟验收（2026-10-27 R1）：四组12个明确用例、31项回归全部通过，新生成229个受控周期并保留逐事件差额，690份本轮输入全部验SHA匹配；原实际PG418／0跳过已复验且六棵代码树一致。本轮结论是“当前本机模拟层通过”，历史原件／旧运行身份与真实外部fork缺口仍单列，原严格四项整项状态不改。已通过五项、容量12项收口、原失败与CPU调整保留，不补测100人。见[本机模拟报告](<G:/Program Files/GodotFiles/godot_FanstaryCard/docs/reports/pr13-rebuild-20261024-r1/continuation-20261025/LOCAL_GAP_RESIMULATION_ACCEPTANCE_20261027_R1.md>)。下方阻塞审计是本次新指令前的历史状态。**

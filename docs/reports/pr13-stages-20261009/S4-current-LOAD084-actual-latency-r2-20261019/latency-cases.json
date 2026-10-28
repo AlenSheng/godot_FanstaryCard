@@ -1,0 +1,97 @@
+{
+  "R1": [
+    {
+      "mode": "fast",
+      "variant": "baseline",
+      "first_ready_ms": 50,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "fast",
+      "variant": "candidate-r1",
+      "first_ready_ms": 51,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "candidate-r1",
+      "first_ready_ms": 1850,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "baseline",
+      "first_ready_ms": 121,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "loss",
+      "variant": "baseline",
+      "first_ready_ms": 105,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    },
+    {
+      "mode": "loss",
+      "variant": "candidate-r1",
+      "first_ready_ms": 3517,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    }
+  ],
+  "R2": [
+    {
+      "mode": "fast",
+      "variant": "baseline",
+      "first_ready_ms": 67,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "fast",
+      "variant": "candidate-r2",
+      "first_ready_ms": 67,
+      "HTTP_logical_reads": 6,
+      "Bootstrap_reads": 1,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "slow",
+      "variant": "candidate-r2",
+      "first_ready_ms": 138,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 1
+    },
+    {
+      "mode": "loss",
+      "variant": "candidate-r2",
+      "first_ready_ms": 122,
+      "HTTP_logical_reads": 7,
+      "Bootstrap_reads": 2,
+      "point_reads": 1,
+      "point_attempts": 3
+    }
+  ],
+  "not_whole_room_or_statistical_latency_benchmark": true
+}

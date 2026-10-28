@@ -1,0 +1,62 @@
+{
+  "native_UI": {
+    "PID": 45,
+    "args": [
+      "/usr/local/bin/godot",
+      "--windowed",
+      "--audio-driver",
+      "Dummy",
+      "--max-fps",
+      "30",
+      "--rendering-method",
+      "gl_compatibility",
+      "--resolution",
+      "960x540",
+      "--path",
+      "/inputs/client",
+      "--log-file",
+      "/evidence/native.engine.original.log",
+      "res://tests/A094T01_PG_live_button.tscn"
+    ],
+    "at_ns": 1792631979917821068
+  },
+  "actual_native_exit": 0,
+  "PG_probe_commands": [
+    [
+      "dotnet",
+      "/inputs/witness/A094T01Probe.dll",
+      "before",
+      "/evidence/PG-marker-before.original.json"
+    ],
+    [
+      "dotnet",
+      "/inputs/witness/A094T01Probe.dll",
+      "while-native",
+      "/evidence/PG-marker-while-native.original.json"
+    ],
+    [
+      "dotnet",
+      "/inputs/witness/A094T01Probe.dll",
+      "after",
+      "/evidence/PG-marker-after.original.json"
+    ]
+  ],
+  "PG_probe_exits": [
+    0,
+    0,
+    0
+  ],
+  "Program": {
+    "PID": 13,
+    "start_ticks": "6237646",
+    "cwd": "/runtime",
+    "base_url": "http://127.0.0.1:37913",
+    "actual_Server_SHA": "dd56dfc4e3ec3de941f85e12a2d1fa3c25a5b4a07be3d2b17eaed2de624d4ead",
+    "only_owned_PG": true
+  },
+  "actual_policy_source_SHA": "ea767e56e412336a70599e89d4084496584314b8e4c06f7a26231acc82c9fcb1",
+  "native_Godot_version": "4.7.2.stable",
+  "immutable_container_image": "sha256:180f524270f6ac28d2fe0ff29707fb392387d7b766f731e41fda1e45e8230520",
+  "PostgreSQL": "18.6",
+  "local_headless_Dummy60_CNO_BelowNormal": true
+}

@@ -1,0 +1,85 @@
+{
+  "source": "G:\\PR13Evidence\\goal-http-write-retry-r3-20261016-complete-originals\\originals\\evidence\\run-result.json",
+  "source_sha256": "a45a6cd4e2d622353807b4a028ee76600501d030a8e9c556eaad424958c6e5bb",
+  "actual": {
+    "ok": true,
+    "production_source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+    "native_source_cache_sha": "9555aa077708af4efa1ee518334306f228e12ef5",
+    "MAIN_accepted": false,
+    "exit_code": 0,
+    "oom_killed": false,
+    "inner": {
+      "ok": true,
+      "MAIN_accepted": false,
+      "production_source_sha": "2ddf34763b2a3f4c5aee22e2fd1749568cc6d41e",
+      "arms": [
+        {
+          "arm": "reusable",
+          "native_exit_code": 0,
+          "native_rows": 1,
+          "native_case_ids": [
+            "LOAD-06.1-T01"
+          ],
+          "players": [
+            {
+              "gold_mail_claimed_via_production_API": true,
+              "initial_gold": 100000,
+              "side": "A",
+              "user_id": "01a14543-30da-7374-8251-d73dc28c21a8"
+            },
+            {
+              "gold_mail_claimed_via_production_API": true,
+              "initial_gold": 100000,
+              "side": "B",
+              "user_id": "01a14543-331a-7a3c-9eda-75b64b70f6fd"
+            }
+          ],
+          "lost_request_id": "godot-99fcf3f4433735de6847412a82168949",
+          "overlap_request_id": "",
+          "actual_committed_responses_before_503": 2,
+          "final_PG_postconditions_still_required": true
+        }
+      ],
+      "phases": [
+        {
+          "name": "restore",
+          "exit_code": 0
+        },
+        {
+          "name": "build",
+          "exit_code": 0
+        }
+      ],
+      "frozen_executed_client_bytes_unchanged": true,
+      "final_PG_postconditions_still_required": true,
+      "owned_backend_stopped": true
+    },
+    "original_database_postconditions": [
+      {
+        "arm": "reusable",
+        "actual": {
+          "player_id": "01a14543-30da-7374-8251-d73dc28c21a8",
+          "gold": 99900,
+          "potions": 1,
+          "purchase_rows": 1,
+          "request_rows": 1,
+          "quantity": 1,
+          "price": 100,
+          "ledger_rows": 1,
+          "ledger_delta": -100,
+          "other_gold": 100000,
+          "other_potions": 0
+        },
+        "all_original_database_postconditions_passed": true
+      }
+    ],
+    "target_POSTGRES_profiles_verified": 1,
+    "owned_containers_removed": true,
+    "cleanup": {
+      "pr13-goal-http-write-retry-01a14470-r3": true,
+      "pr13-goal-http-write-retry-01a14470-r3-pg": true
+    },
+    "frozen_source_package_and_client_bytes_unchanged": true,
+    "all_original_outputs_retained_pending_G_backup": true
+  }
+}

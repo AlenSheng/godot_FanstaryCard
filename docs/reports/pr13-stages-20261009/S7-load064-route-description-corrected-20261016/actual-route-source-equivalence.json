@@ -1,0 +1,82 @@
+{
+  "checks": [
+    {
+      "function": "_request_page",
+      "normalized_text_equal": true,
+      "executed_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287",
+      "current_sha256": "2d4d05623fcf0b5a7514e78b459b3bdefab8be6e59372f76d9f0e59edf800287"
+    },
+    {
+      "function": "_emit_http_attempt",
+      "normalized_text_equal": true,
+      "executed_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d",
+      "current_sha256": "4bb784a64a20528468a00677558ee451def558eb1d72ca92dec26f627da6652d"
+    },
+    {
+      "function": "normalize_request",
+      "normalized_text_equal": true,
+      "executed_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa",
+      "current_sha256": "bdac4cf5b3ae089bde1592d6f98c062f14383529f1b4c26cac27cb4b517639fa"
+    },
+    {
+      "function": "normalize_response",
+      "normalized_text_equal": true,
+      "executed_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493",
+      "current_sha256": "2dec51c32a14bd59aa2fccdce9f4710a8f66b0aad726e2133f32f1122b3ea493"
+    },
+    {
+      "function": "_decode_http_response",
+      "normalized_text_equal": true,
+      "executed_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15",
+      "current_sha256": "2cef16ed86692277ddcb22caca5e7de0c3a79840f1fb43417608ee8989828b15"
+    },
+    {
+      "file": "network/reusable_http_client.gd",
+      "normalized_text_equal": true
+    },
+    {
+      "file": "network/http_protocol.gd",
+      "normalized_text_equal": true
+    },
+    {
+      "file": "network/protobuf.gd",
+      "normalized_text_equal": true
+    },
+    {
+      "function": "_request_http_transport",
+      "original_reusable_first_branch_preserved": true,
+      "new_native_one_off_204_transport_excluded_from_reusable_path": true
+    },
+    {
+      "data": "http_schema.json",
+      "normalized_text_equal": true,
+      "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+    },
+    {
+      "data": "realtime_schema.json",
+      "normalized_text_equal": true,
+      "comparison": "Parsed JSON structure; byte hashes may differ by formatting"
+    },
+    {
+      "route": "/api/v1/players/me",
+      "normalized_text_equal": true,
+      "comparison": "Selected executed route only; registry outside selected paths may differ"
+    },
+    {
+      "route": "/api/v1/bootstrap",
+      "normalized_text_equal": true,
+      "comparison": "Selected executed route only; registry outside selected paths may differ"
+    },
+    {
+      "route": "/api/v1/auth/local",
+      "normalized_text_equal": true,
+      "comparison": "Selected executed route only; registry outside selected paths may differ"
+    },
+    {
+      "data": "HTTP protocol envelope",
+      "normalized_text_equal": true
+    }
+  ],
+  "all_required_equal": true,
+  "scope": "Only executed reusable PG arm and unchanged timing/decode implementation; no blanket full-source equality claim"
+}

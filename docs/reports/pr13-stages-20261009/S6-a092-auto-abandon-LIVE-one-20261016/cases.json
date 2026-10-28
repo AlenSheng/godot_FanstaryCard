@@ -1,0 +1,28 @@
+[
+  {
+    "case_id": "PR13-A09.2-T03",
+    "executed": true,
+    "status": "Passed",
+    "profiles_executed": [
+      "LIVE"
+    ],
+    "expected": "不归正常击杀",
+    "actual": {
+      "actual_public_cleanup_action": "battle.abandon",
+      "drain_ACK_count": 1,
+      "normal_cycles": 0,
+      "original_native_gameplay_pass": false,
+      "cleanup_and_asset_release_verified": true
+    },
+    "scope": "Actual failed1200second public Guardian run and real legal cleanup; negative classification contract passes while gameplay remains failed. No POSTGRES/CAPACITY/RENDER closure.",
+    "source_sha": "20c38ec6884af640f86ce4c0b3175a20ca557a6e",
+    "source_sha_scope": "Current MAIN review; exact native working-tree hashes frozen in source manifest",
+    "setup": "自动弃战",
+    "evidence": [
+      {
+        "path": "docs/reports/pr13-stages-20261009/S5-natural1200-six-normal-and-Guardian-censored-20261016/case-review.json",
+        "scope": "Actual failed1200second public Guardian run and real legal cleanup; negative classification contract passes while gameplay remains failed. No POSTGRES/CAPACITY/RENDER closure."
+      }
+    ]
+  }
+]

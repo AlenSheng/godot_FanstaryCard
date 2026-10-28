@@ -1,0 +1,32 @@
+{
+  "audit_fixture_issues_not_SUT_failures": [
+    {
+      "round": "current-client",
+      "failure": "seed() function name resolved Godot builtin at compile,exit1",
+      "fix": "Rename helper apply_original_seed, old source/log preserved."
+    },
+    {
+      "round": "current-client-r2",
+      "failure": "Preload of UI fixture at SceneTree script compile lacked Game global; invalid innerclass creation",
+      "fix": "Deferred load after autoload initialization, exact ownedPID34412 checked and stopped after actual compile error. Observation timeout was not treated as terminal."
+    },
+    {
+      "round": "current-client-r3",
+      "failure": "Choice vector afterSnapshotWire belongs only to PvP; choice snapshot is in responseWires. Late deferred client-info also reached detached replay gateway.",
+      "fix": "Read exact original room.snapshot from responseWires; await firstprocessframe on original in-tree gateway then end_session tocancel generation before swapping. Exact ownedPID127956 stopped after actual assertions/errors, old raw/log retained."
+    },
+    {
+      "round": "current-client-r4",
+      "result": "Actual120 headless native0,strictlogclean,original wires/fullplayer/replay/PVPreturn all matched. Watchdog prevents fixture assertions idling forever."
+    },
+    {
+      "audit": "Composite manifest stored in public delivery-manifest.original.json, not copied at rawG root; explicit SHAequals original receipt."
+    },
+    {
+      "audit": "Composite dimension ternary could bypass dimensional half; added explicit full tuple check63/99/72/189/45, no criterion weakening."
+    }
+  ],
+  "no_product_fix_or_rule_change": true,
+  "new_gameplay_UI_cloud_orSUTbuild0": true,
+  "freshcurrentclient_replay_only": true
+}

@@ -1,0 +1,80 @@
+{
+  "task": "LOAD-07.3",
+  "scope": "Current bounded segmented writer/offheap reader actual LIVE revalidation; all old OFFLINE/LIVE source versions and failures retained",
+  "previous_goal_turn_classification": "progress:7product/testfilesboundedwriterreaderimplemented159Python7native6crosscases89MB/8.4MBtracemalloc, currentLIVE3reopened",
+  "cases": [
+    "STATUS_GAP",
+    "AUDIT_WRITE",
+    "AUDIT_QUOTA",
+    "SESSION_PARALLEL"
+  ],
+  "canonical_case_ids": [
+    "LOAD-07.3-T01",
+    "LOAD-07.3-T02",
+    "LOAD-07.3-T03"
+  ],
+  "planned_new_native_clients": 5,
+  "maximum_new_native_clients_including_diagnostics": 6,
+  "maximum_rooms_including_diagnostics": 12,
+  "maximum_conservative_player_room_starts": 24,
+  "goal_default_cap": 300,
+  "T01": {
+    "clients": 1,
+    "max_seconds": 65,
+    "real_status_path_renamed_only_during_nonfinal_read": true,
+    "real_stale_boundary_ms": 30000,
+    "testonly_coordinator_disk_guard_percent": 5,
+    "original15percent_capacity_not_passed": true
+  },
+  "T02a": {
+    "clients": 1,
+    "max_seconds": 24,
+    "default16MiB8segment_writer_unchanged": true,
+    "actual_FileAccess_against_owned_directory_then_restore": true
+  },
+  "T02b": {
+    "clients": 1,
+    "max_seconds": 24,
+    "testonly_segment_limit_bytes": 4096,
+    "testonly_max_segments": 2,
+    "real_actual_network_auth_records": true,
+    "expected_lost_and_evidence_invalid": true,
+    "no_physical_resource_exhaustion": true
+  },
+  "T03": {
+    "clients": 2,
+    "max_seconds": 24,
+    "simultaneous_separate_userdata_before_autoload": true,
+    "seed_only_synthetic_oldsession": true,
+    "observe_before_original_scene_ready": true
+  },
+  "all_source_actual_declared_overlays_no_stubbed_HTTP_or_room_assignment": true,
+  "private_backend": "Reused exact complete cached Program and new owned disposable PostgreSQL, internal network no host ports",
+  "production_ID_image_start_environment_and_health_must_remain": true,
+  "private_app_MB": 512,
+  "private_PG_MB": 384,
+  "PG_max_connections": 25,
+  "private_auth_write_read_headroom": [
+    100,
+    200,
+    500
+  ],
+  "no_default_capacity_or_natural_or_human_or_UI_claim": true,
+  "monitoring": "Real same physical cloud host CPU/memory/disk only via strict SSH Prometheus; actor queue/server active counts unavailable for private backend, never substitute production app metrics",
+  "retained_python_dependencies": "Existing local Python310 psutil7.0.0 in prior pydeps; no install/download",
+  "native_deadlines_unchanged": true,
+  "source_upload_bytes": 0,
+  "service_deadline_seconds": 600,
+  "unit_deadline_seconds": 1200,
+  "master_deadline_seconds": 480,
+  "source_hashes": {
+    "tools/gameplay_load_test.py": "dc9da16689bc82bb433584230e871fba2ec6c135c176812baf84736893d012fa",
+    "tools/pr13_audit_archive.py": "6d5b746a96f180ed9f5b8588ad4bfa776675dc3f64a2cb8c1dba4005a5ec99f3",
+    "tools/gameplay_load_validation.py": "37d4b91f444412d189fa0bdaef44be65e7004f2da7d40e51bbd664b03309ba80",
+    "tools/pr13_runtime_evidence.py": "f0e8d33ad379f0893ba7e5ec9b1d8ee0a7f0a05ce1b0f9cea9a887826a639e0a",
+    "tools/cloud_load_test.py": "08042e6f1e72fc730ed92feca3f8a2bca2b09959ec200c8ce42284c6367018af",
+    "client/tests/gameplay_load_client.gd": "412d3862db50db1dc58debcfe60b1922f80fa80a91f16c8d855470292a701e22",
+    "client/state/game_store.gd": "5a5ca76967ca5ae550829da6b6634c53934987d97f35e01d74caf4f397a25c7a",
+    "client/network/gateway.gd": "29f57994d646ac8473589880a196c86afefea4c7153a6a0448cda0199661974d"
+  }
+}

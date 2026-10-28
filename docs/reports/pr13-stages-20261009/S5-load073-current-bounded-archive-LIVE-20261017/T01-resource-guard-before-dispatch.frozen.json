@@ -1,0 +1,11 @@
+{
+  "pre_execution": true,
+  "case": "LOAD-07.3-T01",
+  "old_disk_capacity_floor_percent": 15,
+  "current_goal_fault_scope_floor_percent": 5,
+  "actual_cloud_disk_percent": 14.17229518521884,
+  "old15percent_capacity_floor_passed": false,
+  "scoped_change_only_local_executed_T01_coordinator": "('disk_available',15,True) -> ('disk_available',5,True)",
+  "reason": "Preserve real >30s stale waiting while old15percentwouldstopbefore40s; inheritedauthorized5percentgoalresourcefloor. T02/T03 retain15percentchecks and shortboundedruns. Production unchanged; no capacityclaim.",
+  "all_other_thresholds_and_timers_unchanged": true
+}

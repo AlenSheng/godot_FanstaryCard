@@ -1,0 +1,50 @@
+{
+  "kind": "A043T03ActualPGCommittedMarkRunningLossGodotAndRestart",
+  "case_id": "PR13-A04.3-T03",
+  "profile": "LIVE",
+  "fault": "UnmodifiedProgram8eb Npgsql connection throughownedloopbackPGproxy/SSLDisable. DetectexactsourceMarkSQL ParseP/QueryQ; first UPDATE response frames including actualCommandCompleteUPDATE1 andReadyForQueryI retainednotforwarded. IndependentdirectPGread mustconfirm sameM durableRunning/snapshot1/pendingM/registeredactor tickerfalse andonce-onlyassetreservation beforeownedPGconnectionclosed. Originalcoordinator mustremove transientactor thenretrysamependingM UPDATE0+SELECTactualRunning, exactlyoneStarted. No fabricatedDBreply/row/clock/timeout.",
+  "restart": "After originalMarkretryandactualStarted/currentownroom, verifyProgramPID/startticks/cmdSHA twice andSIGKILLonlyownedProgram. SameDB actualnewProgram loadsRunning checkpoint, originalGodot autoreconnect/newpeer snapshot sameM/room/UID/gen, nonzeroresources unchanged. Hostallowsoriginalpublicabandon/ACKonlyafterproof; final1receipt/ACK/item3movesRelicPile.",
+  "fixture": "OneactualUID, oneinitialboundWhiteFeet0FireDrawIntervalseedonceafterauthbeforepreparation; actualrefreshBootstrap/Mage/prepare/enqueue/READY/originalfullrunner. Read-onlyactualDISingletonObserver reusedsamecompiledDLL10ff fromSavecase; noRegistrymutation.",
+  "budgets": {
+    "additional_worlds_max": 1,
+    "additional_UIDs_max": 1,
+    "additional_initial_items_max": 1,
+    "successful_ACKs_expected": 1,
+    "first_dropped_PG_result_count": 1,
+    "expected_Mark_attempts": 2,
+    "Native_seconds": 180,
+    "service_seconds": 250,
+    "unit_seconds": 480,
+    "PG_commit_proof_hold_seconds_max": 8,
+    "original_CommandTimeout10_HTTP10_30_READY15_botfill30_unchanged": true,
+    "all_prior_A04_samples_failures_retained": true
+  },
+  "required": [
+    "ActualPGframing/poolresetC/Z handled onlycompleteUPDATEtag+Z; malformedvectorsrejectedandtransparentnormalreplyunit beforeupload",
+    "ActualoldActor tickerfalse/pendingM anddurablecommit independentproofbeforeTCPresultloss, thenremoved/replacedactor/oneStart andUPDATE0+SELECTRunning rawdata",
+    "ActualverifiedProgramrestart/currentGodotnewpeer/UIDMroomauthority, nosecondresourceDebit; oneNativecycle/ACK and noPending",
+    "Fullraw/source/producers/PGdump/G SHA+CRC beforeonlyexactownedCLOUDinputcleanup, prodidentityhealth200 unchanged"
+  ],
+  "resources": "Onlycurrentexistingcloudhost, APP1024MiB1.25CPU/PG384MiB.25CPU; functional500MB/5percentnotcapacitySLO. No newhost/resize/productionedits/localGUI/fullscreen/focus/input/PG/auth.",
+  "GDD": [
+    {
+      "path": "GDD.md",
+      "sha256": "7375f9615d4612a617cdb6295a020037016ecef061964c0200b52c2def9d44f6"
+    },
+    {
+      "path": "GDD_BASE_v0.69.md",
+      "sha256": "bccf36529f8f3aa599118521df573425e00b6ab5f76b42d1eaca881d2831bde1"
+    }
+  ],
+  "primary_sources": [
+    "server/tests/FantasyCard.Server.Tests/EndToEnd/ProcessLifecycleRegistrationFaultTests.cs RegistrationCommitProxy",
+    "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+    "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs MarkRunningAsync",
+    "https://www.postgresql.org/docs/18/protocol-message-formats.html",
+    "https://www.postgresql.org/docs/18/protocol-flow.html"
+  ],
+  "human_experience_in_scope": false,
+  "business_criteria_relaxed": false,
+  "no_newGitcommit_push_deploy": true,
+  "state": "FrozenNotExecuted"
+}
