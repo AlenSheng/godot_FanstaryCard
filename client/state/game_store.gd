@@ -19,6 +19,7 @@ const BattleTargets = preload("res://state/battle_targets.gd")
 const CATALOG = preload("res://data/catalog.json")
 const LATEST_WINS_ACTIONS := ["battle.select_target", "combat.preview"]
 const LATEST_WINS_DEBOUNCE_MS := 80
+const LOGIN_TIMEOUT_MS := 10000
 var gateway: Node
 var platform: Node
 var authentication_reason := ""
@@ -46,6 +47,8 @@ var settlement: Dictionary = {}
 var hero_class := "Mage"
 var selected_cards: Array = []
 var busy := false
+var _login_deadline := 0
+var _login_generation := -1
 var _class_switch_request_active := false
 var _pending_class := ""
 var connection := "未连接"
@@ -82,6 +85,7 @@ var _sound_seen: Dictionary = {}
 var _sound_terminal_rooms: Dictionary = {}
 
 func _process(_delta: float) -> void:
+	_check_login_timeout()
 	_process_client_info()
 	_check_shop_rotation()
 	var now := Time.get_ticks_msec()
@@ -262,6 +266,8 @@ func reconnect() -> void:
 	changed.emit()
 
 func _clear_authenticated_state() -> void:
+	_login_deadline = 0
+	_login_generation = -1
 	lobby = {}
 	_cache_syncing.clear()
 	_cache_sync_again.clear()
@@ -325,6 +331,14 @@ func _on_authentication_required(reason: String) -> void:
 	notice.emit(reason)
 	changed.emit()
 
+func _check_login_timeout() -> void:
+	if _login_deadline == 0 or Time.get_ticks_msec() < _login_deadline: return
+	var generation := _login_generation
+	_login_deadline = 0
+	_login_generation = -1
+	if generation == gateway.session_generation:
+		gateway.end_session(preload("res://ui/palette.gd").localized("login_timeout"))
+
 func _login(address: String, display_name: String, provider: String) -> void:
 	if busy: return
 	display_name = display_name.strip_edges()
@@ -366,9 +380,14 @@ func _login(address: String, display_name: String, provider: String) -> void:
 	gateway.begin_sign_in(address)
 	var generation: int = gateway.session_generation
 	busy = true
+	_login_generation = generation
+	_login_deadline = Time.get_ticks_msec() + LOGIN_TIMEOUT_MS
+	connection = "正在连接…"
 	changed.emit()
 	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info():
+	var server_ready: bool = (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()
+	if generation != gateway.session_generation: return
+	if server_ready:
 		var capability: String = str({"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, ""))
 		if capability not in server_info.get("capabilities", []):
 			authentication_reason = {"steam": "此服务器未启用 Steam 登录", "google": I18n.t("此服务器未启用 Google 登录")}.get(provider, "此服务器未启用本地开发登录")
@@ -386,6 +405,7 @@ func _login(address: String, display_name: String, provider: String) -> void:
 			if ticket_result.ok:
 				var auth_path: String = str({"local": "/api/v1/auth/local", "steam": "/api/v1/auth/steam", "google": "/api/v1/auth/google"}.get(provider, ""))
 				var result: Dictionary = await gateway.request(auth_path, HTTPClient.METHOD_POST, sign_in)
+				if generation != gateway.session_generation: return
 				if provider == "steam": platform.release_ticket()
 				if result.ok and result.data is Dictionary and result.data.get("player") is Dictionary:
 					if gateway.accept_session(str(result.data.get("accessToken", "")), str(result.data.get("expiresAt", "")), str(result.data.get("player", {}).get("userId", ""))):
@@ -398,7 +418,12 @@ func _login(address: String, display_name: String, provider: String) -> void:
 				authentication_reason = ticket_result.error
 				notice.emit(authentication_reason)
 	if generation != gateway.session_generation: return
+	_login_deadline = 0
+	_login_generation = -1
 	busy = false
+	if lobby.is_empty():
+		gateway.end_session("", false)
+		connection = "未连接"
 	changed.emit()
 
 func _reject_login(reason: String) -> void:
@@ -408,7 +433,10 @@ func _reject_login(reason: String) -> void:
 	changed.emit()
 
 func _refresh_server_info() -> bool:
+	var generation: int = gateway.session_generation
+	var address: String = gateway.base_url
 	var response: Dictionary = await gateway.request("/api/v1/client-info")
+	if generation != gateway.session_generation or address != gateway.base_url: return false
 	if not response.ok or not response.data is Dictionary: return false
 	_apply_server_info(response.data)
 	_server_info_address = gateway.base_url

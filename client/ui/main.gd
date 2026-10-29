@@ -559,6 +559,7 @@ func _render() -> void:
 	var reuse_current: bool = not card_page.is_empty() and is_instance_valid(_reference) and _reference == cached_view and _card_page_cache_keys.get(card_page) == page_key
 	if not reuse_current: _park_or_free_reference()
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
+	content.size_flags_vertical = Control.SIZE_FILL
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
 	if is_instance_valid(_login_version_label):
 		_login_version_label.text = P.localized_text(P.localized("client_version") % str(Game.CATALOG.data.version))
@@ -680,14 +681,24 @@ func _is_positive_button(value: String) -> bool:
 		if value.contains(keyword): return true
 	return false
 
-func _panel(parent: Node, minimum_width: float = 0) -> VBoxContainer:
+func _panel(parent: Node, minimum_width: float = 0, scrollable: bool = false) -> VBoxContainer:
 	var panel := PanelContainer.new()
 	panel.custom_minimum_size.x = minimum_width
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	panel.add_theme_stylebox_override("panel", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
 	parent.add_child(panel)
+	var content_parent: Node = panel
+	if scrollable:
+		var scroll := ScrollContainer.new()
+		scroll.name = "LoginControlsScroll"
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+		panel.add_child(scroll)
+		content_parent = scroll
 	var column := VBoxContainer.new()
-	panel.add_child(column)
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content_parent.add_child(column)
 	return column
 
 func _row(parent: Node) -> HBoxContainer:
@@ -696,12 +707,15 @@ func _row(parent: Node) -> HBoxContainer:
 	return row
 
 func _login() -> void:
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_label(content, "混沌领域", 76, P.GOLD)
 	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
 	var row := _row(content)
-	var panel := _panel(row)
+	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	var panel := _panel(row, 0, true)
 	panel.add_theme_constant_override("separation", 12)
-	var panel_frame: Control = panel.get_parent()
+	var panel_frame: Control = panel.get_parent().get_parent()
+	panel_frame.name = "LoginPanel"
 	panel_frame.size_flags_stretch_ratio = 0.32
 	panel_frame.custom_minimum_size.x = 340
 	_label(panel, "启程", 40)
@@ -742,16 +756,19 @@ func _login() -> void:
 	row.add_child(center_space)
 	var about := _panel(row)
 	var about_frame: Control = about.get_parent()
+	about_frame.name = "AnnouncementPanel"
 	about_frame.size_flags_stretch_ratio = 0.30
 	about_frame.custom_minimum_size.x = 400
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := RemoteCopy.field(announcement, "title")
 	var body := RemoteCopy.field(announcement, "body")
 	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD)
+	announcement_title.name = "AnnouncementTitle"
 	announcement_title.custom_minimum_size.y = 58
 	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	announcement_title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	announcement_title.tooltip_text = announcement_title.text
 	var announcement_scroll := ScrollContainer.new()
+	announcement_scroll.name = "AnnouncementScroll"
 	announcement_scroll.custom_minimum_size.y = 230
 	announcement_scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	announcement_scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL

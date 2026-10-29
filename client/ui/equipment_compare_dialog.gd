@@ -47,13 +47,9 @@ func _build() -> void:
 	shell.add_theme_stylebox_override("panel", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
 	add_child(shell)
 
-	var margin := MarginContainer.new()
-	for side in ["left", "right"]: margin.add_theme_constant_override("margin_" + side, 34)
-	for side in ["top", "bottom"]: margin.add_theme_constant_override("margin_" + side, 28)
-	shell.add_child(margin)
 	var body := VBoxContainer.new()
 	body.add_theme_constant_override("separation", 10)
-	margin.add_child(body)
+	shell.add_child(body)
 
 	_build_title(body)
 	var scroll := ScrollContainer.new()

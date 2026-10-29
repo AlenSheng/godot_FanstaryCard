@@ -433,12 +433,12 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 					_picture(ui, marker.texture, Rect2(rect.position + Vector2(marker_x, 5), Vector2(icon_size, 48)))
 					_center(ui.text(marker.label, Rect2(rect.position + Vector2(marker_x - 8, 70), Vector2(icon_size + 16, 31)), 18 if markers.size() == 2 else 14, marker.tint))
 	ui.panel(Rect2(1372, 241, 430, 548))
-	_center(ui.text(P.localized("exploration_map_legend"), Rect2(1420, 274, 333, 65), 40, P.GOLD))
+	_center(ui.text(P.localized("exploration_map_legend"), Rect2(1420, 289, 333, 65), 40, P.GOLD))
 	for index in range(3):
 		var tint: Color = [Color("fa8c72"), P.TEAL, P.GOLD][index]
 		_picture(ui, [MAP_BOSS_MARKER, Art.texture("UI/Action/spring_clean.png"), MAP_SELF_MARKER][index], Rect2(1423, 377 + index * 114, 88, 83))
 		ui.text(["首领", "源泉", "自己"][index], Rect2(1535, 394 + index * 114, 220, 55), 34, tint)
-	ui.text("高亮邻格可前往", Rect2(1431, 725, 330, 38), 24, P.GOLD)
+	ui.text("高亮邻格可前往", Rect2(1431, 711, 330, 38), 24, P.GOLD)
 	var map_player_count := int(state.get("map_player_count", 0))
 	var population_text := P.localized("map_player_count_unavailable")
 	if map_player_count > 0: population_text = P.localized("map_player_count") % [map_player_count]
@@ -454,20 +454,20 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	var hero: Control = _picture(ui, Art.portrait(player.get("hero_class", Game.hero_class)), Rect2(105, 135, 380, 405))
 	host._combat_panels[player.get("player_id", "")] = hero
 	ui.panel(Rect2(553, 165, 540, 252))
-	ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(594, 191, 450, 58), 37, P.GOLD)
-	_health(ui, player.get("combat", {}), Rect2(596, 261, 449, 126))
+	ui.text(P.CLASSES.get(player.get("hero_class", Game.hero_class), P.CLASSES.Mage)[0], Rect2(597, 213, 452, 48), 37, P.GOLD)
+	_health(ui, player.get("combat", {}), Rect2(597, 281, 452, 96))
 	var inventory: Array = player.get("inventory", [])
 	ui.panel(Rect2(1228, 158, 574, 363))
-	ui.text(P.localized("temporary_bag"), Rect2(1268, 182, 480, 54), 34, P.GOLD)
-	ui.text(P.localized("temporary_bag_slots_used") % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1268, 240, 466, 40), 25, P.PAPER)
-	ui.button(P.localized("open_bag"), Rect2(1556, 180, 206, 52), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
+	ui.text(P.localized("temporary_bag"), Rect2(1272, 206, 272, 38), 34, P.GOLD)
+	ui.text(P.localized("temporary_bag_slots_used") % [inventory.size(), player.get("inventory_capacity", 0)], Rect2(1272, 248, 486, 32), 25, P.PAPER)
+	ui.button(P.localized("open_bag"), Rect2(1552, 206, 206, 46), func(): InventoryView.open(host), not Game.allowed("inventory.move")).name = "OpenInventory"
 	# The compact view always shows two rows of three items. Keep the server's
 	# inventory order (the acquisition order) instead of laying items out by
 	# slot_index; the full bag is the only place where slot exchange is allowed.
 	var bag_scroll := DragScroll.new()
 	bag_scroll.name = "TemporaryBackpackScroll"
-	bag_scroll.position = Vector2(1268, 291)
-	bag_scroll.size = Vector2(500, 182)
+	bag_scroll.position = Vector2(1272, 299)
+	bag_scroll.size = Vector2(486, 182)
 	bag_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	bag_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	bag_scroll.interaction_enabled = inventory.size() > 6
@@ -496,9 +496,9 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		if Game.allowed(action): actions.append(action)
 	var piles: Array = state.get("current_cell", {}).get("relic_piles", [])
 	actions.append("map")
-	ui.panel(Rect2(80, 539, 1758, 425)).name = "ActionPanel"
-	_center(ui.text(P.localized("choose_next_action"), Rect2(610, 558, 680, 62), 40, P.GOLD)).name = "ActionTitle"
-	var scroll: ScrollContainer = ui._scroll(Rect2(107, 632, 1702, 300), true)
+	ui.panel(Rect2(80, 524, 1758, 440)).name = "ActionPanel"
+	_center(ui.text(P.localized("choose_next_action"), Rect2(610, 572, 680, 44), 40, P.GOLD)).name = "ActionTitle"
+	var scroll: ScrollContainer = ui._scroll(Rect2(124, 630, 1670, 294), true)
 	var strip := HBoxContainer.new()
 	strip.add_theme_constant_override("separation", 22)
 	scroll.add_child(strip)
@@ -547,7 +547,7 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 		var option: Dictionary = options[index]
 		var kind: int = int(option.get("kind", 0))
 		var title: String = {1: P.localized("exploration_equipment_reward"), 2: P.localized("exploration_fragment_reward"), 3: P.localized("exploration_heal_reward")}.get(kind, P.localized("loot"))
-		_center(ui.text(title, Rect2(rect.position + Vector2(24, 28), Vector2(376, 62)), 42, P.PAPER))
+		_center(ui.text(title, Rect2(rect.position + Vector2(44, 48), Vector2(336, 50)), 42, P.PAPER))
 		var item := {"kind": "Equipment", "equipment": option.get("equipment", {})}
 		if kind == 3: _center(ui.text("+", Rect2(rect.position + Vector2(112, 103), Vector2(200, 165)), 120, P.TEAL))
 		else:
@@ -562,10 +562,10 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			var maximum: int = int(combat.get("maximum_hp", 0))
 			var amount: int = mini(maxi(0, int(combat.get("effective_maximum_hp", maximum)) - int(combat.get("hp", 0))), int(maximum * int(option.get("heal_percent", 0)) / 100.0))
 			description = P.localized("exploration_reward_heal") % [option.get("heal_percent", 0), amount]
-		ui.text(description, Rect2(rect.position + Vector2(25, 281), Vector2(374, 168)), 23, P.TEAL)
-		ui.button(P.localized("added_to_bag") if kind != 3 else P.localized("exploration_heal_now"), Rect2(rect.position + Vector2(25, 459), Vector2(374, 61)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
+		ui.text(description, Rect2(rect.position + Vector2(44, 281), Vector2(336, 148)), 23, P.TEAL)
+		ui.button(P.localized("added_to_bag") if kind != 3 else P.localized("exploration_heal_now"), Rect2(rect.position + Vector2(44, 439), Vector2(336, 50)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
 		if kind == 1:
-			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(25, 525), Vector2(374, 58)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
+			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(44, 499), Vector2(336, 49)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
 	var count: int = clampi(int(reward.get("refresh_count", 0)), 0, 3)
 	ui.text(P.localized("exploration_refresh_count") % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
 	ui.button(P.localized("exploration_refresh_cost") % [60, 180, 450][mini(count, 2)] if count < 3 else P.localized("refresh_exhausted"), Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
@@ -680,7 +680,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	var confirm := Button.new()
 	confirm.text = P.localized_text("确认进入")
 	confirm.position = Vector2(735, 758)
-	confirm.size = Vector2(450, 87)
+	confirm.size = Vector2(450, 74)
 	confirm.add_theme_font_size_override("font_size", 35)
 	confirm.clip_text = true
 	confirm.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
@@ -694,7 +694,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	P.fit_control_font(confirm, P.font_for_text(confirm.text, 35), 35, 48.0)
 	var cancel := Button.new()
 	cancel.text = P.localized_text("暂不进入")
-	cancel.position = Vector2(750, 861)
+	cancel.position = Vector2(750, 848)
 	cancel.size = Vector2(420, 60)
 	Art.button(cancel, "UI/CardCodex/card_codex_action_button_blue.png")
 	cancel.clip_text = true

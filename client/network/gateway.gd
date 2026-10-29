@@ -263,6 +263,8 @@ func end_session(reason: String, notify: bool = true) -> void:
 	_pending_ping_request_id = ""
 	_ping_sent_at = 0
 	socket.close()
+	socket = WebSocketPeer.new()
+	if not _reusable_http.busy: _reusable_http.close()
 	if notify:
 		connection_changed.emit(reason)
 		authentication_required.emit(reason)
@@ -453,24 +455,35 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 
 func _request_http_transport(path: String, method: int, headers: PackedStringArray,
 		body: PackedByteArray, timeout_ms: int = 10000) -> Array:
+	var generation := session_generation
+	var cancelled := func() -> bool: return generation != session_generation
 	if use_reusable_http and not OS.has_feature("web") and not _reusable_http.busy:
-		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
+		return await _reusable_http.request(get_tree(), base_url, path, method, headers, body, timeout_ms, 2 * 1024 * 1024, cancelled)
 	if not OS.has_feature("web"):
 		# Native one-off/concurrent requests must handle empty 204 replies too.
 		# Keep them independent of the shared connection and close on completion.
 		var one_off := ReusableHttpClient.new()
-		var response: Array = await one_off.request(get_tree(), base_url, path, method, headers, body, timeout_ms)
+		var response: Array = await one_off.request(get_tree(), base_url, path, method, headers, body, timeout_ms, 2 * 1024 * 1024, cancelled)
 		one_off.close()
 		return response
 	var http := HTTPRequest.new()
 	http.timeout = float(timeout_ms) / 1000.0
 	http.body_size_limit = 2 * 1024 * 1024
 	add_child(http)
+	var completed := {"response": []}
+	http.request_completed.connect(func(result, status, response_headers, response_body):
+		completed.response = [result, status, response_headers, response_body]
+	)
 	var start := http.request_raw(base_url + path, headers, method, body)
 	if start != OK:
 		http.queue_free()
 		return [HTTPRequest.RESULT_CANT_CONNECT, 0, PackedStringArray(), PackedByteArray(), false]
-	var response: Array = await http.request_completed
+	while completed.response.is_empty() and not cancelled.call():
+		await get_tree().process_frame
+	var response: Array = completed.response
+	if cancelled.call():
+		http.cancel_request()
+		response = [HTTPRequest.RESULT_REQUEST_FAILED, 0, PackedStringArray(), PackedByteArray(), false]
 	http.queue_free()
 	return response
 

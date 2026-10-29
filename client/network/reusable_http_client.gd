@@ -13,8 +13,10 @@ func close() -> void:
 
 func request(tree: SceneTree, origin: String, path: String, method: int,
 		headers: PackedStringArray, body: PackedByteArray,
-		timeout_ms: int = 10000, body_limit: int = 2 * 1024 * 1024) -> Array:
+		timeout_ms: int = 10000, body_limit: int = 2 * 1024 * 1024,
+		cancelled: Callable = Callable()) -> Array:
 	busy = true
+	if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 	var deadline := Time.get_ticks_msec() + timeout_ms
 	# Refresh an idle connection before reuse; a cached CONNECTED status can
 	# outlive the peer's close. This check happens before submitting a write.
@@ -27,9 +29,11 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 		if _connect_origin(origin) != OK:
 			return _failure(HTTPRequest.RESULT_CANT_CONNECT)
 	while _client.get_status() in [HTTPClient.STATUS_RESOLVING, HTTPClient.STATUS_CONNECTING]:
+		if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 		if Time.get_ticks_msec() >= deadline: return _failure(HTTPRequest.RESULT_TIMEOUT)
 		if _client.poll() != OK: return _failure(HTTPRequest.RESULT_CANT_CONNECT)
 		await tree.process_frame
+	if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 	if _client.get_status() != HTTPClient.STATUS_CONNECTED:
 		return _failure(HTTPRequest.RESULT_CANT_CONNECT)
 	var request_headers := headers.duplicate()
@@ -38,9 +42,11 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 	if _client.request_raw(method, path, request_headers, body) != OK:
 		return _failure(HTTPRequest.RESULT_CONNECTION_ERROR)
 	while _client.get_status() == HTTPClient.STATUS_REQUESTING:
+		if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 		if Time.get_ticks_msec() >= deadline: return _failure(HTTPRequest.RESULT_TIMEOUT)
 		if _client.poll() != OK: return _failure(HTTPRequest.RESULT_CONNECTION_ERROR)
 		await tree.process_frame
+	if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 	if _client.get_status() not in [HTTPClient.STATUS_BODY, HTTPClient.STATUS_CONNECTED] or not _client.has_response():
 		return _failure(HTTPRequest.RESULT_CONNECTION_ERROR)
 	var code := _client.get_response_code()
@@ -49,6 +55,7 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 	var response_headers := _client.get_response_headers()
 	var response_body := PackedByteArray()
 	while _client.get_status() == HTTPClient.STATUS_BODY:
+		if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 		if Time.get_ticks_msec() >= deadline: return _failure(HTTPRequest.RESULT_TIMEOUT)
 		# Drain buffered bytes before polling a peer close. A connection status
 		# alone cannot prove that the response body was complete.
@@ -59,6 +66,7 @@ func request(tree: SceneTree, origin: String, path: String, method: int,
 		if _client.get_status() == HTTPClient.STATUS_BODY and _client.poll() != OK:
 			return _failure(HTTPRequest.RESULT_CONNECTION_ERROR)
 		await tree.process_frame
+	if cancelled.is_valid() and cancelled.call(): return _failure(HTTPRequest.RESULT_REQUEST_FAILED)
 	var final_status := _client.get_status()
 	var complete := (response_body.size() == expected_bytes if expected_bytes >= 0 and not chunked else
 		final_status == HTTPClient.STATUS_CONNECTED if chunked else

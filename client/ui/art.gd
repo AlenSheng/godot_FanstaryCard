@@ -11,6 +11,9 @@ const COMMON_CELL_KEY := "UI/Prep/exploration_prep_backpack_cell_empty_normal.pn
 const COMMON_CELL_SOURCE_SIZE := Vector2i(144, 144)
 const COMMON_CELL_DISPLAY_SIZE := Vector2(96, 96)
 const COMMON_CELL_GAP := 8
+const COMMON_PANEL_KEY := "UI/CardCodex/card_codex_dialog_panel_normal.png"
+## Left/top/right/bottom clear space inside the shared decorative frame.
+const COMMON_PANEL_PADDING := Vector4(44, 48, 44, 40)
 const QUALITY_FILL_INSET_RATIO := 12.0 / 192.0
 ## Shared dark state for an empty equipment slot. Keep it visually distinct from White gear.
 const UNEQUIPPED_SLOT_COLOR := Color8(25, 28, 29, 255)
@@ -99,6 +102,11 @@ static func _style_prototype(key: String, tint: Color) -> StyleBoxTexture:
 		box.set_texture_margin(pair[0], float(borders[pair[1]]))
 	for side in [SIDE_LEFT, SIDE_RIGHT]: box.set_content_margin(side, 24)
 	for side in [SIDE_TOP, SIDE_BOTTOM]: box.set_content_margin(side, 12)
+	if key == COMMON_PANEL_KEY:
+		box.set_content_margin(SIDE_LEFT, COMMON_PANEL_PADDING.x)
+		box.set_content_margin(SIDE_TOP, COMMON_PANEL_PADDING.y)
+		box.set_content_margin(SIDE_RIGHT, COMMON_PANEL_PADDING.z)
+		box.set_content_margin(SIDE_BOTTOM, COMMON_PANEL_PADDING.w)
 	_styles[cache_key] = box
 	return box
 
