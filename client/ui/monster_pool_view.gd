@@ -24,7 +24,7 @@ static func _pool_theme() -> Theme:
     result.set_stylebox("panel", "AcceptDialog", Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png"))
     var frame := Art.style("UI/CardCodex/card_codex_dialog_panel_normal.png")
     frame.set_expand_margin(SIDE_TOP, 36)
-    frame.content_margin_top = 36
+    frame.content_margin_top = Art.COMMON_PANEL_PADDING.y
     result.set_stylebox("embedded_border", "Window", frame)
     result.set_stylebox("embedded_unfocused_border", "Window", frame.duplicate())
     result.set_font("title_font", "Window", P.font("title"))
@@ -57,8 +57,9 @@ static func open(host: Control) -> void:
     dialog.title = text("title")
     dialog.theme = _pool_theme()
     dialog.name = "MonsterPoolDialog"
-    var width := minf(1280.0, host.get_viewport_rect().size.x - 128.0)
-    dialog.min_size = Vector2i(int(width) + 48, 560)
+    var outer_width := minf(1328.0, host.get_viewport_rect().size.x - 128.0)
+    var width := outer_width - Art.COMMON_PANEL_PADDING.x - Art.COMMON_PANEL_PADDING.z
+    dialog.min_size = Vector2i(int(outer_width), 560)
     var box := VBoxContainer.new()
     box.custom_minimum_size.x = width
     box.size.x = width
@@ -191,17 +192,15 @@ static func loot(host: Control, items: Array) -> void:
     var dialog := AcceptDialog.new()
     dialog.title = text("loot")
     dialog.theme = _pool_theme()
-    var width := minf(940.0, host.get_viewport_rect().size.x - 128.0)
-    dialog.min_size = Vector2i(int(width) + 48, 280)
+    var outer_width := minf(988.0, host.get_viewport_rect().size.x - 128.0)
+    var width := outer_width - Art.COMMON_PANEL_PADDING.x - Art.COMMON_PANEL_PADDING.z
+    dialog.min_size = Vector2i(int(outer_width), 280)
     var lines := PackedStringArray()
     for item in items:
         var gear: Dictionary = item.get("equipment", {})
         lines.append("%s / %s / %s +%d" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", "")), int(gear.get("level", 0))])
     var body := _pool_label("\n".join(lines) if not lines.is_empty() else P.localized("no_equipment"), width)
     body.name = "SearchableLootBody"
-    var margin := MarginContainer.new()
-    for side in ["left", "right", "top", "bottom"]:
-        margin.add_theme_constant_override("margin_" + side, 28)
     var content := VBoxContainer.new()
     content.add_theme_constant_override("separation", 16)
     var title_bar := PanelContainer.new()
@@ -214,8 +213,7 @@ static func loot(host: Control, items: Array) -> void:
     title_bar.add_child(title)
     content.add_child(title_bar)
     content.add_child(body)
-    margin.add_child(content)
-    dialog.add_child(margin)
+    dialog.add_child(content)
     host.add_child(dialog)
     dialog.get_ok_button().text = P.localized("confirm")
     Art.button(dialog.get_ok_button(), "UI/CardCodex/card_codex_action_button_blue.png")

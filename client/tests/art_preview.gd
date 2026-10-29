@@ -179,8 +179,8 @@ func _check_shop() -> void:
 				layout_errors.append("Guaranteed card repeats its quality above the identifying frame: " + product.productId)
 			if face_name == null or face_name.text.is_empty() or face_effect == null or face_effect.text.is_empty():
 				layout_errors.append("Guaranteed card frame omits its name or effect: " + product.productId)
-			elif face_name.position != Vector2(40, 352):
-				layout_errors.append("Guaranteed card name lost its shop-only offset: " + product.productId)
+			elif not frame.get_rect().encloses(face_name.get_rect()) or not frame.get_rect().encloses(face_effect.get_rect()):
+				layout_errors.append("Guaranteed card text extends outside its card frame: " + product.productId)
 			elif face_name.position.y + face_name.size.y >= face_effect.position.y:
 				layout_errors.append("Guaranteed card name overlaps its effect: " + product.productId)
 			elif face_effect.position.y + face_effect.size.y >= frame.position.y + frame.size.y - 18:
