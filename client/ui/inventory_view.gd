@@ -25,8 +25,8 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.localized("relic_search") if not pile_id.is_empty() else P.localized("explore_bag"), Rect2(90, 45, 710, 85), 44, P.GOLD)
 	ui.panel(Rect2(75, 145, 845, 800))
 	ui.panel(Rect2(955, 145, 900, 800))
-	ui.text("背包 %s / %s · 安全格 %s" % [items.size(), capacity, safe_slots.size()], Rect2(995, 172, 790, 50), 31, P.GOLD)
-	ui.text(P.localized("drag_inventory_hint"), Rect2(995, 226, 790, 36), 22, P.MUTED)
+	ui.text("背包 %s / %s · 安全格 %s" % [items.size(), capacity, safe_slots.size()], Rect2(999, 193, 790, 50), 31, P.GOLD)
+	ui.text(P.localized("drag_inventory_hint"), Rect2(999, 247, 790, 36), 22, P.MUTED)
 	var safe_slot_lookup: Dictionary = {}
 	var slot_order: Array = []
 	for value in safe_slots:
@@ -37,7 +37,7 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	for slot_index in range(capacity):
 		if not safe_slot_lookup.has(slot_index): slot_order.append(slot_index)
 	var row_count := int(ceil(float(capacity) / 6.0))
-	var slots_scroll: ScrollContainer = ui._scroll(Rect2(992, 270, 640, 408))
+	var slots_scroll: ScrollContainer = ui._scroll(Rect2(999, 294, 640, 384))
 	slots_scroll.name = "InventorySlotsScroll"
 	var slots_grid := Control.new()
 	slots_grid.name = "InventorySlotsContent"

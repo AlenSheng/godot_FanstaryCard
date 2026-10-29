@@ -1,7 +1,7 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
-const SCENARIOS := ["login", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
+const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -137,6 +137,10 @@ func _render_base() -> void:
 func _prepare_scene(scenario: String, locale: String) -> bool:
 	match scenario:
 		"login": Game.lobby = {}
+		"login_notice", "login_notice_bottom":
+			Game.lobby = {}
+			Game.authentication_reason = Palette.localized("login_timeout")
+			Game.server_info["announcement"] = {"title": "Relicbound Test Server Update and Traveler Notices" if locale == "en" else "遗境行者测试服更新与旅人公告", "body": ("Dear Travelers,\n\nThe test server has recently been updated:\n\n1. After extraction, wait for server settlement and the run results.\n2. Results include the items earned during the run and equipped gear.\n3. Log Out returns to the login screen.\n4. Common panels leave clear space inside their decorative borders.\n\nThank you for playing!" if locale == "en" else "亲爱的旅人：\n\n测试服近期已更新：\n\n1. 撤离后等待服务器结算并显示本局结果。\n2. 结算包含本局获得的物品和穿戴装备。\n3. 切换账号后返回登录界面。\n4. 通用框的内容与装饰边框之间保留留白。\n\n感谢参与测试！")}
 		"hall_priest": Game.hero_class = "Priest"
 		"hall_guardian": Game.hero_class = "Guardian"
 		"prep", "gear", "shop", "cards", "deck": $UI.screen = scenario
@@ -261,10 +265,14 @@ func _review_window_position() -> Vector2i:
 	return Vector2i.ZERO if OS.get_environment("FANTASYCARD_REVIEW_ISOLATED_DESKTOP") == "1" else Vector2i(-32000, -32000)
 
 func _review_capture(frame_name: String, rebuild: bool = true) -> void:
-	if frame_name.ends_with("_login"):
+	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
 		# Login uses the normal shell, rather than the in-game reference view.
 		$UI._render()
 		await get_tree().create_timer(0.4).timeout
+		if frame_name.ends_with("_login_notice_bottom"):
+			for scroll_name in ["LoginControlsScroll", "AnnouncementScroll"]:
+				$UI.find_child(scroll_name, true, false).scroll_vertical = 100000
+			await get_tree().process_frame
 		RenderingServer.force_draw(false)
 		var error := get_viewport().get_texture().get_image().save_png(output + "/" + frame_name + ".png")
 		if error == OK: screenshot_count += 1
@@ -282,9 +290,28 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			review_checks[frame_name + ": readable common-card name"] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).contains("Slot_C01/") and str(entry.path).ends_with("/CardEffect"):
 			review_checks[frame_name + ": readable common-card effect"] = float(entry.effective_font_size) >= 12.0
-	if frame_name.ends_with("_login"):
+	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
 		var title: Label = $UI._game_title
 		review_checks[frame_name + ": readable login title"] = title.get_theme_font_size("font_size") >= 20 and title.get_visible_line_count() > 0
+		for panel_name in ["LoginPanel", "AnnouncementPanel"]:
+			var panel: PanelContainer = $UI.find_child(panel_name, true, false)
+			_check_content_insets(frame_name + ": " + panel_name, panel, panel.get_child(0))
+		var announcement_title: Label = $UI.find_child("AnnouncementTitle", true, false)
+		review_checks[frame_name + ": complete announcement title"] = announcement_title.get_visible_line_count() == announcement_title.get_line_count()
+	if frame_name.contains("_settings"):
+		var popup: PopupPanel = $UI.get_node("AudioSettings")._popup
+		if is_instance_valid(popup):
+			var settings_scroll: ScrollContainer = popup.find_child("AudioSettingsScroll", true, false)
+			_check_content_insets(frame_name + ": settings", popup, settings_scroll)
+			var settings_content: Control = popup.find_child("SettingsContent", true, false)
+			var scrollbar := settings_scroll.get_v_scroll_bar()
+			review_checks[frame_name + ": scrollbar stays clear of settings controls"] = settings_content.get_global_rect().end.x + 15.0 <= scrollbar.get_global_rect().position.x
+	if frame_name.ends_with("_shop") or frame_name.ends_with("_shop_tail"):
+		_check_shop()
+		for product in $UI._reference.get_node("ShopScroll/ShopProductRow").get_children():
+			var detail: Label = product.get_node("ShopDetail")
+			var purchase: Button = product.get_node("Purchase")
+			review_checks[frame_name + ": shop details clear purchase " + str(product.name)] = detail.get_rect().end.y + 4.0 <= purchase.position.y and detail.get_visible_line_count() == detail.get_line_count()
 	if frame_name.ends_with("_cards") or frame_name.ends_with("_deck"):
 		var grid_name := "CardGrid" if frame_name.ends_with("_cards") else "DeckOwnedGrid"
 		var grid: Control = $UI._reference.find_child(grid_name, true, false)
@@ -303,6 +330,12 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	_frame_log.store_line(JSON.stringify(frame))
 	_frame_log.flush()
 	print(JSON.stringify({"frame": frame_name, "screenshots": screenshot_count}))
+
+func _check_content_insets(key: String, panel: Node, child: Control) -> void:
+	var style: StyleBox = panel.get_theme_stylebox("panel")
+	var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
+	var inner := Rect2(Vector2(padding.x, padding.y), Vector2(panel.size) - Vector2(padding.x + padding.z, padding.y + padding.w))
+	review_checks[key + ": contents stay inside decorative border"] = inner.encloses(child.get_rect())
 
 func _collect_text(root: Node, rows: Array) -> void:
 	if root is Control and not root.is_visible_in_tree(): return
