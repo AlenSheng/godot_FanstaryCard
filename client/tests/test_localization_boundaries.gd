@@ -6,7 +6,7 @@ const ReferenceUI = preload("res://ui/reference_ui.gd")
 const Exploration = preload("res://ui/exploration_view.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const Store = preload("res://state/game_store.gd")
-const LOCALES := ["zh-CN", "en", "es"]
+var _locales: Array = []
 const AUTHORED_NAME := "Fire  Gold / 装备"
 const BAN_DETAIL := "Fire  Gold: 装备\nmaintenance / 管理员说明"
 
@@ -37,6 +37,7 @@ var _errors: Array[Dictionary] = []
 func run_test() -> Dictionary:
 	_checks = {}
 	_errors = []
+	_locales = P.languages().keys()
 	var tree := Engine.get_main_loop() as SceneTree
 	if tree == null:
 		return {"ok": false, "checks": {}, "errors": [{"check": "SceneTree is available"}]}
@@ -49,7 +50,7 @@ func run_test() -> Dictionary:
 	# so construction never depends on the live gateway's presence or readiness.
 	Game.configuration_error = "localization-boundary-test"
 	Game.relic_details = {}
-	for locale in LOCALES:
+	for locale in _locales:
 		P.set_language(locale)
 		_check(locale + "/registered", P.language() == locale)
 		_check_bans(host, locale)
@@ -67,7 +68,7 @@ func run_test() -> Dictionary:
 	P.set_language(saved.language)
 	host.free()
 	return {"ok": _errors.is_empty(), "checks": _checks, "errors": _errors,
-		"scope": "Real ban dialog, mail list/detail, duel and relic text construction plus real store validation across zh-CN/en/es. No network, Steam, rendered-frame, or whole-language acceptance claim."}
+		"scope": "Real ban dialog, mail list/detail, duel and relic text construction plus real store validation across registered locales. No network, Steam, rendered-frame, or whole-language acceptance claim."}
 
 func _check(name: String, passed: bool, observed: Variant = null) -> void:
 	_checks[name] = passed
@@ -96,7 +97,7 @@ func _check_bans(host: Control, locale: String) -> void:
 	# This literal is an existing server wire reason, not authored interface copy.
 	var raw_wire := "账号已被封禁：" + BAN_DETAIL
 	var reasons := {"server_wire": raw_wire}
-	for source_locale in LOCALES:
+	for source_locale in _locales:
 		var source_label := str(P.languages()[source_locale].strings.ui_account_banned)
 		reasons["label_" + source_locale] = source_label + ":" + BAN_DETAIL
 	for source in reasons:
@@ -198,15 +199,15 @@ func _check_persistent_configuration_messages(host: Control) -> void:
 	gateway.authentication_required.connect(store._on_authentication_required)
 	# The nonempty version deliberately contains recognized aliases. Version
 	# identifiers must survive translation while an absent version is a UI label.
-	for origin_locale in LOCALES:
+	for origin_locale in _locales:
 		for source_key in ["server", "hall", "room", "preparation"]:
 			for server_version in ["Fire  Gold 装备:v0", ""]:
 				P.set_language(origin_locale)
-				var mismatch: bool = not store.validate_config(server_version, P.localized(source_key))
+				var mismatch: bool = not store.validate_config(server_version, source_key)
 				var case_name: String = origin_locale + "/" + source_key + ("/version" if not server_version.is_empty() else "/missing_version")
 				_check("config/" + case_name + "/real_validation_rejected", mismatch)
 				_check("config/" + case_name + "/signal_populated_persistent_fields", not store.configuration_error.is_empty() and store.authentication_reason == gateway.last_reason and store.connection == gateway.last_reason)
-				for target_locale in LOCALES:
+				for target_locale in _locales:
 					P.set_language(target_locale)
 					var expected := P.localized("config_mismatch_details") % [P.localized(source_key), str(Store.CATALOG.data.version), server_version if not server_version.is_empty() else P.localized("version_missing")]
 					for field in ["configuration_error", "authentication_reason", "connection"]:

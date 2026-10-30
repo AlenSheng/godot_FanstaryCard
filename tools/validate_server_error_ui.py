@@ -1,4 +1,4 @@
-"""Prepare or run the guarded 3-language/3-size production error-tip UI matrix.
+"""Prepare or run the guarded registry-language/3-size production error-tip UI matrix.
 
 Every case delegates to tools.validate_ui_hidden.run. It owns the existing
 6+1 GiB admission checks, shared mutex, private desktop and child-process guards.
@@ -16,7 +16,7 @@ import sys
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCALES = ("zh-CN", "en", "es")
+LOCALES = tuple(json.loads((ROOT / "client/data/localization_registry.json").read_text(encoding="utf-8"))["languages"])
 WIDTHS = (960, 1280, 1920)
 DEFAULT_OUTPUT = ROOT / "tmp/localization-error-ui-r1"
 
@@ -45,7 +45,7 @@ def main(argv=None) -> int:
     output = args.output_root.resolve()
     plan = case_plan(output)
     if args.plan:
-        print(json.dumps({"prepared_only": True, "expected_cases": 9, "expected_screenshots": 72,
+        print(json.dumps({"prepared_only": True, "expected_cases": len(plan), "expected_screenshots": len(plan) * 8,
                           "scene": "server_error_preview", "cases": plan}, ensure_ascii=True))
         return 0
     if os.name != "nt":
@@ -60,7 +60,7 @@ def main(argv=None) -> int:
               ROOT / "client/tests/server_error_preview.gd", ROOT / "client/tests/server_error_preview.tscn"]
     pin = {str(path.relative_to(ROOT)): hashlib.sha256(path.read_bytes()).hexdigest() for path in pinned}
     write_once(output / "matrix-plan.original.json", {"scene": "server_error_preview", "cases": plan,
-               "expected_cases": 9, "expected_screenshots": 72, "source_pin": pin,
+               "expected_cases": len(plan), "expected_screenshots": len(plan) * 8, "source_pin": pin,
                "actual_game_matches": 0, "whole_visual_acceptance": False})
     results = []
     interrupted = False
@@ -88,9 +88,9 @@ def main(argv=None) -> int:
         except Exception as error:
             results.append({**case, "ok": False, "error": str(error), "type": type(error).__name__})
     unchanged = all(hashlib.sha256(path.read_bytes()).hexdigest() == pin[str(path.relative_to(ROOT))] for path in pinned)
-    summary = {"ok": len(results) == 9 and all(case["ok"] for case in results) and unchanged,
-               "cases": results, "executed_cases": len(results), "expected_cases": 9,
-               "screenshots": sum(case.get("screenshots", 0) for case in results), "expected_screenshots": 72,
+    summary = {"ok": len(results) == len(plan) and all(case["ok"] for case in results) and unchanged,
+               "cases": results, "executed_cases": len(results), "expected_cases": len(plan),
+               "screenshots": sum(case.get("screenshots", 0) for case in results), "expected_screenshots": len(plan) * 8,
                "interrupted": interrupted, "runner_sources_unchanged": unchanged,
                "actual_game_matches": 0, "whole_visual_acceptance": False}
     write_once(output / "matrix-report.original.json", summary)

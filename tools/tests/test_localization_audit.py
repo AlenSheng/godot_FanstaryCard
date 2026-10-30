@@ -1,9 +1,14 @@
 import unittest
-from tools.localization_audit import coverage, TOKENS
+from tools.localization_audit import coverage, TOKENS, matching_tokens
 from tools.audit_ui_text import human_literal
 
 
 class CoverageTests(unittest.TestCase):
+    def test_positional_types_cannot_swap_but_named_arguments_can(self):
+        self.assertFalse(matching_tokens("%s / %d", "%d / %s"))
+        self.assertTrue(matching_tokens("{name}: {count}", "{count} / {name}"))
+        self.assertTrue(matching_tokens("%s%%", "%%%s"))
+
     def test_overlapping_languages_use_countrywise_maximum(self):
         dataset = {"supplemental": {"territoryInfo": {
             "AA": {"_population": "100", "languagePopulation": {

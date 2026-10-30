@@ -207,7 +207,7 @@ func _apply_server_info(info: Dictionary) -> void:
 	if lobby.is_empty():
 		changed.emit()
 	else:
-		validate_config(str(info.get("configVersion", "")), P.localized("server"))
+		validate_config(str(info.get("configVersion", "")), "server")
 
 func login(address: String, display_name: String) -> void:
 	await _login(address, display_name, false)
@@ -351,7 +351,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	connection = P.localized("connecting")
 	changed.emit()
 	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	var server_ready: bool = (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()
+	var server_ready: bool = (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()
 	if generation != gateway.session_generation: return
 	if server_ready:
 		var capability := "identity.steam" if steam_login else "identity.local"
@@ -402,12 +402,13 @@ func _refresh_server_info() -> bool:
 	if not response.ok or not response.data is Dictionary: return false
 	_apply_server_info(response.data)
 	_server_info_address = gateway.base_url
-	return validate_config(str(server_info.get("configVersion", "")), P.localized("server"))
+	return validate_config(str(server_info.get("configVersion", "")), "server")
 
+# Source labels use stable keys; translated display text can be ambiguous.
 func validate_config(version: String, source: String) -> bool:
 	if not version.is_empty() and version == str(CATALOG.data.version): return true
 	var source_argument: Variant = source
-	var source_key := P.key_for_text(source)
+	var source_key := source
 	if source_key in ["server", "hall", "room", "preparation"]:
 		source_argument = {"translation_key": source_key}
 	var version_argument: Variant = version if not version.is_empty() else {"translation_key": "version_missing"}
@@ -423,7 +424,7 @@ func refresh_lobby() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
 	if not _lobby_request_current(generation, request_epoch, origin_scope): return
 	if not result.ok: return
-	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), P.localized("hall")): return
+	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "hall"): return
 	for required in ["player", "wallet", "materials"]:
 		if not result.data.get(required) is Dictionary:
 			notice.emit(P.localized("incomplete_lobby_data"))
@@ -714,7 +715,7 @@ func prepare(tier: String, potion_count: int) -> void:
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -738,7 +739,7 @@ func enqueue() -> void:
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -752,7 +753,7 @@ func enqueue() -> void:
 
 func _preparation_config_valid(value: Dictionary) -> bool:
 	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
-	return validate_config(str(snapshot.get("configVersion", "")), P.localized("preparation"))
+	return validate_config(str(snapshot.get("configVersion", "")), "preparation")
 
 func _verify_ready_ticket() -> void:
 	if not gateway is Gateway or not room.is_empty() or ticket.is_empty() or ready_prompt.is_empty(): return
@@ -1573,7 +1574,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
-		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), P.localized("room")): return
+		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "room"): return
 		_adopt_room_context(snapshot)
 	_sound_event(kind, payload)
 	if kind == "battle.target_selected" and payload.get("battle_id", "") == room.get("pve", {}).get("battle_id", ""): clear_combat_preview()

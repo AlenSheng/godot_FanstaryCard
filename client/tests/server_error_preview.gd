@@ -73,7 +73,7 @@ func _run() -> void:
 	_locale = OS.get_environment("FANTASYCARD_REVIEW_LOCALES")
 	_width = OS.get_environment("FANTASYCARD_REVIEW_WIDTHS").to_int()
 	var isolated: bool = OS.get_environment("FANTASYCARD_REVIEW_ISOLATED_DESKTOP") == "1"
-	if not isolated or _output.is_empty() or _locale not in ["zh-CN", "en", "es"] or _width not in [960, 1280, 1920]:
+	if not isolated or _output.is_empty() or _locale not in P.languages() or _width not in [960, 1280, 1920]:
 		print(JSON.stringify({"ok": false, "error": "Use the guarded error UI matrix with one supported locale and width."}))
 		get_tree().quit(1)
 		return

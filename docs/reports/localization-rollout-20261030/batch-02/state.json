@@ -6,7 +6,7 @@
     "id"
   ],
   "base_code_commit": "b746f5f1bd5a86afdef1a86ad9c98e281c08212a",
-  "status": "translating_in_parallel",
+  "status": "full_matrix_running",
   "passed": false,
   "deployed": false,
   "external_task_review_required": false,
@@ -36,5 +36,30 @@
   "resource_policy": "Keep 6GiB free plus 1GiB startup allowance; wait for memory and never stop FreeVideo",
   "visual_policy": "Original card art dimensions; overlay text; common-frame safe insets; readable font floor",
   "released_coverage_estimate_percent": 41.93635669909152,
-  "coverage_target_reached": false
+  "coverage_target_reached": false,
+  "translation_authors_stopped": true,
+  "candidate_coverage_estimate_percent": 49.538418517882455,
+  "consistency_fix": "Murk Snail translations aligned with the matching 浊螅 / M-MUDHYDRA full card name in en/fr/pt; IDs and rules unchanged",
+  "initial_native_ui_frames": 225,
+  "initial_native_ui_width": 960,
+  "initial_copy_failure_types": {
+    "fr": 24,
+    "pt": 16,
+    "id": 10
+  },
+  "font_glyph_and_all_card_controls": "Passed after short-name fixes and stable configuration-source keys",
+  "proposals": {
+    "fr": "tmp/batch02-fr-ui-copy-proposal.json",
+    "pt": "tmp/batch02-pt-ui-copy-proposal.json",
+    "id": "tmp/batch02-id-ui-copy-proposal.json"
+  },
+  "initial_960_ui": "Passed: 75 scenes each for fr, pt, id after compact-copy fixes",
+  "matrix_progress": "tmp/batch02-ui-final-r1/progress.json",
+  "matrix_sessions": {
+    "main": 40326,
+    "probes": 31046
+  },
+  "expected_main_frames": 1350,
+  "expected_error_frames": 144,
+  "expected_registered_locales": 6
 }

@@ -17,6 +17,12 @@ DATA = ROOT / "client/data"
 TOKENS = re.compile(r"%(?:[-+0#]*\d*(?:\.\d+)?[sdf]|%)|\{[A-Za-z_]\w*\}")
 
 
+def matching_tokens(source, translated):
+    expected, actual = TOKENS.findall(source), TOKENS.findall(translated)
+    positional = lambda tokens: [token for token in tokens if token.startswith("%") and token != "%%"]
+    return Counter(expected) == Counter(actual) and positional(expected) == positional(actual)
+
+
 def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
 
@@ -51,7 +57,7 @@ def audit_pack(code, entry):
         translated = strings[key]
         if not isinstance(translated, str) or (text and not translated.strip()):
             errors.append({"kind": "empty", "key": key})
-        elif Counter(TOKENS.findall(text)) != Counter(TOKENS.findall(translated)):
+        elif not matching_tokens(text, translated):
             errors.append({"kind": "format", "key": key,
                            "expected": TOKENS.findall(text), "actual": TOKENS.findall(translated)})
         if isinstance(translated, str) and "\ufffd" in translated:
@@ -68,13 +74,13 @@ def audit_pack(code, entry):
         translated = pack.get("equipment_compare", {}).get(key, "")
         if not translated.strip():
             errors.append({"kind": "equipment_compare", "key": key})
-        elif Counter(TOKENS.findall(text)) != Counter(TOKENS.findall(translated)):
+        elif not matching_tokens(text, translated):
             errors.append({"kind": "equipment_compare_format", "key": key})
     for key, text in read(DATA / "locales/en.json")["monster_pool"].items():
         translated = pack.get("monster_pool", {}).get(key, "")
         if not translated.strip():
             errors.append({"kind": "missing_monster_pool", "key": key})
-        elif Counter(TOKENS.findall(text)) != Counter(TOKENS.findall(translated)):
+        elif not matching_tokens(text, translated):
             errors.append({"kind": "monster_pool_format", "key": key})
     numerical_source = read(DATA / "locales/en.json")["numerical"]
     for section, values in numerical_source.items():
@@ -84,7 +90,7 @@ def audit_pack(code, entry):
             value = translated.get(key, "") if isinstance(translated, dict) else (translated[key] if key < len(translated) else "")
             if not value or not str(value).strip():
                 errors.append({"kind": "missing_numerical", "section": section, "key": key})
-            elif Counter(TOKENS.findall(text)) != Counter(TOKENS.findall(value)):
+            elif not matching_tokens(text, value):
                 errors.append({"kind": "numerical_format", "section": section, "key": key})
     return {"code": code, "ok": not errors, "strings": len(strings),
             "source_strings": len(source), "card_names": len(pack.get("card_names", {})),

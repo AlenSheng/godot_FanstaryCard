@@ -78,7 +78,19 @@ def run(args):
         write_json(output / "terminal.original.json", {"ok": ok, "native_exit": child.returncode,
                    "source_unchanged": unchanged, "locale": args.locale, "actual_game_matches": 0})
         errors = report.get("errors", []) if args.suite in ["catalog", "import"] else [row for row in report.get("suites", []) if not row.get("result", {}).get("ok", False)]
-        print(json.dumps({"ok": ok, "locale": args.locale, "suite": args.suite, "errors": errors}, ensure_ascii=True))
+        summaries = []
+        for error in errors:
+            result = error.get("result", {})
+            if error.get("kind") == "existing_regression" or "suite" in error:
+                failed = [name for name, passed in result.get("checks", {}).items() if not passed]
+                summaries.append({"kind": error.get("kind", "suite_failure"),
+                                  "file": error.get("file", error.get("suite")),
+                                  "failed_check_count": len(failed), "failed_checks": failed[:8],
+                                  "errors": result.get("errors", [])[:3]})
+            else:
+                summaries.append(error)
+        print(json.dumps({"ok": ok, "locale": args.locale, "suite": args.suite,
+                          "report": str(report_path), "errors": summaries}, ensure_ascii=True))
         return 0 if ok else 1
     except Exception as error:
         write_json(output / "failure.original.json", {"error": str(error), "type": type(error).__name__})
