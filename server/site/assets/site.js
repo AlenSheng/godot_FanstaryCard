@@ -1,7 +1,35 @@
-(() => {
+(async () => {
   'use strict';
   document.documentElement.classList.add('js');
-  const languageButton = document.querySelector('#language-toggle');
+  const previousLanguageButton = document.querySelector('#language-toggle');
+  const languageButton = previousLanguageButton instanceof HTMLSelectElement ? previousLanguageButton : document.createElement('select');
+  languageButton.id = 'language-toggle';
+  languageButton.className = 'language-toggle';
+  languageButton.disabled = true;
+  languageButton.setAttribute('aria-busy', 'true');
+  const languageRegistry = new Map([['zh', {code: 'zh', name: '简体中文'}], ['en', {code: 'en', name: 'English'}]]);
+  for (const option of languageButton.options) {
+    if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(option.value)) languageRegistry.set(option.value, {code: option.value, name: option.text});
+  }
+  try {
+    const response = await fetch('/assets/locales/manifest.json');
+    if (response.ok) {
+      for (const entry of (await response.json()).languages || []) {
+        if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(entry.code) && typeof entry.name === 'string' && entry.name.trim()) languageRegistry.set(entry.code, entry);
+      }
+    }
+  } catch { /* The original languages remain available when offline. */ }
+  const languages = [...languageRegistry.values()];
+  languageButton.replaceChildren(...languages.map(entry => new Option(entry.name, entry.code)));
+  if (previousLanguageButton !== languageButton) previousLanguageButton?.replaceWith(languageButton);
+  const languageStatus = document.createElement('span');
+  languageStatus.className = 'language-status';
+  languageStatus.setAttribute('role', 'status');
+  languageStatus.setAttribute('aria-live', 'polite');
+  languageButton.after(languageStatus);
+  const packs = new Map();
+  let activePack = {};
+  let requestedLanguage = 0;
   const menuButton = document.querySelector('#menu-toggle');
   const header = document.querySelector('.site-header');
   const navigation = document.querySelector('#site-nav');
@@ -11,40 +39,92 @@
   const updateMenuLabel = () => {
     if (!menuButton) return;
     const isOpen = menuButton.getAttribute('aria-expanded') === 'true';
-    const english = document.body.dataset.lang === 'en';
-    menuButton.setAttribute('aria-label', english ? (isOpen ? 'Close navigation' : 'Open navigation') : (isOpen ? '关闭导航' : '打开导航'));
+    const key = isOpen ? 'Close navigation' : 'Open navigation';
+    menuButton.setAttribute('aria-label', document.body.dataset.lang === 'zh' ? (isOpen ? '关闭导航' : '打开导航') : (activePack[key] || key));
   };
   const setMenuOpen = (open) => {
     header?.classList.toggle('menu-open', open);
     menuButton?.setAttribute('aria-expanded', String(open));
     updateMenuLabel();
   };
-  const setLanguage = (language) => {
+  const routeWithoutLocale = (path) => {
+    for (const entry of languages) {
+      if (!['zh', 'en'].includes(entry.code) && path.startsWith('/' + entry.code + '/')) return path.slice(entry.code.length + 1);
+    }
+    return path;
+  };
+  const setLanguage = async (language, remember = false) => {
+    if (!languages.some(entry => entry.code === language)) return;
+    const request = ++requestedLanguage;
+    let pack = {};
+    languageStatus.textContent = '';
+    try {
+      if (!['zh', 'en'].includes(language)) {
+        if (!packs.has(language)) {
+          const response = await fetch('/assets/locales/' + encodeURIComponent(language) + '.json');
+          if (!response.ok) throw new Error('Locale not available');
+          packs.set(language, await response.json());
+        }
+        pack = packs.get(language);
+      }
+    } catch {
+      if (request !== requestedLanguage) return;
+      languageButton.value = document.body.dataset.lang;
+      languageStatus.textContent = activePack['Translation unavailable. Please try again.'] || 'Translation unavailable. Please try again.';
+      return;
+    }
+    if (request !== requestedLanguage) return;
+    activePack = pack.messages || {};
+    const translate = (english, chinese) => language === 'zh' ? chinese : (activePack[english] || english);
     document.body.dataset.lang = language;
-    document.documentElement.lang = language === 'en' ? 'en' : 'zh-CN';
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : language;
+    document.documentElement.dir = pack.direction || 'ltr';
     const title = document.querySelector('title');
-    document.title = title.dataset[language];
+    document.title = translate(title.dataset.en, title.dataset.zh);
     const description = document.querySelector('meta[name="description"]');
-    description.content = description.dataset[language];
+    description.content = translate(description.dataset.en, description.dataset.zh);
     document.querySelectorAll('[data-i18n]').forEach((element) => {
-      if (element.dataset[language]) element.textContent = element.dataset[language];
+      element.textContent = translate(element.dataset.en, element.dataset.zh);
     });
     document.querySelectorAll('[data-alt-zh]').forEach((element) => {
-      element.alt = element.getAttribute(`data-alt-${language}`);
+      element.alt = translate(element.dataset.altEn, element.dataset.altZh);
     });
     document.querySelectorAll('[data-aria-zh]').forEach((element) => {
-      element.setAttribute('aria-label', element.getAttribute(`data-aria-${language}`));
+      element.setAttribute('aria-label', translate(element.dataset.ariaEn, element.dataset.ariaZh));
     });
-    languageButton.textContent = language === 'en' ? '中文' : 'EN';
-    languageButton.setAttribute('aria-label', language === 'en' ? '切换为中文' : 'Switch to English');
+    document.querySelectorAll('[data-l10n-extra]').forEach(element => {
+      element.textContent = translate(element.dataset.l10nExtra, element.dataset.l10nExtra);
+    });
+    languageButton.value = language;
+    languageButton.setAttribute('aria-label', language === 'zh' ? '语言' : (activePack.Language || 'Language'));
+    document.querySelectorAll('a[href]').forEach(link => {
+      const url = new URL(link.getAttribute('href'), location.href);
+      if (url.origin !== location.origin || !['/', '/index.html', '/classes.html', '/seasons.html'].includes(routeWithoutLocale(url.pathname))) return;
+      url.pathname = routeWithoutLocale(url.pathname);
+      if (!['zh', 'en'].includes(language)) url.pathname = '/' + language + url.pathname;
+      url.searchParams.delete('lang');
+      if (language === 'en') url.searchParams.set('lang', 'en');
+      link.setAttribute('href', url.pathname + url.search + url.hash);
+    });
+    const current = new URL(location.href);
+    current.pathname = routeWithoutLocale(current.pathname);
+    current.searchParams.delete('lang');
+    if (!['zh', 'en'].includes(language)) current.pathname = '/' + language + current.pathname;
+    else current.searchParams.set('lang', language);
+    history.replaceState(null, '', current.pathname + current.search + current.hash);
+    if (remember) try { localStorage.setItem('relicbound-language', language); } catch { /* The current page still changes language. */ }
+    document.documentElement.dataset.localeReady = language;
     updateMenuLabel();
   };
-  setLanguage(storedLanguage === 'en' ? 'en' : 'zh');
-  languageButton?.addEventListener('click', () => {
-    const language = document.body.dataset.lang === 'zh' ? 'en' : 'zh';
-    try { localStorage.setItem('relicbound-language', language); } catch { /* The current page still changes language. */ }
-    setLanguage(language);
+  const pathLocale = location.pathname.split('/')[1];
+  const queryLocale = new URL(location.href).searchParams.get('lang');
+  const initialLanguage = [queryLocale === 'zh-CN' ? 'zh' : queryLocale, pathLocale, storedLanguage, document.body.dataset.lang].find(code => languages.some(entry => entry.code === code)) || 'zh';
+  await setLanguage(initialLanguage);
+  languageButton?.addEventListener('change', () => {
+    void setLanguage(languageButton.value, true);
   });
+  languageButton.disabled = false;
+  languageButton.removeAttribute('aria-busy');
   menuButton?.addEventListener('click', () => setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true'));
   navigation?.addEventListener('click', (event) => {
     if (event.target.closest('a')) setMenuOpen(false);
@@ -68,7 +148,7 @@
         const language = document.body.dataset.lang;
         artwork.src = tile.dataset.artSrc;
         artwork.alt = tile.querySelector('img').alt;
-        caption.textContent = tile.getAttribute('data-art-title-' + language);
+        caption.textContent = language === 'zh' ? tile.dataset.artTitleZh : (activePack[tile.dataset.artTitleEn] || tile.dataset.artTitleEn);
         artDialog.showModal();
         document.body.classList.add('art-open');
       });
