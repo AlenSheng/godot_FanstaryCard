@@ -23,7 +23,7 @@ func _run() -> void:
 	checks["legacy translation remains available"] = I18n.t("确认退出登录？") == "Log out now?"
 	P.set_language("zh-CN")
 	checks["current language is visible to legacy components"] = I18n.locale == "zh" and I18n.t("设置") == "设置"
-	for locale_code in ["zh", "en"]:
+	for locale_code in P.languages():
 		I18n.set_language(locale_code)
 		for width in [960, 1280, 1920]:
 			get_tree().root.size = Vector2i(width, width * 9 / 16)
@@ -37,11 +37,13 @@ func _run() -> void:
 			var popup := panel.get_node("SettingsPopup") as PopupPanel
 			var selector := popup.find_child("LanguageSelector", true, false) as OptionButton
 			var logical_size := get_viewport().get_visible_rect().size
-			checks[label + " retained settings fits viewport"] = popup.visible and selector.item_count == 2 and popup.position.x >= 0 and popup.position.y >= 0 and popup.position.x + popup.size.x <= logical_size.x and popup.position.y + popup.size.y <= logical_size.y
+			checks[label + " retained settings fits viewport"] = popup.visible and selector.item_count == P.languages().size() and popup.position.x >= 0 and popup.position.y >= 0 and popup.position.x + popup.size.x <= logical_size.x and popup.position.y + popup.size.y <= logical_size.y
+			checks[label + " legacy adapter preserves selected locale"] = P.language() == locale_code and str(selector.get_item_metadata(selector.selected)) == locale_code
 			popup.hide()
 			panel.queue_free()
 			await get_tree().process_frame
 	if Game.has_method("login_google"):
+		I18n.set_language("en")
 		var google := HttpProtocol.route("/api/v1/auth/google", HTTPClient.METHOD_POST)
 		checks["Google request has a typed route"] = google.get("request") == "GoogleSignInRequest" and google.get("response") == "LocalSignInResponse"
 		var codec := Codec.new(true)

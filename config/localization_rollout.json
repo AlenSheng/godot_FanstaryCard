@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "target": {
+    "type": "finish_selected_locale_groups",
+    "finish_current_group": [
+      "hi",
+      "ar",
+      "ru"
+    ],
+    "final_additional_locales": [
+      "ja",
+      "ko"
+    ],
+    "stop_after_final_group": true,
+    "population_80_percent_required": false,
+    "authority": "User 2026-10-30: 更新完这一组之后再加个日韩就不再补多语言了"
+  },
+  "coverage_source": {
+    "publisher": "Unicode Consortium",
+    "dataset": "CLDR 48 territoryInfo",
+    "url": "https://github.com/unicode-org/cldr-json/blob/48.0.0/cldr-json/cldr-core/supplemental/territoryInfo.json",
+    "blob_sha": "f4d1177ca41700e17fecce40ae368ea1ccf59547",
+    "definitions": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
+    "limitation": "Countrywise maxima alone cannot establish 80% even if all listed languages are supported. Supplement disjoint census language groups before claiming the global target."
+  },
+  "website_policy": "This task prioritizes game languages. The user separately requested website typography/background/language-selector work in 完善多语言校验; preserve that task's site commits and do not overwrite them. Additional website locale delivery remains outside this game batch until permitted actual UI checks are available.",
+  "release_gate_order": [
+    "complete_game_translation",
+    "native_ui_validation",
+    "mark_game_passed",
+    "deploy_and_restart_game_services",
+    "external_health_checks",
+    "next_batch"
+  ],
+  "batches": [
+    {
+      "id": "01",
+      "locales": [
+        "es"
+      ],
+      "status": "released_deployed",
+      "passed": true,
+      "deployed": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-01/self-validation-final-v5.json",
+      "reviewed_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+      "review": "docs/reports/localization-rollout-20261030/batch-01/independent-review-70f68c3e.json",
+      "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-release-v5.json",
+      "deployed_code_commit": "b746f5f1bd5a86afdef1a86ad9c98e281c08212a",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-01/deployment-completed-v5.json"
+    },
+    {
+      "id": "02",
+      "locales": [
+        "fr",
+        "pt",
+        "id"
+      ],
+      "status": "released_deployed",
+      "passed": true,
+      "deployed": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-02/self-validation-final-r1.json",
+      "deployed_code_commit": "a0e213ad8e65000a6d7077cdc16eef46aee3324b",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-02/deployment-completed-r1.json"
+    },
+    {
+      "id": "03",
+      "locales": [
+        "hi",
+        "ar",
+        "ru"
+      ],
+      "status": "released_deployed",
+      "passed": true,
+      "deployed": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-03/self-validation-final-r1.json",
+      "deployed_code_commit": "526688fd74e0494876fe4590b9a7ae8bd85afb99",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-03/deployment-completed-r1.json"
+    },
+    {
+      "id": "04",
+      "locales": [
+        "ja",
+        "ko"
+      ],
+      "status": "released_deployed_complete",
+      "passed": true,
+      "deployed": true,
+      "final_group": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-04/self-validation-final-r1.json",
+      "deployed_code_commit": "7862513858b94ca6a6cb908f345cf238128e348f",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-04/deployment-completed-r1.json"
+    }
+  ],
+  "target_reached": true,
+  "previous_review_thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+  "review_policy": {
+    "external_task_required": false,
+    "authority": "User instruction on 2026-10-30: 无需其他任务复验，直接下一步",
+    "gate": "Root actual-UI self-validation, then deployment and health checks"
+  },
+  "previous_population_target": {
+    "population": "global",
+    "minimum_coverage_percent": 80,
+    "overlap_policy": "conservative_lower_bound"
+  },
+  "stop_condition": "Current hi/ar/ru group then final ja/ko group; stop further language additions after self-validation and deployment",
+  "rollout_complete": true,
+  "further_language_additions_stopped": true,
+  "completion_basis": "User final selected groups completed: hi/ar/ru then ja/ko; population-80% target was superseded",
+  "game_languages_completed": [
+    "zh-CN",
+    "en",
+    "es",
+    "fr",
+    "pt",
+    "id",
+    "hi",
+    "ar",
+    "ru",
+    "ja",
+    "ko"
+  ]
+}

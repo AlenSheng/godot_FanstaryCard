@@ -33,7 +33,7 @@ func build(source: Control) -> void:
 	else:
 		_header()
 		if host.screen_loading:
-			text("正在读取…", Rect2(700, 440, 520, 100), 40, P.GOLD)
+			text(P.localized("loading"), Rect2(700, 440, 520, 100), 40, P.GOLD)
 			return
 		match host.screen:
 			"hall": _hall()
@@ -50,6 +50,7 @@ func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPE
 	var label := Label.new()
 	var display_text := P.localized_text(value) if localize else value
 	label.text = display_text
+	P.apply_text_direction(label)
 	var typeface := P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
 	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)
@@ -115,25 +116,25 @@ func _scroll(rect: Rect2, horizontal: bool = false, parent: Node = null) -> Scro
 
 func _header() -> void:
 	if host.screen in ["cards", "deck"]:
-		Codex.header(self, host, "卡牌图鉴" if host.screen == "cards" else P.localized("deck_builder_title"))
+		Codex.header(self, host, P.localized("cards_title") if host.screen == "cards" else P.localized("deck_builder_title"))
 		return
 	panel(Rect2(24, 18, 1872, 82))
-	var names := {"hall": "幻想牌域", "cards": "卡牌图鉴", "prep": "探索准备", "gear": "装备穿戴", "enhance": "碎片强化", "shop": "金币商店", "market": "金币市场"}
+	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market")}
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
-		var return_button := button("返回", Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty())
+		var return_button := button(P.localized("back"), Rect2(60, 32, 170, 52), host._navigate.bind("hall"), Game.busy or not Game.ticket.is_empty())
 		return_button.name = "ReturnButton"
 		return_button.set_meta("sound_cue", "")
-		text(names.get(host.screen, "营地"), Rect2(240, 30, 500, 60), 38, P.GOLD)
+		text(names.get(host.screen, P.localized("nav_hall")), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
-	var identity := text("%s\nUID %s" % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
+	var identity := text(P.localized("account_uid_multiline") % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
 	identity.name = "AccountIdentity"
-	var legacy_switch := button("切换账号", Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
+	var legacy_switch := button(P.localized("switch_account"), Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
 	legacy_switch.name = "SwitchAccountButton"
 	legacy_switch.visible = false
 	picture(_item("Gold"), Rect2(1490, 35, 44, 44))
-	var wallet_label := text("%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)], Rect2(1546, 38, 220, 46), 28, P.GOLD)
+	var wallet_label := text("%s %s" % [P.localized_text(P.localized("word_gold")), Game.lobby.get("wallet", {}).get("gold", 0)], Rect2(1546, 38, 220, 46), 28, P.GOLD)
 	wallet_label.name = "WalletGold"
 	if host.screen == "hall":
 		var mail_button := button("", Rect2(34, 286, 96, 82), _mail)
@@ -141,7 +142,7 @@ func _header() -> void:
 		mail_button.icon = Art.texture("UI/Hall/mail_button.png")
 		mail_button.expand_icon = true
 		mail_button.add_theme_constant_override("icon_max_width", 72)
-		mail_button.tooltip_text = P.localized_text("邮件")
+		mail_button.tooltip_text = P.localized_text(P.localized("mail"))
 		var badge_style := StyleBoxFlat.new()
 		badge_style.bg_color = Color("#b6292b")
 		badge_style.border_color = Color("#f1b978")
@@ -186,7 +187,7 @@ func _hall() -> void:
 		var card_rect := Rect2(42 + i * 310, 118, 295, 138)
 		var frame_key := "UI/Hall/class_card_frame_%s.png" % ["on" if hero_class == Game.hero_class else "off"]
 		var node := button("", card_rect, Game.select_class.bind(hero_class), Game.busy or not Game.preparation.is_empty())
-		node.tooltip_text = P.localized_text("%s · 生命上限 %s" % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]])
+		node.tooltip_text = P.localized_text(P.localized("equipment_max_hp") % [P.CLASSES[hero_class][0], P.CLASSES[hero_class][2]])
 		picture(Art.texture(frame_key), card_rect).name = "ClassCardFrame_" + hero_class
 		var class_portrait: Texture2D = Art.texture("UI/Hall/class_card_portrait_%s.png" % hero_class.to_lower())
 		if hero_class == "Priest": class_portrait = Art.portrait(hero_class)
@@ -194,21 +195,21 @@ func _hall() -> void:
 		var hero_title := P.localized_text(P.CLASSES[hero_class][0])
 		var class_name_rect := Rect2(card_rect.position + Vector2(118, 25), Vector2(card_rect.size.x - 128, 30))
 		var class_name_size := 22
-		if P.language() == "en":
+		if P.language() != "zh-CN":
 			hero_title = hero_title.replace(" · ", "\n")
 			class_name_rect.position = card_rect.position + Vector2(114, 18)
 			class_name_rect.size = Vector2(163, 66)
 			class_name_size = 20
 		var title_label := text(hero_title, class_name_rect, class_name_size, P.GOLD, null, true, false)
 		title_label.name = "ClassName_" + hero_class
-		if P.language() == "en": title_label.add_theme_constant_override("line_spacing", 0)
-		var stats_offset := 12.0 if P.language() == "en" else 0.0
-		var stats_x_offset := -6.0 if P.language() == "en" else 0.0
+		if P.language() != "zh-CN": title_label.add_theme_constant_override("line_spacing", 0)
+		var stats_offset := 12.0 if P.language() != "zh-CN" else 0.0
+		var stats_x_offset := -6.0 if P.language() != "zh-CN" else 0.0
 		picture(Art.texture("UI/Hall/class_card_heart.png"), Rect2(card_rect.position + Vector2(119 + stats_x_offset, 74 + stats_offset), Vector2(27, 27))).name = "ClassHeart"
-		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148 + stats_x_offset, 75 + stats_offset), Vector2(42, 28)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
-		var class_label := P.localized_text({"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}[hero_class])
+		text(str(P.CLASSES[hero_class][2]), Rect2(card_rect.position + Vector2(148 + stats_x_offset, 72 + stats_offset), Vector2(42, 36)), 23, P.GOLD).name = "ClassMaximumHp_" + hero_class
+		var class_label := P.localized_text({"Priest": P.localized("class_priest"), "Mage": P.localized("class_mage"), "Guardian": P.localized("class_guardian")}[hero_class])
 		var class_type_rect := Rect2(card_rect.position + Vector2(194, 73 + stats_offset), Vector2(card_rect.size.x - 200, 32))
-		if P.language() == "en":
+		if P.language() != "zh-CN":
 			class_type_rect.position.x -= 8
 		text(class_label, class_type_rect, 22, P.GOLD, null, true, false).name = "ClassType_" + hero_class
 	# The live frontend is deliberately 2D-only. Character art is a static
@@ -294,13 +295,13 @@ func _mail() -> void:
 	modal.add_child(overlay)
 	var frame := panel(Rect2(280, 115, 1360, 850), "UI/CardCodex/card_codex_dialog_panel_normal.png", modal)
 	frame.mouse_filter = Control.MOUSE_FILTER_STOP
-	text(P.localized_text("邮件"), Rect2(334, 163, 360, 60), 42, P.GOLD, modal)
+	text(P.localized_text(P.localized("mail")), Rect2(334, 163, 360, 60), 42, P.GOLD, modal)
 	var unread_label := text(_mail_unread_summary(), Rect2(705, 177, 250, 38), 22, P.MUTED, modal)
 	unread_label.name = "MailUnreadCount"
-	_mail_button(P.localized_text("一键全领"), Rect2(970, 163, 190, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
-	_mail_button(P.localized_text("全部已读"), Rect2(1175, 163, 190, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
-	_mail_button(P.localized_text("删除已读"), Rect2(1380, 163, 190, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
-	button(P.localized_text("关闭"), Rect2(1466, 873, 130, 52), modal.queue_free, false, BLUE, modal)
+	_mail_button(P.localized_text(P.localized("claim_all")), Rect2(970, 163, 190, 52), _mail_action.bind(Game.claim_all_mail), false, ORANGE, modal)
+	_mail_button(P.localized_text(P.localized("mark_all_read")), Rect2(1175, 163, 190, 52), _mail_action.bind(Game.mark_all_mail_read), false, ORANGE, modal)
+	_mail_button(P.localized_text(P.localized("delete_read")), Rect2(1380, 163, 190, 52), _mail_action.bind(Game.delete_read_mail), false, BLUE, modal)
+	button(P.localized_text(P.localized("close")), Rect2(1466, 873, 130, 52), modal.queue_free, false, BLUE, modal)
 	var list: Array = Game.mail.get("items", [])
 	var list_panel := Control.new()
 	list_panel.position = Vector2(340, 296)
@@ -310,8 +311,8 @@ func _mail() -> void:
 	detail_panel.position = Vector2(1130, 296)
 	detail_panel.size = Vector2(450, 570)
 	modal.add_child(detail_panel)
-	text(P.localized_text("收件箱"), Rect2(340, 238, 360, 46), 28, P.GOLD, modal)
-	text(P.localized_text("邮件详情"), Rect2(1140, 238, 360, 46), 28, P.GOLD, modal)
+	text(P.localized_text(P.localized("inbox")), Rect2(340, 238, 360, 46), 28, P.GOLD, modal)
+	text(P.localized_text(P.localized("mail_details")), Rect2(1140, 238, 360, 46), 28, P.GOLD, modal)
 	var detail_root := Control.new()
 	detail_root.name = "MailDetailRoot"
 	detail_root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -320,8 +321,8 @@ func _mail() -> void:
 	modal.set_meta("mail_detail_root", detail_root)
 	modal.set_meta("mail_detail_panel", detail_panel)
 	if list.is_empty():
-		text(P.localized_text("暂无邮件"), Rect2(500, 500, 420, 60), 30, P.MUTED, modal)
-		text(P.localized_text("选择一封邮件查看详情"), Rect2(1140, 500, 400, 60), 28, P.MUTED, modal)
+		text(P.localized_text(P.localized("no_mail")), Rect2(500, 500, 420, 60), 30, P.MUTED, modal)
+		text(P.localized_text(P.localized("select_mail")), Rect2(1140, 500, 400, 60), 28, P.MUTED, modal)
 		return
 	var scroll := _scroll(Rect2(340, 296, 760, 570), false, modal)
 	scroll.name = "MailListScroll"
@@ -354,7 +355,7 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		var attachments: Array = item.get("attachments", []) if item.get("attachments", []) is Array else []
 		var preview := RemoteCopy.field(item, "body").replace("\n", " ")
 		if preview.length() > 54: preview = preview.substr(0, 54) + "…"
-		var state_text := P.localized_text("未读") if unread else P.localized_text("已读")
+		var state_text := P.localized_text(P.localized("unread")) if unread else P.localized_text(P.localized("read"))
 		var open_area := Control.new()
 		open_area.name = "MailOpenArea"
 		open_area.custom_minimum_size = Vector2(0, 104)
@@ -382,6 +383,7 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		title_label.offset_right = -14.0
 		title_label.offset_bottom = 46.0
 		title_label.clip_text = true
+		title_label.max_lines_visible = 1
 		title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		title_label.add_theme_color_override("font_color", P.PAPER if unread else P.MUTED)
@@ -397,6 +399,7 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		preview_label.offset_right = -14.0
 		preview_label.offset_bottom = -10.0
 		preview_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		preview_label.max_lines_visible = 1
 		preview_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		preview_label.clip_text = true
 		preview_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -408,11 +411,11 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		if not attachments.is_empty():
 			open.tooltip_text += "\n" + _mail_attachment_tooltip(attachments[0])
 		if not attachments.is_empty():
-			var claim := _mail_button(P.localized_text("领取") if not bool(item.get("claimed", false)) else P.localized_text("已领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), bool(item.get("claimed", false)), ORANGE, row)
+			var claim := _mail_button(P.localized_text(P.localized("claim")) if not bool(item.get("claimed", false)) else P.localized_text(P.localized("claimed")), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), bool(item.get("claimed", false)), ORANGE, row)
 			claim.name = "MailClaim"
 			claim.custom_minimum_size = Vector2(112, 104)
 		var can_delete := bool(item.get("read", false)) and (bool(item.get("claimed", false)) or attachments.is_empty())
-		var remove := _mail_button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, row)
+		var remove := _mail_button(P.localized_text(P.localized("delete")), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, row)
 		remove.name = "MailDelete"
 		remove.custom_minimum_size = Vector2(112, 104)
 
@@ -437,7 +440,7 @@ func _mail_item_by_id(id: String) -> Dictionary:
 	return {}
 
 func _mail_unread_summary() -> String:
-	return "%s %s / %s" % [P.localized_text("未读"), Game.mail.get("unreadCount", 0), Game.mail.get("items", []).size()]
+	return "%s %s / %s" % [P.localized_text(P.localized("unread")), Game.mail.get("unreadCount", 0), Game.mail.get("items", []).size()]
 
 func _refresh_mail_detail(modal: Control) -> void:
 	var detail_root: Control = modal.get_meta("mail_detail_root", null)
@@ -457,7 +460,7 @@ func _refresh_mail_detail(modal: Control) -> void:
 		for child in detail_root.get_children():
 			detail_root.remove_child(child)
 			child.queue_free()
-		text(P.localized_text("暂无邮件"), Rect2(0, 210, 450, 60), 30, P.MUTED, detail_root)
+		text(P.localized_text(P.localized("no_mail")), Rect2(0, 210, 450, 60), 30, P.MUTED, detail_root)
 		return
 	_mail_detail_panel(detail_root, item)
 
@@ -468,7 +471,7 @@ func _update_mail_row_states(modal: Control) -> void:
 	_update_hall_mail_badge()
 	var wallet_label: Label = get_node_or_null("WalletGold")
 	if wallet_label != null:
-		wallet_label.text = "%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)]
+		wallet_label.text = "%s %s" % [P.localized_text(P.localized("word_gold")), Game.lobby.get("wallet", {}).get("gold", 0)]
 	var column: VBoxContainer = modal.get_meta("mail_list_column", null)
 	if not is_instance_valid(column): return
 	_build_mail_rows(column)
@@ -491,7 +494,7 @@ func _update_mail_row_read_state(modal: Control, id: String) -> void:
 	var item := _mail_item_by_id(id)
 	var title := RemoteCopy.field(item, "title")
 	if title.is_empty(): title = P.localized("system_mail")
-	title_label.text = "● %s  %s" % [P.localized_text("已读"), title]
+	title_label.text = "● %s  %s" % [P.localized_text(P.localized("read")), title]
 	title_label.add_theme_color_override("font_color", P.MUTED)
 
 func _mark_mail_read_local(id: String) -> void:
@@ -538,8 +541,10 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	detail_scroll.add_child(column)
 	var title := RemoteCopy.field(item, "title")
-	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, column)
-	text("%s: %s" % [P.localized_text("发件人"), item.get("sender", "System")], Rect2(0, 0, 0, 0), 20, P.MUTED, column)
+	text(title if not title.is_empty() else P.localized("system_mail"), Rect2(0, 0, 0, 0), 34, P.GOLD, column, true, false)
+	var sender := RemoteCopy.field(item, "sender")
+	if sender.is_empty(): sender = P.localized("system_mail")
+	text("%s: %s" % [P.localized("sender"), sender], Rect2(0, 0, 0, 0), 20, P.MUTED, column, true, false)
 	var body := Label.new()
 	body.text = RemoteCopy.field(item, "body")
 	if body.text.is_empty(): body.text = str(item.get("content", ""))
@@ -549,7 +554,7 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	body.add_theme_font_size_override("font_size", 24)
 	body.add_theme_color_override("font_color", P.PAPER)
 	column.add_child(body)
-	text(P.localized_text("附件"), Rect2(0, 0, 0, 0), 25, P.GOLD, column)
+	text(P.localized_text(P.localized("attachments")), Rect2(0, 0, 0, 0), 25, P.GOLD, column)
 	var grid := GridContainer.new()
 	grid.columns = 2
 	grid.add_theme_constant_override("h_separation", Art.COMMON_CELL_GAP)
@@ -611,9 +616,9 @@ func _mail_detail_panel(parent: Control, item: Dictionary) -> void:
 	actions.alignment = BoxContainer.ALIGNMENT_END
 	column.add_child(actions)
 	if not bool(item.get("claimed", false)) and not attachments.is_empty():
-		button(P.localized_text("领取"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), false, ORANGE, actions).custom_minimum_size = Vector2(160, 54)
+		button(P.localized_text(P.localized("claim")), Rect2(0, 0, 0, 0), _mail_action.bind(Game.claim_mail.bind(id)), false, ORANGE, actions).custom_minimum_size = Vector2(160, 54)
 	var can_delete := bool(item.get("read", true)) and (bool(item.get("claimed", false)) or attachments.is_empty())
-	button(P.localized_text("删除"), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, actions).custom_minimum_size = Vector2(160, 54)
+	button(P.localized_text(P.localized("delete")), Rect2(0, 0, 0, 0), _mail_action.bind(Game.delete_mail.bind(id)), not can_delete, BLUE, actions).custom_minimum_size = Vector2(160, 54)
 
 func _mail_action(action: Callable) -> void:
 	host.mail_modal_lock = true
@@ -628,7 +633,7 @@ func _mail_action(action: Callable) -> void:
 func _refresh_mail_claimed_resources() -> void:
 	var wallet_label := get_node_or_null("WalletGold") as Label
 	if wallet_label != null:
-		wallet_label.text = "%s %s" % [P.localized_text("金币"), Game.lobby.get("wallet", {}).get("gold", 0)]
+		wallet_label.text = "%s %s" % [P.localized_text(P.localized("word_gold")), Game.lobby.get("wallet", {}).get("gold", 0)]
 
 func _mail_attachment_texture(attachment: Dictionary) -> Texture2D:
 	var kind := _mail_attachment_kind(attachment)
@@ -772,7 +777,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	add_child(weapon_fill)
 	picture(Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % hero_class.to_lower()), Rect2(weapon_pos + Vector2(12, 12), Vector2(96, 96)))
 	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
-	var weapon_caption := text("本命 +%s · 锁定" % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else "本命 · 锁定", Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
+	var weapon_caption := text(P.localized("equipment_signature_level_locked") % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else P.localized("equipment_signature_locked"), Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
 	weapon_caption.name = "SignatureWeaponCaption"
 
 func _preparation() -> void:
@@ -797,7 +802,7 @@ func _preparation() -> void:
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
 	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
 		host.bag_tier = "Free"
-	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1090, 186, 740, 28), 21, P.MUTED).name = "PreparationBagStockSummary"
+	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1090, 182, 740, 36), 21, P.MUTED).name = "PreparationBagStockSummary"
 	var tier: String = snap.get("backpackTier", host.bag_tier)
 	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
 	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))
@@ -825,7 +830,7 @@ func _preparation() -> void:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
 			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
-		tab.tooltip_text = P.localized_text("持有 %s 个" % available_count)
+		tab.tooltip_text = P.localized_text(P.localized("equipment_owned_count") % available_count)
 	var row_count := int(ceil(float(capacity) / 6.0))
 	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))
 	bag_scroll.name = "PreparationBackpackScroll"
@@ -862,18 +867,18 @@ func _preparation() -> void:
 	count.position = Vector2(1560, 773)
 	count.size = Vector2(270, 66)
 	if locked:
-		button("取消匹配 / 准备", Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
-		button("正在匹配…" if not Game.ticket.is_empty() else "开始匹配", Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
+		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
+		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
 	else:
-		button("确认探索准备", Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
+		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)
 	_equipment_summary(host._equipped_items())
-	var save_loadout_button := button("保存穿戴", Rect2(410, 939, 385, 68), func(): host._mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": host.gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy, ORANGE)
+	var save_loadout_button := button(P.localized("save_loadout"), Rect2(410, 939, 385, 68), func(): host._mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": host.gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy, ORANGE)
 	save_loadout_button.name = "SaveLoadoutButton"
 	panel(Rect2(1190, 136, 688, 886))
-	text("仓库装备", Rect2(1235, 184, 520, 60), 36, P.GOLD)
+	text(P.localized("stored_equipment"), Rect2(1235, 184, 520, 60), 36, P.GOLD)
 	var scroll := DragScroll.new()
 	scroll.name = "EquipmentInventoryScroll"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -902,8 +907,8 @@ func _gear() -> void:
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
-	if list.get_child_count() == 0: text("仓库暂无装备\n探索撤离后可带回战利品", Rect2(1255, 362, 530, 160), 28, P.MUTED)
-	var enhance_button := button("碎片强化", Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+	if list.get_child_count() == 0: text(P.localized("ui_stored_empty_multiline"), Rect2(1255, 362, 530, 160), 28, P.MUTED)
+	var enhance_button := button(P.localized("enhance_title"), Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
 	enhance_button.set_meta("sound_cue", "")
 
 func _equipment_summary(loadout: Array, rect: Rect2 = Rect2(225, 760, 755, 165), maximum_hp: int = -1) -> void:
@@ -918,9 +923,9 @@ func _equipment_summary(loadout: Array, rect: Rect2 = Rect2(225, 760, 755, 165),
 	var body_height := maxf(1.0, rect.end.y - minf(Art.COMMON_PANEL_PADDING.w, rect.size.y * 0.16) - body_y)
 	var summary_panel := panel(rect)
 	summary_panel.name = "EquipmentSummaryPanel"
-	var attribute_title := text(P.localized("equipment_summary_title"), Rect2(first_x, title_y, column_width, 28), 21, P.GOLD)
+	var attribute_title := text(P.localized("equipment_summary_title"), Rect2(first_x, title_y - 4, column_width, 36), 21, P.GOLD)
 	attribute_title.name = "EquipmentSummaryTitle"
-	var set_title := text(P.localized("equipment_set_summary_title"), Rect2(second_x, title_y, column_width, 28), 21, P.GOLD)
+	var set_title := text(P.localized("equipment_set_summary_title"), Rect2(second_x, title_y - 4, column_width, 36), 21, P.GOLD)
 	set_title.name = "EquipmentSetSummaryTitle"
 	var attribute_lines := _equipment_attribute_lines(loadout)
 	if maximum_hp >= 0: attribute_lines.push_front("%s %s" % [P.localized("hp"), maximum_hp])
@@ -999,7 +1004,10 @@ func _enhance() -> void:
 	panel(Rect2(525, 130, 770, 884))
 	panel(Rect2(1320, 132, 570, 882))
 	text(P.localized("enhance_select_item"), Rect2(74, 180, 382, 58), 34, P.GOLD)
-	button("本命武器 · " + P.CLASSES[Game.hero_class][1], Rect2(74, 254, 382, 94), func(): host._enhance_item = ""; host._render(), false, ORANGE if host._enhance_item.is_empty() else BLUE)
+	var weapon_name := P.localized("ui_signature_weapon_prefix") + P.localized_text(P.CLASSES[Game.hero_class][1])
+	var weapon_label := weapon_name.replace(" · ", "\n") if P.language() != "zh-CN" else weapon_name
+	var weapon_button := button(weapon_label, Rect2(74, 254, 382, 94), func(): host._enhance_item = ""; host._render(), false, ORANGE if host._enhance_item.is_empty() else BLUE)
+	weapon_button.tooltip_text = weapon_name
 	var scroll := _scroll(Rect2(74, 378, 382, 596))
 	var list := VBoxContainer.new()
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1007,7 +1015,7 @@ func _enhance() -> void:
 	var selected: Dictionary = {}
 	for item in host.inventory.get("equipments", []):
 		var item_name: String = host._equipment_name(item)
-		var item_button: Button = host._button(list, item_name.replace(" · ", "\n") if P.language() == "en" else item_name, func(): host._enhance_item = item.instanceId; host._render(), item.get("location") not in ["Inventory", "Equipped"])
+		var item_button: Button = host._button(list, item_name.replace(" · ", "\n") if P.language() != "zh-CN" else item_name, func(): host._enhance_item = item.instanceId; host._render(), item.get("location") not in ["Inventory", "Equipped"])
 		item_button.custom_minimum_size.y = 104
 		item_button.tooltip_text = item_name
 		if item.instanceId == host._enhance_item: selected = item
@@ -1159,14 +1167,14 @@ func _shop() -> void:
 		Art.button(buy, ORANGE)
 		buy.position = Vector2(44, 534)
 		buy.size = Vector2(206, 66)
-	if row.get_child_count() == 0: text("暂无商品，请稍后刷新", Rect2(640, 440, 790, 95), 34, P.MUTED)
+	if row.get_child_count() == 0: text(P.localized("no_products"), Rect2(640, 440, 790, 95), 34, P.MUTED)
 	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
 	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
 	text(stock_text, Rect2(85, 884, 950, 34), 20, P.MUTED).name = "ShopStockSummary"
 	var refresh_used := int(host.shop.get("refreshesUsed", 0))
 	var refresh_limit := int(host.shop.get("refreshLimit", 0))
 	var refresh_remaining := maxi(0, refresh_limit - refresh_used)
-	text("每日刷新次数：剩余 %s / %s" % [refresh_remaining, refresh_limit], Rect2(85, 920, 950, 42), 24, P.GOLD)
+	text(P.localized("equipment_daily_refresh") % [refresh_remaining, refresh_limit], Rect2(85, 920, 950, 42), 24, P.GOLD)
 	var refresh_button := button(P.localized("refresh"), Rect2(1630, 908, 190, 54), host._refresh_shop, Game.busy or refresh_remaining <= 0, ORANGE)
 	refresh_button.name = "RefreshShopButton"
 	host._restore_shop_scroll(scroll)
@@ -1203,7 +1211,7 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		buy.text = P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
 		buy.disabled = Game.busy or stock_unknown or stock_full or already_owned or int(product.get("purchased", 0)) >= int(product.get("limit", 0)) or int(product.get("priceGold", 0)) > gold
 	var wallet_label := get_node_or_null("WalletGold") as Label
-	if wallet_label != null: wallet_label.text = "%s %s" % [P.localized_text("金币"), gold]
+	if wallet_label != null: wallet_label.text = "%s %s" % [P.localized_text(P.localized("word_gold")), gold]
 	var stock_label := get_node_or_null("ShopStockSummary") as Label
 	if stock_label != null:
 		var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
@@ -1228,9 +1236,8 @@ func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dic
 	if frame.texture == null: frame.texture = Art.texture("UI/Codex/qframe_common.png")
 	# Shop cards have their own scaled layout. Keep the shop-only title offset
 	# independent from CardView so codex/deck cards retain their original position.
-	var card_name := _shop_card_face_label(item_panel, CardDetails.localized_name(card_id, card_info), Rect2(77, 321, 140, 28), 18, P.GOLD)
+	var card_name := _shop_card_face_label(item_panel, CardDetails.localized_face_name(card_id, card_info), Rect2(77, 321, 140, 28), 18, P.GOLD, 1, P.font("title"))
 	card_name.name = "ShopCardName"
-	card_name.add_theme_font_override("font", P.font("title"))
 	var effect: String = host.card_description(card_id, "face")
 	if effect.is_empty():
 		var tooltip_parts: PackedStringArray = host._card_text(card_id).split("\n\n", true, 1)
@@ -1238,9 +1245,9 @@ func _shop_card_presentation(item_panel: Panel, image: TextureRect, payload: Dic
 	var effect_label := _shop_card_face_label(item_panel, effect, Rect2(77, 350, 140, 44), 13, P.PAPER, 2)
 	effect_label.name = "ShopCardEffect"
 	var tooltip: String = host._card_text(card_id)
-	item_panel.tooltip_text = P.localized_text(tooltip + "\n品质：%s色" % P.word(quality))
+	item_panel.tooltip_text = P.localized_text(tooltip + P.localized("equipment_quality_line") % P.word(quality))
 
-func _shop_card_face_label(item_panel: Panel, value: String, rect: Rect2, font_size: int, color: Color, max_lines: int = 1) -> Label:
+func _shop_card_face_label(item_panel: Panel, value: String, rect: Rect2, font_size: int, color: Color, max_lines: int = 1, typeface_override: Font = null) -> Label:
 	var label := Label.new()
 	var display_text := P.localized_text(value)
 	label.text = display_text
@@ -1251,7 +1258,7 @@ func _shop_card_face_label(item_panel: Panel, value: String, rect: Rect2, font_s
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	label.clip_text = true
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var typeface := P.font_for_text(display_text, font_size)
+	var typeface: Font = typeface_override if typeface_override != null else P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
 	var line_height := rect.size.y / float(max_lines)
 	var fit_width := -1.0 if max_lines > 1 else rect.size.x - 8.0
@@ -1286,8 +1293,8 @@ func _product_art(kind: String, payload: Dictionary) -> Texture2D:
 func _market() -> void:
 	panel(Rect2(28, 135, 1300, 884))
 	panel(Rect2(1344, 135, 546, 884))
-	text("购买 / 我的挂单", Rect2(76, 183, 770, 57), 34, P.GOLD)
-	text("物品                                     金币             操作", Rect2(76, 238, 1140, 50), 24, P.MUTED)
+	text(P.localized("buy_or_listings"), Rect2(76, 183, 770, 57), 34, P.GOLD)
+	text(P.localized("ui_market_header"), Rect2(76, 238, 1140, 50), 24, P.MUTED)
 	var scroll := _scroll(Rect2(72, 316, 1210, 635))
 	var list := VBoxContainer.new()
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1296,16 +1303,16 @@ func _market() -> void:
 		var row := HBoxContainer.new()
 		list.add_child(row)
 		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
-		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else "装备详情暂不可用", func(): host._show_equipment_details(gear), gear.is_empty())
+		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable"), func(): host._show_equipment_details(gear), gear.is_empty())
 		name.tooltip_text = host.EquipmentDetails.description(gear) if not gear.is_empty() else ""
 		name.custom_minimum_size.x = 660
 		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
 		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):
-			host._button(row, "下架", func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
+			host._button(row, P.localized("remove_listing"), func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
 		else:
-			host._button(row, "购买", func(): host._confirm("花费 %s 金币购买 %s？" % [listing.priceGold, host._equipment_name(gear)], func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or gear.is_empty() or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
-	if list.get_child_count() == 0: text("集市暂时没有挂单", Rect2(356, 453, 730, 100), 32, P.MUTED)
-	text("本次上架", Rect2(1390, 183, 440, 67), 34, P.GOLD)
+			host._button(row, P.localized("buy"), func(): host._confirm(P.localized("equipment_buy_confirm") % [listing.priceGold, host._equipment_name(gear)], func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or gear.is_empty() or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+	if list.get_child_count() == 0: text(P.localized("no_listings"), Rect2(356, 453, 730, 100), 32, P.MUTED)
+	text(P.localized("current_listing"), Rect2(1390, 183, 440, 67), 34, P.GOLD)
 	var choices := OptionButton.new()
 	choices.add_item(P.localized("select_stored_equipment"))
 	var items: Array = []
@@ -1319,7 +1326,7 @@ func _market() -> void:
 	add_child(choices)
 	choices.position = Vector2(1385, 320)
 	choices.size = Vector2(460, 66)
-	text("上架单价", Rect2(1390, 449, 440, 50), 27)
+	text(P.localized("listing_price"), Rect2(1390, 449, 440, 50), 27)
 	var price := SpinBox.new()
 	price.min_value = 1
 	price.max_value = 100000000
@@ -1328,23 +1335,23 @@ func _market() -> void:
 	add_child(price)
 	price.position = Vector2(1385, 515)
 	price.size = Vector2(460, 72)
-	text("手续费 10%（至少 1 金币）\n上架上限 8 件 · 最长 48 小时", Rect2(1390, 643, 455, 121), 25, P.MUTED)
-	button("上架物品", Rect2(1400, 868, 435, 88), func():
+	text(P.localized("listing_terms"), Rect2(1390, 643, 455, 121), 25, P.MUTED)
+	button(P.localized("list_item"), Rect2(1400, 868, 435, 88), func():
 		var selected_id: String = host._market_item
 		var price_gold: int = host._market_price
-		host._confirm("确认以 %s 金币上架？" % price_gold, func(): host._mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": selected_id, "priceGold": price_gold})), Game.busy or host._market_item.is_empty(), ORANGE)
+		host._confirm(P.localized("confirm_listing_price") % price_gold, func(): host._mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": selected_id, "priceGold": price_gold})), Game.busy or host._market_item.is_empty(), ORANGE)
 
 func _ready_prompt() -> void:
 	panel(Rect2(520, 245, 880, 600))
-	text("旅人集结", Rect2(725, 312, 600, 90), 54, P.GOLD)
-	text("已确认 %s / %s" % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)], Rect2(720, 455, 600, 80), 36)
+	text(P.localized("ui_party_gathering"), Rect2(725, 312, 600, 90), 54, P.GOLD)
+	text(P.localized("ui_confirmed_count") % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)], Rect2(720, 455, 600, 80), 36)
 	var deadline: float = float(Game.ready_prompt.get("deadline_unix_ms", 0)) / 1000.0
 	var remaining := text("", Rect2(720, 552, 600, 60), 28, P.TEAL)
-	var update_time: Callable = func(): remaining.text = P.localized_text("确认剩余 %s 秒" % maxi(0, int(deadline - Time.get_unix_time_from_system())))
+	var update_time: Callable = func(): remaining.text = P.localized_text(P.localized("ui_confirm_remaining") % maxi(0, int(deadline - Time.get_unix_time_from_system())))
 	update_time.call()
 	var timer := Timer.new()
 	timer.wait_time = 0.25
 	timer.timeout.connect(update_time)
 	add_child(timer)
 	timer.start()
-	button("准备就绪", Rect2(690, 668, 540, 100), func(): Game.gateway.send("room.ready"), not Game.gateway.online, ORANGE)
+	button(P.localized("ready"), Rect2(690, 668, 540, 100), func(): Game.gateway.send("room.ready"), not Game.gateway.online, ORANGE)

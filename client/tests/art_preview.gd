@@ -187,7 +187,7 @@ func _check_shop() -> void:
 				layout_errors.append("Guaranteed card effect overlaps the bottom frame decoration: " + product.productId)
 			elif face_effect.max_lines_visible != 2 or face_effect.autowrap_mode == TextServer.AUTOWRAP_OFF or face_effect.horizontal_alignment != HORIZONTAL_ALIGNMENT_CENTER:
 				layout_errors.append("Guaranteed card effect does not reserve two centered lines: " + product.productId)
-			if not node.tooltip_text.contains(P.localized_text("品质：%s色" % P.word(quality))):
+			if not node.tooltip_text.contains((P.localized("equipment_quality_line") % P.word(quality)).strip_edges()):
 				layout_errors.append("Guaranteed card tooltip omits quality: " + product.productId)
 			var purchase := node.get_node_or_null("Purchase") as Button
 			if product.get("alreadyOwned", false) and (purchase == null or not purchase.disabled or purchase.text != P.localized_text("已激活")):

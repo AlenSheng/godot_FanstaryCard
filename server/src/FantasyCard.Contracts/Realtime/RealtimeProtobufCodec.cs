@@ -583,11 +583,12 @@ public static class RealtimeProtobufCodec
     {
         w.String(1, value.PileId.ToString("D")); w.String(2, value.OwnerName); w.Int64(3, value.Version);
         foreach (var item in value.Items) w.Bytes(4, EncodeInventoryItem(item));
+        if (value.OwnerNameIsFallback) w.Bool(5, true);
     });
 
     private static RoomRelicPilePayload DecodeRelicPile(Fields value) => new(
         ParseGuid(value.String(1), "relic.contents"), value.String(2), value.Int64(3),
-        value.RepeatedBytes(4).Select(DecodeInventoryItem).ToArray());
+        value.RepeatedBytes(4).Select(DecodeInventoryItem).ToArray(), value.Bool(5));
 
     private static RoomEquipmentPayload? DecodeEquipment(byte[] bytes)
     {
@@ -627,6 +628,7 @@ public static class RealtimeProtobufCodec
         w.Int64(13, value.OpponentDrawBlockRemainingMs);
         w.Bool(14, value.SeparateLoot);
         foreach (var item in value.SearchableLoot ?? []) w.Bytes(15, EncodeInventoryItem(item));
+        if (value.OpponentNameIsFallback) w.Bool(16, true);
     });
 
     private static RoomSnapshotEventPayload DecodeRoomSnapshot(Fields payload)
@@ -654,7 +656,7 @@ public static class RealtimeProtobufCodec
                 NullIfEmpty(current.RepeatedBytes(5).Select(bytes =>
                 {
                     var pile = Fields.Read(bytes);
-                    return new RoomRelicPilePayload(ParseGuid(pile.String(1), "room.snapshot"), pile.String(2), pile.Int64(3), pile.RepeatedBytes(4).Select(DecodeInventoryItem).ToArray());
+                    return new RoomRelicPilePayload(ParseGuid(pile.String(1), "room.snapshot"), pile.String(2), pile.Int64(3), pile.RepeatedBytes(4).Select(DecodeInventoryItem).ToArray(), pile.Bool(5));
                 }).ToArray())),
             DecodeRoomPlayer(player),
             pveBytes.Length == 0 ? null : DecodePve(Fields.Read(pveBytes)),
@@ -721,7 +723,7 @@ public static class RealtimeProtobufCodec
         NullIfEmpty(value.String(8)), NullIfEmpty(value.String(9)), NullIfEmpty(value.String(10)),
         value.Bytes(11).Length > 0 ? DecodeBattleStatus(value.Bytes(11)) : null,
         value.Int64(12), value.Int64(13), value.Bool(14),
-        NullIfEmpty(value.RepeatedBytes(15).Select(DecodeInventoryItem).ToArray()));
+        NullIfEmpty(value.RepeatedBytes(15).Select(DecodeInventoryItem).ToArray()), value.Bool(16));
 
     private static byte[] Message(Action<ProtoWriter> action)
     {

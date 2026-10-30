@@ -82,9 +82,9 @@ func show_settings() -> void:
 	P.fit_control_font(title, P.font("title"), 34)
 	var value := Label.new()
 	value.text = "%s %s%%" % [P.localized("sound_volume"), roundi(Sound.volume * 100)]
-	value.add_theme_font_override("font", P.font("number"))
+	value.add_theme_font_override("font", P.font("body"))
 	column.add_child(value)
-	P.fit_control_font(value, P.font("number"), 24)
+	P.fit_control_font(value, P.font("body"), 24)
 	var slider := HSlider.new()
 	slider.name = "SoundVolume"
 	slider.min_value = 0
@@ -104,9 +104,9 @@ func show_settings() -> void:
 	column.add_child(slider)
 	var music_value := Label.new()
 	music_value.text = "%s %s%%" % [P.localized("music_volume"), roundi(Sound.music_volume * 100)]
-	music_value.add_theme_font_override("font", P.font("number"))
+	music_value.add_theme_font_override("font", P.font("body"))
 	column.add_child(music_value)
-	P.fit_control_font(music_value, P.font("number"), 24)
+	P.fit_control_font(music_value, P.font("body"), 24)
 	var music_slider := HSlider.new()
 	music_slider.name = "MusicVolume"
 	music_slider.min_value = 0
@@ -126,9 +126,9 @@ func show_settings() -> void:
 	column.add_child(music_slider)
 	var ambience_value := Label.new()
 	ambience_value.text = "%s %s%%" % [P.localized("ambience_volume"), roundi(Sound.ambience_volume * 100)]
-	ambience_value.add_theme_font_override("font", P.font("number"))
+	ambience_value.add_theme_font_override("font", P.font("body"))
 	column.add_child(ambience_value)
-	P.fit_control_font(ambience_value, P.font("number"), 24)
+	P.fit_control_font(ambience_value, P.font("body"), 24)
 	var ambience_slider := HSlider.new()
 	ambience_slider.name = "AmbienceVolume"
 	ambience_slider.min_value = 0
@@ -154,24 +154,6 @@ func show_settings() -> void:
 	mute.toggled.connect(Sound.set_muted)
 	column.add_child(mute)
 	P.fit_control_font(mute, P.font("body"), 24, 48.0)
-	var language_title := Label.new()
-	language_title.text = P.localized("language")
-	language_title.add_theme_font_override("font", P.font("title"))
-	language_title.add_theme_color_override("font_color", P.GOLD)
-	column.add_child(language_title)
-	P.fit_control_font(language_title, P.font("title"), 24)
-	var language := OptionButton.new()
-	for code in P.languages(): language.add_item(str(P.languages()[code].get("name", code)), language.item_count)
-	language.select(P.languages().keys().find(P.language()))
-	language.item_selected.connect(func(index):
-		var code: String = P.languages().keys()[index]
-		P.set_language(code)
-		_refresh()
-		_popup.hide()
-		Game.changed.emit()
-	)
-	column.add_child(language)
-	P.fit_control_font(language, P.font("body"), 24, 48.0)
 	var account_title := Label.new()
 	account_title.text = P.localized("account")
 	account_title.add_theme_font_override("font", P.font("title"))

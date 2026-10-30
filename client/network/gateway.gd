@@ -1,10 +1,20 @@
 extends Node
 
+const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
+
 signal failed(message: String)
+signal user_failed(message: String)
 signal event_received(kind: String, payload: Dictionary)
 signal connection_changed(state: String)
 signal authentication_required(reason: String)
 signal telemetry(sample: Dictionary)
+
+func _report_failure(message: String, display_message: String = "") -> void:
+	# Preserve the diagnostic signal used by protocol observers. Only the
+	# presentation signal carries localized server feedback to the game UI.
+	user_failed.emit(message if display_message.is_empty() else display_message)
+	failed.emit(message)
 
 const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
@@ -288,14 +298,14 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 		var previous := -1
 		var pages := 0
 		while not cursor.is_empty():
-			if generation != session_generation: return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+			if generation != session_generation: return {"ok": false, "status": 401, "error": P.localized("login_state_changed"), "stale_session": true}
 			if not cursor.is_valid_int() or int(cursor) <= previous or pages >= 32:
-				return _pagination_error("服务器分页游标无效", quiet_statuses)
+				return _pagination_error(P.localized("invalid_page_cursor"), quiet_statuses)
 			previous = int(cursor)
 			pages += 1
 			var page: Dictionary = await _request_page(collection.path + "?offset=" + cursor + "&limit=200", method, null, quiet_statuses)
 			if not page.ok: return page
-			if generation != session_generation: return {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+			if generation != session_generation: return {"ok": false, "status": 401, "error": P.localized("login_state_changed"), "stale_session": true}
 			aggregate_bytes += int(page.get("body_bytes", 0))
 			var target: Variant
 			var incoming: Variant
@@ -307,15 +317,15 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 				target = result.data if canonical == collection.path else result.data.get(collection.key)
 				incoming = page.data
 			if not target is Array or not incoming is Array:
-				return _pagination_error("服务器分页内容无效", quiet_statuses)
+				return _pagination_error(P.localized("invalid_page_content"), quiet_statuses)
 			if target.size() + incoming.size() > 4096 or aggregate_bytes > 16 * 1024 * 1024:
-				return _pagination_error("列表超过客户端读取上限，请缩小查询范围", quiet_statuses)
+				return _pagination_error(P.localized("list_read_limit"), quiet_statuses)
 			target.append_array(incoming)
 			cursor = HttpProtocol.header(page.get("headers", PackedStringArray()), collection.header)
 	return result
 
 func _pagination_error(message: String, quiet_statuses: Array) -> Dictionary:
-	if 0 not in quiet_statuses: failed.emit(message)
+	if 0 not in quiet_statuses: _report_failure(message)
 	return {"ok": false, "status": 0, "error": message}
 
 func _decode_http_response(contract: Dictionary, status: int, headers: PackedStringArray, body: PackedByteArray) -> Dictionary:
@@ -331,7 +341,7 @@ func _decode_http_response(contract: Dictionary, status: int, headers: PackedStr
 		while not WorkerThreadPool.is_task_completed(task):
 			await get_tree().process_frame
 		WorkerThreadPool.wait_for_task_completion(task)
-		decoded = completed[0] if not completed.is_empty() else {"ok": false, "data": null, "error": "服务器响应解码失败"}
+		decoded = completed[0] if not completed.is_empty() else {"ok": false, "data": null, "error": P.localized("response_decode_failed")}
 	else:
 		decoded = HttpProtocol.decode_response(contract, status, headers, body)
 	decoded["decode_ms"] = float(Time.get_ticks_usec() - started) / 1000.0
@@ -340,30 +350,30 @@ func _decode_http_response(contract: Dictionary, status: int, headers: PackedStr
 
 func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = null, quiet_statuses: Array = []) -> Dictionary:
 	if session_expired():
-		end_session("登录已过期，请重新登录")
-		return {"ok": false, "status": 401, "error": "登录已过期，请重新登录"}
+		end_session(P.localized("login_expired"))
+		return {"ok": false, "status": 401, "error": P.localized("login_expired")}
 	var contract := HttpProtocol.route(path, method)
 	var perimeter := HttpProtocol.is_perimeter(path, method)
 	if contract.is_empty() and not perimeter:
-		return {"ok": false, "status": 0, "error": "未注册的网络接口"}
+		return {"ok": false, "status": 0, "error": P.localized("unregistered_endpoint")}
 	var generation := session_generation
 	var body := PackedByteArray()
 	if not perimeter:
 		if data != null and not data is Dictionary:
-			return {"ok": false, "status": 0, "error": "请求数据类型错误"}
+			return {"ok": false, "status": 0, "error": P.localized("invalid_request_type")}
 		var proto := Proto.new(true)
 		body = proto.encode(contract.request, HttpProtocol.to_wire(contract.request, data if data is Dictionary else {}))
-		if not proto.error.is_empty(): return {"ok": false, "status": 0, "error": "请求编码失败: " + proto.error}
+		if not proto.error.is_empty(): return {"ok": false, "status": 0, "error": P.localized("request_encode_failed_prefix") + proto.error}
 	# Binary identity preserves all 64 integer bits and is never logged.
 	if method != HTTPClient.METHOD_GET: _http_read_epoch += 1
 	var fingerprint := str(generation) + ":" + base_url + ":" + (str(_http_read_epoch) if method == HTTPClient.METHOD_GET else "write") + ":" + str(method) + path + ("" if body.is_empty() else Marshalls.raw_to_base64(body))
 	if _pending_http.has(fingerprint):
 		if method != HTTPClient.METHOD_GET:
-			return {"ok": false, "status": 0, "error": "请求正在处理"}
+			return {"ok": false, "status": 0, "error": P.localized("request_processing")}
 		var existing: Dictionary = _pending_http[fingerprint]
 		while not existing.done and generation == session_generation:
 			await get_tree().process_frame
-		if generation != session_generation: return {"ok": false, "status": 401, "stale_session": true, "error": "登录状态已改变"}
+		if generation != session_generation: return {"ok": false, "status": 401, "stale_session": true, "error": P.localized("login_state_changed_short")}
 		return existing.result.duplicate(true)
 	var flight := {"done": false, "result": {}}
 	_pending_http[fingerprint] = flight
@@ -376,7 +386,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 	var headers := PackedStringArray(["Content-Type: " + media, "Accept: " + media, "X-Trace-Id: " + key])
 	if not perimeter and not token.is_empty(): headers.append("Authorization: Bearer " + token)
 	if method != HTTPClient.METHOD_GET: headers.append("Idempotency-Key: " + key)
-	var result: Dictionary = {"ok": false, "status": 0, "error": "无法连接服务器"}
+	var result: Dictionary = {"ok": false, "status": 0, "error": P.localized("server_connect_failed")}
 	# One logical request retains exactly one key across transport and throttling retries.
 	var attempt_count := 0
 	var retry_backoff_ms := 0.0
@@ -387,7 +397,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 		var delay := pow(2.0, attempt)
 		var response: Array = await _request_http_transport(path, method, headers, body, mini(10000, maxi(1, request_deadline - Time.get_ticks_msec())))
 		if response[0] != HTTPRequest.RESULT_SUCCESS and int(response[1]) == 0:
-			result = {"ok": false, "status": 0, "error": "无法连接服务器"}
+			result = {"ok": false, "status": 0, "error": P.localized("server_connect_failed")}
 			var terminal_transport_failure: bool = response[0] in [HTTPRequest.RESULT_BODY_SIZE_LIMIT_EXCEEDED, HTTPRequest.RESULT_BODY_DECOMPRESS_FAILED]
 			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, 0,
 				"timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else "transport_error",
@@ -402,17 +412,24 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 			if perimeter:
 				var parser := JSON.new()
 				var parse_status := parser.parse(response[3].get_string_from_utf8())
-				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": "服务器响应无效"}
+				decoded = {"ok": parse_status == OK, "data": normalize_response(parser.data) if parse_status == OK else null, "error": P.localized("invalid_server_response")}
 			else: decoded = await _decode_http_response(contract, code, response[2], response[3])
 			if generation != session_generation:
 				_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, "cancelled", response[3].size(), decoded.get("decode_ms", 0.0), 0.0, response.size() > 4 and response[4])
 				break
 			var parsed: Variant = decoded.data
 			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
-			var message := "服务器不可用，请检查地址与服务器状态"
-			if not decoded.ok: message = decoded.error
-			elif parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
-			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
+			var message := P.localized("server_unavailable")
+			var raw_error := ""
+			if not decoded.ok:
+				raw_error = str(decoded.error)
+				message = P.message("invalid_server_response", [])
+			elif not success:
+				var problem: Dictionary = parsed if parsed is Dictionary else {}
+				raw_error = str(problem.get("detail", ""))
+				if raw_error.is_empty(): raw_error = str(problem.get("title", ""))
+				message = RemoteCopy.http_error(problem, code)
+			result = {"ok": success, "status": code, "data": parsed, "error": message, "raw_error": raw_error, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
 			var may_retry: bool = not success and code in [0, 429, 502, 503, 504] and attempt < 2
 			# A received invalid protobuf/JSON body is a terminal decode failure.
 			if code != 0 and not decoded.ok: may_retry = false
@@ -425,7 +442,7 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 			var attempt_result := "success" if success else ("decode_error" if not decoded.ok else ("timeout" if response[0] == HTTPRequest.RESULT_TIMEOUT else ("transport_error" if response[0] != HTTPRequest.RESULT_SUCCESS else "http_error")))
 			_emit_http_attempt(path, method, key, generation, attempt_count, attempt_started_at, code, attempt_result, response[3].size(), decoded.get("decode_ms", 0.0), delay * 1000.0 if may_retry else 0.0, response.size() > 4 and response[4])
 			if code == 401:
-				end_session("Steam 登录票据无效，请重试" if path == "/api/v1/auth/steam" else "登录已过期，请重新登录")
+				end_session(P.localized("steam_ticket_invalid") if path == "/api/v1/auth/steam" else P.localized("login_expired"))
 			if not may_retry: break
 		if attempt < 2:
 			retry_backoff_ms += delay * 1000.0
@@ -446,11 +463,13 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 	telemetry.emit(terminal)
 	_http_origin_contexts.erase(key)
 	if generation != session_generation:
-		result = {"ok": false, "status": 401, "error": "登录状态已改变，请重新登录", "stale_session": true}
+		result = {"ok": false, "status": 401, "error": P.localized("login_state_changed"), "stale_session": true}
 	flight.result = result.duplicate(true)
 	flight.done = true
 	if generation != session_generation: return result
-	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
+	if not result.ok and result.status not in quiet_statuses:
+		var diagnostic := str(result.get("raw_error", ""))
+		_report_failure(diagnostic if not diagnostic.is_empty() else str(result.error), str(result.error))
 	return result
 
 func _request_http_transport(path: String, method: int, headers: PackedStringArray,
@@ -522,13 +541,13 @@ static func normalize_response(data: Variant) -> Variant:
 	return data
 
 func connect_realtime() -> void:
-	if session_expired(): end_session("登录已过期，请重新登录")
+	if session_expired(): end_session(P.localized("login_expired"))
 	if token.is_empty() or _ticket_generation == session_generation: return
 	var generation := session_generation
 	reconnect_enabled = true
 	online = false
 	_ticket_generation = generation
-	connection_changed.emit("正在连接实时服务")
+	connection_changed.emit(P.localized("connecting_realtime"))
 	var response: Dictionary = await request("/api/v1/realtime/ticket", HTTPClient.METHOD_POST, {}, [0, 429, 502, 503, 504])
 	if _ticket_generation == generation: _ticket_generation = -1
 	if generation != session_generation or not reconnect_enabled: return
@@ -559,10 +578,10 @@ func _schedule_reconnect() -> void:
 	_connected_sequence = 0
 	_retry_at = Time.get_ticks_msec() + int(_backoff * 1000)
 	_backoff = minf(_backoff * 2.0, 30.0)
-	connection_changed.emit("连接中断，正在重连")
+	connection_changed.emit(P.localized("connection_interrupted"))
 
 func _process(_delta: float) -> void:
-	if session_expired(): end_session("登录已过期，请重新登录")
+	if session_expired(): end_session(P.localized("login_expired"))
 	if not reconnect_enabled or _ticket_generation == session_generation: return
 	socket.poll()
 	var state := socket.get_ready_state()
@@ -570,7 +589,7 @@ func _process(_delta: float) -> void:
 		while socket.get_available_packet_count() > 0:
 			var packet := socket.get_packet()
 			if socket.was_string_packet():
-				failed.emit("实时协议需要二进制帧")
+				_report_failure(P.localized("binary_frame_required"))
 				continue
 			_receive(packet)
 			if not reconnect_enabled: return
@@ -596,7 +615,7 @@ func _process(_delta: float) -> void:
 
 func send(kind: String, payload: Dictionary = {}, request_id: String = "") -> bool:
 	if session_expired():
-		end_session("登录已过期，请重新登录")
+		end_session(P.localized("login_expired"))
 		return false
 	if not COMMANDS.has(kind) or socket.get_ready_state() != WebSocketPeer.STATE_OPEN: return false
 	# READY has no route fields on wire; only a current verified, unexpired
@@ -707,7 +726,7 @@ func _receive(packet: PackedByteArray) -> void:
 	var proto := Proto.new()
 	var envelope := proto.decode("ServerEnvelope", packet)
 	if not proto.error.is_empty() or envelope.get("protocol_version", 0) != 1:
-		failed.emit("无法解析服务器协议")
+		_report_failure(P.localized("server_protocol_invalid"))
 		return
 	var kind: String = envelope.get("type", "")
 	var sequence: int = envelope.get("sequence", 0)
@@ -716,7 +735,7 @@ func _receive(packet: PackedByteArray) -> void:
 	if kind.begins_with("action.spring_"): schema = "ActionSpringEvent"
 	var payload := proto.decode(schema, envelope.get("payload", PackedByteArray())) if not schema.is_empty() else {}
 	if not proto.error.is_empty():
-		failed.emit("服务器消息内容损坏")
+		_report_failure(P.localized("server_message_corrupt"))
 		return
 	# Keep presentation silent for every replay packet, including after a snapshot
 	# or the final replay advances the recovery cursor.
@@ -766,7 +785,7 @@ func _receive(packet: PackedByteArray) -> void:
 		_retry_at = 0
 		_last_ping = Time.get_ticks_msec()
 		recovering = last_sequence > 0 and last_sequence < sequence - 1
-		connection_changed.emit("已连接")
+		connection_changed.emit(P.localized("connected"))
 		if recovering:
 			send("session.resume", {"last_sequence": last_sequence, "room_id": room_id, "room_revision": room_revision})
 		else:
@@ -779,7 +798,9 @@ func _receive(packet: PackedByteArray) -> void:
 		_save_session()
 		return
 	if kind == "session.replaced":
-		end_session(str(payload.get("reason", "账号已在其他窗口连接，请在此窗口重新登录后继续")))
+		var reason := str(payload.get("reason", P.localized("account_connected_elsewhere")))
+		if reason == "newer_connection": reason = P.message("account_connected_elsewhere", [])
+		end_session(reason)
 		return
 	if sequence <= last_sequence:
 		if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"]:
@@ -867,7 +888,7 @@ func _receive(packet: PackedByteArray) -> void:
 	_save_session()
 	if kind == "error.rate_limited":
 		_command_cooldown = Time.get_ticks_msec() + 2000
-		failed.emit("操作过快，请稍后重试")
+		_report_failure(P.localized("operation_too_fast"))
 	if kind == "error.command_rejected":
 		if _preview_request_ids.has(payload.get("_request_id", "")):
 			_preview_request_ids.erase(payload._request_id)
@@ -894,7 +915,7 @@ func _receive(packet: PackedByteArray) -> void:
 			_save_session()
 		event_received.emit(kind, payload)
 		if payload.get("_retry_handled", false): return
-		failed.emit(payload.get("detail", "操作被拒绝"))
+		_report_failure(str(payload.get("detail", P.localized("operation_rejected"))), RemoteCopy.command_error(payload))
 		if not payload.get("_state_refresh_handled", false) and not room_id.is_empty(): send("room.snapshot.read")
 		return
 	if not payload.has("_origin_context") and kind in ["room.snapshot", "match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:

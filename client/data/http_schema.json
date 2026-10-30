@@ -1,5 +1,5 @@
 {
-  "sha256": "5dfbfba056c8ed6b057514da793133c07e8a434082b748a901b4b49e57db4e69",
+  "sha256": "9e9d90e8b09a1cee70489b54d7bc8196e3aae7d228f3832e3321d28b179c3cd9",
   "messages": {
     "Empty": {},
     "UnfinishedMatchResponse": {
@@ -224,6 +224,20 @@
         "optional": true
       }
     },
+    "MailTemplateArgument": {
+      "1": {
+        "name": "key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "value",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
     "MailItemResponse": {
       "1": {
         "name": "id",
@@ -290,6 +304,24 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "12": {
+        "name": "template_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "template_args",
+        "type": "MailTemplateArgument",
+        "repeated": true,
+        "optional": false
+      },
+      "14": {
+        "name": "sender_role",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "MailListResponse": {

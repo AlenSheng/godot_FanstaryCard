@@ -24,7 +24,8 @@ static func build(ui: Control, host: Control) -> void:
 static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 	var search := LineEdit.new()
 	search.name = "DeckBuilderSearch"
-	search.placeholder_text = P.localized_text("搜索卡牌名称或效果")
+	search.placeholder_text = P.localized_text(P.localized("search_cards"))
+	search.tooltip_text = P.localized("search_cards_hint")
 	search.text = host._search
 	var search_style := Art.style(PREFIX + "search_field_normal.png")
 	search_style.set_content_margin(SIDE_LEFT, 76)
@@ -33,13 +34,13 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 	search.add_theme_constant_override("minimum_character_width", 1)
 	ui.add_child(search)
 	search.position = Vector2(48, 130)
-	search.size = Vector2(510, 66)
-	ui.text("品质：", Rect2(590, 143, 85, 42), 22, P.GOLD)
+	search.size = Vector2(350, 66)
+	ui.text(P.localized("quality_label"), Rect2(430, 143, 85, 42), 22, P.GOLD)
 	for i in range(QUALITIES.size()):
 		var quality: String = QUALITIES[i]
 		var selected: bool = host._quality == quality
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
-		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(676 + i * 94, 132, 92, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
+		var filter: Button = ui.button(P.localized("all") if quality.is_empty() else P.word(quality), Rect2(516 + i * 120, 132, 116, 62), func(): host._quality = quality; host._deck_builder_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "DeckFilter_" + ("All" if quality.is_empty() else quality)
 		# Narrow filters need their own padding and the font actually drawn by the button.
 		for state_name in ["normal", "hover", "pressed", "disabled"]:
@@ -49,7 +50,7 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 			style.set_content_margin(SIDE_TOP, 6)
 			style.set_content_margin(SIDE_BOTTOM, 6)
 			filter.add_theme_stylebox_override(state_name, style)
-		filter.size = Vector2(92, 62)
+		filter.size = Vector2(116, 62)
 		filter.tooltip_text = filter.text
 		P.fit_control_font(filter, filter.get_theme_font("font"), 22, 20.0)
 	return search
@@ -88,7 +89,7 @@ static func _fill_owned_grid(host: Control, grid: GridContainer, scroll: ScrollC
 		entries.append({"id": id, "slot_name": "OwnedSlot_" + id, "card_name": "DeckCard_" + id,
 			"callback": _activate_owned.bind(host, id, scroll), "selected": in_deck, "disabled": Game.busy,
 			"options": {"collection": true, "copy_count": int(entry.get("copyCount", 0)), "level": int(entry.get("level", 0))},
-			"tooltip": reason if not reason.is_empty() else "加入编组"})
+			"tooltip": reason if not reason.is_empty() else P.localized("add_to_deck")})
 	var layout := CardGridView.display_layout(host, 4, 236.0, 1182.0, 48.0)
 	grid.columns = layout.columns
 	grid.configure(host, scroll, entries, layout.side)

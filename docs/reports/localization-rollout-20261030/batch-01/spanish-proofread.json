@@ -1,0 +1,398 @@
+{
+  "report_type": "read_only_spanish_proofread",
+  "date": "2026-10-30",
+  "locale": "es",
+  "status": "IssuesFound_NotBatchApproval",
+  "game_batch_passed": false,
+  "production_files_modified_by_reviewer": false,
+  "godot_or_large_process_started_by_reviewer": false,
+  "reviewed_inputs_sha256": {
+    "client/data/locales/es.json": "1EF597FE15E596613CFA5221F6BF269C3A9C1D6057522E41A3B5B38F975F7652",
+    "client/data/locales/en.json": "51CC3A3CA21D3F40D17B2ED1BF3D7C5E025E60B868F4FB7CA3E7B2042F898282",
+    "client/data/locales/zh-CN.json": "6345506528A9DF75F07653E45E49344BEB43751507ED5DBCD8867AB2959AE866"
+  },
+  "scope": {
+    "all_entries_in_requested_sections_read": true,
+    "strings": 824,
+    "card_names": 232,
+    "equipment_compare_leaf_strings": 27,
+    "numerical_leaf_strings": 30,
+    "monster_pool_leaf_strings": 11,
+    "total_leaf_strings": 1124,
+    "excluded": [
+      "Native UI layout and glyph validation; owned by the root task",
+      "Card description tables absent from the reviewed Spanish pack",
+      "Website text, deployment and runtime gameplay validation"
+    ]
+  },
+  "static_observations": {
+    "json_readable": true,
+    "requested_section_key_parity_against_en_and_zh_CN": true,
+    "missing_or_extra_keys_in_requested_sections": [],
+    "printf_placeholder_type_order_and_precision_mismatches": [],
+    "named_placeholder_multiset_mismatches": [],
+    "escaped_percent_mismatches_in_strings": [],
+    "explicit_numeric_token_mismatches_against_en": [],
+    "han_characters_in_strings": [],
+    "note": "Named placeholders may change order in Spanish; {element}/{value} reordering is valid. These observations are static checks, not a claim that the language group or UI passed."
+  },
+  "confirmed_issues": [
+    {
+      "id": "ES-C001",
+      "priority": "P2",
+      "category": "card_scope_vs_rarity",
+      "keys": ["strings.general_card", "strings.deck_orange_limits"],
+      "current": {
+        "strings.general_card": "Carta común",
+        "strings.deck_orange_limits": "Naranja común {general}/1 · De clase {class}/1"
+      },
+      "source_meaning": "通用卡 / 通用橙：所有职业通用，与职业专属相对；不是普通稀有度。",
+      "issue_zh": "común 在卡牌游戏中常表示普通稀有度；在橙卡限制旁会把职业适用范围与品质混淆。图鉴本来已另列品质标签。",
+      "suggested_replacements": {
+        "strings.general_card": "Carta general",
+        "strings.deck_orange_limits": "Naranja general {general}/1 · De clase {class}/1"
+      },
+      "evidence": ["client/ui/codex_view.gd:198", "client/ui/codex_view.gd:199", "client/ui/deck_builder_view.gd:104"]
+    },
+    {
+      "id": "ES-C002",
+      "priority": "P2",
+      "category": "health_condition_source_mismatch",
+      "key": "strings.class_guardian_role",
+      "zh_CN": "满血护盾 / 坚守",
+      "en": "Full-health shields / steadfast",
+      "current": "Escudos con vida alta / Defensa firme",
+      "issue_zh": "满血被改成高血量。应保留角色定位文案的满血含义；本项不推断实际被动存在某个离散触发阈值。",
+      "suggested_replacement": "Escudos con vida plena / Defensa firme"
+    },
+    {
+      "id": "ES-C003",
+      "priority": "P2",
+      "category": "counter_meaning",
+      "key": "strings.owned_cards_count",
+      "zh_CN": "已拥有并显示 {count} 张",
+      "en": "{count} owned cards shown",
+      "current": "{count} cartas disponibles",
+      "issue_zh": "拥有且正在显示的卡数被写成可用卡数；disponibles 容易被理解为可编入或尚可使用的副本数。",
+      "suggested_replacement": "Mostrando {count} cartas propias"
+    },
+    {
+      "id": "ES-C004",
+      "priority": "P2",
+      "category": "numerical_stat_kind",
+      "key": "strings.battle_equipment_draw_interval",
+      "zh_CN": "装备抽牌间隔",
+      "en": "Equipment Draw Interval",
+      "current": "Robo por equipo",
+      "issue_zh": "丢失间隔含义，可能被当作额外抽牌或抽速收益，影响对百分比正负方向的理解。",
+      "suggested_replacement": "Intervalo por equipo",
+      "evidence": ["client/ui/battle_details.gd:23", "client/ui/battle_details.gd:29"]
+    },
+    {
+      "id": "ES-C005",
+      "priority": "P2",
+      "category": "localized_fragment_composition",
+      "keys": ["strings.battle_attack_bonus", "strings.resistance", "strings.codex_elemental_damage_suffix"],
+      "current": {
+        "strings.battle_attack_bonus": "Daño extra",
+        "strings.resistance": "Resistencia",
+        "strings.codex_elemental_damage_suffix": " Daño"
+      },
+      "derived_current_outputs": ["FuegoDaño extra", "FuegoResistencia", "Fuego Daño"],
+      "issue_zh": "实际调用将元素词与这些文本拼接。前两项缺分隔，后一项沿用英文词序，不是自然西语。相同来源结构也会影响英文，属于本地化片段拼接问题。这里只做源码推导，未运行 UI。",
+      "recommended_format_templates": {
+        "elemental_damage_bonus": "Daño extra de %s",
+        "elemental_resistance": "Resistencia a %s",
+        "elemental_damage_category": "Daño de %s"
+      },
+      "implementation_note_zh": "上述三项是建议的完整格式模板，不能直接塞进当前无格式化调用的旧键；应相应调整调用。battle_attack_bonus 与 resistance 还单独用作标签，不宜简单加前置标点修补。",
+      "locale_only_mitigation_for_category": {"strings.codex_elemental_damage_suffix": " · Daño"},
+      "evidence": [
+        "client/ui/battle_details.gd:27",
+        "client/ui/battle_details.gd:28",
+        "client/ui/equipment_details.gd:32",
+        "client/ui/equipment_details.gd:61",
+        "client/ui/reference_ui.gd:966",
+        "client/ui/codex_view.gd:203"
+      ]
+    },
+    {
+      "id": "ES-C006",
+      "priority": "P2",
+      "category": "card_name_semantics",
+      "key": "card_names.GW03",
+      "zh_CN": "烘烤",
+      "en": "Sear",
+      "current": "Abrasión",
+      "issue_zh": "Abrasión 指摩擦磨损/擦伤，与火系灼烧含义不同；疑似把 abrasar 与 abrasión 混淆。",
+      "suggested_replacement": "Abrasamiento"
+    },
+    {
+      "id": "ES-C007",
+      "priority": "P3",
+      "category": "card_name_grammar",
+      "key": "card_names.GG40",
+      "zh_CN": "木晃",
+      "en": "Woodland Daze",
+      "current": "Aturdir del bosque",
+      "issue_zh": "不定式 Aturdir 与 del bosque 的搭配生硬，不能自然表达来自林木的眩晕。",
+      "suggested_replacement": "Aturdimiento silvestre"
+    },
+    {
+      "id": "ES-C008",
+      "priority": "P2",
+      "category": "duel_action_meaning",
+      "key": "strings.leave_duel",
+      "zh_CN": "双方离开",
+      "en": "Leave Duel",
+      "current": "Abandonar duelo",
+      "issue_zh": "该按钮发起 duel.leave，并有 self_requested_leave 和离开窗口；文案需要保留双方协商离开的含义。当前 Abandonar 易与会损失装备的 battle.abandon 混淆。",
+      "suggested_replacement": "Retirada mutua",
+      "alternative": "Proponer retirada mutua",
+      "evidence": ["client/ui/exploration_view.gd:368", "client/ui/exploration_view.gd:369", "client/ui/audio_settings.gd:259"]
+    },
+    {
+      "id": "ES-C009",
+      "priority": "P2",
+      "category": "monster_entity_card_name_consistency",
+      "issue_zh": "同一中文怪物名在怪物 UI 和对应怪物卡中使用了不同西语名称。下列差异是确定存在的一致性问题；多数也存在于英文参考中，不能归咎于西语单独误译。建议统一西语名称，具体规范名按中文同名实体和运行中已有命名选定。",
+      "canonical_name_decision_required": true,
+      "pairs": [
+        {
+          "keys": ["strings.monster_murk_snail", "card_names.M-MUDHYDRA"],
+          "zh_CN": "浊螅",
+          "current": ["Caracol sombrío", "Pólipo sombrío"],
+          "en": ["Murk Snail", "Murk Polyp"],
+          "suggested_shared_name": "Pólipo sombrío",
+          "suggested_change": {"strings.monster_murk_snail": "Pólipo sombrío"},
+          "note_zh": "螅与卡名 Polyp 对齐；英文运行名 Snail 的物种与中文不符。此处建议以中文实体名为准。"
+        },
+        {
+          "keys": ["strings.monster_metal_guard", "card_names.M-GOLDGUARD"],
+          "zh_CN": "金卫",
+          "current": ["Guardián metálico", "Guardián dorado"],
+          "en": ["Metal Guard", "Golden Guard"],
+          "suggested_shared_name": "Guardián metálico",
+          "suggested_change": {"card_names.M-GOLDGUARD": "Guardián metálico"},
+          "note_zh": "金作为五行元素全包统一为 Metal；这里也优先保持 metálico。"
+        },
+        {
+          "keys": ["strings.monster_fire_herald", "card_names.M-FIREREAVER"],
+          "zh_CN": "火劫使",
+          "current": ["Heraldo del fuego", "Saqueador ígneo"],
+          "en": ["Fire Herald", "Fire Reaver"],
+          "suggested_shared_name": "Heraldo del fuego",
+          "suggested_change": {"card_names.M-FIREREAVER": "Heraldo del fuego"}
+        },
+        {
+          "keys": ["strings.monster_marsh_mother", "card_names.M-SWAMPMOTHER"],
+          "zh_CN": "沼母",
+          "current": ["Madre del pantano", "Madre del fango"],
+          "en": ["Marsh Mother", "Swamp Mother"],
+          "suggested_shared_name": "Madre del pantano",
+          "suggested_change": {"card_names.M-SWAMPMOTHER": "Madre del pantano"},
+          "note_zh": "两者语义接近，但不同 UI 使用相同专名更便于对应。"
+        },
+        {
+          "keys": ["strings.monster_stone_guard", "card_names.M-STONEGUARD"],
+          "zh_CN": "石甲卫",
+          "current": ["Guardián pétreo", "Guardián de roca"],
+          "en": ["Stone Guard", "Stoneplate Guard"],
+          "suggested_shared_name": "Guardián pétreo",
+          "suggested_change": {"card_names.M-STONEGUARD": "Guardián pétreo"},
+          "note_zh": "两者语义接近，主要是一致性修订。"
+        },
+        {
+          "keys": ["strings.monster_thorn_guard", "card_names.M-THORNGUARD"],
+          "zh_CN": "棘林卫",
+          "current": ["Guardián espinoso", "Guardián de vid"],
+          "en": ["Thorn Guard", "Thornwood Guard"],
+          "suggested_shared_name": "Guardián espinoso",
+          "suggested_change": {"card_names.M-THORNGUARD": "Guardián espinoso"},
+          "note_zh": "vid 是葡萄藤，未保留中文和英文共同具有的荆棘含义。"
+        },
+        {
+          "keys": ["strings.monster_annihilation_core", "card_names.M-VOIDCORE"],
+          "zh_CN": "湮核",
+          "current": ["Núcleo de aniquilación", "Núcleo del vacío"],
+          "en": ["Annihilation Core", "Void Core"],
+          "suggested_shared_name": "Núcleo de aniquilación",
+          "suggested_change": {"card_names.M-VOIDCORE": "Núcleo de aniquilación"}
+        }
+      ],
+      "evidence": ["client/ui/main.gd:1677", "client/tests/art_preview.gd:233", "client/tests/art_preview.gd:234"]
+    }
+  ],
+  "editorial_suggestions_not_confirmed_errors": [
+    {
+      "id": "ES-S001",
+      "keys": ["strings.extract", "strings.no_equipment_hint", "strings.equipment_stored_empty", "strings.ui_stored_empty_multiline", "strings.login_feature_3", "strings.exploration_extraction_progress", "strings.extracting_prefix"],
+      "issue_zh": "Extraer/Extráete/Extrayendo 过于贴近英语动词结构，尤其 Extráete 像自我拔除。搜打撤语境可以统一保留名词 extracción，并用撤离或完成撤离的句式。此项属于自然度建议，未将当前游戏术语判为语法硬错。",
+      "suggested_replacements": {
+        "strings.extract": "Iniciar extracción",
+        "strings.no_equipment_hint": "No hay equipo guardado. Completa una extracción para traer botín.",
+        "strings.equipment_stored_empty": "Sin equipo guardado\nCompleta una extracción para traer botín",
+        "strings.ui_stored_empty_multiline": "Sin equipo guardado\nCompleta una extracción para traer botín",
+        "strings.login_feature_3": "Explora hacia el centro · Decide entre combatir y retirarte",
+        "strings.exploration_extraction_progress": "Extracción en curso %.1f s",
+        "strings.extracting_prefix": "Extracción en curso "
+      },
+      "note_zh": "按钮变长，若采纳需主线程重新量宽；也可将按钮简称为 Extracción。"
+    },
+    {
+      "id": "ES-S002",
+      "keys": ["strings.equipment_set_vitality", "strings.equipment_set_vitality_inactive", "strings.battle_vitality_overcap", "strings.equipment_health_overcap", "equipment_compare.overcap"],
+      "issue_zh": "允许生命超过原上限的收益与被上限裁掉的无效 excess 都用 Exceso，面板上容易混淆。numerical 的 stat_text 已使用 Bono de vida máxima。建议为生息收益使用 vida extra/vida sobre el máximo；保留 exceso 指溢出无效部分。",
+      "suggested_replacements": {
+        "strings.equipment_set_vitality": "Curación %s / Vida extra %s",
+        "strings.equipment_set_vitality_inactive": "Curación / Vida extra (inactivo)",
+        "strings.battle_vitality_overcap": "Vida extra de Vitalidad",
+        "strings.equipment_health_overcap": "Vida sobre el máximo",
+        "equipment_compare.overcap": "Vida sobre el máximo"
+      },
+      "note_zh": "这是一组避免歧义的术语建议，不据此断言当前数值或倍率计算错误。"
+    },
+    {
+      "id": "ES-S003",
+      "keys": ["numerical.text.weapon", "numerical.guardian_rules[0]", "numerical.guardian_rules[1]", "numerical.guardian_rules[2]"],
+      "issue_zh": "Resto de escudo 可能被理解为当前剩余护盾。实际说明是在十分之一单位累计的余量，建议加 acumulado/decimal；其余确定性累计、满盾保留、补满清零和离格清空语义已保留。",
+      "suggested_replacement_for_label": "Resto acumulado del arma: %d / 10",
+      "suggested_term_in_rules": "resto acumulado"
+    },
+    {
+      "id": "ES-S004",
+      "key": "numerical.cap_text.shield_stage",
+      "current": "El escudo tiene un límite de la mitad de la vida base de clase. Se cuentan por separado el escudo solicitado, efectivo y excedente.",
+      "issue_zh": "原译保留一半基础生命和三项分开统计，但 de clase、tiene un límite de la mitad 不够自然。",
+      "suggested_replacement": "El escudo está limitado a la mitad de la vida base de la clase. El escudo solicitado, el efectivo y el exceso se contabilizan por separado."
+    },
+    {
+      "id": "ES-S005",
+      "key": "numerical.cap_text.draw_stage",
+      "issue_zh": "se combina equipo y velocidad temporal 把装备本体与速度相加，语句偏机器式；原译的 1.8–6 秒、限制后减半、临时效果结束等数值顺序正确。可将装备与临时加速明确写为抽牌间隔的影响因素。",
+      "suggested_replacement": "Este panel solo muestra el intervalo de robo del equipo. En combate se combinan sus efectos con la aceleración temporal y el intervalo se limita a 1.8–6 segundos. En JcE, la conversión del bloqueo de robo en aceleración divide ese intervalo por dos después de aplicar el límite; al terminar, se restaura."
+    },
+    {
+      "id": "ES-S006",
+      "key": "strings.card_tuning_contract",
+      "issue_zh": "no suma cartas opuestas ni su curación base 没有明确计数与治疗基数；aún reducen 把 can still lower 写得更绝对。建议明确调节牌自身不计入这两个基数，并保留 pueden。",
+      "suggested_replacement": "La primera carta elemental fija el núcleo, incluidas las de afinación. Estas cuentan para la resonancia del núcleo, pero no para el número de cartas en oposición ni para la base de su curación. Otras cartas opuestas aún pueden reducir esa resonancia. La curación por oposición se calcula aparte de la curación de cartas y no recibe los multiplicadores de curación del Sacerdote con poca vida ni del arma."
+    },
+    {
+      "id": "ES-S007",
+      "keys": ["strings.battle_conflict_cancel", "strings.card_conflict_cancel", "strings.card_face_conflict_cancel", "strings.battle_conflict_heal", "strings.card_conflict_heal", "strings.card_face_conflict_heal"],
+      "issue_zh": "Anulación opuesta/Curación opuesta 像反向的取消或治疗，不如 por oposición 明确表示五行相克所产生的机制，并与 card_tuning_contract 的 curación por oposición 保持一致。",
+      "suggested_replacements": {
+        "strings.battle_conflict_cancel": "Anulación por oposición",
+        "strings.card_conflict_cancel": "Anulación por oposición +%s%%",
+        "strings.card_face_conflict_cancel": "Anulación por oposición +%s%%",
+        "strings.battle_conflict_heal": "Factor de curación por oposición",
+        "strings.card_conflict_heal": "Curación por oposición ×%s",
+        "strings.card_face_conflict_heal": "Cura por oposición ×%s"
+      },
+      "note_zh": "标签变长，需要 UI 量宽；可以在卡面保留统一的短词 Oposición。"
+    },
+    {
+      "id": "ES-S008",
+      "key": "strings.battle_preview_shield_parts_unknown",
+      "current": "Escudo efectivo %s · solicitud y exceso no disponibles",
+      "issue_zh": "solicitud 像网络请求；这里是本次请求护盾量/整数总盾和溢出暂时不能估计。",
+      "suggested_replacement": "Escudo efectivo %s · total y exceso no estimables"
+    },
+    {
+      "id": "ES-S009",
+      "key": "strings.equipment_unavailable",
+      "current": "Equipo no disponible",
+      "zh_CN": "装备详情暂不可用",
+      "issue_zh": "建议保留详情暂不可见，避免被理解为该装备不能使用。",
+      "suggested_replacement": "Detalles no disponibles"
+    },
+    {
+      "id": "ES-S010",
+      "key": "strings.cancel_match",
+      "current": "Cancelar búsqueda",
+      "zh_CN": "取消匹配 / 准备",
+      "issue_zh": "丢失取消准备这一用途。若按钮也在已准备阶段使用，应覆盖两种状态，或按状态切换标签。",
+      "suggested_replacement": "Cancelar búsqueda / preparación",
+      "short_alternative": "Cancelar"
+    },
+    {
+      "id": "ES-S011",
+      "keys": ["strings.list_for_sale", "strings.confirm_listing_price"],
+      "issue_zh": "Vender 可被理解为即时卖出，实际是创建市场挂单。list_item 已用 Poner en venta，可以统一。",
+      "suggested_replacements": {
+        "strings.list_for_sale": "Poner en venta",
+        "strings.confirm_listing_price": "¿Poner en venta por %s de oro?"
+      }
+    },
+    {
+      "id": "ES-S012",
+      "keys": ["card_names.GG33", "card_names.GO10", "card_names.GW08", "card_names.GW18"],
+      "issue_zh": "以下为卡名润色与意象保留建议，允许创意命名差异，不按逐词不对应认定为硬错。",
+      "suggested_replacements": {
+        "card_names.GG33": "Rama naciente",
+        "card_names.GO10": "Revelación de clase",
+        "card_names.GW08": "Arena movediza",
+        "card_names.GW18": "Estocada penetrante"
+      },
+      "notes": {
+        "card_names.GG33": "抽枝原指枝条萌发；Robo de rama 将抽牌双关机械地写成抢夺枝条。",
+        "card_names.GO10": "Revelar clase 容易像显示职业身份的操作；Revelación de clase 与效果标签 Revelación 更一致。",
+        "card_names.GW08": "Arena hundida 是已经沉下去的沙；movediza 更自然地表达下陷的沙地。",
+        "card_names.GW18": "aguda 只保留锋利；penetrante 更贴近贯刺。"
+      }
+    },
+    {
+      "id": "ES-S013",
+      "keys": ["card_names.GG14", "card_names.GB14"],
+      "current": {"card_names.GG14": "Lluvia de hojas", "card_names.GB14": "Prisión de hojas"},
+      "issue_zh": "hoja 可以合法表示刀刃，因此不是明确误译；但这两张金系攻击牌的名字单独出现时更容易被理解为树叶。使用 cuchillas 可区分木系意象。",
+      "suggested_replacements": {"card_names.GG14": "Lluvia de cuchillas", "card_names.GB14": "Prisión de cuchillas"}
+    },
+    {
+      "id": "ES-S014",
+      "keys": ["card_names.GW17", "card_names.GB22"],
+      "current_shared_name": "Golpe en caída",
+      "issue_zh": "两张不同卡使用了完全相同的西语名；中文砸落/坠击与英文 Downsmash/Falling Strike 能区分。不是效果错误，但会降低卡牌辨识。另一个同名 Campana de metal 对应金鸣/鸣金，原文意象相近，暂不强制拆分。",
+      "suggested_replacement": {"card_names.GW17": "Golpe descendente"},
+      "keep": {"card_names.GB22": "Golpe en caída"}
+    },
+    {
+      "id": "ES-S015",
+      "keys": ["strings.word_guardian", "strings.word_warrior"],
+      "current": {"strings.word_guardian": "G", "strings.word_warrior": "G"},
+      "issue_zh": "Guardián 与 Guerrero 缩写相同。当前只有三种可选职业，warrior 也常表示通用勇士资源，暂不判为实际 UI 错误；若两者在相同职业或卡牌筛选标签中并列显示，建议改为 Gd/Gr。"
+    }
+  ],
+  "parent_native_ui_shortening_review": {
+    "measurement_source": "Root task message; this reviewer did not run the native UI",
+    "monster_pool.title": {
+      "current": "Cartas de monstruo del viaje",
+      "parent_proposed": "Cartas de monstruo",
+      "language_verdict": "Acceptable",
+      "reason_zh": "标题缩短后保留卡池对象；本局专属语义仍由 monster_pool.hint 的 Solo este viaje 明示。计数追加也自然。"
+    },
+    "strings.refresh_relic": {
+      "current": "Actualizar reliquia",
+      "parent_proposed": "Actualizar",
+      "language_verdict": "Acceptable",
+      "reason_zh": "遗物窗口内的刷新按钮可直接用 Actualizar，保留重新取得内容的动作含义。不要改成可能表示重新随机生成奖励的 Renovar。"
+    },
+    "equipment_full_names": {
+      "parent_proposed": "Use multiline display as in English",
+      "language_verdict": "Acceptable",
+      "reason_zh": "按词边界或已有名称分隔符换行，保留装备品质、部位和等级信息；无需为 8px 左右溢出任意缩短专名。"
+    },
+    "all_changes_require_root_visual_revalidation": true
+  },
+  "terminology_observations": {
+    "quality_colors": "Blanco, Verde, Azul, Morado, Naranja, Rojo 一致；Carmesí 对应本局暗红标签，未当作第七种品质。",
+    "five_elements": "Fuego, Madera, Agua, Metal, Tierra 的基础元素名一致；卡名中的 dorado/ígneo 等艺术性变体不按词表逐词强制。",
+    "classes": "Sacerdote, Mago, Guardián 一致；例外见 G/G 缩写建议。",
+    "equipment_sets": "Bastión, Perforación, Vitalidad 跨主要面板一致；生命超上限与无效溢出的术语歧义见 ES-S002。",
+    "extraction_and_escape": "extracción 用于结束探索带回战利品，huida 用于战斗逃脱，整体区分保留；双方离开与放弃战斗需修订 ES-C008。",
+    "numerical_meaning": "未发现 60% 抗性上限、1.8–6 秒、限制后减半、基础生命一半护盾上限、+2/+4 降低说明或 %d/10 余量的明确数值丢失；语言改进见建议项。",
+    "monster_pool_meaning": "本局限定、新卡进弃牌且不补抽、满池先选替换项、可搜刮战利品与战斗装备分开，语义均在译文中保留。"
+  },
+  "completion_note": "只创建本报告；未修改生产文件、未切分支、未提交、未部署、未启动 Godot。此报告列出确定问题与编辑建议，不代表第一组语言或当前源码通过。"
+}

@@ -1,5 +1,6 @@
 extends SceneTree
 const Gateway = preload("res://network/gateway.gd")
+const P = preload("res://ui/palette.gd")
 class SwitchingGateway extends "res://network/gateway.gd":
 	var decoding := false
 	var switched_during_decode := false
@@ -66,10 +67,18 @@ func run() -> void:
 	await create_timer(.7).timeout
 	check(flights.get("old-read", {}).get("ok", false) and flights.get("new-read", {}).get("ok", false) and flights["old-read"].data.version == 1 and flights["new-read"].data.version == 2, "post-write GET cannot join a pre-write flight")
 	check(origin_samples.any(func(sample): return sample.get("type") == "http" and sample.get("path") == "/api/v1/players/me?flight=epoch" and sample.get("cycle_id") == "first-cycle"), "late HTTP completion retains the initiating cycle")
+	var saved_locale := P.language()
+	P.set_language("es")
+	var rejected: Dictionary = await gateway.request("/api/v1/shop/purchases?rejected=1", HTTPClient.METHOD_POST, {"productId":"p"}, [400])
+	check(not rejected.ok and rejected.error == P.localized("server_operation_failed") and rejected.data.detail == "Opaque diagnostic: Fire / Gold / {amount}" and rejected.raw_error == rejected.data.detail, "HTTP display is localized while wire diagnostics remain exact")
+	P.set_language("en")
+	check(P.localized_text(rejected.error) == P.localized("server_operation_failed"), "cached network feedback follows language switching")
+	P.set_language(saved_locale)
 	var malformed: Dictionary = await gateway.request("/api/v1/shop/purchases?malformed=1", HTTPClient.METHOD_POST, {"productId":"p"}, [200])
 	check(not malformed.ok, "malformed write fails")
 	var proxy: Dictionary = await gateway.request("/api/v1/cards", HTTPClient.METHOD_GET, null, [200])
 	check(not proxy.ok, "proxy HTML fails")
+	check(malformed.error == P.localized("invalid_server_response") and proxy.error == P.localized("invalid_server_response") and not malformed.raw_error.is_empty(), "codec diagnostics use localized feedback")
 	gateway.connect_realtime()
 	await create_timer(.4).timeout
 	gateway.reconnect_enabled = false

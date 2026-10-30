@@ -1,5 +1,7 @@
 extends RefCounted
 
+const P = preload("res://ui/palette.gd")
+
 const Proto = preload("res://network/protobuf.gd")
 const REGISTRY = preload("res://data/http_endpoints.json")
 const SCHEMA = preload("res://data/http_schema.json")
@@ -87,12 +89,12 @@ static func decode_response(contract: Dictionary, status: int, headers: PackedSt
 	if status == 204:
 		return {"ok": bytes.is_empty(), "data": null, "error": "Unexpected body in empty response"}
 	var media := header(headers, "Content-Type").get_slice(";", 0).strip_edges().to_lower()
-	if media != "application/protobuf": return {"ok": false, "data": null, "error": "服务器返回了不支持的响应格式"}
+	if media != "application/protobuf": return {"ok": false, "data": null, "error": P.localized("unsupported_response_format")}
 	var proto := Proto.new(true)
 	var success := status >= 200 and status < 300
 	var message: String = contract.response if success else "HttpError"
 	var decoded: Dictionary = proto.decode_http(message, bytes)
-	if not proto.error.is_empty(): return {"ok": false, "data": null, "error": "服务器协议内容损坏: " + proto.error}
+	if not proto.error.is_empty(): return {"ok": false, "data": null, "error": P.localized("corrupt_protocol_prefix") + proto.error}
 	var data: Variant = decoded
 	if success and contract.get("unwrap_items", false): data = data.items
 	return {"ok": true, "data": data, "error": ""}

@@ -1,0 +1,31 @@
+{
+  "batch": "04",
+  "locales": [
+    "ja",
+    "ko"
+  ],
+  "self_validation_passed": true,
+  "external_task_review_required": false,
+  "authority": "User waived external task review; final scope is hi/ar/ru then ja/ko only",
+  "main_ui_frames": 1287,
+  "main_ui_checks": 132815,
+  "error_ui_frames": 264,
+  "main_ui": "local-ui-final-r1.json",
+  "error_ui": "error-ui-final-r1.json",
+  "probes": "frozen-probes-final-r1.json",
+  "manual_review": "manual-layout-review-r1.json",
+  "passed": true,
+  "deployed": false,
+  "fixes": [
+    "Complete Japanese and Korean packs using bundled regional-capable Source Han fonts",
+    "Japanese-aware source-copy detection accepts legitimate Kanji and retains Chinese-leftover detection",
+    "Locale-authored literals, card names and formatted spans resist legacy alias rewrites",
+    "Canonical card names/effects are checked directly across all 11 locales; login-only language selection defaults to the OS and persists explicit choices",
+    "Short translated UI/card labels at existing font floors; original card illustration bounds unchanged"
+  ],
+  "actual_game_matches": 0,
+  "website": "Separate website task commits preserved; no external game revalidation",
+  "registry_status_change_only": true,
+  "registry_projection_before": "8be1ff165597c7175f71efe19e1b10a288c7e5cd7715c5512f7c6691269db841",
+  "registry_projection_after": "8be1ff165597c7175f71efe19e1b10a288c7e5cd7715c5512f7c6691269db841"
+}

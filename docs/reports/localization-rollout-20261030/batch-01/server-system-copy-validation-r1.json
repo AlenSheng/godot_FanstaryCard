@@ -1,0 +1,134 @@
+{
+  "scope": "Display metadata, generated fixed copy and additive compatibility; no gameplay rule changes",
+  "server_units": {
+    "evidence": "tmp/localization-dotnet-system-r3",
+    "terminal": {
+      "ok": true,
+      "native_exit": 0,
+      "stop_reason": null,
+      "source_unchanged": true,
+      "postgres_integration_configured": false
+    },
+    "trx": [
+      {
+        "path": "tmp/localization-dotnet-system-r3/results/Administrator_SJH_2026-10-30_10_56_39_net10.0.trx",
+        "counters": {
+          "total": "388",
+          "executed": "388",
+          "passed": "388",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      },
+      {
+        "path": "tmp/localization-dotnet-system-r3/results/Administrator_SJH_2026-10-30_10_56_49_net10.0.trx",
+        "counters": {
+          "total": "453",
+          "executed": "319",
+          "passed": "319",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      }
+    ]
+  },
+  "postgres_integration": {
+    "evidence": "tmp/localization-dotnet-postgres-r1",
+    "terminal": {
+      "ok": true,
+      "native_exit": 0,
+      "stop_reason": null,
+      "source_unchanged": true,
+      "postgres_integration_configured": true
+    },
+    "trx": [
+      {
+        "path": "tmp/localization-dotnet-postgres-r1/results/Administrator_SJH_2026-10-30_10_59_26_net10.0.trx",
+        "counters": {
+          "total": "0",
+          "executed": "0",
+          "passed": "0",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      },
+      {
+        "path": "tmp/localization-dotnet-postgres-r1/results/Administrator_SJH_2026-10-30_11_01_05_net10.0.trx",
+        "counters": {
+          "total": "4",
+          "executed": "4",
+          "passed": "4",
+          "failed": "0",
+          "error": "0",
+          "timeout": "0",
+          "aborted": "0",
+          "inconclusive": "0",
+          "passedButRunAborted": "0",
+          "notRunnable": "0",
+          "notExecuted": "0",
+          "disconnected": "0",
+          "warning": "0",
+          "completed": "0",
+          "inProgress": "0",
+          "pending": "0"
+        }
+      }
+    ],
+    "sandbox": {
+      "server_host": "43.172.70.182",
+      "container_name": "codex-localization-pg-b01-20261030-r1",
+      "memory_limit_mib": 256,
+      "cpu_limit": 0.5,
+      "volatile_data_mib": 160,
+      "bind": "127.0.0.1:55439",
+      "production_database_used": false,
+      "container_removed": true,
+      "ssh_tunnel_stopped": true,
+      "production_ready_after_cleanup": "Healthy"
+    }
+  },
+  "metadata": {
+    "system_mail_templates": 10,
+    "new_strings_per_locale": 22,
+    "strings_per_locale": 849,
+    "name_fallbacks_marked": true,
+    "original_protocol_tags_preserved": true,
+    "historical_unmarked_mail": "Original authored content retained; do not guess reclamation provenance"
+  },
+  "gateway_failure_contract": "Raw failed signal and payload preserved; user_failed and localized result.error are UI presentation paths",
+  "game_batch_passed": false,
+  "deployed": false
+}

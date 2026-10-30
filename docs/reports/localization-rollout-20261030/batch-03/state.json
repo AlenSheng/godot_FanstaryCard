@@ -1,0 +1,80 @@
+{
+  "batch": "03",
+  "locales": [
+    "hi",
+    "ar",
+    "ru"
+  ],
+  "status": "released_deployed",
+  "base_code_commit": "a0e213ad8e65000a6d7077cdc16eef46aee3324b",
+  "passed": true,
+  "deployed": true,
+  "external_task_review_required": false,
+  "released_coverage_estimate_percent": 49.538418517882455,
+  "coverage_target_reached": false,
+  "required_work": [
+    "Full locale packs",
+    "Bundled font coverage and fallback for all language names",
+    "Arabic shaping, bidirectional text and suitable UI direction",
+    "All-card and actual UI checks at 960/1280/1920",
+    "Publish/restart/health before next group"
+  ],
+  "resource_policy": "Keep 6GiB plus1GiB UI admission, never stop FreeVideo; keep cloud reserves and backups",
+  "final_following_group": [
+    "ja",
+    "ko"
+  ],
+  "stop_after_following_group": true,
+  "population_80_percent_required": false,
+  "completed_preparation": [
+    "All three 849-string / 232-card language packs",
+    "Bundled verified Noto UI fonts with OFL licenses and multilingual fallbacks",
+    "Arabic authored board geometry and numeric BiDi display",
+    "Hindi passive native line-height sizing",
+    "All nine draft catalog probes passed; these are preparation, pending final source freeze"
+  ],
+  "current_ui_evidence": {
+    "hi_960": "tmp/batch03-ui-final-r3/hi-960",
+    "ar_960": "tmp/batch03-ui-final-r3/ar-960",
+    "ru_960": "tmp/batch03-ui-final-r3/ru-960"
+  },
+  "remaining": [],
+  "all_three_minimum_width_screens_passed": true,
+  "minimum_width_source": "tmp/batch03-ui-final-r3",
+  "active_validations": {
+    "ui_plan": "tmp/batch03-ui-final-r3-plan.json",
+    "ui_summary": "tmp/batch03-ui-final-r3-runner/summary.original.json",
+    "probe_summary": "tmp/batch03-probes-final-r2/summary.original.json",
+    "errors_queue": "tmp/batch03-errors-queue-r1/terminal.original.json",
+    "errors_summary": "tmp/batch03-errors-final-r1/matrix-report.original.json"
+  },
+  "next_step_after_all_pass": "Inspect final native PNGs; write manual-layout-review-r1.json; run tmp/collect_batch03.py; release registry statuses with status-only projection, commit and normal push, guarded Tencent deployment; only after health start ja/ko.",
+  "prepared_helpers": [
+    "tmp/collect_batch03.py",
+    "tmp/localization_deploy_guard.py",
+    "tmp/batch03_remote_preflight.py"
+  ],
+  "final_probes_passed": true,
+  "manual_sample_review": "docs/reports/localization-rollout-20261030/batch-03/manual-layout-review-r1.json",
+  "active_controller_pids": {},
+  "new_locale_main_ui_passed_widths": {
+    "hi": [
+      960,
+      1280,
+      1920
+    ],
+    "ar": [
+      960,
+      1280,
+      1920
+    ],
+    "ru": [
+      960,
+      1280,
+      1920
+    ]
+  },
+  "evidence": "docs/reports/localization-rollout-20261030/batch-03/self-validation-final-r1.json",
+  "deployed_code_commit": "526688fd74e0494876fe4590b9a7ae8bd85afb99",
+  "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-03/deployment-completed-r1.json"
+}

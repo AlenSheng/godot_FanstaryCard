@@ -1,5 +1,5 @@
 {
-  "sha256": "73f2c9b5e761a282604abe909324adfa72d6e037648c3aaa1bc3b6c05f8cd9f2",
+  "sha256": "2032e8018d43107e7124b34fff168b6414691fedd882a17ced0f2f89c44de79c",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -559,6 +559,12 @@
         "type": "RoomInventoryItem",
         "repeated": true,
         "optional": false
+      },
+      "5": {
+        "name": "owner_name_is_fallback",
+        "type": "bool",
+        "repeated": false,
+        "optional": true
       }
     },
     "RoomMonster": {
@@ -745,6 +751,12 @@
         "type": "RoomInventoryItem",
         "repeated": true,
         "optional": false
+      },
+      "16": {
+        "name": "opponent_name_is_fallback",
+        "type": "bool",
+        "repeated": false,
+        "optional": true
       }
     },
     "RoomCurrentCell": {

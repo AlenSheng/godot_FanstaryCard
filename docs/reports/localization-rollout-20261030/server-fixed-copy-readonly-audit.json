@@ -1,0 +1,480 @@
+{
+  "report_type": "ReadOnlyServerFixedPlayerCopyAudit",
+  "date": "2026-10-30",
+  "status": "ConfirmedOmissions_ProposalOnly_NotAcceptance",
+  "scope": "Fixed player-visible server copy, RemoteCopy.field fallback, and provenance boundaries; no next language group",
+  "production_or_client_files_modified": false,
+  "godot_or_heavy_process_started": false,
+  "repository_instructions": {
+    "read": [
+      "server/AGENTS.md",
+      "GDD.md",
+      "docs/SERVER_SPEC.md",
+      "docs/SERVER_0_TO_1_GUIDE.md"
+    ],
+    "stale_reference": ".agents/skills/server_create/SKILL.md is absent; repository-wide hidden SKILL.md search returned no replacement. No server implementation was attempted."
+  },
+  "core_conclusion_zh": "内置固定系统邮件不能作为管理员自由文本例外排除。9类 seed 信件与管理员收回通知均缺少西语模板来源；RemoteCopy.field 在西语下优先回退 titleEn/bodyEn。Game Admin 是服务端固定角色名，不是管理员输入。3处服务端旅人回退与真实玩家名混入同一字段，缺少可安全本地化的来源标记。",
+  "frozen_source_sha256": {
+    "client/ui/remote_copy.gd": "8359BE1D5FB59E5C20277D0EF5E6D2683AA202E155AFFECF288A3A1F3416EEC8",
+    "server/src/FantasyCard.Server/Identity/IdentityRepository.cs": "0CF19945303BA9BC424390D542CA0B22F6B294633C6FB843C0AE436A74F8477A",
+    "server/src/FantasyCard.Server/Admin/AdminRepository.cs": "660DF2FA631867FE7E4B2F1F0C0FEF8D043140DF631F1F0465327ED72EDD6E63",
+    "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs": "B4190F82DDA9322749B1DFD99DF638A28E5A3B2446A534299792C20C489A4343",
+    "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs": "30F479374DF7B8567CC8A306E5BEC2CCEB535BA6DD7AED95E6D3DFBC582EC2FA"
+  },
+  "remote_copy_field_analysis": {
+    "file": "client/ui/remote_copy.gd",
+    "order": [
+      "Read record[name] and strip boundary whitespace.",
+      "Return explicit record.translations[current_locale][name] when present and nonempty.",
+      "For sender, map only exact 系统/System aliases to localized system_mail.",
+      "For every non-zh-CN locale, return nonempty nameEn/name_en.",
+      "Only after English fallback is absent, map exact generic system title aliases.",
+      "Otherwise return the original field."
+    ],
+    "consequences_zh": [
+      "es 与 en 都满足 language != zh-CN，因此 titleEn/bodyEn 存在时西语会显示英文。",
+      "translations.es 在客户端理论上有效，但当前 MailItemResponse / game.proto / MailRepository 只传 Title/Body/Sender/TitleEn/BodyEn，没有 translations 或系统模板标记；仅向任意后台 JSON 添加 translations 不足以打通正式 Protobuf 邮件路径。",
+      "sender aliases 不包含 Game Admin；该发件人保持英文。",
+      "旧系统标题 系统通知 若带 titleEn=System Mail，会先返回英文，绕过后面的系统标题本地化。",
+      "System 发件人目前映射到 system_mail，西语是 Correo del sistema；未来宜用已有 system_sender（Sistema）表达发件角色。",
+      "field() 会 strip_edges；新结构化 reason 若要求逐字保留，不应经此裁剪或通用词条替换。"
+    ],
+    "evidence": [
+      "client/ui/remote_copy.gd:19",
+      "client/ui/remote_copy.gd:21",
+      "client/ui/remote_copy.gd:28",
+      "client/ui/remote_copy.gd:29",
+      "client/ui/remote_copy.gd:31",
+      "client/ui/remote_copy.gd:32",
+      "server/src/FantasyCard.Contracts/Mail/MailContracts.cs:13",
+      "protocol/http/v1/game.proto:68",
+      "server/src/FantasyCard.Server/Mail/MailRepository.cs:20"
+    ]
+  },
+  "classification": [
+    {
+      "kind": "Fixed built-in system templates",
+      "examples": "9 SeedTestMailAsync title/body pairs; item reclamation title and sentence shell",
+      "action": "Assign stable template keys and localize from tables. Do not classify as authored/free text."
+    },
+    {
+      "kind": "Fixed server sender roles",
+      "examples": "System, Game Admin",
+      "action": "Use dedicated sender keys. Preserve custom sender values on non-system records."
+    },
+    {
+      "kind": "Missing-name fallback",
+      "examples": "旅人 emitted by snapshot/router",
+      "action": "Translate only with explicit fallback provenance; preserve real names including a player literally named 旅人."
+    },
+    {
+      "kind": "Player-authored identity",
+      "examples": "displayName, victimName, opponent display name",
+      "action": "Preserve the received name; no dictionary or substring translation."
+    },
+    {
+      "kind": "Bot proper names",
+      "examples": "青岚客, 烬里人, 渡川, 石门卫, 晚潮, 折梅, 无名刃, 拾薪, 北渚, 赤苇, 听雪, 沉锋",
+      "action": "Treat as proper names, not missing system UI translations. Do not infer or expose isBot from name handling.",
+      "evidence": "server/src/FantasyCard.Domain/Bots/BotRules.cs:65"
+    },
+    {
+      "kind": "Administrator-authored prose",
+      "examples": "AdminMailRequest.Title/Body/TitleEn/BodyEn, announcement text",
+      "action": "Use explicit translations if supplied; otherwise retain authored text/fallback policy. Do not translate arbitrary words within it."
+    },
+    {
+      "kind": "Administrator reason",
+      "examples": "AdminRevokeRequest.Reason, ban reason",
+      "action": "Keep the original reason as an opaque raw value; localize only the system prefix/shell."
+    },
+    {
+      "kind": "Identifiers/enums",
+      "examples": "Kind=Gold/PriestSoul/Equipment; event names; asset ledger reason codes",
+      "action": "Do not translate protocol values or persistence codes. Map known item kinds to existing localized item display names only at presentation."
+    },
+    {
+      "kind": "Server diagnostics",
+      "examples": "DomainValidationException messages, HTTP title/detail",
+      "action": "Separate from authored reasons. They are fixed system copy or diagnostic details; use stable display codes/templates rather than substring translation. Full error inventory was not completed in this focused audit."
+    }
+  ],
+  "omissions": [
+    {
+      "id": "SC-01",
+      "priority": "P2",
+      "classification": "Fixed built-in templates, development/local accounts",
+      "summary_zh": "9类 seed 邮件标题与正文仅有中英文，西语确定回退英文。不是自由文本。",
+      "reachability_zh": "只在 provider=local-name 且账号以 test_ / test2_ 开头时触发；不是所有生产登录都会发放。",
+      "evidence": [
+        "server/src/FantasyCard.Server/Identity/IdentityRepository.cs:92",
+        "server/src/FantasyCard.Server/Identity/IdentityRepository.cs:124",
+        "server/src/FantasyCard.Server/Identity/IdentityRepository.cs:135",
+        "server/src/FantasyCard.Server/Identity/IdentityRepository.cs:152"
+      ],
+      "templates": [
+        {
+          "proposed_template_key": "mail.seed.advanced.equipment_set.v1",
+          "title": "测试邮件2：橙紫双词缀套装",
+          "body": "test2 测试账号奖励：头部橙色、其余紫色的同词缀套装，每件带效果词缀和第二词缀。",
+          "titleEn": "Test Mail 2: Orange and Purple Equipment Set",
+          "bodyEn": "test2 reward: an orange head piece and purple pieces for the other slots, all with matching effect and secondary affixes.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.advanced.fragments.v1",
+          "title": "测试邮件2：装备碎片",
+          "body": "test2 测试账号奖励：装备碎片 100000。",
+          "titleEn": "Test Mail 2: Equipment Fragments",
+          "bodyEn": "test2 reward: 100,000 equipment fragments.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.gold.v1",
+          "title": "测试邮件：金币",
+          "body": "测试账号奖励：金币 100000。",
+          "titleEn": "Test Mail: Gold",
+          "bodyEn": "Test account reward: 100,000 gold.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.souls.v1",
+          "title": "测试邮件：魂晶",
+          "body": "测试账号奖励：各类魂晶各 100000。",
+          "titleEn": "Test Mail: Soul Crystals",
+          "bodyEn": "Test account reward: 100,000 of each soul crystal.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.equipment.white_fire.v1",
+          "title": "测试邮件：白色火系装备",
+          "body": "测试账号奖励：白色火系装备一套。",
+          "titleEn": "Test Mail: White Fire Equipment",
+          "bodyEn": "Test account reward: a full set of white fire equipment.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.equipment.green_water.v1",
+          "title": "测试邮件：绿色水系装备",
+          "body": "测试账号奖励：绿色水系装备一套。",
+          "titleEn": "Test Mail: Green Water Equipment",
+          "bodyEn": "Test account reward: a full set of green water equipment.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.equipment.blue_earth.v1",
+          "title": "测试邮件：蓝色土系装备",
+          "body": "测试账号奖励：蓝色土系装备一套。",
+          "titleEn": "Test Mail: Blue Earth Equipment",
+          "bodyEn": "Test account reward: a full set of blue earth equipment.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.equipment.purple_wood.v1",
+          "title": "测试邮件：紫色木系装备",
+          "body": "测试账号奖励：紫色木系装备一套。",
+          "titleEn": "Test Mail: Purple Wood Equipment",
+          "bodyEn": "Test account reward: a full set of purple wood equipment.",
+          "sender": "System"
+        },
+        {
+          "proposed_template_key": "mail.seed.equipment.orange_metal.v1",
+          "title": "测试邮件：橙色金系装备",
+          "body": "测试账号奖励：橙色金系装备一套。",
+          "titleEn": "Test Mail: Orange Metal Equipment",
+          "bodyEn": "Test account reward: a full set of orange metal equipment.",
+          "sender": "System"
+        }
+      ]
+    },
+    {
+      "id": "SC-02",
+      "priority": "P2",
+      "classification": "Fixed template with raw administrator parameter",
+      "summary_zh": "道具收回通知的标题和句子外壳是固定系统模板；Reason 才是管理员自由原文。西语当前显示英文标题/正文，Kind 还以协议英文代码直接嵌入。",
+      "proposed_template_key": "mail.admin.item_reclaimed.v1",
+      "parameters": {
+        "kind": "Known item identifier; render through existing item-name keys",
+        "amount": "Authoritative count",
+        "reason": "Opaque administrator-authored raw string"
+      },
+      "evidence": [
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs:213",
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs:214",
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs:215",
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs:216"
+      ]
+    },
+    {
+      "id": "SC-03",
+      "priority": "P2",
+      "classification": "Fixed sender role",
+      "summary_zh": "所有 AdminRepository.InsertMailAsync 的 sender 都固定为 Game Admin；不是请求中的管理员名字。RemoteCopy 未为其映射西语。",
+      "suggested_sender_keys": {
+        "System": "system_sender",
+        "Game Admin": "game_admin_sender"
+      },
+      "evidence": [
+        "server/src/FantasyCard.Server/Admin/AdminRepository.cs:330",
+        "client/data/localization_legacy.json:system_content_aliases",
+        "client/ui/remote_copy.gd:28"
+      ]
+    },
+    {
+      "id": "SC-04",
+      "priority": "P2",
+      "classification": "Legacy generic system title",
+      "summary_zh": "V028 迁移将 系统通知 的 titleEn 填为 System Mail；西语 field() 会因此跳过系统标题别名映射。旧道具收回通知迁移也只补英文标题，没有西语或历史 reason 参数。",
+      "evidence": [
+        "server/src/FantasyCard.Server/Persistence/Migrations/V028__localized_admin_content.sql:25",
+        "server/src/FantasyCard.Server/Persistence/Migrations/V028__localized_admin_content.sql:29",
+        "client/ui/remote_copy.gd:31"
+      ]
+    },
+    {
+      "id": "SC-05",
+      "priority": "P2",
+      "classification": "Fixed fallback mixed into identity data",
+      "summary_zh": "3处 ?? 旅人 会把中文系统回退写入名称字段，客户端按真实姓名原样显示，英/西语不能安全靠字面值替换。",
+      "sites": [
+        {
+          "file": "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs",
+          "line": 50,
+          "field": "RoomRelicPile.owner_name"
+        },
+        {
+          "file": "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs",
+          "line": 186,
+          "field": "RoomDuel.opponent_name"
+        },
+        {
+          "file": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs",
+          "line": 249,
+          "field": "relic.contents RoomRelicPile.owner_name"
+        }
+      ],
+      "evidence": [
+        "client/ui/exploration_view.gd:385",
+        "client/ui/exploration_view.gd:543"
+      ],
+      "existing_localized_key": "traveler_default_name"
+    },
+    {
+      "id": "SC-06",
+      "priority": "P2",
+      "classification": "Adjacent fixed diagnostics; separate backlog",
+      "summary_zh": "服务端固定英文错误 detail 仍可能到西语 toast。gateway 直接选择 detail/title，TipsOverlay 的通用英文检测只在 zh-CN 生效。不能把所有 detail 当管理员自由文本，也不能把真正 reason 当固定错误改写。",
+      "examples": [
+        "This relic pile is not available in the current cell.",
+        "A valid inventory item and destination are required.",
+        "Supply displayName, selectedClass, or both."
+      ],
+      "evidence": [
+        "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:247",
+        "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:273",
+        "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs:59",
+        "client/network/gateway.gd:416",
+        "client/network/gateway.gd:899",
+        "client/ui/tips_overlay.gd:56",
+        "client/ui/palette.gd:363"
+      ],
+      "inventory_complete": false
+    },
+    {
+      "id": "SC-07",
+      "priority": "P2",
+      "classification": "Authored-text preservation boundary",
+      "summary_zh": "公告正文直接赋值，保留原文；公告标题仍通过 _label 默认 localize=true，因此标题含 Gold 等词条时会被通用别名替换。邮件详情已有 localize=false；应给公告标题同等保护。此项是保护自由文本，不是把公告自动制作西语。",
+      "evidence": [
+        "client/ui/main.gd:643",
+        "client/ui/main.gd:645",
+        "client/ui/main.gd:755",
+        "client/ui/main.gd:_about_scroll_content"
+      ]
+    }
+  ],
+  "static_reproduction": {
+    "method": "Static JavaScript transcription of RemoteCopy.field; not native Godot execution",
+    "seed_results": [
+      {
+        "index": 0,
+        "title": "测试邮件2：橙紫双词缀套装",
+        "es_title": "Test Mail 2: Orange and Purple Equipment Set",
+        "es_body": "test2 reward: an orange head piece and purple pieces for the other slots, all with matching effect and secondary affixes.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 1,
+        "title": "测试邮件2：装备碎片",
+        "es_title": "Test Mail 2: Equipment Fragments",
+        "es_body": "test2 reward: 100,000 equipment fragments.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 2,
+        "title": "测试邮件：金币",
+        "es_title": "Test Mail: Gold",
+        "es_body": "Test account reward: 100,000 gold.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 3,
+        "title": "测试邮件：魂晶",
+        "es_title": "Test Mail: Soul Crystals",
+        "es_body": "Test account reward: 100,000 of each soul crystal.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 4,
+        "title": "测试邮件：白色火系装备",
+        "es_title": "Test Mail: White Fire Equipment",
+        "es_body": "Test account reward: a full set of white fire equipment.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 5,
+        "title": "测试邮件：绿色水系装备",
+        "es_title": "Test Mail: Green Water Equipment",
+        "es_body": "Test account reward: a full set of green water equipment.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 6,
+        "title": "测试邮件：蓝色土系装备",
+        "es_title": "Test Mail: Blue Earth Equipment",
+        "es_body": "Test account reward: a full set of blue earth equipment.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 7,
+        "title": "测试邮件：紫色木系装备",
+        "es_title": "Test Mail: Purple Wood Equipment",
+        "es_body": "Test account reward: a full set of purple wood equipment.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      },
+      {
+        "index": 8,
+        "title": "测试邮件：橙色金系装备",
+        "es_title": "Test Mail: Orange Metal Equipment",
+        "es_body": "Test account reward: a full set of orange metal equipment.",
+        "es_sender": "Correo del sistema",
+        "title_uses_english": true,
+        "body_uses_english": true
+      }
+    ],
+    "synthetic_cases": {
+      "recall_es": {
+        "title": "Item Reclamation Notice",
+        "body": "An administrator reclaimed Gold × 7. Reason: Fire  Gold: 装备\nmaintenance / 管理员说明",
+        "sender": "Game Admin"
+      },
+      "system_notice_with_english": "System Mail",
+      "system_notice_without_english": "Correo del sistema",
+      "explicit_es_override": "Aviso del sistema"
+    }
+  },
+  "recommended_minimal_stable_plan": {
+    "status": "Proposal only; implement after frozen UI source is released",
+    "principle_zh": "用稳定模板键区分服务端生成内容和管理员原文；旧协议字段保留兼容，新客户端只对有明确系统来源的内容走本地化表。",
+    "table": {
+      "suggested_section": "system_content",
+      "current_locales_only": [
+        "zh-CN",
+        "en",
+        "es"
+      ],
+      "families": [
+        "mail.seed.*.title",
+        "mail.seed.*.body",
+        "mail.admin.item_reclaimed.title",
+        "mail.admin.item_reclaimed.summary",
+        "mail.reason_label",
+        "sender.system",
+        "sender.game_admin"
+      ],
+      "reuse_existing_keys": [
+        "system_sender",
+        "traveler_default_name",
+        "word_gold and existing product/item-name keys"
+      ],
+      "source_of_truth_zh": "小型共享系统文案源表，生成当前三种 locale 条目与服务端旧字段的中英文兼容载荷。避免继续硬写复制文本，也不为每种语言新增 title_es/body_es 数据库列。既有 title/body/titleEn/bodyEn 值在兼容阶段保持原字节与语义。"
+    },
+    "mail_metadata": {
+      "suggested_contract": "Append optional MailSystemContent SystemContent to MailItemResponse",
+      "proposed_free_http_proto_field": 12,
+      "proposed_payload": {
+        "template_key": "Stable allowlisted template ID with version",
+        "item_kind": "Existing identifier, not translated on wire",
+        "amount": "int64 authoritative value",
+        "reason": "Original raw administrator string",
+        "sender_key": "Stable fixed-role ID"
+      },
+      "compatibility_zh": "MailItemResponse 当前字段1–11不改名、不换号、不复用，旧客户端忽略新字段；旧字段继续填充。同步 DTO、game.proto、生成的客户端 http_schema 与 JSON compatibility path；不要把 JSON 字符串塞进 Protobuf，也不要仅在某个 JSON 响应添加 translations 后宣称正式路径已支持。",
+      "persistence_zh": "新建可空系统来源/参数列或 mail_id 关联的小表；只记录系统邮件的模板元数据。管理员自由邮件保持无模板标记。不要改已应用 V028 的 checksum；使用新的向前兼容迁移。"
+    },
+    "reason_preservation": {
+      "approach_zh": "先格式化只含可信 kind/amount 的系统摘要，再拼接本地化的原因标签与独立 raw reason。reason 不经过 P.localized_text、产品词替换、递归模板展开或语言检测；必要时用独立原文 Label。",
+      "forbidden_examples": [
+        "Replace Gold/Fire/装备 inside request.Reason",
+        "Infer that every Game Admin body is a system template",
+        "Treat a real player's name 旅人 as a fallback by string equality"
+      ]
+    },
+    "fallback_name_metadata": {
+      "approach_zh": "保留原 owner_name/opponent_name 以兼容旧客户端，另追加显式 fallback 布尔标记。新客户端只在标记为真时使用 traveler_default_name；否则原样显示姓名。保持当前 null-coalescing 触发条件，避免顺便改变空白名规则。",
+      "proposed_free_proto_fields": {
+        "RoomRelicPile": "owner_name_is_fallback at 5",
+        "RoomDuel": "opponent_name_is_fallback at 16"
+      },
+      "sites_to_share_helper": [
+        "RoomSnapshotProjection relic list",
+        "RoomSnapshotProjection duel opponent",
+        "RealtimeCommandRouter relic.contents"
+      ],
+      "compatibility_limit_zh": "旧载荷没有来源标记时无法区分真实名字 旅人 与服务器回退；不能声称不改协议而且两者都能无歧义本地化。"
+    },
+    "historical_records": {
+      "seeds_zh": "仅按 System 来源、已知完整 title/body/附件特征及明确版本匹配回填模板元数据；不要只按标题批量覆盖。保留 mail_id、attachments、read_at、claimed_at、sent_at，不重新发信或重发附件。现有 seed 防重仍依赖中文 title，不能借迁移改变该匹配键。",
+      "recall_zh": "历史回收信缺少结构化 kind/amount/reason 与明确模板来源。若可用审计关系可靠回溯则回填；无法可靠归因时保留原文/旧回退。仅凭 Game Admin + 道具收回通知 不足以证明不是管理员自由撰写。受限、锚定、带全量形状验证的旧格式适配只能声明为兼容性推断，不能当新协议的稳定来源。",
+      "short_term_no_wire_option_zh": "完全不改协议时，可用单独表对9类已知 seed 完整签名做精确旧内容适配，且在英文回退前执行；不要加入全局 inline_aliases。此补丁无法无歧义完成历史回收信和旅人来源识别，不能据此宣布所有遗漏关闭。"
+    },
+    "error_backlog_zh": "另行把固定业务错误映射为稳定 message key/code + typed arguments，保留原 detail 供日志/兼容用途。当前 http_400/http_409 与 COMMAND_REJECTED 太粗，不能准确选择所有业务文案。该工作与管理员 raw reason 分开。",
+    "out_of_scope": [
+      "Do not translate proper names or player inputs",
+      "Do not automatically translate administrator announcements/mail prose",
+      "Do not change ban wire prefix while preserving older clients",
+      "Do not run or invalidate the frozen UI matrix in this audit",
+      "Do not start another language group"
+    ]
+  },
+  "validation_required_after_implementation": [
+    "Real production Protobuf MailItemResponse round-trip with optional metadata and old-field compatibility.",
+    "zh-CN/en/es for all9 seed title/body/sender fields plus item recall fixed shell.",
+    "Raw reasons containing Fire  Gold, 装备, line breaks, punctuation, braces and boundary whitespace remain unchanged.",
+    "Custom mail/announcement titles equal to existing keys/words such as Gold remain raw unless explicit translations are supplied.",
+    "Real player named 旅人/System/Gold stays unchanged; only explicitly flagged missing-name fallback localizes.",
+    "Legacy mail without metadata remains readable; repeated seeding/migration/claim never duplicates rewards.",
+    "Generic 系统通知 with and without TitleEn follows the intended system-template path.",
+    "Locale changes recompute system template copy without altering stored original authored data.",
+    "Separate diagnostic error-code coverage; no full coverage claim from scanning only CJK literals.",
+    "Native UI/glyph acceptance remains owned by root; none was run here."
+  ],
+  "limitations_zh": "只做源码扫描及 RemoteCopy.field 的静态 JavaScript 逻辑复现；未查询真实数据库、未发管理操作、未运行测试或 Godot。英文错误分支清单不是全服务端穷举。"
+}
