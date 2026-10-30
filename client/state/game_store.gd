@@ -231,7 +231,7 @@ func request_account_deletion() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/account-deletion", HTTPClient.METHOD_POST, {})
 	busy = false
 	if result.ok and result.data is Dictionary:
-		notice.emit(I18n.t("账号删除请求已提交，冷静期结束前可在支持页面申请取消。"))
+		notice.emit(P.localized("account_deletion_requested"))
 	else:
 		notice.emit(result.error)
 	changed.emit()
@@ -242,7 +242,7 @@ func cancel_account_deletion() -> void:
 	changed.emit()
 	var result: Dictionary = await gateway.request("/api/v1/account-deletion", HTTPClient.METHOD_DELETE)
 	busy = false
-	notice.emit(I18n.t("账号删除请求已取消") if result.ok else result.error)
+	notice.emit(P.localized("account_deletion_cancelled") if result.ok else result.error)
 	changed.emit()
 
 func reconnect() -> void:
@@ -357,7 +357,7 @@ func _login(address: String, display_name: String, provider: String) -> void:
 	if not OS.is_debug_build():
 		var configured_server := str(ProjectSettings.get_setting("platform/server_url", "")).strip_edges().trim_suffix("/")
 		if configured_server.is_empty() or address != configured_server:
-			_reject_login(I18n.t("正式客户端只能连接官方服务器"))
+			_reject_login(P.localized("official_server_only"))
 			return
 	if provider == "local" and not platform.local_login_enabled():
 		_reject_login(P.localized("local_login_dev_only"))
@@ -392,7 +392,7 @@ func _login(address: String, display_name: String, provider: String) -> void:
 	if server_ready:
 		var capability: String = str({"local": "identity.local", "steam": "identity.steam", "google": "identity.google"}.get(provider, ""))
 		if capability not in server_info.get("capabilities", []):
-			authentication_reason = {"steam": P.localized("steam_disabled"), "google": I18n.t("此服务器未启用 Google 登录")}.get(provider, P.localized("local_login_disabled"))
+			authentication_reason = {"steam": P.localized("steam_disabled"), "google": P.localized("google_disabled")}.get(provider, P.localized("local_login_disabled"))
 			notice.emit(authentication_reason)
 		else:
 			var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}

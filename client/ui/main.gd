@@ -745,18 +745,18 @@ func _login() -> void:
 	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
 	if _google_login_required():
 		var google_reason: String = Game.platform.google_login_unavailable_reason()
-		_button(panel, I18n.t("使用 Google 登录"), func(): Game.login_google(CLOUD_SERVER_URL, _login_name), Game.busy or not google_reason.is_empty())
+		_button(panel, P.localized("google_login"), func(): Game.login_google(CLOUD_SERVER_URL, _login_name), Game.busy or not google_reason.is_empty())
 		if not google_reason.is_empty():
 			var reason_margin := MarginContainer.new()
 			reason_margin.add_theme_constant_override("margin_bottom", 20)
 			panel.add_child(reason_margin)
-			_label(reason_margin, I18n.t(google_reason), 20, P.MUTED)
+			_label(reason_margin, google_reason, 24, P.MUTED)
 	else:
 		_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
 		var steam_reason: String = Game.platform.login_unavailable_reason()
 		_button(panel, P.localized("steam_login"), func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
 		if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
-	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
+	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 24, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var center_space := Control.new()
 	center_space.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -870,8 +870,8 @@ func _hall() -> void:
 	_label(identity, P.localized("account_uid_inline") % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED, false)
 	_button(identity, P.localized("switch_account"), Game.logout, Game.busy)
 	var account_actions := _row(content)
-	_button(account_actions, I18n.t("申请删除账号"), func(): _confirm(I18n.t("申请后进入 7 天冷静期，期满将永久删除账号和游戏进度。确认继续？"), Game.request_account_deletion), Game.busy)
-	_button(account_actions, I18n.t("取消删除请求"), Game.cancel_account_deletion, Game.busy)
+	_button(account_actions, P.localized("account_deletion_request"), func(): _confirm(P.localized("account_deletion_confirmation"), Game.request_account_deletion), Game.busy)
+	_button(account_actions, P.localized("account_deletion_cancel"), Game.cancel_account_deletion, Game.busy)
 	var classes := _row(content)
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]

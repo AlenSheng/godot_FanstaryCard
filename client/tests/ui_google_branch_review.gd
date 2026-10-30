@@ -1,5 +1,7 @@
 extends "res://tests/ui_visual_review.gd"
 
+const GoogleCopy = preload("res://tests/test_google_localization.gd")
+
 func _ready() -> void:
 	super._ready()
 	if Game.changed.is_connected(Sound._sync_context): Game.changed.disconnect(Sound._sync_context)
@@ -8,7 +10,7 @@ func _ready() -> void:
 	Sound.stop_music()
 
 func _selected(scenario: String) -> bool:
-	return scenario in ["login", "settings_bottom", "confirm"]
+	return scenario in ["login", "login_notice", "login_notice_bottom", "settings_bottom", "confirm"]
 
 func _reset_fixture() -> void:
 	var dialog := $UI.get_node("AudioSettings").get_node_or_null("AccountDeletionConfirmation")
@@ -16,6 +18,11 @@ func _reset_fixture() -> void:
 	await super._reset_fixture()
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in ["login_notice", "login_notice_bottom"]:
+		Game.lobby = {}
+		Game.authentication_reason = Palette.localized("google_token_invalid")
+		Game.server_info["announcement"] = {}
+		return true
 	if scenario == "confirm":
 		await super._prepare_scene("settings_bottom", locale)
 		await get_tree().process_frame
@@ -26,12 +33,21 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 		button.pressed.emit()
 		await get_tree().process_frame
 		review_checks[check_prefix + " actual account confirmation opens"] = audio.get_node_or_null("AccountDeletionConfirmation") != null
+		var dialog := audio.get_node("AccountDeletionConfirmation")
+		review_checks[check_prefix + " warning in selected language"] = dialog.description_label.text == Palette.localized("account_deletion_confirmation")
+		review_checks[check_prefix + " title in selected language"] = dialog.title_label.text == Palette.localized("account_deletion_request")
 		return false
 	return await super._prepare_scene(scenario, locale)
 
+func _review_capture(frame_name: String, rebuild: bool = true) -> void:
+	await super._review_capture(frame_name, rebuild)
+	for entry in review_frames.back().texts:
+		for key in GoogleCopy.KEYS:
+			if str(entry.text) != Palette.localized(key): continue
+			review_checks[frame_name + ": readable Google copy " + str(entry.path)] = float(entry.effective_font_size) >= 12.0 - 0.01
+
 func _run() -> void:
 	OS.set_environment("FANTASYCARD_REVIEW_WIDTHS", "960,1280,1920")
-	OS.set_environment("FANTASYCARD_REVIEW_LOCALES", "zh-CN,en")
 	await super._run()
 	var report := JSON.parse_string(FileAccess.get_file_as_string(output.path_join("review.json"))) as Dictionary
 	report["ok"] = report.render_capture_complete and report.legacy_layout_observations.is_empty() and not report.checks.values().has(false)

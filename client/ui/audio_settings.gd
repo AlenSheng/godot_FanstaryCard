@@ -174,7 +174,7 @@ func show_settings() -> void:
 	if not Game.lobby.is_empty():
 		var deletion := Button.new()
 		deletion.name = "AccountDeletionRequestButton"
-		deletion.text = I18n.t("申请删除账号")
+		deletion.text = P.localized("account_deletion_request")
 		deletion.disabled = Game.busy
 		Art.button(deletion, GOLD_BUTTON_KEY)
 		deletion.pressed.connect(_show_account_deletion_confirmation)
@@ -182,7 +182,7 @@ func show_settings() -> void:
 		P.fit_control_font(deletion, P.font("title"), 24, 48.0)
 		var cancel_deletion := Button.new()
 		cancel_deletion.name = "CancelAccountDeletionButton"
-		cancel_deletion.text = I18n.t("取消删除请求")
+		cancel_deletion.text = P.localized("account_deletion_cancel")
 		cancel_deletion.disabled = Game.busy
 		Art.button(cancel_deletion, GOLD_BUTTON_KEY)
 		cancel_deletion.pressed.connect(Game.cancel_account_deletion)
@@ -247,9 +247,9 @@ func _show_account_deletion_confirmation() -> void:
 	dialog.name = "AccountDeletionConfirmation"
 	add_child(dialog)
 	dialog.configure(
-		I18n.t("申请后进入 7 天冷静期，期满将永久删除账号和游戏进度。确认继续？"),
+		P.localized("account_deletion_confirmation"),
 		Game.request_account_deletion,
-		{"title": I18n.t("申请删除账号"), "confirm_text": P.localized("confirm"), "cancel_text": P.localized("cancel"), "tall": true})
+		{"title": P.localized("account_deletion_request"), "confirm_text": P.localized("confirm"), "cancel_text": P.localized("cancel"), "tall": true})
 
 func _settings_popup_size() -> Vector2:
 	var viewport_size := get_viewport().get_visible_rect().size

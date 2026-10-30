@@ -55,6 +55,9 @@ func _run() -> void:
 		checks["deletion request uses a typed status"] = HttpProtocol.route("/api/v1/account-deletion", HTTPClient.METHOD_POST).get("response") == "AccountDeletionStatus"
 		checks["deletion cancellation remains bodyless"] = HttpProtocol.route("/api/v1/account-deletion", HTTPClient.METHOD_DELETE).get("response") == "Empty"
 		checks["Google account actions have English copy"] = I18n.t("申请删除账号") == "Request account deletion" and I18n.t("取消删除请求") == "Cancel deletion request"
+		var localization: Dictionary = await preload("res://tests/test_google_localization.gd").new().run_test()
+		for key in localization.checks:
+			checks["Google copy " + str(key)] = localization.checks[key]
 	var result := {"ok": not checks.values().has(false), "checks": checks, "scope": "Headless native branch compatibility, no login or capacity workload"}
 	var destination := OS.get_environment("FANTASYCARD_BRANCH_SYNC_RESULT")
 	FileAccess.open(destination, FileAccess.WRITE).store_string(JSON.stringify(result))
