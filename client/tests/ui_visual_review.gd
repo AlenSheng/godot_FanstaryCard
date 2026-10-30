@@ -141,6 +141,8 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			Game.lobby = {}
 			Game.authentication_reason = Palette.localized("login_timeout")
 			Game.server_info["announcement"] = {"title": "Relicbound Test Server Update and Traveler Notices" if locale == "en" else "遗境行者测试服更新与旅人公告", "body": ("Dear Travelers,\n\nThe test server has recently been updated:\n\n1. After extraction, wait for server settlement and the run results.\n2. Results include the items earned during the run and equipped gear.\n3. Log Out returns to the login screen.\n4. Common panels leave clear space inside their decorative borders.\n\nThank you for playing!" if locale == "en" else "亲爱的旅人：\n\n测试服近期已更新：\n\n1. 撤离后等待服务器结算并显示本局结果。\n2. 结算包含本局获得的物品和穿戴装备。\n3. 切换账号后返回登录界面。\n4. 通用框的内容与装饰边框之间保留留白。\n\n感谢参与测试！")}
+			if locale not in ["zh-CN", "en"]:
+				Game.server_info["announcement"] = {"translations": {locale: {"title": Palette.localized("game_title") + " · " + Palette.localized("ui_announcement_title"), "body": (Palette.localized("ui_room_hint") + "\n\n" + Palette.localized("ui_safe_slot_hint") + "\n\n").repeat(8)}}}
 		"hall_priest": Game.hero_class = "Priest"
 		"hall_guardian": Game.hero_class = "Guardian"
 		"prep", "gear", "shop", "cards", "deck": $UI.screen = scenario
@@ -204,6 +206,9 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			if scenario != "mail_empty":
 				var title := "Expedition rewards, maintenance compensation and a very long announcement title" if locale == "en" else "探索奖励与维护补偿以及特别长的邮件标题排版验证"
 				var body := "All earned equipment and materials are available below. Open each attachment to review its details. " if locale == "en" else "所有探索装备和材料均列于下方，请查看每项附件的详情。"
+				if locale not in ["zh-CN", "en"]:
+					title = (Palette.localized("run_reward") + " / " + Palette.localized("ui_announcement_title") + " · ").repeat(3)
+					body = Palette.localized("ui_room_hint") + " " + Palette.localized("ui_safe_slot_hint") + " "
 				for index in range(12): Game.mail.items.append({"id": "review-mail-%s" % index, "title": title + " %s" % index, "body": body.repeat(16), "sender": "System" if locale == "en" else "系统", "read": true, "claimed": false, "attachments": [{"kind": "Gold", "amount": 123456}, {"kind": "EquipmentFragments", "amount": 25}, {"kind": "HealthPotion", "amount": 2}]})
 			await _render_base(); $UI.mail_modal_lock = true; $UI._reference._mail()
 			if scenario != "mail_empty": $UI._reference._mail_select(Game.mail.items[0])
@@ -282,6 +287,23 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	var texts: Array = []
 	_collect_text($UI, texts)
 	for entry in texts:
+		review_checks[frame_name + ": glyphs " + str(entry.path)] = entry.missing_glyphs.is_empty()
+		if entry.type == "Button":
+			review_checks[frame_name + ": complete button text " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if entry.type == "Label" and int(entry.max_lines_visible) < 0:
+			review_checks[frame_name + ": complete label lines " + str(entry.path)] = int(entry.visible_lines) >= int(entry.lines)
+		if str(entry.path).get_file().begins_with("ClassMaximumHp_"):
+			review_checks[frame_name + ": integer class health " + str(entry.path)] = str(entry.text).is_valid_int()
+		if Palette.language() not in ["zh-CN", "zh-TW"]:
+			var checked_text: String = entry.text
+			for player_name in ["逐风者", "长夜归来的盾卫", "一位来自漫长旅途的探索者"]:
+				checked_text = checked_text.replace(player_name, "")
+			for language_config in Palette.languages().values(): checked_text = checked_text.replace(str(language_config.get("name", "")), "")
+			var contains_han := false
+			for index in checked_text.length():
+				var codepoint := checked_text.unicode_at(index)
+				if codepoint >= 0x3400 and codepoint <= 0x9fff: contains_han = true
+			review_checks[frame_name + ": localized copy " + str(entry.path)] = not contains_han
 		if str(entry.path).get_file().begins_with("EquippedCaption_"):
 			review_checks[frame_name + ": readable " + str(entry.path).get_file()] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).begins_with("EquipmentComparisonDialog/") and entry.type == "Label" and not str(entry.path).ends_with("/Quantity"):
@@ -353,14 +375,26 @@ func _collect_text(root: Node, rows: Array) -> void:
 			var scale: Vector2 = root.get_global_transform().get_scale()
 			var pixel_scale := float(get_window().size.y) / get_viewport().get_visible_rect().size.y
 			var value: String = root.text
+			var max_line_width := 0.0
+			for line in value.split("\n"):
+				max_line_width = maxf(max_line_width, typeface.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size).x)
+			var available_text_width: float = root.size.x
+			if root is Button:
+				var style: StyleBox = root.get_theme_stylebox("normal")
+				available_text_width -= style.get_content_margin(SIDE_LEFT) + style.get_content_margin(SIDE_RIGHT)
+			var missing_glyphs: Array[int] = []
+			for index in value.length():
+				var codepoint := value.unicode_at(index)
+				if codepoint > 32 and not typeface.has_char(codepoint) and not missing_glyphs.has(codepoint): missing_glyphs.append(codepoint)
 			rows.append({"path": str($UI.get_path_to(root)), "type": root.get_class(),
-				"text": value, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y],
+				"text": value, "missing_glyphs": missing_glyphs, "max_line_width": max_line_width, "available_text_width": available_text_width, "tooltip": root.tooltip_text, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y],
 				"visible_rect": [visible_rect.position.x, visible_rect.position.y, visible_rect.size.x, visible_rect.size.y],
 				"font_size": font_size, "effective_font_size": font_size * absf(scale.y) * pixel_scale,
 				"single_line_width": typeface.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x,
 				"font_color": root.get_theme_color("font_disabled_color" if root is Button and root.disabled else "font_color").to_html(),
 				"disabled": root.disabled if root is Button else false,
 				"lines": root.get_line_count() if root is Label else 1,
+				"max_lines_visible": root.max_lines_visible if root is Label else -1,
 				"visible_lines": root.get_visible_line_count() if root is Label else 1})
 	for child in root.get_children():
 		_collect_text(child, rows)

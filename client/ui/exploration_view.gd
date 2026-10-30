@@ -126,7 +126,7 @@ static func _status(ui: Control, name: String, rect: Rect2) -> void:
 static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview: bool = false) -> void:
 	var names := {"Mage": P.localized("exploration_passive_mage_name"), "Priest": P.localized("exploration_passive_priest_name"), "Guardian": P.localized("exploration_passive_guardian_name")}
 	if not names.has(hero_class): return
-	var descriptions := {"Mage": "同核连放，加快抽牌", "Priest": "生命越低，治疗与控场越强", "Guardian": "生命越高，上盾越厚"}
+	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
 	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
 	if hero_class == "Priest" and Game.room.has("duel"):
@@ -143,7 +143,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview
 	icon.name = "PlayerPassiveIcon_" + hero_class
 	var title_inset := 18.0 if above_preview else 8.0
 	var description_inset := 53.0 if above_preview else 44.0
-	var title: Label = ui.text(P.localized("signature_prefix") + names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
+	var title: Label = ui.text(names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
 	title.name = "PlayerPassiveTitle_" + hero_class
 	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (10 if above_preview else 5))), 18, P.MUTED, null, false)
 	description.name = "PlayerPassiveDescription_" + hero_class
@@ -151,7 +151,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var pvp: bool = state.has("duel")
-	_title(ui, "遭遇战" if pvp else "混沌战斗", true)
+	_title(ui, P.localized("encounter") if pvp else P.localized("chaos_battle"), true)
 	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
@@ -184,7 +184,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			if not alive: enemy.modulate.a = 0.35
 			var element: String = monster.get("intent_element", "None")
 			if alive:
-				var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.get("intent_kind", ""), P.word(element))
+				var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield")}.get(monster.get("intent_kind", ""), P.word(element))
 				var number: String = str(monster.get("intent_value", 0)) if int(monster.get("intent_value", 0)) > 0 else ""
 				if element != "None":
 					ui.picture(Art.element(element), Rect2(x + 25 * slot_scale, 121, 62 * slot_scale, 62))
@@ -358,7 +358,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
 	var class_key: String = {"Mage":"battle_class_mage", "Priest":"battle_class_priest", "Guardian":"battle_class_guardian"}.get(opponent_class, "")
 	var class_title: String = P.localized(class_key) if not class_key.is_empty() else P.word(opponent_class)
-	var opponent_title: Label = ui.text(duel.get("opponent_name", "同格旅人") + " · " + class_title, Rect2(1129, 161, 380, 53), 27, P.GOLD)
+	var opponent_title: Label = ui.text(duel.get("opponent_name", P.localized("same_cell_traveler")) + " · " + class_title, Rect2(1129, 161, 380, 53), 27, P.GOLD, null, true, false)
 	opponent_title.name = "DuelOpponentTitle"
 	opponent_title.tooltip_text = opponent_title.text
 	var opponent_stats: Button = ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
@@ -368,7 +368,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	var seconds: float = maxf(0, (float(duel.get("leave_window_ends_at_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000)
 	ui.button(P.localized("exploration_leave_requested") if duel.get("self_requested_leave", false) else P.localized("leave_duel"), Rect2(400, 398, 350, 66), func(): Game.command("duel.leave", {"duel_id": duel.duel_id}), not Game.allowed("duel.leave"))
 	if seconds > 0: _center(ui.text(P.localized("exploration_leave_window") % seconds, Rect2(400, 480, 350, 44), 26, P.GOLD))
-	ui.button("强制逃脱", Rect2(803, 395, 310, 70), func(): Game.command("duel.escape", {"duel_id": duel.duel_id}), not Game.allowed("duel.escape"))
+	ui.button(P.localized("force_escape"), Rect2(803, 395, 310, 70), func(): Game.command("duel.escape", {"duel_id": duel.duel_id}), not Game.allowed("duel.escape"))
 	if not str(duel.get("escape_probability", "")).is_empty():
 		ui.text(P.localized("exploration_escape_chance") % Details.percent(float(duel.escape_probability)), Rect2(812, 353, 308, 37), 23, P.MUTED)
 	if duel.has("escape_remaining_ms"):
@@ -381,7 +381,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	_passive(ui, player.get("hero_class", ""), Rect2(80, 665, 350, 160), true)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
-	_title(ui, "混沌领域")
+	_title(ui, P.localized("chaos_realm"))
 	var origin := Vector2(424, 144)
 	var stride := Vector2(145, 126)
 	var colors: Array = [Color("79909c"), Color("a3a575"), Color("c6aa81")]
@@ -437,8 +437,8 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	for index in range(3):
 		var tint: Color = [Color("fa8c72"), P.TEAL, P.GOLD][index]
 		_picture(ui, [MAP_BOSS_MARKER, Art.texture("UI/Action/spring_clean.png"), MAP_SELF_MARKER][index], Rect2(1423, 377 + index * 114, 88, 83))
-		ui.text(["首领", "源泉", "自己"][index], Rect2(1535, 394 + index * 114, 220, 55), 34, tint)
-	ui.text("高亮邻格可前往", Rect2(1431, 711, 330, 38), 24, P.GOLD)
+		ui.text([P.localized("boss"), P.localized("spring"), P.localized("self")][index], Rect2(1535, 394 + index * 114, 220, 55), 34, tint)
+	ui.text(P.localized("reachable_hint"), Rect2(1431, 711, 330, 38), 24, P.GOLD)
 	var map_player_count := int(state.get("map_player_count", 0))
 	var population_text := P.localized("map_player_count_unavailable")
 	if map_player_count > 0: population_text = P.localized("map_player_count") % [map_player_count]
@@ -446,10 +446,10 @@ static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.localized("map_encounter_hint"), Rect2(80, 265, 320, 120), 24, P.MUTED, null, false)
 	ui.text(population_text, Rect2(80, 400, 320, 44), 24, P.GOLD, null, false)
 	ui.text(P.localized("map_hint"), Rect2(80, 460, 320, 230), 24, P.MUTED, null, false)
-	ui.button("返回", Rect2(80, 985, 262, 56), func(): host.set_meta("exploration_map_open", false); host._schedule_render())
+	ui.button(P.localized("back"), Rect2(80, 985, 262, 56), func(): host.set_meta("exploration_map_open", false); host._schedule_render())
 
 static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
-	_title(ui, "当前格行动")
+	_title(ui, P.localized("current_cell_action"))
 	var player: Dictionary = state.get("player", {})
 	var hero: Control = _picture(ui, Art.portrait(player.get("hero_class", Game.hero_class)), Rect2(105, 135, 380, 405))
 	host._combat_panels[player.get("player_id", "")] = hero
@@ -528,21 +528,21 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		else:
 			var icon: TextureRect = _picture(tile, Art.texture(key), Rect2(rect.position + Vector2(42, 20), Vector2(180, 160)))
 			icon.name = "ActionIcon_" + action_name
-		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER))
+		_center(tile.text(title, Rect2(rect.position + Vector2(12, 183), Vector2(240, 75)), 26, P.PAPER, null, true, not relic))
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
 		if state.has(key):
 			_center(ui.text(P.localized("exploration_extraction_progress" if key.begins_with("extraction") else "exploration_spring_progress") % (float(state[key]) / 1000), Rect2(615, 453, 560, 67), 36, P.TEAL))
-	ui.button("查看地图", Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
+	ui.button(P.localized("view_map"), Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	ui.panel(Rect2(218, 141, 1484, 818))
-	_title(ui, "战利品三选一")
+	_title(ui, P.localized("loot_three_choices"))
 	var options: Array = reward.get("options", [])
 	for index in range(3):
 		var rect := Rect2(285 + index * 458, 226, 424, 588)
 		ui.panel(rect)
 		if index >= options.size():
-			_center(ui.text("等待战利品", Rect2(rect.position + Vector2(24, 220), Vector2(376, 70)), 32, P.MUTED))
+			_center(ui.text(P.localized("waiting_loot"), Rect2(rect.position + Vector2(24, 220), Vector2(376, 70)), 32, P.MUTED))
 			continue
 		var option: Dictionary = options[index]
 		var kind: int = int(option.get("kind", 0))
@@ -629,7 +629,7 @@ static func build_settlement(ui: Control, host: Control) -> void:
 			if entry.get("equipped", false): title += " · " + P.localized("settlement_equipped")
 			ui.text(title, Rect2(96, 16, 472, 50), 25, P.PAPER, row)
 			ui.text("×%s" % item.get("quantity", 1), Rect2(580, 16, 94, 50), 25, P.GOLD, row).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	ui.button("返回", Rect2(716, 753, 488, 96), host._return_from_settlement, Game.busy)
+	ui.button(P.localized("back"), Rect2(716, 753, 488, 96), host._return_from_settlement, Game.busy)
 
 static func _settlement_items() -> Array:
 	var details: Dictionary = Game.settlement.details if Game.settlement.get("details") is Dictionary else {}
@@ -663,7 +663,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	frame.position = Vector2(534, 230)
 	frame.size = Vector2(852, 720)
 	overlay.add_child(frame)
-	for entry in [["进入中层", 54, 285], ["进入后不能退回外层", 30, 433], ["随机撤离点不会显示在小地图", 30, 526], ["源泉常亮，可规划绕路回血", 30, 619]]:
+	for entry in [[P.localized("enter_middle_layer"), 54, 285], [P.localized("no_outer_return"), 30, 433], [P.localized("hidden_extract_hint"), 30, 526], [P.localized("spring_route_hint"), 30, 619]]:
 		var label := Label.new()
 		var display_text := P.localized_text(entry[0])
 		label.text = display_text
@@ -678,7 +678,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 		overlay.add_child(label)
 		P.fit_control_font(label, typeface, entry[1], 12.0)
 	var confirm := Button.new()
-	confirm.text = P.localized_text("确认进入")
+	confirm.text = P.localized_text(P.localized("confirm_enter"))
 	confirm.position = Vector2(735, 758)
 	confirm.size = Vector2(450, 74)
 	confirm.add_theme_font_size_override("font_size", 35)
@@ -693,7 +693,7 @@ static func show_midlayer(ui: Control, host: Control, row: int, column: int) -> 
 	overlay.add_child(confirm)
 	P.fit_control_font(confirm, P.font_for_text(confirm.text, 35), 35, 48.0)
 	var cancel := Button.new()
-	cancel.text = P.localized_text("暂不进入")
+	cancel.text = P.localized_text(P.localized("do_not_enter"))
 	cancel.position = Vector2(750, 848)
 	cancel.size = Vector2(420, 60)
 	Art.button(cancel, "UI/CardCodex/card_codex_action_button_blue.png")

@@ -5,8 +5,7 @@ const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const ElementRules = preload("res://state/element_rules.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
-const DESCRIPTIONS = preload("res://data/card_descriptions.json")
-const CLASS_NAMES := {"Priest": "牧师", "Mage": "法师", "Guardian": "守护者"}
+static var CLASS_NAMES: Dictionary = preload("res://data/localization_legacy.json").data.card_class_names
 static var _materials: Dictionary = {}
 
 static func clear_material_cache() -> void:
@@ -37,7 +36,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	illustration.position = Vector2(14, 14)
 	illustration.size = Vector2(190, 285)
 	if illustration.texture == null:
-		_text("插画待补", Rect2(14, 112, 190, 60), 22, P.MUTED)
+		_text(P.localized("illustration_missing"), Rect2(14, 112, 190, 60), 22, P.MUTED)
 	if selected and options.get("selected_overlay", false):
 		var selected_overlay := ColorRect.new()
 		selected_overlay.name = "SelectedIllustrationOverlay"
@@ -62,7 +61,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	var passed_effect: String = lines[1] if lines.size() > 1 else description
 	# Build compact summaries from the catalog's effects and level growth so
 	# upgraded cards cannot reuse the base-level numbers from the text table.
-	var effect := _face_description(id, passed_effect) if monster else CardDetails.face_description(id, int(options.get("level", 0)), info)
+	var effect := CardDetails.face_description(id, int(options.get("level", 0)), info)
 	if effect.is_empty(): effect = _face_description(id, passed_effect)
 	if monster:
 		_monster_text(id, info, effect, selected, int(options.get("level", 0)))
@@ -70,7 +69,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		var level := int(options.get("level", 0))
 		# card_view.gdshader moves the frame's text panel below the portrait:
 		# its usable interior is y=303..357, not the source texture's y=256..348.
-		var title := _text(CardDetails.localized_name(id, info), Rect2(24, 304, 170, 26), 18, P.PAPER if unowned else P.GOLD, true, P.scaled_font("title"))
+		var title := _text(CardDetails.localized_face_name(id, info), Rect2(24, 303, 170, 28), 18, P.PAPER if unowned else P.GOLD, true, P.scaled_font("title"))
 		title.name = "CardName"
 		var effect_label := _text(effect.replace("\n", " "), Rect2(24, 331, 170, 24), 16, P.PAPER, false)
 		effect_label.name = "CardEffect"
@@ -84,7 +83,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		if not battle_element_hint.is_empty(): _battle_element_badge(battle_element_hint)
 		elif level > 0: _level_badge(level)
 		if selected:
-			var selection := _text("已选", Rect2(75, 260, 68, 33), 18, P.GOLD)
+			var selection := _text(P.localized("selected"), Rect2(75, 260, 68, 33), 18, P.GOLD)
 			selection.name = "SelectedIndicator"
 			var selection_style := P.box(Color("172d35"), P.GOLD, 1)
 			for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]: selection_style.set_content_margin(side, 0)
@@ -97,8 +96,8 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 
 func _face_description(id: String, fallback: String) -> String:
 	var locale := P.language()
-	var tables: Dictionary = DESCRIPTIONS.data
-	var descriptions: Dictionary = tables.get(locale, tables.get("zh", {}))
+	if locale not in ["zh-CN", "en"]: return fallback
+	var descriptions: Dictionary = P.language_pack_section("card_descriptions")
 	var configured := str(descriptions.get("card.face.desc." + id, "")).strip_edges()
 	return configured if not configured.is_empty() else fallback
 
@@ -168,7 +167,7 @@ func _class_badge(hero_class: String, symbol: String) -> void:
 	badge.name = "ClassBadge"
 	badge.position = Vector2(156, -5)
 	badge.size = Vector2(58, 58)
-	badge.tooltip_text = P.localized_text("仅限%s职业编组" % P.localized_text(CLASS_NAMES.get(hero_class, symbol)))
+	badge.tooltip_text = P.localized_text(P.localized("class_restriction") % P.localized_text(CLASS_NAMES.get(hero_class, symbol)))
 	badge.mouse_filter = Control.MOUSE_FILTER_PASS
 	var label := _text(symbol, Rect2(168, 7, 34, 34), 22, P.PAPER)
 	label.name = "ClassSymbol"
@@ -181,24 +180,26 @@ func _monster_text(id: String, info: Dictionary, effect: String, selected: bool,
 	banner.size = Vector2(184, 34)
 	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(banner)
-	var title_text := P.localized("monster") + " " + CardDetails.localized_name(id, info)
+	var title_text := P.localized("monster") + " " + CardDetails.localized_face_name(id, info)
+	if P.language() != "zh-CN": title_text = CardDetails.localized_face_name(id, info)
 	var title := _text(title_text, Rect2(19, 28, 180, 34), 21, P.PAPER, true, P.scaled_font("title"))
 	title.name = "MonsterName"
-	_text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
+	var effect_label := _text(effect, Rect2(21, 304, 176, 38), 17, P.PAPER)
+	effect_label.name = "MonsterEffect"
+	effect_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+	effect_label.max_lines_visible = 1
+	effect_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	if id == "M-BOXSPIRIT":
 		var element: String = info.get("element", "None")
-		_text(P.word(element), Rect2(135, 258, 61, 35), 23, P.ELEMENT.get(element, Color.WHITE)).name = "MonsterElement"
-	_text("已选 · 本局怪物卡" if selected else "本局怪物卡", Rect2(24, 344, 170, 19), 13, P.GOLD if selected else Color("d3b6ab")).name = "MonsterFooter"
+		_text(P.word(element), Rect2(116, 258, 80, 35), 23, P.ELEMENT.get(element, Color.WHITE)).name = "MonsterElement"
+	_text(P.localized("card_monster_selected") if selected else P.localized("battle_monster_card"), Rect2(24, 344, 170, 19), 13, P.GOLD if selected else Color("d3b6ab")).name = "MonsterFooter"
 
 func _fit_card_effect_font(label: Label, requested_size: int) -> void:
 	var typeface: Font = P.font_for_text(label.text, requested_size, true)
-	var fitted_size: int = requested_size
-	while fitted_size > 12:
-		var text_size := typeface.get_string_size(label.text, HORIZONTAL_ALIGNMENT_CENTER, -1.0, fitted_size)
-		if text_size.x <= label.size.x and typeface.get_height(fitted_size) <= label.size.y:
-			break
-		fitted_size -= 1
-	label.add_theme_font_size_override("font_size", fitted_size)
+	# Faces reserve one summary line. Keep its authored size; the tooltip and
+	# card details retain the complete effects when the summary is elided.
+	label.add_theme_font_override("font", typeface)
+	label.add_theme_font_size_override("font_size", requested_size)
 
 func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect: bool = true, typeface_override: Font = null) -> Label:
 	var label := Label.new()

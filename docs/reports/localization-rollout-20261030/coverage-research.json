@@ -1,0 +1,256 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-10-30",
+  "scope": "Evidence research only. No locale pack, production code, rollout configuration, deployment, or next batch was changed or started.",
+  "decision": {
+    "target_reached": false,
+    "can_certify_80_percent_of_current_global_population_understands_the_written_game": false,
+    "reason_zh": "现有 CLDR 每地区最大值模型的最高结果只有 74.1576%。印度互斥母语明细与印尼官方语言能力调查能使一个条件性语言可达估算超过 80%，但母语/口语能力、文字阅读能力、统计年份及当前人口并非同一口径，不能把该规划情景当作 2026 年全球人口看懂游戏的证明。",
+    "implementation_recommendation": "Keep target_reached false. Complete and independently review the current Spanish batch before any next language batch. Treat the inventories below as research scenarios, not release authorization or a proven minimum language list."
+  },
+  "existing_estimator_recalculation": {
+    "source_file": "config/localization_coverage_source.json",
+    "source_file_sha256": "b50369a0e1f5434c942dfe45064b39f488604ca0cedac5117e993248c19f2c0a",
+    "source_version": "Unicode CLDR 48",
+    "implementation_read_only": "tools/localization_audit.py:coverage",
+    "territory_entries": 258,
+    "distinct_source_language_codes": 778,
+    "population_denominator": 8062273015,
+    "released_codes_used_in_recalculation": ["zh-CN", "en"],
+    "released_estimated_coverage_percent": 37.246217288189904,
+    "candidate_codes_used_in_recalculation": ["zh-CN", "en", "es"],
+    "candidate_estimated_coverage_percent": 41.93635669909152,
+    "candidate_is_released": false,
+    "maximum_estimator_result_with_every_source_language_percent": 74.15763151801428,
+    "meaning_of_maximum": "Maximum output of this specific estimator, not an upper bound on real multilingual comprehension. Adding more locale packs cannot make this unmodified estimator return 80%.",
+    "literacy_adjusted_same_maximum_sensitivity_percent": 62.664715876719164,
+    "literacy_sensitivity_formula": "sum_t(P_t * max_l(populationPercent_tl/100 * literacyPercent_tl/100)) / sum_t(P_t) * 100; missing language literacyPercent defaults to territory literacyPercent, following CLDR definitions",
+    "literacy_sensitivity_interpretation": "Diagnostic estimate only. The existing estimator uses populationPercent without the separate language-literacy factor. Neither figure certifies reading the game's vocabulary, all-age comprehension, or a statistical confidence bound.",
+    "geographic_dedup_audit_needed": {
+      "reason": "Distinct CLDR territory keys do not by themselves establish disjoint statistical populations. Reconcile them to one population geography before claiming a world-person percentage.",
+      "examples_requiring_crosswalk_review": [["ES", "IC", "EA"], ["SH", "AC", "TA"], ["IO", "DG"]],
+      "not_asserted": "This research did not quantify actual overlap in these population estimates; the current sum was reproduced as-is for comparability."
+    }
+  },
+  "primary_sources": [
+    {
+      "id": "unicode_cldr48",
+      "publisher": "Unicode Consortium",
+      "url": "https://github.com/unicode-org/cldr-json/blob/48.0.0/cldr-json/cldr-core/supplemental/territoryInfo.json",
+      "definitions_url": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
+      "checked": "Local frozen dataset and official definitions were read.",
+      "methodological_facts": "populationPercent includes functional first- and second-language users; language literacy is a separate conditional percentage. Marginals can overlap. CLDR describes the data as approximate estimates collected from multiple sources."
+    },
+    {
+      "id": "india_c16_2011",
+      "publisher": "Office of the Registrar General & Census Commissioner, India",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/10191",
+      "workbook_url": "https://censusindia.gov.in/nada/index.php/catalog/10191/download/13303/DDW-C16-STMT-MDDS-0000.XLSX",
+      "reference_id": "PC11_C16-00",
+      "observation_year": 2011,
+      "checked": "Official catalog verified: individual-person mother-tongue counts, total/rural/urban and geographic levels; language group rows and constituent mother-tongue rows are separately listed.",
+      "retrieval_limitation": "Official workbook could not be fetched locally: network timeout. Web fetch rejected its application/octet-stream type. No workbook byte hash or workbook cell-level validation is claimed."
+    },
+    {
+      "id": "india_c16_publication",
+      "publisher": "Office of the Registrar General, India",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/42458",
+      "official_pdf_url": "https://censusindia.gov.in/nada/index.php/catalog/42458/download/46089/C-16_25062018.pdf",
+      "publication": "Census of India 2011, Paper 1 of 2018, Language, Table C-16",
+      "published_on": "2018-06-25",
+      "primary_authored_document_mirror_used_for_reading": "https://cdn.downtoearth.org.in/library/0.58521300_1530794876_census-of-india-2011.pdf",
+      "pages_used_zero_based": [4, 5, 7, 8, 9, 13],
+      "checked": "The mirrored document identifies the official author, title and Table C-16. Statement 1 gives the exact mother-tongue leaves below; Statement 2 gives the denominator. The source is the official-authored publication, not a third-party reinterpretation.",
+      "limitation": "Mirror byte identity to the official download was not verified. Reconcile these transcriptions to the official workbook before adopting a production evidence ledger."
+    },
+    {
+      "id": "india_c17_2011",
+      "publisher": "Office of the Registrar General & Census Commissioner, India",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/10262",
+      "workbook_url": "https://censusindia.gov.in/nada/index.php/catalog/10262/download/13374/DDW-C17-0000.XLSX",
+      "reference_id": "PC11_C17-00",
+      "checked": "Official catalog verified. It classifies speakers by mother-tongue language and first/second subsidiary languages. This can support stronger overlap constraints after its hierarchical workbook rows are audited.",
+      "used_numerically": false,
+      "limitation": "Workbook retrieval timed out. No English/Hindi L2 totals were added to mother-tongue totals. Catalog language groups must not be assumed to equal detailed C-16 mother-tongue leaves."
+    },
+    {
+      "id": "indonesia_supas2025_language",
+      "publisher": "BPS-Statistics Indonesia",
+      "url": "https://www.bps.go.id/en/statistics-table/2/MjgwNSMy/persentase-penduduk-berumur-5-tahun-ke-atas-menurut-kelompok-umur-dan-kemampuan-berbahasa-indonesia-persen.html",
+      "title": "Percentage of Population Aged 5 Years and Over by Age Group and Indonesian Language Ability, 2025",
+      "observation_year": 2025,
+      "updated_on": "2026-07-13",
+      "survey": "2025 Intercensal Population Survey",
+      "able_percent_age5plus": 98.12,
+      "unable_percent_age5plus": 1.88,
+      "checked": "Official BPS search-index table returned the national row, age rows, year, update date and SUPAS source. Direct subsequent page reads returned 403; retain an official export before production adoption.",
+      "limitation": "Language ability is not a verified language-specific reading or game-UI comprehension measure. Published sampling uncertainty was not available in the inspected table."
+    },
+    {
+      "id": "indonesia_supas2025_age",
+      "publisher": "BPS-Statistics Indonesia",
+      "url": "https://www.bps.go.id/en/statistics-table/2/Mjc3NyMy/jumlah-penduduk-menurut-kelompok-umur-dan-jenis-kelamin.html",
+      "title": "Population by Age Group and Gender, 2025",
+      "observation_year": 2025,
+      "updated_on": "2026-07-13",
+      "survey": "2025 Intercensal Population Survey",
+      "population_total": 284667253,
+      "population_age0to4": 22741968,
+      "population_age5plus_derived": 261925285,
+      "checked": "Official BPS search-index table returned all age rows and total. These figures are SUPAS results, not the separate 2020-2050 projection table with a different 2025 total. Direct page read returned 403."
+    },
+    {
+      "id": "indonesia_language_indicator_metadata",
+      "publisher": "BPS-Statistics Indonesia",
+      "url": "https://sirusa.web.bps.go.id/metadata/indikator/898edaba-8756-6a28-e0ef-3fa804ad28b5",
+      "checked": "Definition confirms Indonesian language ability is measured for ages 5 and above; inspected metadata does not establish reading comprehension."
+    },
+    {
+      "id": "un_population",
+      "publisher": "United Nations DESA Population Division",
+      "url": "https://population.un.org/wpp/",
+      "dataset_url": "https://www.un.org/development/desa/pd/content/world-population-prospects-2024-dataset",
+      "summary_url": "https://www.un.org/development/desa/pd/sites/www.un.org.development.desa.pd/files/wpp2024_summary_of_results_final_web.pdf",
+      "recommended_use": "Freeze one WPP revision and one observation/projection date for world and country denominators, with a reviewed country/area crosswalk. Separate 2026 projections from observed language data.",
+      "used_numerically": false,
+      "limitation": "No complete 2026 WPP country extract was downloaded or reconciled in this research. No current UN world-population denominator is claimed."
+    }
+  ],
+  "india_disjoint_mother_tongue_evidence": {
+    "source_id": "india_c16_publication",
+    "population_denominator_2011": 1210854977,
+    "row_selection": "Statement 1 exact named mother-tongue leaves only. Exclude uppercase language-group totals, all Others categories, rural/urban repeats and state repeats.",
+    "not_a_reading_measure": true,
+    "rows": [
+      {"code": "hi", "mother_tongue_leaf": "Hindi", "persons": 322230097, "script_candidate": "Deva"},
+      {"code": "bn", "mother_tongue_leaf": "Bengali", "persons": 96177835, "script_candidate": "Beng"},
+      {"code": "mr", "mother_tongue_leaf": "Marathi", "persons": 82801140, "script_candidate": "Deva"},
+      {"code": "te", "mother_tongue_leaf": "Telugu", "persons": 80912459, "script_candidate": "Telu"},
+      {"code": "ta", "mother_tongue_leaf": "Tamil", "persons": 68888839, "script_candidate": "Taml"},
+      {"code": "gu", "mother_tongue_leaf": "Gujarati", "persons": 55036204, "script_candidate": "Gujr"},
+      {"code": "ur", "mother_tongue_leaf": "Urdu", "persons": 50725762, "script_candidate": "Arab"},
+      {"code": "kn", "mother_tongue_leaf": "Kannada", "persons": 43506272, "script_candidate": "Knda"},
+      {"code": "ml", "mother_tongue_leaf": "Malayalam", "persons": 34776533, "script_candidate": "Mlym"},
+      {"code": "or", "mother_tongue_leaf": "Odia", "persons": 34059266, "script_candidate": "Orya"},
+      {"code": "pa", "mother_tongue_leaf": "Punjabi", "persons": 31144095, "script_candidate": "Guru", "caution": "Mother-tongue count does not identify script literacy. pa must not also count Pakistan's pa_Arab population."},
+      {"code": "as", "mother_tongue_leaf": "Assamese", "persons": 14816414, "script_candidate": "Beng"},
+      {"code": "mai", "mother_tongue_leaf": "Maithili", "persons": 13353347, "script_candidate": "Deva", "caution": "Validate the written standard and script understood by intended readers."},
+      {"code": "bho", "mother_tongue_leaf": "Bhojpuri", "persons": 50579447, "script_candidate": "Deva", "caution": "Contained within the HINDI census group, but not within the Hindi leaf."},
+      {"code": "raj", "mother_tongue_leaf": "Rajasthani", "persons": 25806344, "script_candidate": "Deva", "caution": "Do not count Marwari, Mewari or other HINDI-group leaves through this row. A locale's written standard requires separate comprehension validation."},
+      {"code": "mag", "mother_tongue_leaf": "Magadhi/Magahi", "persons": 12706825, "script_candidate": "Deva"},
+      {"code": "hne", "mother_tongue_leaf": "Chhattisgarhi", "persons": 16245190, "script_candidate": "Deva"},
+      {"code": "en", "mother_tongue_leaf": "English", "persons": 259678, "script_candidate": "Latn"}
+    ],
+    "important_non_equivalence": {
+      "HINDI_language_group_persons": 528347193,
+      "Hindi_exact_leaf_persons": 322230097,
+      "difference_persons": 206117096,
+      "rule": "Never substitute the 528347193 group for standard-Hindi coverage, and never add that group to its Bhojpuri/Rajasthani/Magahi/Chhattisgarhi constituents. Native use of any language also does not by itself certify reading its chosen script."
+    }
+  },
+  "conditional_planning_model": {
+    "is_a_certified_game_readability_bound": false,
+    "meaning": "Overlap-conservative language-reach scenario conditional on source estimates, leaf-to-locale mapping and unchanged historical shares. It is not a current-person confidence bound and does not measure one consistent written-UI event.",
+    "fixed_denominator_for_comparability": "Unmodified CLDR territory population sum: 8062273015; not a 2026 UN denominator.",
+    "formulas": {
+      "cldr_country_fraction": "C_t(S) = max_{supported exact language/script codes l} populationPercent_tl / 100",
+      "india_leaf_fraction": "I(S) = sum_{supported exact C16 leaves j} persons_j / 1210854977",
+      "indonesia_fraction": "D(S) = 0 if id is absent; otherwise 0.98115 * (284667253 - 22741968) / 284667253",
+      "country_selection": "p_IN = max(C_IN, I); p_ID = max(C_ID, D); p_other = C_other. Never add overlapping alternative estimates within a country.",
+      "global_fraction": "sum_t(P_t * p_t) / sum_t(P_t)"
+    },
+    "indonesia_conversion": {
+      "reported_age5plus_able_fraction": 0.9812,
+      "rounding_floor_fraction_assuming_nearest_0_01_percentage_point": 0.98115,
+      "all_age_language_reach_fraction_excluding_every_child_under5": 0.902766267174925,
+      "cldr_indonesia_fraction": 0.64,
+      "cldr_indonesia_population": 281562000,
+      "conditional_global_improvement_percentage_points": 0.9176691930508414,
+      "caution": "The rounding floor is not a survey confidence interval. Applying a 2025 survey fraction to a different population vintage is an explicit scenario assumption."
+    },
+    "india_threshold_if_all_other_cldr_maxima_retained": {
+      "cldr_india_population": 1409130000,
+      "cldr_india_population_weight_percent": 17.478073458667165,
+      "cldr_india_maximum_percent": 41,
+      "required_india_fraction_percent_for_global80": 74.42684475953243,
+      "formula_percent": "41 + (80 - 74.15763151801428) * 8062273015 / 1409130000",
+      "if_india_were100_maximum_estimator_percent": 84.46969485862792
+    },
+    "useful_near_threshold_counterexample": {
+      "india_codes": ["hi", "bn", "mr", "te", "ta", "gu", "ur", "kn", "ml", "or", "pa", "en"],
+      "india_leaf_persons_2011": 900518180,
+      "india_leaf_fraction_percent": 74.37044048256821,
+      "global_result_even_with_every_other_cldr_language_percent": 79.99014161903837,
+      "lesson": "The 11 large Indian exact mother-tongue leaves plus native English narrowly fail this threshold. Rounding 79.9901% to 80% would be a false pass. Extra disjoint evidence or additional exact leaves are required in this scenario."
+    },
+    "concrete_candidate_inventory": {
+      "not_a_next_batch": true,
+      "not_proven_minimal_or_necessary": true,
+      "selection_method": "One reproducible greedy planning inventory using the inspected exact Indian leaves. Retain only its language set; it is not a release sequence or a global optimization result.",
+      "source_language_codes": ["ar", "ary", "as", "az", "bho", "bn", "cs", "de", "en", "es", "fa", "fr", "gu", "hi", "hne", "id", "it", "ja", "km", "kn", "ko", "mag", "mai", "mg", "ml", "mr", "ms", "my", "ne", "or", "pa", "pl", "pt", "raj", "ro", "ru", "rw", "si", "sw", "ta", "te", "tg", "th", "tr", "ur", "uz", "vi", "wo", "zh", "zh_Hant"],
+      "source_language_code_count": 50,
+      "existing_locale_mapping": {"zh": "zh-CN", "zh_Hant": "Requires a separately validated Traditional Chinese locale"},
+      "base_cldr_only_estimate_percent": 72.34222250588223,
+      "india_selected_exact_leaf_persons_2011": 1034025747,
+      "india_selected_exact_leaf_fraction_percent": 85.39633289214287,
+      "india_conditional_global_improvement_percentage_points": 7.759623675843143,
+      "with_india_only_estimate_percent": 80.10184618172538,
+      "with_india_and_indonesia_estimate_percent": 81.01951537477622,
+      "why_this_is_not_a_pass": [
+        "Most listed language packs do not exist or have not passed native UI and independent release review.",
+        "Indian 2011 mother-tongue and Indonesian 2025 language-ability events do not establish literacy in the delivered scripts or game vocabulary.",
+        "The population years and geographic coverage have not been harmonized; no survey confidence floor or measured current-share drift is included.",
+        "Bhojpuri, Magahi, Chhattisgarhi and Rajasthani need validated written standards; census naming alone does not establish that one localization reaches every respondent.",
+        "CLDR estimates elsewhere remain approximate; geographic deduplication remains unverified."
+      ]
+    }
+  },
+  "additional_official_evidence_paths": [
+    {
+      "country": "IN",
+      "source_id": "india_c17_2011",
+      "next_evidence_step": "Audit the C17 workbook hierarchy and totals. For each mutually exclusive mother-tongue group, count supported first-subsidiary-language categories once. Use second-subsidiary-language cells only where their conditioning and overlap with the first language are known. Reconcile coarse C17 groups to fine C16 leaves.",
+      "safe_unknown_overlap_rule": "Within a census mother-tongue group g, if supported C16 leaf mass is A_g and independently established supported-subsidiary-language union mass is B_g, only max(A_g, B_g) is justified without their joint cross-tab. Sum those maxima over disjoint groups. Do not use A_g + B_g.",
+      "expected_value": "Could increase deduplicated spoken-language reach without automatically assuming all grouped Hindi varieties understand standard Hindi. No numerical gain is booked."
+    },
+    {
+      "country": "ZA",
+      "publisher": "Statistics South Africa",
+      "url": "https://census.statssa.gov.za/assets/documents/2022/P03014_Census_2022_Statistical_Release.pdf",
+      "supporting_url": "https://www.statssa.gov.za/publications/03-00-22/03-00-222024.pdf",
+      "table": "Census 2022 Table 2.8 / report Table 5.4.1",
+      "evidence": "Mutually exclusive language-most-often-spoken-in-household categories. Major 2022 shares include isiZulu 24.4%, isiXhosa 16.3%, Afrikaans 10.6%, Sepedi 10.0%, English 8.7%, Setswana 8.3%, Sesotho 7.8%.",
+      "candidate_source_codes": ["zu", "xh", "af", "nso", "en", "tn", "st", "ts", "ss", "ve", "nr"],
+      "limitations": "Table excludes children younger than one. Obtain the matching age denominator before all-age scaling. The question is household language most often spoken, not necessarily a person's mother tongue, strongest language or reading competence. Do not add English L2 to the household union. No numerical gain is booked."
+    },
+    {
+      "country": "PK",
+      "publisher": "Pakistan Bureau of Statistics",
+      "url": "https://www.pbs.gov.pk/wp-content/uploads/census_tables/tables/table_11_national.pdf",
+      "catalog_url": "https://www.pbs.gov.pk/census/",
+      "table": "Population and Housing Census 2023, national Table 11, all localities/all sexes",
+      "population_total_in_table": 240458089,
+      "evidence": "An official national, mutually exclusive mother-tongue table is available, including Urdu, Punjabi, Sindhi, Pushto, Balochi, Saraiki and Hindko.",
+      "limitations": "Confirm national geographic scope against the world-population crosswalk, including treatment of AJK/Gilgit-Baltistan. Pakistani Punjabi requires Shahmukhi/Arabic-script support and cannot be credited to Gurmukhi pa. Urdu/Hindi speech similarity is not an interchangeable written-UI mapping. No numerical gain is booked."
+    }
+  ],
+  "recommended_evidence_model_before_any_80_percent_claim": {
+    "metric": "Record a single event: a person can understand the written UI in at least one released language/script, or explicitly label a different claim as estimated spoken-language reach. Preserve the all-global-population denominator unless the user authorizes an age/reader/gamer denominator.",
+    "population": "Use one UN population revision/date with nonoverlapping country/area units. Audit every CLDR special territory and census territorial exclusion against that crosswalk.",
+    "language_mapping": "Record locale, script, language standard, territory and supporting population row. Script and dialect compatibility must be explicit; no automatic Chinese, Hindi/Urdu, Punjabi-script or Arabic-dialect equivalence.",
+    "overlap": "Prefer disjoint exact mother-tongue leaves or joint L1/L2/L3 comprehension tables. For unmatched marginal unions retain a maximum, not a sum. For multiple constraints in the same population, a linear program minimizing supported-event union can calculate a sharp conservative overlap bound.",
+    "reading": "Obtain language/script-specific reading data. For spoken fraction a and language-specific literate fraction b measured over the same population, the intersection is at least max(0,a+b-1), not a*b unless independence is justified. Generic literacy does not establish literacy in a particular supported language/script.",
+    "time_and_uncertainty": "Keep census/survey year, population vintage, confidence intervals, age filters and temporal adjustments as separate evidence fields. Old mother-tongue shares rescaled to 2026 are an assumption, not an observed conservative current lower bound. Do not invent an arbitrary discount and call it a validated confidence interval.",
+    "release_eligibility": "Only completed, native-UI-validated, independently revalidated and released locale packs can enter the delivered-language set. Research inventories and Spanish candidate files do not enter released coverage.",
+    "acceptance_condition": "A reviewed harmonized estimate must remain at or above 80% before rounding, using only eligible released language/script mappings and published evidence. Retain target_reached=false until then.",
+    "minimum_list_conclusion": "No globally necessary or sufficient final language list can presently be certified. The 50-code scenario demonstrates a concrete research direction, not proof that those locales alone satisfy written-game comprehension for 80% of today's world."
+  },
+  "verification": {
+    "read_only_source_code_and_configuration": true,
+    "large_processes_started": false,
+    "new_locale_batch_started": false,
+    "external_messages_sent": false,
+    "calculations": "Recomputed in bundled Python with the existing coverage function and separate in-memory scenario arithmetic. Official workbook reads were attempted read-only and failed before loading data. No workbook was created or modified.",
+    "report_only_output": "docs/reports/localization-rollout-20261030/coverage-research.json"
+  }
+}

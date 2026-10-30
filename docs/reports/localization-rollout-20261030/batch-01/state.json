@@ -1,0 +1,55 @@
+{
+  "scope": "game localization and full legacy-copy migration; website deployment deferred by user",
+  "base_commit": "0f402352bc334b08b5b34da18880d532a29866fc",
+  "languages": [
+    "zh-CN",
+    "en",
+    "es"
+  ],
+  "strings_per_locale": 826,
+  "card_names_per_locale": 232,
+  "hardcoded_ui_literals": 0,
+  "missing_literal_keys": 0,
+  "static_tables": "Passed",
+  "unit_tests": "4 passed",
+  "earlier_catalog_regressions": {
+    "status": "Superseded by frozen-probes.json",
+    "cards_per_locale": 232,
+    "shop_cards_per_locale": 220,
+    "upgrade_vectors": 2640,
+    "boundary_checks": 369,
+    "native_suites": 28
+  },
+  "latest_completed_native": {
+    "evidence": "tmp/localization-legacy-es-960-r4",
+    "frames": 55,
+    "locale": "es",
+    "width": 960,
+    "status": "Passed on earlier candidate; not approval of latest source"
+  },
+  "latest_native_attempt": {
+    "status": "Passed",
+    "evidence": "docs/reports/localization-rollout-20261030/batch-01/local-ui-evidence.json",
+    "screenshots": 495,
+    "checks": 42669
+  },
+  "independent_review": {
+    "thread_id": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+    "status": "ReadyForHandoff_LocalChecksPassed"
+  },
+  "game_batch_passed": false,
+  "deployed": false,
+  "website_deployment": "DeferredByUser",
+  "coverage_target_reached": false,
+  "pending_user_input": null,
+  "next_required_checks": [
+    "Re-run current native card/glyph/legacy regressions",
+    "Run latest UI checks at 960,1280,1920 in each supported language",
+    "Run isolated HTTP/protobuf client tests",
+    "Independent review in the designated chat",
+    "Mark passed and deploy/restart only after review passes",
+    "Continue next language group"
+  ],
+  "resource_policy": "User chose to wait for free memory; do not close or interrupt FreeVideo",
+  "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation"
+}

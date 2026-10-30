@@ -5,7 +5,6 @@ const Art = preload("res://ui/art.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const CompareModel = preload("res://ui/equipment_compare_model.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
-const COPY = preload("res://data/equipment_compare_text.json")
 
 const POSITIVE := Color("62dc83")
 const NEGATIVE := Color("ef5c5c")
@@ -333,7 +332,7 @@ func _signed_percent(value: float) -> String:
 
 func _t(key: String) -> String:
 	var language := P.language()
-	var table: Dictionary = COPY.data.get(language, COPY.data.get("zh-CN", {}))
+	var table: Dictionary = P.language_pack_section("equipment_compare")
 	return str(table.get(key, key))
 
 func _unhandled_key_input(event: InputEvent) -> void:

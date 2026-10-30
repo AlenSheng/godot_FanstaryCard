@@ -1,0 +1,24 @@
+name: Game localization tables
+on:
+  pull_request:
+    paths: ['client/**', 'tools/*localization*.py', 'tools/audit_ui_text.py', 'tools/tests/test_localization_audit.py', 'config/localization*.json', '.github/workflows/localization.yml']
+  push:
+    branches: ['release']
+    paths: ['client/**', 'tools/*localization*.py', 'tools/audit_ui_text.py', 'tools/tests/test_localization_audit.py', 'config/localization*.json', '.github/workflows/localization.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  tables:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Reject hardcoded game copy
+        run: python3 tools/audit_ui_text.py
+      - name: Check every registered language table
+        run: python3 tools/localization_audit.py
+      - name: Verify placeholder and population-overlap rules
+        run: python3 -m unittest tools.tests.test_localization_audit -v

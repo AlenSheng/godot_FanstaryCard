@@ -46,7 +46,7 @@ func configure(host: Control, scroll: ScrollContainer, entries: Array, side: flo
 		_slots.append(slot)
 	if _entries.is_empty():
 		var empty := Label.new()
-		empty.text = P.localized_text("没有符合条件的卡牌")
+		empty.text = P.localized_text(P.localized("no_matching_cards"))
 		empty.custom_minimum_size = Vector2(1000, 180)
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		add_child(empty)

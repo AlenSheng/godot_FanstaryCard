@@ -80,7 +80,13 @@ def main():
             output["tables"][table[1][0].decode()] = rows
     target = ROOT / "client/data/catalog.json"
     target.write_text(json.dumps(output, ensure_ascii=False, indent=2), encoding="utf-8")
-    descriptions = json.loads((ROOT / "config/card_descriptions.json").read_text(encoding="utf-8"))
+    # Compatibility output for historical tools. Author descriptions in the
+    # same per-language packs used by the runtime.
+    locale_root = ROOT / "client/data/locales"
+    descriptions = {}
+    for code in ("en", "zh-CN"):
+        pack = json.loads((locale_root / (code + ".json")).read_text(encoding="utf-8"))
+        descriptions["zh" if code == "zh-CN" else code] = pack.get("card_descriptions", {})
     (ROOT / "client/data/card_descriptions.json").write_text(json.dumps(descriptions, ensure_ascii=False), encoding="utf-8")
     print({name: len(rows) for name, rows in output["tables"].items()})
 

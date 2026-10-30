@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "target": {
+    "population": "global",
+    "minimum_coverage_percent": 80,
+    "overlap_policy": "conservative_lower_bound"
+  },
+  "coverage_source": {
+    "publisher": "Unicode Consortium",
+    "dataset": "CLDR 48 territoryInfo",
+    "url": "https://github.com/unicode-org/cldr-json/blob/48.0.0/cldr-json/cldr-core/supplemental/territoryInfo.json",
+    "blob_sha": "f4d1177ca41700e17fecce40ae368ea1ccf59547",
+    "definitions": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
+    "limitation": "Countrywise maxima alone cannot establish 80% even if all listed languages are supported. Supplement disjoint census language groups before claiming the global target."
+  },
+  "review_thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+  "website_policy": "Deferred by explicit user instruction on 2026-10-29; preserve draft website work without deployment and continue game localization",
+  "release_gate_order": [
+    "complete_game_translation",
+    "native_ui_validation",
+    "independent_thread_revalidation",
+    "mark_game_passed",
+    "deploy_and_restart_game_services",
+    "external_health_checks",
+    "next_batch"
+  ],
+  "batches": [
+    {
+      "id": "01",
+      "locales": [
+        "es"
+      ],
+      "status": "local_ui_passed_awaiting_independent_review",
+      "passed": false,
+      "deployed": false,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-01/state.json"
+    }
+  ],
+  "target_reached": false
+}

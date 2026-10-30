@@ -41,7 +41,7 @@ class Handler(BaseHTTPRequestHandler):
         for k,v in (extra or {}).items(): self.send_header(k,str(v))
         self.end_headers()
         try: self.wfile.write(body)
-        except (ConnectionResetError, BrokenPipeError): pass
+        except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError): pass
     def do_GET(self):
         global websocket_safe
         uri = urlsplit(self.path); q=parse_qs(uri.query); path=uri.path.rstrip('/')

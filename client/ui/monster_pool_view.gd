@@ -5,17 +5,11 @@ const Art = preload("res://ui/art.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const CardView = preload("res://ui/card_view.gd")
-const TEXT := {
-    "zh-CN": {"title":"本局怪物卡", "capacity":"已吸收 %d / %d", "accept":"吸收", "skip":"跳过", "replace":"替换已吸收卡", "empty":"没有待处理的怪物卡", "hint":"只影响本局；新卡进入弃牌，不补抽。", "loot":"可搜刮战利品（与战斗装备分开）", "active_header":"已吸收的怪物卡", "empty_active":"尚未吸收怪物卡", "full_hint":"容量已满，请先选择要替换的已吸收卡。"},
-    "zh-TW": {"title":"本局怪物卡", "capacity":"已吸收 %d / %d", "accept":"吸收", "skip":"略過", "replace":"替換已吸收卡", "empty":"沒有待處理的怪物卡", "hint":"只影響本局；新卡進入棄牌，不補抽。", "loot":"可搜刮戰利品（與戰鬥裝備分開）", "active_header":"已吸收的怪物卡", "empty_active":"尚未吸收怪物卡", "full_hint":"容量已滿，請先選擇要替換的已吸收卡。"},
-    "en": {"title":"Run monster cards", "capacity":"Active %d / %d", "accept":"Absorb", "skip":"Skip", "replace":"Replace active card", "empty":"No pending monster cards", "hint":"This run only. New cards enter discard; no bonus draw.", "loot":"Searchable loot (separate from combat equipment)", "active_header":"Active monster cards", "empty_active":"No monster cards absorbed yet", "full_hint":"Pool full. Select an active card to replace before absorbing."},
-    "ja": {"title":"探索中のモンスターカード", "capacity":"吸収済み %d / %d", "accept":"吸収", "skip":"スキップ", "replace":"吸収済みカードと交換", "empty":"保留中のカードはありません", "hint":"今回の探索のみ。新カードは捨て札へ。追加ドローなし。", "loot":"回収可能な戦利品（戦闘装備とは別）", "active_header":"吸収済みモンスターカード", "empty_active":"まだカードを吸収していません", "full_hint":"上限に達しています。先に交換するカードを選んでください。"},
-    "ko": {"title":"이번 탐험 몬스터 카드", "capacity":"활성 %d / %d", "accept":"흡수", "skip":"건너뛰기", "replace":"활성 카드 교체", "empty":"대기 중인 카드가 없습니다", "hint":"이번 탐험에만 적용. 새 카드는 버린 카드 더미로 이동하며 추가 드로우는 없습니다.", "loot":"회수 가능한 전리품 (전투 장비와 별도)", "active_header":"흡수한 몬스터 카드", "empty_active":"아직 흡수한 카드가 없습니다", "full_hint":"한도에 도달했습니다. 먼저 교체할 카드를 선택하세요."}
-}
+
 
 static func text(key: String) -> String:
     var lang: String = P.language()
-    var dictionary: Dictionary = TEXT.get(lang, TEXT.get(lang.get_slice("-", 0), TEXT.en))
+    var dictionary: Dictionary = P.language_pack_section("monster_pool")
     return str(dictionary.get(key, key))
 
 static func _pool_theme() -> Theme:

@@ -1,5 +1,7 @@
 extends Node
 
+const P = preload("res://ui/palette.gd")
+
 signal changed
 signal notice(message: String)
 signal player_data_invalidated
@@ -51,7 +53,7 @@ var _login_deadline := 0
 var _login_generation := -1
 var _class_switch_request_active := false
 var _pending_class := ""
-var connection := "未连接"
+var connection := P.localized("disconnected")
 var _settlement_loading := ""
 var _settlement_ack_pending_id := ""
 var _settlement_polling := false
@@ -142,7 +144,7 @@ func _process(_delta: float) -> void:
 			break
 	if not _queued_command.is_empty() and Time.get_ticks_msec() > _queue_deadline:
 		_queued_command = {}
-		notice.emit("操作未发出，请在连接恢复后重试")
+		notice.emit(P.localized("request_not_sent"))
 		pending_changed = true
 	_flush_latest_commands()
 	_flush_combat_preview()
@@ -205,7 +207,7 @@ func _apply_server_info(info: Dictionary) -> void:
 	if lobby.is_empty():
 		changed.emit()
 	else:
-		validate_config(str(info.get("configVersion", "")), "服务器")
+		validate_config(str(info.get("configVersion", "")), P.localized("server"))
 
 func login(address: String, display_name: String) -> void:
 	await _login(address, display_name, false)
@@ -217,7 +219,7 @@ func logout() -> void:
 	# End the local session and show the login screen in one state change.
 	# The gateway has no logout request to wait for.
 	gateway.end_session("", false)
-	_on_authentication_required("已退出登录")
+	_on_authentication_required(P.localized("logged_out"))
 
 func reconnect() -> void:
 	if busy: return
@@ -229,10 +231,10 @@ func reconnect() -> void:
 		if OS.is_debug_build() and is_local_server and not gateway.local_account_name.is_empty():
 			await _login(gateway.base_url, gateway.local_account_name, false)
 		else:
-			gateway.end_session("登录会话已失效，请重新登录")
+			gateway.end_session(P.localized("login_session_invalid"))
 		return
 	busy = true
-	connection = "正在恢复连接…"
+	connection = P.localized("restoring_connection")
 	changed.emit()
 	var generation: int = gateway.session_generation
 	await refresh_lobby()
@@ -319,17 +321,17 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if busy: return
 	display_name = display_name.strip_edges()
 	if not steam_login and display_name.is_empty():
-		_reject_login("请输入账号名称")
+		_reject_login(P.localized("enter_account"))
 		return
 	address = address.strip_edges().trim_suffix("/")
 	if not (address.begins_with("http://") or address.begins_with("https://")):
-		_reject_login("请输入 http:// 或 https:// 服务器地址")
+		_reject_login(P.localized("invalid_server_url"))
 		return
 	if not OS.is_debug_build() and not address.begins_with("https://"):
-		_reject_login("正式客户端需要 HTTPS 服务器地址")
+		_reject_login(P.localized("https_required"))
 		return
 	if not steam_login and not platform.local_login_enabled():
-		_reject_login("本地账号仅用于开发验证，请使用 Steam 登录")
+		_reject_login(P.localized("local_login_dev_only"))
 		return
 	if steam_login:
 		var unavailable: String = platform.login_unavailable_reason()
@@ -346,15 +348,15 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	busy = true
 	_login_generation = generation
 	_login_deadline = Time.get_ticks_msec() + LOGIN_TIMEOUT_MS
-	connection = "正在连接…"
+	connection = P.localized("connecting")
 	changed.emit()
 	var has_current_server_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	var server_ready: bool = (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()
+	var server_ready: bool = (has_current_server_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()
 	if generation != gateway.session_generation: return
 	if server_ready:
 		var capability := "identity.steam" if steam_login else "identity.local"
 		if capability not in server_info.get("capabilities", []):
-			authentication_reason = "此服务器未启用 Steam 登录" if steam_login else "此服务器未启用本地开发登录"
+			authentication_reason = P.localized("steam_disabled") if steam_login else P.localized("local_login_disabled")
 			notice.emit(authentication_reason)
 		else:
 			var sign_in: Dictionary = {"deviceId": gateway.device_id, "displayName": display_name}
@@ -373,7 +375,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 						await refresh_lobby()
 						if generation != gateway.session_generation: return
 						if not lobby.is_empty() and configuration_error.is_empty(): gateway.connect_realtime()
-					else: gateway.end_session("服务器未返回有效登录凭证，请重试")
+					else: gateway.end_session(P.localized("invalid_login_credential"))
 			else:
 				authentication_reason = ticket_result.error
 				notice.emit(authentication_reason)
@@ -383,7 +385,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	busy = false
 	if lobby.is_empty():
 		gateway.end_session("", false)
-		connection = "未连接"
+		connection = P.localized("disconnected")
 	changed.emit()
 
 func _reject_login(reason: String) -> void:
@@ -400,11 +402,16 @@ func _refresh_server_info() -> bool:
 	if not response.ok or not response.data is Dictionary: return false
 	_apply_server_info(response.data)
 	_server_info_address = gateway.base_url
-	return validate_config(str(server_info.get("configVersion", "")), "服务器")
+	return validate_config(str(server_info.get("configVersion", "")), P.localized("server"))
 
 func validate_config(version: String, source: String) -> bool:
 	if not version.is_empty() and version == str(CATALOG.data.version): return true
-	configuration_error = "%s配置与客户端不一致，请更新客户端后重新登录（客户端 %s，服务器 %s）" % [source, CATALOG.data.version, version if not version.is_empty() else "未提供版本"]
+	var source_argument: Variant = source
+	var source_key := P.key_for_text(source)
+	if source_key in ["server", "hall", "room", "preparation"]:
+		source_argument = {"translation_key": source_key}
+	var version_argument: Variant = version if not version.is_empty() else {"translation_key": "version_missing"}
+	configuration_error = P.message("config_mismatch_details", [source_argument, CATALOG.data.version, version_argument])
 	gateway.end_session(configuration_error)
 	return false
 
@@ -416,10 +423,10 @@ func refresh_lobby() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/bootstrap")
 	if not _lobby_request_current(generation, request_epoch, origin_scope): return
 	if not result.ok: return
-	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), "大厅"): return
+	if not result.data is Dictionary or not validate_config(str(result.data.get("configVersion", "")), P.localized("hall")): return
 	for required in ["player", "wallet", "materials"]:
 		if not result.data.get(required) is Dictionary:
-			notice.emit("服务器大厅数据不完整，请重试")
+			notice.emit(P.localized("incomplete_lobby_data"))
 			return
 	if generation != gateway.session_generation: return
 	var next_lobby: Dictionary = result.data.duplicate(true)
@@ -554,11 +561,11 @@ func claim_mail(id: String) -> void:
 	if result.ok:
 		if result.data is Dictionary and bool(result.data.get("alreadyClaimed", false)):
 			await refresh_lobby()
-			notice.emit("邮件附件已领取")
+			notice.emit(P.localized("mail_claimed"))
 			return
 		var granted: Array = result.data.get("granted", []) if result.data is Dictionary else []
 		_apply_claimed_mail(id, granted)
-		notice.emit("邮件附件已领取")
+		notice.emit(P.localized("mail_claimed"))
 		_sync_claimed_assets(granted)
 
 func claim_all_mail() -> void:
@@ -568,7 +575,7 @@ func claim_all_mail() -> void:
 			# Older servers do not report which mails they actually granted. Re-read
 			# authoritative balances instead of crediting potentially stale mail.
 			await refresh_lobby()
-			notice.emit("邮件附件已全部领取")
+			notice.emit(P.localized("mail_all_claimed"))
 			return
 		var pending_ids: Dictionary = {}
 		for item in mail.get("items", []):
@@ -580,7 +587,7 @@ func claim_all_mail() -> void:
 		if pending_ids != actual_ids:
 			# A different client changed the mailbox. Reconcile all balances once.
 			await refresh_lobby()
-			notice.emit("邮件附件已全部领取")
+			notice.emit(P.localized("mail_all_claimed"))
 			return
 		var granted: Array = []
 		for claim in result.data.claims:
@@ -588,7 +595,7 @@ func claim_all_mail() -> void:
 			var attachments: Array = claim.get("granted", [])
 			_apply_claimed_mail(str(claim.get("mailId", "")), attachments)
 			granted.append_array(attachments)
-		notice.emit("邮件附件已全部领取")
+		notice.emit(P.localized("mail_all_claimed"))
 		_sync_claimed_assets(granted)
 
 func _sync_claimed_assets(granted: Array) -> void:
@@ -636,7 +643,7 @@ func mark_all_mail_read() -> void:
 func delete_mail(id: String) -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/%s" % id.uri_encode(), HTTPClient.METHOD_DELETE, {})
 	if result.ok:
-		notice.emit("邮件已删除")
+		notice.emit(P.localized("mail_deleted"))
 		mail["items"] = mail.get("items", []).filter(func(item): return str(item.get("id", item.get("mailId", ""))) != id)
 		mail["unreadCount"] = mail.items.filter(func(item): return not bool(item.get("read", false))).size()
 		update_cache("mail", mail)
@@ -644,7 +651,7 @@ func delete_mail(id: String) -> void:
 func delete_read_mail() -> void:
 	var result: Dictionary = await gateway.request("/api/v1/mail/read", HTTPClient.METHOD_DELETE, {})
 	if result.ok:
-		notice.emit("已读邮件已清理")
+		notice.emit(P.localized("mail_read_deleted"))
 		mail["items"] = mail.get("items", []).filter(func(item): return not bool(item.get("read", false)))
 		mail["unreadCount"] = mail.items.size()
 		update_cache("mail", mail)
@@ -707,7 +714,7 @@ func prepare(tier: String, potion_count: int) -> void:
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -731,7 +738,7 @@ func enqueue() -> void:
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "服务器")) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), P.localized("server"))) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
 		if generation != gateway.session_generation: return
 		busy = false
 		changed.emit()
@@ -745,7 +752,7 @@ func enqueue() -> void:
 
 func _preparation_config_valid(value: Dictionary) -> bool:
 	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
-	return validate_config(str(snapshot.get("configVersion", "")), "准备")
+	return validate_config(str(snapshot.get("configVersion", "")), P.localized("preparation"))
 
 func _verify_ready_ticket() -> void:
 	if not gateway is Gateway or not room.is_empty() or ticket.is_empty() or ready_prompt.is_empty(): return
@@ -1222,7 +1229,7 @@ func play_cards() -> void:
 	var battle: Dictionary = room.get("duel", room.get("pve", {}))
 	var target_id := combat_target_id()
 	if not target_alive(target_id):
-		notice.emit("请先选择存活目标")
+		notice.emit(P.localized("select_living_target"))
 		return
 	var payload := {"battle_id": battle.get("duel_id", battle.get("battle_id", "")), "target_id": target_id, "card_instance_ids": selected_cards.duplicate()}
 	command("battle.play_cards", payload)
@@ -1374,7 +1381,7 @@ func _send_queued_command(queued: Dictionary) -> bool:
 		changed.emit()
 		return true
 	elif dispatched.get("retry", false):
-		notice.emit("操作未发出，请在连接恢复后重试")
+		notice.emit(P.localized("request_not_sent"))
 	return false
 
 func _retry_rejected_command(payload: Dictionary) -> bool:
@@ -1547,7 +1554,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		if generation != gateway.session_generation or context_epoch != _room_context_epoch: return
 		if not settlement.is_empty(): _settlement_recovery_match_id = ""
 		if settlement.is_empty() and lobby.get("unfinishedMatch") != null:
-			notice.emit("上次探索正在结算，请稍后点击重新连接")
+			notice.emit(P.localized("previous_run_settling"))
 		return
 	if kind == "error.command_rejected" and _retry_rejected_command(payload):
 		payload["_retry_handled"] = true
@@ -1566,7 +1573,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 		_pending_play = {}
 	if kind in ["room.snapshot", "room.started"]:
 		var snapshot: Dictionary = payload.get("snapshot", {}) if kind == "room.started" else payload
-		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), "房间"): return
+		if (not gateway.token.is_empty() or snapshot.has("config_version")) and not validate_config(str(snapshot.get("config_version", "")), P.localized("room")): return
 		_adopt_room_context(snapshot)
 	_sound_event(kind, payload)
 	if kind == "battle.target_selected" and payload.get("battle_id", "") == room.get("pve", {}).get("battle_id", ""): clear_combat_preview()
@@ -1591,7 +1598,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				var queued: Dictionary = _queued_command
 				_queued_command = {}
 				if Time.get_ticks_msec() <= _queue_deadline and queued.get("room_id", room.get("room_id", "")) == room.get("room_id", "") and allowed(queued.action) and _intent_valid(queued.action, queued.payload): _send_queued_command(queued)
-				else: notice.emit("当前状态已改变，请重新选择操作")
+				else: notice.emit(P.localized("state_changed"))
 		"room.started":
 			clear_combat_preview()
 			_sound_snapshot(payload.get("snapshot", {}), payload)
@@ -1613,7 +1620,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			# Preparation locking removes equipped items from the inventory cache.
 			# The server releases them on timeout; reload their saved item details.
 			refresh_cache("inventory")
-			notice.emit("确认超时，席位已释放")
+			notice.emit(P.localized("ready_timeout"))
 		"settlement.ready", "match.settled":
 			if not str(payload.get("settlement_id", "")).is_empty() and not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
 				_close_room_actions()
@@ -1645,7 +1652,7 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 				return
 			if str(payload.get("action", "")) == "admin.refresh":
 				refresh_lobby()
-				notice.emit("管理员更新已同步。")
+				notice.emit(P.localized("admin_update_synced"))
 				player_data_invalidated.emit()
 			else:
 				if event_request_id.is_empty(): _request_snapshot()
@@ -1875,7 +1882,7 @@ func acknowledge_settlement() -> bool:
 		lobby["unfinishedMatch"] = previous_lobby_match
 		gateway.room_id = previous_gateway_room_id
 		gateway.room_revision = previous_gateway_revision
-		notice.emit("结算确认失败，请重试")
+		notice.emit(P.localized("settlement_ack_failed"))
 	if generation != gateway.session_generation: return false
 	_settlement_ack_pending_id = ""
 	busy = false

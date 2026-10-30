@@ -7,11 +7,11 @@ const DragScroll = preload("res://ui/drag_scroll.gd")
 const CardGridView = preload("res://ui/card_grid_view.gd")
 const PREFIX := "UI/CardCodex/card_codex_"
 const SOULS := ["PriestSoul", "MageSoul", "GuardianSoul", "WarriorSoul"]
-const SOUL_NAMES := {"PriestSoul": "牧魂", "MageSoul": "法魂", "GuardianSoul": "盾魂", "WarriorSoul": "勇士之魂"}
+static var SOUL_NAMES: Dictionary = preload("res://data/localization_legacy.json").data.soul_names
 
-static func header(ui: Control, host: Control, title: String = "卡牌图鉴") -> void:
+static func header(ui: Control, host: Control, title: String = P.localized("cards_title")) -> void:
 	ui.panel(Rect2(20, 18, 1880, 82), PREFIX + "title_bar_normal.png")
-	ui.button("返回", Rect2(56, 30, 136, 58), host._navigate.bind("hall"), Game.busy).name = "ReturnButton"
+	ui.button(P.localized("back"), Rect2(56, 30, 136, 58), host._navigate.bind("hall"), Game.busy).name = "ReturnButton"
 	ui.text(title, Rect2(232, 30, 430, 60), 36, P.GOLD)
 	for i in range(SOULS.size()):
 		var kind: String = SOULS[i]
@@ -25,7 +25,7 @@ static func header(ui: Control, host: Control, title: String = "卡牌图鉴") -
 static func build(ui: Control, host: Control) -> void:
 	var search := LineEdit.new()
 	search.name = "CodexSearch"
-	search.placeholder_text = P.localized_text("搜索卡牌名称或效果")
+	search.placeholder_text = P.localized_text(P.localized("search_cards"))
 	search.text = host._search
 	var search_style := Art.style(PREFIX + "search_field_normal.png")
 	search_style.set_content_margin(SIDE_LEFT, 76)
@@ -41,7 +41,7 @@ static func build(ui: Control, host: Control) -> void:
 		var quality: String = qualities[i]
 		var selected: bool = host._quality == quality
 		var key := "filter_button_selected.png" if quality.is_empty() else "filter_button_%s%s.png" % [quality.to_lower(), "_selected" if selected else ""]
-		var filter: Button = ui.button("全部" if quality.is_empty() else P.word(quality), Rect2(1090 + i * 132, 132, 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
+		var filter: Button = ui.button(P.localized("all") if quality.is_empty() else P.word(quality), Rect2(1090 + i * 132, 132, 116, 62), func(): host._quality = quality; host._codex_scroll = 0; host._render(), false, PREFIX + key)
 		filter.name = "Filter_" + ("All" if quality.is_empty() else quality)
 		for state_name in ["normal", "hover", "pressed", "disabled"]:
 			var style: StyleBox = filter.get_theme_stylebox(state_name).duplicate()
@@ -128,7 +128,7 @@ static func _scroll(ui: Control, rect: Rect2) -> ScrollContainer:
 
 static func _deck(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(1410, 219, 487, 803))
-	ui.text("当前编组  %s / 20" % host.deck_draft.size(), Rect2(1450, 244, 410, 60), 30, P.GOLD)
+	ui.text(P.localized("codex_deck_count") % host.deck_draft.size(), Rect2(1450, 244, 410, 60), 30, P.GOLD)
 	var scroll := _scroll(ui, Rect2(1435, 324, 430, 570))
 	scroll.name = "DeckScroll"
 	scroll.interaction_enabled = host._codex_card.is_empty()
@@ -151,8 +151,8 @@ static func _deck(ui: Control, host: Control) -> void:
 		rows.add_child(row)
 	scroll.set_deferred("scroll_vertical", host._codex_deck_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._codex_deck_scroll = int(value))
-	ui.button("还原", Rect2(1440, 936, 172, 60), func(): host.deck_draft = Game.deck().get("cardIds", []).duplicate(); host._render(), Game.busy)
-	ui.button("保存编组", Rect2(1630, 936, 230, 60), host._save_deck, Game.busy or host.deck_draft.size() != 20, ui.ORANGE)
+	ui.button(P.localized("restore"), Rect2(1440, 936, 172, 60), func(): host.deck_draft = Game.deck().get("cardIds", []).duplicate(); host._render(), Game.busy)
+	ui.button(P.localized("save_deck"), Rect2(1630, 936, 230, 60), host._save_deck, Game.busy or host.deck_draft.size() != 20, ui.ORANGE)
 
 static func _details(ui: Control, host: Control) -> void:
 	var id: String = host._codex_card
@@ -185,8 +185,8 @@ static func _details(ui: Control, host: Control) -> void:
 	shade.mouse_filter = Control.MOUSE_FILTER_STOP
 	modal.add_child(shade)
 	modal.panel(Rect2(340, 120, 1240, 876)).name = "DetailsPanel"
-	modal.text("卡牌详情", Rect2(740, 150, 440, 58), 38).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	modal.button("返回", Rect2(1406, 146, 140, 64), close_details.bind(ui, host), host._codex_mutating).name = "CloseCardDetails"
+	modal.text(P.localized("card_details"), Rect2(740, 150, 440, 58), 38).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	modal.button(P.localized("back"), Rect2(1406, 146, 140, 64), close_details.bind(ui, host), host._codex_mutating).name = "CloseCardDetails"
 	var preview: Button = host._card_button(modal, id, func(): pass, false, false, {"preview": true, "level": int(entry.get("level", 0))})
 	preview.name = "DetailCard"
 	preview.position = Vector2(411, 271) if owned else Vector2(390, 311)
@@ -200,9 +200,9 @@ static func _details(ui: Control, host: Control) -> void:
 	var category_code: String = str(info.get("category", "Support"))
 	var category: String = P.localized("word_support") if category_code == "Assist" else P.word(category_code)
 	var element: String = str(info.get("element")) if info.get("element") != null else "None"
-	if category_code == "Damage": category = P.word(element) + P.localized("codex_elemental_damage_suffix") if element != "None" else P.localized("ui_direct_damage")
+	if category_code == "Damage": category = P.localized("element_damage_category") % P.word(element) if element != "None" else P.localized("ui_direct_damage")
 	_tag(modal, category, Rect2(1166, 338, 172, 60), "tag_%s.png" % element.to_lower() if element in ["Earth", "Metal", "Water", "Wood"] else "tag_normal.png")
-	modal.text(P.localized_text("等级 +%s · 已拥有 ×%s" % [entry.get("level", 0), copies]) if owned else P.localized_text("未拥有 · 合成后获得 +0 ") + CardDetails.localized_name(id, info), Rect2(798, 424, 690, 50), 27)
+	modal.text(P.localized_text(P.localized("codex_owned_level") % [entry.get("level", 0), copies]) if owned else P.localized_text(P.localized("codex_unowned_craft")) + CardDetails.localized_name(id, info), Rect2(798, 424, 690, 50), 27)
 	var effect_text: String = host.card_description(id, "full")
 	if effect_text.is_empty():
 		var face: PackedStringArray = host._card_text(id, int(entry.get("level", 0))).split("\n\n", true, 1)
@@ -215,7 +215,8 @@ static func _details(ui: Control, host: Control) -> void:
 		level_effects.append(P.localized("codex_current_effect") + CardDetails.effect_text(CardDetails.at_level(info, level)))
 	if entry.get("nextEffect") is Dictionary: level_effects.append(P.localized("codex_next_effect") + host.CardDetails.effect_text(entry.nextEffect))
 	if not level_effects.is_empty():
-		if level > 0 and not effect_text.is_empty(): effect_text = ("Base: " if P.language() == "en" else "基础：") + effect_text
+		if level > 0 and not effect_text.is_empty():
+			effect_text = P.localized("codex_base_effect") + effect_text
 		if not effect_text.is_empty(): effect_text += "\n"
 		effect_text += "\n".join(level_effects)
 	var contract: String = CardDetails.contract_text(info)
@@ -236,35 +237,35 @@ static func _details(ui: Control, host: Control) -> void:
 	box.position = Vector2(794, 672)
 	box.size = Vector2(650, 168)
 	if owned:
-		_cost_row(modal, "升级消耗", kind, "%s %s" % [entry.get("upgradeCost", 0), material] if int(entry.get("level", 0)) < 5 else "已达 +5", 687)
-		_cost_row(modal, "当前拥有", kind, "%s %s" % [balance, material], 735)
-		_cost_row(modal, "分解返还", kind, "%s %s" % [refund, material] if known else "读取中", 783)
+		_cost_row(modal, P.localized("upgrade_cost"), kind, "%s %s" % [entry.get("upgradeCost", 0), material] if int(entry.get("level", 0)) < 5 else P.localized("max_level_short"), 687)
+		_cost_row(modal, P.localized("current_owned"), kind, "%s %s" % [balance, material], 735)
+		_cost_row(modal, P.localized("dismantle_refund"), kind, "%s %s" % [refund, material] if known else P.localized("reading"), 783)
 	else:
-		_cost_row(modal, "合成消耗", kind, "%s %s" % [cost, material] if known else "读取中", 701)
-		_cost_row(modal, "当前拥有", kind, "%s %s" % [balance, material], 756)
-	var hint := "总投入的 25%，向下取整；优先分解未升级副本" if owned else "合成后可加入编组"
-	if owned and not entry.get("canDismantle", false): hint = "已保存编组正在使用，请先调整并保存编组"
+		_cost_row(modal, P.localized("craft_cost"), kind, "%s %s" % [cost, material] if known else P.localized("reading"), 701)
+		_cost_row(modal, P.localized("current_owned"), kind, "%s %s" % [balance, material], 756)
+	var hint := P.localized("dismantle_hint") if owned else P.localized("craft_hint")
+	if owned and not entry.get("canDismantle", false): hint = P.localized("saved_deck_in_use")
 	var used_in_draft: bool = owned and host.deck_draft.count(id) >= copies
-	if used_in_draft: hint = "当前编组正在使用，请先从编组移除并保存"
-	if not known: hint = "暂未取得合成与分解报价，请重新进入图鉴刷新"
-	if known and not owned and balance < cost: hint = "%s不足，还需 %s" % [material, cost - balance]
+	if used_in_draft: hint = P.localized("deck_in_use")
+	if not known: hint = P.localized("quote_unavailable")
+	if known and not owned and balance < cost: hint = P.localized("codex_insufficient") % [material, cost - balance]
 	modal.text(hint, Rect2(782, 845, 680, 45), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var disabled: bool = Game.busy or not known or ((not entry.get("canDismantle", false) or used_in_draft) if owned else balance < cost)
-	var title := "分解 ×1  +%s" % refund if owned else "合成 ×1  %s" % cost
-	if not known: title = "报价暂不可用"
-	if host._codex_mutating: title = "正在处理…"
+	var title := P.localized("codex_dismantle_one") % refund if owned else P.localized("codex_craft_one") % cost
+	if not known: title = P.localized("quote_unavailable_short")
+	if host._codex_mutating: title = P.localized("processing")
 	var action: Button = modal.button(title, Rect2(828, 902, 594, 72), host._card_action.bind(id, "dismantle" if owned else "craft"), disabled, ui.ORANGE if owned else ui.BLUE)
 	action.name = "DismantleCard" if owned else "CraftCard"
 	modal.picture(modal._item(kind), Rect2(856, 915, 36, 43))
 	if owned:
 		var upgrade_cost: int = int(entry.get("upgradeCost", 0))
 		var upgrade_ready: bool = entry.get("canUpgrade", false) and balance >= upgrade_cost
-		var upgrade_title := "升至 +%s" % (int(entry.get("level", 0)) + 1)
-		if int(entry.get("level", 0)) >= 5: upgrade_title = "已达 +5"
+		var upgrade_title := P.localized("codex_upgrade_to") % (int(entry.get("level", 0)) + 1)
+		if int(entry.get("level", 0)) >= 5: upgrade_title = P.localized("max_level_short")
 		var upgrade: Button = modal.button(upgrade_title, Rect2(400, 795, 315, 67), func():
-			host._confirm("消耗 %s %s，将此卡升级到 +%s？" % [upgrade_cost, material, int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
+			host._confirm(P.localized("codex_upgrade_confirm") % [upgrade_cost, material, int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
 		upgrade.name = "UpgradeCard"
-		upgrade.tooltip_text = P.localized_text("已达最高等级" if int(entry.get("level", 0)) >= 5 else "只消耗魂材料")
+		upgrade.tooltip_text = P.localized_text(P.localized("max_level") if int(entry.get("level", 0)) >= 5 else P.localized("soul_only"))
 
 static func _open_details(ui: Control, host: Control, id: String, scroll: ScrollContainer) -> void:
 	if not host._codex_card.is_empty(): return
@@ -296,11 +297,11 @@ static func _cost_row(ui: Control, label: String, kind: String, value: String, y
 	ui.text(value, Rect2(1136, y, 280, 38), 20).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 static func _add_reason(host: Control, id: String, info: Dictionary, copies: int) -> String:
-	if info.get("hero_class") != null and info.hero_class != Game.hero_class: return "仅限%s职业编组" % P.word(info.hero_class)
-	if host.deck_draft.size() >= 20: return "编组已满"
-	if host.deck_draft.count(id) >= copies: return "可用数量不足"
+	if info.get("hero_class") != null and info.hero_class != Game.hero_class: return P.localized("class_restriction") % P.word(info.hero_class)
+	if host.deck_draft.size() >= 20: return P.localized("deck_full")
+	if host.deck_draft.count(id) >= copies: return P.localized("not_enough_copies")
 	if info.get("quality") == "Orange":
 		for existing_id in host.deck_draft:
 			var existing: Dictionary = host.cards.get(existing_id, {})
-			if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (info.get("hero_class") == null): return "已达到橙卡携带上限"
+			if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (info.get("hero_class") == null): return P.localized("ui_cannot_carry_orange")
 	return ""
