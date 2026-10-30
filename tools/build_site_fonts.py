@@ -1,4 +1,4 @@
-"""Build renamed OFL webfont subsets from the game's existing Source Han fonts.
+"""Build renamed OFL webfont subsets from the game's existing font families.
 
 Rebuild with: python -m pip install 'fonttools[woff]'; python tools/build_site_fonts.py
 Latin/extended Latin remains available for new locales; CJK copy is drawn from
@@ -26,12 +26,18 @@ def main():
     for role, original, family, weight in [
         ("sans", "SourceHanSansSC-Regular.otf", "Relicbound Sans", 400),
         ("serif", "SourceHanSerifSC-SemiBold.otf", "Relicbound Serif", 600),
+        ("arabic", "NotoSansArabicUI-Regular.ttf", "Relicbound Arabic", 400),
+        ("arabic-title", "NotoSansArabicUI-SemiBold.ttf", "Relicbound Arabic Display", 600),
+        ("devanagari", "NotoSansDevanagariUI-Regular.ttf", "Relicbound Devanagari", 400),
+        ("devanagari-title", "NotoSansDevanagariUI-SemiBold.ttf", "Relicbound Devanagari Display", 600),
     ]:
         source = ROOT / "client/assets/fonts" / original
         font = TTFont(source, recalcTimestamp=False)
         covered = sorted(characters & set(font.getBestCmap()))
         options = subset.Options()
         options.flavor = "woff2"
+        # Arabic joining and Indic reordering/conjuncts require the shaping tables.
+        options.layout_features = ["*"]
         options.name_IDs = [0, 1, 2, 3, 4, 5, 6, 13, 14, 16, 17]
         options.name_legacy = True
         options.name_languages = [0x409]
@@ -57,7 +63,7 @@ def main():
                         "sha256": hashlib.sha256(target.read_bytes()).hexdigest(),
                         "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest()}
         font.close()
-    for license_name in ["LICENSE-SourceHanSans.txt", "LICENSE-SourceHanSerif.txt"]:
+    for license_name in ["LICENSE-SourceHanSans.txt", "LICENSE-SourceHanSerif.txt", "LICENSE-Noto.txt"]:
         shutil.copyfile(ROOT / "client/assets/fonts" / license_name, output / license_name)
     (output / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({role: {k: v for k, v in value.items() if k != "glyph_codepoints"} for role, value in result.items()}))

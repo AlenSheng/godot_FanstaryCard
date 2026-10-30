@@ -1,6 +1,13 @@
 @font-face{font-family:"Relicbound Sans";src:url("/assets/fonts/relicbound-sans.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
 @font-face{font-family:"Relicbound Serif";src:url("/assets/fonts/relicbound-serif.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:"Relicbound Arabic";src:url("/assets/fonts/relicbound-arabic.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Relicbound Arabic Display";src:url("/assets/fonts/relicbound-arabic-title.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
+@font-face{font-family:"Relicbound Devanagari";src:url("/assets/fonts/relicbound-devanagari.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"Relicbound Devanagari Display";src:url("/assets/fonts/relicbound-devanagari-title.woff2") format("woff2");font-style:normal;font-weight:600;font-display:swap}
 :root{color-scheme:dark;--ink:#eee9dd;--muted:#afb8c3;--gold:#d7ad63;--night:#07101d;--panel:#0d1928;--line:rgba(232,229,216,.15);--gutter:clamp(1.25rem,7vw,8rem);--serif:"Relicbound Serif","Noto Serif SC",serif;--sans:"Relicbound Sans","Microsoft YaHei","PingFang SC",sans-serif;font-family:var(--sans);font-size:16px;font-synthesis:weight;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root{--sans:"Relicbound Sans","Relicbound Arabic","Relicbound Devanagari",sans-serif;--serif:"Relicbound Serif","Relicbound Arabic Display","Relicbound Devanagari Display",serif}
+html[lang=ar]{--sans:"Relicbound Arabic","Relicbound Sans",sans-serif;--serif:"Relicbound Arabic Display","Relicbound Serif",serif}
+html[lang=hi]{--sans:"Relicbound Devanagari","Relicbound Sans",sans-serif;--serif:"Relicbound Devanagari Display","Relicbound Serif",serif}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:6rem}
 body{margin:0;min-width:0;color:var(--ink);background:var(--night)}
@@ -36,7 +43,17 @@ html body :is(.section-kicker,.micro-label,.feature-number,.release-note,.brand-
 .site-header nav{flex-wrap:wrap}
 .button-row .button{height:auto;min-height:44px;white-space:normal;text-align:center;overflow-wrap:anywhere}
 html[dir=rtl] body{text-align:start}
-html[dir=rtl] .site-header nav{margin-left:0;margin-right:auto}
+/* Keep the shared artwork and the top-right selector in the same viewport frame. */
+html[dir=rtl] .site-header,html[dir=rtl] .hero,html[dir=rtl] .season-hero{direction:ltr}
+html[dir=rtl] .site-header nav,html[dir=rtl] .header-actions,html[dir=rtl] .hero-content,html[dir=rtl] .season-hero-copy{direction:rtl}
+html[dir=rtl] .site-header nav{margin-left:auto;margin-right:0}
+html[dir=rtl] .hero-content{max-width:calc(36rem + 2 * var(--gutter))}
+html[dir=rtl] .brand{direction:ltr;text-align:left}
+html[dir=rtl] .language-toggle{padding-inline:2rem .8rem;background-position:left .7rem center}
+html[dir=rtl] .class-preview-copy>p:last-of-type{padding-right:0;padding-left:1rem}
+html[dir=rtl] .card-arrow{right:auto;left:1.4rem}
+html[lang=ar] :is(h1,h2,h3,h4,.section-kicker,.season-badge,.class-role,.micro-label),html[lang=hi] :is(h1,h2,h3,h4,.section-kicker,.season-badge,.class-role,.micro-label){letter-spacing:normal}
+html[lang=ar] :is(h1,h2),html[lang=hi] :is(h1,h2){line-height:1.5}
 .menu-toggle{display:none;width:44px;height:44px;border:1px solid var(--line);background:transparent;cursor:pointer}
 .menu-toggle span{display:block;height:1px;width:18px;background:var(--ink);margin:5px auto}
 .hero{--hero-art-height:max(780px,100svh);position:relative;isolation:isolate;min-height:var(--hero-art-height);display:flex;align-items:flex-start;overflow:hidden;background:var(--night)}
@@ -344,7 +361,8 @@ footer>div{gap:1.2rem;font-size:.72rem}
 .home-sections a{font-size:.85rem;color:var(--gold);padding:.5rem 0;border-bottom:1px solid transparent}
 .home-sections a:hover{border-color:var(--gold)}
 .equipment-section>.section-lead{margin-top:1.8rem}
-.equipment-layout{display:grid;grid-template-columns:1fr 1.25fr;gap:4rem;margin-top:3rem}
+.equipment-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:4rem;margin-top:3rem}
+.equipment-layout>div{min-width:0;overflow-wrap:anywhere}
 .equipment-slots{padding:2rem;background:#0d1928;border:1px solid var(--line);align-self:start}
 .equipment-slots h3{font-family:var(--serif);font-size:1.6rem;line-height:1.6;margin-top:1rem}
 .equipment-slots ul{list-style:none;padding:0;margin:2rem 0}
@@ -372,7 +390,7 @@ footer>div{gap:1.2rem;font-size:.72rem}
 .rare-affixes dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem 2rem;padding-bottom:1rem}
 .rare-affixes dt{color:var(--gold);margin-bottom:.5rem}
 .rare-affixes dd{margin-left:0}
-@media(max-width:800px){.equipment-layout{grid-template-columns:1fr;gap:2.5rem}
+@media(max-width:800px){.equipment-layout{grid-template-columns:minmax(0,1fr);gap:2.5rem}
 .equipment-slots ul{display:grid;grid-template-columns:1fr 1fr;gap:0 1rem}
 .rare-affixes dl{grid-template-columns:1fr 1fr}
 }

@@ -16,7 +16,7 @@ def audit(code):
     errors = []
     checks = 0
     pages = []
-    for original in sorted(SITE.glob("*.html")):
+    for original in [SITE / name for name in ("index.html", "classes.html", "seasons.html")]:
         target = SITE / code / original.name
         document = html.document_fromstring(target.read_text(encoding="utf-8"))
         pages.append(str(target.relative_to(ROOT)))
@@ -67,10 +67,16 @@ def audit(code):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--locale", action="append", required=True)
+    parser.add_argument("--locale", action="append")
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    results = [audit(code) for code in args.locale]
+    codes = args.locale or [p.stem for p in sorted((ROOT / "config/site_locales").glob("*.json"))]
+    registry = json.loads((ROOT / "client/data/localization_registry.json").read_text(encoding="utf-8"))["languages"]
+    manifest = json.loads((SITE / "assets/locales/manifest.json").read_text(encoding="utf-8"))["languages"]
+    expected = {"zh" if code == "zh-CN" else code for code, item in registry.items() if item["status"] in ("baseline", "released")}
+    if expected != {item["code"] for item in manifest} or len(manifest) != len(expected):
+        raise ValueError("Website and game language registries differ")
+    results = [audit(code) for code in codes]
     report = {"static_ok": all(r["static_ok"] for r in results), "locales": results,
               "whole_visual_acceptance": False, "independent_review_passed": False}
     if args.output:

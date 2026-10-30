@@ -9,6 +9,7 @@ from lxml import html
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "server/site"
 COPY_ATTRIBUTES = {"data-alt-en": "alt", "data-aria-en": "aria-label"}
+PAGES = [SITE / name for name in ("index.html", "classes.html", "seasons.html")]
 
 
 def update_base_documents(available):
@@ -21,12 +22,12 @@ def update_base_documents(available):
         selector += f'<option value="{code}" lang="{code}"{selected}>{name}</option>'
     selector += '</select>'
     pattern = re.compile(r'<(button|select)\b(?=[^>]*\bid="language-toggle")[^>]*>.*?</\1>', re.S)
-    for page in sorted(SITE.glob("*.html")):
+    for page in PAGES:
         text = page.read_text(encoding="utf-8")
         text, count = pattern.subn(lambda _: selector, text)
         if count != 1:
             raise ValueError(f"Expected one language selector: {page.name}")
-        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-4', text)
+        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-5', text)
         if '/assets/fonts/relicbound-sans.woff2' not in text:
             preloads = ''.join(f'<link rel="preload" href="/assets/fonts/relicbound-{role}.woff2" as="font" type="font/woff2" crossorigin>\n  ' for role in ["sans", "serif"])
             text = text.replace('<link rel="stylesheet"', preloads + '<link rel="stylesheet"', 1)
@@ -48,7 +49,7 @@ def build(code):
     messages = dict(zip(source, values))
     messages.update(pack.get("extra", {}))
     referenced = set()
-    for page in sorted(SITE.glob("*.html")):
+    for page in PAGES:
         tree = html.document_fromstring(page.read_text(encoding="utf-8"))
         tree.set("lang", code)
         tree.set("dir", pack.get("direction", "ltr"))
@@ -103,7 +104,7 @@ def main():
     codes = args.locale or [p.stem for p in sorted((ROOT / "config/site_locales").glob("*.json"))]
     if args.mark_static_source:
         extra = load(ROOT / "config/site_locales" / (codes[0] + ".json")).get("extra", {})
-        for page in sorted(SITE.glob("*.html")):
+        for page in PAGES:
             text = page.read_text(encoding="utf-8")
             for key in extra:
                 pattern = r"<([a-z][a-z0-9]*)([^<>]*)>" + re.escape(key) + r"</\1>"
@@ -116,10 +117,12 @@ def main():
             text = text.replace("/assets/site.js?v=5", "/assets/site.js?v=6").replace("/assets/site.css?v=7", "/assets/site.css?v=8")
             page.write_text(text, encoding="utf-8")
     # One registry drives static HTML, dynamic switching, and future locale packs.
-    available = [{"code": "zh", "name": "简体中文", "direction": "ltr"},
-                 {"code": "en", "name": "English", "direction": "ltr"}]
-    available += [{"code": p.stem, "name": load(p)["name"], "direction": load(p).get("direction", "ltr")}
-                 for p in sorted((ROOT / "config/site_locales").glob("*.json"))]
+    registry = load(ROOT / "client/data/localization_registry.json")["languages"]
+    available = [{"code": "zh" if code == "zh-CN" else code, "name": item["name"], "direction": item["direction"]}
+                 for code, item in registry.items() if item["status"] in ("baseline", "released")]
+    expected = {item["code"] for item in available} - {"zh", "en"}
+    if expected != {p.stem for p in (ROOT / "config/site_locales").glob("*.json")}:
+        raise ValueError("Website packs must match the game's released languages")
     if len({entry["code"] for entry in available}) != len(available):
         raise ValueError("Duplicate registered website language")
     update_base_documents(available)
