@@ -13,7 +13,7 @@
     "definitions": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
     "limitation": "Countrywise maxima alone cannot establish 80% even if all listed languages are supported. Supplement disjoint census language groups before claiming the global target."
   },
-  "website_policy": "Deferred by explicit user instruction on 2026-10-29; preserve draft website work without deployment and continue game localization",
+  "website_policy": "This task prioritizes game languages. The user separately requested website typography/background/language-selector work in 完善多语言校验; preserve that task's site commits and do not overwrite them. Additional website locale delivery remains outside this game batch until permitted actual UI checks are available.",
   "release_gate_order": [
     "complete_game_translation",
     "native_ui_validation",
@@ -45,10 +45,10 @@
         "pt",
         "id"
       ],
-      "status": "translating_in_parallel",
-      "passed": false,
+      "status": "self_validated_ready_for_deploy",
+      "passed": true,
       "deployed": false,
-      "evidence": "docs/reports/localization-rollout-20261030/batch-02/state.json"
+      "evidence": "docs/reports/localization-rollout-20261030/batch-02/self-validation-final-r1.json"
     }
   ],
   "target_reached": false,
