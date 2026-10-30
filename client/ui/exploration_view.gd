@@ -141,7 +141,7 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, bottom_limit:
 	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
 	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
-	var description_text: String = descriptions[hero_class].replace(" · ", "\n")
+	var description_text: String = P.system_display_text(descriptions[hero_class].replace(" · ", "\n"))
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
@@ -177,6 +177,19 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, bottom_limit:
 		label.add_theme_constant_override("line_spacing", 0)
 		label.set_meta("battle_primary_text", true)
 		label.set_meta("minimum_effective_font_size", 12.0)
+	# Native Label minimums include fallback-glyph ascent/descent. Font-only
+	# measurements can be a few pixels shorter for mixed Devanagari/numbers.
+	title_height = maxf(title_height, title.get_line_count() * title.get_line_height() + 2.0)
+	body_height = maxf(body_height, description.get_line_count() * description.get_line_height() + 2.0)
+	title.size.y = title_height
+	description.position.y = title_height + 12.0
+	description.size.y = body_height
+	content_height = title_height + 12.0 + body_height
+	content.size.y = content_height
+	bounds.size.y = maxf(rect.size.y, padding.y + content_height + padding.w)
+	if bottom_limit > 0.0: bounds.position.y = minf(rect.position.y, bottom_limit - bounds.size.y)
+	frame.position = bounds.position
+	frame.size = bounds.size
 	title.set_meta("battle_text_role", "passive_name")
 	description.set_meta("battle_text_role", "passive_effect")
 	frame.set_meta("battle_passive_layout", true)

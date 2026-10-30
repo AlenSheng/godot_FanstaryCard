@@ -260,8 +260,9 @@ func _fit_card_effect_font(label: Label, requested_size: int) -> void:
 
 func _text(value: String, rect: Rect2, font_size: int, color: Color, fit_to_rect: bool = true, typeface_override: Font = null) -> Label:
 	var label := Label.new()
-	var display_text := P.localized_text(value)
+	var display_text := P.system_display_text(P.localized_text(value))
 	label.text = display_text
+	P.apply_text_direction(label)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	label.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY

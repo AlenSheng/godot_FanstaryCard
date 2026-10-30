@@ -1,0 +1,32 @@
+{
+  "batch": "03",
+  "locales": [
+    "hi",
+    "ar",
+    "ru"
+  ],
+  "self_validation_passed": true,
+  "external_task_review_required": false,
+  "authority": "User waived external task review; final scope is hi/ar/ru then ja/ko only",
+  "main_ui_frames": 1185,
+  "main_ui_checks": 124144,
+  "error_ui_frames": 216,
+  "main_ui": "local-ui-final-r1.json",
+  "error_ui": "error-ui-final-r1.json",
+  "probes": "frozen-probes-final-r1.json",
+  "manual_review": "manual-layout-review-r1.json",
+  "passed": true,
+  "deployed": false,
+  "fixes": [
+    "Bundled Arabic/Devanagari UI fonts and flat multilingual fallback chains",
+    "Fixed physical board coordinates with locale text shaping and stable numeric order",
+    "Runtime-only numeric isolation for composed Arabic system copy; authored remote text unchanged",
+    "Native passive line heights with original common-frame safe padding",
+    "Short translated UI/card labels at existing font floors; original card illustration bounds unchanged"
+  ],
+  "actual_game_matches": 0,
+  "website": "Separate website task commits preserved; no external game revalidation",
+  "registry_projection_before": "759a8ef8f7c83270645e069903ab8653f6ad6dff553765f6545fb945ff457a44",
+  "registry_projection_after": "759a8ef8f7c83270645e069903ab8653f6ad6dff553765f6545fb945ff457a44",
+  "registry_status_change_only": true
+}

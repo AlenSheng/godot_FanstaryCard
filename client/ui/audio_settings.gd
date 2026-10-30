@@ -82,9 +82,9 @@ func show_settings() -> void:
 	P.fit_control_font(title, P.font("title"), 34)
 	var value := Label.new()
 	value.text = "%s %s%%" % [P.localized("sound_volume"), roundi(Sound.volume * 100)]
-	value.add_theme_font_override("font", P.font("number"))
+	value.add_theme_font_override("font", P.font("body"))
 	column.add_child(value)
-	P.fit_control_font(value, P.font("number"), 24)
+	P.fit_control_font(value, P.font("body"), 24)
 	var slider := HSlider.new()
 	slider.name = "SoundVolume"
 	slider.min_value = 0
@@ -104,9 +104,9 @@ func show_settings() -> void:
 	column.add_child(slider)
 	var music_value := Label.new()
 	music_value.text = "%s %s%%" % [P.localized("music_volume"), roundi(Sound.music_volume * 100)]
-	music_value.add_theme_font_override("font", P.font("number"))
+	music_value.add_theme_font_override("font", P.font("body"))
 	column.add_child(music_value)
-	P.fit_control_font(music_value, P.font("number"), 24)
+	P.fit_control_font(music_value, P.font("body"), 24)
 	var music_slider := HSlider.new()
 	music_slider.name = "MusicVolume"
 	music_slider.min_value = 0
@@ -126,9 +126,9 @@ func show_settings() -> void:
 	column.add_child(music_slider)
 	var ambience_value := Label.new()
 	ambience_value.text = "%s %s%%" % [P.localized("ambience_volume"), roundi(Sound.ambience_volume * 100)]
-	ambience_value.add_theme_font_override("font", P.font("number"))
+	ambience_value.add_theme_font_override("font", P.font("body"))
 	column.add_child(ambience_value)
-	P.fit_control_font(ambience_value, P.font("number"), 24)
+	P.fit_control_font(ambience_value, P.font("body"), 24)
 	var ambience_slider := HSlider.new()
 	ambience_slider.name = "AmbienceVolume"
 	ambience_slider.min_value = 0

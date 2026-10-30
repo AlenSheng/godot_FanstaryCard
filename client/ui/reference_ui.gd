@@ -50,6 +50,7 @@ func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPE
 	var label := Label.new()
 	var display_text := P.localized_text(value) if localize else value
 	label.text = display_text
+	P.apply_text_direction(label)
 	var typeface := P.font_for_text(display_text, font_size)
 	label.add_theme_font_override("font", typeface)
 	label.add_theme_font_size_override("font_size", P.fit_font_size(typeface, font_size, rect.size.y, rect.size.x - 8.0, display_text) if fit_to_rect else font_size)

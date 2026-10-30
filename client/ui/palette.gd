@@ -22,6 +22,9 @@ static var _language_packs: Dictionary = {}
 static var _partial_source_regex: RegEx
 static var _partial_source_aliases: Dictionary = {}
 static var _client_messages: Dictionary = {}
+static var _fallback_font_cache: Dictionary = {}
+static var _numeric_run_regex: RegEx
+const NUMBER_FONT_PATH := "res://assets/fonts/SourceHanSansSC-Regular.otf"
 
 static func clear_runtime_fonts() -> void:
 	_body_font = null
@@ -32,6 +35,7 @@ static func clear_runtime_fonts() -> void:
 	_scaled_title_font = null
 	_scaled_number_font = null
 	_scaled_fonts_ready = false
+	_fallback_font_cache.clear()
 
 const INK := Color("172d35")
 const PAPER := Color("efe3c7")
@@ -79,20 +83,16 @@ static func _word_identifier(value: String) -> String:
 static func font(role: String = "body") -> Font:
 	_ensure_locale()
 	if not _fonts_ready:
-		_body_font = load(_locale_config.languages[_language].fonts.body)
-		_title_font = load(_locale_config.languages[_language].fonts.title)
-		_body_font.allow_system_fallback = false
-		_title_font.allow_system_fallback = false
-		for typeface in [_body_font, _title_font]:
-			typeface.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
-			typeface.hinting = TextServer.HINTING_NORMAL
-			typeface.force_autohinter = true
-			typeface.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_ONE_QUARTER
-			typeface.oversampling = 2.0
-			typeface.generate_mipmaps = true
-		_title_font.fallbacks = [_body_font]
+		var body_path := str(_locale_config.languages[_language].fonts.body)
+		var title_path := str(_locale_config.languages[_language].fonts.title)
+		_body_font = _raster_font(body_path)
+		_title_font = _raster_font(title_path)
+		_body_font.fallbacks = _fallback_fonts("body", body_path)
+		var title_fallbacks := _fallback_fonts("title", title_path)
+		title_fallbacks.append(_body_font)
+		_title_font.fallbacks = title_fallbacks
 		_number_font = FontVariation.new()
-		_number_font.base_font = _body_font
+		_number_font.base_font = _raster_font(NUMBER_FONT_PATH)
 		# Source Han Sans ships equal-width default figures; keep proportional widths off.
 		_number_font.opentype_features = {"pwid": 0}
 		_fonts_ready = true
@@ -107,15 +107,45 @@ static func scaled_font(role: String = "body") -> Font:
 	if not _scaled_fonts_ready:
 		_scaled_body_font = _distance_field_font(font("body") as FontFile)
 		_scaled_title_font = _distance_field_font(font("title") as FontFile)
-		_scaled_title_font.fallbacks = [_scaled_body_font]
+		_scaled_body_font.fallbacks = _fallback_fonts("body", str(_locale_config.languages[_language].fonts.body), true)
+		var title_fallbacks := _fallback_fonts("title", str(_locale_config.languages[_language].fonts.title), true)
+		title_fallbacks.append(_scaled_body_font)
+		_scaled_title_font.fallbacks = title_fallbacks
 		_scaled_number_font = FontVariation.new()
-		_scaled_number_font.base_font = _scaled_body_font
+		_scaled_number_font.base_font = _distance_field_font(_number_font.base_font as FontFile)
 		_scaled_number_font.opentype_features = {"pwid": 0}
 		_scaled_fonts_ready = true
 	match role:
 		"title": return _scaled_title_font
 		"number": return _scaled_number_font
 	return _scaled_body_font
+
+static func _raster_font(path: String) -> FontFile:
+	# Keep imported prototypes unchanged so switching languages cannot form a
+	# fallback cycle or change fonts still referenced by the previous frame.
+	var prototype: FontFile = load(path)
+	var result := prototype.duplicate() as FontFile
+	result.fallbacks = []
+	result.allow_system_fallback = false
+	result.antialiasing = TextServer.FONT_ANTIALIASING_GRAY
+	result.hinting = TextServer.HINTING_NORMAL
+	result.force_autohinter = true
+	result.subpixel_positioning = TextServer.SUBPIXEL_POSITIONING_ONE_QUARTER
+	result.oversampling = 2.0
+	result.generate_mipmaps = true
+	return result
+
+static func _fallback_fonts(role: String, primary_path: String, scaled: bool = false) -> Array[Font]:
+	var result: Array[Font] = []
+	for entry in _locale_config.get("font_fallbacks", {}).get(role, []):
+		var path := str(entry)
+		if path == primary_path: continue
+		var key := path + ("/sdf" if scaled else "/raster")
+		if not _fallback_font_cache.has(key):
+			var typeface := _raster_font(path)
+			_fallback_font_cache[key] = _distance_field_font(typeface) if scaled else typeface
+		result.append(_fallback_font_cache[key])
+	return result
 
 static func _distance_field_font(source: FontFile) -> FontFile:
 	var result := FontFile.new()
@@ -129,12 +159,13 @@ static func _distance_field_font(source: FontFile) -> FontFile:
 static func _ensure_locale() -> void:
 	if not _locale_config.is_empty(): return
 	var registry: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(LOCALE_REGISTRY_PATH))
-	_locale_config = {"default_language": registry.get("default_language", "zh-CN"), "languages": {}}
+	_locale_config = {"default_language": registry.get("default_language", "zh-CN"), "languages": {}, "font_fallbacks": registry.get("font_fallbacks", {})}
 	_load_language_packs()
 	_language = str(_locale_config.default_language)
 	var saved_language := _load_language()
 	if _locale_config.languages.has(saved_language): _language = saved_language
 	_build_source_aliases()
+	TranslationServer.set_locale(_language.replace("-", "_"))
 
 static func _load_language_packs() -> void:
 	var registry: Variant = JSON.parse_string(FileAccess.get_file_as_string(LOCALE_REGISTRY_PATH))
@@ -303,6 +334,7 @@ static func set_language(value: String) -> void:
 	_fonts_ready = false
 	_scaled_fonts_ready = false
 	_formatted_alias_cache.clear()
+	TranslationServer.set_locale(_language.replace("-", "_"))
 	_save_language()
 
 static func _save_language() -> void:
@@ -373,13 +405,61 @@ static func languages() -> Dictionary:
 	return _locale_config.get("languages", {})
 
 static func font_for_text(value: String, size: int = 24, scaled: bool = false) -> Font:
-	var numeric := not value.is_empty()
-	for character in value:
-		if character not in "0123456789+-−.,:%/ ×":
-			numeric = false
-			break
+	var numeric := is_numeric_text(value)
 	var role := "number" if numeric else ("title" if size >= 32 and value.length() <= 26 and not value.contains("\n") else "body")
 	return scaled_font(role) if scaled else font(role)
+
+static func is_numeric_text(value: String) -> bool:
+	if value.is_empty(): return false
+	for character in value:
+		if is_bidi_isolate(character.unicode_at(0)): continue
+		if character not in "0123456789+-−.,:%/ ×|→←()\n\t": return false
+	return true
+
+static func is_bidi_isolate(codepoint: int) -> bool:
+	return codepoint >= 0x2066 and codepoint <= 0x2069
+
+static func system_display_text(value: String) -> String:
+	# Only call for locally composed system copy, never authored remote text.
+	# Isolates affect visual ordering; locale tables, wire values and tooltips
+	# retain their original text. In particular, -5 and 4 / 10 stay LTR in Arabic.
+	if str(languages()[language()].get("direction", "ltr")) != "rtl": return value
+	var lri := String.chr(0x2066)
+	var fsi := String.chr(0x2068)
+	var pdi := String.chr(0x2069)
+	if value.contains(lri) or value.contains(fsi): return value
+	if _numeric_run_regex == null:
+		_numeric_run_regex = RegEx.new()
+		_numeric_run_regex.compile("[+−-]?[0-9]+(?:[.,][0-9]+)?%?(?:[ \\t]*(?:[/|→←×x])[ \\t]*[+−-]?[0-9]+(?:[.,][0-9]+)?%?)*")
+	var paragraphs := PackedStringArray()
+	for paragraph in value.split("\n", true):
+		if paragraph.contains(" | "):
+			var cells := PackedStringArray()
+			for cell in paragraph.split(" | ", true): cells.append(fsi + cell + pdi)
+			paragraphs.append(lri + " | ".join(cells) + pdi)
+			continue
+		if is_numeric_text(paragraph):
+			paragraphs.append(lri + paragraph + pdi)
+			continue
+		var formatted := ""
+		var cursor := 0
+		for matched in _numeric_run_regex.search_all(paragraph):
+			formatted += paragraph.substr(cursor, matched.get_start() - cursor) + lri + matched.get_string() + pdi
+			cursor = matched.get_end()
+		paragraphs.append(formatted + paragraph.substr(cursor))
+	return "\n".join(paragraphs)
+
+static func without_bidi_isolates(value: String) -> String:
+	var result := ""
+	for character in value:
+		if not is_bidi_isolate(character.unicode_at(0)): result += character
+	return result
+
+static func apply_text_direction(control: Control) -> void:
+	# A neutral numeric paragraph must keep current/max and signed deltas in
+	# source order. Natural language paragraphs retain automatic BiDi shaping.
+	if control is Label or control is Button or control is LineEdit:
+		control.text_direction = Control.TEXT_DIRECTION_LTR if is_numeric_text(str(control.get("text"))) else Control.TEXT_DIRECTION_AUTO
 
 static func fit_font_size(typeface: Font, requested: int, height: float, width: float = -1.0, value: String = "") -> int:
 	var fitted := requested
@@ -405,6 +485,7 @@ static func fit_control_font(control: Control, typeface: Font, requested: int, h
 	if not is_instance_valid(control): return
 	var update := func() -> void:
 		if not is_instance_valid(control): return
+		apply_text_direction(control)
 		# Containers allocate their children after insertion. Fitting the initial
 		# zero-width rectangle shrinks the font and therefore its minimum size,
 		# trapping labels at one pixel before layout can give them room.

@@ -5,9 +5,9 @@
     "ar",
     "ru"
   ],
-  "status": "translation_and_font_preparation",
+  "status": "self_validated_awaiting_deploy",
   "base_code_commit": "a0e213ad8e65000a6d7077cdc16eef46aee3324b",
-  "passed": false,
+  "passed": true,
   "deployed": false,
   "external_task_review_required": false,
   "released_coverage_estimate_percent": 49.538418517882455,
@@ -25,5 +25,59 @@
     "ko"
   ],
   "stop_after_following_group": true,
-  "population_80_percent_required": false
+  "population_80_percent_required": false,
+  "completed_preparation": [
+    "All three 849-string / 232-card language packs",
+    "Bundled verified Noto UI fonts with OFL licenses and multilingual fallbacks",
+    "Arabic authored board geometry and numeric BiDi display",
+    "Hindi passive native line-height sizing",
+    "All nine draft catalog probes passed; these are preparation, pending final source freeze"
+  ],
+  "current_ui_evidence": {
+    "hi_960": "tmp/batch03-ui-final-r3/hi-960",
+    "ar_960": "tmp/batch03-ui-final-r3/ar-960",
+    "ru_960": "tmp/batch03-ui-final-r3/ru-960"
+  },
+  "remaining": [
+    "Commit and push frozen game release",
+    "Guarded Tencent update/restart and health",
+    "Then final ja/ko group only"
+  ],
+  "all_three_minimum_width_screens_passed": true,
+  "minimum_width_source": "tmp/batch03-ui-final-r3",
+  "active_validations": {
+    "ui_plan": "tmp/batch03-ui-final-r3-plan.json",
+    "ui_summary": "tmp/batch03-ui-final-r3-runner/summary.original.json",
+    "probe_summary": "tmp/batch03-probes-final-r2/summary.original.json",
+    "errors_queue": "tmp/batch03-errors-queue-r1/terminal.original.json",
+    "errors_summary": "tmp/batch03-errors-final-r1/matrix-report.original.json"
+  },
+  "next_step_after_all_pass": "Inspect final native PNGs; write manual-layout-review-r1.json; run tmp/collect_batch03.py; release registry statuses with status-only projection, commit and normal push, guarded Tencent deployment; only after health start ja/ko.",
+  "prepared_helpers": [
+    "tmp/collect_batch03.py",
+    "tmp/localization_deploy_guard.py",
+    "tmp/batch03_remote_preflight.py"
+  ],
+  "final_probes_passed": true,
+  "manual_sample_review": "docs/reports/localization-rollout-20261030/batch-03/manual-layout-review-r1.json",
+  "active_controller_pids": {},
+  "new_locale_main_ui_passed_widths": {
+    "hi": [
+      960,
+      1280,
+      1920
+    ],
+    "ar": [
+      960,
+      1280,
+      1920
+    ],
+    "ru": [
+      960,
+      1280,
+      1920
+    ]
+  },
+  "awaiting": "Original-language main/settings regression matrix, then queued server-error UI matrix",
+  "evidence": "docs/reports/localization-rollout-20261030/batch-03/self-validation-final-r1.json"
 }

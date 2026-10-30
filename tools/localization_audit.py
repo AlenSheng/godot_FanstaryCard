@@ -133,6 +133,7 @@ def main():
     released = ["zh-CN", "en"] + [c for c, e in registry["languages"].items() if e.get("status") == "released"]
     candidate = ["zh-CN", "en"] + list(packs)
     dataset = read(ROOT / "config/localization_coverage_source.json")
+    rollout = read(ROOT / "config/localization_rollout.json")
     all_codes = {c for t in dataset["supplemental"]["territoryInfo"].values()
                  for c in t.get("languagePopulation", {})}
     report = {"ok": bool(results) and not unknown and all(r["ok"] for r in results),
@@ -140,7 +141,8 @@ def main():
               "released_coverage": coverage(released, dataset),
               "candidate_coverage": coverage(candidate, dataset),
               "dataset_maximum_coverage_percent": coverage(all_codes, dataset)["coverage_lower_bound_percent"],
-              "coverage_target_percent": 80,
+              "coverage_target_percent": 80 if rollout.get("target", {}).get("population_80_percent_required", True) else None,
+              "completion_target": rollout.get("target", {}),
               "review_gate": "Actual game UI self-validation required; external task revalidation waived by user; website deployment deferred"}
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)

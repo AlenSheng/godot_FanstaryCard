@@ -50,6 +50,8 @@ def run(args):
                     "FANTASYCARD_SERVER_URL": "http://127.0.0.1:9", "FANTASYCARD_REVIEW_LOCALES": args.locale,
                     "FANTASYCARD_LOCALE_PROBE_REPORT": str(output / "report.json"),
                     "NATIVE_REGRESSION_REPORT": str(output / "report.json")})
+        if args.catalog_only:
+            env["FANTASYCARD_CATALOG_SKIP_REGRESSIONS"] = "1"
         command = [str(args.godot.resolve()), "--headless", "--path", str(ROOT / "client"),
                    "--audio-driver", "Dummy"]
         command += (["--script", "res://tests/localization_pack_probe.gd"] if args.suite == "catalog"
@@ -90,7 +92,8 @@ def run(args):
             else:
                 summaries.append(error)
         print(json.dumps({"ok": ok, "locale": args.locale, "suite": args.suite,
-                          "report": str(report_path), "errors": summaries}, ensure_ascii=True))
+                          "report": str(report_path), "error_count": len(summaries),
+                          "errors": summaries[:12]}, ensure_ascii=True))
         return 0 if ok else 1
     except Exception as error:
         write_json(output / "failure.original.json", {"error": str(error), "type": type(error).__name__})
@@ -106,6 +109,7 @@ if __name__ == "__main__":
     parser.add_argument("--godot", type=Path, required=True)
     parser.add_argument("--locale", required=True)
     parser.add_argument("--suite", choices=["catalog", "native", "import"], default="catalog")
+    parser.add_argument("--catalog-only", action="store_true", help="Run glyph/card coverage; run shared native regressions separately once per frozen source")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--wait-seconds", type=int, default=0)
     options = parser.parse_args()

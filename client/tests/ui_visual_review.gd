@@ -474,7 +474,7 @@ func _collect_text(root: Node, rows: Array) -> void:
 			var missing_glyphs: Array[int] = []
 			for index in value.length():
 				var codepoint := value.unicode_at(index)
-				if codepoint > 32 and not typeface.has_char(codepoint) and not missing_glyphs.has(codepoint): missing_glyphs.append(codepoint)
+				if codepoint > 32 and not Palette.is_bidi_isolate(codepoint) and not typeface.has_char(codepoint) and not missing_glyphs.has(codepoint): missing_glyphs.append(codepoint)
 			rows.append({"path": str($UI.get_path_to(root)), "type": root.get_class(),
 				"text": value, "missing_glyphs": missing_glyphs, "max_line_width": max_line_width, "available_text_width": available_text_width, "tooltip": root.tooltip_text, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y],
 				"visible_rect": [visible_rect.position.x, visible_rect.position.y, visible_rect.size.x, visible_rect.size.y],

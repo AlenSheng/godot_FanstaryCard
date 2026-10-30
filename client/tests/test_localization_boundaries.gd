@@ -53,6 +53,7 @@ func run_test() -> Dictionary:
 	for locale in _locales:
 		P.set_language(locale)
 		_check(locale + "/registered", P.language() == locale)
+		_check_typography(host, locale)
 		_check_bans(host, locale)
 		_check_mail(host, locale, false)
 		_check_mail(host, locale, true)
@@ -73,6 +74,28 @@ func run_test() -> Dictionary:
 func _check(name: String, passed: bool, observed: Variant = null) -> void:
 	_checks[name] = passed
 	if not passed: _errors.append({"check": name, "observed": observed})
+
+func _check_typography(host: Control, locale: String) -> void:
+	_check(locale + "/typography/fixed_board_direction", not host.is_layout_rtl())
+	_check(locale + "/typography/shaping_locale", TranslationServer.get_locale().begins_with(locale.replace("-", "_")))
+	for role in ["body", "title"]:
+		for scaled in [false, true]:
+			var typeface: Font = P.scaled_font(role) if scaled else P.font(role)
+			var missing: Array = []
+			for entry in P.languages().values():
+				for character in str(entry.name):
+					if character.unicode_at(0) > 32 and not typeface.has_char(character.unicode_at(0)):
+						missing.append(character.unicode_at(0))
+			_check(locale + "/typography/all_language_names/" + role + str(scaled), missing.is_empty(), missing)
+	var view := _view(host)
+	for value in ["48 / 78", "+25% / 4", "+1 | 1.0 | 1.4 | +0.4"]:
+		var number: Label = view.text(value, Rect2(0, 0, 800, 64), 24, P.PAPER, null, true, false)
+		_check(locale + "/typography/numeric_order/" + value, number.text == value and number.text_direction == Control.TEXT_DIRECTION_LTR)
+	for value in ["-5", "+25% / 4", "+1 | 1.0 | 1.4 | +0.4"]:
+		var formatted := P.system_display_text(value)
+		_check(locale + "/typography/numeric_isolation_keeps_content/" + value, P.without_bidi_isolates(formatted) == value)
+		_check(locale + "/typography/numeric_isolation_is_idempotent/" + value, P.system_display_text(formatted) == formatted)
+	view.free()
 
 func _view(host: Control) -> Control:
 	var view = ReferenceUI.new()

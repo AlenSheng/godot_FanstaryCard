@@ -60,7 +60,49 @@
         "body": "res://assets/fonts/SourceHanSansSC-Regular.otf",
         "title": "res://assets/fonts/SourceHanSerifSC-SemiBold.otf"
       }
+    },
+    "hi": {
+      "name": "हिन्दी",
+      "fonts": {
+        "body": "res://assets/fonts/NotoSansDevanagariUI-Regular.ttf",
+        "title": "res://assets/fonts/NotoSansDevanagariUI-SemiBold.ttf"
+      },
+      "direction": "ltr",
+      "path": "res://data/locales/hi.json",
+      "status": "released"
+    },
+    "ar": {
+      "name": "العربية",
+      "fonts": {
+        "body": "res://assets/fonts/NotoSansArabicUI-Regular.ttf",
+        "title": "res://assets/fonts/NotoSansArabicUI-SemiBold.ttf"
+      },
+      "direction": "rtl",
+      "path": "res://data/locales/ar.json",
+      "status": "released"
+    },
+    "ru": {
+      "name": "Русский",
+      "fonts": {
+        "body": "res://assets/fonts/SourceHanSansSC-Regular.otf",
+        "title": "res://assets/fonts/SourceHanSerifSC-SemiBold.otf"
+      },
+      "direction": "ltr",
+      "path": "res://data/locales/ru.json",
+      "status": "released"
     }
   },
-  "default_language": "zh-CN"
+  "default_language": "zh-CN",
+  "font_fallbacks": {
+    "body": [
+      "res://assets/fonts/SourceHanSansSC-Regular.otf",
+      "res://assets/fonts/NotoSansDevanagariUI-Regular.ttf",
+      "res://assets/fonts/NotoSansArabicUI-Regular.ttf"
+    ],
+    "title": [
+      "res://assets/fonts/SourceHanSerifSC-SemiBold.otf",
+      "res://assets/fonts/NotoSansDevanagariUI-SemiBold.ttf",
+      "res://assets/fonts/NotoSansArabicUI-SemiBold.ttf"
+    ]
+  }
 }

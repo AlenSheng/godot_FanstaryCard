@@ -125,7 +125,7 @@ static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	scroll.custom_minimum_size = Vector2(popup_size.x - 64, popup_size.y - 128)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var label := Label.new()
-	label.text = "\n".join(lines)
+	label.text = P.system_display_text("\n".join(lines))
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(label)

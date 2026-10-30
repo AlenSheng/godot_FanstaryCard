@@ -74,7 +74,7 @@ func _run() -> void:
 				var variant: Dictionary = CardDetails.with_element(info, element)
 				var expected := CardDetails.face_description(id, 5, variant)
 				view.configure(id, variant, "stale-text-sentinel", false, {"level": 5})
-				if view.get_node("MonsterEffect").text != expected:
+				if P.without_bidi_isolates(view.get_node("MonsterEffect").text) != expected:
 					errors.append({"kind": "stale_monster_effect", "element": element, "expected": expected, "actual": view.get_node("MonsterEffect").text})
 		if str(info.get("source", "")) != "Monster":
 			for child in shop_panel.get_children(): child.free()
@@ -94,7 +94,10 @@ func _run() -> void:
 	shop_host.free()
 	var battle_report: Dictionary = await _check_battle_catalog(locale, errors)
 	var regressions := {}
-	for filename in ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd", "test_remote_system_copy.gd", "test_play_retry.gd"]:
+	var regression_files: Array = ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd", "test_remote_system_copy.gd", "test_play_retry.gd"]
+	var catalog_only := OS.get_environment("FANTASYCARD_CATALOG_SKIP_REGRESSIONS") == "1"
+	if catalog_only: regression_files.clear()
+	for filename in regression_files:
 		P.set_language("zh-CN")
 		var result: Dictionary = load("res://tests/" + filename).new().run_test()
 		regressions[filename] = result
@@ -102,7 +105,8 @@ func _run() -> void:
 	P.set_language(locale)
 	var report := {"ok": errors.is_empty(), "locale": locale, "catalog_cards_checked": count,
 		"shop_cards_checked": shop_count, "glyphs_checked": characters.size(), "real_card_controls": true,
-		"battle_layout": battle_report, "actual_game_matches": 0, "errors": errors, "regressions": regressions}
+		"battle_layout": battle_report, "actual_game_matches": 0, "errors": errors, "regressions": regressions,
+		"catalog_only": catalog_only, "shared_regressions_require_separate_evidence": catalog_only}
 	var output := OS.get_environment("FANTASYCARD_LOCALE_PROBE_REPORT")
 	if not output.is_empty():
 		var file := FileAccess.open(output, FileAccess.WRITE)
@@ -214,8 +218,8 @@ func _check_battle_controls(view: Control, context: Dictionary, expected_name: S
 			errors.append(context.merged({"kind": "battle_original_artwork_bounds_changed", "artwork": artwork_name, "rect": _rect_values(artwork.get_rect())}))
 		if panel.get_index() <= artwork.get_index():
 			errors.append(context.merged({"kind": "battle_text_panel_below_artwork", "artwork": artwork_name}))
-	if title.text != P.localized_text(expected_name): errors.append(context.merged({"kind": "battle_wrong_card_name", "actual": title.text, "expected": expected_name}))
-	if summary.text != expected_summary: errors.append(context.merged({"kind": "battle_stale_or_incomplete_effect", "actual": summary.text, "expected": expected_summary}))
+	if P.without_bidi_isolates(title.text) != P.localized_text(expected_name): errors.append(context.merged({"kind": "battle_wrong_card_name", "actual": title.text, "expected": expected_name}))
+	if P.without_bidi_isolates(summary.text) != expected_summary: errors.append(context.merged({"kind": "battle_stale_or_incomplete_effect", "actual": summary.text, "expected": expected_summary}))
 	var minimum_effective_font := INF
 	for label in [title, summary]:
 		var role := "name" if label == title else "effect"
@@ -237,6 +241,10 @@ func _check_battle_controls(view: Control, context: Dictionary, expected_name: S
 		errors.append(context.merged({"kind": "battle_native_text_height_exceeds_budget", "required_height": required_height, "budget": BATTLE_TEXT_HEIGHT_BUDGET}))
 	if not view.tooltip_text.begins_with(expected_tooltip) or not view.tooltip_text.contains(full_name):
 		errors.append(context.merged({"kind": "battle_full_tooltip_lost", "expected": expected_tooltip, "actual": view.tooltip_text}))
+	var symbol := view.get_node_or_null("ClassSymbol") as Label
+	if symbol != null and (symbol.get_visible_line_count() < symbol.get_line_count() or symbol.get_line_count() != 1):
+		errors.append(context.merged({"kind": "battle_clipped_class_badge", "text": symbol.text,
+			"lines": symbol.get_line_count(), "visible_lines": symbol.get_visible_line_count()}))
 	return {"minimum_effective_font": minimum_effective_font}
 
 func _rect_values(rect: Rect2) -> Array:
