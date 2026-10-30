@@ -13,7 +13,7 @@ button{color:inherit}
 button:focus-visible,a:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid #f3d398;outline-offset:5px}
 [hidden]{display:none!important}
 h1,h2,h3,h4,p{margin-top:0}
-h1,h2,h3,h4{text-wrap:balance}
+h1,h2,h3,h4{text-wrap:balance;overflow-wrap:anywhere}
 h1,h2{font-family:var(--serif);font-weight:600}
 p{line-height:1.9}
 .skip-link{position:fixed;left:1rem;top:-6rem;z-index:20;padding:1rem;background:var(--gold);color:var(--night)}
@@ -165,7 +165,8 @@ footer a:hover{color:var(--gold)}
 .rules-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.5rem;margin:2.5rem 0 1.5rem}
 .rules-grid h3{color:var(--gold);font-size:1rem}
 .rules-grid p{color:var(--muted);font-size:.88rem}
-.season-hero{--season-art-height:46rem;position:relative;isolation:isolate;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:5rem;min-height:var(--season-art-height);padding-top:11rem;padding-bottom:6rem;overflow:hidden;border-bottom:1px solid var(--line)}
+.season-hero{--season-art-height:46rem;position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);align-items:center;gap:5rem;min-height:var(--season-art-height);padding-top:11rem;padding-bottom:6rem;overflow:hidden;border-bottom:1px solid var(--line)}
+.season-hero-copy{min-width:0}
 .season-hero-art{position:absolute;z-index:-2;inset:0;width:100%;height:var(--season-art-height);object-fit:cover;object-position:65% center}
 .season-hero::after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,rgba(7,16,29,.96),rgba(7,16,29,.68) 40%,rgba(7,16,29,.05) 75%),linear-gradient(0deg,#07101d,transparent 30%)}
 .season-hero .season-badge{margin-bottom:1.8rem}
@@ -275,7 +276,7 @@ footer a:hover{color:var(--gold)}
 .class-stats div:last-child dd{font-size:1.4rem}
 .rules-grid{gap:1.2rem}
 .rules-grid p{max-width:45rem}
-.season-hero{grid-template-columns:1fr;padding-top:10rem;gap:2rem}
+.season-hero{grid-template-columns:minmax(0,1fr);padding-top:10rem;gap:2rem}
 .season-hero h1{font-size:clamp(3.5rem,11vw,5rem)}
 .season-orbit{max-width:17rem;margin-block:3rem 1rem}
 .season-pillars{gap:1.2rem;margin-bottom:3rem}
@@ -311,9 +312,9 @@ footer{flex-direction:column;align-items:start}
 .season-seal{max-width:13rem;margin-block:1.5rem}
 .season-preview .button{margin-top:.6rem}
 .page-heading h1{font-size:2.2rem}
-.class-tab{flex-direction:column;align-items:start;gap:.4rem;padding:1rem .65rem}
-.class-tab small{font-size:.67rem}
-.class-tab>span:first-child{font-size:1.2rem}
+.class-tab{flex-direction:column;align-items:start;gap:.4rem;padding:1rem .35rem}
+.class-tab small{max-width:100%;font-size:.67rem;overflow-wrap:anywhere}
+.class-tab>span:first-child{max-width:100%;font-size:clamp(1rem,4vw,1.2rem);overflow-wrap:anywhere}
 .character-stage{min-height:28rem}
 .character-stage>img{height:25rem}
 .character-caption{padding:1rem}
@@ -326,7 +327,7 @@ footer{flex-direction:column;align-items:start}
 .signature-grid article,.signature-grid article:first-child{padding:1.3rem 0;border-right:0;border-bottom:1px solid var(--line)}
 .signature-grid article:last-child{border-bottom:0}
 .season-hero{padding-top:9rem}
-.season-hero h1{font-size:3.2rem}
+.season-hero h1{font-size:clamp(2.2rem,11vw,3.2rem)}
 .season-tagline{font-size:1rem}
 .orbit-core{font-size:2.6rem}
 .element-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem}
@@ -420,4 +421,12 @@ footer>div{gap:1.2rem;font-size:.72rem}
 .brand img{width:28px;height:28px}
 .brand small{font-size:.55rem}
 .language-toggle{width:6rem;padding-inline:.5rem 1.4rem}
+}
+/* Full language autonyms remain visible even on the narrowest phone header. */
+@media(max-width:520px){
+.site-header .brand{grid-column:1;grid-row:1}
+.site-header .header-actions{display:contents}
+.site-header .menu-toggle{grid-column:2;grid-row:1;justify-self:end}
+.site-header .language-toggle{grid-column:1 / -1;grid-row:2;justify-self:end;width:auto;max-width:100%}
+.site-header nav{grid-row:3}
 }
