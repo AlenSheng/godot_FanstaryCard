@@ -5,6 +5,8 @@ const P = preload("res://ui/palette.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const ElementRules = preload("res://state/element_rules.gd")
 const CARD_SHADER = preload("res://ui/card_view.gdshader")
+const BATTLE_FONT_SIZE := 24
+const BATTLE_TEXT_BREAKS := TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
 static var CLASS_NAMES: Dictionary = preload("res://data/localization_legacy.json").data.card_class_names
 static var _materials: Dictionary = {}
 
@@ -63,7 +65,10 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	# upgraded cards cannot reuse the base-level numbers from the text table.
 	var effect := CardDetails.face_description(id, int(options.get("level", 0)), info)
 	if effect.is_empty(): effect = _face_description(id, passed_effect)
-	if monster:
+	set_meta("battle_layout", bool(options.get("battle_layout", false)))
+	if options.get("battle_layout", false):
+		_battle_text(id, info, effect, selected, options, monster)
+	elif monster:
 		_monster_text(id, info, effect, selected, int(options.get("level", 0)))
 	else:
 		var level := int(options.get("level", 0))
@@ -93,6 +98,58 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 		# on the standard font path rather than dimming glyphs with that shader.
 		if child is Label: child.use_parent_material = false
 		elif child is CanvasItem and child.material == null: child.use_parent_material = true
+
+## Battle cards keep the five authored slots and original illustration bounds.
+## Their text determines the height of an opaque panel above the artwork.
+## A 24px design font remains 12 physical pixels at the supported 960px width.
+## Collection and shop cards continue through their existing layout above.
+func _battle_text(id: String, info: Dictionary, effect: String, selected: bool, options: Dictionary, monster: bool) -> void:
+	var font_size := maxi(BATTLE_FONT_SIZE, int(options.get("battle_font_size", BATTLE_FONT_SIZE)))
+	var text_width := 174.0
+	var title_text := CardDetails.localized_face_name(id, info)
+	var effect_text := effect.replace(P.localized("card_face_separator"), "\n")
+	var title_font := P.scaled_font("title")
+	var effect_font := P.font_for_text(effect_text, font_size, true)
+	var title_height := ceilf(title_font.get_multiline_string_size(title_text, HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size, -1, BATTLE_TEXT_BREAKS).y) + 6.0
+	var effect_height := ceilf(effect_font.get_multiline_string_size(effect_text, HORIZONTAL_ALIGNMENT_CENTER, text_width, font_size, -1, BATTLE_TEXT_BREAKS).y) + 8.0
+	var text_top := maxf(52.0, 360.0 - title_height - effect_height - 8.0)
+	var panel := Panel.new()
+	panel.name = "BattleTextPanel"
+	panel.position = Vector2(16, text_top - 6.0)
+	panel.size = Vector2(186, 366.0 - panel.position.y)
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var panel_style := P.box(Color("101b21"), P.GOLD if selected else Color("47626a"), 2)
+	for side in [SIDE_LEFT, SIDE_TOP, SIDE_RIGHT, SIDE_BOTTOM]: panel_style.set_content_margin(side, 0)
+	panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(panel)
+	var title := _text(title_text, Rect2(22, text_top, text_width, title_height), font_size, P.PAPER if monster else P.GOLD, false, title_font)
+	title.name = "MonsterName" if monster else "CardName"
+	_battle_label(title, "card_name")
+	var summary_rect := Rect2(22, text_top + title_height + 8.0, text_width, effect_height)
+	var summary := _text(effect_text, summary_rect, font_size, P.PAPER, false, effect_font)
+	summary.name = "MonsterEffect" if monster else "CardEffect"
+	_battle_label(summary, "card_effect")
+	set_meta("battle_required_text_height", title_height + effect_height + 8.0)
+	set_meta("battle_text_top", text_top)
+	set_meta("battle_art_height", 285.0)
+	set_meta("battle_effect_parts", effect_text.split("\n").size())
+	set_meta("battle_summary_rect", summary_rect)
+	set_meta("battle_font_size", font_size)
+	if not monster:
+		var hero_class := str(info.get("hero_class", ""))
+		if not P.word(info.get("hero_class", "")).is_empty(): _class_badge(hero_class, P.word(hero_class))
+		var hint := _battle_element_hint(str(info.get("element", "None")), str(options.get("battle_target_element", "None")))
+		if not hint.is_empty(): _battle_element_badge(hint)
+		elif int(options.get("level", 0)) > 0: _level_badge(int(options.level))
+
+func _battle_label(label: Label, role: String) -> void:
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.max_lines_visible = -1
+	label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	label.add_theme_constant_override("line_spacing", 0)
+	label.set_meta("battle_primary_text", true)
+	label.set_meta("battle_text_role", role)
+	label.set_meta("minimum_effective_font_size", 12.0)
 
 func _face_description(id: String, fallback: String) -> String:
 	var locale := P.language()

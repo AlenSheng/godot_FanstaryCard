@@ -1,7 +1,7 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
-const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
+const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -104,6 +104,7 @@ func _reset_fixture() -> void:
 			if child.has_method("dismiss"): child.dismiss()
 			else: child.queue_free()
 	await get_tree().process_frame
+	Game.selected_cards = []; Game.combat_preview = {}
 	Game.room = {}; Game.settlement = {}; Game.ready_prompt = {}; Game.preparation = {}; Game.relic_details = {}
 	Game._settlement_recovery_match_id = ""
 	Game.gateway.recovering = false; Game.gateway.online = true
@@ -236,18 +237,28 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			await _render_base(); $UI._confirm(Palette.localized("battle_abandon_warning"), func(): pass, {"title": "battle_abandon_title", "confirm_text": "battle_abandon_confirm", "tall": true}); return false
 		"battle_status":
 			Game.room = _room_fixture(); await _render_base(); $UI._show_battle_details(_status_fixture()); return false
-		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "notice":
+		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "choice", "notice":
 			Game.room = _room_fixture()
 			if scenario in ["map", "midlayer"]:
 				Game.room.map = []
 				for y in range(6):
 					for x in range(6): Game.room.map.append({"row": y, "column": x, "has_spring": y == 0 and x == 3, "is_boss": y == 2 and x == 2})
 				Game.room.legal_moves = [{"row": 2, "column": 2}, {"row": 3, "column": 3}]; Game.room.allowed_actions.append("room.move")
-			if scenario in ["pve", "pvp"]:
-				Game.room.player.phase = "Pve" if scenario == "pve" else "Pvp"; Game.room.allowed_actions += ["battle.play_cards", "battle.select_target", "duel.leave", "duel.escape"]
+			if scenario.begins_with("pve") or scenario.begins_with("pvp"):
+				Game.room.player.phase = "Pve" if scenario.begins_with("pve") else "Pvp"; Game.room.allowed_actions += ["battle.play_cards", "battle.select_target", "duel.leave", "duel.escape"]
 				Game.room.pve = {"battle_id": "review-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_element": "Fire", "intent_value": 5}]}
-				if scenario == "pve": Game.room.player.combat = {"hp": 80, "maximum_hp": 70, "shield": 6}
+				if scenario.begins_with("pve"): Game.room.player.combat = {"hp": 80, "maximum_hp": 70, "shield": 6}
 				else: Game.room.duel = {"duel_id": "review-duel", "opponent_id": "review-opponent", "opponent": {"hero_class": "Guardian", "hp": 60, "maximum_hp": 100, "shield": 8}, "escape_remaining_ms": 0}
+				if scenario.ends_with("full_hand"):
+					Game.room.player.hand = []
+					for card_id in ["MAG-10", "GW19", "GP07", "GO04", "M-BOXSPIRIT"]:
+						var instance_id := "full-hand-" + str(Game.room.player.hand.size())
+						Game.room.player.hand.append({"instance_id": instance_id, "card_id": card_id, "level": 10})
+						Game.selected_cards.append(instance_id)
+				if scenario == "pve_priest":
+					Game.room.player.hero_class = "Priest"; Game.room.player.battle_status = _status_fixture("LinYuan")
+				elif scenario == "pve_guardian":
+					Game.room.player.hero_class = "Guardian"; Game.room.player.battle_status = _status_fixture("ZaiYue")
 			if scenario == "choice":
 				Game.room.player.phase = "Choice"; Game.room.allowed_actions = ["choice.pick", "choice.refresh"]
 				Game.room.reward_choice = {"refresh_count": 0, "options": [{"option_id": "equipment", "kind": 1, "quantity": 1}, {"option_id": "fragments", "kind": 2, "quantity": 18}, {"option_id": "heal", "kind": 3, "quantity": 1, "heal_percent": 14}]}
@@ -292,9 +303,15 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			review_checks[frame_name + ": complete button text " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
 		if entry.type == "Label" and int(entry.max_lines_visible) < 0:
 			review_checks[frame_name + ": complete label lines " + str(entry.path)] = int(entry.visible_lines) >= int(entry.lines)
+			if int(entry.autowrap_mode) == TextServer.AUTOWRAP_OFF:
+				review_checks[frame_name + ": complete fixed label width " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if entry.type == "LineEdit" and bool(entry.is_placeholder):
+			review_checks[frame_name + ": complete input hint " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if bool(entry.battle_primary_text):
+			review_checks[frame_name + ": readable battle primary " + str(entry.path)] = float(entry.effective_font_size) >= 12.0 - 0.01
 		if str(entry.path).get_file().begins_with("ClassMaximumHp_"):
 			review_checks[frame_name + ": integer class health " + str(entry.path)] = str(entry.text).is_valid_int()
-		if Palette.language() not in ["zh-CN", "zh-TW"]:
+		if Palette.language() not in ["zh-CN", "zh-TW"] and (entry.type != "LineEdit" or bool(entry.is_placeholder)):
 			var checked_text: String = entry.text
 			for player_name in ["逐风者", "长夜归来的盾卫", "一位来自漫长旅途的探索者"]:
 				checked_text = checked_text.replace(player_name, "")
@@ -344,6 +361,23 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			var available: float = node.size.x - style.get_content_margin(SIDE_LEFT) - style.get_content_margin(SIDE_RIGHT)
 			var text_width: float = node.get_theme_font("font").get_string_size(node.text, HORIZONTAL_ALIGNMENT_LEFT, -1, node.get_theme_font_size("font_size")).x
 			review_checks[frame_name + ": complete " + str(node.name)] = text_width <= available
+	if frame_name.ends_with("full_hand"):
+		var hand_cards: Array[Control] = []
+		for control in $UI._reference.find_children("*", "Button", true, false):
+			if control.has_meta("battle_hand_index"): hand_cards.append(control)
+		review_checks[frame_name + ": five hand cards visible"] = hand_cards.size() == 5
+		var action: Control = $UI._reference.find_child("PlayCardsButton", true, false)
+		for card in hand_cards:
+			var card_rect := card.get_global_rect()
+			review_checks[frame_name + ": hand inside viewport " + str(card.get_meta("battle_hand_index"))] = get_viewport().get_visible_rect().encloses(card_rect)
+			review_checks[frame_name + ": play clear of hand " + str(card.get_meta("battle_hand_index"))] = action != null and not action.get_global_rect().intersects(card_rect)
+			var panel: Control = card.get_node("BattleTextPanel")
+			var illustration: Control = card.get_node("Illustration")
+			review_checks[frame_name + ": original card illustration " + str(card.get_meta("battle_hand_index"))] = illustration.get_rect().is_equal_approx(Rect2(14, 14, 190, 285))
+			review_checks[frame_name + ": text above illustration " + str(card.get_meta("battle_hand_index"))] = panel.get_index() > illustration.get_index()
+			for child in card.get_children():
+				if not child.get_meta("battle_primary_text", false): continue
+				review_checks[frame_name + ": battle panel encloses " + str(card.get_meta("battle_hand_index")) + "/" + str(child.name)] = panel.get_rect().encloses(child.get_rect())
 	var frame := {"name": frame_name, "language": Palette.language(),
 		"window_size": [get_window().size.x, get_window().size.y],
 		"viewport_size": [get_viewport().get_visible_rect().size.x, get_viewport().get_visible_rect().size.y],
@@ -361,7 +395,10 @@ func _check_content_insets(key: String, panel: Node, child: Control) -> void:
 
 func _collect_text(root: Node, rows: Array) -> void:
 	if root is Control and not root.is_visible_in_tree(): return
-	if (root is Label or root is Button) and not root.text.is_empty():
+	var collected_value := ""
+	if root is Label or root is Button: collected_value = root.text
+	elif root is LineEdit: collected_value = root.placeholder_text if root.text.is_empty() else root.text
+	if not collected_value.is_empty():
 		var rect: Rect2 = root.get_global_rect()
 		var visible_rect := rect
 		var ancestor := root.get_parent()
@@ -374,14 +411,15 @@ func _collect_text(root: Node, rows: Array) -> void:
 			var font_size: int = root.get_theme_font_size("font_size")
 			var scale: Vector2 = root.get_global_transform().get_scale()
 			var pixel_scale := float(get_window().size.y) / get_viewport().get_visible_rect().size.y
-			var value: String = root.text
+			var value: String = collected_value
 			var max_line_width := 0.0
 			for line in value.split("\n"):
 				max_line_width = maxf(max_line_width, typeface.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size).x)
 			var available_text_width: float = root.size.x
-			if root is Button:
+			if root is Button or root is LineEdit:
 				var style: StyleBox = root.get_theme_stylebox("normal")
 				available_text_width -= style.get_content_margin(SIDE_LEFT) + style.get_content_margin(SIDE_RIGHT)
+				if root is LineEdit and root.right_icon != null: available_text_width -= root.right_icon.get_width()
 			var missing_glyphs: Array[int] = []
 			for index in value.length():
 				var codepoint := value.unicode_at(index)
@@ -393,6 +431,9 @@ func _collect_text(root: Node, rows: Array) -> void:
 				"single_line_width": typeface.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x,
 				"font_color": root.get_theme_color("font_disabled_color" if root is Button and root.disabled else "font_color").to_html(),
 				"disabled": root.disabled if root is Button else false,
+				"is_placeholder": root is LineEdit and root.text.is_empty(),
+				"autowrap_mode": root.autowrap_mode if root is Label else TextServer.AUTOWRAP_OFF,
+				"battle_primary_text": bool(root.get_meta("battle_primary_text", false)),
 				"lines": root.get_line_count() if root is Label else 1,
 				"max_lines_visible": root.max_lines_visible if root is Label else -1,
 				"visible_lines": root.get_visible_line_count() if root is Label else 1})

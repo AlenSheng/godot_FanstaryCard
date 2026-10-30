@@ -382,6 +382,7 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		title_label.offset_right = -14.0
 		title_label.offset_bottom = 46.0
 		title_label.clip_text = true
+		title_label.max_lines_visible = 1
 		title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		title_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		title_label.add_theme_color_override("font_color", P.PAPER if unread else P.MUTED)
@@ -397,6 +398,7 @@ func _build_mail_rows(column: VBoxContainer) -> void:
 		preview_label.offset_right = -14.0
 		preview_label.offset_bottom = -10.0
 		preview_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+		preview_label.max_lines_visible = 1
 		preview_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 		preview_label.clip_text = true
 		preview_label.mouse_filter = Control.MOUSE_FILTER_IGNORE

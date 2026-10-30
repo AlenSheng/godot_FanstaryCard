@@ -6,7 +6,7 @@
     "en",
     "es"
   ],
-  "strings_per_locale": 826,
+  "strings_per_locale": 827,
   "card_names_per_locale": 232,
   "hardcoded_ui_literals": 0,
   "missing_literal_keys": 0,
@@ -28,14 +28,24 @@
     "status": "Passed on earlier candidate; not approval of latest source"
   },
   "latest_native_attempt": {
-    "status": "Passed",
-    "evidence": "docs/reports/localization-rollout-20261030/batch-01/local-ui-evidence.json",
-    "screenshots": 495,
-    "checks": 42669
+    "status": "WaitingForMemory",
+    "evidence": "docs/reports/localization-rollout-20261030/batch-01/overlay-partial-evidence-r1.json",
+    "completed_cases": 4,
+    "expected_cases": 9,
+    "completed_screenshots": 236,
+    "pending": [
+      "en-960",
+      "en-1280",
+      "en-1920",
+      "es-1280",
+      "es-1920"
+    ]
   },
   "independent_review": {
     "thread_id": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
-    "status": "ReadyForHandoff_LocalChecksPassed"
+    "status": "ChangesRequired_RevisionUnderTest",
+    "reviewed_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+    "report": "docs/reports/localization-rollout-20261030/batch-01/independent-review-70f68c3e.json"
   },
   "game_batch_passed": false,
   "deployed": false,
@@ -51,5 +61,6 @@
     "Continue next language group"
   ],
   "resource_policy": "User chose to wait for free memory; do not close or interrupt FreeVideo",
-  "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation"
+  "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation",
+  "user_visual_correction": "Complete: keep original illustration bounds and draw the expanding readable text panel on top. New 960 Spanish screenshots and all 3 Chinese widths passed; full revised matrix awaits memory."
 }

@@ -25,6 +25,7 @@ static func _search_and_filters(ui: Control, host: Control) -> LineEdit:
 	var search := LineEdit.new()
 	search.name = "DeckBuilderSearch"
 	search.placeholder_text = P.localized_text(P.localized("search_cards"))
+	search.tooltip_text = P.localized("search_cards_hint")
 	search.text = host._search
 	var search_style := Art.style(PREFIX + "search_field_normal.png")
 	search_style.set_content_margin(SIDE_LEFT, 76)

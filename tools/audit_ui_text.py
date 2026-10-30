@@ -1,4 +1,4 @@
-"""Find human-language literals in production GDScript (comments excluded)."""
+"""Find fixed human-language literals in production GDScript and scene text."""
 import argparse
 import ast
 from collections import Counter
@@ -79,6 +79,20 @@ def scan():
                                  "line": token.start[0], "column": token.start[1], "text": value})
         except (tokenize.TokenError, IndentationError) as error:
             errors.append({"path": str(path), "error": str(error)})
+    # Serialized controls can otherwise reintroduce language-specific defaults
+    # even when their scripts use stable keys correctly.
+    for pattern in ("*.tscn", "*.tres"):
+        for path in sorted((ROOT / "client").rglob(pattern)):
+            if "tests" in path.parts or ".godot" in path.parts:
+                continue
+            for line_number, line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+                match = re.match(r'\s*(?:text|placeholder_text|tooltip_text|title|dialog_text)\s*=\s*(".*")\s*$', line)
+                if not match:
+                    continue
+                value = ast.literal_eval(match.group(1))
+                if human_literal(value, "label.text = "):
+                    rows.append({"path": path.relative_to(ROOT).as_posix(), "line": line_number,
+                                 "column": 0, "text": value})
     return {"ok": not rows and not errors and not missing_keys, "hardcoded_literals": rows, "parse_errors": errors, "missing_keys": missing_keys, "classified_technical_literals": classified,
             "counts": dict(Counter(row["path"] for row in rows))}
 

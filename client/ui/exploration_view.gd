@@ -123,30 +123,47 @@ static func _status(ui: Control, name: String, rect: Rect2) -> void:
 		label.add_theme_constant_override("outline_size", 2)
 	label.visible = false
 
+static func _battle_pixel_scale(ui: Control) -> float:
+	# Detached component tests use the supported minimum window as a conservative
+	# default. Live controls include their own transform and viewport stretching.
+	var pixel_scale := 0.5
+	if ui.is_inside_tree():
+		pixel_scale = float(ui.get_window().size.y) / maxf(1.0, ui.get_viewport().get_visible_rect().size.y)
+	return maxf(0.01, pixel_scale * absf(ui.get_global_transform().get_scale().y))
+
+static func _battle_font_size(ui: Control, local_scale: float = 1.0) -> int:
+	return maxi(24, int(ceil(12.0 / maxf(0.01, _battle_pixel_scale(ui) * absf(local_scale)))))
+
 static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview: bool = false) -> void:
 	var names := {"Mage": P.localized("exploration_passive_mage_name"), "Priest": P.localized("exploration_passive_priest_name"), "Guardian": P.localized("exploration_passive_guardian_name")}
 	if not names.has(hero_class): return
 	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
 	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
-	if hero_class == "Priest" and Game.room.has("duel"):
-		descriptions[hero_class] = descriptions[hero_class].replace(" · ", "\n")
-	if hero_class == "Mage" and Game.room.has("duel"):
-		var parts: PackedStringArray = descriptions[hero_class].split(" · ")
-		if parts.size() == 3:
-			descriptions[hero_class] = parts[0] + " · " + parts[1] + "\n" + parts[2]
+	# Give every live passive field its own line. The complete existing wording
+	# stays visible at 24 design pixels, including signature weapon bonuses.
+	descriptions[hero_class] = descriptions[hero_class].replace(" · ", "\n")
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
 	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else P.localized_text(descriptions[hero_class])]
-	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(12, 9), Vector2(66, rect.size.y - 18)))
+	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(16, 12), Vector2(38, 38)))
 	icon.name = "PlayerPassiveIcon_" + hero_class
-	var title_inset := 18.0 if above_preview else 8.0
-	var description_inset := 53.0 if above_preview else 44.0
-	var title: Label = ui.text(names[hero_class], Rect2(rect.position + Vector2(89, title_inset), Vector2(rect.size.x - (110 if above_preview else 100), 32 if above_preview else 36)), 25, P.GOLD)
+	var title_inset := 12.0 if above_preview else 8.0
+	var description_inset := 54.0 if above_preview else 50.0
+	var font_size := _battle_font_size(ui)
+	var title: Label = ui.text(names[hero_class], Rect2(rect.position + Vector2(66, title_inset), Vector2(rect.size.x - 82, 36)), font_size, P.GOLD, null, false)
 	title.name = "PlayerPassiveTitle_" + hero_class
-	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(89, description_inset), Vector2(rect.size.x - (113 if above_preview else 103), rect.size.y - description_inset - (10 if above_preview else 5))), 18, P.MUTED, null, false)
+	title.set_meta("battle_primary_text", true)
+	title.set_meta("battle_text_role", "passive_name")
+	title.set_meta("minimum_effective_font_size", 12.0)
+	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(16, description_inset), Vector2(rect.size.x - 32, rect.size.y - description_inset - 16)), font_size, P.MUTED, null, false)
 	description.name = "PlayerPassiveDescription_" + hero_class
+	description.add_theme_constant_override("line_spacing", 0)
+	description.set_meta("battle_primary_text", true)
+	description.set_meta("battle_text_role", "passive_effect")
+	description.set_meta("minimum_effective_font_size", 12.0)
+	frame.set_meta("battle_passive_layout", true)
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
@@ -162,7 +179,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
 		# Leave the entire signature frame above the preview, including its final text line.
-		_passive(ui, player.get("hero_class", ""), Rect2(621, 357, 350, 156), true)
+		_passive(ui, player.get("hero_class", ""), Rect2(621, 302, 350, 220), true)
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
 		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))
@@ -222,11 +239,17 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 		var rect := Rect2(origin + Vector2(index * 232, 0), Vector2(218, 376))
 		if index < hand.size():
 			var card: Dictionary = hand[index]
-			ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true})
+			var card_button: Button = ui.card(host, card.get("card_id", ""), rect, func(): Game.toggle_card(card.instance_id), card.get("instance_id", "") in Game.selected_cards, not Game.allowed("battle.play_cards"), {"level": int(card.get("level", 0)), "element_override": str(card.get("element_override", "")), "battle_target_element": target_element, "selected_overlay": true, "battle_layout": true, "battle_font_size": _battle_font_size(ui, rect.size.y / 376.0)})
+			card_button.set_meta("battle_hand_index", index)
 			var play_index := Game.selected_cards.find(card.get("instance_id", ""))
 			if play_index >= 0:
-				var order_label: Label = ui.text(str(play_index + 1), Rect2(rect.position.x + 20, rect.position.y + 20, 50, 50), 32, P.GOLD)
+				# Keep order above even the tallest text panel, between the level
+				# marker and class badge rather than over the enlarged card name.
+				var order_label: Label = ui.text(str(play_index + 1), Rect2(rect.position.x + 87, rect.position.y + 4, 44, 44), 28, P.GOLD)
 				order_label.name = "PlayOrder_%s" % index
+				order_label.set_meta("battle_primary_text", true)
+				order_label.set_meta("battle_text_role", "selection_order")
+				order_label.set_meta("minimum_effective_font_size", 12.0)
 				# Keep play order clear over the artwork and decorative frame.
 				order_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 				order_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -241,9 +264,10 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 			empty_slot.stretch_mode = TextureRect.STRETCH_SCALE
 	var play_label := P.localized("battle_play_button")
 	var play_width := 220.0
-	var play_font := P.font_for_text(play_label, 30)
+	var play_font := P.font_for_text(play_label, 24)
 	if play_font != null:
-		play_width = clampf(play_font.get_string_size(play_label, HORIZONTAL_ALIGNMENT_LEFT, -1, 30).x + 72.0, 220.0, 300.0)
+		# The fifth slot ends at x=1604. Keep the action entirely to its right.
+		play_width = clampf(play_font.get_string_size(play_label, HORIZONTAL_ALIGNMENT_LEFT, -1, 24).x + 48.0, 220.0, 240.0)
 	var play_rect := Rect2(1860.0 - play_width, 845, play_width, 89)
 	var play_art := _nine_patch(ui, Art.texture("UI/Battle/battle_play_button_generated.png"), play_rect, Vector4(34, 18, 34, 18))
 	play_art.name = "PlayCardsButtonArt"
@@ -251,7 +275,7 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	play_button.name = "PlayCardsButton"
 	for state_name in ["normal", "hover", "pressed", "disabled"]:
 		play_button.add_theme_stylebox_override(state_name, StyleBoxEmpty.new())
-	play_button.add_theme_font_size_override("font_size", 30)
+	play_button.add_theme_font_size_override("font_size", 24)
 	play_button.add_theme_color_override("font_color", P.PAPER)
 	play_button.add_theme_color_override("font_hover_color", P.PAPER)
 	play_button.add_theme_color_override("font_pressed_color", P.PAPER)
@@ -377,8 +401,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		ui.picture(Art.texture("UI/Encounter/encounter_lock_icon_normal.png"), Rect2(1076, 477, 42, 42))
 		var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 477, 400, 42), 24, P.GOLD)
 		waiting_label.name = "DuelWaitLabel"
-	ui.text(P.localized("own_hand"), Rect2(80, 600, 330, 54), 34, P.GOLD)
-	_passive(ui, player.get("hero_class", ""), Rect2(80, 665, 350, 160), true)
+	ui.text(P.localized("own_hand"), Rect2(80, 568, 330, 40), 28, P.GOLD)
+	_passive(ui, player.get("hero_class", ""), Rect2(80, 612, 350, 220), true)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, P.localized("chaos_realm"))
