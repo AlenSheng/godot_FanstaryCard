@@ -52,6 +52,11 @@ func _run() -> void:
 	for id in CatalogIndex.cards():
 		var info: Dictionary = CatalogIndex.card(id)
 		var effect := CardDetails.face_description(id, 5, info)
+		for authored_name in [CardDetails.localized_name(id, info), CardDetails.localized_face_name(id, info)]:
+			if P.localized_text(authored_name) != authored_name:
+				errors.append({"kind": "localized_card_name_rewritten", "id": id, "expected": authored_name, "actual": P.localized_text(authored_name)})
+		if P.localized_text(effect) != effect:
+			errors.append({"kind": "localized_card_effect_rewritten", "id": id, "expected": effect, "actual": P.localized_text(effect)})
 		view.configure(id, info, effect, false, {"collection": true, "copy_count": 1, "level": 5})
 		await process_frame
 		var label: Label = view.get_node_or_null("CardName")
@@ -83,6 +88,8 @@ func _run() -> void:
 			shop_ui._shop_card_presentation(shop_panel, image, {"cardId": id})
 			await process_frame
 			var shop_name: Label = shop_panel.get_node("ShopCardName")
+			if P.without_bidi_isolates(shop_name.text) != CardDetails.localized_face_name(id, info):
+				errors.append({"kind": "shop_wrong_card_name", "id": id, "expected": CardDetails.localized_face_name(id, info), "actual": shop_name.text})
 			var font: Font = shop_name.get_theme_font("font")
 			var text_width := font.get_string_size(shop_name.text, HORIZONTAL_ALIGNMENT_LEFT, -1.0, shop_name.get_theme_font_size("font_size")).x
 			if text_width > shop_name.size.x + 0.5:
@@ -94,7 +101,7 @@ func _run() -> void:
 	shop_host.free()
 	var battle_report: Dictionary = await _check_battle_catalog(locale, errors)
 	var regressions := {}
-	var regression_files: Array = ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd", "test_remote_system_copy.gd", "test_play_retry.gd"]
+	var regression_files: Array = ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd", "test_remote_system_copy.gd", "test_play_retry.gd", "test_localization_text_audit.gd", "test_language_preferences.gd"]
 	var catalog_only := OS.get_environment("FANTASYCARD_CATALOG_SKIP_REGRESSIONS") == "1"
 	if catalog_only: regression_files.clear()
 	for filename in regression_files:
@@ -157,7 +164,7 @@ func _check_battle_catalog(locale: String, errors: Array) -> Dictionary:
 				var context := {"id": id, "level": level, "element": str(variant.element)}
 				var face_name := CardDetails.localized_face_name(id, info)
 				var effect := CardDetails.face_description(id, level, info)
-				var summary := P.localized_text(effect.replace(P.localized("card_face_separator"), "\n"))
+				var summary := effect.replace(P.localized("card_face_separator"), "\n")
 				var title_font := P.scaled_font("title")
 				var effect_font := P.font_for_text(summary, BATTLE_FONT_SIZE, true)
 				# Font measurements cover all 0..10 numeric/duration growth. The
@@ -218,7 +225,7 @@ func _check_battle_controls(view: Control, context: Dictionary, expected_name: S
 			errors.append(context.merged({"kind": "battle_original_artwork_bounds_changed", "artwork": artwork_name, "rect": _rect_values(artwork.get_rect())}))
 		if panel.get_index() <= artwork.get_index():
 			errors.append(context.merged({"kind": "battle_text_panel_below_artwork", "artwork": artwork_name}))
-	if P.without_bidi_isolates(title.text) != P.localized_text(expected_name): errors.append(context.merged({"kind": "battle_wrong_card_name", "actual": title.text, "expected": expected_name}))
+	if P.without_bidi_isolates(title.text) != expected_name: errors.append(context.merged({"kind": "battle_wrong_card_name", "actual": title.text, "expected": expected_name}))
 	if P.without_bidi_isolates(summary.text) != expected_summary: errors.append(context.merged({"kind": "battle_stale_or_incomplete_effect", "actual": summary.text, "expected": expected_summary}))
 	var minimum_effective_font := INF
 	for label in [title, summary]:

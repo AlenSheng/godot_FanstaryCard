@@ -19,6 +19,9 @@ const LANGUAGE_SETTINGS_PATH := "user://fantasycard_language.cfg"
 const LOCALE_REGISTRY_PATH := "res://data/localization_registry.json"
 const MIN_FITTED_FONT_SIZE := 20
 static var _language_packs: Dictionary = {}
+static var _localized_literal_values: Dictionary = {}
+static var _localized_card_names: Dictionary = {}
+static var _localized_format_regexes: Dictionary = {}
 static var _partial_source_regex: RegEx
 static var _partial_source_aliases: Dictionary = {}
 static var _client_messages: Dictionary = {}
@@ -161,9 +164,7 @@ static func _ensure_locale() -> void:
 	var registry: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(LOCALE_REGISTRY_PATH))
 	_locale_config = {"default_language": registry.get("default_language", "zh-CN"), "languages": {}, "font_fallbacks": registry.get("font_fallbacks", {})}
 	_load_language_packs()
-	_language = str(_locale_config.default_language)
-	var saved_language := _load_language()
-	if _locale_config.languages.has(saved_language): _language = saved_language
+	_language = resolve_preferred_language(_load_language(), OS.get_locale(), _locale_config.languages.keys(), str(_locale_config.default_language))
 	_build_source_aliases()
 	TranslationServer.set_locale(_language.replace("-", "_"))
 
@@ -175,12 +176,27 @@ static func _load_language_packs() -> void:
 		var pack: Variant = JSON.parse_string(FileAccess.get_file_as_string(str(entry.get("path", ""))))
 		if not pack is Dictionary: continue
 		_language_packs[code] = pack
+		var literals := {}
+		_collect_localized_literals(pack, literals)
+		_localized_literal_values[code] = literals
+		var card_names := {}
+		for section in ["card_names", "card_face_names"]:
+			for display_name in pack.get(section, {}).values(): card_names[str(display_name)] = true
+		_localized_card_names[code] = card_names
 		_locale_config.languages[code] = {
 			"name": str(entry.get("name", code)),
 			"fonts": entry.get("fonts", {}),
 			"direction": str(entry.get("direction", "ltr")),
 			"strings": pack.get("strings", {})
 		}
+
+static func _collect_localized_literals(value: Variant, result: Dictionary) -> void:
+	if value is String:
+		if not value.is_empty(): result[value] = true
+	elif value is Dictionary:
+		for child in value.values(): _collect_localized_literals(child, result)
+	elif value is Array:
+		for child in value: _collect_localized_literals(child, result)
 
 static func language_pack_section(section: String) -> Dictionary:
 	_ensure_locale()
@@ -329,7 +345,9 @@ static func language() -> String:
 static func set_language(value: String) -> void:
 	_ensure_locale()
 	if not _locale_config.get("languages", {}).has(value): return
-	if _language == value: return
+	if _language == value:
+		_save_language()
+		return
 	_language = value
 	_fonts_ready = false
 	_scaled_fonts_ready = false
@@ -347,6 +365,19 @@ static func _load_language() -> String:
 	if settings.load(LANGUAGE_SETTINGS_PATH) != OK: return ""
 	return str(settings.get_value("ui", "language", ""))
 
+static func resolve_preferred_language(saved: String, system_locale: String, supported: Array, fallback: String = "en") -> String:
+	if saved in supported: return saved
+	var normalized := system_locale.replace("-", "_").to_lower().split(".")[0].split("@")[0]
+	for code in supported:
+		if str(code).replace("-", "_").to_lower() == normalized: return str(code)
+	var base := normalized.get_slice("_", 0)
+	if base == "in": base = "id"
+	if base == "zh" and "zh-CN" in supported: return "zh-CN"
+	if base in supported: return base
+	if "en" in supported: return "en"
+	if fallback in supported: return fallback
+	return str(supported[0]) if not supported.is_empty() else fallback
+
 static func localized(key: String) -> String:
 	_ensure_locale()
 	var language_config: Dictionary = _locale_config.get("languages", {}).get(_language, {})
@@ -361,6 +392,12 @@ static func localized_text(value: String) -> String:
 		var cached: Dictionary = _client_messages[value]
 		return _render_message(str(cached.key), cached.arguments)
 	if _locale_config.languages[_language].get("strings", {}).has(value): return localized(value)
+	# Locale-authored display values are already translated. Legacy aliases
+	# must not rewrite homographs inside names such as Japanese card titles.
+	if _localized_literal_values.get(_language, {}).has(value): return value
+	var newline := value.find("\n")
+	if newline > 0 and _localized_card_names.get(_language, {}).has(value.substr(0, newline)):
+		return value.substr(0, newline + 1) + localized_text(value.substr(newline + 1))
 	var localized_identifier := word(value)
 	if localized_identifier != value: return localized_identifier
 	var aliases := TEXT_KEYS.duplicate()
@@ -371,6 +408,7 @@ static func localized_text(value: String) -> String:
 	var formatted := _localized_format_alias(value)
 	if not formatted.is_empty(): return formatted
 	if _partial_source_regex == null: return value
+	var owned_ranges := _localized_format_ranges(value)
 	var result := ""
 	var cursor := 0
 	for matched in _partial_source_regex.search_all(value):
@@ -378,9 +416,42 @@ static func localized_text(value: String) -> String:
 		var phrase: String = matched.get_string()
 		var key := str(_partial_source_aliases.get(phrase, ""))
 		var translated := localized(key)
-		result += phrase if translated == key else translated
+		var already_localized := false
+		for span in owned_ranges:
+			if matched.get_start() >= span.x and matched.get_end() <= span.y:
+				already_localized = true
+				break
+		result += phrase if already_localized or translated == key else translated
 		cursor = matched.get_end()
 	result += value.substr(cursor)
+	return result
+
+static func _localized_format_ranges(value: String) -> Array[Vector2i]:
+	if not _localized_format_regexes.has(_language):
+		var format_tokens := RegEx.new()
+		format_tokens.compile("%[0-9.\\-+]*[sdf%]")
+		var letters := RegEx.new()
+		letters.compile("\\p{L}")
+		var patterns: Array[String] = []
+		for raw_source in _localized_literal_values.get(_language, {}):
+			var source := str(raw_source)
+			if not source.contains("%"): continue
+			# Generic "%s %s" must never claim arbitrary source copy. Require
+			# actual locale-authored words in the template, such as 同属性 +%s.
+			if letters.search_all(format_tokens.sub(source, "", true)).size() < 2: continue
+			var pattern := _format_pattern(source)
+			pattern = pattern.substr(1, pattern.length() - 2)
+			if source.left(1) in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz": pattern = "(?<![\\p{L}\\p{N}_])" + pattern
+			if source.right(1) in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz": pattern += "(?![\\p{L}\\p{N}_])"
+			patterns.append(pattern)
+		var matcher := RegEx.new()
+		if not patterns.is_empty():
+			assert(matcher.compile("|".join(patterns)) == OK)
+		_localized_format_regexes[_language] = matcher
+	var result: Array[Vector2i] = []
+	var matcher: RegEx = _localized_format_regexes[_language]
+	if matcher.get_pattern().is_empty(): return result
+	for matched in matcher.search_all(value): result.append(Vector2i(matched.get_start(), matched.get_end()))
 	return result
 
 static func localized_word(value: Variant) -> String:
@@ -483,6 +554,8 @@ static func fit_font_size(typeface: Font, requested: int, height: float, width: 
 
 static func fit_control_font(control: Control, typeface: Font, requested: int, horizontal_padding: float = 0.0) -> void:
 	if not is_instance_valid(control): return
+	var previous: Variant = control.get_meta("localized_font_fit") if control.has_meta("localized_font_fit") else null
+	if previous is Callable and control.resized.is_connected(previous): control.resized.disconnect(previous)
 	var update := func() -> void:
 		if not is_instance_valid(control): return
 		apply_text_direction(control)
@@ -505,6 +578,7 @@ static func fit_control_font(control: Control, typeface: Font, requested: int, h
 		if control.get_theme_font_size("font_size") != fitted:
 			control.add_theme_font_size_override("font_size", fitted)
 	control.resized.connect(update)
+	control.set_meta("localized_font_fit", update)
 	# Resized will refit after layout. The initial size is already available
 	# here; deferring a lambda can retain a card that was returned to the pool.
 	update.call()

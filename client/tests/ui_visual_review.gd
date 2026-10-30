@@ -1,11 +1,13 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
-const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
+const TextAudit = preload("res://tests/localization_text_audit.gd")
+const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
 var _initial_lobby: Dictionary = {}
+var _text_auditor: TextAudit
 
 func _ready() -> void:
 	get_window().mode = Window.MODE_WINDOWED
@@ -42,9 +44,25 @@ func _run() -> void:
 	_frame_log = FileAccess.open(output.path_join("frames.original.jsonl"), FileAccess.WRITE)
 	_initial_lobby = Game.lobby.duplicate(true)
 	var expected := 0
+	var registry: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Palette.LOCALE_REGISTRY_PATH))
+	var chinese_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(str(registry.languages["zh-CN"].path)))
 	for locale in locales:
 		await _reset_fixture()
-		Palette.set_language(locale)
+		Game.lobby = {}
+		await _render_base()
+		var selector: Control = $UI.get_node("LoginLanguageSelector")
+		selector.open()
+		await get_tree().process_frame
+		var choice: Button = selector.find_child("LanguageChoice_" + str(locale).replace("-", "_"), true, false)
+		assert(choice != null)
+		choice.pressed.emit()
+		await get_tree().process_frame
+		assert(Palette.language() == locale)
+		var preferences := ConfigFile.new()
+		assert(preferences.load(Palette.LANGUAGE_SETTINGS_PATH) == OK and str(preferences.get_value("ui", "language", "")) == locale)
+		Game.lobby = _initial_lobby.duplicate(true)
+		var target_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(str(registry.languages[locale].path)))
+		_text_auditor = TextAudit.new(locale, chinese_pack, target_pack)
 		$UI.theme = Palette.theme()
 		Game.changed.emit()
 		await get_tree().process_frame
@@ -83,6 +101,22 @@ func _selected(scenario: String) -> bool:
 		if scenario == value or scenario.begins_with(value + "_"): return true
 	return false
 
+func _check_login_language(frame_name: String, on_login: bool) -> void:
+	var selector: Control = $UI.get_node("LoginLanguageSelector")
+	review_checks[frame_name + ": language selection only before login"] = selector.visible == on_login
+	if on_login:
+		var language_button: Button = selector.get_node("LoginLanguageButton")
+		review_checks[frame_name + ": login language control within viewport"] = $UI.get_viewport_rect().grow(0.5).encloses(language_button.get_global_rect())
+		review_checks[frame_name + ": login language clear of status"] = language_button.get_global_rect().position.y >= $UI.status_label.get_global_rect().end.y + 15
+		if frame_name.ends_with("_login_language"):
+			var panel: PanelContainer = selector.get_node("LoginLanguageListPanel")
+			var scroll: ScrollContainer = panel.get_node("LoginLanguageListScroll")
+			_check_content_insets(frame_name + ": login language list", panel, scroll)
+			review_checks[frame_name + ": language list within viewport"] = $UI.get_viewport_rect().grow(0.5).encloses(panel.get_global_rect())
+			review_checks[frame_name + ": all registered language choices"] = scroll.get_node("LoginLanguageChoices").get_child_count() == Palette.languages().size()
+			for choice in scroll.get_node("LoginLanguageChoices").get_children():
+				review_checks[frame_name + ": readable language choice " + str(choice.name)] = choice.get_theme_font_size("font_size") >= 24
+
 func _frame_checks(frame_name: String) -> Dictionary:
 	var result: Dictionary = {}
 	for key in review_checks:
@@ -97,6 +131,7 @@ func _owned(id: String) -> Dictionary:
 	return {"cardId": id, "heroClass": info.get("hero_class"), "unlocked": true, "copyCount": 3, "level": 3, "version": 7, "currencyKind": "WarriorSoul" if info.get("hero_class") == null else str(info.hero_class) + "Soul", "craftCost": 12, "dismantleRefund": 3, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 0}
 
 func _reset_fixture() -> void:
+	$UI.get_node("LoginLanguageSelector").close()
 	var audio: Node = $UI.get_node("AudioSettings")
 	if is_instance_valid(audio._popup): audio._popup.hide()
 	for child in $UI.get_children():
@@ -152,6 +187,11 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 		return false
 	match scenario:
 		"login": Game.lobby = {}
+		"login_language":
+			Game.lobby = {}
+			await _render_base()
+			$UI.get_node("LoginLanguageSelector").open()
+			return false
 		"login_notice", "login_notice_bottom", "login_notice_authored":
 			Game.lobby = {}
 			Game.authentication_reason = Palette.localized("login_timeout")
@@ -240,13 +280,9 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 					var attachment_grid: GridContainer = detail_scroll.find_children("*", "GridContainer", true, false)[0]
 					detail_scroll.set_deferred("scroll_vertical", maxi(0, int(attachment_grid.position.y) - 80) if scenario == "mail_attachments" else 100000)
 			return false
-		"settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom":
+		"settings", "settings_battle", "settings_bottom", "settings_battle_bottom":
 			if scenario.begins_with("settings_battle"): Game.room = _room_fixture(); Game.room.player.phase = "Pve"; Game.room.allowed_actions.append("battle.abandon")
 			await _render_base(); $UI.get_node("AudioSettings").show_settings()
-			if scenario == "settings_language":
-				await get_tree().process_frame
-				var choices: Array = $UI.get_node("AudioSettings")._popup.find_children("*", "OptionButton", true, false)
-				if not choices.is_empty(): choices[0].show_popup()
 			if scenario.ends_with("_bottom"):
 				await get_tree().process_frame
 				await get_tree().process_frame
@@ -305,7 +341,8 @@ func _review_window_position() -> Vector2i:
 	return Vector2i.ZERO if OS.get_environment("FANTASYCARD_REVIEW_ISOLATED_DESKTOP") == "1" else Vector2i(-32000, -32000)
 
 func _review_capture(frame_name: String, rebuild: bool = true) -> void:
-	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
+	var on_login := frame_name.ends_with("_login") or frame_name.ends_with("_login_language") or frame_name.contains("_login_notice")
+	if on_login:
 		# Login uses the normal shell, rather than the in-game reference view.
 		$UI._render()
 		await get_tree().create_timer(0.4).timeout
@@ -319,6 +356,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 		else: layout_errors.append("Screenshot save failed: " + frame_name)
 	else:
 		await _capture(frame_name, rebuild)
+	_check_login_language(frame_name, on_login)
 	var texts: Array = []
 	_collect_text($UI, texts)
 	for entry in texts:
@@ -343,11 +381,9 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			for player_name in ["逐风者", "长夜归来的盾卫", "一位来自漫长旅途的探索者"]:
 				checked_text = checked_text.replace(player_name, "")
 			for language_config in Palette.languages().values(): checked_text = checked_text.replace(str(language_config.get("name", "")), "")
-			var contains_han := false
-			for index in checked_text.length():
-				var codepoint := checked_text.unicode_at(index)
-				if codepoint >= 0x3400 and codepoint <= 0x9fff: contains_han = true
-			review_checks[frame_name + ": localized copy " + str(entry.path)] = not contains_han
+			var unexpected_source_han: Array = _text_auditor.unexpected_han(checked_text)
+			entry["unexpected_source_han"] = unexpected_source_han
+			review_checks[frame_name + ": localized copy " + str(entry.path)] = unexpected_source_han.is_empty()
 		if str(entry.path).get_file().begins_with("EquippedCaption_"):
 			review_checks[frame_name + ": readable " + str(entry.path).get_file()] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).begins_with("EquipmentComparisonDialog/") and entry.type == "Label" and not str(entry.path).ends_with("/Quantity"):
@@ -356,7 +392,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			review_checks[frame_name + ": readable common-card name"] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).contains("Slot_C01/") and str(entry.path).ends_with("/CardEffect"):
 			review_checks[frame_name + ": readable common-card effect"] = float(entry.effective_font_size) >= 12.0
-	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
+	if on_login:
 		var title: Label = $UI._game_title
 		review_checks[frame_name + ": readable login title"] = title.get_theme_font_size("font_size") >= 20 and title.get_visible_line_count() > 0
 		for panel_name in ["LoginPanel", "AnnouncementPanel"]:
@@ -374,6 +410,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	if frame_name.contains("_settings"):
 		var popup: PopupPanel = $UI.get_node("AudioSettings")._popup
 		if is_instance_valid(popup):
+			review_checks[frame_name + ": no language selection in settings"] = popup.find_children("*", "OptionButton", true, false).is_empty()
 			var settings_scroll: ScrollContainer = popup.find_child("AudioSettingsScroll", true, false)
 			_check_content_insets(frame_name + ": settings", popup, settings_scroll)
 			var settings_content: Control = popup.find_child("SettingsContent", true, false)

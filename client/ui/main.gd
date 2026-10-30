@@ -15,6 +15,7 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
+const LoginLanguageSelector = preload("res://ui/login_language_selector.gd")
 const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
@@ -93,6 +94,7 @@ var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
 var _game_title: Label
 var _login_version_label: Label
+var _login_language_selector: LoginLanguageSelector
 var _draw_charge_visual := 0.0
 var _draw_charge_authoritative := 0.0
 var _draw_charge_anchor_msec := 0
@@ -121,6 +123,12 @@ func _ready() -> void:
 	var audio_settings := AudioSettings.new()
 	audio_settings.name = "AudioSettings"
 	add_child(audio_settings)
+	_login_language_selector = LoginLanguageSelector.new()
+	_login_language_selector.name = "LoginLanguageSelector"
+	_login_language_selector.header_guard = status_label
+	_login_language_selector.z_index = 100
+	_login_language_selector.language_selected.connect(_select_login_language)
+	add_child(_login_language_selector)
 	_sync_account_session()
 	_render()
 
@@ -560,6 +568,7 @@ func _render() -> void:
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
 	content.size_flags_vertical = Control.SIZE_FILL
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if is_instance_valid(_login_language_selector): _login_language_selector.refresh(_can_show_login_language(), not Game.busy)
 	if is_instance_valid(_login_version_label):
 		_login_version_label.text = P.localized_text(P.localized("client_version") % str(Game.CATALOG.data.version))
 		_login_version_label.visible = show_login_video
@@ -766,6 +775,26 @@ func _login() -> void:
 	announcement_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
+
+func _can_show_login_language() -> bool:
+	return Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() and Game.gateway.token.is_empty() and not Game.room_authority_recovering() and Game._settlement_recovery_match_id.is_empty()
+
+func _select_login_language(code: String) -> void:
+	# A queued click from the login screen must not change an authenticated
+	# session or race a login request that is already in progress.
+	if not _can_show_login_language() or Game.busy: return
+	P.set_language(code)
+	theme = P.theme()
+	if is_instance_valid(_game_title): _game_title.text = P.localized("game_title")
+	for label in [_game_title, status_label, _login_version_label]:
+		if not is_instance_valid(label): continue
+		var requested: int = label.get_theme_font_size("font_size")
+		var typeface := P.font_for_text(label.text, requested)
+		label.add_theme_font_override("font", typeface)
+		P.fit_control_font(label, typeface, requested)
+	var audio: Node = get_node_or_null("AudioSettings")
+	if audio != null: audio._refresh()
+	Game.changed.emit()
 
 func _random_login_name(previous: String = "") -> String:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))

@@ -4,9 +4,9 @@
     "ja",
     "ko"
   ],
-  "status": "translation_and_detection_preparation",
+  "status": "self_validated_awaiting_deploy",
   "base_code_commit": "526688fd74e0494876fe4590b9a7ae8bd85afb99",
-  "passed": false,
+  "passed": true,
   "deployed": false,
   "external_task_review_required": false,
   "final_group": true,
@@ -19,5 +19,44 @@
     "Actual glyph/card/UI validation and safe frame/card geometry",
     "Commit, guarded cloud update/restart, external health",
     "Stop new languages and remove heartbeat after success"
-  ]
+  ],
+  "login_language_requirements": {
+    "entry": "Bounded ornate list at login only",
+    "default": "Saved explicit choice; otherwise supported OS language; unsupported system language falls back to English",
+    "persistence": "Same-choice and changed-choice selections persist locally; fresh-process reload verified",
+    "authenticated": "No language controls in game settings; queued changes rejected while busy, authenticated or in hall"
+  },
+  "active_validations": {
+    "ui_plan": "tmp/batch04-ui-final-r2-plan.json",
+    "ui_summary": "tmp/batch04-ui-final-r2-runner/summary.original.json",
+    "probe_summary": "tmp/batch04-probes-final-r2/summary.original.json",
+    "errors_queue": "tmp/batch04-errors-queue-r2/terminal.original.json",
+    "errors_summary": "tmp/batch04-errors-final-r2/matrix-report.original.json",
+    "collection_queue": "tmp/batch04-collection-queue-r1/terminal.original.json"
+  },
+  "focused_login_ui": "tmp/batch04-login-layout-r2/ja-960",
+  "preference_restart": "tmp/batch04-login-preference-restart-r1/terminal.original.json",
+  "collector": "tmp/collect_batch04_login.py",
+  "source_fixes": [
+    "Source-aware Japanese Han checks",
+    "Locale-authored card names and formatted text cannot be rewritten by legacy aliases",
+    "Login-only bounded selector with OS/default/persistence/authentication guards"
+  ],
+  "final_probes_passed": true,
+  "new_locale_main_ui_passed_widths": {
+    "ja": [
+      960,
+      1280,
+      1920
+    ],
+    "ko": [
+      960,
+      1280,
+      1920
+    ]
+  },
+  "active_controller_pids": {},
+  "manual_sample_review": "docs/reports/localization-rollout-20261030/batch-04/manual-layout-review-r1.json",
+  "latest_main_ui_completed_cases": 21,
+  "evidence": "docs/reports/localization-rollout-20261030/batch-04/self-validation-final-r1.json"
 }
