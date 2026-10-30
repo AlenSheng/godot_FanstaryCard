@@ -1,9 +1,19 @@
 {
   "schema_version": 1,
   "target": {
-    "population": "global",
-    "minimum_coverage_percent": 80,
-    "overlap_policy": "conservative_lower_bound"
+    "type": "finish_selected_locale_groups",
+    "finish_current_group": [
+      "hi",
+      "ar",
+      "ru"
+    ],
+    "final_additional_locales": [
+      "ja",
+      "ko"
+    ],
+    "stop_after_final_group": true,
+    "population_80_percent_required": false,
+    "authority": "User 2026-10-30: 更新完这一组之后再加个日韩就不再补多语言了"
   },
   "coverage_source": {
     "publisher": "Unicode Consortium",
@@ -45,10 +55,24 @@
         "pt",
         "id"
       ],
-      "status": "self_validated_ready_for_deploy",
+      "status": "released_deployed",
       "passed": true,
+      "deployed": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-02/self-validation-final-r1.json",
+      "deployed_code_commit": "a0e213ad8e65000a6d7077cdc16eef46aee3324b",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-02/deployment-completed-r1.json"
+    },
+    {
+      "id": "03",
+      "locales": [
+        "hi",
+        "ar",
+        "ru"
+      ],
+      "status": "translation_and_font_preparation",
+      "passed": false,
       "deployed": false,
-      "evidence": "docs/reports/localization-rollout-20261030/batch-02/self-validation-final-r1.json"
+      "evidence": "docs/reports/localization-rollout-20261030/batch-03/state.json"
     }
   ],
   "target_reached": false,
@@ -57,5 +81,11 @@
     "external_task_required": false,
     "authority": "User instruction on 2026-10-30: 无需其他任务复验，直接下一步",
     "gate": "Root actual-UI self-validation, then deployment and health checks"
-  }
+  },
+  "previous_population_target": {
+    "population": "global",
+    "minimum_coverage_percent": 80,
+    "overlap_policy": "conservative_lower_bound"
+  },
+  "stop_condition": "Current hi/ar/ru group then final ja/ko group; stop further language additions after self-validation and deployment"
 }
