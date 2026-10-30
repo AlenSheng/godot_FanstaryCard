@@ -12,7 +12,8 @@
     if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(option.value)) languageRegistry.set(option.value, {code: option.value, name: option.text});
   }
   const languages = [...languageRegistry.values()];
-  languageButton.replaceChildren(...languages.map(entry => new Option(entry.name, entry.code)));
+  const authoredLanguage = languageButton.value || document.body.dataset.lang || 'zh';
+  languageButton.replaceChildren(...languages.map(entry => new Option(entry.name, entry.code, false, entry.code === authoredLanguage)));
   if (previousLanguageButton !== languageButton) previousLanguageButton?.replaceWith(languageButton);
   const languageStatus = document.createElement('span');
   languageStatus.className = 'language-status';
@@ -108,7 +109,7 @@
       const url = new URL(link.getAttribute('href'), location.href);
       if (url.origin !== location.origin || !['/', '/index.html', '/classes.html', '/seasons.html'].includes(routeWithoutLocale(url.pathname))) return;
       url.pathname = routeWithoutLocale(url.pathname);
-      if (!['zh', 'en'].includes(language)) url.pathname = '/' + language + url.pathname;
+      if (!['zh', 'en'].includes(language)) url.pathname = '/' + language + (url.pathname === '/' ? '/index.html' : url.pathname);
       url.searchParams.delete('lang');
       if (language === 'en') url.searchParams.set('lang', 'en');
       link.setAttribute('href', url.pathname + url.search + url.hash);
@@ -116,7 +117,7 @@
     const current = new URL(location.href);
     current.pathname = routeWithoutLocale(current.pathname);
     current.searchParams.delete('lang');
-    if (!['zh', 'en'].includes(language)) current.pathname = '/' + language + current.pathname;
+    if (!['zh', 'en'].includes(language)) current.pathname = '/' + language + (current.pathname === '/' ? '/index.html' : current.pathname);
     else current.searchParams.set('lang', language);
     history.replaceState(null, '', current.pathname + current.search + current.hash);
     if (remember) try { localStorage.setItem('relicbound-language', language); } catch { /* The current page still changes language. */ }

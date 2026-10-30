@@ -26,7 +26,7 @@ def update_base_documents(available):
         text, count = pattern.subn(lambda _: selector, text)
         if count != 1:
             raise ValueError(f"Expected one language selector: {page.name}")
-        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-3', text)
+        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-4', text)
         if '/assets/fonts/relicbound-sans.woff2' not in text:
             preloads = ''.join(f'<link rel="preload" href="/assets/fonts/relicbound-{role}.woff2" as="font" type="font/woff2" crossorigin>\n  ' for role in ["sans", "serif"])
             text = text.replace('<link rel="stylesheet"', preloads + '<link rel="stylesheet"', 1)
@@ -78,6 +78,8 @@ def build(code):
             if element.tag == "a":
                 href = element.get("href", "")
                 if href.startswith("/") and not href.startswith("//") and not href.startswith("/assets/"):
+                    if href == "/" or href.startswith("/#") or href.startswith("/?"):
+                        href = "/index.html" + href[1:]
                     element.set("href", "/" + code + href)
             if element.text and element.text.strip() in pack.get("extra", {}):
                 element.set("data-l10n-extra", element.text.strip())
