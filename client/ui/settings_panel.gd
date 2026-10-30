@@ -17,7 +17,7 @@ func _ready() -> void:
 	var toggle := Button.new()
 	_settings_button = toggle
 	toggle.name = "SettingsButton"
-	toggle.text = I18n.t("设置")
+	toggle.text = P.localized("settings")
 	toggle.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	toggle.offset_left = -250
 	toggle.offset_right = -48
@@ -30,9 +30,11 @@ func _ready() -> void:
 	I18n.language_changed.connect(_on_language_changed)
 
 func _on_language_changed(_locale: String) -> void:
-	_settings_button.text = I18n.t("设置")
+	_settings_button.text = P.localized("settings")
 	if is_instance_valid(_popup):
-		_language.selected = 0 if I18n.locale == "zh" else 1
+		_select_current_language()
+		_popup.theme = P.theme()
+		P.apply_text_direction(_column)
 		_refresh_text(_column)
 
 func _popup_size() -> Vector2i:
@@ -66,26 +68,28 @@ func show_settings() -> void:
 	scroll.add_child(column)
 	var title := Label.new()
 	title.name = "SettingsTitle"
-	title.text = I18n.t("设置")
+	title.text = P.localized("settings")
 	title.add_theme_font_override("font", P.font("title"))
 	title.add_theme_font_size_override("font_size", 36)
 	title.add_theme_color_override("font_color", P.GOLD)
 	column.add_child(title)
 	var language_label := Label.new()
-	language_label.text = I18n.t("语言")
+	language_label.text = P.localized("language")
 	column.add_child(language_label)
 	_language = OptionButton.new()
 	_language.name = "LanguageSelector"
-	for key in ["zh", "en"]: _language.add_item(I18n.locale_name(key), _language.item_count)
-	_language.selected = 0 if I18n.locale == "zh" else 1
+	for key in P.languages():
+		_language.add_item(I18n.locale_name(key), _language.item_count)
+		_language.set_item_metadata(_language.item_count - 1, key)
+	_select_current_language()
 	_language.item_selected.connect(func(index):
-		I18n.set_language("zh" if index == 0 else "en")
+		I18n.set_language(str(_language.get_item_metadata(index)))
 		_refresh_text(column)
 	)
 	column.add_child(_language)
 	var audio_title := Label.new()
 	audio_title.name = "AudioTitle"
-	audio_title.text = I18n.t("音量")
+	audio_title.text = P.localized("sound_volume")
 	column.add_child(audio_title)
 	var slider := HSlider.new()
 	slider.name = "Volume"
@@ -97,38 +101,45 @@ func show_settings() -> void:
 	column.add_child(slider)
 	var mute := CheckButton.new()
 	mute.name = "Mute"
-	mute.text = I18n.t("静音")
+	mute.text = P.localized("mute")
 	mute.button_pressed = Sound.muted
 	mute.toggled.connect(Sound.set_muted)
 	column.add_child(mute)
 	var logout := Button.new()
 	logout.name = "Logout"
-	logout.text = I18n.t("退出登录")
+	logout.text = P.localized("switch_account")
 	Art.button(logout, "UI/CardCodex/card_codex_action_button_orange.png")
 	logout.pressed.connect(_logout)
 	column.add_child(logout)
 	var close := Button.new()
 	close.name = "Close"
-	close.text = I18n.t("返回")
+	close.text = P.localized("back")
 	Art.button(close, "UI/CardCodex/card_codex_action_button_blue.png")
 	close.pressed.connect(_popup.hide)
 	column.add_child(close)
 	_popup.popup_hide.connect(_on_popup_hidden.bind(_popup))
 	_popup.popup_centered(_popup_size())
+	P.apply_text_direction(column)
+
+func _select_current_language() -> void:
+	for index in _language.item_count:
+		if str(_language.get_item_metadata(index)) == P.language():
+			_language.selected = index
+			return
 
 func _refresh_text(column: VBoxContainer) -> void:
 	for child in column.get_children():
-		if child.name == "AudioTitle": child.text = I18n.t("音量")
-		elif child.name == "Mute": child.text = I18n.t("静音")
-		elif child.name == "Logout": child.text = I18n.t("退出登录")
-		elif child.name == "Close": child.text = I18n.t("返回")
-		elif child.name == "SettingsTitle": child.text = I18n.t("设置")
+		if child.name == "AudioTitle": child.text = P.localized("sound_volume")
+		elif child.name == "Mute": child.text = P.localized("mute")
+		elif child.name == "Logout": child.text = P.localized("switch_account")
+		elif child.name == "Close": child.text = P.localized("back")
+		elif child.name == "SettingsTitle": child.text = P.localized("settings")
 
 func _logout() -> void:
 	var confirm := ConfirmationDialog.new()
-	confirm.dialog_text = I18n.t("确认退出登录？")
-	confirm.ok_button_text = I18n.t("确认")
-	confirm.cancel_button_text = I18n.t("取消")
+	confirm.dialog_text = P.localized("switch_account")
+	confirm.ok_button_text = P.localized("confirm")
+	confirm.cancel_button_text = P.localized("cancel")
 	confirm.confirmed.connect(func():
 		if is_instance_valid(_popup): _popup.hide()
 		Game.logout()
