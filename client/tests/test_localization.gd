@@ -41,7 +41,7 @@ func run_test() -> Dictionary:
 	identifiers_ok = identifiers_ok and P.localized("temporary_bag_slots_used") % [5, 20] == "Used 5 / 20 slots" and P.localized_text("已连接") == "Connected" and P.localized_text("正在连接实时服务") == "Connecting to realtime service" and P.localized_text("正在恢复连接…") == "Restoring connection…"
 	identifiers_ok = identifiers_ok and P.localized_text("背包 5 / 20 · 安全格 1") == "Bag 5 / 20 · Safe Slots 1" and P.localized_text("筛选结果 12 张") == "12 filtered cards" and P.localized_text("禁抽 1.5秒") == "Draw blocked 1.5s" and P.localized_text("本次结算暂无可展示的道具") == "No items to display in this settlement"
 	identifiers_ok = identifiers_ok and codex.filtered_count(13) == "    13 filtered cards" and codex.card_tooltip_suffix(1) == "\nOwned 1 · Click for details" and P.localized("color_suffix").is_empty() and P.localized("codex_hero_class_tag") % P.localized("class_mage") == "Mage Class Card" and P.localized("codex_current_effect") == "Current: " and P.localized("codex_next_effect") == "Next: "
-	identifiers_ok = identifiers_ok and remote_copy.field(bilingual_notice, "title") == "Test Server Update" and remote_copy.field(bilingual_notice, "body") == "English body" and remote_copy.field({"title": "系统通知"}, "title") == "System Mail"
+	identifiers_ok = identifiers_ok and remote_copy.field(bilingual_notice, "title") == "Test Server Update" and remote_copy.field(bilingual_notice, "body") == "English body" and remote_copy.field({"title": "系统通知"}, "title") == "系统通知" and remote_copy.field({"title": "System Notice"}, "title") == "System Notice"
 	var previous_settlement: Dictionary = Game.settlement.duplicate(true)
 	Game.settlement = {"result": "Dead", "details": {"items": []}}
 	var host := SettlementHost.new()

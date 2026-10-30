@@ -7,7 +7,7 @@
 - `card_face_names`：可选的小卡面短名；完整名称仍由 `card_names` 提供给详情和提示。短名须通过图鉴和商店两种卡面宽度的真实控件检查。
 - `equipment_compare`、`numerical`、`monster_pool`：装备对比、数值说明和怪物卡池文案。
 - `card_descriptions`：中英既有完整说明。新增语言使用本地化动态效果模板，避免升级数值落后于说明。
-- `../localization_registry.json`：语言名称、字体、方向和发布状态。草稿通过独立复验后才能标记发布。
+- `../localization_registry.json`：语言名称、字体、方向和发布状态。草稿完成本任务的实际 UI 自检后才能发布；用户已取消外部任务复验。
 - `../localization_legacy.json`：旧来源别名和兼容数据。用于识别历史来源，不作为新增界面文案的写入入口。
 
 变更后运行 `tools/audit_ui_text.py` 和 `tools/localization_audit.py`。后者检查所有键、格式参数、卡名、装备和数值说明是否完整。`tools/validate_ui_hidden.py` 在隔离桌面生成实际游戏控件的截图，逐档检查 960、1280、1920 分辨率；`client/tests/localization_pack_probe.gd` 检查全量卡牌控件、字体字形及现有中英回归。

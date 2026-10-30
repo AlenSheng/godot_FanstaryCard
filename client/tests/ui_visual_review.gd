@@ -160,6 +160,8 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 				Game.server_info["announcement"] = {"translations": {locale: {"title": Palette.localized("game_title") + " · " + Palette.localized("ui_announcement_title"), "body": (Palette.localized("ui_room_hint") + "\n\n" + Palette.localized("ui_safe_slot_hint") + "\n\n").repeat(8)}}}
 			if scenario == "login_notice_authored":
 				Game.server_info["announcement"] = {"title": "Equipment / Priest / Gold", "body": "Authored announcement text remains verbatim."}
+				var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+				if not authored_title.is_empty(): Game.server_info["announcement"].title = authored_title
 		"hall_priest": Game.hero_class = "Priest"
 		"hall_guardian": Game.hero_class = "Guardian"
 		"prep", "gear", "shop", "cards", "deck": $UI.screen = scenario
@@ -226,7 +228,8 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 				if locale not in ["zh-CN", "en"]:
 					title = (Palette.localized("run_reward") + " / " + Palette.localized("ui_announcement_title") + " · ").repeat(3)
 					body = Palette.localized("ui_room_hint") + " " + Palette.localized("ui_safe_slot_hint") + " "
-				for index in range(12): Game.mail.items.append({"id": "review-mail-%s" % index, "title": title + " %s" % index, "body": body.repeat(16), "sender": "System" if locale == "en" else "系统", "read": true, "claimed": false, "attachments": [{"kind": "Gold", "amount": 123456}, {"kind": "EquipmentFragments", "amount": 25}, {"kind": "HealthPotion", "amount": 2}]})
+				var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+				for index in range(12): Game.mail.items.append({"id": "review-mail-%s" % index, "title": title + " %s" % index if authored_title.is_empty() else authored_title, "body": body.repeat(16), "sender": "System" if locale == "en" else "系统", "read": true, "claimed": false, "attachments": [{"kind": "Gold", "amount": 123456}, {"kind": "EquipmentFragments", "amount": 25}, {"kind": "HealthPotion", "amount": 2}]})
 			await _render_base(); $UI.mail_modal_lock = true; $UI._reference._mail()
 			if scenario != "mail_empty": $UI._reference._mail_select(Game.mail.items[0])
 			if scenario in ["mail_attachments", "mail_long_bottom"]:
@@ -334,6 +337,9 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			review_checks[frame_name + ": integer class health " + str(entry.path)] = str(entry.text).is_valid_int()
 		if Palette.language() not in ["zh-CN", "zh-TW"] and (entry.type != "LineEdit" or bool(entry.is_placeholder)):
 			var checked_text: String = entry.text
+			var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+			if not authored_title.is_empty() and (str(entry.text) == authored_title or str(entry.path).get_file() == "MailTitle"):
+				checked_text = checked_text.replace(authored_title, "")
 			for player_name in ["逐风者", "长夜归来的盾卫", "一位来自漫长旅途的探索者"]:
 				checked_text = checked_text.replace(player_name, "")
 			for language_config in Palette.languages().values(): checked_text = checked_text.replace(str(language_config.get("name", "")), "")
@@ -359,7 +365,12 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 		var announcement_title: Label = $UI.find_child("AnnouncementTitle", true, false)
 		review_checks[frame_name + ": complete announcement title"] = announcement_title.get_visible_line_count() == announcement_title.get_line_count()
 		if frame_name.ends_with("_login_notice_authored"):
-			review_checks[frame_name + ": authored announcement title stays verbatim"] = announcement_title.text == "Equipment / Priest / Gold"
+			var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+			review_checks[frame_name + ": authored announcement title stays verbatim"] = announcement_title.text == ("Equipment / Priest / Gold" if authored_title.is_empty() else authored_title)
+	var authored_mail_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+	if not authored_mail_title.is_empty() and frame_name.ends_with("_mail_long"):
+		review_checks[frame_name + ": authored mail detail title stays verbatim"] = texts.any(func(entry): return str(entry.path).contains("MailDetailScroll") and str(entry.text) == authored_mail_title)
+		review_checks[frame_name + ": authored mail list title stays verbatim"] = texts.any(func(entry): return str(entry.path).get_file() == "MailTitle" and str(entry.text).ends_with("  " + authored_mail_title))
 	if frame_name.contains("_settings"):
 		var popup: PopupPanel = $UI.get_node("AudioSettings")._popup
 		if is_instance_valid(popup):

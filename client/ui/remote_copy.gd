@@ -45,7 +45,6 @@ static func field(record: Dictionary, name: String) -> String:
 	if P.language() != "zh-CN":
 		var translated := str(record.get(name + "En", record.get(name + "_en", ""))).strip_edges()
 		if not translated.is_empty(): return translated
-		if name == "title" and original in system_aliases.get("title", []): return P.localized("system_mail")
 	return original
 
 static func display_name(record: Dictionary, name: String, fallback_key: String = "traveler_default_name") -> String:

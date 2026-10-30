@@ -13,12 +13,10 @@
     "definitions": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
     "limitation": "Countrywise maxima alone cannot establish 80% even if all listed languages are supported. Supplement disjoint census language groups before claiming the global target."
   },
-  "review_thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
   "website_policy": "Deferred by explicit user instruction on 2026-10-29; preserve draft website work without deployment and continue game localization",
   "release_gate_order": [
     "complete_game_translation",
     "native_ui_validation",
-    "independent_thread_revalidation",
     "mark_game_passed",
     "deploy_and_restart_game_services",
     "external_health_checks",
@@ -30,14 +28,20 @@
       "locales": [
         "es"
       ],
-      "status": "independent_review_pending",
-      "passed": false,
+      "status": "self_validated_ready_for_deploy",
+      "passed": true,
       "deployed": false,
-      "evidence": "docs/reports/localization-rollout-20261030/batch-01/state.json",
+      "evidence": "docs/reports/localization-rollout-20261030/batch-01/self-validation-final-v5.json",
       "reviewed_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
       "review": "docs/reports/localization-rollout-20261030/batch-01/independent-review-70f68c3e.json",
-      "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-final-v4.json"
+      "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-release-v5.json"
     }
   ],
-  "target_reached": false
+  "target_reached": false,
+  "previous_review_thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+  "review_policy": {
+    "external_task_required": false,
+    "authority": "User instruction on 2026-10-30: 无需其他任务复验，直接下一步",
+    "gate": "Root actual-UI self-validation, then deployment and health checks"
+  }
 }

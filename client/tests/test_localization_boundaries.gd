@@ -55,6 +55,8 @@ func run_test() -> Dictionary:
 		_check_bans(host, locale)
 		_check_mail(host, locale, false)
 		_check_mail(host, locale, true)
+		_check_mail(host, locale, false, "系统通知")
+		_check_mail(host, locale, false, "System Notice")
 		_check_duel(host, locale)
 		_check_relics(host, locale)
 	_check_persistent_configuration_messages(host)
@@ -116,9 +118,10 @@ func _check_bans(host: Control, locale: String) -> void:
 		_check(locale + "/ordinary_session/" + str(index) + "/no_dialog", unexpected.is_empty())
 		for dialog in unexpected: dialog.free()
 
-func _check_mail(host: Control, locale: String, explicit_translation: bool) -> void:
+func _check_mail(host: Control, locale: String, explicit_translation: bool, special_title: String = "") -> void:
 	var kind := "translation" if explicit_translation else "legacy"
-	var authored_title := "装备维护公告 / Fire  Gold"
+	if not special_title.is_empty(): kind += "/" + special_title
+	var authored_title := "装备维护公告 / Fire  Gold" if special_title.is_empty() else special_title
 	var authored_sender := AUTHORED_NAME
 	var authored_body := "Fire  Gold: 装备维护正文\nKeep this administrator-authored text."
 	var item := {"id": "localization-boundary-mail", "title": authored_title,

@@ -36,24 +36,24 @@
     "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-final-v4.json"
   },
   "independent_review": {
+    "required": false,
+    "status": "CancelledByUser",
     "thread_id": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
-    "status": "ReadyForIndependentReview_FinalRevision",
-    "reviewed_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
-    "report": "docs/reports/localization-rollout-20261030/batch-01/independent-review-70f68c3e.json"
+    "authority": "无需其他任务复验，直接下一步",
+    "remaining_confirmed_issue": "Fixed; unmarked titles remain verbatim, targeted native UI and updated regressions passed"
   },
-  "game_batch_passed": false,
+  "game_batch_passed": true,
   "deployed": false,
   "website_deployment": "DeferredByUser",
   "coverage_target_reached": false,
   "pending_user_input": null,
   "next_required_checks": [
-    "Independent revalidation in the designated chat",
-    "Mark passed only after the independent report passes",
-    "Deploy and restart game services, then verify health",
-    "Start the next language group only after deployment succeeds"
+    "Deploy and restart game services",
+    "Verify health and start next language group"
   ],
   "resource_policy": "User chose to wait for free memory; do not close or interrupt FreeVideo",
   "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation",
   "user_visual_correction": "Original card artwork bounds preserved. Passive content follows common-frame insets and expands naturally; draw controls remain separate. All 3 classes, PVE/PVP and supported widths checked.",
-  "server_validation": "docs/reports/localization-rollout-20261030/batch-01/server-system-copy-validation-r1.json"
+  "server_validation": "docs/reports/localization-rollout-20261030/batch-01/server-system-copy-validation-r1.json",
+  "self_validation": "docs/reports/localization-rollout-20261030/batch-01/self-validation-final-v5.json"
 }

@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "revision": 5,
+  "generated_utc": "2026-10-30T04:20:36.217616+00:00",
+  "scope": "Coverage-method research only; old reports retained, no locale packs/production/configuration changes, no heavy process or next language group.",
+  "conclusion": {
+    "r4_90_to100_versions_is_a_verified_requirement": false,
+    "r4_90_to100_versions_is_a_minimum": false,
+    "three_pp_buffer_is_a_user_requirement": false,
+    "one_msa_pack_has_primary_source_support": true,
+    "official_hindi_L1_L2_L3_aggregate_found": true,
+    "all_hindi_varieties_understand_standard_written_hindi_verified": false,
+    "all_arabic_vernacular_speakers_understand_msa_verified": false,
+    "new_smaller_language_count_proven_sufficient_for80": false,
+    "target_reached_by_this_report": false,
+    "summary_zh": "R4的90–100版本只是特定3pp缓冲、细母语cohort和脚本拆分假设下的预算，并非最低要求。MSA可以先做一套中性ar内容；Hindi找到官方6.916亿总体语言人口代理。二者都不能据此把所有方言额外人口自动并入标准语。版本数应随可信标准语人口与联合去重数据重算，不能按每个方言标签预先强制做包。"
+  },
+  "msa_evidence_and_rule": {
+    "locale_standard": "ar / ar_001 = Modern Standard Arabic; verified from Unicode official Default Content documentation.",
+    "recommended_initial_content_family": "One neutral MSA translation, with RTL/font/native review and regional formats as needed; do not require a separate country translation merely because ar_EG/ar_SA/etc exist.",
+    "frozen_cldr48_ar_functional_population_proxy": 378792526.339,
+    "territories_with_ar_marginal": 38,
+    "share_of_frozen_population_percent": 4.698334150111884,
+    "population_measure": "Approximate functional L1/L2 population, not an official census count of individual MSA readers.",
+    "safe_credit": "Credit each country ar marginal to the neutral MSA pack and take a maximum against other overlapping language estimates in that country.",
+    "do_not_automatically_credit": [
+      "ary Moroccan Arabic",
+      "arq Algerian Arabic",
+      "apc Levantine Arabic",
+      "other vernacular categories without evidence of standard-language knowledge"
+    ],
+    "illustration": {
+      "MA_ar_percent": 62,
+      "MA_ary_percent": 87,
+      "DZ_ar_percent": 74,
+      "DZ_arq_percent": 83
+    },
+    "meaning": "The source itself distinguishes the standard-language estimate from larger vernacular populations. A vernacular pack is optional for an evidenced extra audience; it is not required for people already credited under ar.",
+    "global_msa_population_becomes_current_2026_strict_count": false
+  },
+  "hindi_evidence_and_rule": {
+    "official_aggregate_population_2011": 691564035,
+    "reported_percent_2011": 57.11,
+    "exact_ratio_using_prior_c16_denominator": 0.5711369636629904,
+    "source": "trai_c17_hindi",
+    "official_summary_is_newly_verified": true,
+    "original_c17_workbook_cells_verified": false,
+    "standard_ui_target": "Standard Hindi in Devanagari; one neutral Hindi content pack, not an automatic separate UI for every named mother-tongue variety.",
+    "available_proxy_interpretation": "The official C17-derived Hindi-language speaker category can be used as an alternative aggregate population proxy when that category-to-standard-UI approximation is disclosed. This is more useful than relying only on a bare mother-tongue leaf.",
+    "standard_intelligibility_limit": "The regulatory/census summary does not measure standard written-Hindi comprehension separately for Bhojpuri, Rajasthani, Magahi, Chhattisgarhi or every other constituent. Universal transfer across those varieties remains unverified.",
+    "safe_aggregate_formula": "If Hindi is eligible, p_IN=max(CLDR_supported_language_max, official_Hindi_aggregate_proxy, disjoint_supported_C16_leaf_union); never add these overlapping alternatives.",
+    "fallback_if_the_broad_category_mapping_is_not_accepted": "Retain the existing CLDR hi functional-language estimate and exact supported C16 leaves; keep the TRAI aggregate as an alternate reported scenario until its language-category mapping is reviewed.",
+    "not_an_additional_literacy_gate": "No person-by-person literacy or universal age proof is required for the population-proxy claim. The issue is the meaning of a broad statistical category, not a requirement to prove that each person reads the interface.",
+    "no_duplicate_native_groups": "Do not count HINDI528347193 plus its constituent mother tongues. Do not sum Hindi57.11% and English10.62% as distinct people.",
+    "subsidiary_total_derived_from_two_coarse_totals": 163216842,
+    "derived_total_limit": "Arithmetic difference only, conditional on the same Census grouping definition; it is not a new joint table or a cross-variety comprehension measure.",
+    "first_step_sensitivity_zh_en_es_hi": {
+      "existing_R4_cldr_hi_input_percent": 45.75417933270026,
+      "alternative_official_hindi_proxy_percent": 48.570543020508595,
+      "difference_global_pp": 2.816363687808334,
+      "conditional_historical_share_estimate": true
+    }
+  },
+  "why_versions_were_overstated_as_a_requirement": {
+    "r4_baseline_family_count": 86,
+    "r4_added_script_versions": 7,
+    "r4_illustrative_total": 93,
+    "correction": "A languageData script list is descriptive metadata, not a requirement to translate every listed secondary/historical script. Regional locale aliases can share one standard content pack. Extra variants should be justified by a compatible audience and the actual incremental coverage needed.",
+    "cannot_just_delete_variants_and_keep_their_people": "If the credited mother-tongue cohort has unresolved relevant standard/script scope, restrict its credited population or report the mapping assumption. Removing a pack does not establish that its population understands another pack.",
+    "buffer_is_a_larger_driver_than_the_seven_variants": true,
+    "same_R4_path_point_only_buffer_sensitivity": [
+      {
+        "candidate_buffer_global_pp": 0,
+        "first_family_count_on_same_R4_path": 42,
+        "point_estimate_percent": 80.06403960866322,
+        "point_minus_candidate_buffer_percent": 80.06403960866322,
+        "user_required_policy": false,
+        "optimized_minimum": false
+      },
+      {
+        "candidate_buffer_global_pp": 1,
+        "first_family_count_on_same_R4_path": 50,
+        "point_estimate_percent": 81.03439421913657,
+        "point_minus_candidate_buffer_percent": 80.03439421913657,
+        "user_required_policy": false,
+        "optimized_minimum": false
+      },
+      {
+        "candidate_buffer_global_pp": 2,
+        "first_family_count_on_same_R4_path": 62,
+        "point_estimate_percent": 82.04193627713299,
+        "point_minus_candidate_buffer_percent": 80.04193627713299,
+        "user_required_policy": false,
+        "optimized_minimum": false
+      },
+      {
+        "candidate_buffer_global_pp": 3,
+        "first_family_count_on_same_R4_path": 86,
+        "point_estimate_percent": 83.01706051438553,
+        "point_minus_candidate_buffer_percent": 80.01706051438553,
+        "user_required_policy": false,
+        "optimized_minimum": false
+      }
+    ],
+    "sensitivity_limits": "Same candidate order and historical-share assumptions as R4; not separate optimized plans, not verified minimums, and not delivered/released coverage. Zero buffer is an explanatory comparison, not a recommendation.",
+    "headline_budget_replacement": "Do not present90–100 as the required number. Report the scenario, buffer choice and source assumptions together; the current evidence permits planning comparisons but not one verified minimum count."
+  },
+  "dialect_optional_scenarios_on_R4_inventory": {
+    "meaning": "Remove prospective dialect codes and stop crediting their extra native populations; do not relabel those people as standard-language users. These are arithmetic illustrations, not claims that the reduced inventories have been delivered.",
+    "original_inventory": {
+      "families": 86,
+      "point_percent": 83.01706051438552
+    },
+    "without_three_arabic_vernacular_codes": {
+      "removed": [
+        "apc",
+        "arq",
+        "ary"
+      ],
+      "families": 83,
+      "point_percent": 82.82451900442776,
+      "lost_global_pp": 0.19254150995776342
+    },
+    "without_four_hindi_variety_codes": {
+      "removed": [
+        "bho",
+        "hne",
+        "mag",
+        "raj"
+      ],
+      "families": 82,
+      "point_percent": 81.49656305910455,
+      "with_alternative_official_hindi_marginal_percent": 81.49656305910455
+    },
+    "without_all_seven_codes": {
+      "families": 79,
+      "point_percent": 81.30402154914674,
+      "with_alternative_official_hindi_marginal_percent": 81.30402154914674
+    },
+    "why_hindi_marginal_may_not_raise_large_union": "At large inventories, the disjoint supported native-language union can already exceed the Hindi aggregate marginal; taking max therefore gives no further numerical gain. A C17 joint cross-tab may be needed for a sharper deduplicated union."
+  },
+  "actionable_estimation_rules": [
+    "Maintain separate records for a source population variable, an exclusive cohort and an implemented content pack. Several regional aliases may share one standard pack; several population cohorts may be covered by one standard through evidenced L2 knowledge.",
+    "Start with neutral standard packs for hi and ar. Count their compatible functional-language or explicit official language-population marginals; do not prescribe regional/dialect packs merely because the source lists dialects.",
+    "For unknown overlaps, retain country-level max. For C17 mother-tongue groups g that are exclusive, an audited union may use sum_g max(A_g,B_g), where A_g is supported native-leaf mass and B_g is a verified supported-subsidiary-language union in that group. Add only source-proven disjoint first/second subsidiary-language cells, respecting table hierarchy.",
+    "Do not infer standard-language knowledge from a language-family label, common alphabet, official status, school policy or a generic mother-tongue total alone. Do not infer inability merely because a respondent uses a dialect name either.",
+    "Use official C17 or UNdata joint/knowledge-of-language records to identify remaining uncovered cohorts. A dialect UI becomes a candidate only when it supplies needed evidenced incremental audience after standard-language overlap, or when user research justifies it for product quality.",
+    "Keep the all-global-population denominator and publish observation years, current/frozen weights, historical-share extrapolation and category-to-standard assumptions. No universal literacy/age proof is added.",
+    "Show unbuffered and candidate-buffer estimates separately. Three global percentage points and the R4 stress multipliers remain optional research policies, not instructions from the user. Choose and document any buffer before using it to stop; do not silently shrink it to obtain a pass.",
+    "A released set may be reported as meeting the estimated80% target only under its stated, independently reviewed source/mapping/overlap assumptions and chosen uncertainty policy. Unknown standard-language transfers remain uncredited or explicitly hypothetical; no report here updates a release or target flag."
+  ],
+  "remaining_evidence_gaps": [
+    "No representative, source-verified percentage of each Hindi-group mother-tongue cohort understanding standard written Hindi was obtained; no claim that all such cohorts can be merged into hi is made.",
+    "No source-verified global or country-complete conversion from Arabic vernacular population to MSA comprehension was obtained. The existing CLDR ar functional marginal is usable, but vernacular-only increments are not automatically added.",
+    "C17 original joint workbook and a filtered Indian UNdata export remain unavailable in this research. TRAI verifies aggregate counts, not the missing conditional overlaps.",
+    "The frozen CLDR/Census/BPS mixture remains an approximate population-proxy model, not a strict current population guarantee. A materially smaller sufficient inventory cannot yet be certified from these new sources alone."
+  ],
+  "sources": [
+    {
+      "id": "unicode_msa_identity",
+      "publisher": "Unicode Consortium",
+      "url": "https://cldr.unicode.org/translation/translation-guide-general/default-content",
+      "verified": "Official page lines17/22 identifies ar/ar_001 as Modern Standard Arabic and a world-neutral content locale.",
+      "implication": "One neutral MSA content pack can serve the ar population estimates across territories; country formatting differences do not automatically require another full translation.",
+      "does_not_prove": "The number of speakers of every Arabic vernacular who understand MSA."
+    },
+    {
+      "id": "unicode_functional_population",
+      "publisher": "Unicode Consortium",
+      "url": "https://unicode.org/reports/tr35/tr35-info.html#Territory_Information",
+      "verified": "populationPercent describes functional first/second-language users at a computer/smartphone UI level; overlapping percentages must not be summed. languageData is a language/script usage list for consistency checking, not a population split or mandatory translation inventory.",
+      "version_note": "Method definitions read on current official documentation; numerical populations remain the frozen local CLDR48 dataset."
+    },
+    {
+      "id": "trai_c17_hindi",
+      "publisher": "Telecom Regulatory Authority of India",
+      "url": "https://www.trai.gov.in/sites/default/files/2024-10/Regulation_01012020.pdf",
+      "document": "Telecommunication (Broadcasting and Cable) Services Interconnection (Addressable Systems) (Second Amendment) Regulations2020, ScheduleVIII",
+      "document_date": "2020-01-01",
+      "observed_population_year": 2011,
+      "pdf_page_zero_based": 2,
+      "printed_page": 3,
+      "retrieval": "Original official PDF opened and table read successfully. The old unversioned URL failed; the observed official2024-10 asset URL worked. No access restriction bypass was used.",
+      "hindi_speaker_population": 691564035,
+      "hindi_reported_percent": 57.11,
+      "english_speaker_population": 128539090,
+      "english_reported_percent": 10.62,
+      "underlying_source_printed_in_table": "Census2011 C-17 Population by bilingualism and trilingualism",
+      "use_scope": "An official Hindi-language population/audience proxy suitable as an alternative language marginal in an explicitly labelled estimate. It is not a direct study of standard written-Hindi intelligibility for every grouped mother tongue.",
+      "critical_overlap_warning": "The regulation adds language percentages for a carriage-fee formula. Do not copy that addition as a union of unique people: Hindi and English audiences overlap."
+    },
+    {
+      "id": "trai_later_republication",
+      "publisher": "Telecom Regulatory Authority of India",
+      "url": "https://www.trai.gov.in/sites/default/files/2024-09/CR_18072024.pdf",
+      "verified": "Official consolidated text reprints the same C17-derived Hindi/English table. A2026 consolidated text is also indexed with these figures.",
+      "later_indexed_url": "https://www.trai.gov.in/sites/default/files/2026-03/CR_16032026.pdf",
+      "year_rule": "Republication does not turn the2011 language observations into2024/2026 observations."
+    },
+    {
+      "id": "census_c17",
+      "publisher": "Office of the Registrar General & Census Commissioner, India",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/10262",
+      "verified": "Official catalog describes subsidiary languages within each mother-tongue language group. It is a route to overlap-aware L1/L2/L3 estimates.",
+      "original_workbook_joint_cells_verified": false,
+      "gap": "No original C17 joint extract or fine-mother-tongue-to-standard-Hindi comprehension table has been obtained. Do not claim that the new TRAI summary supplies those cells."
+    },
+    {
+      "id": "census_lsi_bihar",
+      "publisher": "Office of the Registrar General & Census Commissioner, India",
+      "url": "https://censusindia.gov.in/nada/index.php/catalog/45247/download/48954/LSI_BIHAR.pdf",
+      "locator": "Linguistic Survey of India, Bihar, section1.6 bilingualism/trilingualism, printed page81",
+      "retrieval": "Official search-index text inspected; direct open rejected application/octet-stream.",
+      "finding": "The report explicitly discusses Hindi language and grouped mother tongues together when reporting monolingual/bilingual populations.",
+      "implication": "A coarse Hindi group or its monolingual label does not resolve individual grouped varieties or demonstrate universal standard-Hindi understanding. It also does not prove that grouped-variety speakers cannot understand Hindi.",
+      "new_population_gain_booked": false
+    },
+    {
+      "id": "un_population_language",
+      "publisher": "United Nations Statistics Division",
+      "url": "https://data.un.org/Data.aspx?d=POP&f=tableCode%3A27",
+      "table": "Population by language, sex and urban/rural residence",
+      "verified": "Official page lists India and92 country/area options and displays observation year, record type, reliability, source year and language. UNSD compiles national statistical-office census submissions.",
+      "retrieval_limit": "Unfiltered page read successfully; filtered Indian page could not be read and no filtered export was obtained. No new Indian or MSA population total is claimed from UNdata.",
+      "rule": "Check each country questionnaire and footnotes for mother tongue, usual/home language, knowledge of languages and multiple-response categories. The generic Language column does not certify MSA/standard-Hindi proficiency or mutual exclusivity."
+    },
+    {
+      "id": "worldbank_msa_diglossia",
+      "publisher": "World Bank",
+      "url": "https://www.worldbank.org/en/region/mena/publication/advancing-arabic-language-teaching-and-learning-path-to-reducing-learning-poverty-in-the-middle-east-and-north-africa",
+      "published": "2021-06-29",
+      "finding": "MSA is learned as the reading/writing standard at school and differs from home varieties; experience with it is not uniform.",
+      "use": "Qualitative support for one shared formal written standard and a warning against universal vernacular-to-MSA equivalence; no country/global population uplift is derived, and no new literacy/age gate is imposed."
+    }
+  ],
+  "evidence_preservation": [
+    {
+      "path": "docs\\reports\\localization-rollout-20261030\\coverage-research.json",
+      "sha256": "01d13d14e599397cbdcb9c4846ad304cc9d077ba76c5a193c92a69fb51d4c362"
+    },
+    {
+      "path": "docs\\reports\\localization-rollout-20261030\\coverage-primary-verification.json",
+      "sha256": "f1b89b7a9fc6420fa2c499d37446e39195987f189b219c4f67629b5021b8526e"
+    },
+    {
+      "path": "docs\\reports\\localization-rollout-20261030\\coverage-estimate-revision-3.json",
+      "sha256": "b0011b5b852fd6f95f87018a83a04a9608518bc6d1190556c1b467e00e34f2d6"
+    },
+    {
+      "path": "docs\\reports\\localization-rollout-20261030\\coverage-practical-proxy-revision-4.json",
+      "sha256": "5a04d55be12869115dc9bef81d1d4b5179ae2a3150ac498beaae935063ffc83c"
+    }
+  ],
+  "verification": {
+    "prior_reports_unchanged": true,
+    "production_population_config_unchanged": true,
+    "R4_point_reproduced": true,
+    "TRAI_original_public_pdf_table_read": true,
+    "C17_original_joint_cells_not_claimed_verified": true,
+    "no_locale_pack_or_production_change": true,
+    "no_next_language_group_started": true,
+    "no_heavy_process_started": true
+  }
+}

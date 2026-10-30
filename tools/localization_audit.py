@@ -135,7 +135,7 @@ def main():
               "candidate_coverage": coverage(candidate, dataset),
               "dataset_maximum_coverage_percent": coverage(all_codes, dataset)["coverage_lower_bound_percent"],
               "coverage_target_percent": 80,
-              "review_gate": "Independent UI and website review required before release"}
+              "review_gate": "Actual game UI self-validation required; external task revalidation waived by user; website deployment deferred"}
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
