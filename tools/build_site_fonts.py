@@ -7,6 +7,7 @@ the site's HTML and registered language packs. No source font is changed.
 from pathlib import Path
 import hashlib
 import json
+import re
 import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,6 +67,12 @@ def main():
     for license_name in ["LICENSE-SourceHanSans.txt", "LICENSE-SourceHanSerif.txt", "LICENSE-Noto.txt"]:
         shutil.copyfile(ROOT / "client/assets/fonts" / license_name, output / license_name)
     (output / "manifest.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    stylesheet = SITE / "assets/site.css"
+    css = stylesheet.read_text(encoding="utf-8")
+    for value in result.values():
+        url = "/assets/fonts/" + value["file"]
+        css = re.sub(re.escape(url) + r'(?:\?v=[a-f0-9]+)?', url + "?v=" + value["sha256"][:12], css)
+    stylesheet.write_text(css, encoding="utf-8")
     print(json.dumps({role: {k: v for k, v in value.items() if k != "glyph_codepoints"} for role, value in result.items()}))
 
 
