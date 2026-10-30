@@ -179,7 +179,7 @@ func _check_shop_rotation() -> void:
 func _ready() -> void:
 	gateway = Gateway.new()
 	add_child(gateway)
-	gateway.failed.connect(func(message): notice.emit(message))
+	gateway.user_failed.connect(func(message): notice.emit(message))
 	gateway.event_received.connect(_on_event)
 	gateway.telemetry.connect(_on_gateway_telemetry)
 	gateway.connection_changed.connect(_on_connection_changed)

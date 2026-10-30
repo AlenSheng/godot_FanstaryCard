@@ -1,6 +1,7 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
@@ -128,7 +129,7 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	if summary.is_empty():
 		ui.text(P.localized("relic_unavailable"), Rect2(117, 235, 725, 130), 30, P.MUTED)
 		return
-	ui.text(str(summary.get("owner_name", P.localized("traveler_default_name"))) + P.localized("relic_owner_suffix"), Rect2(115, 172, 730, 58), 31, P.GOLD, null, true, false)
+	ui.text(RemoteCopy.display_name(summary, "owner_name") + P.localized("relic_owner_suffix"), Rect2(115, 172, 730, 58), 31, P.GOLD, null, true, false)
 	var pile: Dictionary = Game.relic_details.get(pile_id, {})
 	var fresh: bool = not pile.is_empty() and int(pile.get("version", 0)) == int(summary.get("version", 0))
 	ui.button(P.localized("refresh_relic"), Rect2(620, 236, 232, 53), func(): Game.command("relic.read", {"pile_id": pile_id}), not Game.allowed("relic.read"))

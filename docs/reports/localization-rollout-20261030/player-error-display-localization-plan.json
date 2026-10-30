@@ -1,0 +1,107 @@
+{
+  "scope": "只读审计；仅玩家客户端 HTTP/RT 错误显示。排除 Admin 网页、日志和任意 C# 技术异常全文；不改生产或语言包、不启动下一组。",
+  "counts": {
+    "explicit_player_http_titles": 39,
+    "http_title_scope": "玩家 Endpoints + Authentication/Idempotency 公共辅助方法中的显式固定标题；不包含框架默认状态标题。另有 Protobuf middleware 的 Response exceeds supported HTTP limits，交给通用兜底。",
+    "rt_command_rejected_codes": 15,
+    "rt_already_localized_event": "error.rate_limited -> operation_too_fast",
+    "adjacent_fixed_session_reason": "session.replaced / newer_connection"
+  },
+  "display_leak_and_constraints": [
+    "gateway.gd:416 把 detail 优先放入 result.error，:455 failed.emit(result.error)；game_store.gd:182 又直接转为 notice。必须统一 result.error 与 failed 的显示文案，不能只拦信号而让调用者继续读取英文 error。",
+    "HttpError.code 目前只有 http_<status>，不能区分同为409的状态版本冲突、余额不足、市场操作或请求幂等冲突；无需改服务端协议。",
+    "gateway.gd:899 直接 failed.emit(payload.detail)。只改这一显示出口的文案，payload.code/detail 原样保留；game_store.gd:1395 的旧版冲突兼容逻辑仍读取 Room revision conflict. 前缀。",
+    "detail 字段存在但为空时，get(detail, get(title)) 不会退回非空 title；例如 Account banned 只有标题。显示分类器必须保证有非空本地化兜底。"
+  ],
+  "http_major_groups": [
+    {
+      "category": "身份与登录",
+      "titles": ["Authentication required", "Invalid sign-in request", "Account banned", "Steam authentication unavailable", "Player name conflict"],
+      "display": "401继续现有会话结束流程：Steam登录用steam_ticket_invalid，其他用login_expired；Account banned用ui_account_banned；Steam上游不可用用server_unavailable。名称冲突可新增一个当前语言组的player_name_conflict键。"
+    },
+    {
+      "category": "固定请求校验",
+      "titles": ["Invalid Idempotency-Key", "Invalid version", "Unknown hero class", "Invalid settlement match selector", "No profile changes supplied", "Invalid player profile", "Invalid preparation", "Invalid loadout", "Invalid mail attachment"],
+      "display": "按精确title/route归类；最小版本用本地化通用操作反馈，不逐条翻译exception.Message。raw detail留诊断。"
+    },
+    {
+      "category": "版本与幂等冲突",
+      "titles": ["Player profile changed", "Deck changed", "Loadout changed", "Idempotency conflict"],
+      "display": "前三个用state_changed；仅在调用方确实已完成重新加载时才用deck_changed_retry。Idempotency conflict用通用拒绝反馈，不自动重发写请求。禁止把所有409统一说成版本冲突。"
+    },
+    {
+      "category": "准备与匹配",
+      "titles": ["Preparation not found", "Preparation cannot be cancelled", "Active preparation exists", "Asset unavailable", "Match ticket not found", "Matchmaking rejected", "Cancellation rejected"],
+      "display": "主要复用state_changed或operation_rejected；保留quiet_statuses、已有准备/匹配恢复流程，正常的静默404不能新增toast。"
+    },
+    {
+      "category": "卡组、装备与强化",
+      "titles": ["Card operation rejected", "Invalid deck", "Equipment unavailable", "Equipment not found", "Class weapon not found", "Cannot enhance equipment", "Cannot enhance weapon"],
+      "display": "Invalid deck->deck_invalid；Cannot enhance equipment->enhance_unavailable；Cannot enhance weapon->enhance_weapon_unavailable；其余按route用state_changed/operation_rejected。不要从异常英文猜测缺少多少材料。"
+    },
+    {
+      "category": "商店与市场",
+      "titles": ["Shop refresh rejected", "Purchase rejected", "Listing rejected", "Cancel rejected"],
+      "display": "最小版本用operation_rejected；需要更细文案时按稳定route/action增加少量操作级键，不能枚举余额/绑定/过期等所有C#异常句子。"
+    },
+    {
+      "category": "结算",
+      "titles": ["Settlement not found", "Settlement is not ready"],
+      "display": "按结算route给本地化状态待同步/刷新提示；保留既有轮询、静默状态和确认幂等。不能将尚未就绪提示成已经结算失败。"
+    },
+    {
+      "category": "容量与传输兜底",
+      "titles": ["Realtime ticket capacity reached"],
+      "display": "该特定429表示票据容量，优先server_unavailable；其他429用operation_too_fast，5xx用server_unavailable，传输0用server_connect_failed，解码错误用invalid_server_response。保留Retry-After/重试上限。"
+    }
+  ],
+  "rt_code_to_locale_key": {
+    "COMMAND_REJECTED": "operation_rejected",
+    "EXPECTED_REVISION_REQUIRED": "server_action_unconfirmed (建议新增通用键)",
+    "INVALID_COMMAND": "server_action_unconfirmed (建议新增通用键)",
+    "INVALID_PAYLOAD": "server_action_unconfirmed (建议新增通用键)",
+    "INVALID_REQUEST_ID": "server_action_unconfirmed (建议新增通用键)",
+    "INVALID_ROOM_CONTEXT": "state_changed",
+    "NOT_IN_ROOM": "state_changed",
+    "READY_NOT_FOUND": "state_changed",
+    "READY_TIMEOUT": "ready_timeout",
+    "READY_UNAVAILABLE": "server_unavailable",
+    "REQUEST_ID_REQUIRED": "server_action_unconfirmed (建议新增通用键)",
+    "REQUEST_ID_REUSED": "operation_rejected",
+    "REVISION_CONFLICT": "state_changed",
+    "STALE_RELIC": "relic_changed",
+    "UNSUPPORTED_COMMAND": "server_action_unconfirmed (建议新增通用键)"
+  },
+  "minimal_implementation_checklist": [
+    "新增一个客户端纯显示分类器，例如ErrorCopy.http_message(method, canonical_route, status, parsed)与ErrorCopy.rt_message(code, action, detail)；不改HTTP/RT协议。HTTP优先精确title+route/status白名单，再按status，最后通用本地化反馈；不使用宽泛英文替换或包含词匹配。",
+    "HTTP只将分类结果写入result.error并用于failed；result.data及其中title/detail/code/traceId、状态码、headers保持原样。若调用方需要额外诊断槽可单独保留raw_error，避免普通UI再次读取。",
+    "RT继续先执行预览分流、旧上下文过滤、NOT_IN_ROOM恢复、event_received和_retry_handled/_state_refresh_handled判断；仅在原failed.emit位置选择locale key。不能更改payload.detail或把本地化文本写回协议数据。",
+    "旧服务端COMMAND_REJECTED且detail精确以Room revision conflict.开头时，可以仅为显示映射state_changed；该原文仍保留给既有重试判断。未知code只显示通用本地化提示，绝不退回英文detail。",
+    "复用现有state_changed、relic_changed、ready_timeout、server_unavailable、operation_rejected、deck_invalid、enhance_unavailable、enhance_weapon_unavailable、login_expired、steam_ticket_invalid、ui_account_banned等。最多先补1个通用server_action_unconfirmed键，名称冲突键为可选；仅更新当前zh-CN/en/es组，不新增语种。",
+    "server_action_unconfirmed建议语义：无法确认操作结果，请先刷新当前状态再尝试。不要声称操作一定没有执行，不新增自动重试。原始detail仅作受控诊断，勿顺手把凭据、玩家输入或封禁原因批量写入普通日志。"
+  ],
+  "opaque_content_preservation": [
+    "封禁固定标题可本地化，但管理员reason必须保持原文；沿用RemoteCopy.account_ban及main.gd:1769把reason作为独立内容附加，禁止对整个reason字符串做通用翻译。当前HTTP Account banned响应本身没有reason，不得编造。",
+    "玩家姓名、昵称、输入、邮件/公告自定义正文不能进入错误别名字典。名称冲突若需显示名字，只把请求中的明确结构化名字原样传入本地化模板，不能从异常字符串正则猜名字。",
+    "相邻固定系统reason newer_connection可精确映射account_connected_elsewhere；其他session.replaced原因先经过现有封禁/业务处理，不可把未知原文统一替换导致reason丢失。"
+  ],
+  "focused_acceptance_checks_for_later_implementation": [
+    "HTTP Invalid deck+英文detail、Account banned+空detail、未知409/503均得到非空本地化提示；raw title/detail与quiet_statuses保持。",
+    "15个RT code可确定映射；未知code使用通用提示；REVISION_CONFLICT仍按原逻辑有界重试并抑制重复toast，STALE_RELIC只显示本地化提示。",
+    "预览拒绝、过期房间/会话拒绝和已处理ready拒绝不新增全局提示；原payload及Room revision conflict.前缀不变。",
+    "带英文系统词、引号或{占位符}的封禁reason/玩家名保持原样；自定义邮件和公告不受错误分类器影响。"
+  ],
+  "source_anchors": {
+    "http_display": "client/network/gateway.gd:416,455",
+    "rt_display": "client/network/gateway.gd:873-900",
+    "notice_forwarding": "client/state/game_store.gd:182",
+    "raw_detail_retry_dependency": "client/state/game_store.gd:1393-1395",
+    "http_error_code": "server/src/FantasyCard.Server/ProtobufHttp/ProtobufHttpResult.cs:71-83",
+    "rt_literal_codes": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:59-993",
+    "rt_room_context_codes": "server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:16,55",
+    "rt_ready_codes": "server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:227,232",
+    "ban_reason_preservation": "client/ui/remote_copy.gd:5-16; client/ui/main.gd:1760-1769",
+    "fixed_session_reason": "server/src/FantasyCard.Server/Realtime/RealtimeEndpoints.cs:127-129; client/network/gateway.gd:784"
+  },
+  "verification": "通过源码读取、固定标题/RT code提取和现有locale键核对；未运行服务器、Godot或大型测试。39个HTTP标题按8类分组且无重复，RT code共15个。未修改任何生产/配置/语言包文件。"
+}

@@ -2,6 +2,7 @@ extends RefCounted
 
 const Art = preload("res://ui/art.gd")
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const MonsterPool = preload("res://ui/monster_pool_view.gd")
@@ -134,40 +135,57 @@ static func _battle_pixel_scale(ui: Control) -> float:
 static func _battle_font_size(ui: Control, local_scale: float = 1.0) -> int:
 	return maxi(24, int(ceil(12.0 / maxf(0.01, _battle_pixel_scale(ui) * absf(local_scale)))))
 
-static func _passive(ui: Control, hero_class: String, rect: Rect2, above_preview: bool = false) -> void:
+static func _passive(ui: Control, hero_class: String, rect: Rect2, bottom_limit: float = 0.0) -> Rect2:
 	var names := {"Mage": P.localized("exploration_passive_mage_name"), "Priest": P.localized("exploration_passive_priest_name"), "Guardian": P.localized("exploration_passive_guardian_name")}
-	if not names.has(hero_class): return
+	if not names.has(hero_class): return Rect2()
 	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
 	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
-	# Give every live passive field its own line. The complete existing wording
-	# stays visible at 24 design pixels, including signature weapon bonuses.
-	descriptions[hero_class] = descriptions[hero_class].replace(" · ", "\n")
+	var description_text: String = descriptions[hero_class].replace(" · ", "\n")
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else P.localized_text(descriptions[hero_class])]
-	var icon: TextureRect = _picture(ui, Art.passive(hero_class), Rect2(rect.position + Vector2(16, 12), Vector2(38, 38)))
-	icon.name = "PlayerPassiveIcon_" + hero_class
-	var title_inset := 12.0 if above_preview else 8.0
-	var description_inset := 54.0 if above_preview else 50.0
+	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else description_text]
+	var style: StyleBox = frame.get_theme_stylebox("panel")
+	var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
+	var content_width := maxf(1.0, rect.size.x - padding.x - padding.z)
 	var font_size := _battle_font_size(ui)
-	var title: Label = ui.text(names[hero_class], Rect2(rect.position + Vector2(66, title_inset), Vector2(rect.size.x - 82, 36)), font_size, P.GOLD, null, false)
+	var title_width := maxf(1.0, content_width - 48.0)
+	var title_font := P.font_for_text(names[hero_class], font_size)
+	var body_font := P.font_for_text(description_text, font_size)
+	var breaks := TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+	var title_height := maxf(38.0, ceilf(title_font.get_multiline_string_size(names[hero_class], HORIZONTAL_ALIGNMENT_LEFT, title_width, font_size, -1, breaks).y) + 2.0)
+	var body_height := ceilf(body_font.get_multiline_string_size(description_text, HORIZONTAL_ALIGNMENT_LEFT, content_width, font_size, -1, breaks).y) + 2.0
+	var content_height := title_height + 12.0 + body_height
+	var bounds := Rect2(rect.position, Vector2(rect.size.x, maxf(rect.size.y, padding.y + content_height + padding.w)))
+	if bottom_limit > 0.0: bounds.position.y = minf(bounds.position.y, bottom_limit - bounds.size.y)
+	frame.position = bounds.position
+	frame.size = bounds.size
+	var content := Control.new()
+	content.name = "PassiveContent"
+	content.position = Vector2(padding.x, padding.y)
+	content.size = Vector2(content_width, content_height)
+	content.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	frame.add_child(content)
+	var icon: TextureRect = _picture(content, Art.passive(hero_class), Rect2(0, 0, 38, 38))
+	icon.name = "PlayerPassiveIcon_" + hero_class
+	var title: Label = ui.text(names[hero_class], Rect2(48, 0, title_width, title_height), font_size, P.GOLD, content, false, false)
 	title.name = "PlayerPassiveTitle_" + hero_class
-	title.set_meta("battle_primary_text", true)
-	title.set_meta("battle_text_role", "passive_name")
-	title.set_meta("minimum_effective_font_size", 12.0)
-	var description: Label = ui.text(descriptions[hero_class], Rect2(rect.position + Vector2(16, description_inset), Vector2(rect.size.x - 32, rect.size.y - description_inset - 16)), font_size, P.MUTED, null, false)
+	var description: Label = ui.text(description_text, Rect2(0, title_height + 12.0, content_width, body_height), font_size, P.MUTED, content, false, false)
 	description.name = "PlayerPassiveDescription_" + hero_class
-	description.add_theme_constant_override("line_spacing", 0)
-	description.set_meta("battle_primary_text", true)
+	for label in [title, description]:
+		label.add_theme_constant_override("line_spacing", 0)
+		label.set_meta("battle_primary_text", true)
+		label.set_meta("minimum_effective_font_size", 12.0)
+	title.set_meta("battle_text_role", "passive_name")
 	description.set_meta("battle_text_role", "passive_effect")
-	description.set_meta("minimum_effective_font_size", 12.0)
 	frame.set_meta("battle_passive_layout", true)
+	return bounds
 
 static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var player: Dictionary = state.get("player", {})
 	var pvp: bool = state.has("duel")
+	ui.set_meta("battle_passive_bottom", 0.0)
 	_title(ui, P.localized("encounter") if pvp else P.localized("chaos_battle"), true)
 	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
 	if pvp:
@@ -179,7 +197,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 		_health(ui, player.get("combat", {}), Rect2(80, 670, 310, 115))
 		_status(ui, "PlayerStatus", Rect2(80, 785, 375, 32))
 		# Leave the entire signature frame above the preview, including its final text line.
-		_passive(ui, player.get("hero_class", ""), Rect2(621, 302, 350, 220), true)
+		_passive(ui, player.get("hero_class", ""), Rect2(621, 302, 350, 220), 518.0)
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var can_select_target := BattleTargets.living(state.get("pve", {})).size() > 1
 		var target_id := str(BattleTargets.current(state.get("pve", {})).get("monster_id", ""))
@@ -280,14 +298,15 @@ static func _hand(ui: Control, host: Control, state: Dictionary) -> void:
 	play_button.add_theme_color_override("font_hover_color", P.PAPER)
 	play_button.add_theme_color_override("font_pressed_color", P.PAPER)
 	play_button.add_theme_color_override("font_disabled_color", P.MUTED)
-	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840, 72, 84))
-	ui.text(P.localized("draw"), Rect2(170, 838, 230, 43), 26, P.TEAL)
-	var charge_bar := _bar(ui, Rect2(171, 885, 225, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
+	var draw_offset := maxf(0.0, float(ui.get_meta("battle_passive_bottom", 0.0)) + 16.0 - 838.0)
+	ui.picture(Art.texture("UI/Battle/battle_energy_ring_clean.png"), Rect2(83, 840 + draw_offset, 72, 84)).name = "DrawChargeIcon"
+	ui.text(P.localized("draw"), Rect2(170, 838 + draw_offset, 230, 43), 26, P.TEAL).set_name("DrawChargeLabel")
+	var charge_bar := _bar(ui, Rect2(171, 885 + draw_offset, 200, 32), clampf(float(player.get("draw_charge", "0")), 0, 1), 1, "UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
 	charge_bar.name = "DrawChargeBar"
 	if host.has_method("_draw_charge_value"):
 		charge_bar.value = host._draw_charge_value(float(player.get("draw_charge", "0")))
-	ui.text("%d%%" % roundi(charge_bar.value * 100.0), Rect2(402, 880, 72, 38), 24, P.TEAL).name = "DrawChargePercent"
-	ui.text(P.localized("exploration_library_discard") % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940, 330, 32), 21, P.MUTED)
+	ui.text("%d%%" % roundi(charge_bar.value * 100.0), Rect2(380, 880 + draw_offset, 72, 38), 24, P.TEAL).name = "DrawChargePercent"
+	ui.text(P.localized("exploration_library_discard") % [player.get("library_count", 0), player.get("discard_count", 0)], Rect2(79, 940 + draw_offset, 330, 32), 21, P.MUTED).set_name("LibraryDiscardLabel")
 	var waiting: Dictionary = Game.combat_wait_state()
 	if waiting.reason != "available":
 		var waiting_label: Label = ui.text(P.localized("battle_wait_" + str(waiting.reason)), Rect2(1390, 1005, 460, 38), 22, P.MUTED)
@@ -382,7 +401,7 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 	host._combat_panels[duel.get("opponent_id", "")] = opponent
 	var class_key: String = {"Mage":"battle_class_mage", "Priest":"battle_class_priest", "Guardian":"battle_class_guardian"}.get(opponent_class, "")
 	var class_title: String = P.localized(class_key) if not class_key.is_empty() else P.word(opponent_class)
-	var opponent_title: Label = ui.text(duel.get("opponent_name", P.localized("same_cell_traveler")) + " · " + class_title, Rect2(1129, 161, 380, 53), 27, P.GOLD, null, true, false)
+	var opponent_title: Label = ui.text(RemoteCopy.display_name(duel, "opponent_name") + " · " + class_title, Rect2(1129, 161, 380, 53), 27, P.GOLD, null, true, false)
 	opponent_title.name = "DuelOpponentTitle"
 	opponent_title.tooltip_text = opponent_title.text
 	var opponent_stats: Button = ui.button(P.localized("opponent_stats"), Rect2(1534, 462, 252, 55), func(): host._show_battle_details(duel.get("opponent_status", {})))
@@ -402,7 +421,8 @@ static func _duel(ui: Control, host: Control, state: Dictionary) -> void:
 		var waiting_label: Label = ui.text(P.localized("waiting_action"), Rect2(1128, 477, 400, 42), 24, P.GOLD)
 		waiting_label.name = "DuelWaitLabel"
 	ui.text(P.localized("own_hand"), Rect2(80, 568, 330, 40), 28, P.GOLD)
-	_passive(ui, player.get("hero_class", ""), Rect2(80, 612, 350, 220), true)
+	var passive_bounds := _passive(ui, player.get("hero_class", ""), Rect2(80, 612, 350, 220))
+	ui.set_meta("battle_passive_bottom", passive_bounds.end.y)
 
 static func _map(ui: Control, host: Control, state: Dictionary) -> void:
 	_title(ui, P.localized("chaos_realm"))
@@ -540,7 +560,7 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 		if relic:
 			var pile_id := action.trim_prefix("relic:")
 			for pile in piles:
-				if pile.pile_id == pile_id: title = P.localized("exploration_relic_owner") % str(pile.get("owner_name", P.localized("same_cell_traveler"))); break
+				if pile.pile_id == pile_id: title = P.localized("exploration_relic_owner") % RemoteCopy.display_name(pile, "owner_name"); break
 			callback = func(): InventoryView.open(host, pile_id)
 		var action_name: String = "relic" if relic else action.trim_prefix("action.")
 		var action_button: Button = tile.button("", rect, callback, relic and not Game.allowed("relic.read"), SLOT)

@@ -14,6 +14,10 @@
 
 缓存到客户端状态的动态文案使用 `P.message(key, arguments)` 保留键和参数。需要随语言切换的固定标签参数显式使用 `{translation_key: key}`；版本、昵称和管理员自由文本保持原样。自由文本在展示控件中关闭二次本地化。
 
+系统邮件使用 `mail_<模板ID>_title/body` 和结构化参数。修改后运行 `tools/sync_system_mail_locales.py`，将共享文案生成到服务端嵌入资源；`--check` 只检查同步状态。管理员原因只插值一次。缺失姓名必须有协议回退标记才能本地化，真实同名玩家保持原文。
+
+`../server_error_catalog.json` 把稳定的错误代码和固定标题映射到本表；原始服务端诊断保持不变。显示错误统一经过 `RemoteCopy`，不要把英文诊断直接接到玩家提示中。
+
 `localization_literal_exceptions.json` 只允许逐条说明的协议格式、音频总线标识和编解码诊断。新增用户可见文本不能通过扩大例外范围跳过扫描。
 
 语言人口覆盖使用 `config/localization_rollout.json` 中记录的数据口径。草稿覆盖和已发布覆盖分别记录，多语言人口不直接相加；覆盖估算不能替代 UI 验收。

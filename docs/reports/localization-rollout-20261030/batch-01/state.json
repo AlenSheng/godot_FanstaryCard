@@ -6,7 +6,7 @@
     "en",
     "es"
   ],
-  "strings_per_locale": 827,
+  "strings_per_locale": 849,
   "card_names_per_locale": 232,
   "hardcoded_ui_literals": 0,
   "missing_literal_keys": 0,
@@ -28,22 +28,16 @@
     "status": "Passed on earlier candidate; not approval of latest source"
   },
   "latest_native_attempt": {
-    "status": "WaitingForMemory",
-    "evidence": "docs/reports/localization-rollout-20261030/batch-01/overlay-partial-evidence-r1.json",
-    "completed_cases": 4,
-    "expected_cases": 9,
-    "completed_screenshots": 236,
-    "pending": [
-      "en-960",
-      "en-1280",
-      "en-1920",
-      "es-1280",
-      "es-1920"
-    ]
+    "status": "Passed_LocalOnly",
+    "evidence": "docs/reports/localization-rollout-20261030/batch-01/local-ui-final-v4.json",
+    "screenshots": 675,
+    "checks": 65511,
+    "supplemental_error_ui_screenshots": 72,
+    "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-final-v4.json"
   },
   "independent_review": {
     "thread_id": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
-    "status": "ChangesRequired_RevisionUnderTest",
+    "status": "ReadyForIndependentReview_FinalRevision",
     "reviewed_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
     "report": "docs/reports/localization-rollout-20261030/batch-01/independent-review-70f68c3e.json"
   },
@@ -53,14 +47,13 @@
   "coverage_target_reached": false,
   "pending_user_input": null,
   "next_required_checks": [
-    "Re-run current native card/glyph/legacy regressions",
-    "Run latest UI checks at 960,1280,1920 in each supported language",
-    "Run isolated HTTP/protobuf client tests",
-    "Independent review in the designated chat",
-    "Mark passed and deploy/restart only after review passes",
-    "Continue next language group"
+    "Independent revalidation in the designated chat",
+    "Mark passed only after the independent report passes",
+    "Deploy and restart game services, then verify health",
+    "Start the next language group only after deployment succeeds"
   ],
   "resource_policy": "User chose to wait for free memory; do not close or interrupt FreeVideo",
   "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation",
-  "user_visual_correction": "Complete: keep original illustration bounds and draw the expanding readable text panel on top. New 960 Spanish screenshots and all 3 Chinese widths passed; full revised matrix awaits memory."
+  "user_visual_correction": "Original card artwork bounds preserved. Passive content follows common-frame insets and expands naturally; draw controls remain separate. All 3 classes, PVE/PVP and supported widths checked.",
+  "server_validation": "docs/reports/localization-rollout-20261030/batch-01/server-system-copy-validation-r1.json"
 }

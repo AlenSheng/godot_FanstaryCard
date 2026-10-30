@@ -1,7 +1,7 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
-const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
+const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -136,14 +136,30 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("mail_template_"):
+		var template_id := scenario.trim_prefix("mail_template_").trim_suffix("_bottom")
+		var arguments: Array = []
+		if template_id == "item_reclamation":
+			arguments = [{"key": "kind", "value": "Gold"}, {"key": "amount", "value": "123456"}, {"key": "reason", "value": "Opaque reason {amount}: Fire / Gold. ".repeat(20)}]
+		Game.mail = {"unreadCount": 1, "items": [{"id": "template-review", "template_id": template_id, "template_args": arguments, "sender_role": "admin" if template_id == "item_reclamation" else "system", "sender": "old sender", "title": "old title", "body": "old body", "read": true, "claimed": false, "attachments": []}]}
+		await _render_base(); $UI.mail_modal_lock = true; $UI._reference._mail()
+		$UI._reference._mail_select(Game.mail.items[0])
+		if scenario.ends_with("_bottom"):
+			await get_tree().process_frame
+			await get_tree().process_frame
+			var scroll: ScrollContainer = $UI._reference.get_node("MailModal").find_child("MailDetailScroll", true, false)
+			scroll.set_deferred("scroll_vertical", 100000)
+		return false
 	match scenario:
 		"login": Game.lobby = {}
-		"login_notice", "login_notice_bottom":
+		"login_notice", "login_notice_bottom", "login_notice_authored":
 			Game.lobby = {}
 			Game.authentication_reason = Palette.localized("login_timeout")
 			Game.server_info["announcement"] = {"title": "Relicbound Test Server Update and Traveler Notices" if locale == "en" else "遗境行者测试服更新与旅人公告", "body": ("Dear Travelers,\n\nThe test server has recently been updated:\n\n1. After extraction, wait for server settlement and the run results.\n2. Results include the items earned during the run and equipped gear.\n3. Log Out returns to the login screen.\n4. Common panels leave clear space inside their decorative borders.\n\nThank you for playing!" if locale == "en" else "亲爱的旅人：\n\n测试服近期已更新：\n\n1. 撤离后等待服务器结算并显示本局结果。\n2. 结算包含本局获得的物品和穿戴装备。\n3. 切换账号后返回登录界面。\n4. 通用框的内容与装饰边框之间保留留白。\n\n感谢参与测试！")}
 			if locale not in ["zh-CN", "en"]:
 				Game.server_info["announcement"] = {"translations": {locale: {"title": Palette.localized("game_title") + " · " + Palette.localized("ui_announcement_title"), "body": (Palette.localized("ui_room_hint") + "\n\n" + Palette.localized("ui_safe_slot_hint") + "\n\n").repeat(8)}}}
+			if scenario == "login_notice_authored":
+				Game.server_info["announcement"] = {"title": "Equipment / Priest / Gold", "body": "Authored announcement text remains verbatim."}
 		"hall_priest": Game.hero_class = "Priest"
 		"hall_guardian": Game.hero_class = "Guardian"
 		"prep", "gear", "shop", "cards", "deck": $UI.screen = scenario
@@ -237,7 +253,7 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			await _render_base(); $UI._confirm(Palette.localized("battle_abandon_warning"), func(): pass, {"title": "battle_abandon_title", "confirm_text": "battle_abandon_confirm", "tall": true}); return false
 		"battle_status":
 			Game.room = _room_fixture(); await _render_base(); $UI._show_battle_details(_status_fixture()); return false
-		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "choice", "notice":
+		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "pvp_name_fallback", "relic_name_fallback", "choice", "notice":
 			Game.room = _room_fixture()
 			if scenario in ["map", "midlayer"]:
 				Game.room.map = []
@@ -248,24 +264,29 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 				Game.room.player.phase = "Pve" if scenario.begins_with("pve") else "Pvp"; Game.room.allowed_actions += ["battle.play_cards", "battle.select_target", "duel.leave", "duel.escape"]
 				Game.room.pve = {"battle_id": "review-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_element": "Fire", "intent_value": 5}]}
 				if scenario.begins_with("pve"): Game.room.player.combat = {"hp": 80, "maximum_hp": 70, "shield": 6}
-				else: Game.room.duel = {"duel_id": "review-duel", "opponent_id": "review-opponent", "opponent": {"hero_class": "Guardian", "hp": 60, "maximum_hp": 100, "shield": 8}, "escape_remaining_ms": 0}
+				else: Game.room.duel = {"duel_id": "review-duel", "opponent_id": "review-opponent", "opponent_class": "Guardian", "opponent": {"hero_class": "Guardian", "hp": 60, "maximum_hp": 100, "shield": 8}, "escape_remaining_ms": 0}
 				if scenario.ends_with("full_hand"):
 					Game.room.player.hand = []
 					for card_id in ["MAG-10", "GW19", "GP07", "GO04", "M-BOXSPIRIT"]:
 						var instance_id := "full-hand-" + str(Game.room.player.hand.size())
 						Game.room.player.hand.append({"instance_id": instance_id, "card_id": card_id, "level": 10})
 						Game.selected_cards.append(instance_id)
-				if scenario == "pve_priest":
+				if scenario in ["pve_priest", "pvp_priest"]:
 					Game.room.player.hero_class = "Priest"; Game.room.player.battle_status = _status_fixture("LinYuan")
-				elif scenario == "pve_guardian":
+				elif scenario in ["pve_guardian", "pvp_guardian"]:
 					Game.room.player.hero_class = "Guardian"; Game.room.player.battle_status = _status_fixture("ZaiYue")
+			if scenario == "pvp_name_fallback":
+				Game.room.duel.opponent_name = "旅人"; Game.room.duel.opponent_name_is_fallback = true
+			if scenario == "relic_name_fallback":
+				Game.room.current_cell.relic_piles[0].owner_name = "旅人"
+				Game.room.current_cell.relic_piles[0].owner_name_is_fallback = true
 			if scenario == "choice":
 				Game.room.player.phase = "Choice"; Game.room.allowed_actions = ["choice.pick", "choice.refresh"]
 				Game.room.reward_choice = {"refresh_count": 0, "options": [{"option_id": "equipment", "kind": 1, "quantity": 1}, {"option_id": "fragments", "kind": 2, "quantity": 18}, {"option_id": "heal", "kind": 3, "quantity": 1, "heal_percent": 14}]}
 			await _render_base()
-			if scenario in ["inventory", "inventory_details", "relic"]: $UI.set_meta("inventory_open", true)
+			if scenario in ["inventory", "inventory_details", "relic", "relic_name_fallback"]: $UI.set_meta("inventory_open", true)
 			if scenario == "inventory_details": $UI.set_meta("inventory_selected", "pack-35")
-			if scenario == "relic":
+			if scenario in ["relic", "relic_name_fallback"]:
 				Game.relic_details = {"pile-a": {"pile_id": "pile-a", "owner_name": "A Very Long Expedition Traveler Name" if locale == "en" else "一位来自漫长旅途的探索者", "version": 7, "items": [_item(90), _item(91)]}}
 				$UI.set_meta("relic_pile", "pile-a"); $UI.set_meta("relic_selected", "pack-90")
 			if scenario in ["map", "midlayer"]: $UI.set_meta("exploration_map_open", true)
@@ -337,6 +358,8 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			_check_content_insets(frame_name + ": " + panel_name, panel, panel.get_child(0))
 		var announcement_title: Label = $UI.find_child("AnnouncementTitle", true, false)
 		review_checks[frame_name + ": complete announcement title"] = announcement_title.get_visible_line_count() == announcement_title.get_line_count()
+		if frame_name.ends_with("_login_notice_authored"):
+			review_checks[frame_name + ": authored announcement title stays verbatim"] = announcement_title.text == "Equipment / Priest / Gold"
 	if frame_name.contains("_settings"):
 		var popup: PopupPanel = $UI.get_node("AudioSettings")._popup
 		if is_instance_valid(popup):
@@ -361,6 +384,23 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			var available: float = node.size.x - style.get_content_margin(SIDE_LEFT) - style.get_content_margin(SIDE_RIGHT)
 			var text_width: float = node.get_theme_font("font").get_string_size(node.text, HORIZONTAL_ALIGNMENT_LEFT, -1, node.get_theme_font_size("font_size")).x
 			review_checks[frame_name + ": complete " + str(node.name)] = text_width <= available
+	for passive_frame in $UI.find_children("PlayerPassive_*", "Panel", true, false):
+		var content: Control = passive_frame.get_node_or_null("PassiveContent")
+		review_checks[frame_name + ": passive has padded content " + str(passive_frame.name)] = content != null
+		if content != null:
+			_check_content_insets(frame_name + ": " + str(passive_frame.name), passive_frame, content)
+			var style: StyleBox = passive_frame.get_theme_stylebox("panel")
+			var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
+			review_checks[frame_name + ": passive uses shared border padding " + str(passive_frame.name)] = padding == ART.COMMON_PANEL_PADDING
+			for control in content.get_children():
+				if control is Control:
+					review_checks[frame_name + ": passive control inside content " + str(control.name)] = Rect2(Vector2.ZERO, content.size).encloses(control.get_rect())
+		review_checks[frame_name + ": passive frame within viewport " + str(passive_frame.name)] = get_viewport().get_visible_rect().encloses(passive_frame.get_global_rect())
+		for control_name in ["DrawChargeIcon", "DrawChargeLabel", "DrawChargeBar", "DrawChargePercent", "LibraryDiscardLabel"]:
+			var control: Control = $UI.find_child(control_name, true, false)
+			if control == null: continue
+			review_checks[frame_name + ": draw control stays in viewport " + control_name] = get_viewport().get_visible_rect().encloses(control.get_global_rect())
+			review_checks[frame_name + ": passive clear of draw control " + control_name] = not passive_frame.get_global_rect().intersects(control.get_global_rect())
 	if frame_name.ends_with("full_hand"):
 		var hand_cards: Array[Control] = []
 		for control in $UI._reference.find_children("*", "Button", true, false):

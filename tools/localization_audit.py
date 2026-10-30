@@ -31,6 +31,16 @@ def audit_pack(code, entry):
     source = source_strings()
     strings = pack.get("strings", {})
     errors = []
+    error_catalog = read(DATA / "server_error_catalog.json")
+    for section in ["http_titles", "command_codes", "command_details", "http_statuses"]:
+        for origin, key in error_catalog.get(section, {}).items():
+            if key not in strings:
+                errors.append({"kind": "server_error_copy", "section": section, "origin": origin, "key": key})
+            elif TOKENS.findall(strings[key]):
+                errors.append({"kind": "server_error_requires_arguments", "section": section, "origin": origin, "key": key})
+    for field in ["default_http", "default_command"]:
+        if error_catalog.get(field) not in strings:
+            errors.append({"kind": "server_error_default", "field": field})
     for key in ["codex_base_effect", "card_tuning_contract"]:
         if not strings.get(key, "").strip():
             errors.append({"kind": "missing_dynamic_copy", "key": key})

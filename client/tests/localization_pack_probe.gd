@@ -94,7 +94,7 @@ func _run() -> void:
 	shop_host.free()
 	var battle_report: Dictionary = await _check_battle_catalog(locale, errors)
 	var regressions := {}
-	for filename in ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd"]:
+	for filename in ["test_localization.gd", "test_card_localization.gd", "test_card_description_levels.gd", "test_equipment_name.gd", "test_localization_boundaries.gd", "test_remote_system_copy.gd", "test_play_retry.gd"]:
 		P.set_language("zh-CN")
 		var result: Dictionary = load("res://tests/" + filename).new().run_test()
 		regressions[filename] = result

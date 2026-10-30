@@ -752,7 +752,7 @@ func _login() -> void:
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := RemoteCopy.field(announcement, "title")
 	var body := RemoteCopy.field(announcement, "body")
-	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD)
+	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD, false)
 	announcement_title.name = "AnnouncementTitle"
 	announcement_title.custom_minimum_size.y = 58
 	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER

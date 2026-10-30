@@ -68,6 +68,8 @@ def isolated_environment(work: Path, **overrides):
     # Isolated protocol projects need the text dependency, but no fonts or art.
     repository = Path(__file__).resolve().parents[2]
     dependencies = [repository / "client/ui/palette.gd",
+                    repository / "client/ui/remote_copy.gd",
+                    repository / "client/data/server_error_catalog.json",
                     repository / "client/data/localization_registry.json",
                     repository / "client/data/localization_legacy.json"]
     dependencies += list((repository / "client/data/locales").glob("*.json"))

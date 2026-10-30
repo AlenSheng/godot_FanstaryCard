@@ -1,12 +1,20 @@
 extends Node
 
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 
 signal failed(message: String)
+signal user_failed(message: String)
 signal event_received(kind: String, payload: Dictionary)
 signal connection_changed(state: String)
 signal authentication_required(reason: String)
 signal telemetry(sample: Dictionary)
+
+func _report_failure(message: String, display_message: String = "") -> void:
+	# Preserve the diagnostic signal used by protocol observers. Only the
+	# presentation signal carries localized server feedback to the game UI.
+	user_failed.emit(message if display_message.is_empty() else display_message)
+	failed.emit(message)
 
 const Proto = preload("res://network/protobuf.gd")
 const HttpProtocol = preload("res://network/http_protocol.gd")
@@ -317,7 +325,7 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 	return result
 
 func _pagination_error(message: String, quiet_statuses: Array) -> Dictionary:
-	if 0 not in quiet_statuses: failed.emit(message)
+	if 0 not in quiet_statuses: _report_failure(message)
 	return {"ok": false, "status": 0, "error": message}
 
 func _decode_http_response(contract: Dictionary, status: int, headers: PackedStringArray, body: PackedByteArray) -> Dictionary:
@@ -412,9 +420,16 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 			var parsed: Variant = decoded.data
 			var success: bool = response[0] == HTTPRequest.RESULT_SUCCESS and code >= 200 and code < 300 and decoded.ok
 			var message := P.localized("server_unavailable")
-			if not decoded.ok: message = decoded.error
-			elif parsed is Dictionary: message = str(parsed.get("detail", parsed.get("title", message)))
-			result = {"ok": success, "status": code, "data": parsed, "error": message, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
+			var raw_error := ""
+			if not decoded.ok:
+				raw_error = str(decoded.error)
+				message = P.message("invalid_server_response", [])
+			elif not success:
+				var problem: Dictionary = parsed if parsed is Dictionary else {}
+				raw_error = str(problem.get("detail", ""))
+				if raw_error.is_empty(): raw_error = str(problem.get("title", ""))
+				message = RemoteCopy.http_error(problem, code)
+			result = {"ok": success, "status": code, "data": parsed, "error": message, "raw_error": raw_error, "headers": response[2], "body_bytes": response[3].size(), "decode_ms": decoded.get("decode_ms", 0.0), "decode_worker": decoded.get("decode_worker", false)}
 			var may_retry: bool = not success and code in [0, 429, 502, 503, 504] and attempt < 2
 			# A received invalid protobuf/JSON body is a terminal decode failure.
 			if code != 0 and not decoded.ok: may_retry = false
@@ -452,7 +467,9 @@ func _request_page(path: String, method: int = HTTPClient.METHOD_GET, data: Vari
 	flight.result = result.duplicate(true)
 	flight.done = true
 	if generation != session_generation: return result
-	if not result.ok and result.status not in quiet_statuses: failed.emit(result.error)
+	if not result.ok and result.status not in quiet_statuses:
+		var diagnostic := str(result.get("raw_error", ""))
+		_report_failure(diagnostic if not diagnostic.is_empty() else str(result.error), str(result.error))
 	return result
 
 func _request_http_transport(path: String, method: int, headers: PackedStringArray,
@@ -572,7 +589,7 @@ func _process(_delta: float) -> void:
 		while socket.get_available_packet_count() > 0:
 			var packet := socket.get_packet()
 			if socket.was_string_packet():
-				failed.emit(P.localized("binary_frame_required"))
+				_report_failure(P.localized("binary_frame_required"))
 				continue
 			_receive(packet)
 			if not reconnect_enabled: return
@@ -709,7 +726,7 @@ func _receive(packet: PackedByteArray) -> void:
 	var proto := Proto.new()
 	var envelope := proto.decode("ServerEnvelope", packet)
 	if not proto.error.is_empty() or envelope.get("protocol_version", 0) != 1:
-		failed.emit(P.localized("server_protocol_invalid"))
+		_report_failure(P.localized("server_protocol_invalid"))
 		return
 	var kind: String = envelope.get("type", "")
 	var sequence: int = envelope.get("sequence", 0)
@@ -718,7 +735,7 @@ func _receive(packet: PackedByteArray) -> void:
 	if kind.begins_with("action.spring_"): schema = "ActionSpringEvent"
 	var payload := proto.decode(schema, envelope.get("payload", PackedByteArray())) if not schema.is_empty() else {}
 	if not proto.error.is_empty():
-		failed.emit(P.localized("server_message_corrupt"))
+		_report_failure(P.localized("server_message_corrupt"))
 		return
 	# Keep presentation silent for every replay packet, including after a snapshot
 	# or the final replay advances the recovery cursor.
@@ -781,7 +798,9 @@ func _receive(packet: PackedByteArray) -> void:
 		_save_session()
 		return
 	if kind == "session.replaced":
-		end_session(str(payload.get("reason", P.localized("account_connected_elsewhere"))))
+		var reason := str(payload.get("reason", P.localized("account_connected_elsewhere")))
+		if reason == "newer_connection": reason = P.message("account_connected_elsewhere", [])
+		end_session(reason)
 		return
 	if sequence <= last_sequence:
 		if kind in ["match.found", "room.ready_required", "room.ready_accepted", "room.started"]:
@@ -869,7 +888,7 @@ func _receive(packet: PackedByteArray) -> void:
 	_save_session()
 	if kind == "error.rate_limited":
 		_command_cooldown = Time.get_ticks_msec() + 2000
-		failed.emit(P.localized("operation_too_fast"))
+		_report_failure(P.localized("operation_too_fast"))
 	if kind == "error.command_rejected":
 		if _preview_request_ids.has(payload.get("_request_id", "")):
 			_preview_request_ids.erase(payload._request_id)
@@ -896,7 +915,7 @@ func _receive(packet: PackedByteArray) -> void:
 			_save_session()
 		event_received.emit(kind, payload)
 		if payload.get("_retry_handled", false): return
-		failed.emit(payload.get("detail", P.localized("operation_rejected")))
+		_report_failure(str(payload.get("detail", P.localized("operation_rejected"))), RemoteCopy.command_error(payload))
 		if not payload.get("_state_refresh_handled", false) and not room_id.is_empty(): send("room.snapshot.read")
 		return
 	if not payload.has("_origin_context") and kind in ["room.snapshot", "match.found", "room.ready_required", "room.ready_accepted", "room.started", "room.moved", "battle.combo_resolved", "settlement.ready", "match.settled", "player.died", "action.extract_completed"]:
