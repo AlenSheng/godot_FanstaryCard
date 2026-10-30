@@ -246,9 +246,9 @@ public sealed partial class RealtimeCommandRouter
                 var pile = piles.SingleOrDefault(value => value.PileId == read.PileId)
                     ?? throw new DomainValidationException("This relic pile is not available in the current cell.");
                 var state = await actor.ExecuteAsync(new GetRoomClientStateCommand(player.UserId), cancellationToken);
-                var name = pile.VictimName ?? state.Snapshot.Players.FirstOrDefault(value => value.PlayerId.ToString("D") == pile.VictimId)?.DisplayName ?? "旅人";
                 return [_eventStore.Create(player.UserId, "relic.contents", traceId,
-                    new RoomRelicPilePayload(pile.PileId, name, pile.Version, pile.Items.Select(RoomSnapshotProjection.ToInventoryItem).ToArray()),
+                    RoomSnapshotProjection.ToRelicPile(pile, state.Snapshot.Players,
+                        pile.Items.Select(RoomSnapshotProjection.ToInventoryItem).ToArray()),
                     command.RequestId, state.Snapshot.Revision)];
             }
             catch (DomainValidationException exception)

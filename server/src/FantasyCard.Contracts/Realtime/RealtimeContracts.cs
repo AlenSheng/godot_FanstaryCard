@@ -41,7 +41,8 @@ public sealed record RoomBattleStatusPayload(string PassiveKind, int Combo, stri
     int ChargeLevel = 0);
 public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false);
 public sealed record RoomInventoryItemPayload(string ItemId, string Kind, int Quantity, bool IsSafe, RoomEquipmentPayload? Equipment = null, int SlotIndex = -1);
-public sealed record RoomRelicPilePayload(Guid PileId, string OwnerName, long Version, IReadOnlyList<RoomInventoryItemPayload> Items);
+public sealed record RoomRelicPilePayload(Guid PileId, string OwnerName, long Version, IReadOnlyList<RoomInventoryItemPayload> Items,
+    bool OwnerNameIsFallback = false);
 public sealed record RoomMonsterPayload(
     string MonsterId,
     int MaximumHp,
@@ -70,7 +71,8 @@ public sealed record RoomDuelPayload(
     long OpponentStunRemainingMs = 0,
     long OpponentDrawBlockRemainingMs = 0,
     bool SeparateLoot = false,
-    IReadOnlyList<RoomInventoryItemPayload>? SearchableLoot = null);
+    IReadOnlyList<RoomInventoryItemPayload>? SearchableLoot = null,
+    bool OpponentNameIsFallback = false);
 public sealed record RoomCurrentCellPayload(
     bool HasEvacuation,
     string MonsterGroupId,

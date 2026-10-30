@@ -17,7 +17,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         {
             await using var command = dataSource.CreateCommand(
                 """
-                SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en
+                SELECT mail_id,title,body,sender,sent_at,expires_at,read_at,claimed_at,attachments_json::text,title_en,body_en,template_id,template_args::text,sender_role
                 FROM mail_messages
                 WHERE player_id=$1 AND (expires_at IS NULL OR expires_at > $2)
                 ORDER BY sent_at DESC,mail_id DESC LIMIT $3 OFFSET $4
@@ -40,7 +40,10 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                     !reader.IsDBNull(7),
                     ReadAttachments(reader.GetString(8)),
                     reader.GetString(9),
-                    reader.GetString(10)));
+                    reader.GetString(10),
+                    EmptyToNull(reader.GetString(11)),
+                    ReadTemplateArgs(reader.GetString(12)),
+                    EmptyToNull(reader.GetString(13))));
             }
         }
 
@@ -196,6 +199,16 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             "DELETE FROM mail_messages WHERE player_id=$1 AND read_at IS NOT NULL AND (claimed_at IS NOT NULL OR attachments_json = '[]'::jsonb)");
         command.Parameters.AddWithValue(playerId);
         return await command.ExecuteNonQueryAsync(cancellationToken);
+    }
+
+    private static string? EmptyToNull(string value) => value.Length == 0 ? null : value;
+
+    private static MailTemplateArgumentResponse[] ReadTemplateArgs(string json)
+    {
+        var arguments = JsonSerializer.Deserialize<Dictionary<string, string>>(json)
+            ?? throw new InvalidDataException("Mail template arguments must be an object.");
+        return arguments.OrderBy(entry => entry.Key, StringComparer.Ordinal)
+            .Select(entry => new MailTemplateArgumentResponse(entry.Key, entry.Value)).ToArray();
     }
 
     private static List<MailAttachmentResponse> ReadAttachments(string json)

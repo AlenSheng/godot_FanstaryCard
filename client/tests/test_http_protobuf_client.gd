@@ -11,6 +11,14 @@ func _initialize() -> void:
 	call_deferred("run")
 func run() -> void:
 	var proto := Proto.new(true)
+	# Independent added-field wire: field 12 (template_id), nine UTF-8 bytes.
+	var template_wire := PackedByteArray([98, 9, 115, 101, 101, 100, 95, 103, 111, 108, 100])
+	check(proto.decode("MailItemResponse", template_wire).get("template_id") == "seed_gold", "system mail template field preserves its new tag")
+	var legacy_mail := proto.decode("MailItemResponse", PackedByteArray([18, 1, 116]))
+	check(legacy_mail.title == "t" and not legacy_mail.has("template_id") and not legacy_mail.has("sender_role"), "legacy mail has no inferred system provenance")
+	var mail_args := [{"key": "reason", "value": "Fire / 装备 {amount}"}]
+	var mail := proto.decode("MailItemResponse", proto.encode("MailItemResponse", {"template_id": "item_reclamation", "template_args": mail_args, "sender_role": "admin"}))
+	check(proto.error.is_empty() and mail.template_args == mail_args and mail.sender_role == "admin", "opaque mail arguments survive protobuf")
 	var vectors: Array = JSON.parse_string(FileAccess.get_file_as_string("res://data/golden-vectors.json"))
 	for vector in vectors:
 		var codec := Proto.new(Http.SCHEMA.data.messages.has(vector.message))

@@ -33,6 +33,9 @@ def encode(message, data):
 class Handler(BaseHTTPRequestHandler):
     protocol_version = 'HTTP/1.1'
     def log_message(self, *args): pass
+    def handle(self):
+        try: super().handle()
+        except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError): pass
     def send(self, code, message=None, data=None, raw=None, media='application/protobuf', extra=None):
         body = raw if raw is not None else encode(message, data) if message else b''
         self.send_response(code)
@@ -41,7 +44,7 @@ class Handler(BaseHTTPRequestHandler):
         for k,v in (extra or {}).items(): self.send_header(k,str(v))
         self.end_headers()
         try: self.wfile.write(body)
-        except (ConnectionResetError, BrokenPipeError): pass
+        except (ConnectionResetError, ConnectionAbortedError, BrokenPipeError): pass
     def do_GET(self):
         global websocket_safe
         uri = urlsplit(self.path); q=parse_qs(uri.query); path=uri.path.rstrip('/')
@@ -95,6 +98,8 @@ class Handler(BaseHTTPRequestHandler):
             assert self.headers.get('Authorization') == 'Bearer fixture-bearer'
             self.send(200,'RealtimeTicketResponse',{'ticket':'fixture-ticket','expires_at':'2099-01-01T00:00:00Z'}); return
         if path == '/api/v1/shop/purchases':
+            if uri.query == 'rejected=1':
+                self.send(400,'HttpError',{'status':400,'title':'Unknown fixture rejection','detail':'Opaque diagnostic: Fire / Gold / {amount}'}); return
             if uri.query == 'malformed=1': self.send(200,raw=b'\x00'); return
             attempts.append((body,self.headers.get('Idempotency-Key')))
             if len(attempts)==1: self.send(429,'HttpError',{'status':429,'detail':'slow','retry_after_seconds':1},extra={'Retry-After':1}); return

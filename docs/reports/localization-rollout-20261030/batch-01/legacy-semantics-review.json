@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "review": "batch-01 legacy localization semantics",
+  "reviewed_at": "2026-10-30",
+  "reviewer": "legacy_semantics subagent",
+  "scope": [
+    "client/ui/palette.gd",
+    "client/state/game_store.gd",
+    "client/network/gateway.gd",
+    "client/network/http_protocol.gd",
+    "client/platform/platform_service.gd",
+    "client/ui/remote_copy.gd",
+    "client/data/locales/{zh-CN,en,es}.json",
+    "affected presentation call sites and localization tests"
+  ],
+  "constraints": {
+    "production_edits": false,
+    "branch_changes": false,
+    "commits": false,
+    "godot_executed": false,
+    "large_processes_started": false
+  },
+  "method": "Read-only working-tree diff and source review; lightweight Node.js JSON analysis reproduced the current alias-map and single-pass partial-replacement branch. Reproduced strings below are static algorithm evidence, not Godot UI execution.",
+  "overall_language_batch_passed": false,
+  "acceptance_scope": "Findings only. Native UI verification and independent-chat revalidation remain owned by the main thread.",
+  "findings": [
+    {
+      "id": "LEGACY-SEM-01",
+      "priority": "P1",
+      "status_at_observation": "open",
+      "title": "Localized ban prefix no longer matches the server wire reason in en/es",
+      "category": "introduced protocol comparison regression",
+      "primary_location": {
+        "path": "client/ui/main.gd",
+        "line": 1761
+      },
+      "evidence": [
+        {
+          "path": "client/ui/main.gd",
+          "line": 1761,
+          "code": "if not reason.begins_with(P.localized(\"ui_account_banned\")): return"
+        },
+        {
+          "path": "server/src/FantasyCard.Server/Admin/AdminRepository.cs",
+          "line": 151,
+          "code": "new SessionReplacedEventPayload(\"账号已被封禁：\" + reason));"
+        },
+        {
+          "path": "client/network/gateway.gd",
+          "line": 784,
+          "code": "end_session(str(payload.get(\"reason\", P.localized(\"account_connected_elsewhere\"))))"
+        },
+        {
+          "path": "client/ui/main.gd",
+          "line": 117,
+          "code": "Game.authentication_required.connect(_show_ban_dialog)"
+        },
+        {
+          "path": "client/data/locales/en.json",
+          "line": 644,
+          "value": "This account has been banned"
+        },
+        {
+          "path": "client/data/locales/es.json",
+          "line": 646,
+          "value": "Esta cuenta está bloqueada"
+        }
+      ],
+      "trigger": "Select en or es, then receive the server session.replaced ban reason.",
+      "result": "The raw Chinese reason cannot begin with the localized English/Spanish prefix; the early return suppresses the dedicated ban dialog.",
+      "recommendation": "Recognize the stable raw protocol marker or a structured ban code independently of UI translation; localize only the displayed dialog title/message prefix and preserve the administrator-authored reason.",
+      "verification_needed": "Deliver the existing raw server ban payload under zh-CN/en/es; assert that the dialog appears in all three and that an ordinary session replacement does not trigger it."
+    },
+    {
+      "id": "LEGACY-SEM-02",
+      "priority": "P2",
+      "status_at_observation": "open",
+      "title": "Generic label localization still rewrites player names and administrator-authored mail text",
+      "category": "retained presentation-boundary bug exposed by rollout",
+      "primary_location": {
+        "path": "client/ui/reference_ui.gd",
+        "line": 541
+      },
+      "evidence": [
+        {
+          "path": "client/ui/reference_ui.gd",
+          "line": 49,
+          "code": "func text(..., localize: bool = true) -> Label:"
+        },
+        {
+          "path": "client/ui/reference_ui.gd",
+          "line": 51,
+          "code": "var display_text := P.localized_text(value) if localize else value"
+        },
+        {
+          "path": "client/ui/reference_ui.gd",
+          "line": 541,
+          "code": "text(title if not title.is_empty() else P.localized(\"system_mail\"), ..., column)"
+        },
+        {
+          "path": "client/ui/reference_ui.gd",
+          "line": 544,
+          "code": "text(\"%s: %s\" % [P.localized_text(P.localized(\"sender\")), sender], ..., column)"
+        },
+        {
+          "path": "client/ui/reference_ui.gd",
+          "line": 378,
+          "code": "title_label.text = \"● %s  %s\" % [state_text, title]"
+        },
+        {
+          "path": "client/ui/exploration_view.gd",
+          "line": 361,
+          "code": "ui.text(duel.get(\"opponent_name\", P.localized(\"same_cell_traveler\")) + \" · \" + class_title, ...)"
+        },
+        {
+          "path": "client/ui/exploration_view.gd",
+          "line": 519,
+          "code": "title = P.localized(\"exploration_relic_owner\") % str(pile.get(\"owner_name\", P.localized(\"same_cell_traveler\")))"
+        },
+        {
+          "path": "client/ui/exploration_view.gd",
+          "line": 531,
+          "code": "tile.text(title, ...)"
+        },
+        {
+          "path": "client/ui/inventory_view.gd",
+          "line": 131,
+          "code": "ui.text(str(summary.get(\"owner_name\", P.localized(\"traveler_default_name\"))) + P.localized(\"relic_owner_suffix\"), ...)"
+        },
+        {
+          "path": "client/ui/palette.gd",
+          "line": 309,
+          "code": "for matched in _partial_source_regex.search_all(value):"
+        }
+      ],
+      "static_reproductions": [
+        {
+          "locale": "es",
+          "input": "Fire · Mage",
+          "actual_alias_result": "Fuego · Mago",
+          "meaning": "The player nickname Fire is rewritten as Fuego."
+        },
+        {
+          "locale": "es",
+          "input": "装备维护公告",
+          "actual_alias_result": "Equipo维护公告",
+          "meaning": "An untranslated admin mail title is partially rewritten; the mail list retains the raw title but details rewrite it."
+        },
+        {
+          "locale": "es",
+          "input": "Remitente: Gold",
+          "actual_alias_result": "Remitente: Oro",
+          "meaning": "An administrator-selected sender name Gold is rewritten."
+        }
+      ],
+      "qualification": "Several call sites predate this diff; this is a current, actionable rollout risk rather than a claim that every call was newly introduced. RemoteCopy.field itself correctly returns authored values, but these callers localize them a second time.",
+      "recommendation": "Use localize=false for text containing player names and RemoteCopy outputs. Localize fixed label templates before interpolation, then preserve all externally authored arguments verbatim.",
+      "verification_needed": "Render duel names and relic owners named Fire/Gold/装备, and mail title/sender values containing the same aliases, under zh-CN/en/es. Assert exact preservation of authored fragments in visible controls and tooltips, including mail list/detail consistency."
+    },
+    {
+      "id": "LEGACY-SEM-03",
+      "priority": "P2",
+      "status_at_observation": "open",
+      "title": "Configuration errors cached in the active language do not fully follow later language changes",
+      "category": "introduced persistent-message locale regression",
+      "primary_location": {
+        "path": "client/state/game_store.gd",
+        "line": 409
+      },
+      "evidence": [
+        {
+          "path": "client/state/game_store.gd",
+          "line": 409,
+          "code": "configuration_error = P.localized(\"config_mismatch_details\") % [source, CATALOG.data.version, ...]"
+        },
+        {
+          "path": "client/state/game_store.gd",
+          "line": 410,
+          "code": "gateway.end_session(configuration_error)"
+        },
+        {
+          "path": "client/state/game_store.gd",
+          "line": 306,
+          "code": "authentication_reason = reason"
+        },
+        {
+          "path": "client/state/game_store.gd",
+          "line": 307,
+          "code": "connection = reason"
+        },
+        {
+          "path": "client/ui/main.gd",
+          "line": 742,
+          "code": "if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)"
+        },
+        {
+          "path": "client/ui/palette.gd",
+          "line": 191,
+          "code": "var chinese: Dictionary = ...get(\"zh-CN\", {}).get(\"strings\", {})"
+        },
+        {
+          "path": "client/ui/palette.gd",
+          "line": 193,
+          "code": "for key in chinese:"
+        },
+        {
+          "path": "client/ui/palette.gd",
+          "line": 266,
+          "code": "static func set_language(value: String) -> void:"
+        },
+        {
+          "path": "client/ui/audio_settings.gd",
+          "line": 168,
+          "code": "P.set_language(code)"
+        },
+        {
+          "path": "client/ui/audio_settings.gd",
+          "line": 171,
+          "code": "Game.changed.emit()"
+        }
+      ],
+      "trigger": "Produce a configuration version mismatch while en is selected, then switch to es or zh-CN from settings without making another login request.",
+      "static_reproduction": {
+        "stored_en_message": "Server configuration differs. Update the client and log in again (client v1, server v0).",
+        "display_after_switch_to_es": "Servidor configuration differs. Update the client and log in again (client v1, server v0).",
+        "display_after_switch_to_zh_CN": "服务器 configuration differs. Update the client and log in again (client v1, server v0)."
+      },
+      "explanation": "The complete formatted message is stored as text. The exact-source alias does not match after interpolation, and formatted aliases are constructed only from Chinese templates. Clearing the formatted-alias cache does not rebuild the stored state. The partial alias pass changes only isolated source terms.",
+      "recommendation": "Keep a stable message key plus raw format arguments for persistent client-generated status/error state, and render it for the current locale, or explicitly rebuild this state on locale change without rewriting server-authored details.",
+      "verification_needed": "Create an en/es configuration mismatch, switch through zh-CN/en/es, and inspect configuration_error, authentication_reason and connection presentation. The fixed message should fully follow the selected language while versions and administrator/server details remain unchanged."
+    }
+  ],
+  "coverage_gaps": [
+    {
+      "path": "client/tests/localization_pack_probe.gd",
+      "line": 25,
+      "gap": "The non-cascading check uses one equipment count phrase and never sends a raw server ban payload or renders a nickname/admin value that collides with an alias."
+    },
+    {
+      "path": "client/tests/test_localization.gd",
+      "line": 37,
+      "gap": "RemoteCopy assertions test returned fields; rendered mail coverage at lines 58-65 exercises list rows only, so the detail-view second-localization path escapes detection."
+    },
+    {
+      "path": "client/tests/localization_pack_probe.gd",
+      "line": 58,
+      "gap": "Legacy regression tests are started after resetting to zh-CN. There is no non-Chinese formatted persistent-error state followed by another locale."
+    },
+    {
+      "path": "client/tests/localization_pack_probe.gd",
+      "line": 33,
+      "gap": "Glyph coverage calls body.has_char only. Title/number/scaled font behavior and retained visible control themes on a live locale switch still need native UI evidence; no present es glyph failure was established by this review."
+    }
+  ],
+  "checks_without_findings": [
+    "The reviewed gateway/http_protocol/platform_service replacements are error/status presentation values; their route names, HTTP media/schema identifiers, command kinds, status codes, auth/session generations and Steam method names remain stable.",
+    "game_store configuration-version comparison still compares raw version identifiers before composing its localized error.",
+    "set_language resets body and scaled-font readiness flags and clears the formatted-alias cache; current zh-CN/en/es registry entries all use the same body/title font paths, so this read-only review does not assert a demonstrated es font-cache failure.",
+    "All three current runtime packs have 824 strings keys. No exact-string alias idempotence mismatch was found across those strings; formatted single-pass checks found no en/es same-locale cascade for numeric placeholder samples."
+  ]
+}

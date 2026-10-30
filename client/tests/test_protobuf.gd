@@ -4,6 +4,12 @@ const Proto = preload("res://network/protobuf.gd")
 
 func run_test() -> Dictionary:
 	var proto := Proto.new()
+	if proto.decode("RoomRelicPile", PackedByteArray([40, 1])).get("owner_name_is_fallback") != true:
+		return {"ok": false, "message": "Relic name provenance tag changed"}
+	if proto.decode("RoomDuel", PackedByteArray([128, 1, 1])).get("opponent_name_is_fallback") != true:
+		return {"ok": false, "message": "Opponent name provenance tag changed"}
+	if proto.decode("RoomRelicPile", PackedByteArray()).has("owner_name_is_fallback") or proto.decode("RoomDuel", PackedByteArray()).has("opponent_name_is_fallback"):
+		return {"ok": false, "message": "Legacy names acquired an inferred provenance marker"}
 	# Independent golden wire: version=1, type=ping, request_id=a.
 	var golden := PackedByteArray([8, 1, 18, 4, 112, 105, 110, 103, 26, 1, 97])
 	var decoded: Dictionary = proto.decode("ClientEnvelope", golden)

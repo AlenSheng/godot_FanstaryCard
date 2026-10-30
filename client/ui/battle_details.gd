@@ -24,7 +24,7 @@ static func description(status: Dictionary) -> String:
 	for stat in status.get("bonuses", []):
 		var key: String = stat.key
 		var title: String = names.get(key, "")
-		if key.begins_with("damage_"): title = P.word(key.trim_prefix("damage_")) + P.localized("battle_attack_bonus")
-		elif key.begins_with("resistance_"): title = P.word(key.trim_prefix("resistance_")) + P.localized("resistance")
+		if key.begins_with("damage_"): title = P.element_stat("damage", key.trim_prefix("damage_"))
+		elif key.begins_with("resistance_"): title = P.element_stat("resistance", key.trim_prefix("resistance_"))
 		if not title.is_empty(): lines.append("%s %s%%" % [title, Details.percent(float(stat.value))])
 	return P.localized_text("\n".join(lines))

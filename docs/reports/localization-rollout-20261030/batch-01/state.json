@@ -1,0 +1,59 @@
+{
+  "scope": "game localization and full legacy-copy migration; website deployment deferred by user",
+  "base_commit": "0f402352bc334b08b5b34da18880d532a29866fc",
+  "languages": [
+    "zh-CN",
+    "en",
+    "es"
+  ],
+  "strings_per_locale": 849,
+  "card_names_per_locale": 232,
+  "hardcoded_ui_literals": 0,
+  "missing_literal_keys": 0,
+  "static_tables": "Passed",
+  "unit_tests": "4 passed",
+  "earlier_catalog_regressions": {
+    "status": "Superseded by frozen-probes.json",
+    "cards_per_locale": 232,
+    "shop_cards_per_locale": 220,
+    "upgrade_vectors": 2640,
+    "boundary_checks": 369,
+    "native_suites": 28
+  },
+  "latest_completed_native": {
+    "evidence": "tmp/localization-legacy-es-960-r4",
+    "frames": 55,
+    "locale": "es",
+    "width": 960,
+    "status": "Passed on earlier candidate; not approval of latest source"
+  },
+  "latest_native_attempt": {
+    "status": "Passed_LocalOnly",
+    "evidence": "docs/reports/localization-rollout-20261030/batch-01/local-ui-final-v4.json",
+    "screenshots": 675,
+    "checks": 65511,
+    "supplemental_error_ui_screenshots": 72,
+    "source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin-final-v4.json"
+  },
+  "independent_review": {
+    "required": false,
+    "status": "CancelledByUser",
+    "thread_id": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+    "authority": "无需其他任务复验，直接下一步",
+    "remaining_confirmed_issue": "Fixed; unmarked titles remain verbatim, targeted native UI and updated regressions passed"
+  },
+  "game_batch_passed": true,
+  "deployed": true,
+  "website_deployment": "DeferredByUser",
+  "coverage_target_reached": false,
+  "pending_user_input": null,
+  "next_required_checks": [
+    "Continue batch 02: fr, pt, id"
+  ],
+  "resource_policy": "User chose to wait for free memory; do not close or interrupt FreeVideo",
+  "parallel_policy": "User authorized parallel work within each language group; root owns UI validation and designated independent revalidation",
+  "user_visual_correction": "Original card artwork bounds preserved. Passive content follows common-frame insets and expands naturally; draw controls remain separate. All 3 classes, PVE/PVP and supported widths checked.",
+  "server_validation": "docs/reports/localization-rollout-20261030/batch-01/server-system-copy-validation-r1.json",
+  "self_validation": "docs/reports/localization-rollout-20261030/batch-01/self-validation-final-v5.json",
+  "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-01/deployment-completed-v5.json"
+}

@@ -25,6 +25,7 @@ func run_test() -> Dictionary:
 	var null_current := _gear("null-current", "Chest", "Blue", "Earth", "<null>")
 	var null_selected := _gear("null-selected", "Chest", "Purple", "Fire", "<null>")
 	var dialog := EquipmentCompareDialog.new()
+	(Engine.get_main_loop() as SceneTree).root.add_child(dialog)
 	dialog.open(null_selected, null_current, [null_current])
 	var has_title_close := dialog.find_child("CloseComparison", true, false) != null
 	var shows_null_affix := _all_text(dialog).contains("<null>")

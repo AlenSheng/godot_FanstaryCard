@@ -1,0 +1,35 @@
+{
+  "previous_candidate": "70f68c3ef4c1ff2fb535414ffbf81a8ea8ede78b",
+  "previous_review": "independent-review-70f68c3e.json",
+  "issues": {
+    "L10-affix-name-elision": "Affix name expands across its header; full description wraps below. Comparison labels wrap and allow natural height inside the existing scroll.",
+    "L11-deck-search-placeholder": "Short localized name-or-effect placeholders and complete localized tooltips in both deck builder and codex; native collector checks LineEdit content width including style/icon insets.",
+    "L12-battle-effective-font-floor": "Battle-only card text panel grows upward above the unchanged illustration, keeps 24 design px / >=12 actual px at 960, displays complete effect clauses on separate lines; passive panel uses a taller frame; five hand slots stay clear of the play action."
+  },
+  "additional_legacy_scan": "Four serialized Chinese defaults removed from confirmation_modal.tscn; setup reads existing locale keys. Audit now scans production tscn/tres text properties as well as GDScript.",
+  "oracle_scope": "Fixed UI copy must fit in full. Mail list previews remain intentional one-line excerpts with full-title tooltip and selectable full details. Nonempty LineEdit values are user data and are excluded from untranslated-copy checks; empty placeholders are checked.",
+  "new_scenarios": [
+    "pve_full_hand",
+    "pvp_full_hand",
+    "pve_priest",
+    "pve_guardian"
+  ],
+  "manual_visual_sample": {
+    "locale": "es",
+    "width": 960,
+    "path": "tmp/localization-revision-es960-r2",
+    "screens": [
+      "pve",
+      "pvp",
+      "pve_full_hand",
+      "pvp_full_hand",
+      "pve_priest",
+      "gear_compare"
+    ],
+    "observations": "Card names and complete battle clauses readable; complex cards give artwork space to text; five cards visible without play-button overlap; complete affix name visible.",
+    "status": "Superseded by user visual correction; new overlay-only source requires recapture"
+  },
+  "approval": false,
+  "deployed": false,
+  "user_visual_correction": "Preserve original illustration position (14,14), size (190,285), and overlay/backdrop bounds. The expanding opaque text panel renders above the unchanged artwork. No squeezing or cropping adjustment is introduced by multilingual battle text."
+}
