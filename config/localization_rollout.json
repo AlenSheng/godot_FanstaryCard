@@ -82,14 +82,16 @@
         "ja",
         "ko"
       ],
-      "status": "self_validated_awaiting_deploy",
+      "status": "released_deployed_complete",
       "passed": true,
-      "deployed": false,
+      "deployed": true,
       "final_group": true,
-      "evidence": "docs/reports/localization-rollout-20261030/batch-04/self-validation-final-r1.json"
+      "evidence": "docs/reports/localization-rollout-20261030/batch-04/self-validation-final-r1.json",
+      "deployed_code_commit": "7862513858b94ca6a6cb908f345cf238128e348f",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-04/deployment-completed-r1.json"
     }
   ],
-  "target_reached": false,
+  "target_reached": true,
   "previous_review_thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
   "review_policy": {
     "external_task_required": false,
@@ -101,5 +103,21 @@
     "minimum_coverage_percent": 80,
     "overlap_policy": "conservative_lower_bound"
   },
-  "stop_condition": "Current hi/ar/ru group then final ja/ko group; stop further language additions after self-validation and deployment"
+  "stop_condition": "Current hi/ar/ru group then final ja/ko group; stop further language additions after self-validation and deployment",
+  "rollout_complete": true,
+  "further_language_additions_stopped": true,
+  "completion_basis": "User final selected groups completed: hi/ar/ru then ja/ko; population-80% target was superseded",
+  "game_languages_completed": [
+    "zh-CN",
+    "en",
+    "es",
+    "fr",
+    "pt",
+    "id",
+    "hi",
+    "ar",
+    "ru",
+    "ja",
+    "ko"
+  ]
 }
