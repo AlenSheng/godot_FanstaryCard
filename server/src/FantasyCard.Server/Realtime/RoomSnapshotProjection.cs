@@ -45,10 +45,7 @@ internal static class RoomSnapshotProjection
                 state.Map.CurrentCell.SpringConsumed,
                 relics.Select(pile => pile.PileId).ToArray(),
                 allowedActions.Contains("relic.take")
-                    ? relics.Select(pile => new RoomRelicPilePayload(
-                        pile.PileId,
-                        pile.VictimName ?? snapshot.Players.FirstOrDefault(value => value.PlayerId.ToString("D") == pile.VictimId)?.DisplayName ?? "旅人",
-                        pile.Version, [])).ToArray()
+                    ? relics.Select(pile => ToRelicPile(pile, snapshot.Players, [])).ToArray()
                     : []),
             new RoomPlayerPayload(
                 player.PlayerId,
@@ -183,14 +180,26 @@ internal static class RoomSnapshotProjection
                 ? PositiveMilliseconds(duel.EscapeAttempt.Remaining)
                 : null,
             opponent.HeroClass.ToString(),
-            opponent.DisplayName ?? "旅人",
+            opponent.DisplayName ?? FantasyCard.Server.Mail.SystemMailCatalog.Current.TravelerFallback,
             info?.EscapeProbability?.ToString("R", CultureInfo.InvariantCulture),
             info?.Opponent is { } opponentInfo ? ToBattleStatus(opponentInfo) : null,
             PositiveMilliseconds(opponent.Combat.StunRemaining) ?? 0,
             PositiveMilliseconds(opponent.Combat.DrawBlockRemaining) ?? 0,
             snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot,
             snapshot.Numerics?.BudgetedBotLoot == true && opponent.IsBot
-                ? (opponent.BotLoot ?? []).Select(ToInventoryItem).ToArray() : null);
+                ? (opponent.BotLoot ?? []).Select(ToInventoryItem).ToArray() : null,
+            opponent.DisplayName is null);
+    }
+
+    public static string? ResolveRelicOwnerName(RelicPileSnapshot pile, IReadOnlyList<RoomPlayerSnapshot> players) =>
+        pile.VictimName ?? players.FirstOrDefault(value => value.PlayerId.ToString("D") == pile.VictimId)?.DisplayName;
+
+    public static RoomRelicPilePayload ToRelicPile(RelicPileSnapshot pile, IReadOnlyList<RoomPlayerSnapshot> players,
+        IReadOnlyList<RoomInventoryItemPayload> items)
+    {
+        var name = ResolveRelicOwnerName(pile, players);
+        return new(pile.PileId, name ?? FantasyCard.Server.Mail.SystemMailCatalog.Current.TravelerFallback,
+            pile.Version, items, name is null);
     }
 
     private static RoomBattleStatusPayload ToBattleStatus(CombatantPublicInfo info)

@@ -210,11 +210,15 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         }
         else throw new ArgumentException("Unsupported item kind or item ID.");
         if (changed != 1) throw new AdminConflictException("Insufficient balance or equipment is unavailable in inventory.");
-        await InsertMailAsync(connection, transaction, request.PlayerId, "道具收回通知",
-            $"管理员收回：{request.Kind} × {request.Amount}。原因：{request.Reason}",
-            "Item Reclamation Notice",
-            $"An administrator reclaimed {request.Kind} × {request.Amount}. Reason: {request.Reason}",
-            [], cancellationToken);
+        var templateArgs = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["kind"] = request.Kind,
+            ["amount"] = request.Amount.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            ["reason"] = request.Reason
+        };
+        var mail = FantasyCard.Server.Mail.SystemMailCatalog.Current.Render("item_reclamation", templateArgs);
+        await InsertMailAsync(connection, transaction, request.PlayerId, mail.Title, mail.Body,
+            mail.TitleEn, mail.BodyEn, [], cancellationToken, "item_reclamation", templateArgs);
         await AuditAsync(connection, transaction, "revoke", request.PlayerId, request, requestId, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         await NotifyPlayerRefreshAsync(request.PlayerId, "revoke");
@@ -323,20 +327,24 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
 
     private async Task<Guid> InsertMailAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,
         string title, string body, string? titleEn, string? bodyEn,
-        IReadOnlyList<AdminAttachment> attachments, CancellationToken cancellationToken)
+        IReadOnlyList<AdminAttachment> attachments, CancellationToken cancellationToken,
+        string templateId = "", IReadOnlyDictionary<string, string>? templateArgs = null)
     {
         var id = Guid.CreateVersion7();
         await using var command = new NpgsqlCommand(
-            "INSERT INTO mail_messages(mail_id,player_id,title,body,title_en,body_en,sender,attachments_json,sent_at) VALUES($1,$2,$3,$4,$5,$6,'Game Admin',$7::jsonb,$8)",
+            "INSERT INTO mail_messages(mail_id,player_id,title,body,title_en,body_en,sender,attachments_json,sent_at,template_id,template_args,sender_role) VALUES($1,$2,$3,$4,$5,$6,$9,$7::jsonb,$8,$10,$11::jsonb,'admin')",
             connection, transaction);
         command.Parameters.AddWithValue(id);
         command.Parameters.AddWithValue(playerId);
         command.Parameters.AddWithValue(title);
         command.Parameters.AddWithValue(body);
-        command.Parameters.AddWithValue((titleEn ?? "").Trim());
-        command.Parameters.AddWithValue((bodyEn ?? "").Trim());
+        command.Parameters.AddWithValue(templateId.Length > 0 ? titleEn ?? "" : (titleEn ?? "").Trim());
+        command.Parameters.AddWithValue(templateId.Length > 0 ? bodyEn ?? "" : (bodyEn ?? "").Trim());
         command.Parameters.AddWithValue(JsonSerializer.Serialize(attachments, Json));
         command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        command.Parameters.AddWithValue(FantasyCard.Server.Mail.SystemMailCatalog.Current.Sender("admin"));
+        command.Parameters.AddWithValue(templateId);
+        command.Parameters.AddWithValue(JsonSerializer.Serialize(templateArgs ?? new Dictionary<string, string>(), Json));
         await command.ExecuteNonQueryAsync(cancellationToken);
         return id;
     }

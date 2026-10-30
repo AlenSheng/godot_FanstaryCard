@@ -2,12 +2,13 @@
 import argparse, importlib.util, json, os, shutil, subprocess, threading
 from pathlib import Path
 from http.server import ThreadingHTTPServer
-from fixture_runtime import isolated_environment
+from fixture_runtime import isolated_environment, guarded_run, FixtureResourceGuard
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--godot', required=True)
 parser.add_argument('--work-dir', default='work/client-fixture')
 parser.add_argument('--http-transport',choices=('reusable','per-request'),default='reusable')
+parser.add_argument('--wait-seconds',type=int,default=0)
 args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
 work = (repo / args.work_dir).resolve()
@@ -23,10 +24,14 @@ records = []
 def run(extra, label):
     command = [args.godot,'--headless','--path',str(work)] + extra
     try:
-        result = subprocess.run(command,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=90,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+        result = guarded_run(command, env=env, timeout=90, wait_seconds=args.wait_seconds)
+    except FixtureResourceGuard as exc:
+        (work/(label+'.log')).write_text(exc.output+'\nRESOURCE GUARD: '+str(exc),encoding='utf-8')
+        records.append({'command':command,'exit_code':None,'resource_guard':str(exc),'log':label+'.log'})
+        return False
     except subprocess.TimeoutExpired as exc:
-        output = (exc.stdout or b'') + (exc.stderr or b'')
-        if isinstance(output, bytes): output = output.decode('utf-8', errors='replace')
+        streams = [exc.stdout or '', exc.stderr or '']
+        output = ''.join(value.decode('utf-8', errors='replace') if isinstance(value,bytes) else value for value in streams)
         (work/(label+'.log')).write_text(output+'\nFIXTURE TIMEOUT',encoding='utf-8')
         records.append({'command':command,'exit_code':None,'timeout':True,'log':label+'.log'})
         print(output,flush=True)

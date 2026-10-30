@@ -1,0 +1,52 @@
+{
+  "results": {
+    "ok": true,
+    "runs": [
+      {
+        "command": [
+          "E:\\githubFiles\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "E:\\githubFiles\\godot_FanstaryCard\\tmp\\localization-final-http-v4",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "exit_code": 0,
+        "engine_errors": false,
+        "log": "import.log"
+      },
+      {
+        "command": [
+          "E:\\githubFiles\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "E:\\githubFiles\\godot_FanstaryCard\\tmp\\localization-final-http-v4",
+          "--script",
+          "res://tests/test_http_protobuf_client.gd"
+        ],
+        "exit_code": 0,
+        "engine_errors": false,
+        "log": "codec.log"
+      },
+      {
+        "command": [
+          "E:\\githubFiles\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64_console.exe",
+          "--headless",
+          "--path",
+          "E:\\githubFiles\\godot_FanstaryCard\\tmp\\localization-final-http-v4",
+          "--script",
+          "res://tests/test_http_protobuf_transport.gd"
+        ],
+        "exit_code": 0,
+        "engine_errors": false,
+        "log": "transport.log"
+      }
+    ]
+  },
+  "codec_checks": 181,
+  "transport_checks": 27,
+  "source": "tmp/localization-final-http-v4",
+  "result_sha256": "26de587d3287de4861e04b7df384006d0e2fb65d2c54621c8039f9add26967d8",
+  "real_game_matches": 0
+}

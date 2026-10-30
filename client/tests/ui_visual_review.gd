@@ -1,11 +1,13 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
-const SCENARIOS := ["login", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice"]
+const TextAudit = preload("res://tests/localization_text_audit.gd")
+const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
 var _initial_lobby: Dictionary = {}
+var _text_auditor: TextAudit
 
 func _ready() -> void:
 	get_window().mode = Window.MODE_WINDOWED
@@ -42,9 +44,25 @@ func _run() -> void:
 	_frame_log = FileAccess.open(output.path_join("frames.original.jsonl"), FileAccess.WRITE)
 	_initial_lobby = Game.lobby.duplicate(true)
 	var expected := 0
+	var registry: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Palette.LOCALE_REGISTRY_PATH))
+	var chinese_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(str(registry.languages["zh-CN"].path)))
 	for locale in locales:
 		await _reset_fixture()
-		Palette.set_language(locale)
+		Game.lobby = {}
+		await _render_base()
+		var selector: Control = $UI.get_node("LoginLanguageSelector")
+		selector.open()
+		await get_tree().process_frame
+		var choice: Button = selector.find_child("LanguageChoice_" + str(locale).replace("-", "_"), true, false)
+		assert(choice != null)
+		choice.pressed.emit()
+		await get_tree().process_frame
+		assert(Palette.language() == locale)
+		var preferences := ConfigFile.new()
+		assert(preferences.load(Palette.LANGUAGE_SETTINGS_PATH) == OK and str(preferences.get_value("ui", "language", "")) == locale)
+		Game.lobby = _initial_lobby.duplicate(true)
+		var target_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(str(registry.languages[locale].path)))
+		_text_auditor = TextAudit.new(locale, chinese_pack, target_pack)
 		$UI.theme = Palette.theme()
 		Game.changed.emit()
 		await get_tree().process_frame
@@ -83,6 +101,22 @@ func _selected(scenario: String) -> bool:
 		if scenario == value or scenario.begins_with(value + "_"): return true
 	return false
 
+func _check_login_language(frame_name: String, on_login: bool) -> void:
+	var selector: Control = $UI.get_node("LoginLanguageSelector")
+	review_checks[frame_name + ": language selection only before login"] = selector.visible == on_login
+	if on_login:
+		var language_button: Button = selector.get_node("LoginLanguageButton")
+		review_checks[frame_name + ": login language control within viewport"] = $UI.get_viewport_rect().grow(0.5).encloses(language_button.get_global_rect())
+		review_checks[frame_name + ": login language clear of status"] = language_button.get_global_rect().position.y >= $UI.status_label.get_global_rect().end.y + 15
+		if frame_name.ends_with("_login_language"):
+			var panel: PanelContainer = selector.get_node("LoginLanguageListPanel")
+			var scroll: ScrollContainer = panel.get_node("LoginLanguageListScroll")
+			_check_content_insets(frame_name + ": login language list", panel, scroll)
+			review_checks[frame_name + ": language list within viewport"] = $UI.get_viewport_rect().grow(0.5).encloses(panel.get_global_rect())
+			review_checks[frame_name + ": all registered language choices"] = scroll.get_node("LoginLanguageChoices").get_child_count() == Palette.languages().size()
+			for choice in scroll.get_node("LoginLanguageChoices").get_children():
+				review_checks[frame_name + ": readable language choice " + str(choice.name)] = choice.get_theme_font_size("font_size") >= 24
+
 func _frame_checks(frame_name: String) -> Dictionary:
 	var result: Dictionary = {}
 	for key in review_checks:
@@ -97,6 +131,7 @@ func _owned(id: String) -> Dictionary:
 	return {"cardId": id, "heroClass": info.get("hero_class"), "unlocked": true, "copyCount": 3, "level": 3, "version": 7, "currencyKind": "WarriorSoul" if info.get("hero_class") == null else str(info.hero_class) + "Soul", "craftCost": 12, "dismantleRefund": 3, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 0}
 
 func _reset_fixture() -> void:
+	$UI.get_node("LoginLanguageSelector").close()
 	var audio: Node = $UI.get_node("AudioSettings")
 	if is_instance_valid(audio._popup): audio._popup.hide()
 	for child in $UI.get_children():
@@ -104,6 +139,7 @@ func _reset_fixture() -> void:
 			if child.has_method("dismiss"): child.dismiss()
 			else: child.queue_free()
 	await get_tree().process_frame
+	Game.selected_cards = []; Game.combat_preview = {}
 	Game.room = {}; Game.settlement = {}; Game.ready_prompt = {}; Game.preparation = {}; Game.relic_details = {}
 	Game._settlement_recovery_match_id = ""
 	Game.gateway.recovering = false; Game.gateway.online = true
@@ -135,12 +171,37 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("mail_template_"):
+		var template_id := scenario.trim_prefix("mail_template_").trim_suffix("_bottom")
+		var arguments: Array = []
+		if template_id == "item_reclamation":
+			arguments = [{"key": "kind", "value": "Gold"}, {"key": "amount", "value": "123456"}, {"key": "reason", "value": "Opaque reason {amount}: Fire / Gold. ".repeat(20)}]
+		Game.mail = {"unreadCount": 1, "items": [{"id": "template-review", "template_id": template_id, "template_args": arguments, "sender_role": "admin" if template_id == "item_reclamation" else "system", "sender": "old sender", "title": "old title", "body": "old body", "read": true, "claimed": false, "attachments": []}]}
+		await _render_base(); $UI.mail_modal_lock = true; $UI._reference._mail()
+		$UI._reference._mail_select(Game.mail.items[0])
+		if scenario.ends_with("_bottom"):
+			await get_tree().process_frame
+			await get_tree().process_frame
+			var scroll: ScrollContainer = $UI._reference.get_node("MailModal").find_child("MailDetailScroll", true, false)
+			scroll.set_deferred("scroll_vertical", 100000)
+		return false
 	match scenario:
 		"login": Game.lobby = {}
-		"login_notice", "login_notice_bottom":
+		"login_language":
+			Game.lobby = {}
+			await _render_base()
+			$UI.get_node("LoginLanguageSelector").open()
+			return false
+		"login_notice", "login_notice_bottom", "login_notice_authored":
 			Game.lobby = {}
 			Game.authentication_reason = Palette.localized("login_timeout")
 			Game.server_info["announcement"] = {"title": "Relicbound Test Server Update and Traveler Notices" if locale == "en" else "遗境行者测试服更新与旅人公告", "body": ("Dear Travelers,\n\nThe test server has recently been updated:\n\n1. After extraction, wait for server settlement and the run results.\n2. Results include the items earned during the run and equipped gear.\n3. Log Out returns to the login screen.\n4. Common panels leave clear space inside their decorative borders.\n\nThank you for playing!" if locale == "en" else "亲爱的旅人：\n\n测试服近期已更新：\n\n1. 撤离后等待服务器结算并显示本局结果。\n2. 结算包含本局获得的物品和穿戴装备。\n3. 切换账号后返回登录界面。\n4. 通用框的内容与装饰边框之间保留留白。\n\n感谢参与测试！")}
+			if locale not in ["zh-CN", "en"]:
+				Game.server_info["announcement"] = {"translations": {locale: {"title": Palette.localized("game_title") + " · " + Palette.localized("ui_announcement_title"), "body": (Palette.localized("ui_room_hint") + "\n\n" + Palette.localized("ui_safe_slot_hint") + "\n\n").repeat(8)}}}
+			if scenario == "login_notice_authored":
+				Game.server_info["announcement"] = {"title": "Equipment / Priest / Gold", "body": "Authored announcement text remains verbatim."}
+				var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+				if not authored_title.is_empty(): Game.server_info["announcement"].title = authored_title
 		"hall_priest": Game.hero_class = "Priest"
 		"hall_guardian": Game.hero_class = "Guardian"
 		"prep", "gear", "shop", "cards", "deck": $UI.screen = scenario
@@ -204,7 +265,11 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			if scenario != "mail_empty":
 				var title := "Expedition rewards, maintenance compensation and a very long announcement title" if locale == "en" else "探索奖励与维护补偿以及特别长的邮件标题排版验证"
 				var body := "All earned equipment and materials are available below. Open each attachment to review its details. " if locale == "en" else "所有探索装备和材料均列于下方，请查看每项附件的详情。"
-				for index in range(12): Game.mail.items.append({"id": "review-mail-%s" % index, "title": title + " %s" % index, "body": body.repeat(16), "sender": "System" if locale == "en" else "系统", "read": true, "claimed": false, "attachments": [{"kind": "Gold", "amount": 123456}, {"kind": "EquipmentFragments", "amount": 25}, {"kind": "HealthPotion", "amount": 2}]})
+				if locale not in ["zh-CN", "en"]:
+					title = (Palette.localized("run_reward") + " / " + Palette.localized("ui_announcement_title") + " · ").repeat(3)
+					body = Palette.localized("ui_room_hint") + " " + Palette.localized("ui_safe_slot_hint") + " "
+				var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+				for index in range(12): Game.mail.items.append({"id": "review-mail-%s" % index, "title": title + " %s" % index if authored_title.is_empty() else authored_title, "body": body.repeat(16), "sender": "System" if locale == "en" else "系统", "read": true, "claimed": false, "attachments": [{"kind": "Gold", "amount": 123456}, {"kind": "EquipmentFragments", "amount": 25}, {"kind": "HealthPotion", "amount": 2}]})
 			await _render_base(); $UI.mail_modal_lock = true; $UI._reference._mail()
 			if scenario != "mail_empty": $UI._reference._mail_select(Game.mail.items[0])
 			if scenario in ["mail_attachments", "mail_long_bottom"]:
@@ -215,13 +280,9 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 					var attachment_grid: GridContainer = detail_scroll.find_children("*", "GridContainer", true, false)[0]
 					detail_scroll.set_deferred("scroll_vertical", maxi(0, int(attachment_grid.position.y) - 80) if scenario == "mail_attachments" else 100000)
 			return false
-		"settings", "settings_language", "settings_battle", "settings_bottom", "settings_battle_bottom":
+		"settings", "settings_battle", "settings_bottom", "settings_battle_bottom":
 			if scenario.begins_with("settings_battle"): Game.room = _room_fixture(); Game.room.player.phase = "Pve"; Game.room.allowed_actions.append("battle.abandon")
 			await _render_base(); $UI.get_node("AudioSettings").show_settings()
-			if scenario == "settings_language":
-				await get_tree().process_frame
-				var choices: Array = $UI.get_node("AudioSettings")._popup.find_children("*", "OptionButton", true, false)
-				if not choices.is_empty(): choices[0].show_popup()
 			if scenario.ends_with("_bottom"):
 				await get_tree().process_frame
 				await get_tree().process_frame
@@ -231,25 +292,40 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			await _render_base(); $UI._confirm(Palette.localized("battle_abandon_warning"), func(): pass, {"title": "battle_abandon_title", "confirm_text": "battle_abandon_confirm", "tall": true}); return false
 		"battle_status":
 			Game.room = _room_fixture(); await _render_base(); $UI._show_battle_details(_status_fixture()); return false
-		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "choice", "notice":
+		"exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "pvp_name_fallback", "relic_name_fallback", "choice", "notice":
 			Game.room = _room_fixture()
 			if scenario in ["map", "midlayer"]:
 				Game.room.map = []
 				for y in range(6):
 					for x in range(6): Game.room.map.append({"row": y, "column": x, "has_spring": y == 0 and x == 3, "is_boss": y == 2 and x == 2})
 				Game.room.legal_moves = [{"row": 2, "column": 2}, {"row": 3, "column": 3}]; Game.room.allowed_actions.append("room.move")
-			if scenario in ["pve", "pvp"]:
-				Game.room.player.phase = "Pve" if scenario == "pve" else "Pvp"; Game.room.allowed_actions += ["battle.play_cards", "battle.select_target", "duel.leave", "duel.escape"]
+			if scenario.begins_with("pve") or scenario.begins_with("pvp"):
+				Game.room.player.phase = "Pve" if scenario.begins_with("pve") else "Pvp"; Game.room.allowed_actions += ["battle.play_cards", "battle.select_target", "duel.leave", "duel.escape"]
 				Game.room.pve = {"battle_id": "review-battle", "current_target_id": "fire-bat", "monsters": [{"monster_id": "fire-bat", "maximum_hp": 44, "hp": 31, "shield": 8, "intent_kind": "Attack", "intent_element": "Fire", "intent_value": 5}]}
-				if scenario == "pve": Game.room.player.combat = {"hp": 80, "maximum_hp": 70, "shield": 6}
-				else: Game.room.duel = {"duel_id": "review-duel", "opponent_id": "review-opponent", "opponent": {"hero_class": "Guardian", "hp": 60, "maximum_hp": 100, "shield": 8}, "escape_remaining_ms": 0}
+				if scenario.begins_with("pve"): Game.room.player.combat = {"hp": 80, "maximum_hp": 70, "shield": 6}
+				else: Game.room.duel = {"duel_id": "review-duel", "opponent_id": "review-opponent", "opponent_class": "Guardian", "opponent": {"hero_class": "Guardian", "hp": 60, "maximum_hp": 100, "shield": 8}, "escape_remaining_ms": 0}
+				if scenario.ends_with("full_hand"):
+					Game.room.player.hand = []
+					for card_id in ["MAG-10", "GW19", "GP07", "GO04", "M-BOXSPIRIT"]:
+						var instance_id := "full-hand-" + str(Game.room.player.hand.size())
+						Game.room.player.hand.append({"instance_id": instance_id, "card_id": card_id, "level": 10})
+						Game.selected_cards.append(instance_id)
+				if scenario in ["pve_priest", "pvp_priest"]:
+					Game.room.player.hero_class = "Priest"; Game.room.player.battle_status = _status_fixture("LinYuan")
+				elif scenario in ["pve_guardian", "pvp_guardian"]:
+					Game.room.player.hero_class = "Guardian"; Game.room.player.battle_status = _status_fixture("ZaiYue")
+			if scenario == "pvp_name_fallback":
+				Game.room.duel.opponent_name = "旅人"; Game.room.duel.opponent_name_is_fallback = true
+			if scenario == "relic_name_fallback":
+				Game.room.current_cell.relic_piles[0].owner_name = "旅人"
+				Game.room.current_cell.relic_piles[0].owner_name_is_fallback = true
 			if scenario == "choice":
 				Game.room.player.phase = "Choice"; Game.room.allowed_actions = ["choice.pick", "choice.refresh"]
 				Game.room.reward_choice = {"refresh_count": 0, "options": [{"option_id": "equipment", "kind": 1, "quantity": 1}, {"option_id": "fragments", "kind": 2, "quantity": 18}, {"option_id": "heal", "kind": 3, "quantity": 1, "heal_percent": 14}]}
 			await _render_base()
-			if scenario in ["inventory", "inventory_details", "relic"]: $UI.set_meta("inventory_open", true)
+			if scenario in ["inventory", "inventory_details", "relic", "relic_name_fallback"]: $UI.set_meta("inventory_open", true)
 			if scenario == "inventory_details": $UI.set_meta("inventory_selected", "pack-35")
-			if scenario == "relic":
+			if scenario in ["relic", "relic_name_fallback"]:
 				Game.relic_details = {"pile-a": {"pile_id": "pile-a", "owner_name": "A Very Long Expedition Traveler Name" if locale == "en" else "一位来自漫长旅途的探索者", "version": 7, "items": [_item(90), _item(91)]}}
 				$UI.set_meta("relic_pile", "pile-a"); $UI.set_meta("relic_selected", "pack-90")
 			if scenario in ["map", "midlayer"]: $UI.set_meta("exploration_map_open", true)
@@ -265,7 +341,8 @@ func _review_window_position() -> Vector2i:
 	return Vector2i.ZERO if OS.get_environment("FANTASYCARD_REVIEW_ISOLATED_DESKTOP") == "1" else Vector2i(-32000, -32000)
 
 func _review_capture(frame_name: String, rebuild: bool = true) -> void:
-	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
+	var on_login := frame_name.ends_with("_login") or frame_name.ends_with("_login_language") or frame_name.contains("_login_notice")
+	if on_login:
 		# Login uses the normal shell, rather than the in-game reference view.
 		$UI._render()
 		await get_tree().create_timer(0.4).timeout
@@ -279,9 +356,34 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 		else: layout_errors.append("Screenshot save failed: " + frame_name)
 	else:
 		await _capture(frame_name, rebuild)
+	_check_login_language(frame_name, on_login)
 	var texts: Array = []
 	_collect_text($UI, texts)
 	for entry in texts:
+		review_checks[frame_name + ": glyphs " + str(entry.path)] = entry.missing_glyphs.is_empty()
+		if entry.type == "Button":
+			review_checks[frame_name + ": complete button text " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if entry.type == "Label" and int(entry.max_lines_visible) < 0:
+			review_checks[frame_name + ": complete label lines " + str(entry.path)] = int(entry.visible_lines) >= int(entry.lines)
+			if int(entry.autowrap_mode) == TextServer.AUTOWRAP_OFF:
+				review_checks[frame_name + ": complete fixed label width " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if entry.type == "LineEdit" and bool(entry.is_placeholder):
+			review_checks[frame_name + ": complete input hint " + str(entry.path)] = float(entry.max_line_width) <= float(entry.available_text_width) + 1.0
+		if bool(entry.battle_primary_text):
+			review_checks[frame_name + ": readable battle primary " + str(entry.path)] = float(entry.effective_font_size) >= 12.0 - 0.01
+		if str(entry.path).get_file().begins_with("ClassMaximumHp_"):
+			review_checks[frame_name + ": integer class health " + str(entry.path)] = str(entry.text).is_valid_int()
+		if Palette.language() not in ["zh-CN", "zh-TW"] and (entry.type != "LineEdit" or bool(entry.is_placeholder)):
+			var checked_text: String = entry.text
+			var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+			if not authored_title.is_empty() and (str(entry.text) == authored_title or str(entry.path).get_file() == "MailTitle"):
+				checked_text = checked_text.replace(authored_title, "")
+			for player_name in ["逐风者", "长夜归来的盾卫", "一位来自漫长旅途的探索者"]:
+				checked_text = checked_text.replace(player_name, "")
+			for language_config in Palette.languages().values(): checked_text = checked_text.replace(str(language_config.get("name", "")), "")
+			var unexpected_source_han: Array = _text_auditor.unexpected_han(checked_text)
+			entry["unexpected_source_han"] = unexpected_source_han
+			review_checks[frame_name + ": localized copy " + str(entry.path)] = unexpected_source_han.is_empty()
 		if str(entry.path).get_file().begins_with("EquippedCaption_"):
 			review_checks[frame_name + ": readable " + str(entry.path).get_file()] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).begins_with("EquipmentComparisonDialog/") and entry.type == "Label" and not str(entry.path).ends_with("/Quantity"):
@@ -290,7 +392,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			review_checks[frame_name + ": readable common-card name"] = float(entry.effective_font_size) >= 12.0
 		if str(entry.path).contains("Slot_C01/") and str(entry.path).ends_with("/CardEffect"):
 			review_checks[frame_name + ": readable common-card effect"] = float(entry.effective_font_size) >= 12.0
-	if (frame_name.ends_with("_login") or frame_name.contains("_login_notice")):
+	if on_login:
 		var title: Label = $UI._game_title
 		review_checks[frame_name + ": readable login title"] = title.get_theme_font_size("font_size") >= 20 and title.get_visible_line_count() > 0
 		for panel_name in ["LoginPanel", "AnnouncementPanel"]:
@@ -298,9 +400,17 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			_check_content_insets(frame_name + ": " + panel_name, panel, panel.get_child(0))
 		var announcement_title: Label = $UI.find_child("AnnouncementTitle", true, false)
 		review_checks[frame_name + ": complete announcement title"] = announcement_title.get_visible_line_count() == announcement_title.get_line_count()
+		if frame_name.ends_with("_login_notice_authored"):
+			var authored_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+			review_checks[frame_name + ": authored announcement title stays verbatim"] = announcement_title.text == ("Equipment / Priest / Gold" if authored_title.is_empty() else authored_title)
+	var authored_mail_title := OS.get_environment("FANTASYCARD_REVIEW_AUTHORED_TITLE")
+	if not authored_mail_title.is_empty() and frame_name.ends_with("_mail_long"):
+		review_checks[frame_name + ": authored mail detail title stays verbatim"] = texts.any(func(entry): return str(entry.path).contains("MailDetailScroll") and str(entry.text) == authored_mail_title)
+		review_checks[frame_name + ": authored mail list title stays verbatim"] = texts.any(func(entry): return str(entry.path).get_file() == "MailTitle" and str(entry.text).ends_with("  " + authored_mail_title))
 	if frame_name.contains("_settings"):
 		var popup: PopupPanel = $UI.get_node("AudioSettings")._popup
 		if is_instance_valid(popup):
+			review_checks[frame_name + ": no language selection in settings"] = popup.find_children("*", "OptionButton", true, false).is_empty()
 			var settings_scroll: ScrollContainer = popup.find_child("AudioSettingsScroll", true, false)
 			_check_content_insets(frame_name + ": settings", popup, settings_scroll)
 			var settings_content: Control = popup.find_child("SettingsContent", true, false)
@@ -322,6 +432,40 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			var available: float = node.size.x - style.get_content_margin(SIDE_LEFT) - style.get_content_margin(SIDE_RIGHT)
 			var text_width: float = node.get_theme_font("font").get_string_size(node.text, HORIZONTAL_ALIGNMENT_LEFT, -1, node.get_theme_font_size("font_size")).x
 			review_checks[frame_name + ": complete " + str(node.name)] = text_width <= available
+	for passive_frame in $UI.find_children("PlayerPassive_*", "Panel", true, false):
+		var content: Control = passive_frame.get_node_or_null("PassiveContent")
+		review_checks[frame_name + ": passive has padded content " + str(passive_frame.name)] = content != null
+		if content != null:
+			_check_content_insets(frame_name + ": " + str(passive_frame.name), passive_frame, content)
+			var style: StyleBox = passive_frame.get_theme_stylebox("panel")
+			var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
+			review_checks[frame_name + ": passive uses shared border padding " + str(passive_frame.name)] = padding == ART.COMMON_PANEL_PADDING
+			for control in content.get_children():
+				if control is Control:
+					review_checks[frame_name + ": passive control inside content " + str(control.name)] = Rect2(Vector2.ZERO, content.size).encloses(control.get_rect())
+		review_checks[frame_name + ": passive frame within viewport " + str(passive_frame.name)] = get_viewport().get_visible_rect().encloses(passive_frame.get_global_rect())
+		for control_name in ["DrawChargeIcon", "DrawChargeLabel", "DrawChargeBar", "DrawChargePercent", "LibraryDiscardLabel"]:
+			var control: Control = $UI.find_child(control_name, true, false)
+			if control == null: continue
+			review_checks[frame_name + ": draw control stays in viewport " + control_name] = get_viewport().get_visible_rect().encloses(control.get_global_rect())
+			review_checks[frame_name + ": passive clear of draw control " + control_name] = not passive_frame.get_global_rect().intersects(control.get_global_rect())
+	if frame_name.ends_with("full_hand"):
+		var hand_cards: Array[Control] = []
+		for control in $UI._reference.find_children("*", "Button", true, false):
+			if control.has_meta("battle_hand_index"): hand_cards.append(control)
+		review_checks[frame_name + ": five hand cards visible"] = hand_cards.size() == 5
+		var action: Control = $UI._reference.find_child("PlayCardsButton", true, false)
+		for card in hand_cards:
+			var card_rect := card.get_global_rect()
+			review_checks[frame_name + ": hand inside viewport " + str(card.get_meta("battle_hand_index"))] = get_viewport().get_visible_rect().encloses(card_rect)
+			review_checks[frame_name + ": play clear of hand " + str(card.get_meta("battle_hand_index"))] = action != null and not action.get_global_rect().intersects(card_rect)
+			var panel: Control = card.get_node("BattleTextPanel")
+			var illustration: Control = card.get_node("Illustration")
+			review_checks[frame_name + ": original card illustration " + str(card.get_meta("battle_hand_index"))] = illustration.get_rect().is_equal_approx(Rect2(14, 14, 190, 285))
+			review_checks[frame_name + ": text above illustration " + str(card.get_meta("battle_hand_index"))] = panel.get_index() > illustration.get_index()
+			for child in card.get_children():
+				if not child.get_meta("battle_primary_text", false): continue
+				review_checks[frame_name + ": battle panel encloses " + str(card.get_meta("battle_hand_index")) + "/" + str(child.name)] = panel.get_rect().encloses(child.get_rect())
 	var frame := {"name": frame_name, "language": Palette.language(),
 		"window_size": [get_window().size.x, get_window().size.y],
 		"viewport_size": [get_viewport().get_visible_rect().size.x, get_viewport().get_visible_rect().size.y],
@@ -339,7 +483,10 @@ func _check_content_insets(key: String, panel: Node, child: Control) -> void:
 
 func _collect_text(root: Node, rows: Array) -> void:
 	if root is Control and not root.is_visible_in_tree(): return
-	if (root is Label or root is Button) and not root.text.is_empty():
+	var collected_value := ""
+	if root is Label or root is Button: collected_value = root.text
+	elif root is LineEdit: collected_value = root.placeholder_text if root.text.is_empty() else root.text
+	if not collected_value.is_empty():
 		var rect: Rect2 = root.get_global_rect()
 		var visible_rect := rect
 		var ancestor := root.get_parent()
@@ -352,15 +499,31 @@ func _collect_text(root: Node, rows: Array) -> void:
 			var font_size: int = root.get_theme_font_size("font_size")
 			var scale: Vector2 = root.get_global_transform().get_scale()
 			var pixel_scale := float(get_window().size.y) / get_viewport().get_visible_rect().size.y
-			var value: String = root.text
+			var value: String = collected_value
+			var max_line_width := 0.0
+			for line in value.split("\n"):
+				max_line_width = maxf(max_line_width, typeface.get_string_size(line, HORIZONTAL_ALIGNMENT_LEFT, -1.0, font_size).x)
+			var available_text_width: float = root.size.x
+			if root is Button or root is LineEdit:
+				var style: StyleBox = root.get_theme_stylebox("normal")
+				available_text_width -= style.get_content_margin(SIDE_LEFT) + style.get_content_margin(SIDE_RIGHT)
+				if root is LineEdit and root.right_icon != null: available_text_width -= root.right_icon.get_width()
+			var missing_glyphs: Array[int] = []
+			for index in value.length():
+				var codepoint := value.unicode_at(index)
+				if codepoint > 32 and not Palette.is_bidi_isolate(codepoint) and not typeface.has_char(codepoint) and not missing_glyphs.has(codepoint): missing_glyphs.append(codepoint)
 			rows.append({"path": str($UI.get_path_to(root)), "type": root.get_class(),
-				"text": value, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y],
+				"text": value, "missing_glyphs": missing_glyphs, "max_line_width": max_line_width, "available_text_width": available_text_width, "tooltip": root.tooltip_text, "rect": [rect.position.x, rect.position.y, rect.size.x, rect.size.y],
 				"visible_rect": [visible_rect.position.x, visible_rect.position.y, visible_rect.size.x, visible_rect.size.y],
 				"font_size": font_size, "effective_font_size": font_size * absf(scale.y) * pixel_scale,
 				"single_line_width": typeface.get_string_size(value, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size).x,
 				"font_color": root.get_theme_color("font_disabled_color" if root is Button and root.disabled else "font_color").to_html(),
 				"disabled": root.disabled if root is Button else false,
+				"is_placeholder": root is LineEdit and root.text.is_empty(),
+				"autowrap_mode": root.autowrap_mode if root is Label else TextServer.AUTOWRAP_OFF,
+				"battle_primary_text": bool(root.get_meta("battle_primary_text", false)),
 				"lines": root.get_line_count() if root is Label else 1,
+				"max_lines_visible": root.max_lines_visible if root is Label else -1,
 				"visible_lines": root.get_visible_line_count() if root is Label else 1})
 	for child in root.get_children():
 		_collect_text(child, rows)

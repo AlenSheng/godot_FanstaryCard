@@ -15,11 +15,11 @@ const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const BattleDetails = preload("res://ui/battle_details.gd")
 const AudioSettings = preload("res://ui/audio_settings.gd")
+const LoginLanguageSelector = preload("res://ui/login_language_selector.gd")
 const TipsOverlay = preload("res://ui/tips_overlay.gd")
 const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const CellIndex = preload("res://ui/cell_index.gd")
-const DESCRIPTIONS = preload("res://data/card_descriptions.json")
 const UI_CONFIG = preload("res://data/ui_config.json")
 const CLOUD_SERVER_URL := "https://www.relicbound.cn"
 const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
@@ -92,6 +92,7 @@ var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
 var _game_title: Label
 var _login_version_label: Label
+var _login_language_selector: LoginLanguageSelector
 var _draw_charge_visual := 0.0
 var _draw_charge_authoritative := 0.0
 var _draw_charge_anchor_msec := 0
@@ -118,6 +119,12 @@ func _ready() -> void:
 	var audio_settings := AudioSettings.new()
 	audio_settings.name = "AudioSettings"
 	add_child(audio_settings)
+	_login_language_selector = LoginLanguageSelector.new()
+	_login_language_selector.name = "LoginLanguageSelector"
+	_login_language_selector.header_guard = status_label
+	_login_language_selector.z_index = 100
+	_login_language_selector.language_selected.connect(_select_login_language)
+	add_child(_login_language_selector)
 	_sync_account_session()
 	_render()
 
@@ -555,6 +562,7 @@ func _render() -> void:
 	content.add_theme_constant_override("separation", 10 if not Game.room.is_empty() else 18)
 	content.size_flags_vertical = Control.SIZE_FILL
 	var show_login_video: bool = Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty()
+	if is_instance_valid(_login_language_selector): _login_language_selector.refresh(_can_show_login_language(), not Game.busy)
 	if is_instance_valid(_login_version_label):
 		_login_version_label.text = P.localized_text(P.localized("client_version") % str(Game.CATALOG.data.version))
 		_login_version_label.visible = show_login_video
@@ -582,7 +590,7 @@ func _render() -> void:
 		content.remove_child(node)
 		node.queue_free()
 	status_label.text = P.localized_text(Game.connection)
-	if not Game.lobby.is_empty(): status_label.text += P.localized_text("    金币 %s" % Game.lobby.get("wallet", {}).get("gold", 0))
+	if not Game.lobby.is_empty(): status_label.text += P.localized_text(P.localized("connection_gold_suffix") % Game.lobby.get("wallet", {}).get("gold", 0))
 	root_column.get_parent().visible = not use_reference
 	if use_reference:
 		if not card_page.is_empty():
@@ -618,13 +626,13 @@ func _render() -> void:
 		_ready_screen()
 		return
 	if Game.lobby.get("unfinishedMatch") != null:
-		_label(content, "正在恢复上次探索…", 42, P.GOLD)
+		_label(content, P.localized("ui_restoring_run"), 42, P.GOLD)
 		_label(content, Game.connection, 24, P.MUTED)
-		_button(content, "重新连接", Game.reconnect, Game.busy)
+		_button(content, P.localized("reconnect"), Game.reconnect, Game.busy)
 		return
 	_nav()
 	if screen_loading:
-		_label(content, "正在读取…", 32)
+		_label(content, P.localized("loading"), 32)
 		return
 	match screen:
 		"hall": _hall()
@@ -671,7 +679,7 @@ func _button(parent: Node, text: String, callback: Callable, disabled: bool = fa
 	return button
 
 func _is_positive_button(value: String) -> bool:
-	for keyword in ["确认", "领取", "登录", "注册", "Login", "开始", "保存", "购买", "强化", "穿戴", "上架", "选择", "准备就绪", "探索准备", "随机起名", "Randomize"]:
+	for keyword in [P.localized("confirm"), P.localized("claim"), P.localized("login"), P.localized("register"), "Login", P.localized("begin_action"), P.localized("save"), P.localized("buy"), P.localized("empower"), P.localized("equip"), P.localized("list_for_sale"), P.localized("select"), P.localized("ready"), P.localized("nav_prep"), P.localized("random_name"), "Randomize"]:
 		if value.contains(keyword): return true
 	return false
 
@@ -702,8 +710,8 @@ func _row(parent: Node) -> HBoxContainer:
 
 func _login() -> void:
 	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_label(content, "混沌领域", 76, P.GOLD)
-	_label(content, "搜寻遗物，组合五行，带着战利品归来。", 30)
+	_label(content, P.localized("chaos_realm"), 76, P.GOLD)
+	_label(content, P.localized("login_subtitle"), 30)
 	var row := _row(content)
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	var panel := _panel(row, 0, true)
@@ -738,7 +746,7 @@ func _login() -> void:
 	var announcement: Dictionary = Game.server_info.get("announcement", {})
 	var title := RemoteCopy.field(announcement, "title")
 	var body := RemoteCopy.field(announcement, "body")
-	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD)
+	var announcement_title := _label(about, title if not title.is_empty() else P.localized("ui_announcement_title"), 34, P.GOLD, false)
 	announcement_title.name = "AnnouncementTitle"
 	announcement_title.custom_minimum_size.y = 58
 	announcement_title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -761,6 +769,27 @@ func _enter_steam() -> void:
 	var address := str(ProjectSettings.get_setting("platform/server_url", CLOUD_SERVER_URL)).strip_edges().trim_suffix("/")
 	await Game.login_steam(address)
 
+func _can_show_login_language() -> bool:
+	return Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() and Game.gateway.token.is_empty() and not Game.room_authority_recovering() and Game._settlement_recovery_match_id.is_empty()
+
+func _select_login_language(code: String) -> void:
+	# A queued click from the login screen must not change an authenticated
+	# session or race a login request that is already in progress.
+	if not _can_show_login_language() or Game.busy: return
+	P.set_language(code)
+	theme = P.theme()
+	if is_instance_valid(_game_title): _game_title.text = P.localized("game_title")
+	for label in [_game_title, status_label, _login_version_label]:
+		if not is_instance_valid(label): continue
+		var requested: int = label.get_theme_font_size("font_size")
+		var typeface := P.font_for_text(label.text, requested)
+		label.add_theme_font_override("font", typeface)
+		P.fit_control_font(label, typeface, requested)
+	var audio: Node = get_node_or_null("AudioSettings")
+	if audio != null: audio._refresh()
+	Game.changed.emit()
+
+
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()
 	text.text = body if not body.is_empty() else P.localized("ui_no_announcement")
@@ -773,7 +802,7 @@ func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 
 func _nav() -> void:
 	var nav := _row(content)
-	var names := {"hall": "营地", "cards": "卡牌图鉴", "gear": "穿戴 / 强化", "shop": "金币商店", "market": "金币市场", "prep": "探索准备"}
+	var names := {"hall": P.localized("nav_hall"), "cards": P.localized("cards_title"), "gear": P.localized("nav_gear"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"), "prep": P.localized("nav_prep")}
 	for key in names:
 		var button := _button(nav, names[key], _navigate.bind(key), Game.busy or not Game.ticket.is_empty())
 		button.set_meta("sound_cue", "")
@@ -802,14 +831,14 @@ func _navigate(value: String) -> void:
 	_render()
 
 func _hall() -> void:
-	_label(content, "余火营地", 56, P.GOLD)
+	_label(content, P.localized("camp_title"), 56, P.GOLD)
 	var identity := _row(content)
-	_label(identity, "%s · UID %s" % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED, false)
-	_button(identity, "切换账号", Game.logout, Game.busy)
+	_label(identity, P.localized("account_uid_inline") % [Game.lobby.player.get("displayName", ""), Game.lobby.player.get("userId", "")], 20, P.MUTED, false)
+	_button(identity, P.localized("switch_account"), Game.logout, Game.busy)
 	var classes := _row(content)
 	for key in P.CLASSES:
 		var info: Array = P.CLASSES[key]
-		var button := _button(classes, "%s   %s\n生命上限 %s" % [P.word(key), info[0], info[2]], func(): Game.select_class(key), Game.busy or not Game.preparation.is_empty())
+		var button := _button(classes, P.localized("class_health_summary") % [P.word(key), info[0], info[2]], func(): Game.select_class(key), Game.busy or not Game.preparation.is_empty())
 		button.icon = Art.texture("UI/Codex/class_badge_%s.png" % key.to_lower())
 		button.expand_icon = true
 		button.add_theme_constant_override("icon_max_width", 44)
@@ -830,34 +859,34 @@ func _hall() -> void:
 	_label(hero, info[0], 52)
 	_label(hero, info[3], 25, P.MUTED)
 	_label(hero, info[4], 30, P.TEAL)
-	_label(hero, "出战编组  %s / 20" % Game.deck().get("cardIds", []).size(), 26)
+	_label(hero, P.localized("ui_deck_battle_count") % Game.deck().get("cardIds", []).size(), 26)
 	var portal := _panel(row, 740)
 	Art.image(portal, Art.texture("UI/Hall/portal_background_clean.png"), Vector2(360, 240))
-	_label(portal, "混沌领域", 60, P.GOLD)
-	_label(portal, "六乘六的未知旅途\n四名旅人，向领域中心前进。", 28)
-	var prep_button := _button(portal, "探索准备   →", _navigate.bind("prep"))
+	_label(portal, P.localized("chaos_realm"), 60, P.GOLD)
+	_label(portal, P.localized("ui_expedition_intro"), 28)
+	var prep_button := _button(portal, P.localized("ui_prep_arrow"), _navigate.bind("prep"))
 	prep_button.set_meta("sound_cue", "")
-	_label(portal, "怪物各自迎战，同格可能触发决斗。", 22, P.MUTED)
+	_label(portal, P.localized("ui_room_hint"), 22, P.MUTED)
 
 func _preparation() -> void:
-	_label(content, "带上勇气，留出归途", 46, P.GOLD)
+	_label(content, P.localized("ui_prep_tagline"), 46, P.GOLD)
 	if not Game.preparation.is_empty():
 		var panel := _panel(content)
 		var snap: Dictionary = Game.preparation.snapshot
-		_label(panel, "准备已锁定 · %s · %s 张牌" % [P.CLASSES[snap.heroClass][0], snap.cardIds.size()], 32)
-		_label(panel, "背包 %s 格 / 安全 %s 格 · 生命药剂 %s" % [snap.backpackCapacity, snap.safeSlotIndexes.size(), snap.potionCount])
+		_label(panel, P.localized("ui_prep_locked") % [P.CLASSES[snap.heroClass][0], snap.cardIds.size()], 32)
+		_label(panel, P.localized("ui_prep_bag_summary") % [snap.backpackCapacity, snap.safeSlotIndexes.size(), snap.potionCount])
 		if not Game.ticket.is_empty():
-			_label(panel, "正在寻找旅人…不足四人时由机器人补位。", 30, P.TEAL)
+			_label(panel, P.localized("ui_matchmaking_hint"), 30, P.TEAL)
 		else:
-			_button(panel, "开始匹配", Game.enqueue, Game.busy or not Game.gateway.online)
-		_button(panel, "取消匹配 / 准备" if not Game.ticket.is_empty() else "取消准备", Game.cancel_preparation, Game.busy)
+			_button(panel, P.localized("start_match"), Game.enqueue, Game.busy or not Game.gateway.online)
+		_button(panel, P.localized("cancel_match") if not Game.ticket.is_empty() else P.localized("cancel_prep"), Game.cancel_preparation, Game.busy)
 		return
 	var row := _row(content)
 	var left := _panel(row, 650)
 	var identity := _row(left)
 	Art.image(identity, Art.portrait(Game.hero_class), Vector2(90, 110))
 	_label(identity, P.CLASSES[Game.hero_class][0], 36)
-	_label(left, "锁定武器 · " + P.CLASSES[Game.hero_class][1], 26, P.GOLD)
+	_label(left, P.localized("ui_locked_weapon_prefix") + P.CLASSES[Game.hero_class][1], 26, P.GOLD)
 	_label(left, P.localized("deck_count_summary") % Game.deck().get("cardIds", []).size())
 	var consumables: Dictionary = inventory.get("consumables", {})
 	for key in ["Free", "Advanced", "Top"]:
@@ -871,10 +900,10 @@ func _preparation() -> void:
 	potion.value = potion_count
 	potion.value_changed.connect(func(value): potion_count = int(value))
 	left.add_child(potion)
-	_button(left, "确认探索准备", func(): Game.prepare(bag_tier, potion_count), Game.busy)
+	_button(left, P.localized("confirm_prep"), func(): Game.prepare(bag_tier, potion_count), Game.busy)
 	var right := _panel(row, 880)
-	_label(right, "临时背包", 34)
-	_label(right, "带锁花纹格为安全格，卡牌与专属武器不占格。", 22, P.MUTED)
+	_label(right, P.localized("temporary_bag"), 34)
+	_label(right, P.localized("ui_safe_slot_hint"), 22, P.MUTED)
 	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
 	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
 	var slot_order: Array = []
@@ -906,19 +935,21 @@ func _preparation() -> void:
 
 func _ready_screen() -> void:
 	var panel := _panel(content)
-	_label(panel, "旅人集结", 60, P.GOLD)
-	_label(panel, "找到同行者，请确认启程。", 32)
-	_label(panel, "已确认 %s / %s" % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)])
+	_label(panel, P.localized("ui_party_gathering"), 60, P.GOLD)
+	_label(panel, P.localized("ui_match_found"), 32)
+	_label(panel, P.localized("ui_confirmed_count") % [Game.ready_prompt.get("ready_players", 0), Game.ready_prompt.get("required_players", 1)])
 	var remaining := maxi(0, int((int(Game.ready_prompt.get("deadline_unix_ms", 0)) - Time.get_unix_time_from_system() * 1000) / 1000))
-	_label(panel, "确认剩余 %s 秒" % remaining, 32, P.TEAL)
-	_button(panel, "准备就绪", func(): Game.gateway.send("room.ready"), not Game.gateway.online)
+	_label(panel, P.localized("ui_confirm_remaining") % remaining, 32, P.TEAL)
+	_button(panel, P.localized("ready"), func(): Game.gateway.send("room.ready"), not Game.gateway.online)
 
 func card_description(id: String, kind: String = "face", level: int = 0) -> String:
 	if kind == "face":
 		var summary := CardDetails.face_description(id, level, cards.get(id, {}))
 		if not summary.is_empty(): return summary
 	var locale := P.language()
-	var descriptions: Dictionary = DESCRIPTIONS.data.get(locale, DESCRIPTIONS.data.get("zh", {}))
+	if locale not in ["zh-CN", "en"]:
+		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level))
+	var descriptions: Dictionary = P.language_pack_section("card_descriptions")
 	var description := str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 	# Existing full descriptions use the legacy `card.desc.full.<id>` order.
 	# Keep reading them until the localized table is migrated to the newer key.
@@ -931,7 +962,7 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
-	var badge := "怪" if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
+	var badge := P.localized("monster") if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name := CardDetails.localized_name(id, info)
 	var description: String = CardDetails.face_description(id, level, info)
 	if description.is_empty(): description = card_description(id, "face", level)
@@ -940,9 +971,9 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 		var lines: Array = []
 		for key in ["elemental_damage", "direct_damage", "heal", "shield"]:
 			if int(info.get(key, 0)) > 0:
-				lines.append("%s %s" % [{"elemental_damage": P.word(info.get("element", "None")), "direct_damage": "直伤", "heal": "治疗", "shield": "护盾"}[key], info[key]])
+				lines.append("%s %s" % [{"elemental_damage": P.word(info.get("element", "None")), "direct_damage": P.localized("direct_damage"), "heal": P.localized("healing"), "shield": P.localized("word_shield")}[key], info[key]])
 		description = " / ".join(lines)
-	var result := "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else "暗红 · 本局", description]
+	var result := "%s %s\n%s\n\n%s" % [badge, name, P.word(info.get("quality", "")) if source != "Monster" else P.localized("ui_red_run"), description]
 	_card_text_cache[cache_key] = result
 	return result
 
@@ -973,21 +1004,21 @@ func _card_material(kind: String) -> int:
 
 func _card_action_block_reason(id: String, action: String) -> String:
 	var entry := _owned_card(id)
-	if entry.is_empty() or not entry.has("craftCost"): return "报价暂不可用"
+	if entry.is_empty() or not entry.has("craftCost"): return P.localized("quote_unavailable_short")
 	var kind := str(entry.get("currencyKind", "WarriorSoul"))
 	var material := P.localized_word(kind)
 	var balance := _card_material(kind)
 	if action == "upgrade":
-		if int(entry.get("level", 0)) >= 5: return "已达最高等级"
+		if int(entry.get("level", 0)) >= 5: return P.localized("max_level")
 		var cost := int(entry.get("upgradeCost", 0))
-		if balance < cost: return "%s不足，还需 %s" % [material, cost - balance]
-		if not entry.get("canUpgrade", false): return "当前状态已改变，请重新选择操作"
+		if balance < cost: return P.localized("codex_insufficient") % [material, cost - balance]
+		if not entry.get("canUpgrade", false): return P.localized("state_changed")
 	elif action == "craft":
-		if entry.get("unlocked", false) or int(entry.get("copyCount", 0)) > 0: return "卡牌已激活"
+		if entry.get("unlocked", false) or int(entry.get("copyCount", 0)) > 0: return P.localized("ui_card_activated")
 		var craft_cost := int(entry.get("craftCost", 0))
-		if balance < craft_cost: return "%s不足，还需 %s" % [material, craft_cost - balance]
+		if balance < craft_cost: return P.localized("codex_insufficient") % [material, craft_cost - balance]
 	elif action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
-		return "当前编组正在使用这张卡，请先从编组移除"
+		return P.localized("card_in_deck")
 	return ""
 
 func _replace_owned_card(card: Dictionary) -> void:
@@ -1007,7 +1038,7 @@ func _set_codex_action_busy(value: bool) -> void:
 		var button := _reference.find_child(node_name, true, false) as Button
 		if button != null: button.disabled = value
 	var primary := _reference.find_child("UpgradeCard", true, false) as Button
-	if value and primary != null: primary.text = P.localized_text("正在处理…")
+	if value and primary != null: primary.text = P.localized_text(P.localized("processing"))
 
 func _card_action(id: String, action: String) -> void:
 	if Game.busy or _codex_mutating or not _codex_ready: return
@@ -1031,7 +1062,7 @@ func _card_action(id: String, action: String) -> void:
 		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
 		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
-		_toast({"craft": "合成成功，已获得 1 张卡牌", "dismantle": "分解成功，材料已返还", "upgrade": "升级成功，卡牌效果已提升"}.get(action, "操作完成"))
+		_toast({"craft": P.localized("ui_crafted_card"), "dismantle": P.localized("ui_dismantled_card"), "upgrade": P.localized("upgrade_success")}.get(action, P.localized("operation_done")))
 	else:
 		Sound.play_cue("error")
 		var refreshed: Dictionary = await Game.gateway.request("/api/v1/cards")
@@ -1049,17 +1080,17 @@ func _card_action(id: String, action: String) -> void:
 
 func _codex() -> void:
 	var header := _row(content)
-	_label(header, "卡牌图鉴", 42, P.GOLD)
+	_label(header, P.localized("cards_title"), 42, P.GOLD)
 	_label(header, P.localized("deck_count_summary") % deck_draft.size(), 30)
-	_button(header, "保存编组", _save_deck, deck_draft.size() != 20 or Game.busy)
-	_button(header, "还原", func(): deck_draft = Game.deck().get("cardIds", []).duplicate(); _render())
+	_button(header, P.localized("save_deck"), _save_deck, deck_draft.size() != 20 or Game.busy)
+	_button(header, P.localized("restore"), func(): deck_draft = Game.deck().get("cardIds", []).duplicate(); _render())
 	var deck_row := HFlowContainer.new()
 	content.add_child(deck_row)
 	for index in range(deck_draft.size()):
 		var id: String = deck_draft[index]
 		_button(deck_row, "%s ×" % CardDetails.localized_name(id, cards.get(id, {})), func(): deck_draft.remove_at(index); _render())
 	var resources: Dictionary = Game.lobby.get("materials", {})
-	_label(content, "勇士之魂 %s   ·   职业之魂 %s" % [resources.get("warriorSoul", 0), resources.get(Game.hero_class.to_lower() + "Soul", 0)], 22, P.MUTED)
+	_label(content, P.localized("ui_soul_summary") % [resources.get("warriorSoul", 0), resources.get(Game.hero_class.to_lower() + "Soul", 0)], 22, P.MUTED)
 	var grid := GridContainer.new()
 	grid.columns = 6
 	content.add_child(grid)
@@ -1073,7 +1104,7 @@ func _codex() -> void:
 				var existing: Dictionary = cards.get(entry, {})
 				if existing.get("quality") == "Orange" and (existing.get("hero_class") == null) == (class_value == null): can_add = false
 		var button := _card_button(grid, id, func(): deck_draft.append(id); _render(), false, not can_add)
-		button.tooltip_text += "\n已编入 %s / 持有 %s · 等级 %s" % [deck_draft.count(id), card.copyCount, card.level]
+		button.tooltip_text += P.localized("ui_owned_card_summary") % [deck_draft.count(id), card.copyCount, card.level]
 
 func _save_deck() -> void:
 	if Game.busy: return
@@ -1117,38 +1148,38 @@ func _equipment() -> void:
 		if value.heroClass == Game.hero_class: weapon = value
 	var top := _row(content)
 	Art.image(top, Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower()), Vector2(80, 100))
-	_label(top, "锁定 · %s  +%s" % [P.CLASSES[Game.hero_class][1], weapon.get("level", 0)], 30, P.GOLD)
-	_button(top, "强化专属武器", _enhance_weapon, Game.busy or int(weapon.get("level", 0)) >= 5)
-	_label(content, "装备碎片 %s" % Game.lobby.get("materials", {}).get("equipmentFragments", 0), 24, P.MUTED)
-	var slot_names := ["头部", "胸甲", "手部", "腿部", "鞋子"]
+	_label(top, P.localized("locked_item_level") % [P.CLASSES[Game.hero_class][1], weapon.get("level", 0)], 30, P.GOLD)
+	_button(top, P.localized("enhance_weapon"), _enhance_weapon, Game.busy or int(weapon.get("level", 0)) >= 5)
+	_label(content, P.localized("ui_fragments_amount") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), 24, P.MUTED)
+	var slot_names := [P.localized("word_head"), P.localized("word_chest"), P.localized("word_hands"), P.localized("word_legs"), P.localized("word_feet")]
 	var row := _row(content)
 	for index in range(5):
 		var id: Variant = gear_draft[index] if index < gear_draft.size() else null
-		var name := "未穿戴"
+		var name := P.localized("not_equipped")
 		var worn_item: Dictionary = {}
 		for item in inventory.get("equipments", []):
 			if item.instanceId == id:
 				name = _equipment_name(item)
 				worn_item = item
-		var slot := _button(row, slot_names[index] + "\n" + name + ("\n点击卸下" if id != null else ""), func(): gear_draft[index] = null; _render(), id == null)
+		var slot := _button(row, slot_names[index] + "\n" + name + (P.localized("click_unequip_suffix") if id != null else ""), func(): gear_draft[index] = null; _render(), id == null)
 		slot.icon = Art.equipment_texture(worn_item) if not worn_item.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_%s.png" % ["helmet", "chest", "gauntlet", "legs", "boots"][index])
 		slot.expand_icon = true
 		slot.add_theme_constant_override("icon_max_width", 58)
 		if id == null:
 			for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 				slot.add_theme_color_override("icon_%s_color" % state, Art.UNEQUIPPED_ITEM_MODULATE)
-	_button(content, "保存五部位穿戴", func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)
+	_button(content, P.localized("save_loadout"), func(): _mutate("/loadouts/" + Game.hero_class, HTTPClient.METHOD_PUT, {"equipmentIds": gear_draft, "expectedVersion": Game.loadout().get("version", 0)}), Game.busy)
 	for item in inventory.get("equipments", []):
 		var line := _row(_panel(content))
 		_label(line, _equipment_name(item), 26)
 		_label(line, P.word(item.get("effectAffix")), 24, P.TEAL)
-		_button(line, "穿戴", func(): _equip(item), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
-		_button(line, "强化", func(): _enhance(item), Game.busy or int(item.get("level", 0)) >= 5)
-	if inventory.get("equipments", []).is_empty(): _label(content, "仓库暂无装备，探索撤离后可带回战利品。", 28, P.MUTED)
+		_button(line, P.localized("equip"), func(): _equip(item), Game.busy or item.get("location") not in ["Inventory", "Equipped"])
+		_button(line, P.localized("empower"), func(): _enhance(item), Game.busy or int(item.get("level", 0)) >= 5)
+	if inventory.get("equipments", []).is_empty(): _label(content, P.localized("no_equipment_hint"), 28, P.MUTED)
 
 func _equip(item: Dictionary) -> void:
 	var slots := {"Head": 0, "Helmet": 0, "Chest": 1, "Body": 1, "Hands": 2, "Gloves": 2, "Legs": 3, "Feet": 4, "Boots": 4}
-	if not slots.has(item.slot): _toast("未识别的装备部位"); return
+	if not slots.has(item.slot): _toast(P.localized("unknown_equipment_slot")); return
 	gear_draft.resize(5)
 	var target_slot: int = slots[item.slot]
 	var item_id: Variant = item.get("instanceId", "")
@@ -1193,7 +1224,7 @@ func _current_equipment(item: Dictionary, worn: Array = []) -> Dictionary:
 			break
 	return current
 
-func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = "穿戴") -> void:
+func _show_equipment_details(item: Dictionary, action: Callable = Callable(), action_title: String = P.localized("equip")) -> void:
 	var worn := _equipped_items()
 	var current := _current_equipment(item, worn)
 	# Wearing into an empty slot has no baseline to compare. Follow the GDD/UI
@@ -1284,7 +1315,7 @@ func _weapon_benefit(level: int) -> String:
 		_: return P.localized("weapon_benefit_shield") % (3 if level >= 4 else (2 if level >= 2 else 1))
 
 func _shop() -> void:
-	_label(content, "旅人补给", 44, P.GOLD)
+	_label(content, P.localized("shop_title"), 44, P.GOLD)
 	var grid := GridContainer.new()
 	grid.columns = 3
 	content.add_child(grid)
@@ -1297,23 +1328,23 @@ func _shop() -> void:
 			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
 		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
 		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, "已激活" if item.get("alreadyOwned", false) else "购买", func(): _confirm("花费 %s 金币购买？" % item.priceGold, func(): _complete_shop_purchase(item)), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
-	if shop.get("products", []).is_empty(): _label(content, "暂无商品，稍后刷新。", 28)
+		_button(panel, P.localized("activated") if item.get("alreadyOwned", false) else P.localized("buy"), func(): _confirm(P.localized("ui_buy_confirm") % item.priceGold, func(): _complete_shop_purchase(item)), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+	if shop.get("products", []).is_empty(): _label(content, P.localized("no_products_later"), 28)
 
 func _market() -> void:
-	_label(content, "旅人集市", 44, P.GOLD)
-	_label(content, "金币交易 · 上架上限 8 件 · 48 小时 · 手续费 10%（至少 1 金币）", 24, P.MUTED)
+	_label(content, P.localized("market_title"), 44, P.GOLD)
+	_label(content, P.localized("market_terms"), 24, P.MUTED)
 	for listing in listings:
 		var row := _row(_panel(content))
-		_label(row, "装备 " + str(listing.equipmentId).left(8), 25)
-		_label(row, "%s 金币" % listing.priceGold, 32, P.GOLD)
+		_label(row, P.localized("equipment_name_prefix") + str(listing.equipmentId).left(8), 25)
+		_label(row, P.localized("shop_price") % listing.priceGold, 32, P.GOLD)
 		if listing.sellerId == Game.lobby.player.userId:
-			_label(row, "卖家实得 %s" % (int(listing.priceGold) - maxi(1, int(int(listing.priceGold) / 10.0))), 22)
-			_button(row, "下架", func(): _mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
+			_label(row, P.localized("ui_seller_receives") % (int(listing.priceGold) - maxi(1, int(int(listing.priceGold) / 10.0))), 22)
+			_button(row, P.localized("remove_listing"), func(): _mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
 		else:
-			_button(row, "购买", func(): _confirm("花费 %s 金币购买此装备？" % listing.priceGold, func(): _mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or int(listing.priceGold) > int(Game.lobby.wallet.gold))
-	if listings.is_empty(): _label(content, "集市暂时没有挂单。", 28, P.MUTED)
-	_label(content, "选择仓库装备上架", 32)
+			_button(row, P.localized("buy"), func(): _confirm(P.localized("ui_buy_equipment_confirm") % listing.priceGold, func(): _mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or int(listing.priceGold) > int(Game.lobby.wallet.gold))
+	if listings.is_empty(): _label(content, P.localized("no_listings"), 28, P.MUTED)
+	_label(content, P.localized("select_item_to_list"), 32)
 	for item in inventory.get("equipments", []):
 		if item.get("isBound", false) or item.get("location") != "Inventory": continue
 		var row := _row(content)
@@ -1323,7 +1354,7 @@ func _market() -> void:
 		price.max_value = 100000000
 		price.value = 100
 		row.add_child(price)
-		_button(row, "上架", func(): _confirm("确认以 %s 金币上架？" % int(price.value), func(): _mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": item.instanceId, "priceGold": int(price.value)})), Game.busy)
+		_button(row, P.localized("list_for_sale"), func(): _confirm(P.localized("confirm_listing_price") % int(price.value), func(): _mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": item.instanceId, "priceGold": int(price.value)})), Game.busy)
 
 func _mutate(path: String, method: int, body: Variant = null) -> void:
 	if Game.busy: return
@@ -1337,7 +1368,7 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 		if path.ends_with("/enhance"): cue = "upgrade"
 		elif path == "/shop/purchases" or path.contains("/purchase?"): cue = "purchase"
 		Sound.play_cue(cue)
-		_toast("操作成功")
+		_toast(P.localized("operation_success"))
 	else:
 		Sound.play_cue("error")
 		if path.begins_with("/market/"): Game.refresh_cache("market")
@@ -1440,7 +1471,7 @@ func _set_inventory_items(items: Array) -> void:
 func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
 	var purchase := func(): _complete_shop_purchase(item)
 	if item.get("kind", "") == "Cards":
-		_confirm("花费 %s 金币购买%s？" % [item.get("priceGold", 0), product_title], purchase)
+		_confirm(P.localized("ui_buy_named_confirm") % [item.get("priceGold", 0), product_title], purchase)
 	else:
 		purchase.call()
 
@@ -1454,7 +1485,7 @@ func _refresh_shop() -> void:
 		shop = result.data
 		Game.update_cache("shop", shop)
 		Sound.play_cue("reward")
-		_toast("商店货架已刷新")
+		_toast(P.localized("ui_shop_refreshed"))
 	else:
 		Sound.play_cue("error")
 		_toast(result.error)
@@ -1473,7 +1504,7 @@ func _complete_shop_purchase(item: Dictionary) -> void:
 		_apply_shop_purchase(product_id, result.data)
 		_shop_purchase_product_id = ""
 		Sound.play_cue("purchase")
-		_toast("操作成功")
+		_toast(P.localized("operation_success"))
 	else:
 		Sound.play_cue("error")
 	Game.busy = false
@@ -1538,10 +1569,10 @@ func _room() -> void:
 	var player: Dictionary = state.get("player", {})
 	var combat: Dictionary = player.get("combat", {})
 	var row := _row(content)
-	_label(row, "混沌领域 / " + P.word(player.get("phase", "")), 38, P.GOLD)
-	_label(row, "生命 %s / %s   护盾 %s" % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
-	if Game.has_pending_commands(): _label(row, "正在处理操作…", 24, P.TEAL)
-	_button(row, "同步", Game.refresh_room_snapshot)
+	_label(row, P.localized("chaos_realm_prefix") + P.word(player.get("phase", "")), 38, P.GOLD)
+	_label(row, P.localized("combat_health_shield_summary") % [combat.get("hp", 0), combat.get("maximum_hp", 0), combat.get("shield", 0)], 28)
+	if Game.has_pending_commands(): _label(row, P.localized("ui_operation_pending"), 24, P.TEAL)
+	_button(row, P.localized("sync"), Game.refresh_room_snapshot)
 	if player.get("phase", "") in ["Pve", "Pvp"]:
 		_button(row, P.localized("battle_exit"), func(): _confirm(
 			P.localized("battle_abandon_warning"),
@@ -1555,7 +1586,7 @@ func _room() -> void:
 		_map(state)
 		_action_bar(state)
 	for key in ["extraction_remaining_ms", "spring_remaining_ms"]:
-		if state.has(key): _label(content, ("撤离中 " if key.begins_with("extraction") else "饮用泉水 ") + "%.1f 秒" % (float(state[key]) / 1000.0), 32, P.TEAL)
+		if state.has(key): _label(content, (P.localized("extracting_prefix") if key.begins_with("extraction") else P.localized("drinking_spring_prefix")) + P.localized("seconds_decimal") % (float(state[key]) / 1000.0), 32, P.TEAL)
 
 func _battle(state: Dictionary) -> void:
 	var stage := _row(content)
@@ -1568,12 +1599,12 @@ func _battle(state: Dictionary) -> void:
 	if state.has("duel"):
 		var opponent := _panel(stage, 900)
 		_combat_panels[state.duel.opponent_id] = opponent.get_parent()
-		_label(opponent, "同格旅人", 42, P.GOLD)
+		_label(opponent, P.localized("same_cell_traveler"), 42, P.GOLD)
 		_health_bar(opponent, state.duel.opponent)
-		_label(opponent, "生命 %s / %s    护盾 %s" % [state.duel.opponent.hp, state.duel.opponent.maximum_hp, state.duel.opponent.shield], 28)
-		if Game.allowed("duel.leave"): _button(opponent, "双方离开", func(): Game.command("duel.leave", {"duel_id": state.duel.duel_id}))
-		if Game.allowed("duel.escape"): _button(opponent, "强制逃脱", func(): Game.command("duel.escape", {"duel_id": state.duel.duel_id}))
-		if state.duel.has("escape_remaining_ms"): _label(opponent, "逃脱读条 %.1f 秒" % (float(state.duel.escape_remaining_ms) / 1000.0))
+		_label(opponent, P.localized("ui_hp_shield") % [state.duel.opponent.hp, state.duel.opponent.maximum_hp, state.duel.opponent.shield], 28)
+		if Game.allowed("duel.leave"): _button(opponent, P.localized("leave_duel"), func(): Game.command("duel.leave", {"duel_id": state.duel.duel_id}))
+		if Game.allowed("duel.escape"): _button(opponent, P.localized("force_escape"), func(): Game.command("duel.escape", {"duel_id": state.duel.duel_id}))
+		if state.duel.has("escape_remaining_ms"): _label(opponent, P.localized("ui_escape_progress") % (float(state.duel.escape_remaining_ms) / 1000.0))
 	else:
 		var monsters: Array = state.get("pve", {}).get("monsters", [])
 		var alive_monster_count := 0
@@ -1588,13 +1619,13 @@ func _battle(state: Dictionary) -> void:
 			if portrait.texture == null:
 				portrait.custom_minimum_size.y = 40
 				_label(enemy, _monster_name(monster.monster_id), 28, P.MUTED)
-			_label(enemy, "生命 %s / %s    盾 %s" % [monster.hp, monster.maximum_hp, monster.shield], 20)
+			_label(enemy, P.localized("combat_health_short_shield") % [monster.hp, monster.maximum_hp, monster.shield], 20)
 			_health_bar(enemy, monster)
 			if multiple_monsters and int(monster.hp) > 0:
-				var button := _button(enemy, _monster_name(monster.monster_id) + (" · 当前目标" if Game.combat_target_id() == monster.monster_id else " · 选择目标"), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"), "UI/CardCodex/card_codex_action_button_orange.png")
+				var button := _button(enemy, _monster_name(monster.monster_id) + (P.localized("current_target_suffix") if Game.combat_target_id() == monster.monster_id else P.localized("choose_target_suffix")), func(): Game.command("battle.select_target", {"battle_id": state.pve.battle_id, "target_id": monster.monster_id}), not Game.allowed("battle.select_target"), "UI/CardCodex/card_codex_action_button_orange.png")
 				button.custom_minimum_size.y = 60
-			var intent: String = {"Charge": "蓄力", "Empower": "强化", "Shield": "护盾"}.get(monster.intent_kind, P.word(monster.intent_element))
-			_label(enemy, "意图 %s %s" % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
+			var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield")}.get(monster.intent_kind, P.word(monster.intent_element))
+			_label(enemy, P.localized("ui_intent_value") % [intent, monster.intent_value if int(monster.intent_value) > 0 else ""], 23, P.ELEMENT.get(monster.intent_element, Color.WHITE))
 	var charge := BoundedBar.new()
 	charge.name = "DrawChargeBar"
 	charge.configure("UI/Battle/battle_energy_cell_lit.png", "UI/Battle/battle_energy_cell_unlit.png")
@@ -1602,7 +1633,7 @@ func _battle(state: Dictionary) -> void:
 	charge.value = _draw_charge_value(float(state.player.get("draw_charge", "0")))
 	charge.custom_minimum_size.y = 16
 	content.add_child(charge)
-	_label(content, "1–5 选牌 / 空格放出 / R 同步    已选 %s 张" % Game.selected_cards.size(), 22, P.MUTED)
+	_label(content, P.localized("ui_combat_hand_hint") % Game.selected_cards.size(), 22, P.MUTED)
 	var hand := _row(content)
 	hand.alignment = BoxContainer.ALIGNMENT_CENTER
 	for index in range(5):
@@ -1615,7 +1646,7 @@ func _battle(state: Dictionary) -> void:
 			Art.button(empty, "UI/Codex/qframe_common.png")
 			empty.custom_minimum_size = Vector2(218, 376)
 			empty.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	var play := _button(hand, "放", Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"))
+	var play := _button(hand, P.localized("play"), Game.play_cards, Game.selected_cards.is_empty() or not Game.allowed("battle.play_cards"))
 	Art.button(play, "UI/Battle/battle_play_button.png")
 	play.custom_minimum_size = Vector2(100, 100)
 	play.size_flags_vertical = Control.SIZE_SHRINK_CENTER
@@ -1632,22 +1663,22 @@ func _map(state: Dictionary) -> void:
 			var pos := Vector2i(y, x)
 			var cell: Dictionary = cells.get(pos, {})
 			var text := ""
-			if cell.get("is_boss", false): text = "首领"
-			elif cell.get("has_spring", false): text = "源泉"
+			if cell.get("is_boss", false): text = P.localized("boss")
+			elif cell.get("has_spring", false): text = P.localized("spring")
 			var current: bool = state.get("self", {}).get("row", -1) == y and state.get("self", {}).get("column", -1) == x
-			if current: text += "\n自己"
+			if current: text += P.localized("self_newline")
 			var legal: bool = moves.has(pos)
 			var button := _button(grid, text, _move.bind(y, x), not legal or not Game.allowed("room.move"))
 			button.custom_minimum_size = Vector2(148, 88)
 			var layer: int = mini(mini(x, y), mini(5 - x, 5 - y))
 			button.add_theme_stylebox_override("disabled", P.box([Color("243e40"), Color("3b4842"), Color("594d3e")][layer], P.GOLD if current else Color("486368"), 3 if current else 1))
 	var side := _panel(row, 630)
-	_label(side, "深入混沌", 38, P.GOLD)
-	_label(side, "首领 / 源泉 / 自己", 26, P.TEAL)
-	_label(side, "只能同层横行或向内探索。\n随机撤离点进入所在格后才可发现。", 24, P.MUTED)
-	_label(side, "行囊", 30)
+	_label(side, P.localized("enter_chaos"), 38, P.GOLD)
+	_label(side, P.localized("map_legend"), 26, P.TEAL)
+	_label(side, P.localized("ui_map_discovery_hint"), 24, P.MUTED)
+	_label(side, P.localized("bag"), 30)
 	for item in state.get("player", {}).get("inventory", []):
-		_label(side, "%s ×%s%s" % [P.word(item.kind), item.quantity, " · 安全" if item.is_safe else ""], 22)
+		_label(side, "%s ×%s%s" % [P.word(item.kind), item.quantity, P.localized("safe_suffix") if item.is_safe else ""], 22)
 
 func _monster_name(id: String) -> String:
 	var keys := {"fire-bat": "monster_fire_bat", "thorn-mite": "monster_thorn_mite", "murk-snail": "monster_murk_snail", "sand-lizard": "monster_sand_lizard", "rust-rat": "monster_rust_rat", "metal-guard": "monster_metal_guard", "fire-herald": "monster_fire_herald", "marsh-mother": "monster_marsh_mother", "stone-guard": "monster_stone_guard", "thorn-guard": "monster_thorn_guard", "annihilation-core": "monster_annihilation_core", "box-spirit": "monster_box_spirit", "treasure-box-spirit": "monster_box_spirit"}
@@ -1665,22 +1696,22 @@ func _move(row: int, column: int) -> void:
 
 func _action_bar(_state: Dictionary) -> void:
 	var row := _row(content)
-	for action in {"action.spring": "饮用源泉", "action.potion": "使用生命药剂", "action.extract": "撤离"}:
+	for action in {"action.spring": P.localized("drink_spring"), "action.potion": P.localized("use_health_potion"), "action.extract": P.localized("extract")}:
 		if Game.allowed(action):
-			_button(row, {"action.spring": "饮用源泉", "action.potion": "使用生命药剂", "action.extract": "撤离"}[action], func(): Game.command(action))
+			_button(row, {"action.spring": P.localized("drink_spring"), "action.potion": P.localized("use_health_potion"), "action.extract": P.localized("extract")}[action], func(): Game.command(action))
 
 func _rewards(reward: Dictionary) -> void:
-	_label(content, "留下你最需要的", 46, P.GOLD)
+	_label(content, P.localized("choose_reward"), 46, P.GOLD)
 	var row := _row(content)
 	for option in reward.get("options", []):
 		var panel := _panel(row, 510)
 		var index := int(option.kind)
-		_label(panel, {1: "装备", 2: "装备碎片", 3: "即时回血"}.get(index, "战利品"), 38)
-		_label(panel, "%s%% 生命" % option.heal_percent if index == 3 else "数量 %s" % option.quantity, 28, P.TEAL)
-		_button(panel, "选择", func(): _claim(option), not Game.allowed("reward.choice.claim"))
+		_label(panel, {1: P.localized("word_equipment"), 2: P.localized("word_equipment_fragments"), 3: P.localized("exploration_heal_reward")}.get(index, P.localized("loot")), 38)
+		_label(panel, P.localized("ui_combat_hp_percent") % option.heal_percent if index == 3 else P.localized("ui_quantity") % option.quantity, 28, P.TEAL)
+		_button(panel, P.localized("select"), func(): _claim(option), not Game.allowed("reward.choice.claim"))
 	var count := int(reward.get("refresh_count", 0))
 	if count < 3:
-		_button(content, "刷新 · %s 金币 · 剩余 %s 次" % [[60, 180, 450][count], 3 - count], func(): Game.command("reward.choice.refresh"), not Game.allowed("reward.choice.refresh"))
+		_button(content, P.localized("ui_refresh_remaining") % [[60, 180, 450][count], 3 - count], func(): Game.command("reward.choice.refresh"), not Game.allowed("reward.choice.refresh"))
 
 func _claim(option: Dictionary, equip: bool = false) -> void:
 	var player: Dictionary = Game.room.get("player", {})
@@ -1689,7 +1720,7 @@ func _claim(option: Dictionary, equip: bool = false) -> void:
 	var payload := {"option_id": option.option_id, "equip": equip}
 	if not equip and int(option.kind) != 3 and not InventoryView.can_add(player, reward_item):
 		var dialog := AcceptDialog.new()
-		dialog.title = "包满替换 · 换下物品会被系统回收"
+		dialog.title = P.localized("bag_full_replace")
 		var scroll := ScrollContainer.new()
 		scroll.custom_minimum_size = Vector2(720, 460)
 		dialog.add_child(scroll)
@@ -1697,23 +1728,23 @@ func _claim(option: Dictionary, equip: bool = false) -> void:
 		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		scroll.add_child(column)
 		for item in items:
-			_button(column, "%s ×%s%s" % [EquipmentDetails.title(item), item.quantity, " · 安全格" if item.get("is_safe", false) else ""], func():
+			_button(column, "%s ×%s%s" % [EquipmentDetails.title(item), item.quantity, P.localized("safe_slot_suffix") if item.get("is_safe", false) else ""], func():
 				dialog.queue_free()
-				_confirm("回收 %s 并领取战利品？" % EquipmentDetails.title(item), func(): payload.replace_item_id = item.item_id; Game.command("reward.choice.claim", payload)))
+				_confirm(P.localized("recycle_for_loot") % EquipmentDetails.title(item), func(): payload.replace_item_id = item.item_id; Game.command("reward.choice.claim", payload)))
 		add_child(dialog)
 		dialog.confirmed.connect(dialog.queue_free)
 		dialog.popup_centered(Vector2i(750, 550))
 	elif equip:
-		_confirm("直接穿戴新防具，同部位旧装会被系统回收。", func(): Game.command("reward.choice.claim", payload))
+		_confirm(P.localized("direct_equip_recycle"), func(): Game.command("reward.choice.claim", payload))
 	else: Game.command("reward.choice.claim", payload)
 
 func _settlement() -> void:
-	_label(content, P.word(Game.settlement.get("result", "旅程结束")), 66, P.GOLD)
-	_label(content, "本次旅程已由服务器结算。", 30)
+	_label(content, P.word(Game.settlement.get("result", P.localized("journey_end"))), 66, P.GOLD)
+	_label(content, P.localized("settlement_synced"), 30)
 	var details: Dictionary = Game.settlement.details if Game.settlement.get("details") is Dictionary else {}
 	for key in ["gold", "goldEarned", "equipmentFragments", "warriorSoul"]:
 		if details.has(key): _label(content, "%s  %s" % [P.word(key), details[key]], 30)
-	_button(content, "返回", _return_from_settlement, Game.busy)
+	_button(content, P.localized("back"), _return_from_settlement, Game.busy)
 
 func _return_from_settlement() -> void:
 	Game.acknowledge_settlement()
@@ -1734,10 +1765,15 @@ func _toast(message: String) -> void:
 		tips_overlay.show_tip(message, _notice_anchor(), _notice_width_ratio())
 
 func _show_ban_dialog(reason: String) -> void:
-	if not reason.begins_with("账号已被封禁"): return
+	var ban := RemoteCopy.account_ban(reason)
+	if ban.is_empty(): return
 	var dialog := AcceptDialog.new()
-	dialog.title = "账号已被封禁"
-	dialog.dialog_text = reason
+	dialog.name = "AccountBanDialog"
+	dialog.title = P.localized("ui_account_banned")
+	dialog.theme = P.theme()
+	dialog.get_ok_button().text = P.localized("confirm")
+	dialog.dialog_text = P.localized("ui_account_banned")
+	if not str(ban.reason).is_empty(): dialog.dialog_text += "\n" + str(ban.reason)
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
 	add_child(dialog)
@@ -1777,7 +1813,7 @@ func _play_combat_feedback(payload: Dictionary, context: Array) -> void:
 		for segment in payload.get("damage_segments", []):
 			if int(segment.get("amount", 0)) <= 0: continue
 			var kind := str(segment.get("kind", "Direct"))
-			_float_number(target, "%s %s" % ["直" if _is_direct_damage(kind) else P.word(kind), segment.get("amount", 0)], _damage_color(kind), index)
+			_float_number(target, "%s %s" % [P.localized("direct_damage_badge") if _is_direct_damage(kind) else P.word(kind), segment.get("amount", 0)], _damage_color(kind), index)
 			index += 1
 	var source_id: String = payload.get("source_id", "")
 	if source_id.is_empty(): source_id = payload.get("attacker_id", "")

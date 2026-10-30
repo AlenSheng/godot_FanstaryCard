@@ -10,6 +10,8 @@ public sealed record MailAttachmentResponse(
     string? EffectAffix = null,
     string? SecondaryTrait = null);
 
+public sealed record MailTemplateArgumentResponse(string Key, string Value);
+
 public sealed record MailItemResponse(
     Guid Id,
     string Title,
@@ -23,7 +25,23 @@ public sealed record MailItemResponse(
     bool IsClaimed,
     IReadOnlyList<MailAttachmentResponse> Attachments,
     string TitleEn = "",
-    string BodyEn = "");
+    string BodyEn = "",
+    string? TemplateId = null,
+    IReadOnlyList<MailTemplateArgumentResponse>? TemplateArgs = null,
+    string? SenderRole = null)
+{
+    public IReadOnlyList<MailTemplateArgumentResponse>? TemplateArgs { get; init; } = ValidateArguments(TemplateArgs);
+
+    private static IReadOnlyList<MailTemplateArgumentResponse>? ValidateArguments(IReadOnlyList<MailTemplateArgumentResponse>? arguments)
+    {
+        if (arguments is null) return null;
+        var keys = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var argument in arguments)
+            if (argument is null || string.IsNullOrEmpty(argument.Key) || argument.Value is null || !keys.Add(argument.Key))
+                throw new ArgumentException("Mail template arguments require unique, nonempty keys and nonnull values.", nameof(arguments));
+        return arguments;
+    }
+}
 
 public sealed record MailListResponse(
     IReadOnlyList<MailItemResponse> Items,

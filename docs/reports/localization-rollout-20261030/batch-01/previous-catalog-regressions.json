@@ -1,0 +1,41 @@
+{
+  "actual_game_matches": 0,
+  "catalog_cards_checked": 232,
+  "errors": [],
+  "glyphs_checked": 85,
+  "locale": "es",
+  "ok": true,
+  "real_card_controls": true,
+  "regressions": {
+    "test_card_description_levels.gd": {
+      "checked": 2640,
+      "errors": [],
+      "ok": true
+    },
+    "test_card_localization.gd": {
+      "checks": {
+        "Card faces use the localized name": true,
+        "Chinese keeps the catalog name": true,
+        "Every catalog card has an English name": true
+      },
+      "message": "Card names follow the active language across the shared rendering path",
+      "ok": true
+    },
+    "test_equipment_name.gd": {
+      "checks": {
+        "equipment without set affix keeps its name": true,
+        "exploration equipment includes set prefix": true,
+        "stored equipment includes set prefix": true,
+        "tooltip uses the same name": true,
+        "upgraded draw interval is shown": true,
+        "zero draw interval is hidden": true
+      },
+      "message": "Equipment set-affix names",
+      "ok": true
+    },
+    "test_localization.gd": {
+      "message": "Localization tables and snake_case item IDs are covered",
+      "ok": true
+    }
+  }
+}

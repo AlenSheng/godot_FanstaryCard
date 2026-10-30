@@ -1,0 +1,76 @@
+{
+  "batch": "02",
+  "locales": [
+    "fr",
+    "pt",
+    "id"
+  ],
+  "base_code_commit": "b746f5f1bd5a86afdef1a86ad9c98e281c08212a",
+  "status": "released_deployed",
+  "passed": true,
+  "deployed": true,
+  "external_task_review_required": false,
+  "authority": "User cancelled external review: 无需其他任务复验，直接下一步",
+  "translation_owners": {
+    "fr": "/root/translate_fr",
+    "pt": "/root/translate_pt",
+    "id": "/root/translate_id"
+  },
+  "translation_scope": {
+    "strings": 849,
+    "card_names": 232,
+    "card_face_names": "compact when needed",
+    "equipment_compare": 27,
+    "numerical": "all leaves",
+    "monster_pool": 11
+  },
+  "checks_pending": [
+    "Wait for all authors to stop writing",
+    "Register draft locales and regenerate shared system mail copy",
+    "Audit keys, placeholders, glyphs, all card and shop names",
+    "Actual UI at 960,1280,1920 plus wide/combat error tips",
+    "Publish and restart game/website services after self-validation",
+    "Health checks before the next batch"
+  ],
+  "website_multilingual_deployment": "Deferred by user",
+  "resource_policy": "Keep 6GiB free plus 1GiB startup allowance; wait for memory and never stop FreeVideo",
+  "visual_policy": "Original card art dimensions; overlay text; common-frame safe insets; readable font floor",
+  "released_coverage_estimate_percent": 41.93635669909152,
+  "coverage_target_reached": false,
+  "translation_authors_stopped": true,
+  "candidate_coverage_estimate_percent": 49.538418517882455,
+  "consistency_fix": "Murk Snail translations aligned with the matching 浊螅 / M-MUDHYDRA full card name in en/fr/pt; IDs and rules unchanged",
+  "initial_native_ui_frames": 225,
+  "initial_native_ui_width": 960,
+  "initial_copy_failure_types": {
+    "fr": 24,
+    "pt": 16,
+    "id": 10
+  },
+  "font_glyph_and_all_card_controls": "Passed after short-name fixes and stable configuration-source keys",
+  "proposals": {
+    "fr": "tmp/batch02-fr-ui-copy-proposal.json",
+    "pt": "tmp/batch02-pt-ui-copy-proposal.json",
+    "id": "tmp/batch02-id-ui-copy-proposal.json"
+  },
+  "initial_960_ui": "Passed: 75 scenes each for fr, pt, id after compact-copy fixes",
+  "matrix_progress": "tmp/batch02-ui-final-r1/progress.json",
+  "matrix_sessions": {
+    "main": 40326,
+    "probes": 31046
+  },
+  "expected_main_frames": 1350,
+  "expected_error_frames": 144,
+  "expected_registered_locales": 6,
+  "concurrent_site_work": {
+    "thread": "01a187df-e067-7ce1-9fd2-6cceb5eb707c",
+    "scope": "Separate direct user request for website fonts/background/dropdown; not game revalidation",
+    "commits_observed": [
+      "21dc8980f05e5c3dffa69b57f0d7404fac556779",
+      "f64f603dabb3d6d9f88230a794a5da52bfa1644f"
+    ],
+    "policy": "Preserve changes; do not reset or cherry-pick over them. Runtime game release remains gated by this task self-validation."
+  },
+  "self_validation": "docs/reports/localization-rollout-20261030/batch-02/self-validation-final-r1.json",
+  "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-02/deployment-completed-r1.json"
+}

@@ -41,6 +41,9 @@ func _setup() -> void:
 	Art.button(cancel_button, CANCEL_BUTTON)
 	confirm_button.set_meta("sound_cue", "ui_confirm")
 	cancel_button.set_meta("sound_cue", "ui_cancel")
+	title_label.text = P.localized("confirm_action")
+	confirm_button.text = P.localized("confirm")
+	cancel_button.text = P.localized("cancel")
 	for label in [title_label, description_label]:
 		label.add_theme_color_override("font_color", P.PAPER)
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE

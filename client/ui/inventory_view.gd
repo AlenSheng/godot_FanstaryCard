@@ -1,6 +1,7 @@
 extends RefCounted
 
 const P = preload("res://ui/palette.gd")
+const RemoteCopy = preload("res://ui/remote_copy.gd")
 const Art = preload("res://ui/art.gd")
 const Details = preload("res://ui/equipment_details.gd")
 const Slot = preload("res://ui/inventory_slot.gd")
@@ -25,7 +26,7 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.text(P.localized("relic_search") if not pile_id.is_empty() else P.localized("explore_bag"), Rect2(90, 45, 710, 85), 44, P.GOLD)
 	ui.panel(Rect2(75, 145, 845, 800))
 	ui.panel(Rect2(955, 145, 900, 800))
-	ui.text("背包 %s / %s · 安全格 %s" % [items.size(), capacity, safe_slots.size()], Rect2(999, 193, 790, 50), 31, P.GOLD)
+	ui.text(P.localized("inventory_bag_summary") % [items.size(), capacity, safe_slots.size()], Rect2(999, 193, 790, 50), 31, P.GOLD)
 	ui.text(P.localized("drag_inventory_hint"), Rect2(999, 247, 790, 36), 22, P.MUTED)
 	var safe_slot_lookup: Dictionary = {}
 	var slot_order: Array = []
@@ -63,7 +64,7 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slot.text = marker_text
 		slot.add_theme_font_size_override("font_size", 16)
 		slot.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		slot.tooltip_text = P.localized_text(("安全格 · " if is_safe else "") + (Details.description(item) if not item.is_empty() else "空格"))
+		slot.tooltip_text = P.localized_text((P.localized("ui_safe_slot_prefix") if is_safe else "") + (Details.description(item) if not item.is_empty() else P.localized("empty_slot")))
 		if not is_safe: Art.button(slot, CELL)
 		if not item.is_empty():
 			# All occupied slots use the configured quality background and frame.
@@ -97,7 +98,7 @@ static func build(ui: Control, host: Control, state: Dictionary) -> void:
 		slots_grid.add_child(slot)
 	if pile_id.is_empty(): _equipment(ui, host, player, selected)
 	else: _relic(ui, host, state, pile_id, selected)
-	ui.button("返回", Rect2(80, 983, 245, 58), func(): host.set_meta("inventory_open", false); host._schedule_render())
+	ui.button(P.localized("back"), Rect2(80, 983, 245, 58), func(): host.set_meta("inventory_open", false); host._schedule_render())
 	ui.text(P.localized("safe_slot_hint"), Rect2(990, 704, 800, 60), 23, P.MUTED)
 
 static func _equipment(ui: Control, host: Control, player: Dictionary, selected: Dictionary) -> void:
@@ -108,18 +109,18 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 		var item: Dictionary = {}
 		for candidate in worn:
 			if candidate.get("equipment") is Dictionary and candidate.equipment.get("slot", "") == slot: item = candidate; break
-		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else "未穿戴"), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm("卸下这件防具并放入背包？", func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
+		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else P.localized("not_equipped")), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm(P.localized("unequip_confirm"), func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
-		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else "未穿戴")
+		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else P.localized("not_equipped"))
 	ui.text("%s +%s · %s" % [P.localized("signature_weapon"), player.get("weapon_level", 0), P.localized("locked")], Rect2(118, 598, 740, 44), 27, P.TEAL)
 	if selected.is_empty():
 		ui.text(P.localized("inventory_detail_hint"), Rect2(118, 670, 736, 102), 27, P.PAPER)
 	else:
 		_description(ui, host, selected, Rect2(118, 656, 730, 185))
 		if selected.get("kind", "") == "Equipment":
-			ui.button("对比 / 穿戴", Rect2(119, 850, 550, 62), func(): host._show_equipment_details(selected, func(): Game.command("inventory.equip", {"item_id": selected.item_id}), "穿戴 · 旧装放回背包"), not Game.allowed("inventory.equip"))
+			ui.button(P.localized("compare_equip"), Rect2(119, 850, 550, 62), func(): host._show_equipment_details(selected, func(): Game.command("inventory.equip", {"item_id": selected.item_id}), P.localized("equip_replace")), not Game.allowed("inventory.equip"))
 		elif selected.get("kind", "") == "HealthPotion":
-			ui.button("使用生命药剂", Rect2(119, 850, 550, 62), func(): Game.command("action.potion"), not Game.allowed("action.potion"))
+			ui.button(P.localized("use_health_potion"), Rect2(119, 850, 550, 62), func(): Game.command("action.potion"), not Game.allowed("action.potion"))
 
 static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: String, selected: Dictionary) -> void:
 	var summary: Dictionary = {}
@@ -128,10 +129,10 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	if summary.is_empty():
 		ui.text(P.localized("relic_unavailable"), Rect2(117, 235, 725, 130), 30, P.MUTED)
 		return
-	ui.text(str(summary.get("owner_name", "旅人")) + "的遗物", Rect2(115, 172, 730, 58), 31, P.GOLD)
+	ui.text(RemoteCopy.display_name(summary, "owner_name") + P.localized("relic_owner_suffix"), Rect2(115, 172, 730, 58), 31, P.GOLD, null, true, false)
 	var pile: Dictionary = Game.relic_details.get(pile_id, {})
 	var fresh: bool = not pile.is_empty() and int(pile.get("version", 0)) == int(summary.get("version", 0))
-	ui.button("刷新遗物", Rect2(620, 236, 232, 53), func(): Game.command("relic.read", {"pile_id": pile_id}), not Game.allowed("relic.read"))
+	ui.button(P.localized("refresh_relic"), Rect2(620, 236, 232, 53), func(): Game.command("relic.read", {"pile_id": pile_id}), not Game.allowed("relic.read"))
 	if not fresh:
 		ui.text(P.localized("relic_changed"), Rect2(115, 317, 730, 82), 27, P.MUTED)
 		return
@@ -152,11 +153,11 @@ static func _relic(ui: Control, host: Control, state: Dictionary, pile_id: Strin
 	if item.is_empty(): return
 	_description(ui, host, item, Rect2(117, 682, 727, 147))
 	if item.get("kind", "") == "Equipment":
-		ui.button("装备对比", Rect2(115, 236, 250, 53), func(): host._show_equipment_details(item))
+		ui.button(P.localized("compare_equipment_action"), Rect2(115, 236, 250, 53), func(): host._show_equipment_details(item))
 	var fits: bool = can_add(state.player, item)
 	var ready: bool = fits or not selected.is_empty()
 	var action: String = "relic.take" if fits else "relic.replace"
-	ui.button("拾取" if fits else ("放回选中物品，再拾取" if ready else "先选右侧物品放回本堆"), Rect2(118, 847, 738, 63), func():
+	ui.button(P.localized("take") if fits else (P.localized("replace_then_take") if ready else P.localized("select_item_to_return")), Rect2(118, 847, 738, 63), func():
 		var payload := {"pile_id": pile_id, "item_id": item.item_id, "pile_version": pile.version}
 		if not fits: payload.replace_item_id = selected.item_id
 		Game.command(action, payload), not ready or not Game.allowed(action))

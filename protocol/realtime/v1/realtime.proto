@@ -64,7 +64,7 @@ message RoomSet { string kind = 1; int32 count = 2; int32 required = 3; bool act
 message RoomBattleStatus { string passive_kind = 1; int32 combo = 2; string core_element = 3; repeated RoomStat bonuses = 4; repeated RoomSet sets = 5; string draw_interval_seconds = 6; int32 charge_level = 7; }
 message RoomEquipment { string slot = 1; string quality = 2; string element = 3; string effect_affix = 4; string secondary_trait = 5; int32 level = 6; bool is_bound = 7; }
 message RoomInventoryItem { string item_id = 1; string kind = 2; int32 quantity = 3; bool is_safe = 4; RoomEquipment equipment = 5; optional int32 slot_index = 6; }
-message RoomRelicPile { string pile_id = 1; string owner_name = 2; int64 version = 3; repeated RoomInventoryItem items = 4; }
+message RoomRelicPile { string pile_id = 1; string owner_name = 2; int64 version = 3; repeated RoomInventoryItem items = 4; optional bool owner_name_is_fallback = 5; }
 message RoomMonster {
   string monster_id = 1;
   int32 maximum_hp = 2;
@@ -96,6 +96,7 @@ message RoomDuel {
   int64 opponent_draw_block_remaining_ms = 13;
   bool separate_loot = 14;
   repeated RoomInventoryItem searchable_loot = 15;
+  optional bool opponent_name_is_fallback = 16;
 }
 message RoomCurrentCell { bool has_evacuation = 1; string monster_group_id = 2; bool spring_consumed = 3; repeated string relic_pile_ids = 4; repeated RoomRelicPile relic_piles = 5; }
 message RoomPlayer {

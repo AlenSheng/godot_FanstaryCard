@@ -108,6 +108,13 @@ def run(args):
     sources = list((root / "client/ui").glob("*.gd")) + list((root / "client/tests").glob("ui_*"))
     sources += [root / "client/tests" / (args.scene + ".gd"), root / "client/project.godot"]
     sources += list((root / "client/assets/fonts").glob("*.otf*"))
+    sources += list((root / "client/assets/fonts").glob("*.ttf*"))
+    sources += list((root / "client/data").rglob("*.json"))
+    sources += list((root / "client/ui").glob("*.tscn"))
+    sources += [Path(__file__).resolve()]
+    sources += list((root / "client").rglob("*.gd"))
+    sources += list((root / "client").rglob("*.tscn"))
+    sources = sorted(set(sources))
     pin = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sources}
     write_json(output / "source-pin.original.json", pin)
     try:
@@ -277,7 +284,8 @@ if __name__ == "__main__":
     parser.add_argument("--output", required=True, type=Path, help="New immutable evidence directory")
     parser.add_argument("--scripts-only", action="store_true")
     parser.add_argument("--card-regression", action="store_true")
-    parser.add_argument("--locale", choices=["zh-CN", "en"], default="zh-CN")
+    registry = json.loads((Path(__file__).resolve().parents[1] / "client/data/localization_registry.json").read_text(encoding="utf-8"))
+    parser.add_argument("--locale", choices=["zh-CN", "en"] + list(registry.get("languages", {})), default="zh-CN")
     parser.add_argument("--width", type=int, choices=[960, 1280, 1920], default=960)
     parser.add_argument("--screens", default="", help="Comma-separated screen families; empty means all")
     parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe", "ui_branch_sync_preview", "ui_steam_entry_review"], default="ui_visual_review")

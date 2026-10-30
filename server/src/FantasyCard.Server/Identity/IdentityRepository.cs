@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Players;
+using FantasyCard.Server.Mail;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
 using Npgsql;
@@ -147,48 +148,57 @@ public sealed class IdentityRepository(
         CancellationToken cancellationToken)
     {
         var mails = advancedEquipmentSet
-            ? new List<(string Title, string Body, string TitleEn, string BodyEn, object Attachments)>
+            ? new List<(string TemplateId, object Attachments)>
             {
-                ("测试邮件2：橙紫双词缀套装", "test2 测试账号奖励：头部橙色、其余紫色的同词缀套装，每件带效果词缀和第二词缀。", "Test Mail 2: Orange and Purple Equipment Set", "test2 reward: an orange head piece and purple pieces for the other slots, all with matching effect and secondary affixes.", MixedEquipmentSet("Orange", "Purple", "Metal", "Bulwark", "DrawInterval")),
-                ("测试邮件2：装备碎片", "test2 测试账号奖励：装备碎片 100000。", "Test Mail 2: Equipment Fragments", "test2 reward: 100,000 equipment fragments.", new[] { new { kind = "EquipmentFragments", amount = 100000L } })
+                ("seed2_mixed_set", MixedEquipmentSet("Orange", "Purple", "Metal", "Bulwark", "DrawInterval")),
+                ("seed2_fragments", new[] { new { kind = "EquipmentFragments", amount = 100000L } })
             }
-            : new List<(string Title, string Body, string TitleEn, string BodyEn, object Attachments)>
+            : new List<(string TemplateId, object Attachments)>
         {
-            ("测试邮件：金币", "测试账号奖励：金币 100000。", "Test Mail: Gold", "Test account reward: 100,000 gold.", new[] { new { kind = "Gold", amount = 100000L } }),
-            ("测试邮件：魂晶", "测试账号奖励：各类魂晶各 100000。", "Test Mail: Soul Crystals", "Test account reward: 100,000 of each soul crystal.", new object[] {
+            ("seed_gold", new[] { new { kind = "Gold", amount = 100000L } }),
+            ("seed_souls", new object[] {
                 new { kind = "WarriorSoul", amount = 100000L }, new { kind = "PriestSoul", amount = 100000L },
                 new { kind = "MageSoul", amount = 100000L }, new { kind = "GuardianSoul", amount = 100000L } }),
-            ("测试邮件：白色火系装备", "测试账号奖励：白色火系装备一套。", "Test Mail: White Fire Equipment", "Test account reward: a full set of white fire equipment.", EquipmentSet("White", "Fire")),
-            ("测试邮件：绿色水系装备", "测试账号奖励：绿色水系装备一套。", "Test Mail: Green Water Equipment", "Test account reward: a full set of green water equipment.", EquipmentSet("Green", "Water")),
-            ("测试邮件：蓝色土系装备", "测试账号奖励：蓝色土系装备一套。", "Test Mail: Blue Earth Equipment", "Test account reward: a full set of blue earth equipment.", EquipmentSet("Blue", "Earth")),
-            ("测试邮件：紫色木系装备", "测试账号奖励：紫色木系装备一套。", "Test Mail: Purple Wood Equipment", "Test account reward: a full set of purple wood equipment.", EquipmentSet("Purple", "Wood")),
-            ("测试邮件：橙色金系装备", "测试账号奖励：橙色金系装备一套。", "Test Mail: Orange Metal Equipment", "Test account reward: a full set of orange metal equipment.", EquipmentSet("Orange", "Metal"))
+            ("seed_white_fire", EquipmentSet("White", "Fire")),
+            ("seed_green_water", EquipmentSet("Green", "Water")),
+            ("seed_blue_earth", EquipmentSet("Blue", "Earth")),
+            ("seed_purple_wood", EquipmentSet("Purple", "Wood")),
+            ("seed_orange_metal", EquipmentSet("Orange", "Metal"))
         };
-        foreach (var mail in mails)
+        var catalog = SystemMailCatalog.Current;
+        var sender = catalog.Sender("system");
+        foreach (var (templateId, attachments) in mails)
         {
-            await using var command = new NpgsqlCommand("INSERT INTO mail_messages(mail_id,player_id,title,body,title_en,body_en,sender,attachments_json,sent_at) SELECT $1,$2,$3,$4,$5,$6,'System',$7::jsonb,$8 WHERE NOT EXISTS (SELECT 1 FROM mail_messages WHERE player_id=$2 AND title=$3)", connection, transaction);
+            var mail = catalog.Render(templateId);
+            var attachmentsJson = JsonSerializer.Serialize(attachments);
+            await using var command = new NpgsqlCommand(
+                "INSERT INTO mail_messages(mail_id,player_id,title,body,title_en,body_en,sender,attachments_json,sent_at,template_id,template_args,sender_role) SELECT $1,$2,$3,$4,$5,$6,$7,$8::jsonb,$9,$10,'{}'::jsonb,'system' WHERE NOT EXISTS (SELECT 1 FROM mail_messages WHERE player_id=$2 AND (template_id=$10 OR title=$3))",
+                connection, transaction);
             command.Parameters.AddWithValue(Guid.CreateVersion7());
             command.Parameters.AddWithValue(playerId);
             command.Parameters.AddWithValue(mail.Title);
             command.Parameters.AddWithValue(mail.Body);
             command.Parameters.AddWithValue(mail.TitleEn);
             command.Parameters.AddWithValue(mail.BodyEn);
-            command.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            command.Parameters.AddWithValue(sender);
+            command.Parameters.AddWithValue(attachmentsJson);
             command.Parameters.AddWithValue(now);
+            command.Parameters.AddWithValue(templateId);
             await command.ExecuteNonQueryAsync(cancellationToken);
 
-            // Test accounts may already have a mail created by an older build.
-            // Refresh only its deterministic display payload; claimed_at is left
-            // untouched, so this never grants the reward a second time.
+            // Repair only deterministic seed mail, never similarly titled admin prose.
+            // Preserve mail identity, claim/read timestamps and the existing reward behavior.
             await using var repair = new NpgsqlCommand(
-                "UPDATE mail_messages SET attachments_json=$1::jsonb,body=$2,title_en=$3,body_en=$4,version=version+1 WHERE player_id=$5 AND title=$6 AND (attachments_json IS DISTINCT FROM $1::jsonb OR body IS DISTINCT FROM $2 OR title_en IS DISTINCT FROM $3 OR body_en IS DISTINCT FROM $4)",
+                "UPDATE mail_messages SET attachments_json=$1::jsonb,body=$2,title_en=$3,body_en=$4,template_id=$7,template_args='{}'::jsonb,sender_role='system',version=version+1 WHERE player_id=$5 AND (template_id=$7 OR (template_id='' AND title=$6)) AND (sender_role='system' OR (sender_role='' AND sender=$8)) AND (attachments_json IS DISTINCT FROM $1::jsonb OR body IS DISTINCT FROM $2 OR title_en IS DISTINCT FROM $3 OR body_en IS DISTINCT FROM $4 OR template_id IS DISTINCT FROM $7 OR template_args IS DISTINCT FROM '{}'::jsonb OR sender_role IS DISTINCT FROM 'system')",
                 connection, transaction);
-            repair.Parameters.AddWithValue(JsonSerializer.Serialize(mail.Attachments));
+            repair.Parameters.AddWithValue(attachmentsJson);
             repair.Parameters.AddWithValue(mail.Body);
             repair.Parameters.AddWithValue(mail.TitleEn);
             repair.Parameters.AddWithValue(mail.BodyEn);
             repair.Parameters.AddWithValue(playerId);
             repair.Parameters.AddWithValue(mail.Title);
+            repair.Parameters.AddWithValue(templateId);
+            repair.Parameters.AddWithValue(sender);
             await repair.ExecuteNonQueryAsync(cancellationToken);
         }
     }

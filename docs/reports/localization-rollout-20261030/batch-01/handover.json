@@ -1,0 +1,47 @@
+{
+  "batch": "01",
+  "scope": "Add Spanish and consolidate all fixed game copy across zh-CN/en/es",
+  "candidate_commit": "Recorded in the review dispatch message",
+  "runtime_source_pin": "docs/reports/localization-rollout-20261030/batch-01/candidate-source-pin.json",
+  "languages": ["zh-CN", "en", "es"],
+  "strings_per_language": 826,
+  "full_card_names_per_language": 232,
+  "canonical_tables": "client/data/locales/<code>.json",
+  "registry": "client/data/localization_registry.json",
+  "fixed_copy_audit": "docs/reports/localization-rollout-20261030/batch-01/hardcoded-audit-current.json",
+  "table_audit": "docs/reports/localization-rollout-20261030/batch-01/tables-audit-current.json",
+  "native_ui_evidence": "docs/reports/localization-rollout-20261030/batch-01/local-ui-evidence.json",
+  "native_ui_frames": 495,
+  "native_ui_checks": 42669,
+  "screen_sizes": ["960x540", "1280x720", "1920x1080"],
+  "native_ui_mode": "Real production controls, deterministic offline fixtures, inactive Windows desktop; no real game matches",
+  "local_fixes": [
+    "Fixed copy moved from GDScript literals and bilingual dictionaries to per-locale tables",
+    "Single-pass legacy substitution avoids re-translating Spanish output",
+    "Ban matching uses stable protocol prefixes; visible labels remain localized",
+    "Cached client-owned configuration errors retain message keys and opaque arguments across language changes",
+    "Player names and administrator-authored titles, senders and bodies remain verbatim",
+    "Full card names are retained in details and tooltips; optional short face names fit both 170px codex and 140px shop labels",
+    "Elemental stat labels use complete locale templates instead of word concatenation",
+    "Class base health is normalized back to integer after JSON loading",
+    "Button text widths and ordinary-label complete lines are checked in native UI"
+  ],
+  "typography_policy": {
+    "ordinary_fitting_minimum_design_px": 20,
+    "authored_smaller_annotations_keep_authored_size": true,
+    "codex_card_summary_design_px": 16,
+    "long_card_summary": "Intentional one-line ellipsis; complete effects remain in tooltip and details",
+    "short_face_names": "Near-meaning labels; full names remain unchanged in detail surfaces"
+  },
+  "review_requirements": [
+    "Independently verify the actual delivered game UI, not only these self-test results",
+    "Inspect source pin and locale/table integrity, formatting, switching, fallback, glyph coverage, clipping and readable sizes",
+    "Run suitable existing regressions and repeat native checks with original evidence preserved",
+    "Report actionable failures or an evidence-backed batch pass without deploying or restarting services"
+  ],
+  "review_output": "docs/reports/localization-rollout-20261030/batch-01/independent-review.json",
+  "website": "Deferred by the user. Local website drafts remain uncommitted and are excluded from this game batch; do not block game review on browser permission",
+  "target_80_percent": "Not achieved. Current CLDR overlap bound alone cannot establish 80%; separate research reports preserve this limitation",
+  "game_batch_passed": false,
+  "deployed": false
+}

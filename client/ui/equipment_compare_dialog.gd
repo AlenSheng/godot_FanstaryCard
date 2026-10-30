@@ -5,7 +5,6 @@ const Art = preload("res://ui/art.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const CompareModel = preload("res://ui/equipment_compare_model.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
-const COPY = preload("res://data/equipment_compare_text.json")
 
 const POSITIVE := Color("62dc83")
 const NEGATIVE := Color("ef5c5c")
@@ -179,9 +178,9 @@ func _affix_card(parent: Node, item: Dictionary, tint: Color) -> void:
 	var icon := Art.image(row, Art.texture(_affix_icon(contribution.kind)), Vector2(42, 42))
 	icon.modulate = tint.lightened(0.12)
 	var name_label := _label(row, P.word(contribution.kind) + "：", 20, Art.quality_color(CompareModel.gear(item).get("quality", "White")), "title")
-	name_label.custom_minimum_size.x = 90
+	name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	var description := _label(row, _affix_text(contribution), 19, tint)
+	var description := _label(panel, _affix_text(contribution), 19, tint)
 	description.name = "AffixDescription"
 	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	description.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
@@ -273,8 +272,9 @@ func _label(parent: Node, text: String, size: int, color: Color, role: String = 
 	label.add_theme_font_override("font", P.font(role))
 	label.add_theme_font_size_override("font_size", size)
 	label.add_theme_color_override("font_color", color)
-	label.autowrap_mode = TextServer.AUTOWRAP_OFF
-	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	label.autowrap_mode = TextServer.AUTOWRAP_OFF if role == "number" else TextServer.AUTOWRAP_WORD_SMART
+	label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	label.custom_minimum_size.x = 0
 	label.custom_minimum_size.y = ceilf(float(size) * 1.4)
 	parent.add_child(label)
 	return label
@@ -333,7 +333,7 @@ func _signed_percent(value: float) -> String:
 
 func _t(key: String) -> String:
 	var language := P.language()
-	var table: Dictionary = COPY.data.get(language, COPY.data.get("zh-CN", {}))
+	var table: Dictionary = P.language_pack_section("equipment_compare")
 	return str(table.get(key, key))
 
 func _unhandled_key_input(event: InputEvent) -> void:
