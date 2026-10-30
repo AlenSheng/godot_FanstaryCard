@@ -1,0 +1,23 @@
+{
+  "batch": "04",
+  "locales": [
+    "ja",
+    "ko"
+  ],
+  "status": "translation_and_detection_preparation",
+  "base_code_commit": "526688fd74e0494876fe4590b9a7ae8bd85afb99",
+  "passed": false,
+  "deployed": false,
+  "external_task_review_required": false,
+  "final_group": true,
+  "stop_after_this_group": true,
+  "population_80_percent_required": false,
+  "font_preparation": "Existing bundled Source Han fonts cover 176 kana and all 11172 modern Hangul syllables; hani/kana/hang GSUB language systems include JAN and KOR. Verify native shaping and actual UI.",
+  "required_work": [
+    "Complete Japanese and Korean packs",
+    "Japanese-aware leftover Chinese detection that permits valid Kanji",
+    "Actual glyph/card/UI validation and safe frame/card geometry",
+    "Commit, guarded cloud update/restart, external health",
+    "Stop new languages and remove heartbeat after success"
+  ]
+}

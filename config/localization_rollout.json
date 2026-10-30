@@ -69,10 +69,24 @@
         "ar",
         "ru"
       ],
-      "status": "self_validated_awaiting_deploy",
+      "status": "released_deployed",
       "passed": true,
+      "deployed": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-03/self-validation-final-r1.json",
+      "deployed_code_commit": "526688fd74e0494876fe4590b9a7ae8bd85afb99",
+      "deployment_evidence": "docs/reports/localization-rollout-20261030/batch-03/deployment-completed-r1.json"
+    },
+    {
+      "id": "04",
+      "locales": [
+        "ja",
+        "ko"
+      ],
+      "status": "translation_and_detection_preparation",
+      "passed": false,
       "deployed": false,
-      "evidence": "docs/reports/localization-rollout-20261030/batch-03/self-validation-final-r1.json"
+      "final_group": true,
+      "evidence": "docs/reports/localization-rollout-20261030/batch-04/state.json"
     }
   ],
   "target_reached": false,
