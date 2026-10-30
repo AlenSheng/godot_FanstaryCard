@@ -31,6 +31,10 @@ def update_base_documents(available):
         if '/assets/fonts/relicbound-sans.woff2' not in text:
             preloads = ''.join(f'<link rel="preload" href="/assets/fonts/relicbound-{role}.woff2" as="font" type="font/woff2" crossorigin>\n  ' for role in ["sans", "serif"])
             text = text.replace('<link rel="stylesheet"', preloads + '<link rel="stylesheet"', 1)
+        fonts = load(SITE / "assets/fonts/manifest.json")
+        for role in ("sans", "serif"):
+            url = "/assets/fonts/" + fonts[role]["file"]
+            text = re.sub(re.escape(url) + r'(?:\?v=[a-f0-9]+)?', url + "?v=" + fonts[role]["sha256"][:12], text)
         page.write_text(text, encoding="utf-8")
 
 
