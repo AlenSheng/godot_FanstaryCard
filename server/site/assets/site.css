@@ -42,16 +42,10 @@ p{line-height:1.9}
 html body :is(.section-kicker,.micro-label,.feature-number,.release-note,.brand-alias){font-size:max(14px,.875rem);overflow-wrap:anywhere}
 .site-header nav{flex-wrap:wrap}
 .button-row .button{height:auto;min-height:44px;white-space:normal;text-align:center;overflow-wrap:anywhere}
-html[dir=rtl] body{text-align:start}
-/* Keep the shared artwork and the top-right selector in the same viewport frame. */
-html[dir=rtl] .site-header,html[dir=rtl] .hero,html[dir=rtl] .season-hero{direction:ltr}
-html[dir=rtl] .site-header nav,html[dir=rtl] .header-actions,html[dir=rtl] .hero-content,html[dir=rtl] .season-hero-copy{direction:rtl}
-html[dir=rtl] .site-header nav{margin-left:auto;margin-right:0}
-html[dir=rtl] .hero-content{max-width:calc(36rem + 2 * var(--gutter))}
-html[dir=rtl] .brand{direction:ltr;text-align:left}
-html[dir=rtl] .language-toggle{padding-inline:2rem .8rem;background-position:left .7rem center}
-html[dir=rtl] .class-preview-copy>p:last-of-type{padding-right:0;padding-left:1rem}
-html[dir=rtl] .card-arrow{right:auto;left:1.4rem}
+/* All locales share one physical layout; RTL belongs to authored text only.
+   Inheriting RTL on flex/grid containers also reverses navigation and cards. */
+html[dir=rtl] body{direction:ltr;text-align:left}
+html[dir=rtl] :is([data-i18n],[data-l10n-extra],.language-status){direction:rtl;unicode-bidi:isolate;text-align:inherit}
 html[lang=ar] :is(h1,h2,h3,h4,.section-kicker,.season-badge,.class-role,.micro-label),html[lang=hi] :is(h1,h2,h3,h4,.section-kicker,.season-badge,.class-role,.micro-label){letter-spacing:normal}
 html[lang=ar] :is(h1,h2),html[lang=hi] :is(h1,h2){line-height:1.5}
 .menu-toggle{display:none;width:44px;height:44px;border:1px solid var(--line);background:transparent;cursor:pointer}
