@@ -26,7 +26,7 @@ def update_base_documents(available):
         text, count = pattern.subn(lambda _: selector, text)
         if count != 1:
             raise ValueError(f"Expected one language selector: {page.name}")
-        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-1', text)
+        text = re.sub(r'/assets/site\.(css|js)\?v=[^"\s]+', r'/assets/site.\1?v=20261030-2', text)
         if '/assets/fonts/relicbound-sans.woff2' not in text:
             preloads = ''.join(f'<link rel="preload" href="/assets/fonts/relicbound-{role}.woff2" as="font" type="font/woff2" crossorigin>\n  ' for role in ["sans", "serif"])
             text = text.replace('<link rel="stylesheet"', preloads + '<link rel="stylesheet"', 1)

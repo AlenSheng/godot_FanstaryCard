@@ -11,14 +11,6 @@
   for (const option of languageButton.options) {
     if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(option.value)) languageRegistry.set(option.value, {code: option.value, name: option.text});
   }
-  try {
-    const response = await fetch('/assets/locales/manifest.json');
-    if (response.ok) {
-      for (const entry of (await response.json()).languages || []) {
-        if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(entry.code) && typeof entry.name === 'string' && entry.name.trim()) languageRegistry.set(entry.code, entry);
-      }
-    }
-  } catch { /* The original languages remain available when offline. */ }
   const languages = [...languageRegistry.values()];
   languageButton.replaceChildren(...languages.map(entry => new Option(entry.name, entry.code)));
   if (previousLanguageButton !== languageButton) previousLanguageButton?.replaceWith(languageButton);
@@ -27,6 +19,21 @@
   languageStatus.setAttribute('role', 'status');
   languageStatus.setAttribute('aria-live', 'polite');
   languageButton.after(languageStatus);
+  // The generated HTML already lists every published locale. Registry refresh
+  // must not block the selector or navigation on a slow first connection.
+  const refreshLanguageRegistry = async () => {
+    try {
+      const response = await fetch('/assets/locales/manifest.json');
+      if (!response.ok) return;
+      for (const entry of (await response.json()).languages || []) {
+        if (/^[a-z]{2,3}(?:-[A-Za-z]{2,4})?$/.test(entry.code) && typeof entry.name === 'string' && entry.name.trim() && !languageRegistry.has(entry.code)) {
+          languageRegistry.set(entry.code, entry);
+          languages.push(entry);
+          languageButton.add(new Option(entry.name, entry.code));
+        }
+      }
+    } catch { /* Static language options remain usable when offline. */ }
+  };
   const packs = new Map();
   let activePack = {};
   let requestedLanguage = 0;
@@ -125,6 +132,7 @@
   });
   languageButton.disabled = false;
   languageButton.removeAttribute('aria-busy');
+  void refreshLanguageRegistry();
   menuButton?.addEventListener('click', () => setMenuOpen(menuButton.getAttribute('aria-expanded') !== 'true'));
   navigation?.addEventListener('click', (event) => {
     if (event.target.closest('a')) setMenuOpen(false);
