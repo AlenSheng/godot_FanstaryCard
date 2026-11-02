@@ -3,40 +3,191 @@
   "source_zip_sha256": "ac593d3600b4c68dac4f136b0bee1808899ecf0a452b59e02605fe8b2018b64c",
   "overall_status": "in_progress",
   "items": [
-    {"id":"A01","status":"complete","requirement":"原件、39项包内清单、新旧规则差异和实施范围冻结","evidence":["source/manifest.json","source/Season_Balance_Design.md","README.md","../../GDD.md"]},
-    {"id":"A02","status":"in_progress","requirement":"42日默认、30至60日、上海时区、左闭右开与04点业务日分离","evidence":[],"note":"SeasonDefinition与SeasonContext及边界测试已编写，尚未执行，尚未接入生产配置与服务端持久化。"},
-    {"id":"A03","status":"pending","requirement":"永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离"},
-    {"id":"A04","status":"pending","requirement":"准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本"},
-    {"id":"A05","status":"pending","requirement":"跨季停止旧准备、市场退回、旧房收尾、分页归档任务、满仓托管与失败恢复"},
-    {"id":"B01","status":"pending","requirement":"v0.70黄金向量与职业合法70/80/100生命保持，通过真实Resolver回归"},
-    {"id":"B02","status":"pending","requirement":"R小于2清连携且无本命即时抽牌；R至少2保留节奏并限制到实际消耗减1"},
-    {"id":"B03","status":"pending","requirement":"两次成功连放至少500ms，同combatActionId幂等，重连与快照恢复不绕过"},
-    {"id":"B04","status":"pending","requirement":"新季有效PVE正伤害意图减免后最低1，取消/纯效果/免疫/PVP/旧房排除"},
-    {"id":"B05","status":"pending","requirement":"合法完整卡组、水系调节、蓄能、满手轮空与真实击杀加入怪物卡，禁同时间循环"},
-    {"id":"C01","status":"pending","requirement":"正式Excel配置源、五行元数据、强校验、双端Protobuf导出、版本与哈希"},
-    {"id":"C02","status":"pending","requirement":"D0至D5生命/盾/意图/间隔、基点取整顺序、Boss相对阶段阈值与解锁"},
-    {"id":"C03","status":"pending","requirement":"卡与专武有效等级帽、三职业合法20张借用模板、PVE/PVP同一投影"},
-    {"id":"C04","status":"pending","requirement":"难度/格类型掉落矩阵、一次升档、外层帽、所有来源最终帽与入场品质帽"},
-    {"id":"C05","status":"pending","requirement":"新季statsVersion、五品质及红装属性、鞋词条、有效抗性/溢出和抽牌地板"},
-    {"id":"C06","status":"pending","requirement":"防具强化60/780碎基准、重铸6碎、真实同品质材料、红390碎与专武248碎分离"},
-    {"id":"C07","status":"pending","requirement":"印记独立来源、品质门槛、定向元素与效果心愿、首件尾部保底"},
-    {"id":"C08","status":"pending","requirement":"原始样本一次提取、配方按季、重铸1入1出、绑定/来源继承及并发幂等"},
-    {"id":"C09","status":"pending","requirement":"独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整"},
-    {"id":"C10","status":"pending","requirement":"机器人战斗投影与可带出实物隔离、真实死亡及来源/材料/每局奖励限制"},
-    {"id":"C11","status":"pending","requirement":"每逻辑服周红唯一铸造、D2以上Boss独立0.4%、跨季跨周/多渠道并发及完整物品履历"},
-    {"id":"C12","status":"pending","requirement":"双币固定价市场、共享8栏/48h/卖方10%税、价格帽、托管竞争、旧季退回和筛选"},
-    {"id":"C13","status":"pending","requirement":"商店原价原日限、04点并发、跨季不重复额度、资源与金币账分离"},
-    {"id":"C14","status":"pending","requirement":"42天两次三日活动、每期12绑定章共享预算、原季晚领、去重与红配额"},
-    {"id":"C15","status":"pending","requirement":"逐级经验、契约、前20级主奖励、最多2倍追赶、账号/赛季奖励唯一性"},
-    {"id":"C16","status":"pending","requirement":"主题与怪组配置、Boss策略、至少三类有效构筑，先同图六档后扩主题"},
-    {"id":"D01","status":"pending","requirement":"三职业/六成长/六难度/元素/怪组/怪物卡与健康边界真实领域战斗矩阵"},
-    {"id":"D02","status":"pending","requirement":"先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建"},
-    {"id":"D03","status":"pending","requirement":"分人群P50/P90及清格目标、职业效率差异、D5无需红装及可持续三账"},
-    {"id":"D04","status":"pending","requirement":"低基数遥测、系统新增/转移/托管/销毁/归档分账及小时净来源"},
-    {"id":"E01","status":"pending","requirement":"品质帽、有效等级/超帽、理论/生效/溢出、借用、配方与归档UI"},
-    {"id":"E02","status":"pending","requirement":"受影响全部语言与分辨率真实渲染、文本清晰、无遮挡、协议与分页完整"},
-    {"id":"F01","status":"pending","requirement":"第1/7/14日分人群赛季场景与最高开放难度放行证据"},
-    {"id":"F02","status":"pending","requirement":"实际PostgreSQL事务、并发/重复/重启/跨季边界与新旧版本恢复自检"},
-    {"id":"F03","status":"pending","requirement":"发布分支集成、固定提交远端推送、数据库备份、服务器重启与公网核验"}
+    {
+      "id": "A01",
+      "status": "complete",
+      "requirement": "原件、39项包内清单、新旧规则差异和实施范围冻结",
+      "evidence": [
+        "source/manifest.json",
+        "source/Season_Balance_Design.md",
+        "README.md",
+        "../../GDD.md"
+      ]
+    },
+    {
+      "id": "A02",
+      "status": "complete",
+      "requirement": "42日默认、30至60日、上海时区、左闭右开与04点业务日分离",
+      "evidence": [
+        "evidence/A02/result.json",
+        "evidence/A02/a02.trx"
+      ],
+      "note": "SeasonDefinition and SeasonContext domain invariants; runtime/configuration/persistence integration is tracked separately by A04 and C01."
+    },
+    {
+      "id": "A03",
+      "status": "pending",
+      "requirement": "永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离"
+    },
+    {
+      "id": "A04",
+      "status": "pending",
+      "requirement": "准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本"
+    },
+    {
+      "id": "A05",
+      "status": "pending",
+      "requirement": "跨季停止旧准备、市场退回、旧房收尾、分页归档任务、满仓托管与失败恢复"
+    },
+    {
+      "id": "B01",
+      "status": "pending",
+      "requirement": "v0.70黄金向量与职业合法70/80/100生命保持，通过真实Resolver回归"
+    },
+    {
+      "id": "B02",
+      "status": "pending",
+      "requirement": "R小于2清连携且无本命即时抽牌；R至少2保留节奏并限制到实际消耗减1"
+    },
+    {
+      "id": "B03",
+      "status": "pending",
+      "requirement": "两次成功连放至少500ms，同combatActionId幂等，重连与快照恢复不绕过"
+    },
+    {
+      "id": "B04",
+      "status": "pending",
+      "requirement": "新季有效PVE正伤害意图减免后最低1，取消/纯效果/免疫/PVP/旧房排除"
+    },
+    {
+      "id": "B05",
+      "status": "pending",
+      "requirement": "合法完整卡组、水系调节、蓄能、满手轮空与真实击杀加入怪物卡，禁同时间循环"
+    },
+    {
+      "id": "C01",
+      "status": "pending",
+      "requirement": "正式Excel配置源、五行元数据、强校验、双端Protobuf导出、版本与哈希"
+    },
+    {
+      "id": "C02",
+      "status": "pending",
+      "requirement": "D0至D5生命/盾/意图/间隔、基点取整顺序、Boss相对阶段阈值与解锁"
+    },
+    {
+      "id": "C03",
+      "status": "pending",
+      "requirement": "卡与专武有效等级帽、三职业合法20张借用模板、PVE/PVP同一投影"
+    },
+    {
+      "id": "C04",
+      "status": "pending",
+      "requirement": "难度/格类型掉落矩阵、一次升档、外层帽、所有来源最终帽与入场品质帽"
+    },
+    {
+      "id": "C05",
+      "status": "pending",
+      "requirement": "新季statsVersion、五品质及红装属性、鞋词条、有效抗性/溢出和抽牌地板"
+    },
+    {
+      "id": "C06",
+      "status": "pending",
+      "requirement": "防具强化60/780碎基准、重铸6碎、真实同品质材料、红390碎与专武248碎分离"
+    },
+    {
+      "id": "C07",
+      "status": "pending",
+      "requirement": "印记独立来源、品质门槛、定向元素与效果心愿、首件尾部保底"
+    },
+    {
+      "id": "C08",
+      "status": "pending",
+      "requirement": "原始样本一次提取、配方按季、重铸1入1出、绑定/来源继承及并发幂等"
+    },
+    {
+      "id": "C09",
+      "status": "pending",
+      "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整"
+    },
+    {
+      "id": "C10",
+      "status": "pending",
+      "requirement": "机器人战斗投影与可带出实物隔离、真实死亡及来源/材料/每局奖励限制"
+    },
+    {
+      "id": "C11",
+      "status": "pending",
+      "requirement": "每逻辑服周红唯一铸造、D2以上Boss独立0.4%、跨季跨周/多渠道并发及完整物品履历"
+    },
+    {
+      "id": "C12",
+      "status": "pending",
+      "requirement": "双币固定价市场、共享8栏/48h/卖方10%税、价格帽、托管竞争、旧季退回和筛选"
+    },
+    {
+      "id": "C13",
+      "status": "pending",
+      "requirement": "商店原价原日限、04点并发、跨季不重复额度、资源与金币账分离"
+    },
+    {
+      "id": "C14",
+      "status": "pending",
+      "requirement": "42天两次三日活动、每期12绑定章共享预算、原季晚领、去重与红配额"
+    },
+    {
+      "id": "C15",
+      "status": "pending",
+      "requirement": "逐级经验、契约、前20级主奖励、最多2倍追赶、账号/赛季奖励唯一性"
+    },
+    {
+      "id": "C16",
+      "status": "pending",
+      "requirement": "主题与怪组配置、Boss策略、至少三类有效构筑，先同图六档后扩主题"
+    },
+    {
+      "id": "D01",
+      "status": "pending",
+      "requirement": "三职业/六成长/六难度/元素/怪组/怪物卡与健康边界真实领域战斗矩阵"
+    },
+    {
+      "id": "D02",
+      "status": "pending",
+      "requirement": "先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建"
+    },
+    {
+      "id": "D03",
+      "status": "pending",
+      "requirement": "分人群P50/P90及清格目标、职业效率差异、D5无需红装及可持续三账"
+    },
+    {
+      "id": "D04",
+      "status": "pending",
+      "requirement": "低基数遥测、系统新增/转移/托管/销毁/归档分账及小时净来源"
+    },
+    {
+      "id": "E01",
+      "status": "pending",
+      "requirement": "品质帽、有效等级/超帽、理论/生效/溢出、借用、配方与归档UI"
+    },
+    {
+      "id": "E02",
+      "status": "pending",
+      "requirement": "受影响全部语言与分辨率真实渲染、文本清晰、无遮挡、协议与分页完整"
+    },
+    {
+      "id": "F01",
+      "status": "pending",
+      "requirement": "第1/7/14日分人群赛季场景与最高开放难度放行证据"
+    },
+    {
+      "id": "F02",
+      "status": "pending",
+      "requirement": "实际PostgreSQL事务、并发/重复/重启/跨季边界与新旧版本恢复自检"
+    },
+    {
+      "id": "F03",
+      "status": "pending",
+      "requirement": "发布分支集成、固定提交远端推送、数据库备份、服务器重启与公网核验"
+    }
   ]
 }
