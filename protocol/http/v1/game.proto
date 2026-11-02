@@ -38,6 +38,37 @@ message BootstrapResponse {
   repeated MarketListingResponse market = 15;
   MailListResponse mail = 16;
   PreparationResponse active_preparation = 17;
+  SeasonSummaryResponse season = 18;
+}
+
+message SeasonWalletResponse {
+  string season_id = 1;
+  int64 gold = 2;
+  int64 equipment_fragments = 3;
+  int64 challenge_marks = 4;
+  int64 version = 5;
+  optional string archived_at = 6;
+  bool can_fund_weapon = 7;
+}
+
+message SeasonSummaryResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string ruleset_id = 3;
+  optional string config_version = 4;
+  optional string stats_version = 5;
+  optional string starts_at = 6;
+  optional string ends_at = 7;
+  int32 highest_open_difficulty = 8;
+  int32 highest_unlocked_difficulty = 9;
+  int32 effective_level_cap = 10;
+  int64 historical_equipment_fragments = 11;
+  optional string next_season_id = 12;
+  optional string next_starts_at = 13;
+  SeasonWalletResponse wallet = 14;
+  repeated SeasonWalletResponse fragment_wallets = 15;
+  bool has_joined = 16;
+  string difficulty_id = 17;
 }
 
 message LocalSignInRequest {
@@ -357,6 +388,12 @@ message EquipmentResponse {
   optional string element = 8;
   optional string effect_affix = 9;
   optional string secondary_trait = 10;
+  optional string origin_season_id = 11;
+  optional string season_id = 12;
+  optional string asset_scope = 13;
+  optional string stats_version = 14;
+  optional string source_kind = 15;
+  optional bool recipe_extracted = 16;
 }
 
 message LoadoutResponse {
@@ -381,6 +418,13 @@ message InventoryResponse {
   InventorySummaryResponse summary = 1;
   repeated EquipmentResponse equipments = 2;
   InventoryConsumablesResponse consumables = 3;
+  InventoryScopeResponse scope = 4;
+}
+
+message InventoryScopeResponse {
+  string state = 1;
+  optional string season_id = 2;
+  bool read_only = 3;
 }
 
 message UpdateLoadoutRequest {
@@ -391,6 +435,7 @@ message UpdateLoadoutRequest {
 message EnhanceEquipmentRequest {
   int64 expected_version = 1;
   optional string material_equipment_id = 2;
+  optional string fragment_source_season_id = 3;
 }
 
 message EnhancementQuoteResponse {
@@ -405,12 +450,16 @@ message EnhancementQuoteResponse {
   int32 available_material_count = 9;
   bool can_enhance = 10;
   optional string blocked_reason = 11;
+  optional string fragment_source_season_id = 12;
+  optional int64 fragment_wallet_version = 13;
 }
 
 message EnhanceResult {
   EquipmentResponse equipment = 1;
   int64 equipment_fragments = 2;
   optional string consumed_material_equipment_id = 3;
+  optional string fragment_source_season_id = 4;
+  optional int64 fragment_wallet_version = 5;
 }
 
 message CardListResponse { repeated CardResponse items = 1; }

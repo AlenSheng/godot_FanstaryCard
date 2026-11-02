@@ -1,5 +1,5 @@
 {
-  "sha256": "724b596011aa577fadebe6d2d38a5ee6274f79035e83591c28ebf52daa2e5031",
+  "sha256": "cac9fb243e26160219d8442163dcaeeb16810b3cd39bb0d37de2c8ec758e45d0",
   "messages": {
     "Empty": {},
     "UnfinishedMatchResponse": {
@@ -134,6 +134,160 @@
       "17": {
         "name": "active_preparation",
         "type": "PreparationResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "season",
+        "type": "SeasonSummaryResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonWalletResponse": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equipment_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "challenge_marks",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "archived_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "can_fund_weapon",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonSummaryResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "ruleset_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "highest_open_difficulty",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "highest_unlocked_difficulty",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "effective_level_cap",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "historical_equipment_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "next_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "next_starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "wallet",
+        "type": "SeasonWalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "fragment_wallets",
+        "type": "SeasonWalletResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "16": {
+        "name": "has_joined",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "difficulty_id",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -1422,6 +1576,42 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      },
+      "11": {
+        "name": "origin_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "12": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "asset_scope",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "source_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "16": {
+        "name": "recipe_extracted",
+        "type": "bool",
+        "repeated": false,
+        "optional": true
       }
     },
     "LoadoutResponse": {
@@ -1502,6 +1692,32 @@
         "type": "InventoryConsumablesResponse",
         "repeated": false,
         "optional": false
+      },
+      "4": {
+        "name": "scope",
+        "type": "InventoryScopeResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "InventoryScopeResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "read_only",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "UpdateLoadoutRequest": {
@@ -1527,6 +1743,12 @@
       },
       "2": {
         "name": "material_equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "fragment_source_season_id",
         "type": "string",
         "repeated": false,
         "optional": true
@@ -1598,6 +1820,18 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      },
+      "12": {
+        "name": "fragment_source_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "fragment_wallet_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
       }
     },
     "EnhanceResult": {
@@ -1616,6 +1850,18 @@
       "3": {
         "name": "consumed_material_equipment_id",
         "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "fragment_source_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "fragment_wallet_version",
+        "type": "int64",
         "repeated": false,
         "optional": true
       }

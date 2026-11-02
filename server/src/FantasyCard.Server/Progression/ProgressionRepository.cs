@@ -25,26 +25,46 @@ public sealed record SaveDeckResult(SaveDeckStatus Status, DeckResponse? Deck = 
 public enum SaveLoadoutStatus { Updated, VersionConflict, NotFound, AssetUnavailable }
 public sealed record SaveLoadoutResult(SaveLoadoutStatus Status, LoadoutResponse? Loadout = null, string? Detail = null);
 
-public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
+public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, TimeProvider? timeProvider = null)
 {
     private static readonly string[] EquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
 
     public async Task<InventoryResponse> GetInventoryAsync(Guid playerId, CancellationToken cancellationToken)
     {
+        var schedule = await new SeasonRepository(dataSource, timeProvider ?? TimeProvider.System).GetScheduleAsync(cancellationToken);
+        return await GetInventoryForScheduleAsync(playerId, schedule, cancellationToken);
+    }
+
+    internal async Task<InventoryResponse> GetInventoryForScheduleAsync(
+        Guid playerId, SeasonScheduleSnapshot schedule, CancellationToken cancellationToken)
+    {
+        var context = schedule.Current?.ContextFor(0);
+        var scopeFilter = context is not null ? "e.season_id=$2 AND e.asset_scope='ActiveSeason'"
+            : schedule.LegacyAllowed ? "e.season_id IS NULL AND e.asset_scope IS NULL" : "false";
         var items = new List<EquipmentResponse>();
         await using (var command = dataSource.CreateCommand(
-            """
+            $"""
             SELECT instance_id, slot, quality, level, is_bound, location, version,
-                   element, effect_affix, secondary_trait
-            FROM equipments
-            WHERE owner_id = $1 AND location IN ('Inventory', 'Equipped')
+                   element, effect_affix, secondary_trait,origin_season_id,season_id,asset_scope,
+                   stats_version,source_kind,recipe_extracted
+            FROM equipments e
+            WHERE owner_id = $1 AND location IN ('Inventory', 'Equipped') AND ({scopeFilter})
             ORDER BY CASE location WHEN 'Equipped' THEN 0 ELSE 1 END, created_at, instance_id
             """))
         {
             command.Parameters.AddWithValue(playerId);
+            if (context is not null) command.Parameters.AddWithValue(context.SeasonId);
             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken))
-                items.Add(ReadEquipment(reader));
+                items.Add(ReadEquipment(reader) with
+                {
+                    OriginSeasonId = reader.IsDBNull(10) ? null : reader.GetString(10),
+                    SeasonId = reader.IsDBNull(11) ? null : reader.GetString(11),
+                    AssetScope = reader.IsDBNull(12) ? null : reader.GetString(12),
+                    StatsVersion = reader.IsDBNull(13) ? null : reader.GetString(13),
+                    SourceKind = reader.IsDBNull(14) ? null : reader.GetString(14),
+                    RecipeExtracted = reader.IsDBNull(12) ? null : reader.GetBoolean(15)
+                });
         }
 
         InventoryConsumablesResponse consumables;
@@ -66,7 +86,11 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
         return new InventoryResponse(
             new InventorySummaryResponse(50, inventoryEquipmentCount, Math.Max(0, 50 - inventoryEquipmentCount)),
             items,
-            consumables);
+            consumables)
+        {
+            Scope = context is not null ? new("ActiveSeason", context.SeasonId, false)
+                : schedule.LegacyAllowed ? null : new("Closed", null, true)
+        };
     }
 
     public async Task<LoadoutResponse?> GetLoadoutAsync(
@@ -198,6 +222,8 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
 
     public async Task<EnhanceResult> EnhanceEquipmentAsync(Guid playerId, Guid equipmentId, string requestId, EnhanceEquipmentRequest request, CancellationToken cancellationToken)
     {
+        if (request.FragmentSourceSeasonId is not null)
+            throw new DomainValidationException("Armor enhancement cannot use a permanent-weapon wallet selection.");
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
@@ -281,16 +307,20 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
         // This legacy quality table retains the permanent 8/16/32/64/128 costs.
         // Seasonal armor uses its own stats version and must not replace this price source.
         var cost = FragmentCost("White", level + 1);
-        var fragments = fragmentSource is null
-            ? await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken)
-            : (await SeasonRepository.ApplyWithinTransactionAsync(connection, transaction, playerId, fragmentSource,
+        SeasonWalletSnapshot? seasonalWallet = null;
+        if (fragmentSource is not null)
+            seasonalWallet = await SeasonRepository.ApplyWithinTransactionAsync(connection, transaction, playerId, fragmentSource,
                 0, -cost, 0, "class_weapon.enhance", requestId, SeasonWalletPurpose.PermanentWeaponEnhancement,
-                DateTimeOffset.UtcNow, requestHash, cancellationToken)).EquipmentFragments;
+                DateTimeOffset.UtcNow, requestHash, cancellationToken);
+        var fragments = seasonalWallet is null
+            ? await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken)
+            : seasonalWallet.EquipmentFragments;
         await using var update = new NpgsqlCommand("UPDATE class_weapons SET level=level+1, version=version+1 WHERE player_id=$1 AND hero_class=$2", connection, transaction);
         update.Parameters.AddWithValue(playerId); update.Parameters.AddWithValue((short)heroClass); await update.ExecuteNonQueryAsync(cancellationToken);
         if (fragmentSource is null)
             await WriteEconomyLedgerAsync(connection, transaction, playerId, -cost, fragments, "EquipmentFragments", "class_weapon.enhance", cancellationToken, requestId);
-        var result = new EnhanceResult(new EquipmentResponse(Guid.Empty, "ClassWeapon", heroClass.ToString(), level + 1, true, "Equipped", version + 1), fragments, null);
+        var result = new EnhanceResult(new EquipmentResponse(Guid.Empty, "ClassWeapon", heroClass.ToString(), level + 1, true, "Equipped", version + 1),
+            fragments, null, fragmentSource?.SeasonId, seasonalWallet?.Version);
         await WriteIdempotentResultAsync(connection, transaction, playerId, "class_weapon.enhance", requestId, requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return result;

@@ -1,4 +1,5 @@
 using FantasyCard.Contracts.Players;
+using System.Text.Json.Serialization;
 
 namespace FantasyCard.Contracts.Progression;
 
@@ -83,7 +84,13 @@ public sealed record EquipmentResponse(
     long Version,
     string? Element = null,
     string? EffectAffix = null,
-    string? SecondaryTrait = null);
+    string? SecondaryTrait = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? OriginSeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? AssetScope = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? StatsVersion = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SourceKind = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] bool? RecipeExtracted = null);
 
 public sealed record LoadoutResponse(
     HeroClassDto HeroClass,
@@ -100,7 +107,12 @@ public sealed record InventoryConsumablesResponse(
 public sealed record InventoryResponse(
     InventorySummaryResponse Summary,
     IReadOnlyList<EquipmentResponse> Equipments,
-    InventoryConsumablesResponse Consumables);
+    InventoryConsumablesResponse Consumables)
+{
+    public InventoryScopeResponse? Scope { get; init; }
+}
+
+public sealed record InventoryScopeResponse(string State, string? SeasonId, bool ReadOnly);
 
 public sealed record UpdateLoadoutRequest(
     IReadOnlyList<Guid?>? EquipmentIds,
@@ -108,7 +120,8 @@ public sealed record UpdateLoadoutRequest(
 
 public sealed record EnhanceEquipmentRequest(
     long ExpectedVersion,
-    Guid? MaterialEquipmentId = null);
+    Guid? MaterialEquipmentId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? FragmentSourceSeasonId = null);
 
 public sealed record EnhancementQuoteResponse(
     string TargetKind,
@@ -121,9 +134,13 @@ public sealed record EnhancementQuoteResponse(
     long AvailableFragments,
     int AvailableMaterialCount,
     bool CanEnhance,
-    string? BlockedReason);
+    string? BlockedReason,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? FragmentSourceSeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] long? FragmentWalletVersion = null);
 
 public sealed record EnhanceResult(
     EquipmentResponse Equipment,
     long EquipmentFragments,
-    Guid? ConsumedMaterialEquipmentId);
+    Guid? ConsumedMaterialEquipmentId,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? FragmentSourceSeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] long? FragmentWalletVersion = null);

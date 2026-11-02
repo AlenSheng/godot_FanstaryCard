@@ -30,17 +30,22 @@
       "id": "A03",
       "status": "in_progress",
       "requirement": "永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离",
-      "note": "资产域26项、当前赛季领域44项及真实PostgreSQL13项通过。V031、版本锁定、钱包幂等与专武同事务扣费已实现；接口传输、库存过滤、归档任务和全流程调用仍待接入。r1夹具失败保留，未放宽生产约束。",
+      "note": "本批25项服务端、49项领域、11项Godot编码检查通过。专武选钱包已接入Protobuf/真实HTTP，库存与Bootstrap读模型按季隔离；仍需完善配装/强化写路径、归档与其余经济调用。",
       "evidence": [
         "evidence/A03/result.json",
         "evidence/A03/a03-r2.trx",
-        "evidence/A03-storage/result.json"
+        "evidence/A03-storage/result.json",
+        "evidence/A03-api-readmodels/result.json"
       ]
     },
     {
       "id": "A04",
-      "status": "pending",
-      "requirement": "准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本"
+      "status": "in_progress",
+      "requirement": "准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本",
+      "evidence": [
+        "evidence/A03-api-readmodels/result.json"
+      ],
+      "note": "Bootstrap已携带赛季/规则/配置/属性版本及钱包来源；准备、匹配、房间、快照、结算、市场仍待贯穿。"
     },
     {
       "id": "A05",

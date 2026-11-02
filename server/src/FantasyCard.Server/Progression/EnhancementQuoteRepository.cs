@@ -1,5 +1,7 @@
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Server.Seasons;
 
 namespace FantasyCard.Server.Progression;
 
@@ -25,9 +27,17 @@ public sealed partial class ProgressionRepository
             reader.GetInt64(4), reader.GetInt32(5), reader.GetString(2) is "Inventory" or "Equipped");
     }
 
+    public Task<EnhancementQuoteResponse?> GetWeaponEnhancementQuoteAsync(
+        Guid playerId, HeroClass heroClass, CancellationToken cancellationToken) =>
+        GetWeaponEnhancementQuoteAsync(playerId, heroClass, null, cancellationToken);
+
     public async Task<EnhancementQuoteResponse?> GetWeaponEnhancementQuoteAsync(
-        Guid playerId, HeroClass heroClass, CancellationToken cancellationToken)
+        Guid playerId, HeroClass heroClass, SeasonContext? fragmentSource, CancellationToken cancellationToken)
     {
+        SeasonWalletSnapshot? seasonalWallet = null;
+        if (fragmentSource is not null)
+            seasonalWallet = await new SeasonRepository(dataSource, TimeProvider.System).GetWalletAsync(playerId, fragmentSource, cancellationToken)
+                ?? throw new DomainValidationException("The player has not joined the selected season.");
         await using var command = dataSource.CreateCommand(
             """
             SELECT w.level,w.version,m.equipment_fragments FROM class_weapons w
@@ -38,7 +48,9 @@ public sealed partial class ProgressionRepository
         command.Parameters.AddWithValue((short)heroClass);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         if (!await reader.ReadAsync(cancellationToken)) return null;
-        return EnhancementQuote("ClassWeapon", "White", reader.GetInt32(0), reader.GetInt64(1), reader.GetInt64(2), 0, true);
+        var quote = EnhancementQuote("ClassWeapon", "White", reader.GetInt32(0), reader.GetInt64(1),
+            seasonalWallet?.EquipmentFragments ?? reader.GetInt64(2), 0, true);
+        return quote with { FragmentSourceSeasonId = fragmentSource?.SeasonId, FragmentWalletVersion = seasonalWallet?.Version };
     }
 
     private static EnhancementQuoteResponse EnhancementQuote(

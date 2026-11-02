@@ -1,0 +1,42 @@
+{
+  "ok": true,
+  "engine_sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424",
+  "inputs": {
+    "client/network/protobuf.gd": "31fbdedfa4a49899d692c66ba7e4b67b35cd885809b2cd861f29e513358a4e67",
+    "client/network/http_protocol.gd": "cbcb1d828410ede216d6896257aa52d21b0a78b0e04ca7ae4048022236b66133",
+    "client/data/http_schema.json": "ba5ca844a7aa59b2be6201fe1b3b54d4133bc3a5643d177163a18ca60957e176",
+    "client/data/http_endpoints.json": "d16c40750d7a52f90cabe944bc2bfec965577b41513f51a45a35157989a281e8",
+    "client/data/realtime_schema.json": "d220f73ca7fc28b28fd9b152bb982369ee0fb94355eb719229c661ac7fc0bd68",
+    "client/tests/test_season_wallet_protocol.gd": "32ac1cf7e9743f3d0ffde100b5e415253e067a45dc9dbc74199c6184d6164ed2",
+    "client/tests/test_season_wallet_protocol.gd.uid": "9aa110fcd68d75ae45387fe533ebacf132fd82cd524f1e2bea454ebe65af3f36"
+  },
+  "runs": [
+    {
+      "label": "import",
+      "command": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--headless",
+        "--path",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\transport-r2-godot",
+        "--editor",
+        "--import",
+        "--quit"
+      ],
+      "exit": 0,
+      "engine_errors": false
+    },
+    {
+      "label": "codec",
+      "command": [
+        "G:\\Program Files\\Godot_v4.7.2-stable_win64.exe\\Godot_v4.7.2-stable_win64.exe",
+        "--headless",
+        "--path",
+        "G:\\PR13Evidence\\season-balance-20261102-r1\\transport-r2-godot",
+        "--script",
+        "res://tests/test_season_wallet_protocol.gd"
+      ],
+      "exit": 0,
+      "engine_errors": false
+    }
+  ]
+}

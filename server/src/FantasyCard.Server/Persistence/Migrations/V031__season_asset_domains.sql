@@ -54,7 +54,8 @@ CREATE TABLE player_season_wallets (
     challenge_marks bigint NOT NULL DEFAULT 0 CHECK (challenge_marks >= 0),
     archived_at timestamptz,
     version bigint NOT NULL DEFAULT 1 CHECK (version > 0),
-    PRIMARY KEY (player_id, season_id)
+    PRIMARY KEY (player_id, season_id),
+    FOREIGN KEY (player_id, season_id) REFERENCES player_season_state(player_id, season_id) ON DELETE CASCADE
 );
 
 CREATE TABLE season_archive_jobs (

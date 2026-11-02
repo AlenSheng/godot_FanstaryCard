@@ -11,6 +11,7 @@ public enum SeasonWalletPurpose { General = 1, PermanentWeaponEnhancement = 2, L
 public sealed record SeasonWalletSnapshot(
     Guid PlayerId, string SeasonId, long Gold, long EquipmentFragments,
     long ChallengeMarks, long Version, DateTimeOffset? ArchivedAt);
+public sealed record SeasonWalletListEntry(SeasonWalletSnapshot Wallet, bool CanFundWeapon);
 
 public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
 {
@@ -73,6 +74,48 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
         return await reader.ReadAsync(cancellationToken) ? ReadDefinition(reader) : null;
     }
 
+    public Task<SeasonScheduleSnapshot> GetScheduleAsync(CancellationToken cancellationToken) =>
+        GetScheduleAtAsync(timeProvider.GetUtcNow(), cancellationToken);
+
+    public async Task<SeasonScheduleSnapshot> GetScheduleAtAsync(DateTimeOffset snapshotTime, CancellationToken cancellationToken)
+    {
+        await using var command = dataSource.CreateCommand("""
+            SELECT season_id,ruleset_id,config_version,stats_version,starts_at,ends_at,highest_open_difficulty
+            FROM season_definitions WHERE ruleset_id='season-v1' ORDER BY starts_at
+            """);
+        var definitions = new List<SeasonDefinition>();
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken)) definitions.Add(ReadDefinition(reader));
+        return SeasonSchedule.Resolve(definitions, snapshotTime);
+    }
+
+    public async Task<IReadOnlyList<SeasonWalletListEntry>> GetWalletsAsync(
+        Guid playerId, DateTimeOffset snapshotTime, CancellationToken cancellationToken)
+    {
+        await using var command = dataSource.CreateCommand("""
+            SELECT w.season_id,w.gold,w.equipment_fragments,w.challenge_marks,w.version,w.archived_at,
+                   d.ruleset_id='season-v1' AND d.starts_at <= $2 AS can_fund_weapon
+            FROM player_season_wallets w JOIN season_definitions d ON d.season_id=w.season_id
+            WHERE w.player_id=$1 ORDER BY d.starts_at DESC NULLS LAST,w.season_id
+            """);
+        command.Parameters.AddWithValue(playerId); command.Parameters.AddWithValue(snapshotTime);
+        var wallets = new List<SeasonWalletListEntry>();
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        while (await reader.ReadAsync(cancellationToken))
+            wallets.Add(new(new(playerId, reader.GetString(0), reader.GetInt64(1), reader.GetInt64(2),
+                reader.GetInt64(3), reader.GetInt64(4), reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5)), reader.GetBoolean(6)));
+        return wallets;
+    }
+
+    public async Task<int> GetUnlockedDifficultyAsync(Guid playerId, string seasonId, CancellationToken cancellationToken)
+    {
+        await using var command = dataSource.CreateCommand(
+            "SELECT highest_unlocked_difficulty FROM player_season_state WHERE player_id=$1 AND season_id=$2");
+        command.Parameters.AddWithValue(playerId); command.Parameters.AddWithValue(seasonId);
+        return await command.ExecuteScalarAsync(cancellationToken) is short value ? value
+            : throw new DomainValidationException("The player has not joined the selected season.");
+    }
+
     /// <summary>Membership creates zeroed seasonal balances and never resets the permanent aggregate.</summary>
     public async Task EnsurePlayerAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
     {
@@ -114,6 +157,22 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await ValidateContextAsync(connection, null, context, cancellationToken);
         return await ReadWalletAsync(connection, null, playerId, context.SeasonId, false, cancellationToken);
+    }
+
+    /// <summary>Economy actions use D0 as their context; no battle difficulty is inferred from a wallet ID.</summary>
+    public async Task<SeasonContext> GetWeaponFragmentSourceAsync(Guid playerId, string seasonId, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(seasonId) || seasonId.Length > 80 ||
+            seasonId.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not '-' and not '_' and not '.'))
+            throw new DomainValidationException("The selected fragment wallet season is invalid.");
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        var published = await ReadDefinitionAsync(connection, null, seasonId, cancellationToken)
+            ?? throw new DomainValidationException("The selected fragment wallet season was not found.");
+        if (timeProvider.GetUtcNow() < published.Definition.StartsAtUtc)
+            throw new DomainValidationException("The selected season has not started.");
+        if (await ReadWalletAsync(connection, null, playerId, seasonId, false, cancellationToken) is null)
+            throw new DomainValidationException("The player has not joined the selected season.");
+        return published.Definition.ContextFor(0);
     }
 
     public async Task<SeasonWalletSnapshot> ApplyAsync(
