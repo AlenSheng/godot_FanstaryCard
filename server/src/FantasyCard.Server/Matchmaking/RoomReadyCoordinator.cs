@@ -167,7 +167,8 @@ public sealed partial class RoomReadyCoordinator(
         if (configVersion != BootstrapRepository.CurrentConfigVersion)
             throw new InvalidOperationException("The assigned room configuration is not loaded by this server.");
         var room = new BattleRoom(assignment.RoomId, configVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics,
+            CombatCardCatalog.CreatePrototype(), assignment.Seed, assignment.Season is null
+                ? FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics : FantasyCard.Domain.Configuration.NumericalRules.SeasonV1,
             assignment.Season);
         foreach (var player in assignment.Players)
         {

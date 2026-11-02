@@ -281,8 +281,12 @@ public sealed partial class BattleRoom
         if (season is not null && season.ConfigVersion != configVersion)
             throw new DomainValidationException("Room and season configuration versions differ.");
         Season = season;
-        Numerics = numerics ?? NumericalRules.Legacy;
+        Numerics = numerics ?? (season is null ? NumericalRules.Legacy : NumericalRules.SeasonV1);
         Numerics.Validate();
+        if (season is not null && (!Numerics.SeasonMageRhythm || !Numerics.PvePositiveMinimum))
+            throw new DomainValidationException("A season-v1 room requires its published combat policies.");
+        if (season is null && (Numerics.SeasonMageRhythm || Numerics.PvePositiveMinimum))
+            throw new DomainValidationException("Season combat policies require a seasonal room context.");
         RoomId = roomId;
         ConfigVersion = configVersion;
         _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
@@ -545,6 +549,8 @@ public sealed partial class BattleRoom
                 SafeSlotIndexes: inventory.SafeSlotIndexes,
                 DisplayName: playerSnapshot.DisplayName,
                 CardLevels: cards.Select(card => card.Level).ToArray()));
+            if (room.Season is not null && playerSnapshot.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
+                throw new DomainValidationException("The seasonal player snapshot has another Fenxian policy.");
             player.Combat.Restore(playerSnapshot.Combat);
             if (playerSnapshot.MonsterPool is { } pool)
                 player.MonsterPool.Restore(pool, player.Combat.Deck, room.Numerics.MonsterCapacity);
@@ -591,7 +597,13 @@ public sealed partial class BattleRoom
                     : room.BotPveDuration(player);
             }
         }
-        foreach (var duel in snapshot.Duels) room._duels.Add(duel.DuelId, DuelState.Restore(duel));
+        foreach (var duel in snapshot.Duels)
+        {
+            if (room.Season is not null && new[] { duel.FirstFrozen, duel.LateFrozen }.Any(frozen =>
+                frozen is not null && frozen.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm))
+                throw new DomainValidationException("The frozen seasonal duel snapshot has another Fenxian policy.");
+            room._duels.Add(duel.DuelId, DuelState.Restore(duel));
+        }
         foreach (var timer in snapshot.BotDuelTimers ?? [])
         {
             if (!room._duels.ContainsKey(timer.DuelId) || timer.Remaining <= TimeSpan.Zero)
@@ -952,7 +964,7 @@ public sealed partial class BattleRoom
         attacker.Combat.AddDrawCharge(draft.DrawCharge);
         attacker.Combat.DrawImmediate(draft.ImmediateDraw);
         attacker.Combat.ApplyDrawSpeed(draft.DrawSpeedDuration, draft.DrawSpeedModifier);
-        var fenxian = attacker.Combat.UpdateFenxian(draft.CoreElement, draft.CoreCount);
+        var fenxian = attacker.Combat.UpdateFenxian(draft.CoreElement, draft.CoreCount, selected.Count);
         attacker.Combat.AddDrawCharge(fenxian.Charge);
         attacker.Combat.DrawImmediate(fenxian.Draw);
         if (pveTarget is not null)
@@ -1201,8 +1213,9 @@ public sealed partial class BattleRoom
                 {
                     var damage = monster.ResolveIntentDamage(
                         intent,
-                        player.Combat.ElementalResistance(intent.Element));
-                    var resolvedDamage = player.Combat.ResolveIncomingDamage(damage);
+                        player.Combat.ElementalResistance(intent.Element), out var effectiveBaseValue);
+                    var resolvedDamage = player.Combat.ResolvePveIntentDamage(damage, intent, Numerics.PvePositiveMinimum,
+                        effectiveBaseValue: effectiveBaseValue);
                     var (shieldDamage, hpDamage) = player.Combat.TakeDamage(resolvedDamage);
                     var kind = intent.Kind == MonsterIntentKind.Direct || intent.Element == CardElement.None
                         ? "Direct" : intent.Element.ToString();
@@ -1501,8 +1514,10 @@ public sealed partial class BattleRoom
         player.CurrentDuelId = duelId;
     }
 
-    private static void RestoreParticipant(RoomPlayerState player, FrozenParticipantState frozen)
+    private void RestoreParticipant(RoomPlayerState player, FrozenParticipantState frozen)
     {
+        if (Season is not null && frozen.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
+            throw new DomainValidationException("The frozen seasonal combat snapshot has another Fenxian policy.");
         player.Combat.Restore(frozen.Combat);
         player.Pve = frozen.Pve is null ? null : PveBattleState.Rehydrate(frozen.Pve);
         player.Phase = frozen.Phase;

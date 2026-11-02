@@ -11,10 +11,13 @@ public sealed record NumericalRules(
     int MonsterCapacity = 5,
     bool BudgetedBotLoot = false,
     int BotLootCount = 2,
-    bool MortalBotPve = false)
+    bool MortalBotPve = false,
+    bool SeasonMageRhythm = false,
+    bool PvePositiveMinimum = false)
 {
     public static NumericalRules Legacy { get; } = new();
-    public FenxianImmediateDrawPolicy FenxianPolicy => CardsSpentDraw
+    public static NumericalRules SeasonV1 { get; } = new(SeasonMageRhythm: true, PvePositiveMinimum: true);
+    public FenxianImmediateDrawPolicy FenxianPolicy => SeasonMageRhythm ? FenxianImmediateDrawPolicy.SeasonBoundedRhythm : CardsSpentDraw
         ? FenxianImmediateDrawPolicy.CoreCardsSpent : FenxianImmediateDrawPolicy.CurrentRhythm;
     public GuardianShieldBonusPolicy GuardianPolicy => FractionalGuardian
         ? GuardianShieldBonusPolicy.FractionalRemainder : GuardianShieldBonusPolicy.CurrentSteps;

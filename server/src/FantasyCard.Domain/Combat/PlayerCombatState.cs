@@ -188,7 +188,7 @@ public sealed class PlayerCombatState
         FenxianChargeLevel = Math.Clamp(chargeLevel, 0, 5);
     }
 
-    public (double Charge, int Draw) UpdateFenxian(CardElement? core, int coreCount)
+    public (double Charge, int Draw) UpdateFenxian(CardElement? core, int coreCount, int? cardsSpent = null)
     {
         if (HeroClass != HeroClass.Mage || core is null || coreCount <= 0)
         {
@@ -197,6 +197,17 @@ public sealed class PlayerCombatState
                 SetFenxian(null, 0, 0);
             }
             return (0, 0);
+        }
+
+        if (FenxianDrawPolicy == FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
+        {
+            if (cardsSpent is null or < 1 or > CombatDeck.HandLimit || coreCount > cardsSpent.Value)
+                throw new DomainValidationException("Season Fenxian requires the actual consumed card count.");
+            if (coreCount < 2)
+            {
+                SetFenxian(null, 0, 1);
+                return (Math.Min(.50, .12 + WeaponPercentBonus()), 0);
+            }
         }
 
         FenxianCombo = LastFenxianCore == core ? FenxianCombo + 1 : 1;
@@ -225,6 +236,7 @@ public sealed class PlayerCombatState
                 3 or 4 => 1,
                 _ => 2
             },
+            FenxianImmediateDrawPolicy.SeasonBoundedRhythm => Math.Min(rhythm is < 3 ? 0 : rhythm < 5 ? 1 : 2, cardsSpent!.Value - 1),
             _ => throw new DomainValidationException("Unknown Fenxian immediate draw policy.")
         };
         charge = Math.Min(0.50, charge + WeaponPercentBonus());
@@ -298,6 +310,17 @@ public sealed class PlayerCombatState
         : Math.Max(0, damage);
 
     public double ElementalResistance(CardElement element) => Equipment.Resistance(element);
+
+    /// <summary>Only a real PVE damage hit may receive the seasonal post-mitigation floor.</summary>
+    public int ResolvePveIntentDamage(int mitigatedDamage, MonsterIntentState intent, bool positiveMinimum,
+        bool hit = true, bool immune = false, int? effectiveBaseValue = null)
+    {
+        ArgumentNullException.ThrowIfNull(intent);
+        if (mitigatedDamage < 0) throw new DomainValidationException("PVE mitigated damage cannot be negative.");
+        if (!hit || immune || IsDead || intent.Kind is not (MonsterIntentKind.Attack or MonsterIntentKind.Direct)) return 0;
+        var damage = ResolveIncomingDamage(mitigatedDamage);
+        return positiveMinimum && (effectiveBaseValue ?? intent.Value) > 0 ? Math.Max(1, damage) : damage;
+    }
 
     public TimeSpan ResolveControl(TimeSpan cardControl)
     {

@@ -13,7 +13,8 @@ public enum CardElement : short
 public enum FenxianImmediateDrawPolicy : short
 {
     CurrentRhythm = 1,
-    CoreCardsSpent = 2
+    CoreCardsSpent = 2,
+    SeasonBoundedRhythm = 3
 }
 
 public enum GuardianShieldBonusPolicy : short

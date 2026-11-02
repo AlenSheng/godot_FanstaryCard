@@ -185,9 +185,13 @@ public sealed class MonsterCombatState
         return value;
     }
 
-    public int ResolveIntentDamage(MonsterIntentState intent, double targetResistance = 0)
+    public int ResolveIntentDamage(MonsterIntentState intent, double targetResistance = 0) =>
+        ResolveIntentDamage(intent, targetResistance, out _);
+
+    public int ResolveIntentDamage(MonsterIntentState intent, double targetResistance, out int effectiveBaseValue)
     {
         var value = ResolveIntentValue(intent);
+        effectiveBaseValue = value;
         var damage = intent.Element == CardElement.None
             ? value
             : (int)Math.Floor(value * (1 + ElementalAmplification) * (1 - targetResistance));

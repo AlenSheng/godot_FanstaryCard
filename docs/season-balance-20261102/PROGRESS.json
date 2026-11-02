@@ -69,13 +69,21 @@
     },
     {
       "id": "B01",
-      "status": "pending",
-      "requirement": "v0.70黄金向量与职业合法70/80/100生命保持，通过真实Resolver回归"
+      "status": "complete",
+      "requirement": "v0.70黄金向量与职业合法70/80/100生命保持，通过真实Resolver回归",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "实际CombatResolver既有向量、三职业合法生命、旧策略与快照回归通过；本批186领域/135服务端/20原生编码检查，未改变旧公式。"
     },
     {
       "id": "B02",
-      "status": "pending",
-      "requirement": "R小于2清连携且无本命即时抽牌；R至少2保留节奏并限制到实际消耗减1"
+      "status": "complete",
+      "requirement": "R小于2清连携且无本命即时抽牌；R至少2保留节奏并限制到实际消耗减1",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "独立新季策略：单核心清C无被动即时抽牌，多核心旧档位并受真实消耗减1上限；合法20张、明确抽牌、混合消耗、预览和恢复均已验证。持续资源循环仍归B05。"
     },
     {
       "id": "B03",
@@ -84,8 +92,12 @@
     },
     {
       "id": "B04",
-      "status": "pending",
-      "requirement": "新季有效PVE正伤害意图减免后最低1，取消/纯效果/免疫/PVP/旧房排除"
+      "status": "complete",
+      "requirement": "新季有效PVE正伤害意图减免后最低1，取消/纯效果/免疫/PVP/旧房排除",
+      "evidence": [
+        "evidence/B01-B02-B04/result.json"
+      ],
+      "note": "完成有效正基础、抗性和盾职减伤后的单次最低1，再扣盾血；真实意图时钟及取消/纯效果/零基础/明确未命中与免疫输入/死亡/PVP/旧房排除已验证。"
     },
     {
       "id": "B05",

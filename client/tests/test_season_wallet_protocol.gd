@@ -53,5 +53,7 @@ func run() -> void:
 	var receipt := proto.decode_http("SettlementResponse", "3a0a0a08736561736f6e2d61".hex_decode())
 	check(proto.error.is_empty() and receipt.season.seasonId == "season-a", "independent original settlement season tag 7 golden")
 	check(proto.decode_http("SettlementResponse", PackedByteArray()).season == null, "legacy settlement has no inferred current season")
+	var season_policy := realtime.decode("RoomNumericalState", "0a13536561736f6e426f756e64656452687974686d".hex_decode())
+	check(realtime.error.is_empty() and season_policy.fenxian_policy == "SeasonBoundedRhythm", "independent season Fenxian policy string golden")
 	print(JSON.stringify({"ok": failures.is_empty(), "checks": checks, "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

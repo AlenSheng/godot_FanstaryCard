@@ -19,6 +19,7 @@ public sealed class SeasonRoomProtocolTests
         var season = new SeasonContext("s", 2, "season-v1", "cfg", "stats");
         var payload = Projection(hero, season);
         Assert.Equal(hp, payload.Player.Combat.MaximumHp);
+        Assert.Equal("SeasonBoundedRhythm", payload.Player.NumericalState!.FenxianPolicy);
         Assert.Equal(new RoomSeasonContextPayload("s", "D2", "season-v1", "cfg", "stats"), payload.Season);
         var envelope = new ServerEvent("room.snapshot", "trace", payload, Guid.NewGuid().ToString("D"), 1, DateTimeOffset.UnixEpoch);
         var wire = RealtimeProtobufCodec.EncodeServer(envelope);
