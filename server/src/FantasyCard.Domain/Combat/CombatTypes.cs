@@ -214,7 +214,8 @@ public sealed record BattleRoomSnapshot(
     ulong? RandomState = null,
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
     RoomRandomStreamsSnapshot? RandomStreams = null,
-    Configuration.NumericalRules? Numerics = null);
+    Configuration.NumericalRules? Numerics = null,
+    Seasons.SeasonContext? Season = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 

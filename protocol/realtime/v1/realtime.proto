@@ -139,6 +139,14 @@ message RoomSnapshotEvent {
   optional int64 spring_remaining_ms = 14;
   repeated string allowed_actions = 15;
   int32 map_player_count = 16;
+  RoomSeasonContext season = 17;
+}
+message RoomSeasonContext {
+  string season_id = 1;
+  string difficulty_id = 2;
+  string ruleset_id = 3;
+  string config_version = 4;
+  string stats_version = 5;
 }
 message RoomStartedEvent {
   string match_id = 1;

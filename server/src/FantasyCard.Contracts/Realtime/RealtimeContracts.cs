@@ -118,7 +118,9 @@ public sealed record RoomSnapshotEventPayload(
     long? ExtractionRemainingMs,
     long? SpringRemainingMs,
     IReadOnlyList<string> AllowedActions,
-    int MapPlayerCount = 0);
+    int MapPlayerCount = 0,
+    RoomSeasonContextPayload? Season = null);
+public sealed record RoomSeasonContextPayload(string SeasonId, string DifficultyId, string RulesetId, string ConfigVersion, string StatsVersion);
 public sealed record CommandRejectedEventPayload(string Code, string Detail);
 public sealed record BattlePlayCardsCommandPayload(
     Guid BattleId,

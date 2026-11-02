@@ -1,5 +1,5 @@
 {
-  "sha256": "2032e8018d43107e7124b34fff168b6414691fedd882a17ced0f2f89c44de79c",
+  "sha256": "dd6e87c0c0d0289dfa3e6b112f3addf4657268d7319c2b877138c44795cd759a",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -1013,6 +1013,44 @@
       "16": {
         "name": "map_player_count",
         "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "season",
+        "type": "RoomSeasonContext",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomSeasonContext": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "difficulty_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "ruleset_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "stats_version",
+        "type": "string",
         "repeated": false,
         "optional": false
       }

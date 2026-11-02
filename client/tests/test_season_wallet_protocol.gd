@@ -43,5 +43,12 @@ func run() -> void:
 	check(proto.encode("CreatePreparationRequest", {"season_id": "season-a"}).hex_encode() == "4208736561736f6e2d61", "independent preparation season tag golden")
 	var preparation := proto.decode_http("PreparationSnapshotResponse", "800105".hex_decode())
 	check(preparation.actualClassWeaponLevel == 5 and preparation.classWeaponLevel == 0 and preparation.season == null, "independent actual weapon level tag golden")
+	var context := {"season_id": "s", "difficulty_id": "D2", "ruleset_id": "season-v1", "config_version": "cfg", "stats_version": "stats"}
+	var realtime = Proto.new()
+	check(realtime.encode("RoomSeasonContext", context).hex_encode() == "0a0173120244321a09736561736f6e2d763122036366672a057374617473", "independent realtime season context golden")
+	var snapshot := realtime.decode("RoomSnapshotEvent", "8a011e0a0173120244321a09736561736f6e2d763122036366672a057374617473".hex_decode())
+	check(realtime.error.is_empty() and snapshot.has("season") and snapshot.season.season_id == "s" and snapshot.season.difficulty_id == "D2" and snapshot.season.config_version == "cfg", "root realtime season tag 17 reaches client")
+	var legacy_snapshot := realtime.decode("RoomSnapshotEvent", PackedByteArray())
+	check(realtime.error.is_empty() and not legacy_snapshot.has("season"), "legacy realtime snapshot does not infer a season")
 	print(JSON.stringify({"ok": failures.is_empty(), "checks": checks, "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

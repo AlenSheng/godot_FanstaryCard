@@ -1,0 +1,72 @@
+{
+  "status": "room_context_snapshot_and_same_loaded_config_season_recovery_verified_settlement_pending",
+  "server_tests": 96,
+  "server_evidence": "r15/rooms.trx; all Server/Contracts/Domain/config inputs unchanged in r16",
+  "domain_tests": 74,
+  "domain_evidence": "r16/domain.trx",
+  "godot_codec_checks": 17,
+  "failed": 0,
+  "skipped": 0,
+  "scope": [
+    "Room construction consumes the assigned config and immutable season context",
+    "BattleRoom JSON capture/restore retains season/difficulty/rules/config/stats and all effective levels",
+    "Published match context checked on checkpoint write, normal read, terminal fallback and restart recovery",
+    "Checkpoint upsert cannot change config/season; missing legacy JSON season remains compatible",
+    "Corrupt or missing season, wrong room ID, unsupported ruleset and stats mismatch quarantine only that room without rewriting evidence",
+    "Actual preparation/queue/launch and recovery after next season under the same loaded config retain original context and permanent levels",
+    "Public realtime snapshot tag 17 and independent golden; legacy sparse realtime payload remains unscoped",
+    "Mage70/Priest80/Guardian100 remain legal; six effective growth levels use the actual 20-card starter deck"
+  ],
+  "history": [
+    {
+      "run": "r14",
+      "server_passed": 95,
+      "server_failed": 1,
+      "domain_executed": 0,
+      "cause": "Fixture incorrectly assumed legacy orphan checkpoints were allowed; V007 already requires an owning match. Both legacy and seasonal ownership are now checked explicitly."
+    },
+    {
+      "run": "r15",
+      "server_passed": 96,
+      "domain_passed": 69,
+      "domain_failed": 5,
+      "cause": "D1-D5 fixture used prototype aliases with no upgrade-table entries. Replaced by the provisioning 13 common + 7 Mage starter cards; level and state assertions unchanged."
+    },
+    {
+      "run": "godot-r5",
+      "classification": "http_codec_used_for_realtime_fixture",
+      "reported_check_total": null,
+      "own_child_timeout_seconds": 90
+    },
+    {
+      "run": "godot-r6",
+      "classification": "legacy_sparse_dictionary_fixture_expected_null_key",
+      "reported_check_total": null,
+      "own_child_timeout_seconds": 90
+    },
+    {
+      "run": "r16",
+      "domain_passed": 74,
+      "server_96_reused_by_exact_input_hashes": true
+    },
+    {
+      "run": "godot-r7",
+      "checks": 17,
+      "failed": 0
+    }
+  ],
+  "public_archive_sha256": {
+    "r14": "cb09070a0768d80cbc06692b4cac3a25a9e5d26b19b95d2f95ef3487d895917e",
+    "r15": "4896b10bb27a240e5b8d4054b0884c16824dc39bde5e53b4ae27562d00871cc3",
+    "r16": "542fcc7c7fe0a700c27f84fa91555f51db4175402192156d8703fdb733a89a0d"
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "remaining": [
+    "Archived configuration bundle loading and cross-config client/server recovery",
+    "Season combat rules, difficulty curves, loot provenance and settlement wallet routing",
+    "Season equipment/economy and archive worker",
+    "Full multilingual/resolution UI, balance and final release acceptance"
+  ]
+}

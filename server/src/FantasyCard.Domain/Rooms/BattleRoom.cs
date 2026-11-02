@@ -2,6 +2,7 @@ using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Bots;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
 
 namespace FantasyCard.Domain.Rooms;
 
@@ -270,13 +271,16 @@ public sealed partial class BattleRoom
     public NumericalRules Numerics { get; }
 
     public BattleRoom(Guid roomId, string configVersion, CombatCardCatalog catalog, int seed,
-        NumericalRules? numerics = null)
+        NumericalRules? numerics = null, SeasonContext? season = null)
     {
         if (roomId == Guid.Empty)
         {
             throw new ArgumentException("Room id cannot be empty.", nameof(roomId));
         }
         ArgumentException.ThrowIfNullOrWhiteSpace(configVersion);
+        if (season is not null && season.ConfigVersion != configVersion)
+            throw new DomainValidationException("Room and season configuration versions differ.");
+        Season = season;
         Numerics = numerics ?? NumericalRules.Legacy;
         Numerics.Validate();
         RoomId = roomId;
@@ -293,6 +297,7 @@ public sealed partial class BattleRoom
 
     public Guid RoomId { get; }
     public string ConfigVersion { get; }
+    public SeasonContext? Season { get; }
     public long Revision { get; private set; }
 
     public IReadOnlyList<CombatFeedbackResolution> DrainCombatFeedback()
@@ -506,12 +511,12 @@ public sealed partial class BattleRoom
                 _lootRandom.State,
                 _escapeRandom.State,
                 _botRandom.State,
-                _duelRandom.State), Numerics);
+                _duelRandom.State), Numerics, Season);
 
     public static BattleRoom Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, int seed)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
-        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed, snapshot.Numerics ?? NumericalRules.Legacy)
+        var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed, snapshot.Numerics ?? NumericalRules.Legacy, snapshot.Season)
         {
             Revision = snapshot.Revision,
             Elapsed = snapshot.Elapsed

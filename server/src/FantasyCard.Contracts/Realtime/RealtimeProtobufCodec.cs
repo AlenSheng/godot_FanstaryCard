@@ -482,6 +482,11 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(14, value.SpringRemainingMs);
         foreach (var action in value.AllowedActions) w.String(15, action);
         w.Int64(16, value.MapPlayerCount);
+        if (value.Season is { } season) w.Bytes(17, Message(s =>
+        {
+            s.String(1, season.SeasonId); s.String(2, season.DifficultyId); s.String(3, season.RulesetId);
+            s.String(4, season.ConfigVersion); s.String(5, season.StatsVersion);
+        }));
     });
 
     private static byte[] EncodePosition(RoomPositionPayload value) =>
@@ -638,6 +643,8 @@ public static class RealtimeProtobufCodec
         var pveBytes = payload.Bytes(10);
         var duelBytes = payload.Bytes(11);
         var rewardBytes = payload.Bytes(12);
+        var seasonBytes = payload.Bytes(17);
+        var season = seasonBytes.Length == 0 ? null : Fields.Read(seasonBytes);
         return new RoomSnapshotEventPayload(
             ParseGuid(payload.String(1), "room.snapshot"),
             Guid.TryParse(payload.String(2), out var matchId) ? matchId : null,
@@ -665,7 +672,8 @@ public static class RealtimeProtobufCodec
             payload.OptionalInt64(13),
             payload.OptionalInt64(14),
             payload.RepeatedStrings(15),
-            checked((int)payload.Int64(16)));
+            checked((int)payload.Int64(16)),
+            season is null ? null : new RoomSeasonContextPayload(season.String(1), season.String(2), season.String(3), season.String(4), season.String(5)));
     }
 
     private static RoomPositionPayload DecodePosition(byte[] bytes)

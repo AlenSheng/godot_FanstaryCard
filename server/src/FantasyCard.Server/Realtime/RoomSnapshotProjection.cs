@@ -81,7 +81,9 @@ internal static class RoomSnapshotProjection
             extractionRemaining,
             springRemaining,
             allowedActions,
-            mapPlayerCount);
+            mapPlayerCount,
+            snapshot.Season is { } season ? new RoomSeasonContextPayload(season.SeasonId, season.DifficultyId,
+                season.RulesetId, season.ConfigVersion, season.StatsVersion) : null);
     }
 
     private static List<string> BuildAllowedActions(

@@ -108,6 +108,9 @@ public sealed partial class RoomReadyCoordinator(
         var assignment = launch.Assignment;
         var startedAt = Stopwatch.GetTimestamp();
         var persisted = await snapshots.GetAsync(assignment.RoomId, cancellationToken);
+        if (persisted is not null)
+            RoomSnapshotRepository.RequireMatchContext(persisted, assignment.RoomId,
+                assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion, assignment.Season);
         var room = persisted is null
             ? CreateRoom(assignment)
             : BattleRoom.Restore(persisted, CombatCardCatalog.CreatePrototype(), assignment.Seed);
@@ -160,8 +163,12 @@ public sealed partial class RoomReadyCoordinator(
 
     private static BattleRoom CreateRoom(MatchAssignment assignment)
     {
-        var room = new BattleRoom(assignment.RoomId, BootstrapRepository.CurrentConfigVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics);
+        var configVersion = assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion;
+        if (configVersion != BootstrapRepository.CurrentConfigVersion)
+            throw new InvalidOperationException("The assigned room configuration is not loaded by this server.");
+        var room = new BattleRoom(assignment.RoomId, configVersion,
+            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics,
+            assignment.Season);
         foreach (var player in assignment.Players)
         {
             var wornArmor = (player.EquipmentIds ?? []).Select(id =>
