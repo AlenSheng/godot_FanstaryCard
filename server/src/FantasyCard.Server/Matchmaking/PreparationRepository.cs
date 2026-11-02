@@ -591,8 +591,8 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             if (!sameDomain) return ("Prepared equipment belongs to another season, archive or stats version.", []);
             if (season is not null)
             {
-                var rank = reader.GetString(2) switch { "White" => 1, "Green" => 2, "Blue" => 3, "Purple" => 4, "Orange" => 5, "Red" => 6, _ => 99 };
-                var entryCap = season.Difficulty switch { 0 => 3, 1 => 4, _ => 6 };
+                var rank = SeasonLootConfig.Rank(reader.GetString(2));
+                var entryCap = GameConfigCatalog.Current.SeasonDifficulty(season.Difficulty).EntryQualityCap;
                 if (rank > entryCap) return ("Equipment quality exceeds the selected difficulty entry cap.", []);
                 if (reader.GetString(10) is "BotProjection" or "Borrowed" or "ActivityMaterial")
                     return ("Projected, borrowed or material-only equipment cannot enter a preparation.", []);

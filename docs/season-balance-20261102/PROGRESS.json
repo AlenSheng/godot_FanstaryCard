@@ -40,7 +40,8 @@
         "evidence/A04-preparation/result.json",
         "evidence/A04-matchmaking/result.json",
         "evidence/A04-rooms/result.json",
-        "evidence/A04-settlement/result.json"
+        "evidence/A04-settlement/result.json",
+        "evidence/C04/result.json"
       ]
     },
     {
@@ -52,7 +53,8 @@
         "evidence/A04-preparation/result.json",
         "evidence/A04-matchmaking/result.json",
         "evidence/A04-rooms/result.json",
-        "evidence/A04-settlement/result.json"
+        "evidence/A04-settlement/result.json",
+        "evidence/C04/result.json"
       ],
       "note": "结算/托管单和钱包/物品流水贯穿固定上下文，原季金币/碎片、永久魂、晚结算归档及配装保护通过135项服务端和19项原生编码检查；领域74项输入未变。精细掉落、其他经济写入、跨配置恢复和归档仍未完成。"
     },
@@ -149,8 +151,13 @@
     },
     {
       "id": "C04",
-      "status": "pending",
-      "requirement": "难度/格类型掉落矩阵、一次升档、外层帽、所有来源最终帽与入场品质帽"
+      "status": "complete",
+      "requirement": "难度/格类型掉落矩阵、一次升档、外层帽、所有来源最终帽与入场品质帽",
+      "note": "24行正式矩阵、一次升档/来源与难度帽、按怪组归类精英、血包价值偏置、来源快照/结算及V037全来源难度硬帽完成。领域526通过；生产源码不变，r45非配置119+r46配置66联合185项通过，原523/525与181/183失败保留。未部署，完整属性/经济/平衡及UI仍待。",
+      "evidence": [
+        "evidence/C04/result.json",
+        "C04-LOOT.md"
+      ]
     },
     {
       "id": "C05",
@@ -175,7 +182,8 @@
     {
       "id": "C09",
       "status": "pending",
-      "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整"
+      "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整",
+      "note": "C04已接血包价值偏置与候选碎片floor(raw×档位×偏置)；基础资源倍率、独立心愿随机流、元素与其余来源预算仍待，保持未完成。"
     },
     {
       "id": "C10",

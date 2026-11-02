@@ -18,7 +18,7 @@ using NpgsqlTypes;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresSeasonSettlementTests
+public sealed partial class PostgresSeasonSettlementTests
 {
     public static bool HasTestDatabase => PostgresRuntimeIntegrationTests.HasTestDatabase;
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
@@ -57,7 +57,7 @@ public sealed class PostgresSeasonSettlementTests
         Assert.Equal(4L, await db.ScalarAsync<long>("SELECT mage_soul FROM player_materials WHERE player_id=$1", fixture.Player));
         Assert.Equal(sourceMatch, await db.ScalarAsync<Guid>("SELECT source_match_id FROM equipments WHERE instance_id=$1", worn));
         Assert.Equal(fixture.Match, await db.ScalarAsync<Guid>("SELECT source_match_id FROM equipments WHERE instance_id=$1", generated));
-        Assert.Equal("MatchReward", await db.ScalarAsync<string>("SELECT source_kind FROM equipments WHERE instance_id=$1", generated));
+        Assert.Equal("NaturalDrop", await db.ScalarAsync<string>("SELECT source_kind FROM equipments WHERE instance_id=$1", generated));
         Assert.Equal("ActiveSeason", await db.ScalarAsync<string>("SELECT asset_scope FROM equipments WHERE instance_id=$1", generated));
         Assert.Equal(2L, await db.ScalarAsync<long>("SELECT count(*) FROM inventory_movements WHERE player_id=$1 AND season_id=$2", fixture.Player, definition.SeasonId));
         Assert.Equal(4L, await db.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND season_id=$2 AND reason='settlement.commit'", fixture.Player, definition.SeasonId));
@@ -310,7 +310,10 @@ public sealed class PostgresSeasonSettlementTests
         return new(player, match, room, definition.ContextFor(0), profile);
     }
     private static Task<SettlementRecord> SettleAsync(SettlementRepository repository, Fixture fixture, IReadOnlyList<SettlementAsset> assets) =>
-        repository.SettleAsync(fixture.Match, fixture.Player, "Extracted", JsonSerializer.SerializeToElement(new { roomId = fixture.Room, heroClass = "Mage" }), assets, Ct, fixture.Context);
+        repository.SettleAsync(fixture.Match, fixture.Player, "Extracted", JsonSerializer.SerializeToElement(new { roomId = fixture.Room, heroClass = "Mage" }),
+            assets.Select(asset=>asset.Equipment is {SeasonOrigin:null} item ? asset with {Equipment=item with {SeasonOrigin=new(fixture.Context,"NaturalChoice",
+                GameConfigCatalog.Current.SeasonLoot(fixture.Context.Difficulty,item.Quality is "White" or "Green"?"outer":"elite").RuleId,
+                item.Quality is "White" or "Green"?"outer":"elite",item.Quality,false)}}:asset).ToArray(), Ct, fixture.Context);
 
     private static async Task<Guid> EquipmentAsync(PostgresTestSchema db, Guid player, string? season, string? stats, string location = "InMatchEquipped", string scope = "ActiveSeason")
     {

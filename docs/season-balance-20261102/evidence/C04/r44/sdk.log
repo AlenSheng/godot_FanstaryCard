@@ -1,0 +1,31 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 528 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 3 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:13.76]     FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(group: "E6") [FAIL]
+[xUnit.net 00:00:13.78]     FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(group: "E1") [FAIL]
+  Failed FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(group: "E6") [2 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : combatActionId must be nextSequence:32-lowercase-hex.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.CombatActionLedger.Replay(String id, String hash) in /workspace/server/src/FantasyCard.Domain/Rooms/CombatActionLedger.cs:line 48
+   at FantasyCard.Domain.Rooms.BattleRoom.PlayCards(Guid playerId, Guid battleId, String targetId, IReadOnlyList`1 cardInstanceIds, Int64 expectedRevision, DateTimeOffset now, String combatActionId) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 979
+   at FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(String group) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/SeasonLootTests.cs:line 142
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(group: "E1") [1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : combatActionId must be nextSequence:32-lowercase-hex.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.CombatActionLedger.Replay(String id, String hash) in /workspace/server/src/FantasyCard.Domain/Rooms/CombatActionLedger.cs:line 48
+   at FantasyCard.Domain.Rooms.BattleRoom.PlayCards(Guid playerId, Guid battleId, String targetId, IReadOnlyList`1 cardInstanceIds, Int64 expectedRevision, DateTimeOffset now, String combatActionId) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 979
+   at FantasyCard.Domain.Tests.Rooms.SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(String group) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/SeasonLootTests.cs:line 142
+   at InvokeStub_SeasonLootTests.MiddleNeighborElitesUseEliteRewardsAndActualRoomRecoveryKeepsTheSameChoice(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+Results File: /workspace/results/season-difficulty-domain.trx
+
+Failed!  - Failed:     2, Passed:   523, Skipped:     0, Total:   525, Duration: 10 s - FantasyCard.Domain.Tests.dll (net10.0)

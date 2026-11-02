@@ -396,6 +396,8 @@ public sealed partial class BattleRoom
     public RoomPlayerState AddPlayer(BattleRoomPlayerSetup setup)
     {
         ArgumentNullException.ThrowIfNull(setup);
+        if(Season is not null && _catalog.UsesPublishedConfiguration)
+            SeasonLootRules.RequireEntry(Season,(setup.WornArmor??[]).Where(item=>item.Equipment is not null).Select(item=>item.Equipment!),_catalog.Configuration);
         if (setup.PlayerId == Guid.Empty || _players.ContainsKey(setup.PlayerId) || _players.Count >= 4)
         {
             throw new DomainValidationException("Room player is invalid, duplicated, or exceeds the four-player limit.");
@@ -431,7 +433,12 @@ public sealed partial class BattleRoom
                 monster.SetDifficultyProfile(SeasonMonsterProfile.For(difficulty,monster.MonsterId));
         }
         if (setup.IsBot && Numerics.BudgetedBotLoot)
+        {
             player.BotLoot = BotLootRules.Generate(RoomId, player.PlayerId, Numerics.BotLootCount);
+            if(Season is not null && _catalog.UsesPublishedConfiguration)
+                player.BotLoot=player.BotLoot.Select(item=>item with {Equipment=item.Equipment! with
+                    {SeasonOrigin=new(Season,"BotBudget","bot-budget-v1","outer",item.Equipment!.Quality,false)}}).ToArray();
+        }
         _players.Add(player.PlayerId, player);
         return player;
     }
@@ -478,7 +485,8 @@ public sealed partial class BattleRoom
         if (accountGoldRequired > accountGoldAvailable)
             throw new DomainValidationException($"Insufficient gold; account gold required: {accountGoldRequired}.");
         player.Inventory.TrySpendGold(Math.Min(cost, player.Inventory.GoldQuantity));
-        choice.Refresh(RewardRandom);
+        choice.Refresh(RewardRandom,Season is not null && _catalog.UsesPublishedConfiguration
+            ? SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,choice.Layer,player.WornArmor,player.Inventory.Items) : null);
         player.RewardRefreshCount = choice.RefreshCount;
         Revision++;
         var receipt = new RewardRefreshReceiptSnapshot(requestId ?? $"legacy:{Revision}", choice.Capture(), Revision);
@@ -609,13 +617,24 @@ public sealed partial class BattleRoom
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
             player.CurrentDuelId = playerSnapshot.CurrentDuelId;
-            player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice, catalog.Configuration);
+            player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice, catalog.Configuration,
+                catalog.UsesPublishedConfiguration?room.Season:playerSnapshot.RewardChoice.SeasonLoot?.Season);
+            if(room.Season is not null && catalog.UsesPublishedConfiguration && player.RewardChoice is { } reward)
+            {
+                if(room.Map is null || player.Position is not { } rewardPosition)
+                    throw new DomainValidationException("Seasonal reward choice is missing its original cell.");
+                var cell=room.Map.GetCell(rewardPosition);
+                if(reward.Layer!=SeasonLootRules.RewardLayer(cell) || reward.IsBoss!=(cell.IsBoss || cell.MonsterGroupId=="BOSS") || reward.IsTreasure!=(cell.MonsterGroupId=="BOX"))
+                    throw new DomainValidationException("Saved reward type differs from the cleared cell.");
+            }
             player.RewardRefreshCount = playerSnapshot.RewardRefreshCount ?? player.RewardChoice?.RefreshCount ?? 0;
             foreach (var receipt in playerSnapshot.RewardRefreshReceipts ?? [])
             {
                 if (string.IsNullOrWhiteSpace(receipt.RequestId) || receipt.RoomRevision < 1 ||
                     player.RewardRefreshReceipts.Any(existing => existing.RequestId == receipt.RequestId))
                     throw new InvalidOperationException("The snapshot contains invalid reward refresh receipts.");
+                _ = RewardChoiceState.Restore(receipt.Choice,catalog.Configuration,
+                    catalog.UsesPublishedConfiguration?room.Season:receipt.Choice.SeasonLoot?.Season);
                 player.RewardRefreshReceipts.Add(receipt);
             }
             foreach (var clearedCell in playerSnapshot.ClearedCells ?? []) player.ClearedCells.Add(clearedCell);
@@ -674,6 +693,13 @@ public sealed partial class BattleRoom
         {
             room._legacyRandom.Restore(randomState);
             room._useLegacyRandom = true;
+        }
+        if(room.Season is not null && catalog.UsesPublishedConfiguration)
+        {
+            var items=room._players.Values.SelectMany(player=>player.Inventory.Items.Concat(player.WornArmor).Concat(player.RecycledEquipment).Concat(player.BotLoot))
+                .Concat(room._relicPiles.Values.SelectMany(pile=>pile.Items));
+            foreach(var item in items.Where(item=>item.IsGenerated==true && item.Equipment is not null))
+                SeasonLootRules.RequireOrigin(item.Equipment!,room.Season,catalog.Configuration);
         }
         return room;
     }
@@ -1123,8 +1149,11 @@ public sealed partial class BattleRoom
         AddPveVictoryDrops(player, Map.GetCell(position));
         player.Pve!.RefreshPhase();
         var cell = Map.GetCell(position);
-        player.RewardChoice = RewardChoiceState.Create(cell.Layer, RewardRandom, cell.IsBoss, player.RewardRefreshCount,
-            isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration);
+        var layer=Season is not null && _catalog.UsesPublishedConfiguration ? SeasonLootRules.RewardLayer(cell):cell.Layer;
+        player.RewardChoice = RewardChoiceState.Create(layer, RewardRandom, cell.IsBoss || cell.MonsterGroupId=="BOSS", player.RewardRefreshCount,
+            isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration,
+            season:Season is not null && _catalog.UsesPublishedConfiguration ? new(Season,
+                SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items)) : null);
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
     }
@@ -1132,7 +1161,7 @@ public sealed partial class BattleRoom
     private void AddPveVictoryDrops(RoomPlayerState player, ChaosMapCell cell)
     {
         var isBoss = cell.IsBoss || string.Equals(cell.MonsterGroupId, "BOSS", StringComparison.Ordinal);
-        var loot = _catalog.Configuration.LootLayer(cell.Layer, isBoss);
+        var loot = _catalog.Configuration.LootLayer(Season is not null && _catalog.UsesPublishedConfiguration ? SeasonLootRules.RewardLayer(cell):cell.Layer, isBoss);
         var gold = loot.Gold;
         var warriorSoul = LootRandom.Next(loot.WarriorSoulMin, checked(loot.WarriorSoulMax + 1));
         var classSoul = loot.ClassSoul;

@@ -116,11 +116,18 @@ public static class SeasonConfigValidator
         {
             var id = S(table,row,"difficulty_id"); var layer = S(table,row,"layer_id");
             Check(DifficultyIds.Contains(id,StringComparer.Ordinal) && Layers.Contains(layer,StringComparer.Ordinal) && pairs.Add((id,layer)), table, "unknown or duplicate difficulty/cell reference");
-            foreach (var field in Weights) Probability(table,row,field);
+            foreach (var field in Weights)
+            {
+                Probability(table,row,field);
+                var fixedPoint=(decimal)N(table,row,field)*10000;
+                Check(fixedPoint==decimal.Truncate(fixedPoint),table,"loot probabilities support at most four decimal places");
+            }
             Check(Math.Abs(Weights.Sum(f => N(table,row,f)) - 1) < 1e-9, table, "quality weights must sum to one");
             var cap = N(table,row,"quality_cap");
             var parent = difficulty.Rows.Single(r => S(difficulty,r,"difficulty_id") == id);
             Check(cap is >= 0 and <= 4 && cap <= N(difficulty,parent,"quality_cap") && N(table,row,"promotion_cap") >= 0 && N(table,row,"promotion_cap") <= cap, table, "loot/promotion cap exceeds its allowed rank");
+            Check(N(table,row,"promotion_cap")<=3 && (layer!="outer" || cap<=3),table,"promotion and outer-layer caps cannot exceed purple");
+            Check(Weights.Select((field,rank)=>(field,rank)).All(value=>value.rank<=cap || N(table,row,value.field)==0),table,"base weights cannot exceed the final cap");
             Check(Weights.Select((field,rank) => rank <= cap || N(table,row,field) == 0).All(x => x), table, "probability exists above the final quality cap");
         }
     }

@@ -11,7 +11,7 @@ namespace FantasyCard.Server.Tests.Config;
 /// <summary>Distinct, legal configuration controls; these numbers are not seasonal balance candidates.</summary>
 internal static class PublishedConfigTestInputs
 {
-    public static (GameConfigCatalog Catalog, byte[] Bytes, string Hash) Create(string version, bool alternate = false)
+    public static (GameConfigCatalog Catalog, byte[] Bytes, string Hash) Create(string version, bool alternate = false, bool seasonalLootControl = false)
     {
         var tables = XlsxConfigReader.Read(Path.Combine(FindRoot(), "config/FantasyCard_Config.xlsx"));
         tables = Set(tables, "Cards", "C01", "elemental_damage", alternate ? 400L : 200L);
@@ -29,17 +29,22 @@ internal static class PublishedConfigTestInputs
         tables = Set(tables, "LootRules", "heal-outer", "orange_rate", 0d);
         for (var index = 1; index <= 3; index++)
             tables = Set(tables, "LootRules", $"refresh-{index}", "refresh_gold", alternate ? 11L : 7L);
+        if(seasonalLootControl)
+        {
+            tables=Set(tables,"SeasonLoot","5_0","blue_weight",alternate?0d:1d);
+            tables=Set(tables,"SeasonLoot","5_0","purple_weight",alternate?1d:0d);
+        }
         var bytes = ConfigCompiler.Compile(version, tables, out var hash);
         return (GameConfigCatalog.Load(bytes), bytes, hash);
     }
 
-    public static BattleRoom Room(GameConfigCatalog configuration, Guid playerId, bool withMap = false)
+    public static BattleRoom Room(GameConfigCatalog configuration, Guid playerId, bool withMap = false,bool legacy = false)
     {
         var cards = Enumerable.Range(1, 13).Select(i => $"C{i:D2}")
             .Concat(Enumerable.Range(1, 7).Select(i => $"MAG-{i:D2}")).ToArray();
         DeckRules.Validate(HeroClass.Mage, cards, configuration.Cards.Where(c => c.IsCodex).ToDictionary(c => c.CardId,
             c => new OwnedCard(c.CardId, c.HeroClass, (CardRarity)c.Rarity, 1, false)));
-        var context = new SeasonContext("archive-season", 5, "season-v1", configuration.Version, "archive-control-stats");
+        var context = legacy ? null : new SeasonContext("archive-season", 5, "season-v1", configuration.Version, "archive-control-stats");
         var room = new BattleRoom(Guid.NewGuid(), configuration.Version, CombatCardCatalog.Create(configuration), 73, season: context);
         room.AddPlayer(new(playerId, HeroClass.Mage, cards, null, InventoryCapacity: configuration.Backpack("Free").Capacity,
             CardLevels: Enumerable.Repeat(1,20).ToArray()));

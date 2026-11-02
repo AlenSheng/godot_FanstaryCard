@@ -1,0 +1,49 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 575 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 3 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/season-difficulty-domain.trx
+
+Passed!  - Failed:     0, Passed:   526, Skipped:     0, Total:   526, Duration: 10 s - FantasyCard.Domain.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 106 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 334 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 6 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  1 of 5 projects are up-to-date for restore.
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:02:24.92]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: False, fragments: 9, cost: 7, quality: "White") [FAIL]
+[xUnit.net 00:02:24.98]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: True, fragments: 11, cost: 11, quality: "Green") [FAIL]
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: False, fragments: 9, cost: 7, quality: "White") [61 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Saved reward policy and room season differ.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.RewardChoiceState.Restore(RewardChoiceSnapshot snapshot, GameConfigCatalog configuration, SeasonContext expectedSeason) in /workspace/server/src/FantasyCard.Domain/Rooms/RewardChoice.cs:line 82
+   at FantasyCard.Domain.Rooms.BattleRoom.Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, Int32 seed) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 620
+   at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(Boolean alternate, Int32 fragments, Int32 cost, String quality) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 66
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: True, fragments: 11, cost: 11, quality: "Green") [61 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Saved reward policy and room season differ.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.RewardChoiceState.Restore(RewardChoiceSnapshot snapshot, GameConfigCatalog configuration, SeasonContext expectedSeason) in /workspace/server/src/FantasyCard.Domain/Rooms/RewardChoice.cs:line 82
+   at FantasyCard.Domain.Rooms.BattleRoom.Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, Int32 seed) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 620
+   at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(Boolean alternate, Int32 fragments, Int32 cost, String quality) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 66
+   at InvokeStub_ConfigRoomVersionTests.PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+Results File: /workspace/results/season-difficulty-server.trx
+
+Failed!  - Failed:     2, Passed:   181, Skipped:     0, Total:   183, Duration: 2 m 28 s - FantasyCard.Server.Tests.dll (net10.0)

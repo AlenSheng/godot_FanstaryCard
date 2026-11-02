@@ -2,6 +2,7 @@ using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
+using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Rooms;
 
 namespace FantasyCard.Server.Tests.Config;
@@ -57,10 +58,10 @@ public sealed class ConfigRoomVersionTests
     [Theory]
     [InlineData(false,9,7,"White")]
     [InlineData(true,11,11,"Green")]
-    public void PendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(bool alternate,int fragments,int cost,string quality)
+    public void LegacyPendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(bool alternate,int fragments,int cost,string quality)
     {
         var fixture = PublishedConfigTestInputs.Create("reward-control-"+alternate,alternate);
-        var playerId = Guid.NewGuid();var room = PublishedConfigTestInputs.Room(fixture.Catalog,playerId);
+        var playerId = Guid.NewGuid();var room = PublishedConfigTestInputs.Room(fixture.Catalog,playerId,legacy:true);
         var choice = RewardChoiceState.Create(ChaosMapLayer.Outer,new Random(73),configuration:fixture.Catalog);
         var before = room.Capture();
         var restored = BattleRoom.Restore(before with { Players = before.Players.Select(p => p with
@@ -74,6 +75,32 @@ public sealed class ConfigRoomVersionTests
             Assert.Equal(100-index*cost,restored.GetPlayer(playerId).Inventory.GoldQuantity);
             restored = BattleRoom.Restore(restored.Capture(),CombatCardCatalog.Create(fixture.Catalog),73);
         }
+    }
+
+    [Theory]
+    [InlineData(false,36,7,"Blue")]
+    [InlineData(true,44,11,"Purple")]
+    public void SeasonalPendingChoiceRefreshUsesTheOriginalMatrixScaleAndPrice(bool alternate,int fragments,int cost,string quality)
+    {
+        var fixture=PublishedConfigTestInputs.Create("season-reward-control-"+alternate,alternate,seasonalLootControl:true);
+        var playerId=Guid.NewGuid();var room=PublishedConfigTestInputs.Room(fixture.Catalog,playerId,withMap:true);
+        var before=room.Capture();var context=before.Season!;var position=before.Players[0].Position!.Value;
+        var choice=RewardChoiceState.Create(ChaosMapLayer.Outer,new Random(73),configuration:fixture.Catalog,season:new(context,SeasonRewardBias.None));
+        var map=before.Map! with {Cells=before.Map!.Cells.Select(cell=>cell.Position==position?cell with {IsBoss=false,MonsterGroupId="O1",TreasureElement=null}:cell).ToArray()};
+        before=before with {Map=map,Players=before.Players.Select(player=>player with {Phase=RoomPlayerPhase.Choice,Pve=null,
+            Combat=player.Combat with {Hp=42},RewardChoice=choice.Capture()}).ToArray()};
+        var restored=BattleRoom.Restore(before,CombatCardCatalog.Create(fixture.Catalog),73);
+        Assert.True(restored.GetPlayer(playerId).Inventory.TryAdd(new("gold",ExplorationItemKind.Gold,100)));
+        for(var index=1;index<=2;index++)
+        {
+            var receipt=restored.RefreshRewardChoice(playerId,restored.Revision,requestId:"season-refresh-"+index);
+            Assert.Equal(fragments,receipt.Choice.Options[1].Item!.Quantity);
+            var item=receipt.Choice.Options[0].Item!.Equipment!;
+            Assert.Equal(quality,item.Quality);Assert.Equal(context,item.SeasonOrigin!.Season);
+            Assert.Equal(100-index*cost,restored.GetPlayer(playerId).Inventory.GoldQuantity);
+            restored=BattleRoom.Restore(restored.Capture(),CombatCardCatalog.Create(fixture.Catalog),73);
+        }
+        Assert.Throws<DomainValidationException>(()=>BattleRoom.Restore(before,CombatCardCatalog.Create(GameConfigCatalog.Current),73));
     }
 
     [Theory]

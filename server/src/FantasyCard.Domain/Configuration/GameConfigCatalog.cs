@@ -164,6 +164,11 @@ public sealed class GameConfigCatalog
     public EconomyConfig Economy { get; }
     public IReadOnlyList<SeasonDifficultyConfig> SeasonDifficulties { get; private init; } = [];
     public IReadOnlyList<SeasonBorrowedDeckConfig> SeasonBorrowedDecks { get; private init; } = [];
+    public IReadOnlyList<SeasonLootConfig> SeasonLootRules { get; private init; } = [];
+    private static readonly string[] SeasonLootWeightFields = ["white_weight","green_weight","blue_weight","purple_weight","orange_weight"];
+    public SeasonLootConfig SeasonLoot(int difficulty,string layerId) =>
+        SeasonLootRules.SingleOrDefault(rule=>rule.Difficulty==difficulty && rule.LayerId==layerId)
+        ?? throw new InvalidDataException("The frozen seasonal loot rule is not published.");
     public SeasonBorrowedDeckConfig BorrowedDeck(HeroClass heroClass) =>
         SeasonBorrowedDecks.SingleOrDefault(value => value.HeroClass == heroClass)
         ?? throw new InvalidDataException("The selected seasonal borrowed deck is not published.");
@@ -301,7 +306,29 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle) };
+    }
+
+    private static SeasonLootConfig[] ReadSeasonLoot(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonLoot");
+        if(table is null)return [];
+        var rows=table.Rows.Select(row=>new SeasonLootConfig(table.Text(row,"loot_rule_id"),
+            table.Text(row,"difficulty_id") is {Length:2} id && id[0]=='D' && id[1] is >= '0' and <= '5' ? id[1]-'0' : -1,
+            table.Text(row,"layer_id"),
+            SeasonLootWeightFields.Select(field=>
+            {
+                var value=table.Double(row,field);
+                if(!double.IsFinite(value) || value<0 || value>1)
+                    throw new InvalidDataException("Seasonal loot probabilities must have at most four decimal places.");
+                var scaled=(decimal)value*SeasonLootConfig.ProbabilityBasis;
+                if(scaled!=decimal.Truncate(scaled))throw new InvalidDataException("Seasonal loot probabilities must have at most four decimal places.");
+                return checked((int)scaled);
+            }).ToArray(),table.Int(row,"quality_cap"),table.Int(row,"promotion_cap"))).ToArray();
+        foreach(var row in rows)row.Validate();
+        if(rows.Length!=24 || rows.Select(row=>(row.Difficulty,row.LayerId)).Distinct().Count()!=24)
+            throw new InvalidDataException("All twenty-four seasonal loot rules must be published together.");
+        return rows;
     }
 
     private static SeasonBorrowedDeckConfig[] ReadBorrowedDecks(ConfigBundle bundle, CardConfigDefinition[] cards)
