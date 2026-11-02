@@ -340,6 +340,7 @@ public sealed partial class BattleRoom
         {
             player.Position = map.SpawnPositions[index];
             player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty));
+            player.Combat.BeginBattle(player.Pve.BattleId);
             player.Phase = RoomPlayerPhase.Pve;
             StartBotPveSimulation(player);
         }
@@ -366,6 +367,7 @@ public sealed partial class BattleRoom
         if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;
         player.Pve = targetPve;
+        if(targetPve is not null)player.Combat.BeginBattle(targetPve.BattleId);
         player.Phase = targetPve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
         StartBotPveSimulation(player);
         _extractions.Remove(playerId);
@@ -426,6 +428,7 @@ public sealed partial class BattleRoom
             setup.Equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
         var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration, setup.BorrowedTemplateId);
+        if(setup.Pve is not null)player.Combat.BeginBattle(setup.Pve.BattleId);
         if (Season is not null && setup.Pve is not null)
         {
             var difficulty = _catalog.Configuration.SeasonDifficulty(Season.Difficulty);
@@ -932,7 +935,7 @@ public sealed partial class BattleRoom
         var probability = DuelRules.EscapeProbability(
             player.HeroClass, player.Combat.Hp, player.Combat.MaximumHp,
             opponent.Combat.Hp, opponent.Combat.MaximumHp,
-            player.Combat.Equipment.ForcedEscapeBonus);
+            player.Combat.Equipment.ForcedEscapeBonus,player.Combat.Equipment.GoldenCicadaBonus);
         duel.BeginEscape(playerId, probability, player.Combat.Hp);
         Revision++;
         return new DuelEscapeRequestResult(duelId, probability, Revision);
@@ -1599,7 +1602,7 @@ public sealed partial class BattleRoom
         _extractions.Remove(player.PlayerId);
         _springDrinks.Remove(player.PlayerId);
         player.Pve?.Freeze();
-        player.Combat.PrepareForDuel(new Random(DuelRandom.Next()));
+        player.Combat.PrepareForDuel(new Random(DuelRandom.Next()),duelId);
         player.Phase = RoomPlayerPhase.Pvp;
         player.CurrentDuelId = duelId;
     }

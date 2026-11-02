@@ -78,7 +78,8 @@ public sealed record PlayerCombatSnapshot(
     int FenxianChargeLevel = 0,
     int GuardianShieldRemainderTenths = 0,
     FenxianImmediateDrawPolicy FenxianPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
-    GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps);
+    GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? LastOpeningBattleId = null);
 
 public enum MonsterIntentKind : short
 {

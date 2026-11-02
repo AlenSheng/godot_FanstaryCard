@@ -132,6 +132,9 @@ public sealed class CombatDeck
     }
 
     public void AddCharge(double amount, Random random)
+        => AddCharge(amount,random,null);
+
+    public void AddCharge(double amount,Random random,Action? afterNaturalDraw)
     {
         if (amount <= 0)
         {
@@ -148,7 +151,9 @@ public sealed class CombatDeck
             }
 
             DrawCharge -= 1;
+            var before=_hand.Count;
             DrawOne(random);
+            if(_hand.Count>before)afterNaturalDraw?.Invoke();
         }
     }
 

@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(21, tables.Count); // The original _README remains non-published; the loan sheet adds sixty slots.
+        Assert.Equal(22, tables.Count); // _README stays private; versioned equipment rules add one published table.
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
         Assert.Equal(24, tables.Single(t => t.Name == "SeasonLoot").Rows.Count);
         var first = ConfigCompiler.Compile("season-config-stage-1", tables, out var hash);

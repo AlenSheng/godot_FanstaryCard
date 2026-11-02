@@ -165,6 +165,14 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<SeasonDifficultyConfig> SeasonDifficulties { get; private init; } = [];
     public IReadOnlyList<SeasonBorrowedDeckConfig> SeasonBorrowedDecks { get; private init; } = [];
     public IReadOnlyList<SeasonLootConfig> SeasonLootRules { get; private init; } = [];
+    public SeasonEquipmentConfig? SeasonEquipment { get; private init; }
+    public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
+    {
+        // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
+        if(SeasonEquipment is null)return null;
+        return SeasonEquipment.StatsVersion==statsVersion ? SeasonEquipment
+            : throw new DomainValidationException("The selected equipment stats version is not published in this configuration.");
+    }
     private static readonly string[] SeasonLootWeightFields = ["white_weight","green_weight","blue_weight","purple_weight","orange_weight"];
     public SeasonLootConfig SeasonLoot(int difficulty,string layerId) =>
         SeasonLootRules.SingleOrDefault(rule=>rule.Difficulty==difficulty && rule.LayerId==layerId)
@@ -176,8 +184,9 @@ public sealed class GameConfigCatalog
         SeasonDifficulties.SingleOrDefault(value => value.Id == $"D{difficulty}")
         ?? throw new InvalidDataException($"Season difficulty D{difficulty} is not published in configuration '{Version}'.");
 
-    public EquipmentQualityConfig EquipmentQuality(string quality) =>
-        EquipmentQualities.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
+    public EquipmentQualityConfig EquipmentQuality(string quality,string? statsVersion = null) =>
+        (statsVersion is null ? null : ResolveSeasonEquipment(statsVersion))?.Quality(quality)
+        ?? EquipmentQualities.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
         ?? throw new DomainValidationException($"Unknown equipment quality '{quality}'.");
 
     public LootLayerConfig LootLayer(ChaosMapLayer layer, bool isBoss = false)
@@ -306,7 +315,35 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment) };
+    }
+
+    private static SeasonEquipmentConfig? ReadSeasonEquipment(ConfigBundle bundle,EquipmentQualityConfig[] legacy)
+    {
+        var rules=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonEquipmentRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("SeasonEquipmentRules must contain one active stats version.");
+        var row=rules.Rows[0];var version=rules.Text(row,"stats_version");var table=bundle.Table("SeasonEquipment");
+        var qualities=table.Rows.Select(values=>
+        {
+            if(table.Text(values,"stats_version")!=version)throw new InvalidDataException("Season equipment and rule versions differ.");
+            var id=table.Text(values,"quality_id");var original=legacy.SingleOrDefault(value=>value.Quality.Equals(id,StringComparison.OrdinalIgnoreCase))
+                ??throw new InvalidDataException("Unknown seasonal equipment quality.");
+            return original with {Damage=table.Double(values,"damage_base"),Resistance=table.Double(values,"resist_base"),
+                DamagePerLevel=table.Double(values,"damage_per_level"),ResistancePerLevel=table.Double(values,"resist_per_level"),
+                DrawInterval=-table.Double(values,"speed_base"),DrawIntervalPerLevel=-table.Double(values,"speed_per_level"),
+                EnhanceCost1=table.Int(values,"cost_1"),EnhanceCost2=table.Int(values,"cost_2"),EnhanceCost3=table.Int(values,"cost_3"),
+                EnhanceCost4=table.Int(values,"cost_4"),EnhanceCost5=table.Int(values,"cost_5"),
+                EnhanceTotalCost=Enumerable.Range(1,5).Sum(level=>table.Int(values,$"cost_{level}"))};
+        }).ToArray();
+        var chance=rules.Double(row,"chain_draw_chance");
+        if(!double.IsFinite(chance) || chance is <0 or >1)throw new InvalidDataException("Invalid chain-draw probability.");
+        var fixedChance=(decimal)chance*10000;
+        if(fixedChance!=decimal.Truncate(fixedChance))throw new InvalidDataException("Invalid chain-draw probability.");
+        var config=new SeasonEquipmentConfig(version,qualities,rules.Double(row,"resistance_cap"),rules.Double(row,"draw_floor_seconds"),
+            rules.Double(row,"draw_ceiling_seconds"),rules.Double(row,"inferno_bonus"),rules.Double(row,"rapid_draw_reduction"),
+            rules.Double(row,"rapid_draw_floor_seconds"),checked((int)fixedChance),rules.Int(row,"opening_draw_count"),rules.Double(row,"golden_cicada_bonus"));
+        config.Validate();return config;
     }
 
     private static SeasonLootConfig[] ReadSeasonLoot(ConfigBundle bundle)

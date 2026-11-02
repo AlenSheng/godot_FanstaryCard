@@ -22,13 +22,14 @@ public static class SeasonConfigValidator
     private static readonly string[] DifficultyScales = ["hp_scale", "shield_scale", "damage_scale", "interval_scale", "gold_scale", "soul_scale", "fragment_scale"];
     private static readonly string[] EquipmentStats = ["damage_base", "resist_base", "damage_per_level", "resist_per_level", "speed_base", "speed_per_level"];
     private static readonly string[] Currencies = ["gold", "diamond"];
+    private static readonly string[] EquipmentRuleFields=["stats_version","resistance_cap","draw_floor_seconds","draw_ceiling_seconds","inferno_bonus","rapid_draw_reduction","rapid_draw_floor_seconds","chain_draw_chance","opening_draw_count","golden_cicada_bonus"];
 
     public static void Validate(IReadOnlyList<ConfigTable> tables)
     {
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
         if (present.Count == 0)
         {
-            if (tables.Any(table => table.Name == "SeasonBorrowedDecks"))
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules"))
                 throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
             return; // Archived pre-season workbooks remain valid.
         }
@@ -48,6 +49,7 @@ public static class SeasonConfigValidator
         ValidateDifficulties(present["SeasonDifficulty"]);
         ValidateLoot(present["SeasonLoot"], present["SeasonDifficulty"]);
         ValidateEquipment(present["SeasonEquipment"]);
+        ValidateEquipmentRules(tables,present["SeasonEquipment"]);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -134,7 +136,9 @@ public static class SeasonConfigValidator
 
     private static void ValidateEquipment(ConfigTable table)
     {
-        Check(table.Rows.Count == Qualities.Length && table.Rows.Select(r => S(table,r,"quality_id")).ToHashSet(StringComparer.Ordinal).SetEquals(Qualities), table, "must contain exactly five ordinary qualities; red rules are separate");
+        var versioned=table.Columns.Any(column=>column.Name=="stats_version");
+        var expected=versioned?Qualities.Append("red").ToArray():Qualities;
+        Check(table.Rows.Count == expected.Length && table.Rows.Select(r => S(table,r,"quality_id")).ToHashSet(StringComparer.Ordinal).SetEquals(expected), table, "must contain every ordinary quality and the versioned red row when enabled");
         foreach (var row in table.Rows)
         {
             foreach (var field in EquipmentStats)
@@ -142,6 +146,28 @@ public static class SeasonConfigValidator
             for (var level = 1; level <= 5; level++) Check(N(table,row,$"cost_{level}") > 0, table, "enhancement costs must be positive");
             Check(N(table,row,"resist_base") <= 1 && N(table,row,"speed_base") < 1, table, "base resistance or interval reduction is outside bounds");
         }
+    }
+
+    private static void ValidateEquipmentRules(IReadOnlyList<ConfigTable> tables,ConfigTable equipment)
+    {
+        var rules=tables.SingleOrDefault(table=>table.Name=="SeasonEquipmentRules");
+        var version=equipment.Columns.SingleOrDefault(column=>column.Name=="stats_version");
+        if(rules is null && version is null)return; // Original pre-C05 source workbooks remain reproducible.
+        Check(rules is not null && version is {Required:true,Scope:PublishScope.Both,Type:ConfigValueType.Text},equipment,"versioned equipment requires a matching public rules sheet");
+        var table=rules!;Check(table.Rows.Count==1,table,"requires one published equipment stats version");
+        Check(table.Columns.Count==EquipmentRuleFields.Length,table,"equipment rules require the complete published schema");
+        foreach(var field in EquipmentRuleFields)
+        {
+            var column=table.Columns.SingleOrDefault(value=>value.Name==field);
+            Check(column is {Required:true,Scope:PublishScope.Both} && column.Type==(field=="stats_version"?ConfigValueType.Text:field=="opening_draw_count"?ConfigValueType.WholeNumber:ConfigValueType.FloatingPoint),table,"invalid seasonal equipment rule metadata");
+        }
+        var row=table.Rows[0];var stats=S(table,row,"stats_version");
+        Check(!string.IsNullOrWhiteSpace(stats) && equipment.Rows.All(value=>S(equipment,value,"stats_version")==stats),table,"equipment and rule versions differ");
+        Check(N(table,row,"resistance_cap") is >0 and <=.6 && N(table,row,"draw_floor_seconds")>=1.8 &&
+            N(table,row,"draw_ceiling_seconds")<=6 && N(table,row,"draw_ceiling_seconds")>=N(table,row,"draw_floor_seconds") &&
+            N(table,row,"rapid_draw_floor_seconds")>=N(table,row,"draw_floor_seconds") && N(table,row,"rapid_draw_floor_seconds")<=N(table,row,"draw_ceiling_seconds"),table,"invalid resistance or draw interval bounds");
+        Probability(table,row,"inferno_bonus");Probability(table,row,"rapid_draw_reduction");Probability(table,row,"chain_draw_chance");Probability(table,row,"golden_cicada_bonus");
+        Check(N(table,row,"opening_draw_count") is >=0 and <=1,table,"opening draw count exceeds hand-opening policy");
     }
 
     private static void ValidateProgression(ConfigTable table)

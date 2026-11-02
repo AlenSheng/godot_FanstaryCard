@@ -5,6 +5,7 @@ namespace FantasyCard.Domain.Combat;
 public sealed class PlayerCombatState
 {
     private readonly CombatRandom _random;
+    private Guid? _lastOpeningBattleId;
     private readonly Dictionary<string, TargetStunWindowSnapshot> _targetStunWindows =
         new(StringComparer.Ordinal);
 
@@ -67,9 +68,12 @@ public sealed class PlayerCombatState
     public TimeSpan DrawBlockRemaining { get; private set; }
     public TimeSpan DrawBlockSpeedRemaining { get; private set; }
     public bool IsDead => Hp <= 0;
+    private double MinimumDrawInterval => Equipment.MinimumDrawInterval??(Equipment.HasRapidDraw?1.5:1.8);
+    private double MaximumDrawInterval => Equipment.MaximumDrawInterval??6;
+    public double NaturalDrawIntervalSeconds => Math.Clamp(4*(1+Equipment.DrawIntervalModifier),MinimumDrawInterval,MaximumDrawInterval);
     public double DrawIntervalSeconds => Math.Clamp(
         4 * (1 + Equipment.DrawIntervalModifier) * (1 + DrawSpeedModifier),
-        Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);
+        MinimumDrawInterval, MaximumDrawInterval) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);
 
     public CombatPassiveInfo GetPassiveInfo()
     {
@@ -340,9 +344,11 @@ public sealed class PlayerCombatState
         _targetStunWindows[targetId] = new TargetStunWindowSnapshot(targetId, remaining, Math.Max(0, count));
     }
 
-    public void PrepareForDuel(Random random)
+    public void PrepareForDuel(Random random,Guid? battleId=null)
     {
+        if(Equipment.StatsVersion is not null && battleId is not null && _lastOpeningBattleId==battleId)return;
         Deck.ResetForDuel(random);
+        BeginBattle(battleId??Guid.NewGuid());
         FenxianCombo = 0;
         LastFenxianCore = null;
         FenxianChargeLevel = 0;
@@ -352,6 +358,22 @@ public sealed class PlayerCombatState
         DrawBlockRemaining = TimeSpan.Zero;
         DrawBlockSpeedRemaining = TimeSpan.Zero;
         _targetStunWindows.Clear();
+    }
+
+    /// <summary>One opening grant per new battle; restoring an existing combat snapshot grants nothing.</summary>
+    public bool BeginBattle(Guid battleId)
+    {
+        if(battleId==Guid.Empty)throw new DomainValidationException("An opening draw requires a battle identity.");
+        if(Equipment.StatsVersion is null || _lastOpeningBattleId==battleId)return false;
+        _lastOpeningBattleId=battleId;
+        Deck.DrawImmediate(Equipment.OpeningDrawCount,_random);
+        return true;
+    }
+
+    private void OnNaturalDraw()
+    {
+        if(Equipment.ChainDrawBasisPoints>0 && Deck.Hand.Count<CombatDeck.HandLimit && _random.Next(10000)<Equipment.ChainDrawBasisPoints)
+            Deck.DrawImmediate(1,_random);
     }
 
     public void Advance(TimeSpan delta, bool drawEnabled)
@@ -371,9 +393,10 @@ public sealed class PlayerCombatState
                 if (start < StunRemaining || start < DrawBlockRemaining) continue;
                 var speed = start < DrawSpeedRemaining ? DrawSpeedModifier : 0;
                 var interval = Math.Clamp(4 * (1 + Equipment.DrawIntervalModifier) * (1 + speed),
-                    Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0);
+                    MinimumDrawInterval, MaximumDrawInterval);
                 var rate = start < DrawBlockSpeedRemaining ? 2 : 1;
-                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random);
+                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random,
+                    Equipment.ChainDrawBasisPoints>0?OnNaturalDraw:null);
             }
         }
 
@@ -420,7 +443,7 @@ public sealed class PlayerCombatState
             FenxianChargeLevel,
             GuardianShieldRemainderTenths,
             FenxianDrawPolicy,
-            GuardianShieldPolicy);
+            GuardianShieldPolicy,_lastOpeningBattleId);
 
     // Only authoritative save/room snapshots may call Restore. Client commands must not supply policies.
     // A restored preview/room inherits the saved policy, never the constructor's current default.
@@ -438,6 +461,7 @@ public sealed class PlayerCombatState
         var guardianPolicy = snapshot.GuardianPolicy == 0
             ? GuardianShieldBonusPolicy.CurrentSteps : snapshot.GuardianPolicy;
         if (!Enum.IsDefined(fenxianPolicy) || !Enum.IsDefined(guardianPolicy) ||
+            snapshot.LastOpeningBattleId==Guid.Empty ||
             snapshot.GuardianShieldRemainderTenths is < 0 or > 9 ||
             snapshot.GuardianShieldRemainderTenths != 0 &&
                 (HeroClass != HeroClass.Guardian || guardianPolicy != GuardianShieldBonusPolicy.FractionalRemainder))
@@ -450,6 +474,7 @@ public sealed class PlayerCombatState
         Shield = snapshot.Shield;
         _random.Restore(snapshot.RandomState);
         Deck.Restore(snapshot.Deck);
+        _lastOpeningBattleId=snapshot.LastOpeningBattleId;
         FenxianCombo = snapshot.FenxianCombo;
         LastFenxianCore = snapshot.LastFenxianCore;
         FenxianChargeLevel = Math.Clamp(snapshot.FenxianChargeLevel, 0, 5);
