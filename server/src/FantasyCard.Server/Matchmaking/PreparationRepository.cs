@@ -8,8 +8,11 @@ using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Matches;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Contracts.Seasons;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Seasons;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -74,11 +77,6 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         var backpackTier = (BackpackTier)(int)request.BackpackTier;
         PreparationRules.Validate(equipmentIds, backpackTier, safeSlotIndexes, request.PotionCount);
 
-        if (!string.Equals(request.Difficulty, "Standard", StringComparison.OrdinalIgnoreCase))
-        {
-            throw new DomainValidationException("Only Standard difficulty is available in the prototype.");
-        }
-
         if (!Enum.IsDefined(request.HeroClass))
         {
             throw new DomainValidationException("Unknown hero class.");
@@ -90,6 +88,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
 
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
+        now = timeProvider.GetUtcNow();
         await ExpireStaleAsync(connection, transaction, playerId, now, cancellationToken);
         var replay = await FindByRequestIdAsync(
             connection,
@@ -116,6 +115,33 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
                 Detail: "Cancel the existing preparation before creating another one.");
         }
 
+        var schedule = await new SeasonRepository(dataSource, timeProvider).GetScheduleAtAsync(now, cancellationToken);
+        SeasonContext? season = null;
+        if (schedule.Current is { } definition)
+        {
+            if (request.SeasonId is not null && request.SeasonId != definition.SeasonId)
+                throw new DomainValidationException("The requested season is not the current season.");
+            if (definition.ConfigVersion != BootstrapRepository.CurrentConfigVersion)
+                throw new DomainValidationException("The active season configuration is not loaded by this server.");
+            var token = request.Difficulty ?? "D0";
+            var difficulty = string.Equals(token, "Standard", StringComparison.OrdinalIgnoreCase) ? 0
+                : token.Length == 2 && (token[0] is 'D' or 'd') && token[1] is >= '0' and <= '5' ? token[1] - '0'
+                : throw new DomainValidationException("Season difficulty must be D0 through D5.");
+            season = definition.ContextFor(difficulty);
+            await using var unlocked = new NpgsqlCommand("SELECT highest_unlocked_difficulty FROM player_season_state WHERE player_id=$1 AND season_id=$2 AND archived_at IS NULL", connection, transaction);
+            unlocked.Parameters.AddWithValue(playerId);unlocked.Parameters.AddWithValue(season.SeasonId);
+            var unlockedValue = await unlocked.ExecuteScalarAsync(cancellationToken);
+            if ((unlockedValue is short value ? value : 0) < difficulty)
+                throw new DomainValidationException("The selected season difficulty has not been unlocked.");
+        }
+        else
+        {
+            if (!schedule.LegacyAllowed || request.SeasonId is not null)
+                throw new DomainValidationException("No active season is accepting preparations.");
+            if (!string.Equals(request.Difficulty, "Standard", StringComparison.OrdinalIgnoreCase))
+                throw new DomainValidationException("Only Standard difficulty is available in the prototype.");
+        }
+
         var heroClass = (HeroClass)(int)request.HeroClass;
         var deck = await LoadDeckAsync(connection, transaction, playerId, heroClass, cancellationToken);
         if (deck is null || deck.Value.Version != request.DeckVersion)
@@ -131,6 +157,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             transaction,
             playerId,
             equipmentIds,
+            season,
             cancellationToken);
         if (equipmentValidation.Error is not null)
         {
@@ -155,26 +182,36 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             playerId,
             heroClass,
             cancellationToken);
+        var actualCardLevels = await LoadCardLevelsAsync(connection, transaction, playerId, deck.Value.CardIds, cancellationToken);
+        if (schedule.Current is { } currentSeason && !currentSeason.Contains(timeProvider.GetUtcNow()) ||
+            schedule.Current is null && schedule.Next is { } nextSeason && timeProvider.GetUtcNow() >= nextSeason.StartsAtUtc)
+            throw new DomainValidationException("The season changed while creating the preparation. Reload and retry.");
+        if (season is not null)
+            await SeasonRepository.EnsurePlayerWithinTransactionAsync(connection, transaction, playerId, season,
+                timeProvider.GetUtcNow(), cancellationToken);
         var snapshot = new PreparationSnapshotResponse(
             request.HeroClass,
             MaximumHp(heroClass),
             deck.Value.CardIds,
             equipmentIds,
-            weaponLevel,
+            season?.ProjectPermanentLevel(weaponLevel) ?? weaponLevel,
             request.BackpackTier,
             GameConfigCatalog.Current.Backpack(backpackTier.ToString()).Capacity,
             safeSlotIndexes,
             request.PotionCount,
-            "Standard",
-            BootstrapRepository.CurrentConfigVersion,
+            season?.DifficultyId ?? "Standard",
+            season?.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion,
             equipmentValidation.Items,
-            await LoadCardLevelsAsync(connection, transaction, playerId, deck.Value.CardIds, cancellationToken));
+            actualCardLevels.Select(level => season?.ProjectPermanentLevel(level) ?? level).ToArray(),
+            season is null ? null : new SeasonContextResponse(season.SeasonId, season.DifficultyId, season.RulesetId, season.ConfigVersion, season.StatsVersion),
+            season is null ? null : actualCardLevels,
+            season is null ? null : weaponLevel);
         var preparation = new PreparationResponse(
             Guid.CreateVersion7(),
             "Active",
             snapshot,
             now,
-            now.AddMinutes(30));
+            schedule.Current is { } active && active.EndsAtUtc < now.AddMinutes(30) ? active.EndsAtUtc : now.AddMinutes(30));
 
         await InsertPreparationAsync(
             connection,
@@ -495,6 +532,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         NpgsqlTransaction transaction,
         Guid playerId,
         Guid?[] equipmentIds,
+        SeasonContext? season,
         CancellationToken cancellationToken)
     {
         var snapshots = new List<PreparationEquipmentSnapshotResponse>();
@@ -507,7 +545,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
 
             await using var command = new NpgsqlCommand(
                 """
-                SELECT slot, location, quality, level, element, effect_affix, secondary_trait FROM equipments
+                SELECT slot, location, quality, level, element, effect_affix, secondary_trait,season_id,asset_scope,stats_version,source_kind FROM equipments
                 WHERE instance_id = $1 AND owner_id = $2
                 FOR SHARE
                 """,
@@ -519,6 +557,20 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             if (!await reader.ReadAsync(cancellationToken))
             {
                 return ($"Equipment '{equipmentId}' is not owned by the player.", []);
+            }
+
+            var sameDomain = season is null ? reader.IsDBNull(7) && reader.IsDBNull(8)
+                : !reader.IsDBNull(7) && reader.GetString(7) == season.SeasonId &&
+                  !reader.IsDBNull(8) && reader.GetString(8) == "ActiveSeason" &&
+                  !reader.IsDBNull(9) && reader.GetString(9) == season.StatsVersion;
+            if (!sameDomain) return ("Prepared equipment belongs to another season, archive or stats version.", []);
+            if (season is not null)
+            {
+                var rank = reader.GetString(2) switch { "White" => 1, "Green" => 2, "Blue" => 3, "Purple" => 4, "Orange" => 5, "Red" => 6, _ => 99 };
+                var entryCap = season.Difficulty switch { 0 => 3, 1 => 4, _ => 6 };
+                if (rank > entryCap) return ("Equipment quality exceeds the selected difficulty entry cap.", []);
+                if (reader.GetString(10) is "BotProjection" or "Borrowed" or "ActivityMaterial")
+                    return ("Projected, borrowed or material-only equipment cannot enter a preparation.", []);
             }
 
             if (!string.Equals(reader.GetString(0), EquipmentSlots[index], StringComparison.Ordinal) ||
@@ -601,8 +653,8 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             """
             INSERT INTO preparations(
                 preparation_id, player_id, request_id, request_hash, snapshot_json,
-                status, config_version, created_at, expires_at)
-            VALUES ($1, $2, $3, $4, $5, 'Active', $6, $7, $8)
+                status, config_version, created_at, expires_at,season_id,difficulty_id,ruleset_id,stats_version)
+            VALUES ($1, $2, $3, $4, $5, 'Active', $6, $7, $8,$9,$10,$11,$12)
             """,
             connection,
             transaction);
@@ -618,6 +670,11 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         command.Parameters.AddWithValue(preparation.Snapshot.ConfigVersion);
         command.Parameters.AddWithValue(preparation.CreatedAt);
         command.Parameters.AddWithValue(preparation.ExpiresAt);
+        var season = preparation.Snapshot.Season;
+        command.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.SeasonId ?? DBNull.Value);
+        command.Parameters.AddWithValue(NpgsqlDbType.Smallint, season is null ? DBNull.Value : (short)(season.DifficultyId[1] - '0'));
+        command.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.RulesetId ?? DBNull.Value);
+        command.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.StatsVersion ?? DBNull.Value);
         await command.ExecuteNonQueryAsync(cancellationToken);
     }
 

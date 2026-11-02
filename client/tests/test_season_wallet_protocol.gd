@@ -40,5 +40,8 @@ func run() -> void:
 	check(bootstrap.season.state == "Closed" and not bootstrap.season.hasJoined and bootstrap.season.wallet == null, "independent closed-season bootstrap golden")
 	var loadout := proto.decode_http("LoadoutResponse", "2208736561736f6e2d61".hex_decode())
 	check(loadout.seasonId == "season-a" and loadout.equipmentIds.is_empty(), "independent loadout season tag golden")
+	check(proto.encode("CreatePreparationRequest", {"season_id": "season-a"}).hex_encode() == "4208736561736f6e2d61", "independent preparation season tag golden")
+	var preparation := proto.decode_http("PreparationSnapshotResponse", "800105".hex_decode())
+	check(preparation.actualClassWeaponLevel == 5 and preparation.classWeaponLevel == 0 and preparation.season == null, "independent actual weapon level tag golden")
 	print(JSON.stringify({"ok": failures.is_empty(), "checks": checks, "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

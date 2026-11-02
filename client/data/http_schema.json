@@ -1,5 +1,5 @@
 {
-  "sha256": "506909f3a2dcf2ee48790f394293cb03ae401c577d4132e3b63ca365572c1e02",
+  "sha256": "f7968ab663144f11954ee2140c3c233b81e90170942c2932c5ba615493c15ebc",
   "messages": {
     "Empty": {},
     "UnfinishedMatchResponse": {
@@ -184,6 +184,38 @@
       "7": {
         "name": "can_fund_weapon",
         "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonContextResponse": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "difficulty_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "ruleset_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "stats_version",
+        "type": "string",
         "repeated": false,
         "optional": false
       }
@@ -622,6 +654,12 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      },
+      "8": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "PreparationSnapshotResponse": {
@@ -702,6 +740,24 @@
         "type": "int32",
         "repeated": true,
         "optional": false
+      },
+      "14": {
+        "name": "season",
+        "type": "SeasonContextResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "actual_card_levels",
+        "type": "int32",
+        "repeated": true,
+        "optional": false
+      },
+      "16": {
+        "name": "actual_class_weapon_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     },
     "PreparationEquipmentSnapshotResponse": {

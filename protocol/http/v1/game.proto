@@ -51,6 +51,14 @@ message SeasonWalletResponse {
   bool can_fund_weapon = 7;
 }
 
+message SeasonContextResponse {
+  string season_id = 1;
+  string difficulty_id = 2;
+  string ruleset_id = 3;
+  string config_version = 4;
+  string stats_version = 5;
+}
+
 message SeasonSummaryResponse {
   string state = 1;
   optional string season_id = 2;
@@ -157,6 +165,7 @@ message CreatePreparationRequest {
   repeated int32 safe_slot_indexes = 5;
   int32 potion_count = 6;
   optional string difficulty = 7;
+  optional string season_id = 8;
 }
 
 message PreparationSnapshotResponse {
@@ -173,6 +182,9 @@ message PreparationSnapshotResponse {
   string config_version = 11;
   repeated PreparationEquipmentSnapshotResponse equipment_snapshots = 12;
   repeated int32 card_levels = 13;
+  SeasonContextResponse season = 14;
+  repeated int32 actual_card_levels = 15;
+  optional int32 actual_class_weapon_level = 16;
 }
 
 message PreparationEquipmentSnapshotResponse {

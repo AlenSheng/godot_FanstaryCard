@@ -1,5 +1,8 @@
 namespace FantasyCard.Contracts.Seasons;
 
+public sealed record SeasonContextResponse(
+    string SeasonId, string DifficultyId, string RulesetId, string ConfigVersion, string StatsVersion);
+
 public sealed record SeasonWalletResponse(
     string SeasonId, long Gold, long EquipmentFragments, long ChallengeMarks,
     long Version, DateTimeOffset? ArchivedAt, bool CanFundWeapon);

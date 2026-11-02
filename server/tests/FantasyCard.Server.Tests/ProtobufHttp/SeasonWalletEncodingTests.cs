@@ -118,4 +118,23 @@ public sealed class SeasonWalletEncodingTests
         Assert.False(Wire.LoadoutResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(contract, source with { SeasonId = null })).HasSeasonId);
         Assert.Equal("2208736561736f6e2d61", Convert.ToHexStringLower(new Wire.LoadoutResponse { SeasonId = "season-a" }.ToByteArray()));
     }
+
+    [Fact]
+    public void PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels()
+    {
+        Assert.Equal("4208736561736f6e2d61", Convert.ToHexStringLower(new Wire.CreatePreparationRequest { SeasonId = "season-a" }.ToByteArray()));
+        Assert.Equal("800105", Convert.ToHexStringLower(new Wire.PreparationSnapshotResponse { ActualClassWeaponLevel = 5 }.ToByteArray()));
+        var snapshot = new FantasyCard.Contracts.Matchmaking.PreparationSnapshotResponse(
+            FantasyCard.Contracts.Players.HeroClassDto.Mage, 70, [], [], 0,
+            FantasyCard.Contracts.Matchmaking.BackpackTierDto.Free, 20, [], 0, "D0", "cfg",
+            CardLevels: [0], Season: new("season-a", "D0", "season-v1", "cfg", "stats"),
+            ActualCardLevels: [5], ActualClassWeaponLevel: 5);
+        var wire = Assert.IsType<Wire.PreparationSnapshotResponse>(HttpDtoMapper.FromDto(Wire.PreparationSnapshotResponse.Descriptor, snapshot));
+        Assert.Equal("season-a", wire.Season.SeasonId);
+        Assert.Equal("cfg", wire.Season.ConfigVersion);
+        Assert.Equal(0, Assert.Single(wire.CardLevels));
+        Assert.Equal(5, Assert.Single(wire.ActualCardLevels));
+        Assert.Equal(0, wire.ClassWeaponLevel);
+        Assert.Equal(5, wire.ActualClassWeaponLevel);
+    }
 }

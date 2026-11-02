@@ -121,9 +121,16 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await EnsurePlayerWithinTransactionAsync(connection, transaction, playerId, context, timeProvider.GetUtcNow(), cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+    }
+
+    public static async Task EnsurePlayerWithinTransactionAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, SeasonContext context, DateTimeOffset now, CancellationToken cancellationToken)
+    {
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
         var definition = await ValidateContextAsync(connection, transaction, context, cancellationToken);
-        if (!definition.Contains(timeProvider.GetUtcNow()))
+        if (!definition.Contains(now))
             throw new DomainValidationException("The selected season is not accepting new entries.");
         await using (var state = new NpgsqlCommand("""
             INSERT INTO player_season_state (player_id,season_id,joined_at) VALUES ($1,$2,$3)
@@ -131,7 +138,7 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
             """, connection, transaction))
         {
             state.Parameters.AddWithValue(playerId); state.Parameters.AddWithValue(context.SeasonId);
-            state.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            state.Parameters.AddWithValue(now);
             await state.ExecuteNonQueryAsync(cancellationToken);
         }
         await using (var wallet = new NpgsqlCommand("""
@@ -149,7 +156,6 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
             if ((bool)(await state.ExecuteScalarAsync(cancellationToken))!)
                 throw new DomainValidationException("The player's season has been archived.");
         }
-        await transaction.CommitAsync(cancellationToken);
     }
 
     public async Task<SeasonWalletSnapshot?> GetWalletAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
