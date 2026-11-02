@@ -6,6 +6,7 @@ namespace FantasyCard.Domain.Seasons;
 public sealed record SeasonDefinition
 {
     public const string SupportedRulesetId = "season-v1";
+    public const string LegacyArchiveId = "legacy-gdd-0.70";
     public const string TimeZoneId = "Asia/Shanghai";
     public const int DefaultDurationDays = 42;
     public const int MinimumDurationDays = 30;
@@ -24,6 +25,8 @@ public sealed record SeasonDefinition
         int highestOpenDifficulty)
     {
         RequireIdentifier(seasonId, nameof(seasonId));
+        if (seasonId == LegacyArchiveId)
+            throw new DomainValidationException("The historical archive cannot be used as a playable season.");
         RequireIdentifier(configVersion, nameof(configVersion));
         RequireIdentifier(statsVersion, nameof(statsVersion));
         if (rulesetId != SupportedRulesetId)

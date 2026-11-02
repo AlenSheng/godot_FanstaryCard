@@ -95,6 +95,15 @@ public sealed class SeasonDefinitionTests
     }
 
     [Fact]
+    public void HistoricalArchiveCannotBePublishedOrRestoredAsAPlayableSeason()
+    {
+        Assert.Throws<DomainValidationException>(() => SeasonDefinition.FromCalendarDays(
+            SeasonDefinition.LegacyArchiveId, new DateOnly(2026, 11, 2), "config-1", "stats-1"));
+        Assert.Throws<DomainValidationException>(() => new SeasonContext(
+            SeasonDefinition.LegacyArchiveId, 0, "season-v1", "config-1", "stats-1"));
+    }
+
+    [Fact]
     public void ContextSurvivesSerializationAndEveryDomainDimensionIsCompared()
     {
         var context = new SeasonContext("season-test", 2, "season-v1", "config-1", "stats-1");

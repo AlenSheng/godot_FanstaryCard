@@ -9,6 +9,8 @@ public sealed record SeasonContext
     public SeasonContext(string seasonId, int difficulty, string rulesetId, string configVersion, string statsVersion)
     {
         SeasonDefinition.RequireIdentifier(seasonId, nameof(seasonId));
+        if (seasonId == SeasonDefinition.LegacyArchiveId)
+            throw new DomainValidationException("The historical archive cannot be used as a playable season.");
         SeasonDefinition.RequireIdentifier(configVersion, nameof(configVersion));
         SeasonDefinition.RequireIdentifier(statsVersion, nameof(statsVersion));
         if (rulesetId != SeasonDefinition.SupportedRulesetId)

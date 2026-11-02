@@ -1,0 +1,291 @@
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
+using Npgsql;
+
+namespace FantasyCard.Server.Seasons;
+
+public enum SeasonWalletPurpose { General = 1, PermanentWeaponEnhancement = 2, LateSettlement = 3 }
+public sealed record SeasonWalletSnapshot(
+    Guid PlayerId, string SeasonId, long Gold, long EquipmentFragments,
+    long ChallengeMarks, long Version, DateTimeOffset? ArchivedAt);
+
+public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
+{
+    private const long PublicationLock = 6_202_611_020_000_001;
+
+    /// <summary>Persist only an already compiled configuration snapshot; never mutate a published season.</summary>
+    public async Task<bool> PublishAsync(SeasonDefinition definition, string configSha256, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        if (configSha256.Length != 64 || configSha256.Any(character => !char.IsAsciiHexDigitLower(character)))
+            throw new DomainValidationException("The season configuration hash is invalid.");
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await using (var gate = new NpgsqlCommand("SELECT pg_advisory_xact_lock($1)", connection, transaction))
+        {
+            gate.Parameters.AddWithValue(PublicationLock);
+            await gate.ExecuteNonQueryAsync(cancellationToken);
+        }
+        var existing = await ReadDefinitionAsync(connection, transaction, definition.SeasonId, cancellationToken);
+        if (existing is not null)
+        {
+            if (existing.Value.Definition != definition || existing.Value.Hash != configSha256)
+                throw new DomainValidationException("A published season cannot change its rules, dates or configuration.");
+            await transaction.CommitAsync(cancellationToken);
+            return false;
+        }
+        await using var insert = new NpgsqlCommand("""
+            INSERT INTO season_definitions
+                (season_id,ruleset_id,config_version,config_sha256,stats_version,starts_at,ends_at,
+                 duration_days,highest_open_difficulty,published_at)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+            """, connection, transaction);
+        insert.Parameters.AddWithValue(definition.SeasonId);
+        insert.Parameters.AddWithValue(definition.RulesetId);
+        insert.Parameters.AddWithValue(definition.ConfigVersion);
+        insert.Parameters.AddWithValue(configSha256);
+        insert.Parameters.AddWithValue(definition.StatsVersion);
+        insert.Parameters.AddWithValue(definition.StartsAtUtc);
+        insert.Parameters.AddWithValue(definition.EndsAtUtc);
+        insert.Parameters.AddWithValue(definition.DurationDays);
+        insert.Parameters.AddWithValue((short)definition.HighestOpenDifficulty);
+        insert.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        try { await insert.ExecuteNonQueryAsync(cancellationToken); }
+        catch (PostgresException exception) when (exception.SqlState == PostgresErrorCodes.ExclusionViolation)
+        {
+            throw new DomainValidationException("Season calendar periods cannot overlap.");
+        }
+        await transaction.CommitAsync(cancellationToken);
+        return true;
+    }
+
+    public async Task<SeasonDefinition?> GetActiveAsync(CancellationToken cancellationToken)
+    {
+        await using var command = dataSource.CreateCommand("""
+            SELECT season_id,ruleset_id,config_version,stats_version,starts_at,ends_at,highest_open_difficulty
+            FROM season_definitions WHERE ruleset_id='season-v1' AND starts_at <= $1 AND ends_at > $1
+            """);
+        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        return await reader.ReadAsync(cancellationToken) ? ReadDefinition(reader) : null;
+    }
+
+    /// <summary>Membership creates zeroed seasonal balances and never resets the permanent aggregate.</summary>
+    public async Task EnsurePlayerAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
+        var definition = await ValidateContextAsync(connection, transaction, context, cancellationToken);
+        if (!definition.Contains(timeProvider.GetUtcNow()))
+            throw new DomainValidationException("The selected season is not accepting new entries.");
+        await using (var state = new NpgsqlCommand("""
+            INSERT INTO player_season_state (player_id,season_id,joined_at) VALUES ($1,$2,$3)
+            ON CONFLICT (player_id,season_id) DO NOTHING
+            """, connection, transaction))
+        {
+            state.Parameters.AddWithValue(playerId); state.Parameters.AddWithValue(context.SeasonId);
+            state.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            await state.ExecuteNonQueryAsync(cancellationToken);
+        }
+        await using (var wallet = new NpgsqlCommand("""
+            INSERT INTO player_season_wallets (player_id,season_id) VALUES ($1,$2)
+            ON CONFLICT (player_id,season_id) DO NOTHING
+            """, connection, transaction))
+        {
+            wallet.Parameters.AddWithValue(playerId); wallet.Parameters.AddWithValue(context.SeasonId);
+            await wallet.ExecuteNonQueryAsync(cancellationToken);
+        }
+        await using (var state = new NpgsqlCommand(
+            "SELECT archived_at IS NOT NULL FROM player_season_state WHERE player_id=$1 AND season_id=$2", connection, transaction))
+        {
+            state.Parameters.AddWithValue(playerId); state.Parameters.AddWithValue(context.SeasonId);
+            if ((bool)(await state.ExecuteScalarAsync(cancellationToken))!)
+                throw new DomainValidationException("The player's season has been archived.");
+        }
+        await transaction.CommitAsync(cancellationToken);
+    }
+
+    public async Task<SeasonWalletSnapshot?> GetWalletAsync(Guid playerId, SeasonContext context, CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await ValidateContextAsync(connection, null, context, cancellationToken);
+        return await ReadWalletAsync(connection, null, playerId, context.SeasonId, false, cancellationToken);
+    }
+
+    public async Task<SeasonWalletSnapshot> ApplyAsync(
+        Guid playerId, SeasonContext context, long goldDelta, long fragmentDelta, long markDelta,
+        string reason, string requestId, SeasonWalletPurpose purpose, CancellationToken cancellationToken)
+    {
+        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        ArgumentNullException.ThrowIfNull(context);
+        var businessHash = WalletRequestHash(context, goldDelta, fragmentDelta, markDelta, reason, purpose, "wallet-only");
+        var result = await ApplyWithinTransactionAsync(connection, transaction, playerId, context,
+            goldDelta, fragmentDelta, markDelta, reason, requestId, purpose, timeProvider.GetUtcNow(), businessHash, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+        return result;
+    }
+
+    /// <summary>Item grants and their idempotency record must share this caller-owned transaction.</summary>
+    public static async Task<SeasonWalletSnapshot> ApplyWithinTransactionAsync(
+        NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, SeasonContext context,
+        long goldDelta, long fragmentDelta, long markDelta, string reason, string requestId,
+        SeasonWalletPurpose purpose, DateTimeOffset now, string businessRequestHash, CancellationToken cancellationToken)
+    {
+        if (!Enum.IsDefined(purpose) || (goldDelta == 0 && fragmentDelta == 0 && markDelta == 0))
+            throw new DomainValidationException("The season wallet operation is invalid.");
+        if (string.IsNullOrWhiteSpace(reason) || reason.Length > 80 ||
+            reason.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not '.' and not '_' and not '-') ||
+            string.IsNullOrWhiteSpace(requestId) || requestId.Length > 80 || requestId.Any(char.IsControl))
+            throw new DomainValidationException("The season wallet request identity is invalid.");
+        if (businessRequestHash.Length != 64 || businessRequestHash.Any(character => !char.IsAsciiHexDigitLower(character)))
+            throw new DomainValidationException("The season wallet business request hash is invalid.");
+        await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
+        var definition = await ValidateContextAsync(connection, transaction, context, cancellationToken);
+        var hash = WalletRequestHash(context, goldDelta, fragmentDelta, markDelta, reason, purpose, businessRequestHash);
+        await using (var replay = new NpgsqlCommand("""
+            SELECT request_hash,gold_after,fragments_after,marks_after,wallet_version,archived_at
+            FROM season_wallet_operations WHERE player_id=$1 AND season_id=$2 AND reason=$3 AND request_id=$4
+            """, connection, transaction))
+        {
+            replay.Parameters.AddWithValue(playerId); replay.Parameters.AddWithValue(context.SeasonId);
+            replay.Parameters.AddWithValue(reason); replay.Parameters.AddWithValue(requestId);
+            await using var reader = await replay.ExecuteReaderAsync(cancellationToken);
+            if (await reader.ReadAsync(cancellationToken))
+            {
+                if (reader.GetString(0) != hash)
+                    throw new DomainValidationException("The season wallet request was reused with different parameters.");
+                return new(playerId, context.SeasonId, reader.GetInt64(1), reader.GetInt64(2), reader.GetInt64(3),
+                    reader.GetInt64(4), reader.IsDBNull(5) ? null : reader.GetFieldValue<DateTimeOffset>(5));
+            }
+        }
+        var wallet = await ReadWalletAsync(connection, transaction, playerId, context.SeasonId, true, cancellationToken)
+            ?? throw new DomainValidationException("The player has not joined the selected season.");
+        if (now < definition.StartsAtUtc)
+            throw new DomainValidationException("The selected season has not started.");
+        switch (purpose)
+        {
+            case SeasonWalletPurpose.General when wallet.ArchivedAt is not null || !definition.Contains(now):
+                throw new DomainValidationException("The selected season wallet is closed for new actions.");
+            case SeasonWalletPurpose.PermanentWeaponEnhancement when goldDelta != 0 || markDelta != 0 || fragmentDelta >= 0:
+                throw new DomainValidationException("Only fragments may fund a permanent weapon upgrade.");
+            case SeasonWalletPurpose.LateSettlement when goldDelta < 0 || fragmentDelta < 0 || markDelta < 0:
+                throw new DomainValidationException("Late settlement may only credit its original season.");
+        }
+        long gold, fragments, marks, version;
+        try
+        {
+            gold = checked(wallet.Gold + goldDelta);
+            fragments = checked(wallet.EquipmentFragments + fragmentDelta);
+            marks = checked(wallet.ChallengeMarks + markDelta);
+            version = checked(wallet.Version + 1);
+        }
+        catch (OverflowException) { throw new DomainValidationException("The season wallet amount exceeds the supported range."); }
+        if (gold < 0 || fragments < 0 || marks < 0)
+            throw new DomainValidationException("The season wallet balance is insufficient.");
+        await using (var update = new NpgsqlCommand("""
+            UPDATE player_season_wallets SET gold=$3,equipment_fragments=$4,challenge_marks=$5,version=$6
+            WHERE player_id=$1 AND season_id=$2
+            """, connection, transaction))
+        {
+            update.Parameters.AddWithValue(playerId); update.Parameters.AddWithValue(context.SeasonId);
+            update.Parameters.AddWithValue(gold); update.Parameters.AddWithValue(fragments);
+            update.Parameters.AddWithValue(marks); update.Parameters.AddWithValue(version);
+            await update.ExecuteNonQueryAsync(cancellationToken);
+        }
+        foreach (var (currency, delta, balance) in new[] { ("Gold", goldDelta, gold),
+                     ("EquipmentFragments", fragmentDelta, fragments), ("ChallengeMarks", markDelta, marks) })
+        {
+            if (delta == 0) continue;
+            await using var ledger = new NpgsqlCommand("""
+                INSERT INTO economy_ledger
+                    (ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,season_id,source_kind)
+                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+                """, connection, transaction);
+            ledger.Parameters.AddWithValue(Guid.NewGuid()); ledger.Parameters.AddWithValue(playerId);
+            ledger.Parameters.AddWithValue(requestId); ledger.Parameters.AddWithValue(currency);
+            ledger.Parameters.AddWithValue(delta); ledger.Parameters.AddWithValue(balance);
+            ledger.Parameters.AddWithValue(reason); ledger.Parameters.AddWithValue(now);
+            ledger.Parameters.AddWithValue(context.SeasonId); ledger.Parameters.AddWithValue(purpose.ToString());
+            await ledger.ExecuteNonQueryAsync(cancellationToken);
+        }
+        await using (var operation = new NpgsqlCommand("""
+            INSERT INTO season_wallet_operations
+                (player_id,season_id,reason,request_id,request_hash,gold_after,fragments_after,marks_after,wallet_version,archived_at,created_at)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+            """, connection, transaction))
+        {
+            operation.Parameters.AddWithValue(playerId); operation.Parameters.AddWithValue(context.SeasonId);
+            operation.Parameters.AddWithValue(reason); operation.Parameters.AddWithValue(requestId);
+            operation.Parameters.AddWithValue(hash); operation.Parameters.AddWithValue(gold);
+            operation.Parameters.AddWithValue(fragments); operation.Parameters.AddWithValue(marks);
+            operation.Parameters.AddWithValue(version);
+            operation.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.TimestampTz, (object?)wallet.ArchivedAt ?? DBNull.Value);
+            operation.Parameters.AddWithValue(now);
+            await operation.ExecuteNonQueryAsync(cancellationToken);
+        }
+        return wallet with { Gold = gold, EquipmentFragments = fragments, ChallengeMarks = marks, Version = version };
+    }
+
+    private static string WalletRequestHash(SeasonContext context, long gold, long fragments, long marks,
+        string reason, SeasonWalletPurpose purpose, string businessHash)
+    {
+        var parts = new[] { "v2", context.SeasonId, context.DifficultyId, context.RulesetId, context.ConfigVersion,
+            context.StatsVersion, gold.ToString(CultureInfo.InvariantCulture), fragments.ToString(CultureInfo.InvariantCulture),
+            marks.ToString(CultureInfo.InvariantCulture), reason, purpose.ToString(), businessHash };
+        return Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(string.Join('\n', parts))));
+    }
+
+    private static async Task LockPlayerAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, CancellationToken cancellationToken)
+    {
+        await using var command = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction);
+        command.Parameters.AddWithValue(playerId);
+        if (await command.ExecuteScalarAsync(cancellationToken) is null)
+            throw new DomainValidationException("The player was not found.");
+    }
+
+    private static async Task<SeasonDefinition> ValidateContextAsync(NpgsqlConnection connection,
+        NpgsqlTransaction? transaction, SeasonContext context, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(context);
+        var published = await ReadDefinitionAsync(connection, transaction, context.SeasonId, cancellationToken)
+            ?? throw new DomainValidationException("The season configuration has not been published.");
+        published.Definition.ContextFor(context.Difficulty).RequireSameDomain(context);
+        return published.Definition;
+    }
+
+    private static async Task<(SeasonDefinition Definition, string Hash)?> ReadDefinitionAsync(
+        NpgsqlConnection connection, NpgsqlTransaction? transaction, string seasonId, CancellationToken cancellationToken)
+    {
+        await using var command = new NpgsqlCommand("""
+            SELECT season_id,ruleset_id,config_version,stats_version,starts_at,ends_at,highest_open_difficulty,config_sha256
+            FROM season_definitions WHERE season_id=$1 AND ruleset_id='season-v1'
+            """, connection, transaction);
+        command.Parameters.AddWithValue(seasonId);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        return await reader.ReadAsync(cancellationToken) ? (ReadDefinition(reader), reader.GetString(7)) : null;
+    }
+
+    private static SeasonDefinition ReadDefinition(NpgsqlDataReader reader) => new(
+        reader.GetString(0), reader.GetString(1), reader.GetString(2), reader.GetString(3),
+        reader.GetFieldValue<DateTimeOffset>(4), reader.GetFieldValue<DateTimeOffset>(5), reader.GetInt16(6));
+
+    private static async Task<SeasonWalletSnapshot?> ReadWalletAsync(NpgsqlConnection connection,
+        NpgsqlTransaction? transaction, Guid playerId, string seasonId, bool lockRow, CancellationToken cancellationToken)
+    {
+        var sql = "SELECT gold,equipment_fragments,challenge_marks,version,archived_at FROM player_season_wallets WHERE player_id=$1 AND season_id=$2";
+        if (lockRow) sql += " FOR UPDATE";
+        await using var command = new NpgsqlCommand(sql, connection, transaction);
+        command.Parameters.AddWithValue(playerId); command.Parameters.AddWithValue(seasonId);
+        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+        return await reader.ReadAsync(cancellationToken)
+            ? new(playerId, seasonId, reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2), reader.GetInt64(3),
+                reader.IsDBNull(4) ? null : reader.GetFieldValue<DateTimeOffset>(4))
+            : null;
+    }
+}

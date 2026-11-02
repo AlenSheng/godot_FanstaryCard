@@ -21,18 +21,20 @@
       "requirement": "42日默认、30至60日、上海时区、左闭右开与04点业务日分离",
       "evidence": [
         "evidence/A02/result.json",
-        "evidence/A02/a02.trx"
+        "evidence/A02/a02.trx",
+        "evidence/A03-storage/r2/domain.trx"
       ],
-      "note": "SeasonDefinition and SeasonContext domain invariants; runtime/configuration/persistence integration is tracked separately by A04 and C01."
+      "note": "Original 17 checks retained; the current 44-check season domain run adds reserved legacy archive rejection. Full runtime/configuration propagation is still tracked by A04/C01."
     },
     {
       "id": "A03",
       "status": "in_progress",
       "requirement": "永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离",
-      "note": "26项领域测试通过；真实钱包/库存路由、数据库持久化与归档事务未完成，A03仍在进行。",
+      "note": "资产域26项、当前赛季领域44项及真实PostgreSQL13项通过。V031、版本锁定、钱包幂等与专武同事务扣费已实现；接口传输、库存过滤、归档任务和全流程调用仍待接入。r1夹具失败保留，未放宽生产约束。",
       "evidence": [
         "evidence/A03/result.json",
-        "evidence/A03/a03-r2.trx"
+        "evidence/A03/a03-r2.trx",
+        "evidence/A03-storage/result.json"
       ]
     },
     {

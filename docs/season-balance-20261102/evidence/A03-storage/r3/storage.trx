@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="ae34c27d-1bc2-40ce-a828-5282ab9f817d" name="@803968e39001 2026-11-02 10:40:45" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-02T10:40:45.7534390+00:00" queuing="2026-11-02T10:40:45.7534391+00:00" start="2026-11-02T10:40:40.5832416+00:00" finish="2026-11-02T10:40:58.4551916+00:00" />
+  <TestSettings name="default" id="a004fd31-20fa-4f7c-803c-f32c0e98d49d">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-02_10_40_45" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c2fc50d0-3e75-4197-af3f-d7137fbbd1e4" testId="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" computerName="803968e39001" duration="00:00:01.2393095" startTime="2026-11-02T10:40:50.6583186+00:00" endTime="2026-11-02T10:40:51.8977047+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c2fc50d0-3e75-4197-af3f-d7137fbbd1e4" />
+    <UnitTestResult executionId="ad38b395-616c-48d5-ab99-9d26f47635f0" testId="7587bed9-503b-5cfe-48d0-09131fda9cec" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" computerName="803968e39001" duration="00:00:01.0604476" startTime="2026-11-02T10:40:51.8983210+00:00" endTime="2026-11-02T10:40:52.9588535+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad38b395-616c-48d5-ab99-9d26f47635f0" />
+    <UnitTestResult executionId="449926ba-1a8a-4796-8a61-c4b23f06cbda" testId="11aebfcf-b4d5-5743-846f-88f2592e7de7" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" computerName="803968e39001" duration="00:00:01.0148902" startTime="2026-11-02T10:40:55.1828659+00:00" endTime="2026-11-02T10:40:56.1978431+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="449926ba-1a8a-4796-8a61-c4b23f06cbda" />
+    <UnitTestResult executionId="b20b9bbc-6b08-40a9-a85a-37fb62b3f4a9" testId="e4441dc5-4f9a-ce04-3d3e-10107bec4213" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" computerName="803968e39001" duration="00:00:01.0589957" startTime="2026-11-02T10:40:47.3003257+00:00" endTime="2026-11-02T10:40:48.3595083+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b20b9bbc-6b08-40a9-a85a-37fb62b3f4a9" />
+    <UnitTestResult executionId="70026c78-d707-4829-aea2-332c8e2e4435" testId="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" computerName="803968e39001" duration="00:00:00.9913863" startTime="2026-11-02T10:40:45.1913788+00:00" endTime="2026-11-02T10:40:46.1831857+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="70026c78-d707-4829-aea2-332c8e2e4435" />
+    <UnitTestResult executionId="edb294ef-a935-4418-8b0d-a49a644faf3f" testId="5a1a2f3f-b2e5-d7de-95df-0eded60af573" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" computerName="803968e39001" duration="00:00:01.4079438" startTime="2026-11-02T10:40:43.7539291+00:00" endTime="2026-11-02T10:40:45.1758715+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="edb294ef-a935-4418-8b0d-a49a644faf3f" />
+    <UnitTestResult executionId="3960d259-7883-4e60-99d2-6bceac9a61e0" testId="9792afe4-0aab-b788-5978-3d2b8cb4e304" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" computerName="803968e39001" duration="00:00:01.0069465" startTime="2026-11-02T10:40:52.9598789+00:00" endTime="2026-11-02T10:40:53.9668976+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3960d259-7883-4e60-99d2-6bceac9a61e0" />
+    <UnitTestResult executionId="ac8866a5-5477-444d-8f87-75e99f0090a9" testId="79130232-c69a-2ec3-e125-323798a88315" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" computerName="803968e39001" duration="00:00:01.1030414" startTime="2026-11-02T10:40:48.3605049+00:00" endTime="2026-11-02T10:40:49.4636380+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac8866a5-5477-444d-8f87-75e99f0090a9" />
+    <UnitTestResult executionId="3a23bd81-acb3-44c5-bec8-4214e594329d" testId="3fdd0d1c-d7bb-4de9-9348-97ca70d25216" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" computerName="803968e39001" duration="00:00:01.2133304" startTime="2026-11-02T10:40:53.9680553+00:00" endTime="2026-11-02T10:40:55.1814599+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a23bd81-acb3-44c5-bec8-4214e594329d" />
+    <UnitTestResult executionId="82cd2d17-f443-41fd-bf49-78e7cabbf96c" testId="407024ca-ba6c-d30a-8c89-d4a3b636ef6f" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" computerName="803968e39001" duration="00:00:01.1900674" startTime="2026-11-02T10:40:49.4670233+00:00" endTime="2026-11-02T10:40:50.6571755+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82cd2d17-f443-41fd-bf49-78e7cabbf96c" />
+    <UnitTestResult executionId="9876bcdd-3e60-4a5f-ac1b-7937b30d7882" testId="7389252f-0490-b84b-ba1d-169cde6e6dad" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" computerName="803968e39001" duration="00:00:01.0839076" startTime="2026-11-02T10:40:57.2735358+00:00" endTime="2026-11-02T10:40:58.3575600+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9876bcdd-3e60-4a5f-ac1b-7937b30d7882" />
+    <UnitTestResult executionId="0505ee18-6d9f-412c-a9fd-cea970e990c2" testId="526eec41-b876-5ecf-63fe-1c85807f008b" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" computerName="803968e39001" duration="00:00:01.1145653" startTime="2026-11-02T10:40:46.1843375+00:00" endTime="2026-11-02T10:40:47.2989775+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0505ee18-6d9f-412c-a9fd-cea970e990c2" />
+    <UnitTestResult executionId="e078666c-d299-4e9b-9bc7-39fc3d985e47" testId="e205839e-3fb0-0008-0c65-8bf2d35f614b" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" computerName="803968e39001" duration="00:00:01.0730110" startTime="2026-11-02T10:40:56.1988559+00:00" endTime="2026-11-02T10:40:57.2719613+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e078666c-d299-4e9b-9bc7-39fc3d985e47" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="407024ca-ba6c-d30a-8c89-d4a3b636ef6f">
+      <Execution id="82cd2d17-f443-41fd-bf49-78e7cabbf96c" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9">
+      <Execution id="70026c78-d707-4829-aea2-332c8e2e4435" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="5a1a2f3f-b2e5-d7de-95df-0eded60af573">
+      <Execution id="edb294ef-a935-4418-8b0d-a49a644faf3f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="3fdd0d1c-d7bb-4de9-9348-97ca70d25216">
+      <Execution id="3a23bd81-acb3-44c5-bec8-4214e594329d" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="9792afe4-0aab-b788-5978-3d2b8cb4e304">
+      <Execution id="3960d259-7883-4e60-99d2-6bceac9a61e0" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e205839e-3fb0-0008-0c65-8bf2d35f614b">
+      <Execution id="e078666c-d299-4e9b-9bc7-39fc3d985e47" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2">
+      <Execution id="c2fc50d0-3e75-4197-af3f-d7137fbbd1e4" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="11aebfcf-b4d5-5743-846f-88f2592e7de7">
+      <Execution id="449926ba-1a8a-4796-8a61-c4b23f06cbda" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="7587bed9-503b-5cfe-48d0-09131fda9cec">
+      <Execution id="ad38b395-616c-48d5-ab99-9d26f47635f0" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e4441dc5-4f9a-ce04-3d3e-10107bec4213">
+      <Execution id="b20b9bbc-6b08-40a9-a85a-37fb62b3f4a9" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="7389252f-0490-b84b-ba1d-169cde6e6dad">
+      <Execution id="9876bcdd-3e60-4a5f-ac1b-7937b30d7882" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="79130232-c69a-2ec3-e125-323798a88315">
+      <Execution id="ac8866a5-5477-444d-8f87-75e99f0090a9" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="526eec41-b876-5ecf-63fe-1c85807f008b">
+      <Execution id="0505ee18-6d9f-412c-a9fd-cea970e990c2" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2" executionId="c2fc50d0-3e75-4197-af3f-d7137fbbd1e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7587bed9-503b-5cfe-48d0-09131fda9cec" executionId="ad38b395-616c-48d5-ab99-9d26f47635f0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11aebfcf-b4d5-5743-846f-88f2592e7de7" executionId="449926ba-1a8a-4796-8a61-c4b23f06cbda" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e4441dc5-4f9a-ce04-3d3e-10107bec4213" executionId="b20b9bbc-6b08-40a9-a85a-37fb62b3f4a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9" executionId="70026c78-d707-4829-aea2-332c8e2e4435" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a1a2f3f-b2e5-d7de-95df-0eded60af573" executionId="edb294ef-a935-4418-8b0d-a49a644faf3f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9792afe4-0aab-b788-5978-3d2b8cb4e304" executionId="3960d259-7883-4e60-99d2-6bceac9a61e0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79130232-c69a-2ec3-e125-323798a88315" executionId="ac8866a5-5477-444d-8f87-75e99f0090a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3fdd0d1c-d7bb-4de9-9348-97ca70d25216" executionId="3a23bd81-acb3-44c5-bec8-4214e594329d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="407024ca-ba6c-d30a-8c89-d4a3b636ef6f" executionId="82cd2d17-f443-41fd-bf49-78e7cabbf96c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7389252f-0490-b84b-ba1d-169cde6e6dad" executionId="9876bcdd-3e60-4a5f-ac1b-7937b30d7882" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="526eec41-b876-5ecf-63fe-1c85807f008b" executionId="0505ee18-6d9f-412c-a9fd-cea970e990c2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e205839e-3fb0-0008-0c65-8bf2d35f614b" executionId="e078666c-d299-4e9b-9bc7-39fc3d985e47" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="13" executed="13" passed="13" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.73]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.24]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.51]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:17.25]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

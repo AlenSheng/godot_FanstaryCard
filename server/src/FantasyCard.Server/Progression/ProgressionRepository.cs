@@ -7,6 +7,8 @@ using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Common;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Server.Seasons;
 using Npgsql;
 
 namespace FantasyCard.Server.Progression;
@@ -250,12 +252,18 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
         return result;
     }
 
-    public async Task<EnhanceResult> EnhanceWeaponAsync(Guid playerId, HeroClass heroClass, string requestId, long expectedVersion, CancellationToken cancellationToken)
+    public Task<EnhanceResult> EnhanceWeaponAsync(Guid playerId, HeroClass heroClass, string requestId, long expectedVersion, CancellationToken cancellationToken) =>
+        EnhanceWeaponAsync(playerId, heroClass, requestId, expectedVersion, null, cancellationToken);
+
+    public async Task<EnhanceResult> EnhanceWeaponAsync(Guid playerId, HeroClass heroClass, string requestId,
+        long expectedVersion, SeasonContext? fragmentSource, CancellationToken cancellationToken)
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
-        var requestHash = HashIdempotentRequest(heroClass, expectedVersion);
+        var requestHash = fragmentSource is null
+            ? HashIdempotentRequest(heroClass, expectedVersion)
+            : HashIdempotentRequest(heroClass, new { ExpectedVersion = expectedVersion, FragmentSource = fragmentSource });
         var replay = await ReadIdempotentResultAsync<EnhanceResult>(connection, transaction, playerId, "class_weapon.enhance", requestId, requestHash, cancellationToken);
         if (replay is not null)
         {
@@ -270,10 +278,18 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource)
         await reader.DisposeAsync();
         if (version != expectedVersion) throw new DomainValidationException("Class weapon changed. Reload and retry.");
         if (level >= 5) throw new DomainValidationException("Class weapon is already at maximum level.");
-        var fragments = await SpendFragmentsAsync(connection, transaction, playerId, FragmentCost("White", level + 1), cancellationToken);
+        // This legacy quality table retains the permanent 8/16/32/64/128 costs.
+        // Seasonal armor uses its own stats version and must not replace this price source.
+        var cost = FragmentCost("White", level + 1);
+        var fragments = fragmentSource is null
+            ? await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken)
+            : (await SeasonRepository.ApplyWithinTransactionAsync(connection, transaction, playerId, fragmentSource,
+                0, -cost, 0, "class_weapon.enhance", requestId, SeasonWalletPurpose.PermanentWeaponEnhancement,
+                DateTimeOffset.UtcNow, requestHash, cancellationToken)).EquipmentFragments;
         await using var update = new NpgsqlCommand("UPDATE class_weapons SET level=level+1, version=version+1 WHERE player_id=$1 AND hero_class=$2", connection, transaction);
         update.Parameters.AddWithValue(playerId); update.Parameters.AddWithValue((short)heroClass); await update.ExecuteNonQueryAsync(cancellationToken);
-        await WriteEconomyLedgerAsync(connection, transaction, playerId, -FragmentCost("White", level + 1), fragments, "EquipmentFragments", "class_weapon.enhance", cancellationToken, requestId);
+        if (fragmentSource is null)
+            await WriteEconomyLedgerAsync(connection, transaction, playerId, -cost, fragments, "EquipmentFragments", "class_weapon.enhance", cancellationToken, requestId);
         var result = new EnhanceResult(new EquipmentResponse(Guid.Empty, "ClassWeapon", heroClass.ToString(), level + 1, true, "Equipped", version + 1), fragments, null);
         await WriteIdempotentResultAsync(connection, transaction, playerId, "class_weapon.enhance", requestId, requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
