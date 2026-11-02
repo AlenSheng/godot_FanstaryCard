@@ -88,6 +88,17 @@ public sealed partial class RoomReadyCoordinator(
         metrics?.ObserveMatchLaunchPhase("claim", Stopwatch.GetElapsedTime(startedAt));
         if (launch is null) return false;
         _pendingLaunch = launch;
+        if (launch.Aborted)
+        {
+            foreach (var playerId in launch.RemovedPlayerIds)
+            {
+                var removed = eventStore.Create(playerId, "room.ready_removed", "context-unavailable",
+                    new RoomReadyRemovedEventPayload(launch.Assignment.MatchId, launch.RemovalReason));
+                await connections.SendIfConnectedAsync(playerId, removed, cancellationToken);
+            }
+            _pendingLaunch = null;
+            return true;
+        }
         await LaunchAsync(launch, cancellationToken);
         return true;
     }

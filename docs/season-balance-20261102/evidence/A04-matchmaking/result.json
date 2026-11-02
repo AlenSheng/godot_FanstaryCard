@@ -1,0 +1,73 @@
+{
+  "status": "matchmaking_context_and_boundaries_verified_room_context_pending",
+  "server_tests": 63,
+  "failed": 0,
+  "skipped": 0,
+  "new_matchmaking_cases": 10,
+  "existing_season_cases": 42,
+  "existing_launch_and_ready_regressions": 11,
+  "reused_domain_tests": 49,
+  "domain_evidence": "../A03-api-readmodels/r5/domain.trx; Domain source hashes unchanged",
+  "reused_godot_codec_checks": 14,
+  "godot_evidence": "../A04-preparation/godot-r4; all codec input hashes unchanged",
+  "scope": [
+    "Full season/difficulty/rules/config/stats queue partitions and published-context match FK",
+    "An incomplete older group does not block another full difficulty group",
+    "Concurrent SKIP LOCKED matchers cannot assign a ticket twice or mix contexts",
+    "Enqueue, selection and post-player-lock admission recheck current server time",
+    "Queued closure releases equipment; unstarted ready lobbies abort without spending consumables or creating rooms",
+    "Admitted Launching retries retain context and bot IDs after season end with exactly-once reservation",
+    "Prepared context and permanent-level projection mismatch rejects before reservation",
+    "Preparation lock/release and match-start movement rows carry season ID",
+    "Legacy four-human room launch, launch-failure retries, lost commit response and persisted recovery regressions"
+  ],
+  "history": [
+    {
+      "run": "r9",
+      "classification": "superseded_before_execution",
+      "tests_executed": 0,
+      "cause": "Review corrected fixture account names before upload; local login identity is name-based."
+    },
+    {
+      "run": "r10",
+      "classification": "compile_local_name_collision",
+      "tests_executed": 0
+    },
+    {
+      "run": "r11",
+      "passed": 49,
+      "failed": 14,
+      "causes": [
+        "10 fixture failures: positional-parameter commands cannot contain multiple SQL statements",
+        "4 launch regressions: movement insert referenced columns absent from the existing schema"
+      ]
+    },
+    {
+      "run": "r12",
+      "passed": 53,
+      "failed": 10,
+      "cause": "Movement schema correction verified; previous fixture SQL batching issue remained in this already pinned input."
+    },
+    {
+      "run": "r13",
+      "passed": 63,
+      "failed": 0,
+      "cause": "Fixture seeding and abort use one data-modifying CTE statement; full selected suite passes."
+    }
+  ],
+  "public_archive_sha256": {
+    "r10": "18b604959de3621a733454e77f21731e93540d2fbdafcd08f50ba27d39d4e9ab",
+    "r11": "a6c0a1622f45da6e23f2ab1817f8c350f463e6cb7864732dc983de993d4eb7d7",
+    "r12": "338c43fd0a033e9412b2faa6bf12e0ca6802913bcf012661365388fcb0b65348",
+    "r13": "0fa9fff2a486115ee37238523e7be72e2304716ca84fac8885fdf3b04257e597"
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "remaining": [
+    "Room and recovery snapshot context",
+    "Season combat, loot and settlement",
+    "Season economy and archive worker",
+    "Full multilingual/resolution UI and final release validation"
+  ]
+}

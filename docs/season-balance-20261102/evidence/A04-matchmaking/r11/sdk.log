@@ -1,0 +1,287 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 99 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 525 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 6 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 1 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:04.09]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 162
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 181
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:05.13]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 217
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 233
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:06.15]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [FAIL]
+[xUnit.net 00:00:07.15]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 217
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 233
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [996 ms]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 191
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 205
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:08.34]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 36
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 64
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:09.43]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 243
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 276
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:11.11]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 141
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 152
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:11.86]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [FAIL]
+[xUnit.net 00:00:12.92]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 123
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 131
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 76
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 89
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:14.11]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 299
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 104
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 113
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:30.70]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [1 s]
+  Error Message:
+   Assert.True() Failure
+Expected: True
+Actual:   False
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 74
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 99
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 99
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 99
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:36.53]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "snapshot") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "snapshot") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Launching"
+Actual:   "Starting"
+           ↑ (pos 0)
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 145
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 166
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 166
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:37.66]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "registry") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: "registry") [1 s]
+  Error Message:
+   Assert.Throws() Failure: Exception type was not an exact match
+Expected: typeof(System.InvalidOperationException)
+Actual:   typeof(Npgsql.PostgresException)
+---- Npgsql.PostgresException : 42703: column "origin_season_id" of relation "inventory_movements" does not exist
+
+POSITION: 128
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 144
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 166
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(String fault) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresLifecycleRecoveryTests.cs:line 166
+--- End of stack trace from previous location ---
+----- Inner Stack Trace -----
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 567
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 568
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 568
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 431
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 454
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 454
+   at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs:line 87
+[xUnit.net 00:01:02.81]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room [1 s]
+  Error Message:
+   Npgsql.PostgresException : 42703: column "origin_season_id" of relation "inventory_movements" does not exist
+
+POSITION: 128
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 567
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 568
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ReserveMatchAssetsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 568
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 431
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 454
+   at FantasyCard.Server.Matchmaking.MatchmakingRepository.ClaimReadyMatchAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/MatchmakingRepository.cs:line 454
+   at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs:line 87
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1685
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1707
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs:line 1707
+--- End of stack trace from previous location ---
+Results File: /workspace/results/matchmaking.trx
+
+Failed!  - Failed:    14, Passed:    49, Skipped:     0, Total:    63, Duration: 1 m - FantasyCard.Server.Tests.dll (net10.0)

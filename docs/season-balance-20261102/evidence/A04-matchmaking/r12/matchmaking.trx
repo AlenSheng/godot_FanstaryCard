@@ -1,0 +1,798 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="df091cfa-91e8-4d76-96d0-388cddecf73d" name="@803968e39001 2026-11-02 13:08:15" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-02T13:08:15.3470006+00:00" queuing="2026-11-02T13:08:15.3470007+00:00" start="2026-11-02T13:08:09.6625657+00:00" finish="2026-11-02T13:09:14.7927669+00:00" />
+  <TestSettings name="default" id="b25cd341-6733-435e-8974-90655f7a3d2d">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-02_13_08_15" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="d7d18a30-e985-42a1-9c0a-04127ba51919" testId="ebf0eb5f-1f6d-dfc5-b817-b6949a5316db" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)" computerName="803968e39001" duration="00:00:01.2010273" startTime="2026-11-02T13:08:56.7651528+00:00" endTime="2026-11-02T13:08:57.9662694+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7d18a30-e985-42a1-9c0a-04127ba51919" />
+    <UnitTestResult executionId="a7215b74-b064-477e-a442-46c023d259b1" testId="f71bd4ae-f75e-087b-1357-fe4c4cce9209" testName="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: False)" computerName="803968e39001" duration="00:00:00.0102652" startTime="2026-11-02T13:08:41.5813669+00:00" endTime="2026-11-02T13:08:41.5917802+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7215b74-b064-477e-a442-46c023d259b1" />
+    <UnitTestResult executionId="a949b7e5-5f6e-4ef1-96bf-45bd6d6bde60" testId="ee19b1bc-5c16-e3cd-4b80-8c6f4f539fe5" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses" computerName="803968e39001" duration="00:00:00.0033990" startTime="2026-11-02T13:08:20.6214715+00:00" endTime="2026-11-02T13:08:20.6249337+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a949b7e5-5f6e-4ef1-96bf-45bd6d6bde60" />
+    <UnitTestResult executionId="cc7628a8-718d-47d4-a521-7d273da93588" testId="d4d7ad20-50fa-e925-88d3-d2f8c689e163" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ResponseCarriesWalletIdentityAndExactInt64Version" computerName="803968e39001" duration="00:00:00.0039070" startTime="2026-11-02T13:08:20.6170156+00:00" endTime="2026-11-02T13:08:20.6209849+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc7628a8-718d-47d4-a521-7d273da93588" />
+    <UnitTestResult executionId="95113893-c563-4ee5-9a56-7d99a831bc6b" testId="1561d008-0805-0e55-03d6-0ca46f77238f" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.WaitingForPlayerLockCannotUseAnExpiredAdmissionTimestamp" computerName="803968e39001" duration="00:00:01.1187216" startTime="2026-11-02T13:08:40.4576549+00:00" endTime="2026-11-02T13:08:41.5764825+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95113893-c563-4ee5-9a56-7d99a831bc6b" />
+    <UnitTestResult executionId="3a714586-f22d-4924-aec6-17cd296239b1" testId="89e22308-c781-e1eb-3272-f941ab120bd3" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: &quot;projection&quot;)" computerName="803968e39001" duration="00:00:01.6122705" startTime="2026-11-02T13:08:43.6884497+00:00" endTime="2026-11-02T13:08:45.3035208+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a714586-f22d-4924-aec6-17cd296239b1">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 218
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 234
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="19cba0bb-39ba-4c45-a508-1d63d98708a2" testId="fbc7f580-14d3-6e24-2e77-a2a3535a2437" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression" computerName="803968e39001" duration="00:00:01.0996275" startTime="2026-11-02T13:09:08.4630793+00:00" endTime="2026-11-02T13:09:09.5627769+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="19cba0bb-39ba-4c45-a508-1d63d98708a2" />
+    <UnitTestResult executionId="decbd37a-b8af-40fe-9f86-3e481c9b11b7" testId="52bc6763-e8be-c4d3-fc2e-45b5d0fa5e4d" testName="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_CanLaunchFourBotRoomWhenNobodyReadies" computerName="803968e39001" duration="00:00:00.0073246" startTime="2026-11-02T13:09:14.6919168+00:00" endTime="2026-11-02T13:09:14.6993507+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="decbd37a-b8af-40fe-9f86-3e481c9b11b7" />
+    <UnitTestResult executionId="79e9b543-73bb-498f-a42e-695380390407" testId="1730603a-b5a6-d42b-f498-5bb83347e5a5" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation" computerName="803968e39001" duration="00:00:01.0655332" startTime="2026-11-02T13:08:48.6900691+00:00" endTime="2026-11-02T13:08:49.7582861+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="79e9b543-73bb-498f-a42e-695380390407">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 142
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 153
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7a3e6250-f7f3-4702-8969-8a94dc566f54" testId="bdab81e7-76b1-8650-23de-d119d7007d82" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.InventoryCarriesProvenanceWithoutInventingRecipeEligibilityForLegacyItems" computerName="803968e39001" duration="00:00:00.0165792" startTime="2026-11-02T13:08:20.5997964+00:00" endTime="2026-11-02T13:08:20.6164437+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a3e6250-f7f3-4702-8969-8a94dc566f54" />
+    <UnitTestResult executionId="97603a65-9647-4fc1-b275-c8d3a66077cb" testId="5625c65d-148c-6899-72bc-82369c6d7deb" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it" computerName="803968e39001" duration="00:00:01.6187460" startTime="2026-11-02T13:08:53.9701313+00:00" endTime="2026-11-02T13:08:55.5893369+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="97603a65-9647-4fc1-b275-c8d3a66077cb" />
+    <UnitTestResult executionId="a0886f0a-198e-4c19-9c91-dd8199db43fb" testId="e205839e-3fb0-0008-0c65-8bf2d35f614b" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" computerName="803968e39001" duration="00:00:01.0199561" startTime="2026-11-02T13:08:32.7865089+00:00" endTime="2026-11-02T13:08:33.8066314+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0886f0a-198e-4c19-9c91-dd8199db43fb" />
+    <UnitTestResult executionId="c561dada-29d3-4fa1-a570-b1b101b08739" testId="a88df070-897b-bdbc-7667-852bccd1832b" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches" computerName="803968e39001" duration="00:00:00.8912757" startTime="2026-11-02T13:08:53.0774640+00:00" endTime="2026-11-02T13:08:53.9691052+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c561dada-29d3-4fa1-a570-b1b101b08739" />
+    <UnitTestResult executionId="2e3504fc-4210-4661-a844-0c2658e2d030" testId="f5638681-c94a-2256-5248-63556d2e9563" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy" computerName="803968e39001" duration="00:00:01.3745622" startTime="2026-11-02T13:08:15.6030792+00:00" endTime="2026-11-02T13:08:16.9777145+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e3504fc-4210-4661-a844-0c2658e2d030" />
+    <UnitTestResult executionId="25194f31-46f4-479d-b459-be4802c23d8c" testId="ad050084-fe78-01f9-5ba7-22061c8c4288" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: &quot;Orange&quot;, accepted: True)" computerName="803968e39001" duration="00:00:01.1898281" startTime="2026-11-02T13:09:07.2720561+00:00" endTime="2026-11-02T13:09:08.4619599+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25194f31-46f4-479d-b459-be4802c23d8c" />
+    <UnitTestResult executionId="440d74cd-658e-4611-8c09-700705f8e834" testId="284260c6-6633-12a3-c587-51fa223da887" testName="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: True)" computerName="803968e39001" duration="00:00:00.0095967" startTime="2026-11-02T13:08:41.5922727+00:00" endTime="2026-11-02T13:08:41.6019562+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="440d74cd-658e-4611-8c09-700705f8e834" />
+    <UnitTestResult executionId="27c61a58-ef4c-4a66-81f9-ca90913d6273" testId="be6ca007-ff65-034a-d7c0-a5ded7f4707c" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart" computerName="803968e39001" duration="00:00:01.3092434" startTime="2026-11-02T13:08:14.2905167+00:00" endTime="2026-11-02T13:08:15.6002550+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="27c61a58-ef4c-4a66-81f9-ca90913d6273" />
+    <UnitTestResult executionId="dc88390b-54a2-43c7-9360-9069344e453f" testId="6cd8db18-4714-7fc6-651b-17dd4e255295" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend" computerName="803968e39001" duration="00:00:01.1638283" startTime="2026-11-02T13:08:45.3043030+00:00" endTime="2026-11-02T13:08:46.4709257+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dc88390b-54a2-43c7-9360-9069344e453f">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 192
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 206
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f2e3fe71-d771-4d79-994d-72e626ffd9f2" testId="095ddd35-3f43-50a5-0010-1cc4808ebbcd" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LegacyEquipmentIdempotencyJsonRemainsByteCompatible" computerName="803968e39001" duration="00:00:00.0113508" startTime="2026-11-02T13:08:20.5776859+00:00" endTime="2026-11-02T13:08:20.5891004+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2e3fe71-d771-4d79-994d-72e626ffd9f2" />
+    <UnitTestResult executionId="3e166869-5f17-454c-9aad-1bd6163ddaa6" testId="18ba2255-2638-15c0-a46c-d1118ac812ff" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: &quot;current&quot;, stats: &quot;wrong-stats&quot;)" computerName="803968e39001" duration="00:00:01.1117854" startTime="2026-11-02T13:09:09.5637085+00:00" endTime="2026-11-02T13:09:10.6756257+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e166869-5f17-454c-9aad-1bd6163ddaa6" />
+    <UnitTestResult executionId="e695e06e-976c-4e54-b84d-f39b5dce10e4" testId="ee8943e4-4d94-83fd-b3a0-dfd321788a51" testName="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room" computerName="803968e39001" duration="00:00:01.6151230" startTime="2026-11-02T13:09:13.0746693+00:00" endTime="2026-11-02T13:09:14.6898901+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e695e06e-976c-4e54-b84d-f39b5dce10e4" />
+    <UnitTestResult executionId="29f71d3f-a57a-43cf-9cc4-6fc02617f682" testId="0812ae1c-8946-1ea1-2bcd-dfa45545173c" testName="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" computerName="803968e39001" duration="00:00:03.3112303" startTime="2026-11-02T13:08:16.9900033+00:00" endTime="2026-11-02T13:08:20.3014675+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="29f71d3f-a57a-43cf-9cc4-6fc02617f682" />
+    <UnitTestResult executionId="351eb98b-f746-4746-b716-1fe7a5f54db1" testId="e5fc0bdb-bf83-51aa-7a0f-f6076820dfc2" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry" computerName="803968e39001" duration="00:00:01.1564620" startTime="2026-11-02T13:08:59.1072173+00:00" endTime="2026-11-02T13:09:00.2637795+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="351eb98b-f746-4746-b716-1fe7a5f54db1" />
+    <UnitTestResult executionId="aec5a449-afe8-4a9f-92bc-45ca8e0f3dae" testId="e4441dc5-4f9a-ce04-3d3e-10107bec4213" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" computerName="803968e39001" duration="00:00:01.0609932" startTime="2026-11-02T13:08:23.8017560+00:00" endTime="2026-11-02T13:08:24.8628487+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aec5a449-afe8-4a9f-92bc-45ca8e0f3dae" />
+    <UnitTestResult executionId="a2c6cbfd-c611-4f4b-8b6e-e1f9e62dfe4f" testId="038ba698-23fa-f3c4-e42c-c6a80b049328" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation" computerName="803968e39001" duration="00:00:01.2879525" startTime="2026-11-02T13:09:02.6972959+00:00" endTime="2026-11-02T13:09:03.9855372+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a2c6cbfd-c611-4f4b-8b6e-e1f9e62dfe4f" />
+    <UnitTestResult executionId="edd55211-bc3f-4676-8b5b-440aba6240dd" testId="7587bed9-503b-5cfe-48d0-09131fda9cec" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" computerName="803968e39001" duration="00:00:01.0975466" startTime="2026-11-02T13:08:28.2575444+00:00" endTime="2026-11-02T13:08:29.3560089+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="edd55211-bc3f-4676-8b5b-440aba6240dd" />
+    <UnitTestResult executionId="ab6f1efa-fbfd-48fa-99b0-c3eae21267bf" testId="9792afe4-0aab-b788-5978-3d2b8cb4e304" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" computerName="803968e39001" duration="00:00:01.2208332" startTime="2026-11-02T13:08:29.3594237+00:00" endTime="2026-11-02T13:08:30.5803524+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab6f1efa-fbfd-48fa-99b0-c3eae21267bf" />
+    <UnitTestResult executionId="020b6a1d-c5a3-4f7f-85b0-59d8e650c89d" testId="72f55c73-9355-e5e2-b924-857daeac1737" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.SaveRejectsLegacyArchivedAndFutureItemsWithoutChangingVersionOrLocations" computerName="803968e39001" duration="00:00:01.0895889" startTime="2026-11-02T13:08:35.9932825+00:00" endTime="2026-11-02T13:08:37.0851753+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="020b6a1d-c5a3-4f7f-85b0-59d8e650c89d" />
+    <UnitTestResult executionId="b9452698-7183-477b-a2a8-c50d6f259bf9" testId="526eec41-b876-5ecf-63fe-1c85807f008b" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" computerName="803968e39001" duration="00:00:01.1137877" startTime="2026-11-02T13:08:22.6871048+00:00" endTime="2026-11-02T13:08:23.8009772+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9452698-7183-477b-a2a8-c50d6f259bf9" />
+    <UnitTestResult executionId="99e8aa82-12c6-4763-9e97-47074e5e7d9c" testId="7389252f-0490-b84b-ba1d-169cde6e6dad" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" computerName="803968e39001" duration="00:00:01.0882574" startTime="2026-11-02T13:08:33.8078766+00:00" endTime="2026-11-02T13:08:34.8962227+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99e8aa82-12c6-4763-9e97-47074e5e7d9c" />
+    <UnitTestResult executionId="a141b002-167f-4746-8ced-4721b7426c9f" testId="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" computerName="803968e39001" duration="00:00:01.2647987" startTime="2026-11-02T13:08:26.9911413+00:00" endTime="2026-11-02T13:08:28.2560369+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a141b002-167f-4746-8ced-4721b7426c9f" />
+    <UnitTestResult executionId="132e25b5-2f8b-41b3-b9c6-a5e5e3d512d6" testId="93b11a8b-b9a3-4370-d955-c6abf577498d" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: &quot;Orange&quot;, accepted: False)" computerName="803968e39001" duration="00:00:01.0915463" startTime="2026-11-02T13:09:06.1799825+00:00" endTime="2026-11-02T13:09:07.2716302+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="132e25b5-2f8b-41b3-b9c6-a5e5e3d512d6" />
+    <UnitTestResult executionId="2f883a88-dd48-4807-9f66-d6ca3c6053fd" testId="11aebfcf-b4d5-5743-846f-88f2592e7de7" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" computerName="803968e39001" duration="00:00:01.0774699" startTime="2026-11-02T13:08:31.7076975+00:00" endTime="2026-11-02T13:08:32.7852747+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f883a88-dd48-4807-9f66-d6ca3c6053fd" />
+    <UnitTestResult executionId="2bdb335b-2162-42b5-aae2-8c02a41ea11f" testId="9e2167b7-a0a1-8388-7421-76b71754c7ca" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure" computerName="803968e39001" duration="00:00:01.0926917" startTime="2026-11-02T13:09:03.9867823+00:00" endTime="2026-11-02T13:09:05.0801912+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bdb335b-2162-42b5-aae2-8c02a41ea11f" />
+    <UnitTestResult executionId="3d501fcf-c690-4790-ab5c-bd4d0df7db18" testId="1018b892-3f91-b4e2-ed39-e89890782b5c" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd" computerName="803968e39001" duration="00:00:01.1952607" startTime="2026-11-02T13:08:47.4880061+00:00" endTime="2026-11-02T13:08:48.6861940+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d501fcf-c690-4790-ab5c-bd4d0df7db18">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 244
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 277
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8d1ee154-a846-436e-8639-0a300993b8ba" testId="8b0bd69b-3516-a199-764d-58cbacf699f2" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null)" computerName="803968e39001" duration="00:00:01.3249875" startTime="2026-11-02T13:09:10.6760264+00:00" endTime="2026-11-02T13:09:12.0010999+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8d1ee154-a846-436e-8639-0a300993b8ba" />
+    <UnitTestResult executionId="99850fe1-6db8-477c-8af0-594648042a5b" testId="521e7cc6-2b49-1020-9800-0240ebbc7547" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)" computerName="803968e39001" duration="00:00:01.1387259" startTime="2026-11-02T13:08:57.9673678+00:00" endTime="2026-11-02T13:08:59.1061913+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="99850fe1-6db8-477c-8af0-594648042a5b" />
+    <UnitTestResult executionId="70c3b780-7f7d-4c3d-8544-a5f19757fce6" testId="0787e3f3-4485-0527-ae39-e0fd15ac96f1" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues" computerName="803968e39001" duration="00:00:00.0182305" startTime="2026-11-02T13:08:20.5221156+00:00" endTime="2026-11-02T13:08:20.5404074+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="70c3b780-7f7d-4c3d-8544-a5f19757fce6" />
+    <UnitTestResult executionId="5b1cd9c4-87e0-4667-837a-6253a8134318" testId="5a1a2f3f-b2e5-d7de-95df-0eded60af573" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" computerName="803968e39001" duration="00:00:01.0326763" startTime="2026-11-02T13:08:20.6260151+00:00" endTime="2026-11-02T13:08:21.6588894+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b1cd9c4-87e0-4667-837a-6253a8134318" />
+    <UnitTestResult executionId="3553a8b0-3780-446b-8082-ac71f752652b" testId="49bd5772-ed46-06a4-9b84-0f1f0266d75a" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot" computerName="803968e39001" duration="00:00:01.0678751" startTime="2026-11-02T13:09:12.0058061+00:00" endTime="2026-11-02T13:09:13.0737866+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3553a8b0-3780-446b-8082-ac71f752652b" />
+    <UnitTestResult executionId="dfdc1d17-812e-4b35-a1d7-86667d4a4ef5" testId="86b7d9d1-e425-768e-c2b8-f27ffe09cb6a" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.CurrentSaveDoesNotUnequipAnItemFromAnotherDomain" computerName="803968e39001" duration="00:00:01.1786910" startTime="2026-11-02T13:08:37.0862461+00:00" endTime="2026-11-02T13:08:38.2650713+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfdc1d17-812e-4b35-a1d7-86667d4a4ef5" />
+    <UnitTestResult executionId="a9a21ffe-339e-47e8-8256-820e93890bfd" testId="51c7f03e-151e-68e2-e23a-863cd8fdcce9" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets" computerName="803968e39001" duration="00:00:01.0625358" startTime="2026-11-02T13:08:41.6034177+00:00" endTime="2026-11-02T13:08:42.6811163+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a9a21ffe-339e-47e8-8256-820e93890bfd">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 163
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 182
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="18f3feba-84bd-48f7-8fa8-79344ea30366" testId="63d674c0-b16d-13e4-7006-c526b8642f21" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.AnnouncedSeasonRetainsLegacyHashAndCannotMoveFutureEquipmentEarly" computerName="803968e39001" duration="00:00:01.0972718" startTime="2026-11-02T13:08:38.2663564+00:00" endTime="2026-11-02T13:08:39.3637140+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="18f3feba-84bd-48f7-8fa8-79344ea30366" />
+    <UnitTestResult executionId="cada8bc6-cb80-4492-95dc-ed9144346e22" testId="cabb66fa-c829-3422-7f99-7a2831466770" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment" computerName="803968e39001" duration="00:00:01.3601351" startTime="2026-11-02T13:08:12.8991040+00:00" endTime="2026-11-02T13:08:14.2731258+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cada8bc6-cb80-4492-95dc-ed9144346e22" />
+    <UnitTestResult executionId="f1f799c3-6e55-49a4-b247-79d4465d0d00" testId="c6c26671-7a9f-d5ca-0f4f-607309cdb7ed" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: &quot;Purple&quot;, accepted: False)" computerName="803968e39001" duration="00:00:01.0980134" startTime="2026-11-02T13:09:05.0813055+00:00" endTime="2026-11-02T13:09:06.1793855+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1f799c3-6e55-49a4-b247-79d4465d0d00" />
+    <UnitTestResult executionId="870b09c1-cdd0-468a-8613-9afc972a6f0f" testId="e572af13-77d0-7705-a81d-fc72761ba89f" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once" computerName="803968e39001" duration="00:00:01.1726279" startTime="2026-11-02T13:08:55.5911276+00:00" endTime="2026-11-02T13:08:56.7638581+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="870b09c1-cdd0-468a-8613-9afc972a6f0f" />
+    <UnitTestResult executionId="2b5935a3-3835-4129-9e64-efad215c9e48" testId="94cfbe7f-388f-611d-e0aa-8fde6bffd674" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup" computerName="803968e39001" duration="00:00:01.0223893" startTime="2026-11-02T13:08:50.7803766+00:00" endTime="2026-11-02T13:08:51.8106492+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b5935a3-3835-4129-9e64-efad215c9e48">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 76
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 89
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="28cacb57-1b6f-464a-abf2-fd751b28e7ed" testId="f3af9c2c-114c-1bbd-99c2-dbb72995ff68" testName="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_ReplacesEveryMissingSeatAndPreservesReadyHumans" computerName="803968e39001" duration="00:00:00.0034320" startTime="2026-11-02T13:09:14.6998327+00:00" endTime="2026-11-02T13:09:14.7033218+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="28cacb57-1b6f-464a-abf2-fd751b28e7ed" />
+    <UnitTestResult executionId="ac955f1a-981c-4420-a531-3b07603ce8ba" testId="73f9730e-b821-78de-245f-d705418e7335" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.QuoteUsesNewTagsWithoutChangingLegacyFields" computerName="803968e39001" duration="00:00:00.0094990" startTime="2026-11-02T13:08:20.5896455+00:00" endTime="2026-11-02T13:08:20.5992132+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac955f1a-981c-4420-a531-3b07603ce8ba" />
+    <UnitTestResult executionId="8700213f-f4ce-40da-8105-d540f2fa6193" testId="10debd5b-d6e1-cda4-a2f5-0e3adee94ac3" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels" computerName="803968e39001" duration="00:00:00.2178767" startTime="2026-11-02T13:08:20.3030970+00:00" endTime="2026-11-02T13:08:20.5210553+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8700213f-f4ce-40da-8105-d540f2fa6193" />
+    <UnitTestResult executionId="c5e574aa-aa8e-4b1e-9b43-81fc12d85161" testId="abd7f050-e323-fcbd-4353-9a9919ac1682" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties" computerName="803968e39001" duration="00:00:01.2611035" startTime="2026-11-02T13:08:51.8115448+00:00" endTime="2026-11-02T13:08:53.0751614+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c5e574aa-aa8e-4b1e-9b43-81fc12d85161">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 104
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 113
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="95552bdb-7800-42a7-944e-266a87aea538" testId="4cf6091b-6a5f-1ead-5292-60670b5cc4d3" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext" computerName="803968e39001" duration="00:00:01.0116631" startTime="2026-11-02T13:08:46.4729519+00:00" endTime="2026-11-02T13:08:47.4872598+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95552bdb-7800-42a7-944e-266a87aea538">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 36
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 64
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6317e561-6357-4dcd-9b84-6bbacaa73b30" testId="f553711f-5555-d09a-af0a-5a72e1aca626" testName="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.RequestPreservesLegacyTagsAndOptionalSeasonPresence" computerName="803968e39001" duration="00:00:00.0361529" startTime="2026-11-02T13:08:20.5409111+00:00" endTime="2026-11-02T13:08:20.5771275+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6317e561-6357-4dcd-9b84-6bbacaa73b30" />
+    <UnitTestResult executionId="17082f71-5639-413c-87a4-bf47fac47625" testId="79130232-c69a-2ec3-e125-323798a88315" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" computerName="803968e39001" duration="00:00:01.0161559" startTime="2026-11-02T13:08:24.8647667+00:00" endTime="2026-11-02T13:08:25.8810352+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="17082f71-5639-413c-87a4-bf47fac47625" />
+    <UnitTestResult executionId="2fa6cd1e-0e40-4dd1-b8bc-e481c1d55fa7" testId="407024ca-ba6c-d30a-8c89-d4a3b636ef6f" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" computerName="803968e39001" duration="00:00:01.1037249" startTime="2026-11-02T13:08:25.8841095+00:00" endTime="2026-11-02T13:08:26.9879398+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2fa6cd1e-0e40-4dd1-b8bc-e481c1d55fa7" />
+    <UnitTestResult executionId="e84a3198-0787-4f91-88fb-6c48134ffa85" testId="33559adf-093b-0932-5486-f5dae663201e" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions" computerName="803968e39001" duration="00:00:01.0161284" startTime="2026-11-02T13:08:49.7604641+00:00" endTime="2026-11-02T13:08:50.7788535+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e84a3198-0787-4f91-88fb-6c48134ffa85">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 123
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 132
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="91ab41f1-4949-43d0-8a62-3e2ef53a1f1e" testId="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" computerName="803968e39001" duration="00:00:01.0258849" startTime="2026-11-02T13:08:21.6596563+00:00" endTime="2026-11-02T13:08:22.6859887+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91ab41f1-4949-43d0-8a62-3e2ef53a1f1e" />
+    <UnitTestResult executionId="79ed3077-e273-4854-9b95-6feb5dee8c51" testId="8573e3ed-ef52-1c1f-be36-86e98bf3c05c" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.LoadoutReadKeepsCurrentPreparationLocksButHidesForeignReferences" computerName="803968e39001" duration="00:00:01.0928126" startTime="2026-11-02T13:08:34.8990264+00:00" endTime="2026-11-02T13:08:35.9921886+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="79ed3077-e273-4854-9b95-6feb5dee8c51" />
+    <UnitTestResult executionId="a6b4d9c8-82c7-4ae5-8501-9f9cd4ab6b77" testId="3fdd0d1c-d7bb-4de9-9348-97ca70d25216" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" computerName="803968e39001" duration="00:00:01.1237003" startTime="2026-11-02T13:08:30.5829939+00:00" endTime="2026-11-02T13:08:31.7067999+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a6b4d9c8-82c7-4ae5-8501-9f9cd4ab6b77" />
+    <UnitTestResult executionId="937e81bf-2e6b-4bf1-9c35-d7e52a5ab169" testId="105b7037-a9cd-36ed-f4f9-42ead742cedf" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: &quot;registry&quot;)" computerName="803968e39001" duration="00:00:01.2391630" startTime="2026-11-02T13:09:01.4566947+00:00" endTime="2026-11-02T13:09:02.6960297+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="937e81bf-2e6b-4bf1-9c35-d7e52a5ab169" />
+    <UnitTestResult executionId="aaa17760-ff34-4cbe-b6cf-692af7919620" testId="124ead41-6837-0e20-30b7-1da95360cabc" testName="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: &quot;snapshot&quot;)" computerName="803968e39001" duration="00:00:01.1892952" startTime="2026-11-02T13:09:00.2646352+00:00" endTime="2026-11-02T13:09:01.4540140+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aaa17760-ff34-4cbe-b6cf-692af7919620" />
+    <UnitTestResult executionId="4bb9b5de-f2b0-493a-af69-5becdc17f72d" testId="5d0c525d-6346-0f76-7217-edd7a2ff7658" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: &quot;context&quot;)" computerName="803968e39001" duration="00:00:00.9993182" startTime="2026-11-02T13:08:42.6843834+00:00" endTime="2026-11-02T13:08:43.6879065+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4bb9b5de-f2b0-493a-af69-5becdc17f72d">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 300
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 301
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 218
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs:line 234
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dbce90b3-4bee-4f33-b364-5bbc33a5a080" testId="b5d13051-5acd-9d5e-5f58-43c2cd2a3b24" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.ClosedPeriodRejectsNewWritesWhileCompletedReplayHasNoNewEffects" computerName="803968e39001" duration="00:00:01.0922393" startTime="2026-11-02T13:08:39.3645429+00:00" endTime="2026-11-02T13:08:40.4569042+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dbce90b3-4bee-4f33-b364-5bbc33a5a080" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.WaitingForPlayerLockCannotUseAnExpiredAdmissionTimestamp" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="1561d008-0805-0e55-03d6-0ca46f77238f">
+      <Execution id="95113893-c563-4ee5-9a56-7d99a831bc6b" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="WaitingForPlayerLockCannotUseAnExpiredAdmissionTimestamp" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: &quot;registry&quot;)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="105b7037-a9cd-36ed-f4f9-42ead742cedf">
+      <Execution id="937e81bf-2e6b-4bf1-9c35-d7e52a5ab169" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Launch_failure_retries_without_duplicate_room_or_asset_reservation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9">
+      <Execution id="91ab41f1-4949-43d0-8a62-3e2ef53a1f1e" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="7389252f-0490-b84b-ba1d-169cde6e6dad">
+      <Execution id="99e8aa82-12c6-4763-9e97-47074e5e7d9c" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="1730603a-b5a6-d42b-f498-5bb83347e5a5">
+      <Execution id="79e9b543-73bb-498f-a42e-695380390407" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="526eec41-b876-5ecf-63fe-1c85807f008b">
+      <Execution id="b9452698-7183-477b-a2a8-c50d6f259bf9" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_CanLaunchFourBotRoomWhenNobodyReadies" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="52bc6763-e8be-c4d3-fc2e-45b5d0fa5e4d">
+      <Execution id="decbd37a-b8af-40fe-9f86-3e481c9b11b7" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests" name="CompleteWithBots_CanLaunchFourBotRoomWhenNobodyReadies" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.RequestPreservesLegacyTagsAndOptionalSeasonPresence" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f553711f-5555-d09a-af0a-5a72e1aca626">
+      <Execution id="6317e561-6357-4dcd-9b84-6bbacaa73b30" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="RequestPreservesLegacyTagsAndOptionalSeasonPresence" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="a88df070-897b-bdbc-7667-852bccd1832b">
+      <Execution id="c561dada-29d3-4fa1-a570-b1b101b08739" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="MarkRunning_retry_accepts_the_committed_result_without_reopening_terminal_matches" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: True)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="521e7cc6-2b49-1020-9800-0240ebbc7547">
+      <Execution id="99850fe1-6db8-477c-8af0-594648042a5b" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e572af13-77d0-7705-a81d-fc72761ba89f">
+      <Execution id="870b09c1-cdd0-468a-8613-9afc972a6f0f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LegacyEquipmentIdempotencyJsonRemainsByteCompatible" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="095ddd35-3f43-50a5-0010-1cc4808ebbcd">
+      <Execution id="f2e3fe71-d771-4d79-994d-72e626ffd9f2" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="LegacyEquipmentIdempotencyJsonRemainsByteCompatible" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: &quot;Orange&quot;, accepted: False)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="93b11a8b-b9a3-4370-d955-c6abf577498d">
+      <Execution id="132e25b5-2f8b-41b3-b9c6-a5e5e3d512d6" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="6cd8db18-4714-7fc6-651b-17dd4e255295">
+      <Execution id="dc88390b-54a2-43c7-9360-9069344e453f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.InventoryCarriesProvenanceWithoutInventingRecipeEligibilityForLegacyItems" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="bdab81e7-76b1-8650-23de-d119d7007d82">
+      <Execution id="7a3e6250-f7f3-4702-8969-8a94dc566f54" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="InventoryCarriesProvenanceWithoutInventingRecipeEligibilityForLegacyItems" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.CurrentSaveDoesNotUnequipAnItemFromAnotherDomain" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="86b7d9d1-e425-768e-c2b8-f27ffe09cb6a">
+      <Execution id="dfdc1d17-812e-4b35-a1d7-86667d4a4ef5" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="CurrentSaveDoesNotUnequipAnItemFromAnotherDomain" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="9e2167b7-a0a1-8388-7421-76b71754c7ca">
+      <Execution id="2bdb335b-2162-42b5-aae2-8c02a41ea11f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.ClosedPeriodRejectsNewWritesWhileCompletedReplayHasNoNewEffects" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="b5d13051-5acd-9d5e-5f58-43c2cd2a3b24">
+      <Execution id="dbce90b3-4bee-4f33-b364-5bbc33a5a080" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="ClosedPeriodRejectsNewWritesWhileCompletedReplayHasNoNewEffects" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests.CompleteWithBots_ReplacesEveryMissingSeatAndPreservesReadyHumans" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f3af9c2c-114c-1bbd-99c2-dbb72995ff68">
+      <Execution id="28cacb57-1b6f-464a-abf2-fd751b28e7ed" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Matchmaking.ReadyLobbyRulesTests" name="CompleteWithBots_ReplacesEveryMissingSeatAndPreservesReadyHumans" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e205839e-3fb0-0008-0c65-8bf2d35f614b">
+      <Execution id="a0886f0a-198e-4c19-9c91-dd8199db43fb" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="CallerRollbackAlsoRollsBackBalancesOperationsAndLedger" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: &quot;context&quot;)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="5d0c525d-6346-0f76-7217-edd7a2ff7658">
+      <Execution id="4bb9b5de-f2b0-493a-af69-5becdc17f72d" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="CorruptedPreparedContextOrProjectionCannotConsumeAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="407024ca-ba6c-d30a-8c89-d4a3b636ef6f">
+      <Execution id="2fa6cd1e-0e40-4dd1-b8bc-e481c1d55fa7" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="7587bed9-503b-5cfe-48d0-09131fda9cec">
+      <Execution id="edd55211-bc3f-4676-8b5b-440aba6240dd" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="3fdd0d1c-d7bb-4de9-9348-97ca70d25216">
+      <Execution id="a6b4d9c8-82c7-4ae5-8501-9f9cd4ab6b77" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: &quot;projection&quot;)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="89e22308-c781-e1eb-3272-f941ab120bd3">
+      <Execution id="3a714586-f22d-4924-aec6-17cd296239b1" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="CorruptedPreparedContextOrProjectionCannotConsumeAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.QuoteUsesNewTagsWithoutChangingLegacyFields" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="73f9730e-b821-78de-245f-d705418e7335">
+      <Execution id="ac955f1a-981c-4420-a531-3b07603ce8ba" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="QuoteUsesNewTagsWithoutChangingLegacyFields" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="0812ae1c-8946-1ea1-2bcd-dfa45545173c">
+      <Execution id="29f71d3f-a57a-43cf-9cc4-6fc02617f682" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests" name="SeasonWallet_binary_quote_upgrade_ownership_and_legacy_contracts" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: &quot;Orange&quot;, accepted: True)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="ad050084-fe78-01f9-5ba7-22061c8c4288">
+      <Execution id="25194f31-46f4-479d-b459-be4802c23d8c" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="abd7f050-e323-fcbd-4353-9a9919ac1682">
+      <Execution id="c5e574aa-aa8e-4b1e-9b43-81fc12d85161" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e5fc0bdb-bf83-51aa-7a0f-f6076820dfc2">
+      <Execution id="351eb98b-f746-4746-b716-1fe7a5f54db1" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Snapshot_write_failure_withholds_settlement_until_terminal_checkpoint_retry" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="10debd5b-d6e1-cda4-a2f5-0e3adee94ac3">
+      <Execution id="8700213f-f4ce-40da-8105-d540f2fa6193" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="11aebfcf-b4d5-5743-846f-88f2592e7de7">
+      <Execution id="2f883a88-dd48-4807-9f66-d6ca3c6053fd" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="79130232-c69a-2ec3-e125-323798a88315">
+      <Execution id="17082f71-5639-413c-87a4-bf47fac47625" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2">
+      <Execution id="a141b002-167f-4746-8ced-4721b7426c9f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.AnnouncedSeasonRetainsLegacyHashAndCannotMoveFutureEquipmentEarly" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="63d674c0-b16d-13e4-7006-c526b8642f21">
+      <Execution id="18f3feba-84bd-48f7-8fa8-79344ea30366" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="AnnouncedSeasonRetainsLegacyHashAndCannotMoveFutureEquipmentEarly" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route(staleCheckpoint: False)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="ebf0eb5f-1f6d-dfc5-b817-b6949a5316db">
+      <Execution id="d7d18a30-e985-42a1-9c0a-04127ba51919" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Recovery_validates_durable_terminal_checkpoint_and_preserves_next_route" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.SaveRejectsLegacyArchivedAndFutureItemsWithoutChangingVersionOrLocations" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="72f55c73-9355-e5e2-b924-857daeac1737">
+      <Execution id="020b6a1d-c5a3-4f7f-85b0-59d8e650c89d" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="SaveRejectsLegacyArchivedAndFutureItemsWithoutChangingVersionOrLocations" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="94cfbe7f-388f-611d-e0aa-8fde6bffd674">
+      <Execution id="2b5935a3-3835-4129-9e64-efad215c9e48" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="038ba698-23fa-f3c4-e42c-c6a80b049328">
+      <Execution id="a2c6cbfd-c611-4f4b-8b6e-e1f9e62dfe4f" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: &quot;Purple&quot;, accepted: False)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="c6c26671-7a9f-d5ca-0f4f-607309cdb7ed">
+      <Execution id="f1f799c3-6e55-49a4-b247-79d4465d0d00" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="51c7f03e-151e-68e2-e23a-863cd8fdcce9">
+      <Execution id="a9a21ffe-339e-47e8-8256-820e93890bfd" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="5625c65d-148c-6899-72bc-82369c6d7deb">
+      <Execution id="97603a65-9647-4fc1-b275-c8d3a66077cb" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="be6ca007-ff65-034a-d7c0-a5ded7f4707c">
+      <Execution id="27c61a58-ef4c-4a66-81f9-ca90913d6273" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests" name="AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: False)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f71bd4ae-f75e-087b-1357-fe4c4cce9209">
+      <Execution id="a7215b74-b064-477e-a442-46c023d259b1" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests" name="Projection_uses_existing_bootstrap_wire_fields_without_catalogs" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="fbc7f580-14d3-6e24-2e77-a2a3535a2437">
+      <Execution id="19cba0bb-39ba-4c45-a508-1d63d98708a2" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Four_humans_enqueue_ready_and_launch_one_persisted_room" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="ee8943e4-4d94-83fd-b3a0-dfd321788a51">
+      <Execution id="e695e06e-976c-4e54-b84d-f39b5dce10e4" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests" name="Four_humans_enqueue_ready_and_launch_one_persisted_room" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: &quot;current&quot;, stats: &quot;wrong-stats&quot;)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="18ba2255-2638-15c0-a46c-d1118ac812ff">
+      <Execution id="3e166869-5f17-454c-9aad-1bd6163ddaa6" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="0787e3f3-4485-0527-ae39-e0fd15ac96f1">
+      <Execution id="70c3b780-7f7d-4c3d-8544-a5f19757fce6" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="cabb66fa-c829-3422-7f99-7a2831466770">
+      <Execution id="cada8bc6-cb80-4492-95dc-ed9144346e22" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests" name="CurrentInventoryExcludesLegacyArchivedAndFutureEquipment" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="1018b892-3f91-b4e2-ed39-e89890782b5c">
+      <Execution id="3d501fcf-c690-4790-ab5c-bd4d0df7db18" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="e4441dc5-4f9a-ce04-3d3e-10107bec4213">
+      <Execution id="aec5a449-afe8-4a9f-92bc-45ca8e0f3dae" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.LoadoutReadKeepsCurrentPreparationLocksButHidesForeignReferences" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="8573e3ed-ef52-1c1f-be36-86e98bf3c05c">
+      <Execution id="79ed3077-e273-4854-9b95-6feb5dee8c51" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests" name="LoadoutReadKeepsCurrentPreparationLocksButHidesForeignReferences" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: True)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="284260c6-6633-12a3-c587-51fa223da887">
+      <Execution id="440d74cd-658e-4611-8c09-700705f8e834" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests" name="Projection_uses_existing_bootstrap_wire_fields_without_catalogs" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="8b0bd69b-3516-a199-764d-58cbacf699f2">
+      <Execution id="8d1ee154-a846-436e-8639-0a300993b8ba" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="33559adf-093b-0932-5486-f5dae663201e">
+      <Execution id="e84a3198-0787-4f91-88fb-6c48134ffa85" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ResponseCarriesWalletIdentityAndExactInt64Version" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="d4d7ad20-50fa-e925-88d3-d2f8c689e163">
+      <Execution id="cc7628a8-718d-47d4-a521-7d273da93588" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="ResponseCarriesWalletIdentityAndExactInt64Version" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="f5638681-c94a-2256-5248-63556d2e9563">
+      <Execution id="2e3504fc-4210-4661-a844-0c2658e2d030" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests" name="BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="9792afe4-0aab-b788-5978-3d2b8cb4e304">
+      <Execution id="ab6f1efa-fbfd-48fa-99b0-c3eae21267bf" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="49bd5772-ed46-06a4-9b84-0f1f0266d75a">
+      <Execution id="3553a8b0-3780-446b-8082-ac71f752652b" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests" name="UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="ee19b1bc-5c16-e3cd-4b80-8c6f4f539fe5">
+      <Execution id="a949b7e5-5f6e-4ef1-96bf-45bd6d6bde60" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests" name="LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="5a1a2f3f-b2e5-d7de-95df-0eded60af573">
+      <Execution id="5b1cd9c4-87e0-4667-837a-6253a8134318" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests" name="ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Launch_failure_retries_without_duplicate_room_or_asset_reservation(fault: &quot;snapshot&quot;)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="124ead41-6837-0e20-30b7-1da95360cabc">
+      <Execution id="aaa17760-ff34-4cbe-b6cf-692af7919620" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests" name="Launch_failure_retries_without_duplicate_room_or_asset_reservation" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="4cf6091b-6a5f-1ead-5292-60670b5cc4d3">
+      <Execution id="95552bdb-7800-42a7-944e-266a87aea538" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests" name="InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="ebf0eb5f-1f6d-dfc5-b817-b6949a5316db" executionId="d7d18a30-e985-42a1-9c0a-04127ba51919" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f71bd4ae-f75e-087b-1357-fe4c4cce9209" executionId="a7215b74-b064-477e-a442-46c023d259b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ee19b1bc-5c16-e3cd-4b80-8c6f4f539fe5" executionId="a949b7e5-5f6e-4ef1-96bf-45bd6d6bde60" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d4d7ad20-50fa-e925-88d3-d2f8c689e163" executionId="cc7628a8-718d-47d4-a521-7d273da93588" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1561d008-0805-0e55-03d6-0ca46f77238f" executionId="95113893-c563-4ee5-9a56-7d99a831bc6b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89e22308-c781-e1eb-3272-f941ab120bd3" executionId="3a714586-f22d-4924-aec6-17cd296239b1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbc7f580-14d3-6e24-2e77-a2a3535a2437" executionId="19cba0bb-39ba-4c45-a508-1d63d98708a2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="52bc6763-e8be-c4d3-fc2e-45b5d0fa5e4d" executionId="decbd37a-b8af-40fe-9f86-3e481c9b11b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1730603a-b5a6-d42b-f498-5bb83347e5a5" executionId="79e9b543-73bb-498f-a42e-695380390407" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bdab81e7-76b1-8650-23de-d119d7007d82" executionId="7a3e6250-f7f3-4702-8969-8a94dc566f54" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5625c65d-148c-6899-72bc-82369c6d7deb" executionId="97603a65-9647-4fc1-b275-c8d3a66077cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e205839e-3fb0-0008-0c65-8bf2d35f614b" executionId="a0886f0a-198e-4c19-9c91-dd8199db43fb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a88df070-897b-bdbc-7667-852bccd1832b" executionId="c561dada-29d3-4fa1-a570-b1b101b08739" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f5638681-c94a-2256-5248-63556d2e9563" executionId="2e3504fc-4210-4661-a844-0c2658e2d030" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ad050084-fe78-01f9-5ba7-22061c8c4288" executionId="25194f31-46f4-479d-b459-be4802c23d8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="284260c6-6633-12a3-c587-51fa223da887" executionId="440d74cd-658e-4611-8c09-700705f8e834" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="be6ca007-ff65-034a-d7c0-a5ded7f4707c" executionId="27c61a58-ef4c-4a66-81f9-ca90913d6273" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cd8db18-4714-7fc6-651b-17dd4e255295" executionId="dc88390b-54a2-43c7-9360-9069344e453f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="095ddd35-3f43-50a5-0010-1cc4808ebbcd" executionId="f2e3fe71-d771-4d79-994d-72e626ffd9f2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="18ba2255-2638-15c0-a46c-d1118ac812ff" executionId="3e166869-5f17-454c-9aad-1bd6163ddaa6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ee8943e4-4d94-83fd-b3a0-dfd321788a51" executionId="e695e06e-976c-4e54-b84d-f39b5dce10e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0812ae1c-8946-1ea1-2bcd-dfa45545173c" executionId="29f71d3f-a57a-43cf-9cc4-6fc02617f682" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e5fc0bdb-bf83-51aa-7a0f-f6076820dfc2" executionId="351eb98b-f746-4746-b716-1fe7a5f54db1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e4441dc5-4f9a-ce04-3d3e-10107bec4213" executionId="aec5a449-afe8-4a9f-92bc-45ca8e0f3dae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="038ba698-23fa-f3c4-e42c-c6a80b049328" executionId="a2c6cbfd-c611-4f4b-8b6e-e1f9e62dfe4f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7587bed9-503b-5cfe-48d0-09131fda9cec" executionId="edd55211-bc3f-4676-8b5b-440aba6240dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9792afe4-0aab-b788-5978-3d2b8cb4e304" executionId="ab6f1efa-fbfd-48fa-99b0-c3eae21267bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="72f55c73-9355-e5e2-b924-857daeac1737" executionId="020b6a1d-c5a3-4f7f-85b0-59d8e650c89d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="526eec41-b876-5ecf-63fe-1c85807f008b" executionId="b9452698-7183-477b-a2a8-c50d6f259bf9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7389252f-0490-b84b-ba1d-169cde6e6dad" executionId="99e8aa82-12c6-4763-9e97-47074e5e7d9c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2" executionId="a141b002-167f-4746-8ced-4721b7426c9f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="93b11a8b-b9a3-4370-d955-c6abf577498d" executionId="132e25b5-2f8b-41b3-b9c6-a5e5e3d512d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11aebfcf-b4d5-5743-846f-88f2592e7de7" executionId="2f883a88-dd48-4807-9f66-d6ca3c6053fd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9e2167b7-a0a1-8388-7421-76b71754c7ca" executionId="2bdb335b-2162-42b5-aae2-8c02a41ea11f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1018b892-3f91-b4e2-ed39-e89890782b5c" executionId="3d501fcf-c690-4790-ab5c-bd4d0df7db18" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8b0bd69b-3516-a199-764d-58cbacf699f2" executionId="8d1ee154-a846-436e-8639-0a300993b8ba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="521e7cc6-2b49-1020-9800-0240ebbc7547" executionId="99850fe1-6db8-477c-8af0-594648042a5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0787e3f3-4485-0527-ae39-e0fd15ac96f1" executionId="70c3b780-7f7d-4c3d-8544-a5f19757fce6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5a1a2f3f-b2e5-d7de-95df-0eded60af573" executionId="5b1cd9c4-87e0-4667-837a-6253a8134318" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49bd5772-ed46-06a4-9b84-0f1f0266d75a" executionId="3553a8b0-3780-446b-8082-ac71f752652b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="86b7d9d1-e425-768e-c2b8-f27ffe09cb6a" executionId="dfdc1d17-812e-4b35-a1d7-86667d4a4ef5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="51c7f03e-151e-68e2-e23a-863cd8fdcce9" executionId="a9a21ffe-339e-47e8-8256-820e93890bfd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="63d674c0-b16d-13e4-7006-c526b8642f21" executionId="18f3feba-84bd-48f7-8fa8-79344ea30366" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cabb66fa-c829-3422-7f99-7a2831466770" executionId="cada8bc6-cb80-4492-95dc-ed9144346e22" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6c26671-7a9f-d5ca-0f4f-607309cdb7ed" executionId="f1f799c3-6e55-49a4-b247-79d4465d0d00" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e572af13-77d0-7705-a81d-fc72761ba89f" executionId="870b09c1-cdd0-468a-8613-9afc972a6f0f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="94cfbe7f-388f-611d-e0aa-8fde6bffd674" executionId="2b5935a3-3835-4129-9e64-efad215c9e48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f3af9c2c-114c-1bbd-99c2-dbb72995ff68" executionId="28cacb57-1b6f-464a-abf2-fd751b28e7ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="73f9730e-b821-78de-245f-d705418e7335" executionId="ac955f1a-981c-4420-a531-3b07603ce8ba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10debd5b-d6e1-cda4-a2f5-0e3adee94ac3" executionId="8700213f-f4ce-40da-8105-d540f2fa6193" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="abd7f050-e323-fcbd-4353-9a9919ac1682" executionId="c5e574aa-aa8e-4b1e-9b43-81fc12d85161" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4cf6091b-6a5f-1ead-5292-60670b5cc4d3" executionId="95552bdb-7800-42a7-944e-266a87aea538" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f553711f-5555-d09a-af0a-5a72e1aca626" executionId="6317e561-6357-4dcd-9b84-6bbacaa73b30" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="79130232-c69a-2ec3-e125-323798a88315" executionId="17082f71-5639-413c-87a4-bf47fac47625" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="407024ca-ba6c-d30a-8c89-d4a3b636ef6f" executionId="2fa6cd1e-0e40-4dd1-b8bc-e481c1d55fa7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="33559adf-093b-0932-5486-f5dae663201e" executionId="e84a3198-0787-4f91-88fb-6c48134ffa85" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a799ab51-e3a5-e93b-cfac-cbcaf2474ee9" executionId="91ab41f1-4949-43d0-8a62-3e2ef53a1f1e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8573e3ed-ef52-1c1f-be36-86e98bf3c05c" executionId="79ed3077-e273-4854-9b95-6feb5dee8c51" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3fdd0d1c-d7bb-4de9-9348-97ca70d25216" executionId="a6b4d9c8-82c7-4ae5-8501-9f9cd4ab6b77" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="105b7037-a9cd-36ed-f4f9-42ead742cedf" executionId="937e81bf-2e6b-4bf1-9c35-d7e52a5ab169" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="124ead41-6837-0e20-30b7-1da95360cabc" executionId="aaa17760-ff34-4cbe-b6cf-692af7919620" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d0c525d-6346-0f76-7217-edd7a2ff7658" executionId="4bb9b5de-f2b0-493a-af69-5becdc17f72d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b5d13051-5acd-9d5e-5f58-43c2cd2a3b24" executionId="dbce90b3-4bee-4f33-b364-5bbc33a5a080" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="63" executed="63" passed="53" failed="10" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.65]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.19]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.45]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:32.36]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:32.36]       Stack Trace:
+[xUnit.net 00:00:32.37]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:32.37]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:32.37]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:32.37]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:32.37]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(163,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets()
+[xUnit.net 00:00:32.37]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(182,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets()
+[xUnit.net 00:00:32.37]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:34.00]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:34.00]       Stack Trace:
+[xUnit.net 00:00:34.00]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:34.00]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.00]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:34.00]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:34.00]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(218,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption)
+[xUnit.net 00:00:34.00]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(234,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption)
+[xUnit.net 00:00:34.00]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:34.98]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:34.98]       Stack Trace:
+[xUnit.net 00:00:34.98]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:34.98]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:34.98]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:34.98]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:34.98]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(218,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption)
+[xUnit.net 00:00:34.98]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(234,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(String corruption)
+[xUnit.net 00:00:34.98]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:36.14]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:36.14]       Stack Trace:
+[xUnit.net 00:00:36.14]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:36.14]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.14]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:36.15]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:36.15]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:36.15]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(192,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend()
+[xUnit.net 00:00:36.15]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(206,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend()
+[xUnit.net 00:00:36.15]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:37.16]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:37.16]       Stack Trace:
+[xUnit.net 00:00:37.16]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:37.16]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:37.16]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:37.16]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:37.16]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(36,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext()
+[xUnit.net 00:00:37.16]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(64,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext()
+[xUnit.net 00:00:37.16]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:38.36]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:38.36]       Stack Trace:
+[xUnit.net 00:00:38.36]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:38.36]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:38.36]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:38.36]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:38.36]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(244,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd()
+[xUnit.net 00:00:38.36]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(277,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd()
+[xUnit.net 00:00:38.36]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:39.43]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:39.43]       Stack Trace:
+[xUnit.net 00:00:39.43]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:39.43]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:39.43]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:39.43]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:39.43]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(142,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation()
+[xUnit.net 00:00:39.43]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(153,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation()
+[xUnit.net 00:00:39.43]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:40.45]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:40.45]       Stack Trace:
+[xUnit.net 00:00:40.45]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:40.45]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:40.45]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:40.45]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:40.45]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(123,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions()
+[xUnit.net 00:00:40.45]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(132,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions()
+[xUnit.net 00:00:40.45]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:41.48]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:41.48]       Stack Trace:
+[xUnit.net 00:00:41.48]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:41.48]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:41.48]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:41.48]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:41.48]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(76,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup()
+[xUnit.net 00:00:41.48]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(89,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup()
+[xUnit.net 00:00:41.48]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:42.75]       Npgsql.PostgresException : 42601: cannot insert multiple commands into a prepared statement
+[xUnit.net 00:00:42.75]       Stack Trace:
+[xUnit.net 00:00:42.75]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+[xUnit.net 00:00:42.75]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+[xUnit.net 00:00:42.75]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(300,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:42.75]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(301,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.PrepareAsync(PostgresTestSchema db, Clock clock, SeasonDefinition season, Int32 difficulty, Boolean equipment)
+[xUnit.net 00:00:42.75]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(104,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties()
+[xUnit.net 00:00:42.75]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonMatchmakingTests.cs(113,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties()
+[xUnit.net 00:00:42.75]         --- End of stack trace from previous location ---
+[xUnit.net 00:01:04.38]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:42.6938820+00:00">
+        <Text>[xUnit.net 00:00:32.36]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:44.3309849+00:00">
+        <Text>[xUnit.net 00:00:34.00]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:45.3090385+00:00">
+        <Text>[xUnit.net 00:00:34.97]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:46.4723674+00:00">
+        <Text>[xUnit.net 00:00:36.14]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:47.4901942+00:00">
+        <Text>[xUnit.net 00:00:37.16]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:48.6913811+00:00">
+        <Text>[xUnit.net 00:00:38.36]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:49.7612708+00:00">
+        <Text>[xUnit.net 00:00:39.43]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:50.7816682+00:00">
+        <Text>[xUnit.net 00:00:40.45]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:51.8143068+00:00">
+        <Text>[xUnit.net 00:00:41.48]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T13:08:53.0792471+00:00">
+        <Text>[xUnit.net 00:00:42.75]     FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

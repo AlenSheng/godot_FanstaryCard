@@ -1,0 +1,16 @@
+{
+  "container_id": "b709f341be44d80ecbfdbecaef2386ce288843135ef1a9d7d880dbcfb70aea64",
+  "name": "fc-season-a03-storage-20261102-r10",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "2a1e2ea4718d250e77d624741c21734b006662f5",
+  "archive_sha256": "c31de7e995b305e3565f4ae1a39da6232527ad65623b4719aa965e862749b644",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~SeasonWallet|FullyQualifiedName~BootstrapProjectionEncodingTests|FullyQualifiedName~ReadyLobbyRulesTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room\" --logger \"trx;LogFileName=matchmaking.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_command": null,
+  "domain_evidence_source": "storage-r5",
+  "production_database_used": false,
+  "available_ram_before": 2572152832,
+  "free_disk_before": 3906584576
+}

@@ -1,9 +1,10 @@
 using System.Text.Json;
-using System.Globalization;
+using System.Text.Json.Serialization;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Domain.Bots;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Persistence;
@@ -11,10 +12,12 @@ using Npgsql;
 
 namespace FantasyCard.Server.Matchmaking;
 
-public sealed record MatchAssignment(Guid MatchId, Guid RoomId, int Seed, IReadOnlyList<MatchPlayerAssignment> Players);
+public sealed record MatchAssignment(Guid MatchId, Guid RoomId, int Seed, IReadOnlyList<MatchPlayerAssignment> Players,
+    SeasonContext? Season = null, string? ConfigVersion = null);
 public sealed record PendingMatch(Guid MatchId, Guid RoomId, DateTimeOffset ReadyDeadline, IReadOnlyList<Guid> PlayerIds);
 public sealed record ReadyLobbyView(Guid MatchId, Guid RoomId, DateTimeOffset ReadyDeadline, int ReadyPlayers, int RequiredPlayers, bool IsReady);
-public sealed record ReadyMatchLaunch(MatchAssignment Assignment, IReadOnlyList<Guid> HumanPlayerIds, IReadOnlyList<Guid> RemovedPlayerIds);
+public sealed record ReadyMatchLaunch(MatchAssignment Assignment, IReadOnlyList<Guid> HumanPlayerIds, IReadOnlyList<Guid> RemovedPlayerIds,
+    bool Aborted = false, string RemovalReason = "ready_timeout");
 
 public sealed class MatchReadyException(string code, string message) : InvalidOperationException(message)
 {
@@ -41,8 +44,23 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         configuration?.GetValue<int?>("Matchmaking:BotFillDelaySeconds") ?? 30));
     private static readonly JsonSerializerOptions SnapshotSerializerOptions = new()
     {
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
+        Converters = { new JsonStringEnumConverter() }
     };
+
+    // Null season columns describe pre-season legacy preparations, not a fallback after a season has started.
+    private const string PreparationAdmissionSql = """
+        p.config_version=$2 AND (p.season_id IS NULL AND NOT EXISTS (
+            SELECT 1 FROM season_definitions d WHERE d.ruleset_id='season-v1' AND d.starts_at <= $1)
+        OR p.season_id IS NOT NULL AND EXISTS (
+            SELECT 1 FROM season_definitions d WHERE d.season_id=p.season_id AND d.starts_at <= $1 AND d.ends_at > $1))
+        """;
+    private const string MatchAdmissionSql = """
+        m.config_version=$2 AND (m.season_id IS NULL AND NOT EXISTS (
+            SELECT 1 FROM season_definitions d WHERE d.ruleset_id='season-v1' AND d.starts_at <= $1)
+        OR m.season_id IS NOT NULL AND EXISTS (
+            SELECT 1 FROM season_definitions d WHERE d.season_id=m.season_id AND d.starts_at <= $1 AND d.ends_at > $1))
+        """;
 
     public async Task<MatchTicketResponse> GetTicketAsync(Guid playerId, Guid ticketId, CancellationToken cancellationToken)
     {
@@ -81,15 +99,27 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 await reader.DisposeAsync(); await transaction.CommitAsync(cancellationToken); return result;
             }
         }
-        await using (var preparation = new NpgsqlCommand("SELECT status FROM preparations WHERE preparation_id=$1 AND player_id=$2 FOR UPDATE", connection, transaction))
+        string? preparationStatus;
+        bool admission = false;
+        await using (var preparation = new NpgsqlCommand($"SELECT p.status,({PreparationAdmissionSql}) FROM preparations p WHERE p.preparation_id=$3 AND p.player_id=$4 FOR UPDATE", connection, transaction))
         {
+            preparation.Parameters.AddWithValue(now); preparation.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
             preparation.Parameters.AddWithValue(request.PreparationId); preparation.Parameters.AddWithValue(playerId);
-            var status = (string?)await preparation.ExecuteScalarAsync(cancellationToken);
-            if (status != "Active")
+            await using var reader = await preparation.ExecuteReaderAsync(cancellationToken);
+            var found = await reader.ReadAsync(cancellationToken);
+            preparationStatus = found ? reader.GetString(0) : null;
+            admission = found && reader.GetBoolean(1);
+        }
+        if (preparationStatus != "Active" || !admission)
+        {
+            if (preparationStatus == "Active" && !admission)
             {
-                await transaction.CommitAsync(cancellationToken);
-                throw new InvalidOperationException("Only an Active preparation can enter matchmaking.");
+                await PreparationRepository.ReleaseEquipmentAsync(connection, transaction, request.PreparationId, requestId, cancellationToken);
+                await using var expire = new NpgsqlCommand("UPDATE preparations SET status='Expired' WHERE preparation_id=$1", connection, transaction);
+                expire.Parameters.AddWithValue(request.PreparationId); await expire.ExecuteNonQueryAsync(cancellationToken);
             }
+            await transaction.CommitAsync(cancellationToken);
+            throw new InvalidOperationException("Only an active preparation for the currently loaded season and configuration can enter matchmaking.");
         }
         var ticketId = Guid.CreateVersion7();
         await using (var insert = new NpgsqlCommand("INSERT INTO match_tickets(ticket_id,player_id,preparation_id,request_id,status,queued_at) VALUES($1,$2,$3,$4,'Queued',$5)", connection, transaction))
@@ -133,27 +163,50 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var now = timeProvider.GetUtcNow();
         await ExpireQueuedPreparationsAsync(connection, transaction, now, cancellationToken);
-        var tickets = new List<(Guid Ticket, Guid Player, Guid Preparation, DateTimeOffset Queued, HeroClass HeroClass, string[] Cards, int Capacity, int SafeSlots, int Potions, Guid[] EquipmentIds, int WeaponLevel, CombatEquipmentItem[] Equipment)>();
-        await using (var query = new NpgsqlCommand("SELECT t.ticket_id,t.player_id,t.preparation_id,t.queued_at,p.snapshot_json->>'heroClass',p.snapshot_json->'cardIds',p.snapshot_json->>'backpackCapacity',jsonb_array_length(p.snapshot_json->'safeSlotIndexes'),p.snapshot_json->>'potionCount',p.snapshot_json->'equipmentIds',p.snapshot_json->>'classWeaponLevel',p.snapshot_json->'equipmentSnapshots' FROM match_tickets t JOIN preparations p ON p.preparation_id=t.preparation_id WHERE t.status='Queued' ORDER BY t.queued_at LIMIT 4 FOR UPDATE OF t SKIP LOCKED", connection, transaction))
+        now = timeProvider.GetUtcNow();
+        var tickets = new List<(Guid Ticket, Guid Player, Guid Preparation, DateTimeOffset Queued)>();
+        SeasonContext? season = null;
+        string configVersion = BootstrapRepository.CurrentConfigVersion;
+        DateTimeOffset? endsAt = null;
+        await using (var query = new NpgsqlCommand($"""
+            WITH ready_groups AS MATERIALIZED (
+                SELECT p.season_id,p.difficulty_id,p.ruleset_id,p.config_version,p.stats_version
+                FROM match_tickets t JOIN preparations p ON p.preparation_id=t.preparation_id
+                WHERE t.status='Queued' AND p.status='Queued' AND p.expires_at > $1 AND ({PreparationAdmissionSql})
+                GROUP BY p.season_id,p.difficulty_id,p.ruleset_id,p.config_version,p.stats_version
+                HAVING count(*) >= 4 OR min(t.queued_at) <= $3
+            ), first_ticket AS MATERIALIZED (
+                SELECT t.ticket_id,p.season_id,p.difficulty_id,p.ruleset_id,p.config_version,p.stats_version
+                FROM match_tickets t JOIN preparations p ON p.preparation_id=t.preparation_id
+                JOIN ready_groups g ON p.season_id IS NOT DISTINCT FROM g.season_id
+                  AND p.difficulty_id IS NOT DISTINCT FROM g.difficulty_id
+                  AND p.ruleset_id IS NOT DISTINCT FROM g.ruleset_id
+                  AND p.config_version=g.config_version AND p.stats_version IS NOT DISTINCT FROM g.stats_version
+                WHERE t.status='Queued' AND p.status='Queued' AND p.expires_at > $1 AND ({PreparationAdmissionSql})
+                ORDER BY t.queued_at,t.ticket_id LIMIT 1 FOR UPDATE OF t,p SKIP LOCKED
+            )
+            SELECT t.ticket_id,t.player_id,t.preparation_id,t.queued_at,
+                   p.season_id,p.difficulty_id,p.ruleset_id,p.config_version,p.stats_version,d.ends_at
+            FROM match_tickets t JOIN preparations p ON p.preparation_id=t.preparation_id
+            CROSS JOIN first_ticket a LEFT JOIN season_definitions d ON d.season_id=p.season_id
+            WHERE t.status='Queued' AND p.status='Queued' AND p.expires_at > $1
+              AND p.season_id IS NOT DISTINCT FROM a.season_id
+              AND p.difficulty_id IS NOT DISTINCT FROM a.difficulty_id
+              AND p.ruleset_id IS NOT DISTINCT FROM a.ruleset_id
+              AND p.config_version=a.config_version
+              AND p.stats_version IS NOT DISTINCT FROM a.stats_version
+            ORDER BY t.queued_at,t.ticket_id LIMIT 4 FOR UPDATE OF t,p SKIP LOCKED
+            """, connection, transaction))
         {
+            query.Parameters.AddWithValue(now); query.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
+            query.Parameters.AddWithValue(now - botFillDelay);
             await using var reader = await query.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken))
             {
-                if (!Enum.TryParse<HeroClass>(reader.GetString(4), true, out var heroClass)) continue;
-                var cards = JsonSerializer.Deserialize<string[]>(reader.GetString(5)) ?? [];
-                var equipmentIds = JsonSerializer.Deserialize<Guid?[]>(reader.GetString(9))?.Where(id => id.HasValue).Select(id => id!.Value).ToArray() ?? [];
-                var equipmentSnapshots = reader.IsDBNull(11)
-                    ? []
-                    : JsonSerializer.Deserialize<PreparationEquipmentSnapshotResponse[]>(reader.GetString(11), SnapshotSerializerOptions) ?? [];
-                var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(
-                    item.InstanceId,
-                    item.Slot,
-                    item.Quality,
-                    item.Level,
-                    Enum.Parse<CardElement>(item.Element, true),
-                    item.EffectAffix,
-                    item.SecondaryTrait)).ToArray();
-                tickets.Add((reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetFieldValue<DateTimeOffset>(3), heroClass, cards, int.Parse(reader.GetString(6), CultureInfo.InvariantCulture), reader.GetInt32(7), int.Parse(reader.GetString(8), CultureInfo.InvariantCulture), equipmentIds, int.Parse(reader.GetString(10), CultureInfo.InvariantCulture), equipment));
+                tickets.Add((reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetFieldValue<DateTimeOffset>(3)));
+                configVersion = reader.GetString(7);
+                season = reader.IsDBNull(4) ? null : new SeasonContext(reader.GetString(4), reader.GetInt16(5), reader.GetString(6), configVersion, reader.GetString(8));
+                endsAt = reader.IsDBNull(9) ? null : reader.GetFieldValue<DateTimeOffset>(9);
             }
         }
         if (tickets.Count == 0 || (tickets.Count < 4 && now - tickets[0].Queued < botFillDelay))
@@ -162,9 +215,36 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             return null;
         }
         var matchId = Guid.CreateVersion7(); var roomId = Guid.CreateVersion7(); var seed = Random.Shared.Next();
-        var readyDeadline = now.AddSeconds(15);
-        await using (var insert = new NpgsqlCommand("INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at,ready_deadline) VALUES($1,$2,'ChaosRealm','Standard',$3,$4,'Starting',$5,$6)", connection, transaction))
-        { insert.Parameters.AddWithValue(matchId); insert.Parameters.AddWithValue(roomId); insert.Parameters.AddWithValue(seed); insert.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion); insert.Parameters.AddWithValue(now); insert.Parameters.AddWithValue(readyDeadline); await insert.ExecuteNonQueryAsync(cancellationToken); }
+        if (endsAt is { } end && timeProvider.GetUtcNow() >= end)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return null;
+        }
+        await using (var admissionCheck = new NpgsqlCommand($"SELECT ({PreparationAdmissionSql}) AND p.expires_at > $1 FROM preparations p WHERE p.preparation_id=$3", connection, transaction))
+        {
+            admissionCheck.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            admissionCheck.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
+            admissionCheck.Parameters.AddWithValue(tickets[0].Preparation);
+            if (await admissionCheck.ExecuteScalarAsync(cancellationToken) is not true)
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return null;
+            }
+        }
+        var readyDeadline = endsAt is { } deadline && deadline < now.AddSeconds(15) ? deadline : now.AddSeconds(15);
+        await using (var insert = new NpgsqlCommand("""
+            INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at,ready_deadline,season_id,ruleset_id,stats_version)
+            VALUES($1,$2,'ChaosRealm',$3,$4,$5,'Starting',$6,$7,$8,$9,$10)
+            """, connection, transaction))
+        {
+            insert.Parameters.AddWithValue(matchId); insert.Parameters.AddWithValue(roomId);
+            insert.Parameters.AddWithValue(season?.DifficultyId ?? "Standard"); insert.Parameters.AddWithValue(seed);
+            insert.Parameters.AddWithValue(configVersion); insert.Parameters.AddWithValue(now); insert.Parameters.AddWithValue(readyDeadline);
+            insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)season?.SeasonId ?? DBNull.Value);
+            insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)season?.RulesetId ?? DBNull.Value);
+            insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)season?.StatsVersion ?? DBNull.Value);
+            await insert.ExecuteNonQueryAsync(cancellationToken);
+        }
         foreach (var ticket in tickets)
         {
             await using (var player = new NpgsqlCommand("INSERT INTO match_players(match_id,player_id,preparation_id,is_bot) VALUES($1,$2,$3,false)", connection, transaction))
@@ -252,23 +332,31 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         Guid matchId = Guid.Empty; Guid roomId = Guid.Empty; int seed = 0; bool firstClaim = false;
         var hasRow = false;
+        SeasonContext? season = null;
+        var configVersion = BootstrapRepository.CurrentConfigVersion;
+        var admission = false;
         await using (var query = new NpgsqlCommand(
-            """
-            SELECT m.match_id,m.room_id,m.seed,m.status
+            $"""
+            SELECT m.match_id,m.room_id,m.seed,m.status,m.season_id,m.difficulty,m.ruleset_id,m.config_version,m.stats_version,
+                   ({MatchAdmissionSql})
             FROM matches m
             WHERE m.status='Launching' OR (m.status='Starting' AND
-                (m.ready_deadline <= $1 OR NOT EXISTS (
+                (NOT ({MatchAdmissionSql}) OR m.ready_deadline <= $1 OR NOT EXISTS (
                     SELECT 1 FROM match_players p WHERE p.match_id=m.match_id AND p.is_bot=false AND p.state='Assigned')))
-            ORDER BY m.created_at LIMIT 1 FOR UPDATE SKIP LOCKED
+            ORDER BY m.created_at,m.match_id LIMIT 1 FOR UPDATE OF m SKIP LOCKED
             """, connection, transaction))
         {
             query.Parameters.AddWithValue(now);
+            query.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
             await using var reader = await query.ExecuteReaderAsync(cancellationToken);
             hasRow = await reader.ReadAsync(cancellationToken);
             if (hasRow)
             {
                 matchId = reader.GetGuid(0); roomId = reader.GetGuid(1); seed = reader.GetInt32(2);
                 firstClaim = reader.GetString(3) == "Starting";
+                configVersion = reader.GetString(7);
+                season = reader.IsDBNull(4) ? null : new SeasonContext(reader.GetString(4), reader.GetString(5)[1] - '0', reader.GetString(6), configVersion, reader.GetString(8));
+                admission = reader.GetBoolean(9);
             }
         }
 
@@ -278,6 +366,42 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         {
             await transaction.CommitAsync(cancellationToken);
             return null;
+        }
+
+        // A Starting match has not consumed prepared assets. Launching is already admitted and drains with its pinned context.
+        if (firstClaim && !admission)
+        {
+            var removedPlayers = new List<Guid>();
+            var preparations = new List<Guid>();
+            await using (var participants = new NpgsqlCommand("SELECT player_id,preparation_id FROM match_players WHERE match_id=$1 AND is_bot=false", connection, transaction))
+            {
+                participants.Parameters.AddWithValue(matchId);
+                await using var reader = await participants.ExecuteReaderAsync(cancellationToken);
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    removedPlayers.Add(reader.GetGuid(0));
+                    if (!reader.IsDBNull(1)) preparations.Add(reader.GetGuid(1));
+                }
+            }
+            foreach (var preparationId in preparations)
+                await PreparationRepository.ReleaseEquipmentAsync(connection, transaction, preparationId, null, cancellationToken);
+            await using (var cancel = new NpgsqlCommand("""
+                WITH prepared_state AS (
+                    UPDATE preparations SET status='Cancelled' WHERE preparation_id=ANY($1) AND status='Matched' RETURNING preparation_id
+                ), ticket_state AS (
+                    UPDATE match_tickets SET status='Cancelled' WHERE preparation_id=ANY($1) AND status='Matched' RETURNING ticket_id
+                ), player_state AS (
+                    UPDATE match_players SET state='Removed' WHERE match_id=$2 AND is_bot=false RETURNING player_id
+                )
+                UPDATE matches SET status='Aborted' WHERE match_id=$2 AND status='Starting'
+                """, connection, transaction))
+            {
+                cancel.Parameters.AddWithValue(preparations.ToArray()); cancel.Parameters.AddWithValue(matchId);
+                await cancel.ExecuteNonQueryAsync(cancellationToken);
+            }
+            await transaction.CommitAsync(cancellationToken);
+            return new(new(matchId, roomId, seed, [], season, configVersion), [], removedPlayers.ToArray(),
+                Aborted: true, RemovalReason: "context_unavailable");
         }
 
         Guid[] removed = [];
@@ -306,7 +430,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             { states.Parameters.AddWithValue(matchId); await states.ExecuteNonQueryAsync(cancellationToken); }
         }
 
-        var humans = await ReadActiveHumansAsync(connection, transaction, matchId, cancellationToken);
+        var humans = await ReadActiveHumansAsync(connection, transaction, matchId, season, configVersion, cancellationToken);
         if (firstClaim)
             await ReserveMatchAssetsAsync(connection, transaction, matchId, cancellationToken);
         var botIds = new List<Guid>();
@@ -331,7 +455,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         }
         await transaction.CommitAsync(cancellationToken);
         var players = CompleteWithBots(humans, botIds, seed);
-        return new(new(matchId, roomId, seed, players), humans.Select(player => player.PlayerId).ToArray(), removed);
+        return new(new(matchId, roomId, seed, players, season, configVersion), humans.Select(player => player.PlayerId).ToArray(), removed);
     }
 
     public async Task MarkRunningAsync(Guid matchId, CancellationToken cancellationToken)
@@ -347,26 +471,39 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             throw new InvalidOperationException("The launching match could not transition to Running.");
     }
 
-    private static async Task<List<MatchPlayerAssignment>> ReadActiveHumansAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId, CancellationToken cancellationToken)
+    private static async Task<List<MatchPlayerAssignment>> ReadActiveHumansAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId,
+        SeasonContext? season, string configVersion, CancellationToken cancellationToken)
     {
         var result = new List<MatchPlayerAssignment>();
-        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json->>'heroClass',p.snapshot_json->'cardIds',p.snapshot_json->>'backpackCapacity',jsonb_array_length(p.snapshot_json->'safeSlotIndexes'),p.snapshot_json->>'potionCount',p.snapshot_json->'equipmentIds',p.snapshot_json->>'classWeaponLevel',p.snapshot_json->'equipmentSnapshots',p.snapshot_json->'cardLevels',p.snapshot_json->'safeSlotIndexes',u.display_name FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id JOIN players u ON u.user_id=mp.player_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
+        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json::text,u.display_name FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id JOIN players u ON u.user_id=mp.player_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
         command.Parameters.AddWithValue(matchId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
         {
-            var heroClass = Enum.Parse<HeroClass>(reader.GetString(1), true);
-            var equipmentIds = JsonSerializer.Deserialize<Guid?[]>(reader.GetString(6))?.Where(id => id.HasValue).Select(id => id!.Value).ToArray() ?? [];
-            var equipmentSnapshots = reader.IsDBNull(8) ? [] : JsonSerializer.Deserialize<PreparationEquipmentSnapshotResponse[]>(reader.GetString(8), SnapshotSerializerOptions) ?? [];
+            var snapshot = JsonSerializer.Deserialize<PreparationSnapshotResponse>(reader.GetString(1), SnapshotSerializerOptions)
+                ?? throw new InvalidOperationException("The prepared snapshot is missing.");
+            if (snapshot.ConfigVersion != configVersion || snapshot.Difficulty != (season?.DifficultyId ?? "Standard") ||
+                (season is null ? snapshot.Season is not null : snapshot.Season is not { } context ||
+                    context.SeasonId != season.SeasonId || context.DifficultyId != season.DifficultyId ||
+                    context.RulesetId != season.RulesetId || context.ConfigVersion != season.ConfigVersion || context.StatsVersion != season.StatsVersion))
+                throw new InvalidOperationException("Prepared snapshot and match contexts differ.");
+            if (season is not null && (snapshot.ActualClassWeaponLevel is not { } actualWeapon ||
+                snapshot.ClassWeaponLevel != season.ProjectPermanentLevel(actualWeapon) ||
+                snapshot.ActualCardLevels is not { } actualCards || snapshot.CardLevels is not { } projectedCards ||
+                actualCards.Count != snapshot.CardIds.Count || projectedCards.Count != actualCards.Count ||
+                !actualCards.Select(season.ProjectPermanentLevel).SequenceEqual(projectedCards)))
+                throw new InvalidOperationException("Prepared permanent level projection is invalid.");
+            var equipmentIds = snapshot.EquipmentIds.Where(id => id.HasValue).Select(id => id!.Value).ToArray();
+            var equipmentSnapshots = snapshot.EquipmentSnapshots ?? [];
             var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait)).ToArray();
-            var cardLevels = reader.IsDBNull(9) ? null : JsonSerializer.Deserialize<int[]>(reader.GetString(9));
-            var safeSlotIndexes = JsonSerializer.Deserialize<int[]>(reader.GetString(10));
-            result.Add(new(reader.GetGuid(0), false, heroClass, JsonSerializer.Deserialize<string[]>(reader.GetString(2)) ?? [], int.Parse(reader.GetString(3), CultureInfo.InvariantCulture), reader.GetInt32(4), int.Parse(reader.GetString(5), CultureInfo.InvariantCulture), equipmentIds, int.Parse(reader.GetString(7), CultureInfo.InvariantCulture), equipment, cardLevels, safeSlotIndexes, reader.GetString(11)));
+            result.Add(new(reader.GetGuid(0), false, (HeroClass)(int)snapshot.HeroClass, snapshot.CardIds,
+                snapshot.BackpackCapacity, snapshot.SafeSlotIndexes.Count, snapshot.PotionCount, equipmentIds,
+                snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2)));
         }
         return result;
     }
 
-    private static async Task ReserveMatchAssetsAsync(
+    private async Task ReserveMatchAssetsAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid matchId,
@@ -397,6 +534,16 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 throw new InvalidOperationException("The matched player is missing.");
         }
 
+        // Recheck after potentially waiting for player locks. A boundary-crossing attempt rolls back to Starting;
+        // the next claim follows the normal abort/release path rather than consuming any asset.
+        await using (var gate = new NpgsqlCommand($"SELECT ({MatchAdmissionSql}) FROM matches m WHERE m.match_id=$3", connection, transaction))
+        {
+            gate.Parameters.AddWithValue(timeProvider.GetUtcNow());
+            gate.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion); gate.Parameters.AddWithValue(matchId);
+            if (await gate.ExecuteScalarAsync(cancellationToken) is not true)
+                throw new MatchReadyException("CONTEXT_UNAVAILABLE", "The match context closed while waiting to reserve prepared assets.");
+        }
+
         foreach (var asset in assets)
         {
             if (asset.Type == "Equipment")
@@ -411,7 +558,11 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 if (await equipment.ExecuteNonQueryAsync(cancellationToken) != 1)
                     throw new InvalidOperationException("Prepared equipment is no longer available for the match.");
                 await using var movement = new NpgsqlCommand(
-                    "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,'PreparationLocked','InMatchEquipped','match.start',$4,CURRENT_TIMESTAMP)",
+                    """
+                    INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id)
+                    SELECT $1,$2,$3,'PreparationLocked','InMatchEquipped','match.start',$4,CURRENT_TIMESTAMP,season_id
+                    FROM equipments WHERE instance_id=$3 AND owner_id=$2
+                    """,
                     connection, transaction);
                 movement.Parameters.AddWithValue(Guid.CreateVersion7());
                 movement.Parameters.AddWithValue(asset.PlayerId);
@@ -456,23 +607,25 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
     {
         var expiring = new List<Guid>();
         await using (var query = new NpgsqlCommand(
-            "SELECT preparation_id FROM preparations WHERE status='Queued' AND expires_at <= $1 FOR UPDATE",
+            $"SELECT p.preparation_id FROM preparations p WHERE p.status='Queued' AND (p.expires_at <= $1 OR NOT ({PreparationAdmissionSql})) ORDER BY p.preparation_id FOR UPDATE SKIP LOCKED",
             connection, transaction))
         {
             query.Parameters.AddWithValue(now);
+            query.Parameters.AddWithValue(BootstrapRepository.CurrentConfigVersion);
             await using var reader = await query.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken)) expiring.Add(reader.GetGuid(0));
         }
+        if (expiring.Count == 0) return;
         foreach (var preparationId in expiring)
             await PreparationRepository.ReleaseEquipmentAsync(
                 connection, transaction, preparationId, null, cancellationToken);
-        await using (var tickets = new NpgsqlCommand("UPDATE match_tickets AS t SET status='Cancelled' FROM preparations AS p WHERE t.preparation_id=p.preparation_id AND t.status='Queued' AND p.status='Queued' AND p.expires_at <= $1", connection, transaction))
+        await using (var tickets = new NpgsqlCommand("UPDATE match_tickets SET status='Cancelled' WHERE preparation_id=ANY($1) AND status='Queued'", connection, transaction))
         {
-            tickets.Parameters.AddWithValue(now);
+            tickets.Parameters.AddWithValue(expiring.ToArray());
             await tickets.ExecuteNonQueryAsync(cancellationToken);
         }
-        await using var preparations = new NpgsqlCommand("UPDATE preparations SET status='Expired' WHERE status='Queued' AND expires_at <= $1", connection, transaction);
-        preparations.Parameters.AddWithValue(now);
+        await using var preparations = new NpgsqlCommand("UPDATE preparations SET status='Expired' WHERE status='Queued' AND preparation_id=ANY($1)", connection, transaction);
+        preparations.Parameters.AddWithValue(expiring.ToArray());
         await preparations.ExecuteNonQueryAsync(cancellationToken);
     }
     private static async Task LockPlayerAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid id, CancellationToken ct) { await using var cmd = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", c, t); cmd.Parameters.AddWithValue(id); if (await cmd.ExecuteScalarAsync(ct) is null) throw new InvalidOperationException("Player was not found."); }

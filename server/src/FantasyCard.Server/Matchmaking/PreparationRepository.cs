@@ -407,7 +407,11 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         foreach (var item in released)
         {
             await using var movement = new NpgsqlCommand(
-                "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,'PreparationLocked','Equipped','preparation.release',$4,CURRENT_TIMESTAMP)",
+                """
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id)
+                SELECT $1,$2,$3,'PreparationLocked','Equipped','preparation.release',$4,CURRENT_TIMESTAMP,season_id
+                FROM equipments WHERE instance_id=$3 AND owner_id=$2
+                """,
                 connection, transaction);
             movement.Parameters.AddWithValue(Guid.CreateVersion7());
             movement.Parameters.AddWithValue(item.PlayerId);
@@ -736,7 +740,11 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             if (await equipment.ExecuteNonQueryAsync(cancellationToken) != 1)
                 throw new InvalidOperationException($"Preparation '{preparationId}' could not lock its equipment.");
             await using var movement = new NpgsqlCommand(
-                "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,'Equipped','PreparationLocked','preparation.lock',$4,CURRENT_TIMESTAMP)",
+                """
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id)
+                SELECT $1,$2,$3,'Equipped','PreparationLocked','preparation.lock',$4,CURRENT_TIMESTAMP,season_id
+                FROM equipments WHERE instance_id=$3 AND owner_id=$2
+                """,
                 connection, transaction);
             movement.Parameters.AddWithValue(Guid.CreateVersion7());
             movement.Parameters.AddWithValue(playerId);

@@ -30,14 +30,15 @@
       "id": "A03",
       "status": "in_progress",
       "requirement": "永久资产、赛季资产、来源季、归档域、专武钱包及历史物品分离",
-      "note": "准备阶段新增赛季/难度/规则/配置/属性版本和等级投影；42项服务端及14项Godot编码检查通过，复用未变领域49项证据。匹配/房间/战斗/结算、经济及归档未完成，本项保持进行中。",
+      "note": "准备及匹配按五维上下文隔离，等级投影、跨季排队/等待取消、锁后准入和启动重试已验证；63项服务端检查通过，原编译与SQL失败完整保留。房间/快照/战斗/结算、经济和归档未完成，本项保持进行中。",
       "evidence": [
         "evidence/A03/result.json",
         "evidence/A03/a03-r2.trx",
         "evidence/A03-storage/result.json",
         "evidence/A03-api-readmodels/result.json",
         "evidence/A03-loadouts/result.json",
-        "evidence/A04-preparation/result.json"
+        "evidence/A04-preparation/result.json",
+        "evidence/A04-matchmaking/result.json"
       ]
     },
     {
@@ -46,14 +47,19 @@
       "requirement": "准备、匹配、房间、快照、掉落、结算、市场与流水锁定赛季/难度/规则/配置版本",
       "evidence": [
         "evidence/A03-api-readmodels/result.json",
-        "evidence/A04-preparation/result.json"
+        "evidence/A04-preparation/result.json",
+        "evidence/A04-matchmaking/result.json"
       ],
-      "note": "准备阶段新增赛季/难度/规则/配置/属性版本和等级投影；42项服务端及14项Godot编码检查通过，复用未变领域49项证据。匹配/房间/战斗/结算、经济及归档未完成，本项保持进行中。"
+      "note": "准备及匹配按五维上下文隔离，等级投影、跨季排队/等待取消、锁后准入和启动重试已验证；63项服务端检查通过，原编译与SQL失败完整保留。房间/快照/战斗/结算、经济和归档未完成，本项保持进行中。"
     },
     {
       "id": "A05",
-      "status": "pending",
-      "requirement": "跨季停止旧准备、市场退回、旧房收尾、分页归档任务、满仓托管与失败恢复"
+      "status": "in_progress",
+      "requirement": "跨季停止旧准备、市场退回、旧房收尾、分页归档任务、满仓托管与失败恢复",
+      "evidence": [
+        "evidence/A04-matchmaking/result.json"
+      ],
+      "note": "已处理跨季排队和未启动等待房间的装备释放，以及已准入Launching继续原版本恢复；尚无季末市场退回、分页归档、托管和完整旧房收尾。"
     },
     {
       "id": "B01",
