@@ -165,7 +165,8 @@ public sealed record RoomPlayerSnapshot(
     IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null,
     long LastCombatActionSequence = 0,
     TimeSpan? LastSuccessfulCombatAt = null,
-    IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null);
+    IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null,
+    string? BorrowedTemplateId = null);
 
 public enum DuelEndReason : short
 {

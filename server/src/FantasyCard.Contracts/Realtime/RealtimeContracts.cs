@@ -102,7 +102,8 @@ public sealed record RoomPlayerPayload(
     string? BaseDrawIntervalSeconds = null,
     RoomMonsterPoolPayload? MonsterPool = null,
     RoomNumericalStatePayload? NumericalState = null,
-    RoomCombatActionStatePayload? CombatAction = null);
+    RoomCombatActionStatePayload? CombatAction = null,
+    string? BorrowedTemplateId = null);
 public sealed record RoomCombatActionStatePayload(long NextSequence, long RemainingMs);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,

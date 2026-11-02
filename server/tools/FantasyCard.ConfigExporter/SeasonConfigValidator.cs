@@ -26,7 +26,12 @@ public static class SeasonConfigValidator
     public static void Validate(IReadOnlyList<ConfigTable> tables)
     {
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
-        if (present.Count == 0) return; // Archived pre-season workbooks remain valid.
+        if (present.Count == 0)
+        {
+            if (tables.Any(table => table.Name == "SeasonBorrowedDecks"))
+                throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
+            return; // Archived pre-season workbooks remain valid.
+        }
         foreach (var (name, schema) in Schemas)
         {
             if (!present.TryGetValue(name, out var table)) throw new InvalidDataException($"Season configuration is missing table '{name}'.");
@@ -46,12 +51,45 @@ public static class SeasonConfigValidator
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
+        ValidateBorrowedDecks(tables);
         foreach (var row in present["SeasonActivityExchange"].Rows)
         {
             var table = present["SeasonActivityExchange"];
             Check(N(table,row,"cost_tokens") > 0 && N(table,row,"reward_count") > 0 && N(table,row,"per_event_limit") > 0, table, "exchange cost, quantity and limit must be positive");
             Check(S(table,row,"reward_kind") is "bound_fragments" or "bound_warrior_soul" or "bound_class_soul" or "potion", table, "unsupported activity reward kind");
         }
+    }
+
+    private static void ValidateBorrowedDecks(IReadOnlyList<ConfigTable> tables)
+    {
+        var table = tables.SingleOrDefault(value => value.Name == "SeasonBorrowedDecks");
+        if (table is null) return;
+        foreach (var field in new[] {"id","template_id","hero_class","slot_index","card_id"})
+        {
+            var column = table.Columns.SingleOrDefault(value => value.Name == field);
+            Check(column is not null && column.Required && column.Scope == PublishScope.Both &&
+                column.Type == (field == "slot_index" ? ConfigValueType.WholeNumber : ConfigValueType.Text),table,"invalid borrowed-template metadata");
+        }
+        var cards = tables.Single(value => value.Name == "Cards");
+        var cardIds = cards.Rows.Where(row => B(cards,row,"enabled") && B(cards,row,"is_codex"))
+            .ToDictionary(row => S(cards,row,"id"),StringComparer.Ordinal);
+        var classes = new HashSet<string>(StringComparer.Ordinal);
+        Check(table.Rows.Count == 60,table,"borrowed templates require sixty card rows");
+        foreach (var group in table.Rows.GroupBy(row => S(table,row,"template_id"),StringComparer.Ordinal))
+        {
+            var rows = group.OrderBy(row => N(table,row,"slot_index")).ToArray();
+            Check(rows.Length == 20 && rows.Select(row => N(table,row,"slot_index")).SequenceEqual(Enumerable.Range(0,20).Select(value => (double)value)),table,"borrowed slots must be zero through nineteen");
+            var hero = S(table,rows[0],"hero_class");
+            Check(hero is "Mage" or "Priest" or "Guardian" && classes.Add(hero) && rows.All(row => S(table,row,"hero_class") == hero),table,"requires one template per class");
+            Check(rows.Select(row => S(table,row,"card_id")).Distinct(StringComparer.Ordinal).Count()==20,table,"borrowed cards must use unique legal slots");
+            foreach (var row in rows)
+            {
+                Check(cardIds.TryGetValue(S(table,row,"card_id"),out var card),table,"borrowed card is not a published collectible");
+                var ownerIndex = cards.Columns.Select((column,index) => (column,index)).Single(value => value.column.Name == "hero_class").index;
+                Check(card![ownerIndex].Value is null || (string)card[ownerIndex].Value! == hero,table,"borrowed card belongs to another class");
+            }
+        }
+        Check(classes.Count == 3,table,"requires all three class templates");
     }
 
     private static void ValidateDifficulties(ConfigTable table)

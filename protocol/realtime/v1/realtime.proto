@@ -122,6 +122,7 @@ message RoomPlayer {
   RoomMonsterPool monster_pool = 20;
   RoomNumericalState numerical_state = 21;
   RoomCombatActionState combat_action = 22;
+  optional string borrowed_template_id = 23;
 }
 message RoomCombatActionState { int64 next_sequence = 1; int64 remaining_ms = 2; }
 message RoomSnapshotEvent {

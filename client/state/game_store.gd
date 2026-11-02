@@ -45,6 +45,8 @@ var _shop_rotation_check_at := 0
 var room: Dictionary = {}
 var _combat_ready_at := 0
 var preparation: Dictionary = {}
+var preparation_difficulty := 0
+var use_borrowed_deck := false
 var ticket: Dictionary = {}
 var ready_prompt: Dictionary = {}
 var mail: Dictionary = {"items": [], "unreadCount": 0}
@@ -260,6 +262,8 @@ func _clear_authenticated_state() -> void:
 	_shop_rotation_check_at = 0
 	room = {}
 	preparation = {}
+	preparation_difficulty = 0
+	use_borrowed_deck = false
 	ticket = {}
 	ready_prompt = {}
 	mail = {"items": [], "unreadCount": 0}
@@ -766,8 +770,16 @@ func loadout() -> Dictionary:
 		if value.heroClass == hero_class: return value
 	return {}
 
+func season_preparation_active() -> bool:
+	return lobby.get("season") is Dictionary and str(lobby.season.get("state", "")) == "Active"
+
+func season_preparation_cap() -> int:
+	if not season_preparation_active(): return 0
+	return clampi(mini(int(lobby.season.get("highestOpenDifficulty", 0)), int(lobby.season.get("highestUnlockedDifficulty", 0))), 0, 5)
+
 func prepare(tier: String, potion_count: int) -> void:
-	if busy or deck().is_empty() or not configuration_error.is_empty(): return
+	var borrowed: bool = season_preparation_active() and use_borrowed_deck
+	if busy or (deck().is_empty() and not borrowed) or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
@@ -779,9 +791,15 @@ func prepare(tier: String, potion_count: int) -> void:
 	var safe: Array = []
 	if tier == "Advanced": safe = [27]
 	if tier == "Top": safe = [33, 34, 35]
-	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, {
-		"heroClass": hero_class, "deckVersion": deck().version, "equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
-		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"})
+	var payload := {"heroClass": hero_class, "deckVersion": 0 if borrowed else deck().version,
+		"equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
+		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"}
+	if season_preparation_active():
+		preparation_difficulty = clampi(preparation_difficulty, 0, season_preparation_cap())
+		payload["difficulty"] = "D%d" % preparation_difficulty
+		payload["seasonId"] = str(lobby.season.seasonId)
+		if borrowed: payload["useBorrowedDeck"] = true
+	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, payload)
 	if generation != gateway.session_generation: return
 	if result.ok and _preparation_config_valid(result.data):
 		preparation = result.data

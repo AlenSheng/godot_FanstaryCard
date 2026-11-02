@@ -3,6 +3,7 @@ extends "res://tests/gameplay_ui_preview.gd"
 const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
+const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -70,7 +71,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -116,6 +117,28 @@ func _check_login_language(frame_name: String, on_login: bool) -> void:
 			review_checks[frame_name + ": all registered language choices"] = scroll.get_node("LoginLanguageChoices").get_child_count() == Palette.languages().size()
 			for choice in scroll.get_node("LoginLanguageChoices").get_children():
 				review_checks[frame_name + ": readable language choice " + str(choice.name)] = choice.get_theme_font_size("font_size") >= 24
+
+func _check_season_preparation(frame_name: String) -> void:
+	var view: Control = $UI._reference
+	var difficulty: OptionButton = view.get_node_or_null("SeasonDifficultySelector")
+	var borrowed: CheckButton = view.get_node_or_null("SeasonBorrowedDeckToggle")
+	if frame_name.ends_with("_locked"):
+		review_checks[frame_name+": immutable selectors hidden"] = difficulty == null and borrowed == null
+		var summary: Label = view.get_node("PreparationDeckSummary")
+		review_checks[frame_name+": locked borrowed source visible"] = summary.text.contains(Palette.localized("season_borrowed_deck"))
+		return
+	review_checks[frame_name+": both selectors visible"] = difficulty != null and borrowed != null
+	if difficulty == null or borrowed == null: return
+	review_checks[frame_name+": six difficulties and selected cap"] = difficulty.item_count == 6 and difficulty.selected == 5
+	review_checks[frame_name+": correct borrowed state"] = borrowed.button_pressed == frame_name.ends_with("_borrowed")
+	for control in [difficulty,borrowed]:
+		review_checks[frame_name+": inside canvas "+str(control.name)] = Rect2(0,0,1920,1080).encloses(control.get_rect())
+		review_checks[frame_name+": clear of stock "+str(control.name)] = not control.get_rect().intersects(view.get_node("PreparationBagStockSummary").get_rect())
+		review_checks[frame_name+": readable control "+str(control.name)] = control.get_theme_font_size("font_size") >= 24
+	review_checks[frame_name+": selectors do not overlap"] = not difficulty.get_rect().intersects(borrowed.get_rect())
+	var font: Font = borrowed.get_theme_font("font")
+	var width := font.get_string_size(borrowed.text,HORIZONTAL_ALIGNMENT_LEFT,-1,borrowed.get_theme_font_size("font_size")).x
+	review_checks[frame_name+": full localized toggle text"] = width + 64 <= borrowed.size.x
 
 func _frame_checks(frame_name: String) -> Dictionary:
 	var result: Dictionary = {}
@@ -186,6 +209,14 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 			scroll.set_deferred("scroll_vertical", 100000)
 		return false
 	match scenario:
+		"prep_season", "prep_season_borrowed", "prep_season_locked":
+			$UI.screen = "prep"
+			Game.lobby["season"] = {"state":"Active","seasonId":"review-season","highestOpenDifficulty":5,"highestUnlockedDifficulty":5}
+			Game.preparation_difficulty = 5
+			Game.use_borrowed_deck = scenario != "prep_season"
+			if scenario == "prep_season_locked":
+				var borrowed_rows: Array = Game.CATALOG.data.tables.SeasonBorrowedDecks.filter(func(row): return str(row.hero_class) == "Mage")
+				Game.preparation = {"snapshot":{"heroClass":"Mage","maximumHp":70,"cardIds":borrowed_rows.map(func(row): return str(row.card_id)),"equipmentIds":[],"equipmentSnapshots":[],"classWeaponLevel":5,"backpackTier":"Free","backpackCapacity":20,"safeSlotIndexes":[],"potionCount":0,"borrowedTemplateId":"loan-mage"}}
 		"login": Game.lobby = {}
 		"login_language":
 			Game.lobby = {}
@@ -357,6 +388,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	else:
 		await _capture(frame_name, rebuild)
 	_check_login_language(frame_name, on_login)
+	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)
 	for entry in texts:

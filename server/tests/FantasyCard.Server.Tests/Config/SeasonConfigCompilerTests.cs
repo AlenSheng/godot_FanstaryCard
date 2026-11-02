@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(20, tables.Count); // Fourteen original sheets include the non-published _README.
+        Assert.Equal(21, tables.Count); // The original _README remains non-published; the loan sheet adds sixty slots.
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
         Assert.Equal(24, tables.Single(t => t.Name == "SeasonLoot").Rows.Count);
         var first = ConfigCompiler.Compile("season-config-stage-1", tables, out var hash);
@@ -71,6 +71,20 @@ public sealed class SeasonConfigCompilerTests
         var tables = Read();
         Assert.Throws<InvalidDataException>(() => ConfigCompiler.Validate(tables.Where(t => t.Name != "SeasonLoot").ToArray()));
         ConfigCompiler.Validate(tables.Where(t => !t.Name.StartsWith("Season",StringComparison.Ordinal)).ToArray());
+        Assert.Throws<InvalidDataException>(() => ConfigCompiler.Validate(tables.Where(t => t.Name == "SeasonBorrowedDecks" || !t.Name.StartsWith("Season",StringComparison.Ordinal)).ToArray()));
+    }
+
+    [Theory]
+    [InlineData("slot_index", -1L)]
+    [InlineData("slot_index", 1L)]
+    [InlineData("hero_class", "Mage")]
+    [InlineData("card_id", "unknown")]
+    [InlineData("card_id", "MAG-01")]
+    [InlineData("card_id", "M-FIREBAT")]
+    [InlineData("template_id", "other")]
+    public void BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(string field, object value)
+    {
+        Assert.Throws<InvalidDataException>(() => ConfigCompiler.Compile("invalid-loan",Change(Read(),"SeasonBorrowedDecks",field,value),out _));
     }
 
     [Fact]

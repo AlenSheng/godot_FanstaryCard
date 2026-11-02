@@ -172,6 +172,7 @@ message CreatePreparationRequest {
   int32 potion_count = 6;
   optional string difficulty = 7;
   optional string season_id = 8;
+  bool use_borrowed_deck = 9;
 }
 
 message PreparationSnapshotResponse {
@@ -191,6 +192,7 @@ message PreparationSnapshotResponse {
   SeasonContextResponse season = 14;
   repeated int32 actual_card_levels = 15;
   optional int32 actual_class_weapon_level = 16;
+  optional string borrowed_template_id = 17;
 }
 
 message PreparationEquipmentSnapshotResponse {

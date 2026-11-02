@@ -19,7 +19,8 @@ public sealed record BattleRoomPlayerSetup(
     CombatEquipmentProfile? Equipment = null,
     IReadOnlyList<int>? SafeSlotIndexes = null,
     string? DisplayName = null,
-    IReadOnlyList<int>? CardLevels = null);
+    IReadOnlyList<int>? CardLevels = null,
+    string? BorrowedTemplateId = null);
 
 public sealed record DuelEscapeRequestResult(Guid DuelId, double Probability, long RoomRevision);
 public sealed record RoomMoveResult(MapPosition Position, DuelStateSnapshot? StartedDuel, long RoomRevision);
@@ -38,7 +39,8 @@ public sealed class RoomPlayerState
         bool isBot,
         IReadOnlyList<int>? safeSlotIndexes,
         string? displayName,
-        GameConfigCatalog configuration)
+        GameConfigCatalog configuration,
+        string? borrowedTemplateId)
     {
         PlayerId = playerId;
         HeroClass = heroClass;
@@ -48,6 +50,7 @@ public sealed class RoomPlayerState
         WornArmor = (wornArmor ?? []).Select(item => item with { SlotIndex = -1, IsSafe = false }).ToArray();
         DisplayName = displayName;
         IsBot = isBot;
+        BorrowedTemplateId = borrowedTemplateId;
         Phase = pve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
     }
 
@@ -66,6 +69,7 @@ public sealed class RoomPlayerState
     internal List<ExplorationItem> RecycledEquipment { get; } = [];
     internal CombatActionLedger CombatActions { get; } = new();
     public bool IsBot { get; }
+    public string? BorrowedTemplateId { get; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
@@ -99,7 +103,7 @@ public sealed class RoomPlayerState
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
-            CombatActions.LastSequence == 0 ? null : CombatActions.Capture());
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId);
 }
 
 public sealed class DuelState
@@ -398,6 +402,15 @@ public sealed partial class BattleRoom
         }
         if (setup.CardLevels is not null && setup.CardLevels.Count != setup.CardIds.Count)
             throw new DomainValidationException("Card levels must match the deck slots.");
+        if (setup.BorrowedTemplateId is { } templateId)
+        {
+            if (Season is null || setup.WeaponLevel != Season.Difficulty || setup.CardLevels is not {Count:20} levels ||
+                levels.Any(level => level != Season.Difficulty))
+                throw new DomainValidationException("Borrowed combat requires the selected seasonal effective level.");
+            var template = _catalog.Configuration.BorrowedDeck(setup.HeroClass);
+            if (template.TemplateId != templateId || !setup.CardIds.SequenceEqual(template.CardIds,StringComparer.Ordinal))
+                throw new DomainValidationException("Borrowed combat deck differs from its published template.");
+        }
         for (var index = 0; index < setup.CardIds.Count; index++)
         {
             _catalog.Get(setup.CardIds[index], setup.CardLevels?[index] ?? 0);
@@ -410,7 +423,7 @@ public sealed partial class BattleRoom
             setup.WeaponLevel,
             setup.Equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
-        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration);
+        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration, setup.BorrowedTemplateId);
         if (Season is not null && setup.Pve is not null)
         {
             var difficulty = _catalog.Configuration.SeasonDifficulty(Season.Difficulty);
@@ -545,12 +558,24 @@ public sealed partial class BattleRoom
                 .Concat(playerSnapshot.Combat.Deck.Library)
                 .Concat(playerSnapshot.Combat.Deck.Discard)
                 .ToArray();
+            foreach (var card in cards) _ = catalog.Get(card.CardId,card.Level,card.ElementOverride);
             var inventory = playerSnapshot.Inventory
                 ?? throw new InvalidOperationException("A room player snapshot is missing inventory state.");
+            var template = playerSnapshot.BorrowedTemplateId is null ? null : catalog.Configuration.BorrowedDeck(playerSnapshot.HeroClass);
+            if (template is not null)
+            {
+                if (snapshot.Season is null || template.TemplateId != playerSnapshot.BorrowedTemplateId ||
+                    playerSnapshot.Combat.WeaponLevel != snapshot.Season.Difficulty ||
+                    cards.Where(card => catalog.Configuration.Cards.Single(c => c.CardId == card.CardId).IsCodex)
+                        .Any(card => card.Level != snapshot.Season.Difficulty) ||
+                    !cards.Where(card => catalog.Configuration.Cards.Single(c => c.CardId == card.CardId).IsCodex).Select(card => card.CardId)
+                        .Order(StringComparer.Ordinal).SequenceEqual(template.CardIds.Order(StringComparer.Ordinal),StringComparer.Ordinal))
+                    throw new DomainValidationException("Saved borrowed cards or levels differ from the original template.");
+            }
             var player = room.AddPlayer(new BattleRoomPlayerSetup(
                 playerSnapshot.PlayerId,
                 playerSnapshot.HeroClass,
-                cards.Select(card => card.CardId).ToArray(),
+                template?.CardIds ?? cards.Select(card => card.CardId).ToArray(),
                 null,
                 playerSnapshot.Combat.WeaponLevel,
                 inventory.Capacity,
@@ -560,7 +585,8 @@ public sealed partial class BattleRoom
                 playerSnapshot.Combat.Equipment,
                 SafeSlotIndexes: inventory.SafeSlotIndexes,
                 DisplayName: playerSnapshot.DisplayName,
-                CardLevels: cards.Select(card => card.Level).ToArray()));
+                CardLevels: template is null ? cards.Select(card => card.Level).ToArray() : Enumerable.Repeat(snapshot.Season!.Difficulty,20).ToArray(),
+                BorrowedTemplateId: playerSnapshot.BorrowedTemplateId));
             if (room.Season is not null && playerSnapshot.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
                 throw new DomainValidationException("The seasonal player snapshot has another Fenxian policy.");
             player.Combat.Restore(playerSnapshot.Combat);

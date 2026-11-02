@@ -19,7 +19,8 @@ public sealed record CreatePreparationRequest(
     IReadOnlyList<int>? SafeSlotIndexes,
     int PotionCount,
     string? Difficulty,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeasonId = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)] bool UseBorrowedDeck = false);
 
 public sealed record PreparationSnapshotResponse(
     HeroClassDto HeroClass,
@@ -37,7 +38,8 @@ public sealed record PreparationSnapshotResponse(
     IReadOnlyList<int>? CardLevels = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SeasonContextResponse? Season = null,
     [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<int>? ActualCardLevels = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? ActualClassWeaponLevel = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] int? ActualClassWeaponLevel = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? BorrowedTemplateId = null);
 
 public sealed record PreparationEquipmentSnapshotResponse(
     Guid InstanceId,

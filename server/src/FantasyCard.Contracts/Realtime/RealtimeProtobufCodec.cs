@@ -524,6 +524,7 @@ public static class RealtimeProtobufCodec
         w.Int64(18, value.DrawBlockSpeedRemainingMs);
         w.String(19, value.BaseDrawIntervalSeconds);
         if (value.CombatAction is { } action) w.Bytes(22, Message(a => { a.Int64(1, action.NextSequence); a.Int64(2, action.RemainingMs); }));
+        w.String(23,value.BorrowedTemplateId);
         if (value.MonsterPool is { } pool) w.Bytes(20, Message(m =>
         {
             m.Int64(1, pool.Capacity);
@@ -712,7 +713,7 @@ public static class RealtimeProtobufCodec
         checked((int)value.Int64(13)),
         value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
         value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)),
-        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)), DecodeCombatAction(value.Bytes(22)));
+        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)), DecodeCombatAction(value.Bytes(22)), NullIfEmpty(value.String(23)));
 
     private static RoomCombatActionStatePayload? DecodeCombatAction(byte[] bytes)
     {

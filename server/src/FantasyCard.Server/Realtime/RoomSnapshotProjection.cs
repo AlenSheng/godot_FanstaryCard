@@ -77,7 +77,8 @@ internal static class RoomSnapshotProjection
                     player.Combat.GuardianShieldRemainderTenths),
                 snapshot.Season is null ? null : new RoomCombatActionStatePayload(
                     player.LastCombatActionSequence == long.MaxValue ? 0 : player.LastCombatActionSequence + 1,
-                    player.LastSuccessfulCombatAt is { } last ? Math.Clamp((long)Math.Ceiling((last + TimeSpan.FromMilliseconds(500) - snapshot.Elapsed).TotalMilliseconds), 0, 500) : 0)),
+                    player.LastSuccessfulCombatAt is { } last ? Math.Clamp((long)Math.Ceiling((last + TimeSpan.FromMilliseconds(500) - snapshot.Elapsed).TotalMilliseconds), 0, 500) : 0),
+                player.BorrowedTemplateId),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,

@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
@@ -111,6 +112,8 @@ public sealed record EconomyConfig(
     int DailyCardSlots,
     int DailyShopRefreshLimit);
 
+public sealed record SeasonBorrowedDeckConfig(string TemplateId, HeroClass HeroClass, IReadOnlyList<string> CardIds);
+
 public sealed class GameConfigCatalog
 {
     private const string ResourceName = "FantasyCard.Config.fantasycard.config.bytes";
@@ -160,6 +163,10 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<ItemConfigDefinition> Items { get; }
     public EconomyConfig Economy { get; }
     public IReadOnlyList<SeasonDifficultyConfig> SeasonDifficulties { get; private init; } = [];
+    public IReadOnlyList<SeasonBorrowedDeckConfig> SeasonBorrowedDecks { get; private init; } = [];
+    public SeasonBorrowedDeckConfig BorrowedDeck(HeroClass heroClass) =>
+        SeasonBorrowedDecks.SingleOrDefault(value => value.HeroClass == heroClass)
+        ?? throw new InvalidDataException("The selected seasonal borrowed deck is not published.");
     public SeasonDifficultyConfig SeasonDifficulty(int difficulty) =>
         SeasonDifficulties.SingleOrDefault(value => value.Id == $"D{difficulty}")
         ?? throw new InvalidDataException($"Season difficulty D{difficulty} is not published in configuration '{Version}'.");
@@ -294,7 +301,30 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards) };
+    }
+
+    private static SeasonBorrowedDeckConfig[] ReadBorrowedDecks(ConfigBundle bundle, CardConfigDefinition[] cards)
+    {
+        var table = bundle.Tables.SingleOrDefault(value => value.Name == "SeasonBorrowedDecks");
+        if (table is null) return [];
+        var available = cards.Where(card => card.IsCodex).ToDictionary(card => card.CardId,
+            card => new OwnedCard(card.CardId,card.HeroClass,(CardRarity)card.Rarity,1,false),StringComparer.Ordinal);
+        var templates = new List<SeasonBorrowedDeckConfig>();
+        foreach (var group in table.Rows.GroupBy(row => table.Text(row,"template_id"),StringComparer.Ordinal))
+        {
+            var ordered = group.OrderBy(row => table.Int(row,"slot_index")).ToArray();
+            if (ordered.Length != 20 || !ordered.Select(row => table.Int(row,"slot_index")).SequenceEqual(Enumerable.Range(0,20)) ||
+                ordered.Select(row => table.Text(row,"hero_class")).Distinct(StringComparer.Ordinal).Count() != 1 ||
+                !Enum.TryParse<HeroClass>(table.Text(ordered[0],"hero_class"),out var hero) || !Enum.IsDefined(hero))
+                throw new InvalidDataException("Borrowed templates require one class and twenty ordered slots.");
+            var ids = ordered.Select(row => table.Text(row,"card_id")).ToArray();
+            DeckRules.Validate(hero,ids,available);
+            templates.Add(new(group.Key,hero,ids));
+        }
+        if (templates.Count != 3 || templates.Select(value => value.HeroClass).Distinct().Count() != 3)
+            throw new InvalidDataException("Borrowed templates require exactly one legal deck per class.");
+        return templates.ToArray();
     }
 
     private static SeasonDifficultyConfig[] ReadSeasonDifficulties(ConfigBundle bundle)

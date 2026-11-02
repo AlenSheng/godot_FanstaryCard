@@ -795,8 +795,33 @@ func _preparation() -> void:
 			if item.get("instanceId", "") in equipped_ids: equipped_items.append(item)
 	_equipment_summary(equipped_items, Rect2(72, 804, 664, 178), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2])))
 	text(P.localized("bag"), Rect2(845, 170, 240, 48), 38, P.GOLD).name = "PreparationBagTitle"
+	if Game.season_preparation_active() and not locked:
+		Game.preparation_difficulty = clampi(Game.preparation_difficulty, 0, Game.season_preparation_cap())
+		var difficulty := OptionButton.new()
+		difficulty.name = "SeasonDifficultySelector"
+		for tier_index in range(Game.season_preparation_cap() + 1): difficulty.add_item("D%d  (+%d)" % [tier_index, tier_index])
+		difficulty.select(Game.preparation_difficulty)
+		difficulty.position = Vector2(1090, 132)
+		difficulty.size = Vector2(250, 42)
+		difficulty.add_theme_font_size_override("font_size", 24)
+		_season_selector_style(difficulty)
+		difficulty.tooltip_text = P.localized("season_level_cap_hint")
+		difficulty.item_selected.connect(func(index): Game.preparation_difficulty = index; host._render())
+		add_child(difficulty)
+		var loan := CheckButton.new()
+		loan.name = "SeasonBorrowedDeckToggle"
+		loan.text = P.localized("season_borrowed_deck")
+		loan.tooltip_text = P.localized("season_borrowed_deck_hint")
+		loan.position = Vector2(1350, 132)
+		loan.size = Vector2(485, 42)
+		loan.add_theme_font_size_override("font_size", 24)
+		_season_selector_style(loan)
+		loan.button_pressed = Game.use_borrowed_deck
+		loan.toggled.connect(func(enabled): Game.use_borrowed_deck = enabled)
+		add_child(loan)
 	if locked:
 		var summary := P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2]))]
+		if not str(snap.get("borrowedTemplateId", "")).is_empty(): summary += "  ·  " + P.localized("season_borrowed_deck")
 		text(summary, Rect2(1090, 145, 740, 34), 23, P.GOLD).name = "PreparationDeckSummary"
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
@@ -871,6 +896,13 @@ func _preparation() -> void:
 		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
 	else:
 		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
+
+func _season_selector_style(control: Button) -> void:
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		var box := Art.style(ORANGE if state == "pressed" else BLUE)
+		box.set_content_margin(SIDE_TOP, 0)
+		box.set_content_margin(SIDE_BOTTOM, 0)
+		control.add_theme_stylebox_override(state, box)
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)

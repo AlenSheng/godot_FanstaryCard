@@ -13,6 +13,7 @@ namespace FantasyCard.Server.Rooms;
 public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics)
 {
     private readonly ConcurrentDictionary<Guid, SavedCheckpoint> _lastSaved = new();
+    private const string BorrowedPolicySql = "COALESCE((SELECT jsonb_object_agg(mp.player_id::text,p.snapshot_json->'borrowedTemplateId') FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id WHERE mp.match_id=m.match_id AND NOT mp.is_bot),'{}'::jsonb)::text";
 
     public async Task SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken = default)
     {
@@ -57,8 +58,8 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
 
     public async Task<BattleRoomSnapshot?> GetAsync(Guid roomId, CancellationToken cancellationToken = default)
     {
-        await using var command = dataSource.CreateCommand("""
-            SELECT s.snapshot_json::text,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version
+        await using var command = dataSource.CreateCommand($"""
+            SELECT s.snapshot_json::text,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version,{BorrowedPolicySql}
             FROM room_snapshots s LEFT JOIN matches m ON m.room_id=s.room_id WHERE s.room_id=$1
             """);
         command.Parameters.AddWithValue(roomId);
@@ -68,6 +69,7 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
         if (!reader.IsDBNull(1)) RequireMatchContext(snapshot, roomId, reader.GetString(1), ReadMatchSeason(reader, 1));
         else throw new InvalidOperationException("A room checkpoint requires an owning match.");
         if (snapshot.RoomId != roomId) throw new InvalidOperationException("The checkpoint has another room ID.");
+        RequireBorrowedSources(snapshot,reader.GetString(6));
         return snapshot;
     }
 
@@ -77,8 +79,8 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
         // A caller-supplied room ID is never sufficient authority. Match membership
         // and committed terminal state must be established in the same query.
         await using var command = dataSource.CreateCommand(
-            """
-            SELECT m.seed,s.snapshot_json::text,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version
+            $"""
+            SELECT m.seed,s.snapshot_json::text,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version,{BorrowedPolicySql}
             FROM matches m
             JOIN match_players p ON p.match_id=m.match_id AND p.player_id=$1 AND NOT p.is_bot
             JOIN room_snapshots s ON s.room_id=m.room_id
@@ -91,6 +93,7 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
         if (!await reader.ReadAsync(cancellationToken)) return null;
         var snapshot = Deserialize(reader.GetString(1));
         RequireMatchContext(snapshot, roomId, reader.GetString(2), ReadMatchSeason(reader, 2));
+        RequireBorrowedSources(snapshot,reader.GetString(7));
         var player = snapshot.Players.SingleOrDefault(value => value.PlayerId == playerId);
         if (snapshot.RoomId != roomId || player is null || player.IsBot ||
             player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted))
@@ -101,14 +104,14 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
     public async Task<IReadOnlyList<PersistedRoomSnapshot>> GetRunningAsync(CancellationToken cancellationToken = default)
     {
         await using var command = dataSource.CreateCommand(
-            """
+            $"""
             SELECT m.match_id,m.seed,s.snapshot_json::text,s.updated_at,
                 COALESCE((
                     SELECT jsonb_object_agg(p.player_id::text,COALESCE(settlement.result,'Settled'))
                     FROM match_players p
                     LEFT JOIN match_settlements settlement ON settlement.match_id=p.match_id AND settlement.player_id=p.player_id
                     WHERE p.match_id=m.match_id AND (p.state='Settled' OR settlement.settlement_id IS NOT NULL)
-                ),'{}'::jsonb)::text,m.room_id,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version
+                ),jsonb_build_object())::text,m.room_id,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version,{BorrowedPolicySql}
             FROM matches m JOIN room_snapshots s ON s.room_id=m.room_id
             WHERE m.status='Running' ORDER BY s.updated_at,m.match_id
             """);
@@ -118,9 +121,14 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
         {
             BattleRoomSnapshot? snapshot = null;
             string? readError = null;
-            try { snapshot = Deserialize(reader.GetString(2)); }
+            try
+            {
+                snapshot = Deserialize(reader.GetString(2));
+                RequireBorrowedSources(snapshot,reader.GetString(11));
+            }
             catch (Exception exception) when (exception is JsonException or DomainValidationException or ArgumentException or InvalidOperationException)
             {
+                snapshot = null;
                 readError = "The persisted room checkpoint could not be read: " + exception.Message;
             }
             var settledPlayers = JsonSerializer.Deserialize<Dictionary<Guid, string>>(reader.GetString(4))
@@ -140,12 +148,28 @@ public sealed class RoomSnapshotRepository(NpgsqlDataSource dataSource, TimeProv
 
     private async Task ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
     {
-        await using var command = dataSource.CreateCommand("SELECT config_version,season_id,difficulty,ruleset_id,stats_version FROM matches WHERE room_id=$1");
+        await using var command = dataSource.CreateCommand($"SELECT config_version,season_id,difficulty,ruleset_id,stats_version,{BorrowedPolicySql} FROM matches m WHERE room_id=$1");
         command.Parameters.AddWithValue(snapshot.RoomId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         if (await reader.ReadAsync(cancellationToken))
+        {
             RequireMatchContext(snapshot, snapshot.RoomId, reader.GetString(0), ReadMatchSeason(reader, 0));
+            RequireBorrowedSources(snapshot,reader.GetString(5));
+        }
         else throw new InvalidOperationException("A room checkpoint requires an owning match.");
+    }
+
+    private static void RequireBorrowedSources(BattleRoomSnapshot snapshot,string json)
+    {
+        var expected = JsonSerializer.Deserialize<Dictionary<Guid,string?>>(json)
+            ?? throw new InvalidOperationException("The durable borrowed policy is invalid.");
+        foreach (var player in snapshot.Players.Where(player=>!player.IsBot))
+        {
+            if (expected.GetValueOrDefault(player.PlayerId) != player.BorrowedTemplateId)
+                throw new InvalidOperationException("Saved borrowed source differs from the original preparation.");
+        }
+        if (expected.Any(entry=>entry.Value is not null && !snapshot.Players.Any(player=>player.PlayerId==entry.Key && !player.IsBot)))
+            throw new InvalidOperationException("The borrowed participant is missing from its checkpoint.");
     }
 
     // Columns are config_version,season_id,difficulty,ruleset_id,stats_version in every owning-match query.
@@ -203,6 +227,7 @@ public static class RoomCheckpointPolicy
         players = snapshot.Players.OrderBy(player => player.PlayerId).Select(player => new
         {
             player.PlayerId,
+            player.BorrowedTemplateId,
             player.Phase,
             player.LastCombatActionSequence,
             player.CurrentDuelId,

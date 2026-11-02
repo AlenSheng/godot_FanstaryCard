@@ -143,8 +143,11 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         }
 
         var heroClass = (HeroClass)(int)request.HeroClass;
-        var deck = await LoadDeckAsync(connection, transaction, playerId, heroClass, cancellationToken);
-        if (deck is null || deck.Value.Version != request.DeckVersion)
+        if (request.UseBorrowedDeck && season is null)
+            throw new DomainValidationException("Borrowed templates are available only in an active season.");
+        var borrowed = request.UseBorrowedDeck ? GameConfigCatalog.Current.BorrowedDeck(heroClass) : null;
+        var deck = borrowed is null ? await LoadDeckAsync(connection, transaction, playerId, heroClass, cancellationToken) : null;
+        if (borrowed is null && (deck is null || deck.Value.Version != request.DeckVersion))
         {
             await transaction.CommitAsync(cancellationToken);
             return new CreatePreparationResult(
@@ -182,7 +185,10 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             playerId,
             heroClass,
             cancellationToken);
-        var actualCardLevels = await LoadCardLevelsAsync(connection, transaction, playerId, deck.Value.CardIds, cancellationToken);
+        var cardIds = borrowed?.CardIds ?? deck!.Value.CardIds;
+        var actualCardLevels = borrowed is null
+            ? await LoadCardLevelsAsync(connection, transaction, playerId, cardIds, cancellationToken)
+            : await LoadBorrowedActualLevelsAsync(connection,transaction,playerId,cardIds,cancellationToken);
         if (schedule.Current is { } currentSeason && !currentSeason.Contains(timeProvider.GetUtcNow()) ||
             schedule.Current is null && schedule.Next is { } nextSeason && timeProvider.GetUtcNow() >= nextSeason.StartsAtUtc)
             throw new DomainValidationException("The season changed while creating the preparation. Reload and retry.");
@@ -192,9 +198,9 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         var snapshot = new PreparationSnapshotResponse(
             request.HeroClass,
             MaximumHp(heroClass),
-            deck.Value.CardIds,
+            cardIds,
             equipmentIds,
-            season?.ProjectPermanentLevel(weaponLevel) ?? weaponLevel,
+            borrowed is null ? season?.ProjectPermanentLevel(weaponLevel) ?? weaponLevel : season!.Difficulty,
             request.BackpackTier,
             GameConfigCatalog.Current.Backpack(backpackTier.ToString()).Capacity,
             safeSlotIndexes,
@@ -202,10 +208,12 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             season?.DifficultyId ?? "Standard",
             season?.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion,
             equipmentValidation.Items,
-            actualCardLevels.Select(level => season?.ProjectPermanentLevel(level) ?? level).ToArray(),
+            borrowed is null ? actualCardLevels.Select(level => season?.ProjectPermanentLevel(level) ?? level).ToArray()
+                : Enumerable.Repeat(season!.Difficulty,cardIds.Count).ToArray(),
             season is null ? null : new SeasonContextResponse(season.SeasonId, season.DifficultyId, season.RulesetId, season.ConfigVersion, season.StatsVersion),
             season is null ? null : actualCardLevels,
-            season is null ? null : weaponLevel);
+            season is null ? null : weaponLevel,
+            borrowed?.TemplateId);
         var preparation = new PreparationResponse(
             Guid.CreateVersion7(),
             "Active",
@@ -531,6 +539,17 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         if (cardIds.GroupBy(id => id).Any(group => counts.GetValueOrDefault(group.Key) < group.Count()))
             throw new DomainValidationException("A prepared deck requires owned copies for every slot.");
         return CardEconomyRules.DeckLevels(cardIds, levels);
+    }
+
+    private static async Task<int[]> LoadBorrowedActualLevelsAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
+        Guid playerId,IReadOnlyList<string> cards,CancellationToken ct)
+    {
+        await using var command = new NpgsqlCommand("SELECT card_id,level FROM player_cards WHERE player_id=$1 AND card_id=ANY($2) FOR SHARE",connection,transaction);
+        command.Parameters.AddWithValue(playerId);command.Parameters.AddWithValue(cards.ToArray());
+        var levels = new Dictionary<string,int>(StringComparer.Ordinal);
+        await using var reader = await command.ExecuteReaderAsync(ct);
+        while (await reader.ReadAsync(ct)) levels[reader.GetString(0)] = reader.GetInt32(1);
+        return cards.Select(id => levels.GetValueOrDefault(id)).ToArray();
     }
 
     private static async Task<(string? Error, IReadOnlyList<PreparationEquipmentSnapshotResponse> Items)> ValidateEquipmentAsync(

@@ -3,11 +3,13 @@ using System.Text.Json.Serialization;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Domain.Bots;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Persistence;
+using FantasyCard.Server.Rooms;
 using Npgsql;
 
 namespace FantasyCard.Server.Matchmaking;
@@ -36,10 +38,13 @@ public sealed record MatchPlayerAssignment(
     IReadOnlyList<CombatEquipmentItem>? Equipment = null,
     IReadOnlyList<int>? CardLevels = null,
     IReadOnlyList<int>? SafeSlotIndexes = null,
-    string? DisplayName = null);
+    string? DisplayName = null,
+    string? BorrowedTemplateId = null);
 
-public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics, IConfiguration? configuration = null)
+public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics, IConfiguration? configuration = null,
+    PublishedConfigCatalogs? configurations = null)
 {
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
     private readonly TimeSpan botFillDelay = TimeSpan.FromSeconds(Math.Max(0,
         configuration?.GetValue<int?>("Matchmaking:BotFillDelaySeconds") ?? 30));
     private static readonly JsonSerializerOptions SnapshotSerializerOptions = new()
@@ -471,7 +476,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             throw new InvalidOperationException("The launching match could not transition to Running.");
     }
 
-    private static async Task<List<MatchPlayerAssignment>> ReadActiveHumansAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId,
+    private async Task<List<MatchPlayerAssignment>> ReadActiveHumansAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid matchId,
         SeasonContext? season, string configVersion, CancellationToken cancellationToken)
     {
         var result = new List<MatchPlayerAssignment>();
@@ -487,7 +492,18 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                     context.SeasonId != season.SeasonId || context.DifficultyId != season.DifficultyId ||
                     context.RulesetId != season.RulesetId || context.ConfigVersion != season.ConfigVersion || context.StatsVersion != season.StatsVersion))
                 throw new InvalidOperationException("Prepared snapshot and match contexts differ.");
-            if (season is not null && (snapshot.ActualClassWeaponLevel is not { } actualWeapon ||
+            if (snapshot.BorrowedTemplateId is { } templateId)
+            {
+                if (season is null || snapshot.ActualClassWeaponLevel is not (>=0 and <=5) ||
+                    snapshot.ActualCardLevels is not {Count:20} actualLevels || actualLevels.Any(level => level is <0 or >5) ||
+                    snapshot.CardLevels is not {Count:20} borrowedLevels || borrowedLevels.Any(level => level != season.Difficulty) ||
+                    snapshot.ClassWeaponLevel != season.Difficulty)
+                    throw new InvalidOperationException("Prepared borrowed level projection is invalid.");
+                var template = _configurations.Resolve(configVersion).BorrowedDeck((HeroClass)(int)snapshot.HeroClass);
+                if (template.TemplateId != templateId || !snapshot.CardIds.SequenceEqual(template.CardIds,StringComparer.Ordinal))
+                    throw new InvalidOperationException("Prepared borrowed template differs from its published configuration.");
+            }
+            else if (season is not null && (snapshot.ActualClassWeaponLevel is not { } actualWeapon ||
                 snapshot.ClassWeaponLevel != season.ProjectPermanentLevel(actualWeapon) ||
                 snapshot.ActualCardLevels is not { } actualCards || snapshot.CardLevels is not { } projectedCards ||
                 actualCards.Count != snapshot.CardIds.Count || projectedCards.Count != actualCards.Count ||
@@ -498,7 +514,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait)).ToArray();
             result.Add(new(reader.GetGuid(0), false, (HeroClass)(int)snapshot.HeroClass, snapshot.CardIds,
                 snapshot.BackpackCapacity, snapshot.SafeSlotIndexes.Count, snapshot.PotionCount, equipmentIds,
-                snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2)));
+                snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2), snapshot.BorrowedTemplateId));
         }
         return result;
     }

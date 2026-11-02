@@ -1,0 +1,86 @@
+{
+  "status": "complete_for_C03_scope_whole_package_and_E02_pending",
+  "domain_tests_passed": 505,
+  "server_tests_passed": 170,
+  "additional_targeted_rejection_tests_passed": 7,
+  "targeted_case_replaced": "unknown MC-FIREBAT changed to real noncollectible M-FIREBAT; old result retained",
+  "native_client_checks_passed": 250,
+  "tests_skipped": 0,
+  "configuration_version": "season-v1-config-2",
+  "content_hash": "5369c210b04548c33f4a98cfd32cb2f212a70894c7839b5dd70312271c722e33",
+  "old_twenty_table_bodies_byte_identical": true,
+  "public_archive_sha256": {
+    "r38": "e4bd0b46bf68cd3d92db7af47e92fab5c32f913f31c49d4e118acc2e31a4a612",
+    "r39": "791f01ba6b53cc05e301ecd3a7945d253693003988ffb68651693cefdfe0156d",
+    "r40": "f466b4630648ecf33e61cf398327fa057552bb068c25dd3cde6aeead119b2e3a",
+    "r41": "aec5403761e1e01d4dd197c0c8be211ac41a13e0514053597f9474ffdea0b6a4",
+    "r42": "e58f6f1d1675583da0be54a0f32c84f57fe9367ffc76652610a18138c0bf66d8"
+  },
+  "ui": {
+    "frames": 99,
+    "checks_passed": 14502,
+    "languages": [
+      "zh-CN",
+      "en",
+      "es",
+      "fr",
+      "pt",
+      "id",
+      "hi",
+      "ar",
+      "ru",
+      "ja",
+      "ko"
+    ],
+    "widths": [
+      960,
+      1280,
+      1920
+    ],
+    "states": [
+      "owned",
+      "borrowed",
+      "locked borrowed"
+    ],
+    "actual_render": true,
+    "private_desktop_only": true,
+    "whole_visual_acceptance": false,
+    "contact_sheets_and_arabic_russian_full_frames_reviewed": true
+  },
+  "failures_retained": [
+    {
+      "run": "r39",
+      "domain_passed": 505,
+      "server_executed": 0,
+      "reason": "CA1869 and xUnit2031 test analyzer build failures"
+    },
+    {
+      "run": "loan-ui-r1",
+      "frames": 0,
+      "reason": "Missing local Arabic/Devanagari imported font cache"
+    },
+    {
+      "run": "loan-ui-r2",
+      "frames": 99,
+      "failed_checks": 132,
+      "reason": "Selectors overlap stock row"
+    },
+    {
+      "run": "r41 first admission",
+      "native_started": false,
+      "reason": "Fixed SDK free-disk guard stopped before extraction/start; original ended build archive offloaded after SHA verification"
+    }
+  ],
+  "scope_limits": [
+    "No complete-route balance or human experience acceptance",
+    "No capacity or 100-player retest",
+    "Production season inactive; no production database or service changed",
+    "B05 remains 291 of 300 routes and nine remaining",
+    "C01/C04-C16/D/E/F still require their own gates"
+  ],
+  "production_deployed": false,
+  "final_recovery_guard_test_stage": "r42",
+  "final_recovery_guard_tests_passed": 27,
+  "final_runtime_stage": "r42",
+  "runtime_files_verified_against_r42": 189
+}

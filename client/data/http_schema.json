@@ -1,5 +1,5 @@
 {
-  "sha256": "c4514ada37ff155f79c8d1de8eacc5fd5b679ba6163c2e22667c1aa1012357e8",
+  "sha256": "49b6946d7141ac4f6a3978c7759780ca3ff96909c7e55e39a9991d349b546d87",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -680,6 +680,12 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      },
+      "9": {
+        "name": "use_borrowed_deck",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "PreparationSnapshotResponse": {
@@ -776,6 +782,12 @@
       "16": {
         "name": "actual_class_weapon_level",
         "type": "int32",
+        "repeated": false,
+        "optional": true
+      },
+      "17": {
+        "name": "borrowed_template_id",
+        "type": "string",
         "repeated": false,
         "optional": true
       }
