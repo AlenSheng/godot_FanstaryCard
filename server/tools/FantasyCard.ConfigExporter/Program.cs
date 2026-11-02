@@ -44,13 +44,20 @@ public static class ConfigCompiler
                 var row = table.Rows[rowIndex];
                 if (row.Count != table.Columns.Count) throw new InvalidDataException($"{table.Name}: row {rowIndex + 6} has the wrong column count.");
                 for (var columnIndex = 0; columnIndex < row.Count; columnIndex++)
+                {
                     if (table.Columns[columnIndex].Required && row[columnIndex].Value is null)
                         throw new InvalidDataException($"{table.Name}: row {rowIndex + 6}, field '{table.Columns[columnIndex].Name}' is required.");
+                    if (row[columnIndex].Type != table.Columns[columnIndex].Type)
+                        throw new InvalidDataException($"{table.Name}: row {rowIndex + 6}, field '{table.Columns[columnIndex].Name}' has the wrong value type.");
+                    if (row[columnIndex].Value is double number && !double.IsFinite(number))
+                        throw new InvalidDataException($"{table.Name}: row {rowIndex + 6}, field '{table.Columns[columnIndex].Name}' must be finite.");
+                }
                 var key = Convert.ToString(row[0].Value, CultureInfo.InvariantCulture);
                 if (string.IsNullOrWhiteSpace(key)) throw new InvalidDataException($"{table.Name}: row {rowIndex + 6} has an empty primary key.");
                 if (!keys.Add(key)) throw new InvalidDataException($"{table.Name}: duplicate primary key '{key}'.");
             }
         }
+        SeasonConfigValidator.Validate(tables);
     }
 
     private static bool IsIdentifier(string value)
