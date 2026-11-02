@@ -69,6 +69,23 @@ public sealed class SeasonWalletEncodingTests
     }
 
     [Fact]
+    public void ArmorMaterialVersionUsesAnOptionalInt64FieldInTheActualRequestMapper()
+    {
+        var contract = HttpProtocolRegistry.Find("POST", "/api/v1/equipment/11111111-1111-1111-1111-111111111111/enhance")!;
+        var wire = new Wire.EnhanceEquipmentRequest
+        {
+            ExpectedVersion = 7, MaterialEquipmentId = "22222222-2222-2222-2222-222222222222",
+            MaterialExpectedVersion = 9_007_199_254_740_993L
+        };
+        var decoded = Assert.IsType<Dto.EnhanceEquipmentRequest>(HttpDtoMapper.DecodeRequest(contract, wire.ToByteArray(), typeof(Dto.EnhanceEquipmentRequest)));
+        Assert.Equal(9_007_199_254_740_993L, decoded.MaterialExpectedVersion);
+        Assert.Equal("material_expected_version", Wire.EnhanceEquipmentRequest.Descriptor.FindFieldByNumber(4).Name);
+        var old = Assert.IsType<Dto.EnhanceEquipmentRequest>(HttpDtoMapper.DecodeRequest(contract,
+            new Wire.EnhanceEquipmentRequest { ExpectedVersion = 7 }.ToByteArray(), typeof(Dto.EnhanceEquipmentRequest)));
+        Assert.Null(old.MaterialExpectedVersion);
+    }
+
+    [Fact]
     public void BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues()
     {
         var time = new DateTimeOffset(2026, 11, 1, 16, 0, 0, TimeSpan.Zero);

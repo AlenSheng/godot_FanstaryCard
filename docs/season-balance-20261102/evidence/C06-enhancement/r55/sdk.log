@@ -1,0 +1,335 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 547 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/season-enhancement-domain.trx
+
+Passed!  - Failed:     0, Passed:   560, Skipped:     0, Total:   560, Duration: 10 s - FantasyCard.Domain.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 112 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 305 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 7 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 5 ms).
+  1 of 5 projects are up-to-date for restore.
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:02:19.13]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "quality") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "quality") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:20.64]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "version") [FAIL]
+[xUnit.net 00:02:21.83]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "bot") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "version") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "bot") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:23.01]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "scope") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "scope") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:24.12]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "stats") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "stats") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:25.31]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "location") [FAIL]
+[xUnit.net 00:02:26.35]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "missing-version") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "location") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "missing-version") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:27.45]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "owner") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(invalid: "owner") [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.InvalidOrChangedMaterialCannotConsumeEitherWalletOrAnyItem(String invalid) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 97
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:28.61]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 42, expectedThree: 60, expectedFive: 780, expectedRed: 390) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 42, expectedThree: 60, expectedFive: 780, expectedRed: 390) [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 37
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 63
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:29.71]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 30, expectedThree: 52, expectedFive: 573, expectedRed: 281) [FAIL]
+[xUnit.net 00:02:30.83]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 60, expectedThree: 60, expectedFive: 780, expectedRed: 390) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 30, expectedThree: 52, expectedFive: 573, expectedRed: 281) [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 37
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 63
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(days: 60, expectedThree: 60, expectedFive: 780, expectedRed: 390) [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 37
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ActualFiveArmorAndRedUpgradesMatchQuoteAndConsumeOnlyTheirSeasonWalletAndRealBodies(Int32 days, Int32 expectedThree, Int32 expectedFive, Int32 expectedRed) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 63
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:31.92]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.DatabaseFailureAfterWalletDebitRollsBackEverythingAndTheSameKeyCanRetry [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.DatabaseFailureAfterWalletDebitRollsBackEverythingAndTheSameKeyCanRetry [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.DatabaseFailureAfterWalletDebitRollsBackEverythingAndTheSameKeyCanRetry() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 124
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.DatabaseFailureAfterWalletDebitRollsBackEverythingAndTheSameKeyCanRetry() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 132
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:33.01]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ConcurrentReplayRestartAndChangedBodyCannotChargeOrConsumeTwice [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ConcurrentReplayRestartAndChangedBodyCannotChargeOrConsumeTwice [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ConcurrentReplayRestartAndChangedBodyCannotChargeOrConsumeTwice() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 105
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ConcurrentReplayRestartAndChangedBodyCannotChargeOrConsumeTwice() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 116
+--- End of stack trace from previous location ---
+[xUnit.net 00:02:34.15]     FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ClosingBoundaryRejectsNewUpgradeBeforeItConsumesTheSeasonWallet [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ClosingBoundaryRejectsNewUpgradeBeforeItConsumesTheSeasonWallet [1 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_generated_difficulty_quality"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ExecuteAsync(PostgresTestSchema db, String sql, Object[] values) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 182
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ItemAsync(PostgresTestSchema db, Setup setup, String quality, Int32 level, String slot) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 168
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ClosingBoundaryRejectsNewUpgradeBeforeItConsumesTheSeasonWallet() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 140
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonEnhancementTests.ClosingBoundaryRejectsNewUpgradeBeforeItConsumesTheSeasonWallet() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEnhancementTests.cs:line 144
+--- End of stack trace from previous location ---
+Results File: /workspace/results/season-enhancement-server.trx
+
+Failed!  - Failed:    14, Passed:   175, Skipped:     0, Total:   189, Duration: 2 m 31 s - FantasyCard.Server.Tests.dll (net10.0)

@@ -198,8 +198,15 @@ public static class ProgressionEndpoints
     {
         var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
         if (player is null) return context.UnauthorizedProblem();
-        var quote = await repository.GetEquipmentEnhancementQuoteAsync(player.UserId, equipmentId, cancellationToken);
-        return quote is null ? Problem(context, 404, "Equipment not found", "Equipment was not found.") : Results.Ok(quote);
+        try
+        {
+            var quote = await repository.GetEquipmentEnhancementQuoteAsync(player.UserId, equipmentId, cancellationToken);
+            return quote is null ? Problem(context, 404, "Equipment not found", "Equipment was not found.") : Results.Ok(quote);
+        }
+        catch (DomainValidationException exception)
+        {
+            return Problem(context, 400, "Cannot quote equipment", exception.Message);
+        }
     }
 
     private static async Task<IResult> WeaponEnhancementQuoteAsync(
@@ -268,7 +275,7 @@ public static class ProgressionEndpoints
             return Problem(context, 400, "Unknown hero class", "Use Priest, Mage, or Guardian.");
         try
         {
-            if (request.Value.MaterialEquipmentId is not null)
+            if (request.Value.MaterialEquipmentId is not null || request.Value.MaterialExpectedVersion is not null)
                 throw new DomainValidationException("Permanent weapon enhancement does not consume armor.");
             SeasonContext? source = request.Value.FragmentSourceSeasonId is null ? null
                 : await seasons.GetWeaponFragmentSourceAsync(player.UserId, request.Value.FragmentSourceSeasonId, cancellationToken);

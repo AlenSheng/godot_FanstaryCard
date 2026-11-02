@@ -124,7 +124,8 @@ public sealed record UpdateLoadoutRequest(
 public sealed record EnhanceEquipmentRequest(
     long ExpectedVersion,
     Guid? MaterialEquipmentId = null,
-    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? FragmentSourceSeasonId = null);
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? FragmentSourceSeasonId = null,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] long? MaterialExpectedVersion = null);
 
 public sealed record EnhancementQuoteResponse(
     string TargetKind,

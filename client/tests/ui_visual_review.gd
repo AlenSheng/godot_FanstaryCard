@@ -4,7 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
-const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic"]
+const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -199,6 +199,7 @@ func _render_base() -> void:
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
 	if scenario.begins_with("c05_"): return await _prepare_equipment_scene(scenario)
+	if scenario.begins_with("c06_"): return await _prepare_enhancement_scene(scenario)
 	if scenario.begins_with("mail_template_"):
 		var template_id := scenario.trim_prefix("mail_template_").trim_suffix("_bottom")
 		var arguments: Array = []
@@ -418,6 +419,38 @@ func _prepare_equipment_scene(scenario: String) -> bool:
 				$UI.set_meta("relic_pile","pile-a")
 				$UI.set_meta("relic_selected","relic-1")
 	return true
+
+func _prepare_enhancement_scene(scenario: String) -> bool:
+	$UI.screen="enhance"
+	var target:=_c05_gear("c06-target","Chest")
+	target["level"]=3
+	target["location"]="Inventory"
+	target["seasonId"]="review"
+	target["assetScope"]="ActiveSeason"
+	var material:=target.duplicate(true)
+	material["instanceId"]="c06-material"
+	material["level"]=0
+	var old:=material.duplicate(true)
+	old["instanceId"]="c06-old"
+	old["seasonId"]="archive"
+	var bot:=material.duplicate(true)
+	bot["instanceId"]="c06-bot"
+	bot["sourceKind"]="BotReward"
+	$UI.inventory.equipments=[target,material,old,bot]
+	Game.lobby.inventory=$UI.inventory
+	Game.lobby.materials={"equipmentFragments":99999}
+	Game.lobby.classWeapons=[{"heroClass":"Mage","level":0,"version":1}]
+	Game.lobby.season={"seasonId":"review","state":"Active","wallet":{"seasonId":"review","equipmentFragments":500,"version":10},"fragmentWallets":[{"seasonId":"review","equipmentFragments":500,"version":10}]}
+	var weapon:=scenario=="c06_weapon"
+	$UI._enhance_item="" if weapon else "c06-target"
+	$UI._enhancement_quote_key="Mage:1" if weapon else "c06-target:7"
+	$UI._enhancement_quote={"targetKind":"ClassWeapon" if weapon else "Equipment","expectedVersion":1 if weapon else 7,"currentLevel":0 if weapon else 3,"nextLevel":1 if weapon else 4,"fragmentCost":8 if weapon else 40,"materialCount":0 if weapon else 1,"availableMaterialCount":0 if weapon else 1,"availableFragments":99999 if weapon else 500,"canEnhance":true,"fragmentSourceSeasonId":null if weapon else "review","fragmentWalletVersion":null if weapon else 10}
+	if scenario=="c06_error":$UI._enhancement_quote={"error":true}
+	await _render_base()
+	var cost: String=(Palette.localized("enhance_cost_confirm") % [40,4])+"\n"+$UI.EnhancementWallets.source_text($UI._enhancement_quote)
+	if scenario=="c06_material":$UI._show_enhance_material_dialog(target,{"expectedVersion":7},cost)
+	if scenario=="c06_confirm":$UI._confirm(Palette.localized("enhance_material_confirm") % [cost,$UI._equipment_name(material)],Callable())
+	return false
 
 func _review_window_position() -> Vector2i:
 	return Vector2i.ZERO if OS.get_environment("FANTASYCARD_REVIEW_ISOLATED_DESKTOP") == "1" else Vector2i(-32000, -32000)

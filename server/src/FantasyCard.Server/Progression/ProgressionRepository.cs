@@ -9,6 +9,7 @@ using FantasyCard.Domain.Players;
 using FantasyCard.Server.Common;
 using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Rooms;
 using Npgsql;
 
 namespace FantasyCard.Server.Progression;
@@ -25,8 +26,10 @@ public sealed record SaveDeckResult(SaveDeckStatus Status, DeckResponse? Deck = 
 public enum SaveLoadoutStatus { Updated, VersionConflict, NotFound, AssetUnavailable }
 public sealed record SaveLoadoutResult(SaveLoadoutStatus Status, LoadoutResponse? Loadout = null, string? Detail = null);
 
-public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, TimeProvider? timeProvider = null)
+public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, TimeProvider? timeProvider = null,
+    PublishedConfigCatalogs? configurations = null)
 {
+    private readonly PublishedConfigCatalogs _enhancementConfigurations = configurations ?? new(GameConfigCatalog.Current);
     private static readonly string[] EquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
 
     public async Task<InventoryResponse> GetInventoryAsync(Guid playerId, CancellationToken cancellationToken)
@@ -270,48 +273,48 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             await transaction.CommitAsync(cancellationToken);
             return replay;
         }
-        await using var command = new NpgsqlCommand(
-            "SELECT slot, quality, level, is_bound, location, version, element, effect_affix, secondary_trait,unique_affix,unique_element,stats_version FROM equipments WHERE instance_id=$1 AND owner_id=$2 FOR UPDATE", connection, transaction);
-        command.Parameters.AddWithValue(equipmentId); command.Parameters.AddWithValue(playerId);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        if (!await reader.ReadAsync(cancellationToken)) throw new DomainValidationException("Equipment was not found.");
-        var slot = reader.GetString(0); var quality = reader.GetString(1); var level = reader.GetInt32(2);
-        var bound = reader.GetBoolean(3); var location = reader.GetString(4); var version = reader.GetInt64(5);
-        var element = reader.IsDBNull(6) ? null : reader.GetString(6);
-        var effectAffix = reader.IsDBNull(7) ? null : reader.GetString(7);
-        var secondaryTrait = reader.IsDBNull(8) ? null : reader.GetString(8);
-        var uniqueAffix=reader.IsDBNull(9)?null:reader.GetString(9);var uniqueElement=reader.IsDBNull(10)?null:reader.GetString(10);
-        var statsVersion=reader.IsDBNull(11)?null:reader.GetString(11);
-        if (location is not ("Inventory" or "Equipped") || level >= 5) throw new DomainValidationException("Equipment cannot be enhanced in its current state.");
-        if (version != request.ExpectedVersion) throw new DomainValidationException("Equipment changed. Reload and retry.");
-        var cost = FragmentCost(quality, level + 1);
+        var equipment = await ReadEnhancementEquipmentAsync(connection, transaction, playerId, equipmentId, true, cancellationToken)
+            ?? throw new DomainValidationException("Equipment was not found.");
+        if (equipment.Location is not ("Inventory" or "Equipped") || equipment.Level >= 5)
+            throw new DomainValidationException("Equipment cannot be enhanced in its current state.");
+        if (equipment.Version != request.ExpectedVersion) throw new DomainValidationException("Equipment changed. Reload and retry.");
+        var policy = await ResolveArmorEnhancementPolicyAsync(connection, transaction, equipment, cancellationToken);
+        var cost = policy.Cost(equipment.Quality, equipment.Level + 1);
         var materialId = request.MaterialEquipmentId;
-        if (level < 3 && materialId is not null)
+        if (equipment.Level < 3 && (materialId is not null || request.MaterialExpectedVersion is not null))
             throw new DomainValidationException("This enhancement does not consume a material equipment item.");
-        await reader.DisposeAsync();
-        if (level >= 3)
+        if (request.MaterialExpectedVersion is <= 0)
+            throw new DomainValidationException("The enhancement material version is invalid.");
+        if (equipment.Level >= 3)
         {
-            var required = quality;
             if (materialId is null || materialId == equipmentId) throw new DomainValidationException("A valid enhancement material is required.");
-            await using var material = new NpgsqlCommand(
-                "SELECT quality, location FROM equipments WHERE instance_id=$1 AND owner_id=$2 FOR UPDATE", connection, transaction);
-            material.Parameters.AddWithValue(materialId.Value); material.Parameters.AddWithValue(playerId);
-            await using var materialReader = await material.ExecuteReaderAsync(cancellationToken);
-            if (!await materialReader.ReadAsync(cancellationToken) || materialReader.GetString(0) != required || materialReader.GetString(1) != "Inventory")
+            var material = await ReadEnhancementEquipmentAsync(connection, transaction, playerId, materialId.Value, true, cancellationToken);
+            if (material is null || material.Quality != equipment.Quality || material.Location != "Inventory" ||
+                !SameEnhancementDomain(equipment, material))
                 throw new DomainValidationException("The enhancement material is invalid.");
+            if (policy.Context is not null && request.MaterialExpectedVersion is null ||
+                request.MaterialExpectedVersion is { } expected && expected != material.Version)
+                throw new DomainValidationException("The enhancement material changed. Reload and retry.");
         }
-        var fragments = await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken);
+        RequireArmorEnhancementTime(policy);
+        SeasonWalletSnapshot? wallet = null;
+        if (policy.Context is { } context)
+            wallet = await SeasonRepository.ApplyWithinTransactionAsync(connection, transaction, playerId, context,
+                0, -cost, 0, "equipment.enhance", requestId, SeasonWalletPurpose.General,
+                (timeProvider ?? TimeProvider.System).GetUtcNow(), requestHash, cancellationToken);
+        var fragments = wallet?.EquipmentFragments ?? await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken);
         await using (var update = new NpgsqlCommand("UPDATE equipments SET level=level+1, version=version+1 WHERE instance_id=$1", connection, transaction))
         { update.Parameters.AddWithValue(equipmentId); await update.ExecuteNonQueryAsync(cancellationToken); }
         if (materialId is not null)
         {
             await using var consume = new NpgsqlCommand("UPDATE equipments SET location='EnhanceMaterialConsumed', version=version+1 WHERE instance_id=$1", connection, transaction);
             consume.Parameters.AddWithValue(materialId.Value); await consume.ExecuteNonQueryAsync(cancellationToken);
-            await WriteInventoryMovementAsync(connection, transaction, playerId, materialId.Value, "Inventory", "EnhanceMaterialConsumed", "equipment.enhance", cancellationToken, requestId);
+            await WriteInventoryMovementAsync(connection, transaction, playerId, materialId.Value, "Inventory", "EnhanceMaterialConsumed", "equipment.enhance", cancellationToken, requestId, policy.Context?.SeasonId);
         }
-        await WriteEconomyLedgerAsync(connection, transaction, playerId, -cost, fragments, "EquipmentFragments", "equipment.enhance", cancellationToken, requestId);
-        var result = new EnhanceResult(new EquipmentResponse(equipmentId, slot, quality, level + 1, bound, location, version + 1, element, effectAffix, secondaryTrait,
-            StatsVersion:statsVersion,UniqueAffix:uniqueAffix,UniqueElement:uniqueElement), fragments, materialId);
+        if (wallet is null)
+            await WriteEconomyLedgerAsync(connection, transaction, playerId, -cost, fragments, "EquipmentFragments", "equipment.enhance", cancellationToken, requestId);
+        var result = new EnhanceResult(equipment with { Level = equipment.Level + 1, Version = equipment.Version + 1 },
+            fragments, materialId, wallet?.SeasonId, wallet?.Version);
         await WriteIdempotentResultAsync(connection, transaction, playerId, "equipment.enhance", requestId, requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return result;
@@ -350,7 +353,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         if (fragmentSource is not null)
             seasonalWallet = await SeasonRepository.ApplyWithinTransactionAsync(connection, transaction, playerId, fragmentSource,
                 0, -cost, 0, "class_weapon.enhance", requestId, SeasonWalletPurpose.PermanentWeaponEnhancement,
-                DateTimeOffset.UtcNow, requestHash, cancellationToken);
+                (timeProvider ?? TimeProvider.System).GetUtcNow(), requestHash, cancellationToken);
         var fragments = seasonalWallet is null
             ? await SpendFragmentsAsync(connection, transaction, playerId, cost, cancellationToken)
             : seasonalWallet.EquipmentFragments;

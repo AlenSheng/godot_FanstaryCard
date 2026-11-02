@@ -336,6 +336,7 @@ public sealed class GameConfigCatalog
                 EnhanceCost4=table.Int(values,"cost_4"),EnhanceCost5=table.Int(values,"cost_5"),
                 EnhanceTotalCost=Enumerable.Range(1,5).Sum(level=>table.Int(values,$"cost_{level}"))};
         }).ToArray();
+        ValidateEquipment(qualities);
         var chance=rules.Double(row,"chain_draw_chance");
         if(!double.IsFinite(chance) || chance is <0 or >1)throw new InvalidDataException("Invalid chain-draw probability.");
         var fixedChance=(decimal)chance*10000;

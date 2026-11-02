@@ -1,0 +1,17 @@
+{
+  "container_id": "7a7432bc6c2b30f467b326b3264a2fe16fa50caf7de5baf31cbf246ff54b9bb3",
+  "name": "fc-season-a03-storage-20261102-r55",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "5fa3b7702ae05d7307941ff2a00e8824b0da8c6f",
+  "archive_sha256": "15f8e4ddee3415bd10b1f25beb7f09626201cddfbfd1bcb38f634fc330a49931",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~PostgresEnhancementQuoteTests|FullyQualifiedName~FantasyCard.Server.Tests.Config|FullyQualifiedName~SeasonWallet|FullyQualifiedName~MigrationBusinessTests\" --logger \"trx;LogFileName=season-enhancement-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter FullyQualifiedName!~SeasonResourceLoopTests --logger \"trx;LogFileName=season-enhancement-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2553290752,
+  "free_disk_before": 3490316288
+}

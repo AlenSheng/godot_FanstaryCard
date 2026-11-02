@@ -10,6 +10,7 @@ const ReferenceUI = preload("res://ui/reference_ui.gd")
 const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
+const EnhancementWallets = preload("res://ui/enhancement_wallets.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -1283,14 +1284,34 @@ func _enhance(item: Dictionary) -> void:
 	var quote: Dictionary = result.data
 	if not quote.get("canEnhance", false): _toast(P.localized("enhance_unavailable")); return
 	var body := {"expectedVersion": quote.expectedVersion}
-	var cost_text := P.localized("enhance_cost_confirm") % [quote.fragmentCost, quote.nextLevel]
+	var cost_text := (P.localized("enhance_cost_confirm") % [quote.fragmentCost, quote.nextLevel]) + "\n" + EnhancementWallets.source_text(quote)
 	if int(quote.materialCount) == 0:
 		_confirm(cost_text + "？", func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body))
 		return
+	_show_enhance_material_dialog(item, body, cost_text)
+
+func _show_enhance_material_dialog(item: Dictionary, body: Dictionary, cost_text: String) -> void:
 	var dialog := AcceptDialog.new()
-	dialog.title = P.localized("enhance_material_dialog")
+	dialog.name = "EnhancementMaterialDialog"
+	dialog.title = P.localized("enhance_material_title")
+	var dialog_theme := P.theme()
+	dialog_theme.default_font_size = 24
+	dialog_theme.set_stylebox("panel", "AcceptDialog", P.box(Color("10272e"), P.GOLD))
+	var frame := P.box(Color("10272e"), P.GOLD)
+	frame.set_expand_margin(SIDE_TOP, 36)
+	frame.content_margin_top = 36
+	dialog_theme.set_stylebox("embedded_border", "Window", frame)
+	dialog_theme.set_stylebox("embedded_unfocused_border", "Window", frame.duplicate())
+	dialog_theme.set_font("title_font", "Window", P.font("title"))
+	dialog_theme.set_font_size("title_font_size", "Window", 24)
+	dialog_theme.set_color("title_color", "Window", P.GOLD)
+	dialog.theme = dialog_theme
+	dialog.get_ok_button().text = P.localized("cancel")
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size = Vector2(720, 390)
+	var available := get_viewport_rect().size
+	var popup_size := Vector2i(mini(840, int(available.x)-64),mini(560,int(available.y)-64))
+	scroll.custom_minimum_size = Vector2(popup_size.x-64,popup_size.y-128)
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	dialog.add_child(scroll)
 	var column := VBoxContainer.new()
 	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -1298,12 +1319,33 @@ func _enhance(item: Dictionary) -> void:
 	_label(column, P.localized("enhance_material_cost") % cost_text, 24)
 	var count := 0
 	for material in inventory.get("equipments", []):
-		if material.instanceId == item.instanceId or material.get("location") != "Inventory" or material.quality != item.quality: continue
+		if not EnhancementWallets.eligible_material(item,material): continue
 		count += 1
-		_button(column, _equipment_name(material), func(): body.materialEquipmentId = material.instanceId; dialog.queue_free(); _confirm(P.localized("enhance_material_confirm") % [cost_text, _equipment_name(material)], func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
+		var button := _button(column, "", func():
+			body.materialEquipmentId = material.instanceId
+			body.materialExpectedVersion = material.version
+			dialog.queue_free()
+			_confirm(P.localized("enhance_material_confirm") % [cost_text, _equipment_name(material)], func(): _mutate("/equipment/" + item.instanceId + "/enhance", HTTPClient.METHOD_POST, body)))
+		button.name = "EnhancementMaterial_" + str(material.instanceId)
+		var caption := Label.new()
+		caption.text = _equipment_name(material)
+		caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		caption.add_theme_font_override("font",P.font_for_text(caption.text,24))
+		caption.add_theme_font_size_override("font_size",24)
+		button.add_child(caption)
+		P.apply_text_direction(caption)
+		var fit := func():
+			caption.position = Vector2(20,8)
+			caption.size = Vector2(maxf(1,button.size.x-40),maxf(1,button.size.y-16))
+			button.custom_minimum_size.y = maxf(72,caption.get_line_count()*caption.get_theme_font("font").get_height(24)+16)
+		button.resized.connect(fit)
+		fit.call_deferred()
 	if count == 0: _label(column, P.localized("enhance_no_material"))
 	add_child(dialog)
-	dialog.popup_centered(Vector2i(750, 360))
+	dialog.popup_centered(popup_size)
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
 
@@ -1414,9 +1456,12 @@ func _apply_account_mutation(path: String, body: Variant, response: Variant) -> 
 		Game.refresh_cache("inventory")
 	elif path.ends_with("/enhance") and data.get("equipment") is Dictionary:
 		var equipment: Dictionary = data.equipment
-		var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
-		materials["equipmentFragments"] = int(data.get("equipmentFragments", materials.get("equipmentFragments", 0)))
-		Game.update_cache("materials", materials)
+		if EnhancementWallets.source_id(data).is_empty():
+			var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
+			materials["equipmentFragments"] = int(data.get("equipmentFragments", materials.get("equipmentFragments", 0)))
+			Game.update_cache("materials", materials)
+		else:
+			Game.update_cache("season",EnhancementWallets.update_summary(Game.lobby.get("season",{}),data))
 		if str(equipment.get("slot", "")) == "ClassWeapon":
 			var weapons: Array = Game.lobby.get("classWeapons", []).duplicate(true)
 			for index in weapons.size():

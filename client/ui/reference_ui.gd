@@ -1095,7 +1095,9 @@ func _enhance() -> void:
 	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	_enhance_progress(level)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
-	text(P.localized("enhance_fragments_summary") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
+	text(P.localized("enhance_fragments_summary") % quote.get("availableFragments","—"), Rect2(1535, 445, 300, 100), 30)
+	var source := text(host.EnhancementWallets.source_text(quote) if not quote.is_empty() else P.localized("enhance_loading_cost"), Rect2(1370, 550, 470, 48), 20, P.TEAL, null, false)
+	source.name = "EnhancementFragmentSource"
 	var cost: String = P.localized("enhance_loading_cost") if quote.is_empty() else P.localized("enhance_cost") % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
 	if quote.get("error", false): cost = P.localized("enhance_quote_error")
 	elif not quote.is_empty() and not quote.get("canEnhance", false) and level < 5: cost += "\n" + P.localized("enhance_requirement_error")
