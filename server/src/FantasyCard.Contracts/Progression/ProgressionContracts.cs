@@ -95,7 +95,8 @@ public sealed record EquipmentResponse(
 public sealed record LoadoutResponse(
     HeroClassDto HeroClass,
     IReadOnlyList<Guid?> EquipmentIds,
-    long Version);
+    long Version,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? SeasonId = null);
 
 public sealed record InventorySummaryResponse(int Capacity, int EquipmentCount, int FreeSlots);
 

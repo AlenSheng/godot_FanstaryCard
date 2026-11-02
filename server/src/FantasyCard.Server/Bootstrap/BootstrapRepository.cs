@@ -59,7 +59,8 @@ public sealed class BootstrapRepository(
         var loadouts = schedule.LegacyAllowed ? core.Loadouts
             : core.Loadouts.Select(loadout => loadout with
             {
-                EquipmentIds = loadout.EquipmentIds.Select(id => id.HasValue && visibleEquipment.Contains(id.Value) ? id : null).ToArray()
+                EquipmentIds = loadout.EquipmentIds.Select(id => id.HasValue && visibleEquipment.Contains(id.Value) ? id : null).ToArray(),
+                SeasonId = schedule.Current?.SeasonId
             }).ToArray();
         SeasonSummaryResponse? season = null;
         if (schedule.Stage != SeasonLifecycleStage.Legacy)

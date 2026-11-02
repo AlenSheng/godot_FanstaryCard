@@ -106,20 +106,37 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             """);
         command.Parameters.AddWithValue(playerId);
         command.Parameters.AddWithValue((short)heroClass);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        if (!await reader.ReadAsync(cancellationToken)) return null;
-        return new LoadoutResponse(
-            (HeroClassDto)(short)heroClass,
-            Enumerable.Range(0, 5)
-                .Select(index => reader.IsDBNull(index) ? null : (Guid?)reader.GetGuid(index))
-                .ToArray(),
-            reader.GetInt64(5));
+        LoadoutResponse response;
+        await using (var reader = await command.ExecuteReaderAsync(cancellationToken))
+        {
+            if (!await reader.ReadAsync(cancellationToken)) return null;
+            response = new((HeroClassDto)(short)heroClass,
+                Enumerable.Range(0, 5).Select(index => reader.IsDBNull(index) ? null : (Guid?)reader.GetGuid(index)).ToArray(),
+                reader.GetInt64(5));
+        }
+        var schedule = await new SeasonRepository(dataSource, timeProvider ?? TimeProvider.System).GetScheduleAsync(cancellationToken);
+        if (schedule.LegacyAllowed) return response;
+        var allowed = new HashSet<Guid>();
+        if (schedule.Current is { } current)
+        {
+            await using var items = dataSource.CreateCommand("SELECT instance_id FROM equipments WHERE owner_id=$1 AND season_id=$2 AND asset_scope='ActiveSeason'");
+            items.Parameters.AddWithValue(playerId); items.Parameters.AddWithValue(current.SeasonId);
+            await using var itemReader = await items.ExecuteReaderAsync(cancellationToken);
+            while (await itemReader.ReadAsync(cancellationToken)) allowed.Add(itemReader.GetGuid(0));
+        }
+        return response with
+        {
+            EquipmentIds = response.EquipmentIds.Select(id => id.HasValue && allowed.Contains(id.Value) ? id : null).ToArray(),
+            SeasonId = schedule.Current?.SeasonId
+        };
     }
 
     public async Task<SaveLoadoutResult> SaveLoadoutAsync(
         Guid playerId, HeroClass heroClass, IReadOnlyList<Guid?> equipmentIds,
         string requestId, long expectedVersion, DateTimeOffset now, CancellationToken cancellationToken)
     {
+        if (equipmentIds.Count != EquipmentSlots.Length)
+            throw new DomainValidationException("Exactly five equipment slots are required.");
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await using var lockPlayer = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id = $1 FOR UPDATE", connection, transaction);
@@ -133,6 +150,12 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             await transaction.CommitAsync(cancellationToken);
             return replay;
         }
+
+        var mutationClock = timeProvider ?? TimeProvider.System;
+        var schedule = await new SeasonRepository(dataSource, mutationClock).GetScheduleAsync(cancellationToken);
+        if (schedule.Current is null && !schedule.LegacyAllowed)
+            throw new DomainValidationException("No active season is accepting loadout changes.");
+        var season = schedule.Current?.ContextFor(0);
 
         long version;
         await using (var current = new NpgsqlCommand(
@@ -153,11 +176,16 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         {
             if (equipmentIds[index] is not { } id) continue;
             await using var item = new NpgsqlCommand(
-                "SELECT slot, location, is_bound, quality FROM equipments WHERE instance_id = $1 AND owner_id = $2 FOR UPDATE", connection, transaction);
+                "SELECT slot, location, is_bound, quality, season_id, asset_scope FROM equipments WHERE instance_id = $1 AND owner_id = $2 FOR UPDATE", connection, transaction);
             item.Parameters.AddWithValue(id); item.Parameters.AddWithValue(playerId);
             await using var reader = await item.ExecuteReaderAsync(cancellationToken);
             if (!await reader.ReadAsync(cancellationToken)) return new(SaveLoadoutStatus.AssetUnavailable, Detail: "Equipment is not owned.");
             var slot = reader.GetString(0); var location = reader.GetString(1);
+            var sameDomain = season is null ? reader.IsDBNull(4) && reader.IsDBNull(5)
+                : !reader.IsDBNull(4) && reader.GetString(4) == season.SeasonId &&
+                  !reader.IsDBNull(5) && reader.GetString(5) == "ActiveSeason";
+            if (!sameDomain)
+                return new(SaveLoadoutStatus.AssetUnavailable, Detail: "Equipment belongs to another season or archive.");
             if (!string.Equals(slot, EquipmentSlots[index], StringComparison.Ordinal) ||
                 location is not ("Inventory" or "Equipped"))
                 return new(SaveLoadoutStatus.AssetUnavailable, Detail: "Equipment is in the wrong slot or unavailable.");
@@ -165,14 +193,20 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         }
         if (highQualityCount > 1)
             return new(SaveLoadoutStatus.AssetUnavailable, Detail: "A loadout can contain at most one Orange or Red armor item.");
+        if (schedule.Current is { } currentSeason && !currentSeason.Contains(mutationClock.GetUtcNow()) ||
+            schedule.Current is null && schedule.Next is { } upcoming && mutationClock.GetUtcNow() >= upcoming.StartsAtUtc)
+            throw new DomainValidationException("The season changed while saving the loadout. Reload and retry.");
 
         var currentlyEquipped = new HashSet<Guid>();
+        var equippedScope = season is null ? "season_id IS NULL AND asset_scope IS NULL"
+            : "season_id=$2 AND asset_scope='ActiveSeason'";
         await using (var currentEquipment = new NpgsqlCommand(
-            "SELECT instance_id FROM equipments WHERE owner_id=$1 AND location='Equipped' FOR UPDATE",
+            "SELECT instance_id FROM equipments WHERE owner_id=$1 AND location='Equipped' AND (" + equippedScope + ") FOR UPDATE",
             connection,
             transaction))
         {
             currentEquipment.Parameters.AddWithValue(playerId);
+            if (season is not null) currentEquipment.Parameters.AddWithValue(season.SeasonId);
             await using var reader = await currentEquipment.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken)) currentlyEquipped.Add(reader.GetGuid(0));
         }
@@ -188,7 +222,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             if (await unequip.ExecuteNonQueryAsync(cancellationToken) != 1)
                 throw new InvalidOperationException("Equipped item changed while saving the loadout.");
             await WriteInventoryMovementAsync(
-                connection, transaction, playerId, id, "Equipped", "Inventory", "loadout.save", cancellationToken);
+                connection, transaction, playerId, id, "Equipped", "Inventory", "loadout.save", cancellationToken, requestId, season?.SeasonId);
         }
         foreach (var id in selectedSet.Except(currentlyEquipped))
         {
@@ -201,7 +235,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             if (await equip.ExecuteNonQueryAsync(cancellationToken) != 1)
                 throw new InvalidOperationException("Inventory item changed while saving the loadout.");
             await WriteInventoryMovementAsync(
-                connection, transaction, playerId, id, "Inventory", "Equipped", "loadout.save", cancellationToken);
+                connection, transaction, playerId, id, "Inventory", "Equipped", "loadout.save", cancellationToken, requestId, season?.SeasonId);
         }
         var newVersion = version + 1;
         await using (var update = new NpgsqlCommand(
@@ -213,7 +247,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         }
         var result = new SaveLoadoutResult(
             SaveLoadoutStatus.Updated,
-            new LoadoutResponse((HeroClassDto)(short)heroClass, equipmentIds, newVersion));
+            new LoadoutResponse((HeroClassDto)(short)heroClass, equipmentIds, newVersion, season?.SeasonId));
         await WriteIdempotentResultAsync(
             connection, transaction, playerId, "loadout.save", requestId, requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
@@ -436,15 +470,16 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
     private static async Task WriteInventoryMovementAsync(
         NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, Guid itemId,
         string from, string to, string reason, CancellationToken cancellationToken,
-        string? requestId = null)
+        string? requestId = null, string? seasonId = null)
     {
         await using var command = new NpgsqlCommand(
-            "INSERT INTO inventory_movements(movement_id, player_id, item_id, from_location, to_location, reason, request_id, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
+            "INSERT INTO inventory_movements(movement_id, player_id, item_id, from_location, to_location, reason, request_id, created_at,season_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
             connection, transaction);
         command.Parameters.AddWithValue(Guid.CreateVersion7()); command.Parameters.AddWithValue(playerId);
         command.Parameters.AddWithValue(itemId); command.Parameters.AddWithValue(from); command.Parameters.AddWithValue(to);
         command.Parameters.AddWithValue(reason); command.Parameters.AddWithValue((object?)requestId ?? DBNull.Value);
         command.Parameters.AddWithValue(DateTimeOffset.UtcNow);
+        command.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)seasonId ?? DBNull.Value);
         await command.ExecuteNonQueryAsync(cancellationToken);
     }
 

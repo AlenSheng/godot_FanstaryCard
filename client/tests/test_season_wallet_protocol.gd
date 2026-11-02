@@ -38,5 +38,7 @@ func run() -> void:
 	check(inventory.scope.state == "ActiveSeason" and inventory.scope.seasonId == "season-a" and not inventory.scope.readOnly, "independent inventory scope golden")
 	var bootstrap := proto.decode_http("BootstrapResponse", "9201080a06436c6f736564".hex_decode())
 	check(bootstrap.season.state == "Closed" and not bootstrap.season.hasJoined and bootstrap.season.wallet == null, "independent closed-season bootstrap golden")
+	var loadout := proto.decode_http("LoadoutResponse", "2208736561736f6e2d61".hex_decode())
+	check(loadout.seasonId == "season-a" and loadout.equipmentIds.is_empty(), "independent loadout season tag golden")
 	print(JSON.stringify({"ok": failures.is_empty(), "checks": checks, "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

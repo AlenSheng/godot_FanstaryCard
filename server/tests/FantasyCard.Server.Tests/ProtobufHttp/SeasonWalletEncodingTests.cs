@@ -105,4 +105,17 @@ public sealed class SeasonWalletEncodingTests
         var scope = new Wire.InventoryResponse { Scope = new Wire.InventoryScopeResponse { State = "ActiveSeason", SeasonId = "season-a" } };
         Assert.Equal("22180a0c416374697665536561736f6e1208736561736f6e2d61", Convert.ToHexStringLower(scope.ToByteArray()));
     }
+
+    [Fact]
+    public void LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses()
+    {
+        var contract = HttpProtocolRegistry.Find("GET", "/api/v1/loadouts/Mage")!;
+        var source = new Dto.LoadoutResponse(FantasyCard.Contracts.Players.HeroClassDto.Mage,
+            [null, null, null, null, null], 2, "season-a");
+        var wire = Wire.LoadoutResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(contract, source));
+        Assert.Equal("season-a", wire.SeasonId);
+        Assert.Equal(2, wire.Version);
+        Assert.False(Wire.LoadoutResponse.Parser.ParseFrom(HttpDtoMapper.EncodeResponse(contract, source with { SeasonId = null })).HasSeasonId);
+        Assert.Equal("2208736561736f6e2d61", Convert.ToHexStringLower(new Wire.LoadoutResponse { SeasonId = "season-a" }.ToByteArray()));
+    }
 }
