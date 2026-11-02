@@ -50,5 +50,8 @@ func run() -> void:
 	check(realtime.error.is_empty() and snapshot.has("season") and snapshot.season.season_id == "s" and snapshot.season.difficulty_id == "D2" and snapshot.season.config_version == "cfg", "root realtime season tag 17 reaches client")
 	var legacy_snapshot := realtime.decode("RoomSnapshotEvent", PackedByteArray())
 	check(realtime.error.is_empty() and not legacy_snapshot.has("season"), "legacy realtime snapshot does not infer a season")
+	var receipt := proto.decode_http("SettlementResponse", "3a0a0a08736561736f6e2d61".hex_decode())
+	check(proto.error.is_empty() and receipt.season.seasonId == "season-a", "independent original settlement season tag 7 golden")
+	check(proto.decode_http("SettlementResponse", PackedByteArray()).season == null, "legacy settlement has no inferred current season")
 	print(JSON.stringify({"ok": failures.is_empty(), "checks": checks, "failures": failures}))
 	quit(0 if failures.is_empty() else 1)

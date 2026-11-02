@@ -212,6 +212,7 @@ message SettlementResponse {
   string result = 4;
   SettlementDetails details = 5;
   string created_at = 6;
+  SeasonContextResponse season = 7;
 }
 
 message SettlementAcknowledgementResponse {

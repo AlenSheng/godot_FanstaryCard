@@ -268,14 +268,17 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
             if (delta == 0) continue;
             await using var ledger = new NpgsqlCommand("""
                 INSERT INTO economy_ledger
-                    (ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,season_id,source_kind)
-                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+                    (ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,season_id,source_kind,
+                     difficulty_id,ruleset_id,config_version,stats_version)
+                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)
                 """, connection, transaction);
             ledger.Parameters.AddWithValue(Guid.NewGuid()); ledger.Parameters.AddWithValue(playerId);
             ledger.Parameters.AddWithValue(requestId); ledger.Parameters.AddWithValue(currency);
             ledger.Parameters.AddWithValue(delta); ledger.Parameters.AddWithValue(balance);
             ledger.Parameters.AddWithValue(reason); ledger.Parameters.AddWithValue(now);
             ledger.Parameters.AddWithValue(context.SeasonId); ledger.Parameters.AddWithValue(purpose.ToString());
+            ledger.Parameters.AddWithValue(context.DifficultyId); ledger.Parameters.AddWithValue(context.RulesetId);
+            ledger.Parameters.AddWithValue(context.ConfigVersion); ledger.Parameters.AddWithValue(context.StatsVersion);
             await ledger.ExecuteNonQueryAsync(cancellationToken);
         }
         await using (var operation = new NpgsqlCommand("""

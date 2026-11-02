@@ -11,6 +11,7 @@ using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Players;
 using FantasyCard.Server.Progression;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Settlement;
 using Npgsql;
 using System.Text.Json;
 
@@ -110,7 +111,8 @@ public sealed class BootstrapRepository(
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var command = new NpgsqlCommand("""
-            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at
+            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at,
+                   s.config_version,s.season_id,s.difficulty_id,s.ruleset_id,s.stats_version
             FROM match_settlements s
             WHERE s.player_id=$1 AND s.match_id=$2
               AND s.acknowledged_at IS NULL
@@ -126,9 +128,7 @@ public sealed class BootstrapRepository(
         SettlementResponse? settlement = null;
         if (await reader.ReadAsync(cancellationToken))
         {
-            using var details = JsonDocument.Parse(reader.GetString(4));
-            settlement = new SettlementResponse(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2),
-                reader.GetString(3), details.RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+            settlement = SettlementRepository.ReadResponse(reader);
         }
         return new BootstrapSettlementProjection(timeProvider.GetUtcNow(), CurrentConfigVersion, settlement);
     }
@@ -162,7 +162,8 @@ public sealed class BootstrapRepository(
             LIMIT 1
             """,
             """
-            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at
+            SELECT s.settlement_id,s.match_id,s.player_id,s.result,s.details_json::text,s.created_at,
+                   s.config_version,s.season_id,s.difficulty_id,s.ruleset_id,s.stats_version
             FROM match_settlements s
             WHERE s.player_id=$1
               AND s.acknowledged_at IS NULL
@@ -207,9 +208,7 @@ public sealed class BootstrapRepository(
         SettlementResponse? settlement = null;
         if (await reader.ReadAsync(cancellationToken))
         {
-            using var details = JsonDocument.Parse(reader.GetString(4));
-            settlement = new SettlementResponse(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2),
-                reader.GetString(3), details.RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+            settlement = SettlementRepository.ReadResponse(reader);
         }
         return new CoreState(wallet, materials, weapons, loadouts, match, settlement);
     }

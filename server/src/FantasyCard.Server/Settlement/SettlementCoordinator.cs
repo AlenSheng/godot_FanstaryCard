@@ -47,6 +47,8 @@ public sealed class SettlementCoordinator(
                     {
                         snapshot.RoomId,
                         snapshot.Revision,
+                        snapshot.ConfigVersion,
+                        snapshot.Season,
                         player.Phase,
                         player.Position,
                         heroClass = player.HeroClass.ToString(),
@@ -59,7 +61,7 @@ public sealed class SettlementCoordinator(
                         result,
                         details.RootElement,
                         assets,
-                        CancellationToken.None);
+                        CancellationToken.None, snapshot.Season, snapshot.ConfigVersion);
                 }
 
                 _completed[key] = _timeProvider.GetUtcNow();

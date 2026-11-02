@@ -473,7 +473,13 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         string? requestId = null, string? seasonId = null)
     {
         await using var command = new NpgsqlCommand(
-            "INSERT INTO inventory_movements(movement_id, player_id, item_id, from_location, to_location, reason, request_id, created_at,season_id) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+            """
+            INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
+                season_id,difficulty_id,ruleset_id,config_version,stats_version)
+            SELECT $1,$2,$3,$4,$5,$6,$7,$8,$9,CASE WHEN d.season_id IS NULL THEN NULL ELSE 'D0' END,
+                d.ruleset_id,d.config_version,d.stats_version
+            FROM (VALUES(1)) seed(n) LEFT JOIN season_definitions d ON d.season_id=$9
+            """,
             connection, transaction);
         command.Parameters.AddWithValue(Guid.CreateVersion7()); command.Parameters.AddWithValue(playerId);
         command.Parameters.AddWithValue(itemId); command.Parameters.AddWithValue(from); command.Parameters.AddWithValue(to);

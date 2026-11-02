@@ -559,15 +559,17 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                     throw new InvalidOperationException("Prepared equipment is no longer available for the match.");
                 await using var movement = new NpgsqlCommand(
                     """
-                    INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id)
-                    SELECT $1,$2,$3,'PreparationLocked','InMatchEquipped','match.start',$4,CURRENT_TIMESTAMP,season_id
-                    FROM equipments WHERE instance_id=$3 AND owner_id=$2
+                    INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version)
+                    SELECT $1,$2,$3,'PreparationLocked','InMatchEquipped','match.start',$4,CURRENT_TIMESTAMP,
+                        m.season_id,m.difficulty,m.ruleset_id,m.config_version,m.stats_version
+                    FROM equipments e CROSS JOIN matches m WHERE e.instance_id=$3 AND e.owner_id=$2 AND m.match_id=$5
                     """,
                     connection, transaction);
                 movement.Parameters.AddWithValue(Guid.CreateVersion7());
                 movement.Parameters.AddWithValue(asset.PlayerId);
                 movement.Parameters.AddWithValue(equipmentId);
                 movement.Parameters.AddWithValue(matchId.ToString("D"));
+                movement.Parameters.AddWithValue(matchId);
                 await movement.ExecuteNonQueryAsync(cancellationToken);
                 continue;
             }
