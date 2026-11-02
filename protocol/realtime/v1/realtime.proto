@@ -121,7 +121,9 @@ message RoomPlayer {
   string base_draw_interval_seconds = 19;
   RoomMonsterPool monster_pool = 20;
   RoomNumericalState numerical_state = 21;
+  RoomCombatActionState combat_action = 22;
 }
+message RoomCombatActionState { int64 next_sequence = 1; int64 remaining_ms = 2; }
 message RoomSnapshotEvent {
   string room_id = 1;
   string match_id = 2;
@@ -164,6 +166,7 @@ message BattlePlayCardsCommand {
   string battle_id = 1;
   string target_id = 2;
   repeated string card_instance_ids = 3;
+  string combat_action_id = 4;
 }
 
 message BattleComboResolvedEvent {
@@ -193,6 +196,8 @@ message BattleComboResolvedEvent {
   string resonance_multiplier = 24;
   int32 conflict_pair_count = 25;
   string conflict_cancellation = 26;
+  string combat_action_id = 27;
+  bool action_replayed = 28;
 }
 message CombatDamageSegment { string kind = 1; int32 amount = 2; }
 message BattleSelectTargetCommand { string battle_id = 1; string target_id = 2; }

@@ -87,8 +87,12 @@
     },
     {
       "id": "B03",
-      "status": "pending",
-      "requirement": "两次成功连放至少500ms，同combatActionId幂等，重连与快照恢复不绕过"
+      "status": "complete",
+      "requirement": "两次成功连放至少500ms，同combatActionId幂等，重连与快照恢复不绕过",
+      "evidence": [
+        "evidence/B03/result.json"
+      ],
+      "note": "500ms服务端房间时钟、序号动作ID、64项有界结果与持久高水位、确认前快照、冷恢复和终态只读回放通过；194领域/145服务端/114原生布尔检查，原失败与启动保护记录保留。"
     },
     {
       "id": "B04",

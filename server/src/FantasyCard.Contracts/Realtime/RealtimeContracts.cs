@@ -101,7 +101,9 @@ public sealed record RoomPlayerPayload(
     long DrawBlockSpeedRemainingMs = 0,
     string? BaseDrawIntervalSeconds = null,
     RoomMonsterPoolPayload? MonsterPool = null,
-    RoomNumericalStatePayload? NumericalState = null);
+    RoomNumericalStatePayload? NumericalState = null,
+    RoomCombatActionStatePayload? CombatAction = null);
+public sealed record RoomCombatActionStatePayload(long NextSequence, long RemainingMs);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,
     Guid? MatchId,
@@ -125,7 +127,8 @@ public sealed record CommandRejectedEventPayload(string Code, string Detail);
 public sealed record BattlePlayCardsCommandPayload(
     Guid BattleId,
     string TargetId,
-    IReadOnlyList<Guid> CardInstanceIds);
+    IReadOnlyList<Guid> CardInstanceIds,
+    string? CombatActionId = null);
 public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
 public sealed record BattleAbandonCommandPayload;
 public sealed record MonsterCardChooseCommandPayload(Guid CandidateId, bool Accept, Guid? ReplaceInstanceId = null);
@@ -158,7 +161,9 @@ public sealed record BattleComboResolvedEventPayload(
     string? DrawBlockSpeedSeconds = null,
     string? ResonanceMultiplier = null,
     int ConflictPairCount = 0,
-    string? ConflictCancellation = null);
+    string? ConflictCancellation = null,
+    string? CombatActionId = null,
+    bool ActionReplayed = false);
 public sealed record CombatDamageSegmentPayload(string Kind, int Amount);
 public sealed record RoomMoveCommandPayload(int Row, int Column);
 public sealed record RoomMovedEventPayload(Guid PlayerId, int Row, int Column);

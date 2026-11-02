@@ -34,6 +34,7 @@ public static class RealtimeProtobufCodec
                 {
                     w.String(3, cardInstanceId.ToString("D"));
                 }
+                w.String(4, payload.CombatActionId);
             }),
             "battle.select_target" when command.Payload is BattleSelectTargetCommandPayload payload => Message(w =>
             {
@@ -203,6 +204,7 @@ public static class RealtimeProtobufCodec
             w.String(20, value.SourceId);
             w.String(21, value.DrawSpeedSeconds); w.String(22, value.DrawSpeedModifier); w.String(23, value.DrawBlockSpeedSeconds);
             w.String(24, value.ResonanceMultiplier); w.Int64(25, value.ConflictPairCount); w.String(26, value.ConflictCancellation);
+            w.String(27, value.CombatActionId); if (value.ActionReplayed) w.Bool(28, true);
         }),
         "battle.target_selected" when message.Payload is BattleTargetSelectedEventPayload value => Message(w =>
         {
@@ -275,7 +277,8 @@ public static class RealtimeProtobufCodec
                 NullIfEmpty(payload.String(17)), checked((int)payload.Int64(18)),
                 NullIfEmpty(payload.RepeatedStrings(19).Select(id => ParseGuid(id, type)).ToArray()), NullIfEmpty(payload.String(20)),
                 NullIfEmpty(payload.String(21)), NullIfEmpty(payload.String(22)), NullIfEmpty(payload.String(23)),
-                NullIfEmpty(payload.String(24)), checked((int)payload.Int64(25)), NullIfEmpty(payload.String(26))),
+                NullIfEmpty(payload.String(24)), checked((int)payload.Int64(25)), NullIfEmpty(payload.String(26)),
+                NullIfEmpty(payload.String(27)), payload.Bool(28)),
             "battle.target_selected" => new BattleTargetSelectedEventPayload(
                 ParseGuid(payload.String(1), type), payload.String(2)),
             "reward.choice" => DecodeRewardChoice(payload),
@@ -322,7 +325,7 @@ public static class RealtimeProtobufCodec
         return new BattlePlayCardsCommandPayload(
             ParseGuid(payload.String(1), "battle.play_cards"),
             payload.String(2),
-            ids);
+            ids, NullIfEmpty(payload.String(4)));
     }
 
     private static BattleSelectTargetCommandPayload DecodeBattleSelectTarget(ReadOnlySpan<byte> bytes)
@@ -520,6 +523,7 @@ public static class RealtimeProtobufCodec
         w.Int64(17, value.DrawSpeedRemainingMs);
         w.Int64(18, value.DrawBlockSpeedRemainingMs);
         w.String(19, value.BaseDrawIntervalSeconds);
+        if (value.CombatAction is { } action) w.Bytes(22, Message(a => { a.Int64(1, action.NextSequence); a.Int64(2, action.RemainingMs); }));
         if (value.MonsterPool is { } pool) w.Bytes(20, Message(m =>
         {
             m.Int64(1, pool.Capacity);
@@ -708,7 +712,14 @@ public static class RealtimeProtobufCodec
         checked((int)value.Int64(13)),
         value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
         value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)),
-        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)));
+        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)), DecodeCombatAction(value.Bytes(22)));
+
+    private static RoomCombatActionStatePayload? DecodeCombatAction(byte[] bytes)
+    {
+        if (bytes.Length == 0) return null;
+        var value = Fields.Read(bytes);
+        return new(value.Int64(1), value.Int64(2));
+    }
 
     private static RoomPvePayload DecodePve(Fields value) => new(
         ParseGuid(value.String(1), "room.snapshot"),

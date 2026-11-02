@@ -739,7 +739,7 @@ func _receive(packet: PackedByteArray) -> void:
 		return
 	# Keep presentation silent for every replay packet, including after a snapshot
 	# or the final replay advances the recovery cursor.
-	payload["_replayed"] = recovering or (sequence > 0 and sequence < _connected_sequence)
+	payload["_replayed"] = recovering or (sequence > 0 and sequence < _connected_sequence) or bool(payload.get("action_replayed", false))
 	payload["_sequence"] = sequence
 	payload["_request_id"] = envelope.get("request_id", "")
 	payload["_event_revision"] = envelope.get("room_revision", -1)

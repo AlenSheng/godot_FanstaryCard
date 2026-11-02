@@ -63,6 +63,7 @@ public sealed class RoomPlayerState
     public MonsterCardPool MonsterPool { get; } = new();
     public IReadOnlyList<ExplorationItem> BotLoot { get; internal set; } = [];
     internal List<ExplorationItem> RecycledEquipment { get; } = [];
+    internal CombatActionLedger CombatActions { get; } = new();
     public bool IsBot { get; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
@@ -96,7 +97,8 @@ public sealed class RoomPlayerState
             botPveRemaining,
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
-            DisplayName, MonsterPool.Capture(), BotLoot);
+            DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture());
 }
 
 public sealed class DuelState
@@ -283,9 +285,9 @@ public sealed partial class BattleRoom
         Season = season;
         Numerics = numerics ?? (season is null ? NumericalRules.Legacy : NumericalRules.SeasonV1);
         Numerics.Validate();
-        if (season is not null && (!Numerics.SeasonMageRhythm || !Numerics.PvePositiveMinimum))
+        if (season is not null && (!Numerics.SeasonMageRhythm || !Numerics.PvePositiveMinimum || !Numerics.SeasonCombatActions))
             throw new DomainValidationException("A season-v1 room requires its published combat policies.");
-        if (season is null && (Numerics.SeasonMageRhythm || Numerics.PvePositiveMinimum))
+        if (season is null && (Numerics.SeasonMageRhythm || Numerics.PvePositiveMinimum || Numerics.SeasonCombatActions))
             throw new DomainValidationException("Season combat policies require a seasonal room context.");
         RoomId = roomId;
         ConfigVersion = configVersion;
@@ -552,6 +554,10 @@ public sealed partial class BattleRoom
             if (room.Season is not null && playerSnapshot.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
                 throw new DomainValidationException("The seasonal player snapshot has another Fenxian policy.");
             player.Combat.Restore(playerSnapshot.Combat);
+            player.CombatActions.Restore(playerSnapshot.LastCombatActionSequence, playerSnapshot.LastSuccessfulCombatAt,
+                playerSnapshot.CombatActions, snapshot.Elapsed, player.PlayerId, snapshot.Revision);
+            if (room.Season is null && player.CombatActions.LastSequence != 0)
+                throw new DomainValidationException("Legacy rooms cannot contain seasonal action state.");
             if (playerSnapshot.MonsterPool is { } pool)
                 player.MonsterPool.Restore(pool, player.Combat.Deck, room.Numerics.MonsterCapacity);
             player.BotLoot = playerSnapshot.BotLoot ?? [];
@@ -906,8 +912,18 @@ public sealed partial class BattleRoom
         string targetId,
         IReadOnlyList<Guid> cardInstanceIds,
         long expectedRevision,
-        DateTimeOffset now)
+        DateTimeOffset now,
+        string? combatActionId = null)
     {
+        string? actionHash = null;
+        var recordAction = Season is not null && !_combatPreview;
+        if (recordAction)
+        {
+            actionHash = CombatActionLedger.Hash(battleId, targetId, cardInstanceIds);
+            var replay = GetPlayer(playerId).CombatActions.Replay(combatActionId, actionHash);
+            if (replay is not null) return replay;
+            GetPlayer(playerId).CombatActions.ValidateNew(combatActionId, Elapsed);
+        }
         if (expectedRevision > Revision)
         {
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
@@ -1026,7 +1042,9 @@ public sealed partial class BattleRoom
             draft.DrawCharge + fenxian.Charge, draft.ImmediateDraw + fenxian.Draw,
             draft.DrawSpeedDuration.TotalSeconds, draft.DrawSpeedModifier,
             pveTarget is not null ? blockSpeed.TotalSeconds : 0,
-            draft.ResonanceMultiplier, draft.ConflictPairCount, draft.ConflictCancellation);
+            draft.ResonanceMultiplier, draft.ConflictPairCount, draft.ConflictCancellation,
+            recordAction ? combatActionId : null);
+        if (recordAction) attacker.CombatActions.Commit(combatActionId!, actionHash!, Elapsed, resolution);
         _combatFeedback.Add(new CombatFeedbackResolution(playerId.ToString("D"), resolution));
         return resolution;
     }
@@ -1384,13 +1402,14 @@ public sealed partial class BattleRoom
             hand.Select(card => ToBotCard(_catalog.Get(card.CardId, card.Level, card.ElementOverride))).ToArray(),
             BotRules.HpPercent(player.Combat.Hp, player.Combat.MaximumHp));
         if (choices.Length == 0) return true;
+        if (Season is not null && GetCombatActionStatus(player.PlayerId).RemainingMs > 0) return true;
         PlayCards(
             player.PlayerId,
             duelId,
             opponent.PlayerId.ToString("D"),
             choices.Select(index => hand[index].InstanceId).ToArray(),
             Revision,
-            now);
+            now, Season is null ? null : NewCombatActionId(player.PlayerId));
         return true;
     }
 

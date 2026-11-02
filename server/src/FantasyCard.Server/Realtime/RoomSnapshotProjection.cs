@@ -74,7 +74,10 @@ internal static class RoomSnapshotProjection
                     ? new RoomMonsterPoolPayload(snapshot.Numerics.MonsterCapacity,
                         pool.Pending.Select(ToPoolCard).ToArray(), pool.Active.Select(ToPoolCard).ToArray()) : null,
                 new RoomNumericalStatePayload(player.Combat.FenxianPolicy.ToString(), player.Combat.GuardianPolicy.ToString(),
-                    player.Combat.GuardianShieldRemainderTenths)),
+                    player.Combat.GuardianShieldRemainderTenths),
+                snapshot.Season is null ? null : new RoomCombatActionStatePayload(
+                    player.LastCombatActionSequence == long.MaxValue ? 0 : player.LastCombatActionSequence + 1,
+                    player.LastSuccessfulCombatAt is { } last ? Math.Clamp((long)Math.Ceiling((last + TimeSpan.FromMilliseconds(500) - snapshot.Elapsed).TotalMilliseconds), 0, 500) : 0)),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,

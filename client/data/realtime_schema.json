@@ -1,5 +1,5 @@
 {
-  "sha256": "dd6e87c0c0d0289dfa3e6b112f3addf4657268d7319c2b877138c44795cd759a",
+  "sha256": "1942f875806a7853d3c4c611ccfa235b1d1ed3d1eb7b3e2bdf9e3916c8761943",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -917,6 +917,26 @@
         "type": "RoomNumericalState",
         "repeated": false,
         "optional": false
+      },
+      "22": {
+        "name": "combat_action",
+        "type": "RoomCombatActionState",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "RoomCombatActionState": {
+      "1": {
+        "name": "next_sequence",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "remaining_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomSnapshotEvent": {
@@ -1133,6 +1153,12 @@
         "type": "string",
         "repeated": true,
         "optional": false
+      },
+      "4": {
+        "name": "combat_action_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
       }
     },
     "BattleComboResolvedEvent": {
@@ -1289,6 +1315,18 @@
       "26": {
         "name": "conflict_cancellation",
         "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "27": {
+        "name": "combat_action_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "28": {
+        "name": "action_replayed",
+        "type": "bool",
         "repeated": false,
         "optional": false
       }

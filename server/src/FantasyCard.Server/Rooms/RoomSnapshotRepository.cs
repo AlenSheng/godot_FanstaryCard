@@ -204,6 +204,7 @@ public static class RoomCheckpointPolicy
         {
             player.PlayerId,
             player.Phase,
+            player.LastCombatActionSequence,
             player.CurrentDuelId,
             player.Position,
             pveBattleId = player.Pve?.BattleId,

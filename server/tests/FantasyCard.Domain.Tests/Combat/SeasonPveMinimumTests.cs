@@ -81,7 +81,7 @@ public sealed class SeasonPveMinimumTests
         var duel = room.StartDuel(attacker.PlayerId, target.PlayerId, now);
         SeasonFenxianTests.SetHand(attacker, "C02");
         var result = room.PlayCards(attacker.PlayerId, duel.DuelId, target.PlayerId.ToString("D"),
-            attacker.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, now);
+            attacker.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, now, room.NewCombatActionId(attacker.PlayerId));
         Assert.Equal(0, result.Damage); Assert.Equal(100, target.Combat.Hp);
     }
 

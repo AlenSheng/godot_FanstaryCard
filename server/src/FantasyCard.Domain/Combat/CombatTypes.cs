@@ -161,7 +161,10 @@ public sealed record RoomPlayerSnapshot(
     IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
     string? DisplayName = null,
     Rooms.MonsterCardPoolSnapshot? MonsterPool = null,
-    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null);
+    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null,
+    long LastCombatActionSequence = 0,
+    TimeSpan? LastSuccessfulCombatAt = null,
+    IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null);
 
 public enum DuelEndReason : short
 {
@@ -276,7 +279,9 @@ public sealed record CombatResolution(
     double DrawBlockSpeedSeconds = 0,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0);
+    double ConflictCancellation = 0,
+    string? CombatActionId = null,
+    bool ActionReplayed = false);
 
 public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 

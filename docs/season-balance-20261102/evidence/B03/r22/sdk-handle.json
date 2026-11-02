@@ -1,0 +1,16 @@
+{
+  "container_id": "878a9542b74653b5b28300b2eca1107e11f27aa53b3ae0f13700baa072815ade",
+  "name": "fc-season-a03-storage-20261102-r22",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "3b2a740a959830f32736d0a777ea46ca0fa1cf57",
+  "archive_sha256": "298ec8e29b5cac1e914aaf34ca74614b7d111247b7e4940f683438f618f1e584",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~SeasonWallet|FullyQualifiedName~BootstrapProjectionEncodingTests|FullyQualifiedName~ReadyLobbyRulesTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room|FullyQualifiedName~PostgresTerminalContextTests|FullyQualifiedName~PostgresCombatPreviewTests|FullyQualifiedName~SeasonRoomProtocolTests|FullyQualifiedName~GameplayProtocolTests|FullyQualifiedName~RoomCheckpointPolicyTests|FullyQualifiedName~PostgresCombatActionTests|FullyQualifiedName~TerminalCommandContextTests|FullyQualifiedName~SettlementEncodingTests|FullyQualifiedName~Extraction_settlement_commits_all_assets_once_and_releases_notification|FullyQualifiedName~Settlement_asset_commit_rolls_back_the_whole_batch_and_withholds_notification|FullyQualifiedName~Death_settlement_moves_worn_equipment_to_relic_and_clears_loadout|FullyQualifiedName~RoomActor_extraction_commits_settlement_and_removes_terminal_room|FullyQualifiedName~RoomActor_death_preserves_safe_assets_and_moves_losses_to_relic|FullyQualifiedName~Settlement_worker_restart_recovers_pending_holds_exactly_once\" --logger \"trx;LogFileName=combat-policies-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName~FantasyCard.Domain.Tests.Seasons|FullyQualifiedName~BattleRoomSnapshotTests|FullyQualifiedName~BattleRoomSeasonContextTests|FullyQualifiedName~RoomRandomStreamTests|FullyQualifiedName~CurrentNumericalBaselineTests|FullyQualifiedName~CombatAuthoritativeRulesTests|FullyQualifiedName~MonsterCombatDamageTests|FullyQualifiedName~FenxianImmediateDrawPolicyTests|FullyQualifiedName~NumericalPolicySnapshotTests|FullyQualifiedName~SeasonFenxianTests|FullyQualifiedName~SeasonPveMinimumTests|FullyQualifiedName~SeasonCombatActionTests\" --logger \"trx;LogFileName=domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2571706368,
+  "free_disk_before": 3501826048
+}

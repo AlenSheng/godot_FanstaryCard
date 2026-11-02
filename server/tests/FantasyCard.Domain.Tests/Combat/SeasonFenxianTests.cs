@@ -74,10 +74,10 @@ public sealed class SeasonFenxianTests
         var selected = player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray();
         var preview = room.PreviewCards(player.PlayerId, player.Pve!.BattleId, "season-target", selected, room.Revision, DateTimeOffset.UnixEpoch);
         Assert.Equivalent(before, room.Capture(), strict: true);
-        var result = room.PlayCards(player.PlayerId, player.Pve.BattleId, "season-target", selected, room.Revision, DateTimeOffset.UnixEpoch);
+        var result = room.PlayCards(player.PlayerId, player.Pve.BattleId, "season-target", selected, room.Revision, DateTimeOffset.UnixEpoch, room.NewCombatActionId(player.PlayerId));
         Assert.Equal(explicitDraw.Effect.ImmediateDraw, result.ImmediateDraw);
         Assert.Equal(explicitDraw.Effect.ImmediateDraw, player.Combat.Deck.Hand.Count);
-        Assert.Equivalent(preview with { RoomRevision = result.RoomRevision }, result, strict: true);
+        Assert.Equivalent(preview with { RoomRevision = result.RoomRevision, CombatActionId = result.CombatActionId }, result, strict: true);
         Assert.Equal(20, TotalCards(player));
     }
 
@@ -93,7 +93,7 @@ public sealed class SeasonFenxianTests
         SetHand(player, ["C01", "C02", .. others]);
         player.Combat.SetFenxian(CardElement.Fire, 4, 5);
         var result = room.PlayCards(player.PlayerId, player.Pve!.BattleId, "season-target",
-            player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, DateTimeOffset.UnixEpoch);
+            player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, DateTimeOffset.UnixEpoch, room.NewCombatActionId(player.PlayerId));
         Assert.Equal(2, result.CoreCount);
         Assert.Equal(2, result.ImmediateDraw);
         Assert.Equal(20, TotalCards(player));
@@ -106,7 +106,7 @@ public sealed class SeasonFenxianTests
         player.Combat.SetFenxian(CardElement.Fire, 4, 5);
         SetHand(player, "C01");
         var result = room.PlayCards(player.PlayerId, player.Pve!.BattleId, "season-target",
-            player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, DateTimeOffset.UnixEpoch);
+            player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(), room.Revision, DateTimeOffset.UnixEpoch, room.NewCombatActionId(player.PlayerId));
         Assert.Equal(0, result.ImmediateDraw);
         Assert.Equal(0, player.Combat.FenxianCombo);
         var other = Guid.NewGuid();

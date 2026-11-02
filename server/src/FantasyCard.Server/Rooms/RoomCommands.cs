@@ -41,7 +41,8 @@ public sealed record ExecuteWithClientStateCommand<TResult>(
 
     public RoomCommandWithClientState<TResult> Execute(BattleRoom room)
     {
-		if (room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)
+        if ((room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted) &&
+            (Mutation is not PlayRoomCardsCommand play || !room.IsHistoricalCombatAction(PlayerId, play.CombatActionId)))
             throw new RoomAlreadyEndedException(new GetRoomClientStateCommand(PlayerId).Execute(room));
         var result = Mutation.Execute(room);
         RoomClientState? clientState = null;
@@ -252,10 +253,11 @@ public sealed record PlayRoomCardsCommand(
     string TargetId,
     IReadOnlyList<Guid> CardInstanceIds,
     long ExpectedRevision,
-    DateTimeOffset Now) : IRoomCommand<CombatResolution>
+    DateTimeOffset Now,
+    string? CombatActionId = null) : IRoomCommand<CombatResolution>
 {
     public CombatResolution Execute(BattleRoom room) =>
-        room.PlayCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
+        room.PlayCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now, CombatActionId);
 }
 
 public sealed record PreviewRoomCardsCommand(

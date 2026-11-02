@@ -41,6 +41,7 @@ var _cache_versions: Dictionary = {}
 var _lobby_request_epoch := 0
 var _shop_rotation_check_at := 0
 var room: Dictionary = {}
+var _combat_ready_at := 0
 var preparation: Dictionary = {}
 var ticket: Dictionary = {}
 var ready_prompt: Dictionary = {}
@@ -92,6 +93,9 @@ func _process(_delta: float) -> void:
 	_check_shop_rotation()
 	var now := Time.get_ticks_msec()
 	var pending_changed := false
+	if _combat_ready_at > 0 and now >= _combat_ready_at:
+		_combat_ready_at = 0
+		pending_changed = true
 	if not _rejected_state_request.is_empty():
 		if not _rejected_state_current(): _rejected_state_request = {}
 		elif now >= int(_rejected_state_request.deadline):
@@ -790,6 +794,7 @@ func allowed(action: String) -> bool:
 	if _room_actions_closed() or _rejected_state_current(): return false
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
 	if action == "battle.play_cards" and _target_selection_pending(): return false
+	if action == "battle.play_cards" and Time.get_ticks_msec() < _combat_ready_at: return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
@@ -1366,6 +1371,11 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 func _send_queued_command(queued: Dictionary) -> bool:
 	var request_id: String = gateway.new_id()
 	var dispatched: Dictionary = queued.duplicate(true)
+	if dispatched.action == "battle.play_cards" and room.has("season") and not dispatched.payload.has("combat_action_id"):
+		var action_state: Dictionary = room.get("player", {}).get("combat_action", {})
+		var next_sequence := int(action_state.get("next_sequence", 0))
+		if next_sequence <= 0: return false
+		dispatched.payload["combat_action_id"] = str(next_sequence) + ":" + gateway.new_id()
 	var origin_context: Dictionary = gateway.capture_context()
 	var sent_room_id: String = str(room.get("room_id", ""))
 	var sent_revision: int = int(room.get("room_revision", 0))
@@ -1490,6 +1500,9 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 	var match_id := str(snapshot.get("match_id", ""))
 	var room_id := str(snapshot.get("room_id", ""))
 	if match_id.is_empty() or room_id.is_empty(): return
+	var action_state: Dictionary = snapshot.get("player", {}).get("combat_action", {})
+	var remaining := clampi(int(action_state.get("remaining_ms", 0)), 0, 500)
+	_combat_ready_at = Time.get_ticks_msec() + remaining if remaining > 0 else 0
 	_command_recovery_context = {}
 	if match_id != _room_context_match_id or room_id != _room_context_room_id:
 		_rejected_state_request = {}
@@ -1527,6 +1540,13 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "room.command_cancelled":
 		var origin: Dictionary = payload.get("_origin_context", {})
 		if not _rejection_context_current(origin) or str(payload.get("room_id", "")) != str(origin.get("room_id", "")) or str(payload.get("match_id", "")) != str(origin.get("match_id", "")): return
+		if str(payload.get("reason", "")) == "CombatActionAlreadyApplied" and str(payload.get("command_type", "")) == "battle.play_cards":
+			var completed_id := str(payload.get("_request_id", ""))
+			_pending_commands.erase(completed_id)
+			_sound_commands.erase(completed_id)
+			if _pending_play.get("request_id", "") == completed_id: _pending_play = {}
+			changed.emit()
+			return
 		if str(payload.get("command_type", "")).is_empty() or str(payload.get("command_type", "")) != str(payload.get("_command_action", "")) or str(payload.get("reason", "")) != "RoomEndedBeforeApply": return
 		# The correlated operation did not execute. Never mark it confirmed or
 		# replay it against another room; the following snapshot is only authority.
