@@ -203,6 +203,9 @@ message PreparationEquipmentSnapshotResponse {
   string element = 5;
   optional string effect_affix = 6;
   optional string secondary_trait = 7;
+  optional string unique_affix = 8;
+  optional string unique_element = 9;
+  optional string stats_version = 10;
 }
 
 message PreparationResponse {
@@ -415,6 +418,8 @@ message EquipmentResponse {
   optional string stats_version = 14;
   optional string source_kind = 15;
   optional bool recipe_extracted = 16;
+  optional string unique_affix = 17;
+  optional string unique_element = 18;
 }
 
 message LoadoutResponse {

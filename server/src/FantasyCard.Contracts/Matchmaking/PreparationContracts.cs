@@ -48,7 +48,10 @@ public sealed record PreparationEquipmentSnapshotResponse(
     int Level,
     string Element,
     string? EffectAffix,
-    string? SecondaryTrait);
+    string? SecondaryTrait,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueAffix = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueElement = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? StatsVersion = null);
 
 public sealed record PreparationResponse(
     Guid PreparationId,

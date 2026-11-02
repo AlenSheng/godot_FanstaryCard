@@ -512,6 +512,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
             }
             if (asset.Equipment is { } generated)
             {
+                if(generated.Quality=="Red")throw new InvalidOperationException("Red equipment must already be minted by the dedicated weekly quota transaction.");
                 if (!EquipmentRewardRules.IsValid(generated))
                     throw new InvalidOperationException("Generated equipment attributes are invalid.");
                 if(realm.Context.Season is { } originalSeason)
@@ -521,8 +522,8 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                     INSERT INTO equipments(
                         instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,
                         element,effect_affix,secondary_trait,origin_season_id,season_id,asset_scope,source_match_id,
-                        generated_difficulty,stats_version,source_kind,loot_rule_id,source_loot_json)
-                    VALUES($1,$2,$3,$4,$9,$10,$5,1,CURRENT_TIMESTAMP,$6,$7,$8,$11,$11,$12,$13,$14,$15,$16,$17,$18)
+                        generated_difficulty,stats_version,source_kind,loot_rule_id,source_loot_json,unique_affix,unique_element)
+                    VALUES($1,$2,$3,$4,$9,$10,$5,1,CURRENT_TIMESTAMP,$6,$7,$8,$11,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
                     ON CONFLICT (instance_id) DO NOTHING
                     """, connection, transaction);
                 create.Parameters.AddWithValue(equipmentId);
@@ -544,6 +545,8 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                 create.Parameters.AddWithValue(NpgsqlDbType.Varchar, season is null ? DBNull.Value : generated.SeasonOrigin?.Source=="BotBudget" ? "BotReward" : "NaturalDrop");
                 create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.SeasonOrigin?.LootRuleId??DBNull.Value);
                 create.Parameters.AddWithValue(NpgsqlDbType.Jsonb,generated.SeasonOrigin is null?DBNull.Value:JsonSerializer.Serialize(generated.SeasonOrigin));
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.UniqueAffix??DBNull.Value);
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.UniqueElement??DBNull.Value);
                 if (await create.ExecuteNonQueryAsync(cancellationToken) == 1)
                 {
                     await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
@@ -554,7 +557,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
             Guid previousOwner;
             string source;
             await using (var select = new NpgsqlCommand(
-                "SELECT owner_id,location,slot,quality,level,is_bound,element,effect_affix,secondary_trait,season_id,stats_version,asset_scope,source_loot_json::text FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
+                "SELECT owner_id,location,slot,quality,level,is_bound,element,effect_affix,secondary_trait,season_id,stats_version,asset_scope,source_loot_json::text,unique_affix,unique_element FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
             {
                 select.Parameters.AddWithValue(equipmentId);
                 await using var reader = await select.ExecuteReaderAsync(cancellationToken);
@@ -574,7 +577,8 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                      reader.GetString(6) != expected.Element ||
                      (reader.IsDBNull(7) ? null : reader.GetString(7)) != expected.EffectAffix ||
                      (reader.IsDBNull(8) ? null : reader.GetString(8)) != expected.SecondaryTrait ||
-                     (reader.IsDBNull(12) ? null : JsonSerializer.Deserialize<SeasonEquipmentOrigin>(reader.GetString(12))) != expected.SeasonOrigin))
+                     (reader.IsDBNull(12) ? null : JsonSerializer.Deserialize<SeasonEquipmentOrigin>(reader.GetString(12))) != expected.SeasonOrigin ||
+                     (reader.IsDBNull(13)?null:reader.GetString(13))!=expected.UniqueAffix || (reader.IsDBNull(14)?null:reader.GetString(14))!=expected.UniqueElement))
                     throw new InvalidOperationException("The existing equipment does not match its reward snapshot.");
             }
             if (source is not ("InMatchBackpack" or "InMatchEquipped" or "RelicPile"))

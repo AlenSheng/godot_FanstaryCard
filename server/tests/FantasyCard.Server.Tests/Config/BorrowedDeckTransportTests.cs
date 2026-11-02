@@ -46,7 +46,7 @@ public sealed class BorrowedDeckTransportTests
     public void BorrowedSourceAndEffectiveLevelsRoundTripPublicRealtimeAndHttpSnapshots()
     {
         var config=GameConfigCatalog.Current;var template=config.BorrowedDeck(HeroClass.Priest);
-        var context=new SeasonContext("loans",4,"season-v1",config.Version,"loan-stats");
+        var context=new SeasonContext("loans",4,"season-v1",config.Version,"season-equipment-v1");
         var room=new BattleRoom(Guid.NewGuid(),config.Version,CombatCardCatalog.Create(config),73,season:context);
         var id=Guid.NewGuid();room.AddPlayer(new(id,HeroClass.Priest,template.CardIds,null,WeaponLevel:4,CardLevels:Enumerable.Repeat(4,20).ToArray(),BorrowedTemplateId:template.TemplateId));
         room.InitializeMap(ChaosMapGenerator.Generate(73,1));

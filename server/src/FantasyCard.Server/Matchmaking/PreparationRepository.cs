@@ -128,6 +128,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
                 : token.Length == 2 && (token[0] is 'D' or 'd') && token[1] is >= '0' and <= '5' ? token[1] - '0'
                 : throw new DomainValidationException("Season difficulty must be D0 through D5.");
             season = definition.ContextFor(difficulty);
+            _=GameConfigCatalog.Current.ResolveSeasonEquipment(season.StatsVersion);
             await using var unlocked = new NpgsqlCommand("SELECT highest_unlocked_difficulty FROM player_season_state WHERE player_id=$1 AND season_id=$2 AND archived_at IS NULL", connection, transaction);
             unlocked.Parameters.AddWithValue(playerId);unlocked.Parameters.AddWithValue(season.SeasonId);
             var unlockedValue = await unlocked.ExecuteScalarAsync(cancellationToken);
@@ -570,7 +571,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
 
             await using var command = new NpgsqlCommand(
                 """
-                SELECT slot, location, quality, level, element, effect_affix, secondary_trait,season_id,asset_scope,stats_version,source_kind FROM equipments
+                SELECT slot, location, quality, level, element, effect_affix, secondary_trait,season_id,asset_scope,stats_version,source_kind,unique_affix,unique_element FROM equipments
                 WHERE instance_id = $1 AND owner_id = $2
                 FOR SHARE
                 """,
@@ -614,7 +615,9 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
                 reader.GetInt32(3),
                 reader.GetString(4),
                 reader.IsDBNull(5) ? null : reader.GetString(5),
-                reader.IsDBNull(6) ? null : reader.GetString(6)));
+                reader.IsDBNull(6) ? null : reader.GetString(6),
+                reader.IsDBNull(11)?null:reader.GetString(11),reader.IsDBNull(12)?null:reader.GetString(12),
+                reader.IsDBNull(9)?null:reader.GetString(9)));
         }
 
         if (snapshots.Count(item => item.Quality is "Orange" or "Red") > 1)

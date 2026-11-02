@@ -580,6 +580,7 @@ public static class RealtimeProtobufCodec
         w.String(1, value.Slot); w.String(2, value.Quality); w.String(3, value.Element);
         w.String(4, value.EffectAffix); w.String(5, value.SecondaryTrait);
         w.Int64(6, value.Level); w.Bool(7, value.IsBound);
+        w.String(8,value.UniqueAffix);w.String(9,value.UniqueElement);w.String(10,value.StatsVersion);
     });
 
     private static byte[] EncodeInventoryItem(RoomInventoryItemPayload value) => Message(w =>
@@ -604,7 +605,8 @@ public static class RealtimeProtobufCodec
     {
         if (bytes.Length == 0) return null;
         var e = Fields.Read(bytes);
-        return new(e.String(1), e.String(2), e.String(3), NullIfEmpty(e.String(4)), NullIfEmpty(e.String(5)), checked((int)e.Int64(6)), e.Bool(7));
+        return new(e.String(1), e.String(2), e.String(3), NullIfEmpty(e.String(4)), NullIfEmpty(e.String(5)), checked((int)e.Int64(6)), e.Bool(7),
+            NullIfEmpty(e.String(8)),NullIfEmpty(e.String(9)),NullIfEmpty(e.String(10)));
     }
 
     private static RoomInventoryItemPayload DecodeInventoryItem(byte[] bytes)

@@ -175,7 +175,7 @@ public sealed class PostgresSeasonRoomTests
         await Assert.ThrowsAsync<InvalidOperationException>(() => snapshots.GetOwnedTerminalAsync(fixture.Player, snapshot.RoomId, fixture.Match, Ct));
     }
 
-    private static SeasonDefinition Define() => SeasonDefinition.FromCalendarDays("original", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "original-stats", highestOpenDifficulty: 5);
+    private static SeasonDefinition Define() => SeasonDefinition.FromCalendarDays("original", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "season-equipment-v1", highestOpenDifficulty: 5);
     private static async Task<Guid> PlayerAsync(PostgresTestSchema db, Clock clock)
     {
         var key = Guid.NewGuid().ToString("N");
@@ -185,7 +185,7 @@ public sealed class PostgresSeasonRoomTests
     private static async Task<(BattleRoom Room, Guid Match, Guid Player)> RoomAsync(PostgresTestSchema db, Clock clock, SeasonContext context)
     {
         var player = await PlayerAsync(db, clock);
-        var room = new BattleRoom(Guid.NewGuid(), context.ConfigVersion, CombatCardCatalog.CreatePrototype(), 73, season: context);
+        var room = new BattleRoom(Guid.NewGuid(), context.ConfigVersion, CombatCardCatalog.Create(GameConfigCatalog.Current), 73, season: context);
         room.AddPlayer(new(player, HeroClass.Mage, Enumerable.Range(1, 20).Select(i => $"common-{i:D2}").ToArray(), null));
         room.InitializeMap(ChaosMapGenerator.Generate(73, 1));
         var match = Guid.NewGuid();

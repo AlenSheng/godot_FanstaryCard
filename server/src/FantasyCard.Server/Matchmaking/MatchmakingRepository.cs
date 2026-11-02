@@ -511,7 +511,10 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 throw new InvalidOperationException("Prepared permanent level projection is invalid.");
             var equipmentIds = snapshot.EquipmentIds.Where(id => id.HasValue).Select(id => id!.Value).ToArray();
             var equipmentSnapshots = snapshot.EquipmentSnapshots ?? [];
-            var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait)).ToArray();
+            if(season is not null && equipmentSnapshots.Any(item=>item.StatsVersion is not null && item.StatsVersion!=season.StatsVersion))
+                throw new InvalidOperationException("Prepared equipment has another stats version.");
+            var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait,
+                item.UniqueAffix,item.UniqueElement is null?null:Enum.Parse<CardElement>(item.UniqueElement,true))).ToArray();
             result.Add(new(reader.GetGuid(0), false, (HeroClass)(int)snapshot.HeroClass, snapshot.CardIds,
                 snapshot.BackpackCapacity, snapshot.SafeSlotIndexes.Count, snapshot.PotionCount, equipmentIds,
                 snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2), snapshot.BorrowedTemplateId));

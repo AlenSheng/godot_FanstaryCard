@@ -126,7 +126,7 @@ public sealed class PostgresDifficultyUnlockTests
         return (match,snapshot);
     }
 
-    private static SeasonDefinition Define(string id,DateOnly start) => SeasonDefinition.FromCalendarDays(id,start,GameConfigCatalog.Current.Version,"difficulty-stats",highestOpenDifficulty:5);
+    private static SeasonDefinition Define(string id,DateOnly start) => SeasonDefinition.FromCalendarDays(id,start,GameConfigCatalog.Current.Version,"season-equipment-v1",highestOpenDifficulty:5);
     private static async Task<Guid> PlayerAsync(PostgresTestSchema db,Clock clock) =>
         (await new IdentityRepository(db.DataSource,new PlayerProvisioningService()).SignInLocalAsync(Guid.NewGuid().ToString("N"),"Unlock "+Guid.NewGuid().ToString("N")[..8],RandomNumberGenerator.GetBytes(32),clock.Now,clock.Now.AddHours(1),Ct)).UserId;
     private sealed class Clock(DateTimeOffset now) : TimeProvider

@@ -18,23 +18,33 @@ static func text(key: String) -> String:
 	return str(words.get(key, cap_words.get(key, key)))
 
 # All values are an equipment-only view; temporary acceleration is intentionally excluded.
-static func inspect(loadout: Array, hero_class: String) -> Dictionary:
-	var raw: Dictionary = Model.aggregate_attributes(loadout)
+static func inspect(loadout: Array, hero_class: String, index: Dictionary = {}) -> Dictionary:
+	if not Model.can_inspect(loadout, index): return {}
+	var raw: Dictionary = Model.aggregate_attributes(loadout, index)
+	var policy: Dictionary = {}
+	var rapid := false
+	for item in loadout:
+		var selected: Dictionary = Model.rules(item,index)
+		if not selected.is_empty(): policy = selected
+		if str(Model.gear(item).get("unique_affix",Model.gear(item).get("uniqueAffix",""))) == "RapidDraw": rapid = true
+	var resistance_cap: float = float(policy.get("resistance_cap",.6))
 	var result := {}
 	for key in raw:
 		var value: float = float(raw[key])
-		var effective: float = minf(0.60, value) if str(key).begins_with("resistance_") else value
+		var effective: float = minf(resistance_cap, value) if str(key).begins_with("resistance_") else value
 		result[key] = {"raw":value, "effective":effective, "excess":maxf(0, value - effective)}
 	var modifier: float = float(raw.get("draw_interval", 0.0))
 	var seconds: float = 4.0 * (1.0 + modifier)
-	var effective_seconds: float = clampf(seconds, 1.8, 6.0)
+	var minimum: float = float(policy.get("rapid_draw_floor_seconds" if rapid else "draw_floor_seconds",1.5 if rapid else 1.8))
+	var maximum: float = float(policy.get("draw_ceiling_seconds",6.0))
+	var effective_seconds: float = clampf(seconds, minimum, maximum)
 	result["interval_seconds"] = {"raw":seconds, "effective":effective_seconds, "excess":maxf(0.0, effective_seconds - seconds)}
 	for kind in Model.AFFIXES:
-		var state: Dictionary = Model.set_state(loadout, kind)
+		var state: Dictionary = Model.set_state(loadout, kind, index)
 		var contributions := {}
 		for field in Model.AFFIX_FIELDS[kind]: contributions[field] = 0.0
 		for item in loadout:
-			var contribution: Dictionary = Model.affix_contributions(item)
+			var contribution: Dictionary = Model.affix_contributions(item, index)
 			if contribution.kind == kind:
 				for field in contributions: contributions[field] += float(contribution.values.get(field, 0.0))
 		var multiple: float = float(Model.MULTIPLIERS.get(clampi(int(state.count), 2, 5), 1.0))
@@ -59,14 +69,13 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 	lines.append(text("draw_stage"))
 	lines.append(text("shield_stage"))
 	lines.append("")
-	var unsupported := false
-	for item in before + after:
-		if str(Model.gear(item).get("quality", "")) == "Red": unsupported = true
+	var catalog_index: Dictionary = Game.room_catalog_index()
+	var unsupported := not Model.can_inspect(before+after,catalog_index)
 	if unsupported:
-		lines.append(text("unsupported"))
+		lines.append(P.localized("config_archive_unavailable"))
 	else:
-		var old: Dictionary = inspect(before, Game.hero_class)
-		var current: Dictionary = inspect(after, Game.hero_class)
+		var old: Dictionary = inspect(before, Game.hero_class,catalog_index)
+		var current: Dictionary = inspect(after, Game.hero_class,catalog_index)
 		var keys: Array = old.keys()
 		for key in current.keys():
 			if key not in keys: keys.append(key)

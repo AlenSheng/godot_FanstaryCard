@@ -1,5 +1,5 @@
 {
-  "sha256": "49b6946d7141ac4f6a3978c7759780ca3ff96909c7e55e39a9991d349b546d87",
+  "sha256": "69c4cb5f4faa10acaab0a800958077825b3de5a5a30505b39a4c0cf65db31d1b",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -831,6 +831,24 @@
       },
       "7": {
         "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "unique_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "unique_element",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "stats_version",
         "type": "string",
         "repeated": false,
         "optional": true
@@ -1704,6 +1722,18 @@
       "16": {
         "name": "recipe_extracted",
         "type": "bool",
+        "repeated": false,
+        "optional": true
+      },
+      "17": {
+        "name": "unique_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "18": {
+        "name": "unique_element",
+        "type": "string",
         "repeated": false,
         "optional": true
       }

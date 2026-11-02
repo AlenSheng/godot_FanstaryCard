@@ -76,15 +76,19 @@ public sealed partial class BattleRoom
     }
 
     private CombatEquipmentProfile CalculateArmor(IReadOnlyList<ExplorationItem> armor) =>
-        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray(), _catalog.Configuration);
+        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray(), _catalog.Configuration,
+            _catalog.UsesPublishedConfiguration?Season?.StatsVersion:null);
 
-    private static CombatEquipmentItem ToCombatEquipment(ExplorationItem item)
+    private CombatEquipmentItem ToCombatEquipment(ExplorationItem item)
     {
         if (item.Kind != ExplorationItemKind.Equipment || item.Quantity != 1 ||
             item.Equipment is not { } data || !Guid.TryParse(item.ItemId, out var id) ||
             !Enum.TryParse<CardElement>(data.Element, out var element))
             throw new DomainValidationException("The armor has no valid combat attributes.");
-        return new(id, data.Slot, data.Quality, data.Level, element, data.EffectAffix, data.SecondaryTrait);
+        if (Season is not null && data.StatsVersion is not null && data.StatsVersion != Season.StatsVersion)
+            throw new DomainValidationException("The armor stats version differs from its frozen room context.");
+        return new(id, data.Slot, data.Quality, data.Level, element, data.EffectAffix, data.SecondaryTrait,data.UniqueAffix,
+            data.UniqueElement is null?null:Enum.Parse<CardElement>(data.UniqueElement,true));
     }
 
     private int EquipReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)

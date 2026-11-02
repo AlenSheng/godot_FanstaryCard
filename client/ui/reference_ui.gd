@@ -935,6 +935,25 @@ func _gear() -> void:
 				else: host._show_equipment_details(item, func(): host._equip(item)),
 			Game.busy or item.get("location") not in ["Inventory", "Equipped"], BLUE if selected else ORANGE)
 		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
+		entry.text = ""
+		var caption := Label.new()
+		caption.name = "EquipmentEntryCaption"
+		caption.text = entry_text
+		caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		caption.add_theme_font_override("font",P.font("title"))
+		caption.add_theme_font_size_override("font_size",24)
+		caption.add_theme_color_override("font_color",P.MUTED if entry.disabled else P.PAPER)
+		entry.add_child(caption)
+		P.apply_text_direction(caption)
+		var fit_caption := func():
+			caption.position = Vector2(24,8)
+			caption.size = Vector2(maxf(1,entry.size.x-48),maxf(1,entry.size.y-16))
+			entry.custom_minimum_size.y = maxf(72,caption.get_line_count()*caption.get_theme_font("font").get_height(24)+16)
+		entry.resized.connect(fit_caption)
+		fit_caption.call_deferred()
 		entry.tooltip_text = host.EquipmentDetails.description(item, Game.room_catalog_index()) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
@@ -991,7 +1010,9 @@ func _equipment_summary_scroll(scroll_name: String, label_name: String, value: S
 	return scroll
 
 func _equipment_attribute_lines(loadout: Array) -> Array[String]:
+	if not EquipmentCompareModel.can_inspect(loadout,Game.room_catalog_index()): return [P.localized("config_archive_unavailable")]
 	var totals := EquipmentCompareModel.aggregate_attributes(loadout, Game.room_catalog_index())
+	var numbers: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,Game.hero_class,Game.room_catalog_index())
 	var lines: Array[String] = []
 	for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
 		var damage := float(totals.get("damage_" + element, 0.0))
@@ -999,7 +1020,9 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 		if is_zero_approx(damage) and is_zero_approx(resistance): continue
 		var values: Array[String] = []
 		if not is_zero_approx(damage): values.append("%s %s" % [P.localized("battle_attack_bonus"), _summary_percent(damage)])
-		if not is_zero_approx(resistance): values.append("%s %s" % [P.localized("resistance"), _summary_percent(resistance)])
+		if not is_zero_approx(resistance):
+			var state: Dictionary = numbers["resistance_"+element]
+			values.append(P.localized("equipment_resistance_values") % [_summary_percent(float(state.effective)),_summary_percent(float(state.raw)),_summary_percent(float(state.excess))])
 		lines.append("%s · %s" % [P.word(element), " · ".join(values)])
 	var secondary: Array[String] = []
 	var draw_interval := float(totals.get("draw_interval", 0.0))
@@ -1007,6 +1030,7 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 	if not is_zero_approx(draw_interval): secondary.append("%s %s" % [P.localized("battle_draw_interval_seconds"), _summary_percent(draw_interval)])
 	if not is_zero_approx(forced_escape): secondary.append("%s %s" % [P.localized("force_escape"), _summary_percent(forced_escape)])
 	if not secondary.is_empty(): lines.append(" · ".join(secondary))
+	if not is_zero_approx(draw_interval): lines.append(P.localized("battle_draw_interval_summary") % float(numbers.interval_seconds.effective))
 	return lines
 
 func _equipment_set_lines(loadout: Array) -> Array[String]:
@@ -1019,7 +1043,7 @@ func _equipment_set_lines(loadout: Array) -> Array[String]:
 				"Piercing":
 					line += "\n  " + P.localized("equipment_set_piercing") % _summary_percent(float(state.values.get("piercing_percent", 0.0)))
 				"Bulwark":
-					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)))]
+					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)) if Game.hero_class=="Guardian" else 0.0)]
 				"Vitality":
 					line += "\n  " + P.localized("equipment_set_vitality") % [_summary_percent(float(state.values.get("vitality_heal_percent", 0.0))), _summary_percent(float(state.values.get("vitality_overcap_percent", 0.0)))]
 		else:

@@ -46,7 +46,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             $"""
             SELECT instance_id, slot, quality, level, is_bound, location, version,
                    element, effect_affix, secondary_trait,origin_season_id,season_id,asset_scope,
-                   stats_version,source_kind,recipe_extracted
+                   stats_version,source_kind,recipe_extracted,unique_affix,unique_element
             FROM equipments e
             WHERE owner_id = $1 AND location IN ('Inventory', 'Equipped') AND ({scopeFilter})
             ORDER BY CASE location WHEN 'Equipped' THEN 0 ELSE 1 END, created_at, instance_id
@@ -63,7 +63,9 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
                     AssetScope = reader.IsDBNull(12) ? null : reader.GetString(12),
                     StatsVersion = reader.IsDBNull(13) ? null : reader.GetString(13),
                     SourceKind = reader.IsDBNull(14) ? null : reader.GetString(14),
-                    RecipeExtracted = reader.IsDBNull(12) ? null : reader.GetBoolean(15)
+                    RecipeExtracted = reader.IsDBNull(12) ? null : reader.GetBoolean(15),
+                    UniqueAffix=reader.IsDBNull(16)?null:reader.GetString(16),
+                    UniqueElement=reader.IsDBNull(17)?null:reader.GetString(17)
                 });
         }
 
@@ -269,7 +271,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             return replay;
         }
         await using var command = new NpgsqlCommand(
-            "SELECT slot, quality, level, is_bound, location, version, element, effect_affix, secondary_trait FROM equipments WHERE instance_id=$1 AND owner_id=$2 FOR UPDATE", connection, transaction);
+            "SELECT slot, quality, level, is_bound, location, version, element, effect_affix, secondary_trait,unique_affix,unique_element,stats_version FROM equipments WHERE instance_id=$1 AND owner_id=$2 FOR UPDATE", connection, transaction);
         command.Parameters.AddWithValue(equipmentId); command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         if (!await reader.ReadAsync(cancellationToken)) throw new DomainValidationException("Equipment was not found.");
@@ -278,6 +280,8 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         var element = reader.IsDBNull(6) ? null : reader.GetString(6);
         var effectAffix = reader.IsDBNull(7) ? null : reader.GetString(7);
         var secondaryTrait = reader.IsDBNull(8) ? null : reader.GetString(8);
+        var uniqueAffix=reader.IsDBNull(9)?null:reader.GetString(9);var uniqueElement=reader.IsDBNull(10)?null:reader.GetString(10);
+        var statsVersion=reader.IsDBNull(11)?null:reader.GetString(11);
         if (location is not ("Inventory" or "Equipped") || level >= 5) throw new DomainValidationException("Equipment cannot be enhanced in its current state.");
         if (version != request.ExpectedVersion) throw new DomainValidationException("Equipment changed. Reload and retry.");
         var cost = FragmentCost(quality, level + 1);
@@ -306,7 +310,8 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             await WriteInventoryMovementAsync(connection, transaction, playerId, materialId.Value, "Inventory", "EnhanceMaterialConsumed", "equipment.enhance", cancellationToken, requestId);
         }
         await WriteEconomyLedgerAsync(connection, transaction, playerId, -cost, fragments, "EquipmentFragments", "equipment.enhance", cancellationToken, requestId);
-        var result = new EnhanceResult(new EquipmentResponse(equipmentId, slot, quality, level + 1, bound, location, version + 1, element, effectAffix, secondaryTrait), fragments, materialId);
+        var result = new EnhanceResult(new EquipmentResponse(equipmentId, slot, quality, level + 1, bound, location, version + 1, element, effectAffix, secondaryTrait,
+            StatsVersion:statsVersion,UniqueAffix:uniqueAffix,UniqueElement:uniqueElement), fragments, materialId);
         await WriteIdempotentResultAsync(connection, transaction, playerId, "equipment.enhance", requestId, requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return result;

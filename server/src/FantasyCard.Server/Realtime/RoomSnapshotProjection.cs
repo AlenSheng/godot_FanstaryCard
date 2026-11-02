@@ -68,7 +68,7 @@ internal static class RoomSnapshotProjection
                 PositiveMilliseconds(player.Combat.DrawSpeedRemaining) ?? 0,
                 PositiveMilliseconds(player.Combat.DrawBlockSpeedRemaining) ?? 0,
                 Math.Clamp(4 * (1 + (player.Combat.Equipment?.DrawIntervalModifier ?? 0)),
-                    player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8, 6.0)
+                    player.Combat.Equipment?.MinimumDrawInterval??(player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8),player.Combat.Equipment?.MaximumDrawInterval??6.0)
                     .ToString("R", CultureInfo.InvariantCulture),
                 snapshot.Numerics?.OptionalMonsterPool == true && player.MonsterPool is { } pool
                     ? new RoomMonsterPoolPayload(snapshot.Numerics.MonsterCapacity,
@@ -270,7 +270,7 @@ internal static class RoomSnapshotProjection
         item.SlotIndex);
 
     internal static RoomEquipmentPayload? ToEquipment(EquipmentRewardData? item) => item is null ? null :
-        new(item.Slot, item.Quality, item.Element, item.EffectAffix, item.SecondaryTrait, item.Level, item.IsBound);
+        new(item.Slot, item.Quality, item.Element, item.EffectAffix, item.SecondaryTrait, item.Level, item.IsBound,item.UniqueAffix,item.UniqueElement,item.StatsVersion??item.SeasonOrigin?.Season.StatsVersion);
 
     private static RewardChoiceEventPayload ToReward(RewardChoiceSnapshot reward) => new(
         (int)reward.Layer,

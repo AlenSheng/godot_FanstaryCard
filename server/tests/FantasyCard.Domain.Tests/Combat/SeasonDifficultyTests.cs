@@ -128,7 +128,7 @@ public sealed class SeasonDifficultyTests
     {
         for (var difficulty=0;difficulty<6;difficulty++)
         {
-            var context = new SeasonContext("difficulty",difficulty,"season-v1",GameConfigCatalog.Current.Version,"difficulty-test");
+            var context = new SeasonContext("difficulty",difficulty,"season-v1",GameConfigCatalog.Current.Version,"season-equipment-v1");
             var room = new BattleRoom(Guid.NewGuid(),context.ConfigVersion,CombatCardCatalog.Create(GameConfigCatalog.Current),73,season:context);
             var cards = SeasonFenxianTests.Starter(hero);SeasonFenxianTests.ValidateDeck(hero,cards);
             var battle = Create("O1",GameConfigCatalog.Current.SeasonDifficulty(difficulty));
@@ -142,7 +142,7 @@ public sealed class SeasonDifficultyTests
     [Fact]
     public void RoomSnapshotPinsGeneratedPoliciesAndRejectsMissingOrDifferentScaling()
     {
-        var context = new SeasonContext("snapshot",5,"season-v1",GameConfigCatalog.Current.Version,"difficulty-test");
+        var context = new SeasonContext("snapshot",5,"season-v1",GameConfigCatalog.Current.Version,"season-equipment-v1");
         var catalog = CombatCardCatalog.Create(GameConfigCatalog.Current);
         var room = new BattleRoom(Guid.NewGuid(),context.ConfigVersion,catalog,73,season:context);
         room.AddPlayer(new(Guid.NewGuid(),HeroClass.Mage,SeasonFenxianTests.Starter(HeroClass.Mage),null));

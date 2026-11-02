@@ -156,7 +156,7 @@ public sealed class PostgresSeasonBorrowedDeckTests
     }
 
     private static CreatePreparationRequest Request(HeroClassDto hero,int difficulty)=>new(hero,0,[null,null,null,null,null],BackpackTierDto.Free,[],0,"D"+difficulty,"loans",true);
-    private static SeasonDefinition Define()=>SeasonDefinition.FromCalendarDays("loans",new DateOnly(2026,11,2),GameConfigCatalog.Current.Version,"loan-stats",highestOpenDifficulty:5);
+    private static SeasonDefinition Define()=>SeasonDefinition.FromCalendarDays("loans",new DateOnly(2026,11,2),GameConfigCatalog.Current.Version,"season-equipment-v1",highestOpenDifficulty:5);
     private static async Task<Guid> PlayerAsync(PostgresTestSchema db,Clock clock)=>(await new IdentityRepository(db.DataSource,new PlayerProvisioningService()).SignInLocalAsync(Guid.NewGuid().ToString("N"),"Borrow "+Guid.NewGuid().ToString("N")[..8],RandomNumberGenerator.GetBytes(32),clock.Now,clock.Now.AddHours(1),Ct)).UserId;
     private static Task<string> AssetsAsync(PostgresTestSchema db,Guid player)=>db.ScalarAsync<string>("""
         SELECT jsonb_build_object(

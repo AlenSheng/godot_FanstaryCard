@@ -15,20 +15,26 @@ public sealed record EquipmentRewardData(
     string SecondaryTrait,
     int Level = 0,
     bool IsBound = false,
-    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] SeasonEquipmentOrigin? SeasonOrigin = null);
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] SeasonEquipmentOrigin? SeasonOrigin = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueAffix = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? UniqueElement = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? StatsVersion = null);
 
 public static class EquipmentRewardRules
 {
     public static bool IsValid(EquipmentRewardData equipment) =>
         (equipment.Slot is "Head" or "Chest" or "Hands" or "Legs" or "Feet") &&
         equipment.Level is >= 0 and <= 5 &&
-        (equipment.Quality is "White" or "Green" or "Blue" or "Purple" or "Orange") &&
+        (equipment.Quality is "White" or "Green" or "Blue" or "Purple" or "Orange" or "Red") &&
         (equipment.Element is "Wood" or "Fire" or "Earth" or "Metal" or "Water") &&
         (equipment.EffectAffix is null or "Piercing" or "Bulwark" or "Vitality") &&
         (equipment.SecondaryTrait is "DrawInterval" or "ForcedEscape") &&
         (equipment.SecondaryTrait != "ForcedEscape" || equipment.Slot == "Feet") &&
-        (equipment.Quality is "Purple" or "Orange" || equipment.EffectAffix is null) &&
-        (equipment.Quality != "Orange" || equipment.EffectAffix is not null);
+        (equipment.Quality is "Purple" or "Orange" or "Red" || equipment.EffectAffix is null) &&
+        (equipment.Quality is not ("Orange" or "Red") || equipment.EffectAffix is not null) &&
+        (equipment.UniqueAffix is null || equipment.Quality=="Red" && equipment.UniqueAffix is "Inferno" or "RapidDraw" or "ChainDraw" or "Scavenge" or "GoldenCicada") &&
+        (equipment.UniqueAffix!="GoldenCicada" || equipment.Slot=="Feet") &&
+        (equipment.UniqueElement is null || equipment.UniqueAffix=="Inferno" && equipment.UniqueElement is "Fire" or "Wood" or "Earth" or "Metal" or "Water");
 }
 
 public sealed record RewardChoiceOption(string OptionId, RewardChoiceKind Kind, ExplorationItem? Item = null, int HealPercent = 0);
@@ -132,11 +138,12 @@ public sealed class RewardChoiceState
                 quality = quality switch { "White" => "Green", "Green" => "Blue", "Blue" => "Purple", _ => "Orange" };
         }
         var slot = slots[random.Next(slots.Length)];
-        var affixRate = configuration.EquipmentQuality(quality).AffixDropRate;
+        var affixRate = season is not null && configuration.ResolveSeasonEquipment(season.Season.StatsVersion) is not null && quality=="Purple"
+            ? configuration.SeasonDifficulty(season.Season.Difficulty).PurpleAffixChance : configuration.EquipmentQuality(quality).AffixDropRate;
         var hasAffix = affixRate >= 1 || affixRate > 0 && random.Next(100) < Math.Round(affixRate * 100);
         var effectAffix = hasAffix ? affixes[random.Next(affixes.Length)] : null;
         var secondaryTrait = slot == "Feet" && random.Next(2) == 1 ? "ForcedEscape" : "DrawInterval";
-        return new(slot, quality, elements[random.Next(elements.Length)], effectAffix, secondaryTrait,SeasonOrigin:origin);
+        return new(slot, quality, elements[random.Next(elements.Length)], effectAffix, secondaryTrait,SeasonOrigin:origin,StatsVersion:season?.Season.StatsVersion);
     }
 
     private static Guid CreateDeterministicId(Random random)

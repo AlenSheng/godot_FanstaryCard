@@ -104,20 +104,20 @@ public sealed class PostgresCombatActionTests
     }
     private static async Task<Fixture> Setup(PostgresTestSchema db)
     {
-        var season = SeasonDefinition.FromCalendarDays("actions", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "stats");
+        var season = SeasonDefinition.FromCalendarDays("actions", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "season-equipment-v1");
         var clock = new Clock(season.StartsAtUtc);
         var seasons = new SeasonRepository(db.DataSource, clock); await seasons.PublishAsync(season, new string('a', 64), Ct);
         var key = Guid.NewGuid().ToString("N");
         var player = await new IdentityRepository(db.DataSource, new PlayerProvisioningService()).SignInLocalAsync(key,
             "Action " + key[..10], RandomNumberGenerator.GetBytes(32), clock.GetUtcNow(), clock.GetUtcNow().AddHours(1), Ct);
         await seasons.EnsurePlayerAsync(player.UserId, season.ContextFor(0), Ct);
-        var room = new BattleRoom(Guid.NewGuid(), season.ConfigVersion, CombatCardCatalog.CreatePrototype(), 73, season: season.ContextFor(0));
+        var room = new BattleRoom(Guid.NewGuid(), season.ConfigVersion, CombatCardCatalog.Create(GameConfigCatalog.Current), 73, season: season.ContextFor(0));
         var cards = Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"MAG-{i:D2}")).ToArray();
         room.AddPlayer(new(player.UserId, HeroClass.Mage, cards, null)); room.InitializeMap(ChaosMapGenerator.Generate(73, 1));
         var match = Guid.NewGuid();
         await using (var command = db.DataSource.CreateCommand("""
             INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at,season_id,ruleset_id,stats_version)
-            VALUES($1,$2,'ChaosRealm','D0',73,$3,'Running',$4,'actions','season-v1','stats')
+            VALUES($1,$2,'ChaosRealm','D0',73,$3,'Running',$4,'actions','season-v1','season-equipment-v1')
             """))
         {
             command.Parameters.AddWithValue(match); command.Parameters.AddWithValue(room.RoomId);

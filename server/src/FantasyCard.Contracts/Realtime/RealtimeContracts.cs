@@ -39,7 +39,8 @@ public sealed record RoomSetPayload(string Kind, int Count, int Required, bool A
 public sealed record RoomBattleStatusPayload(string PassiveKind, int Combo, string? CoreElement,
     IReadOnlyList<RoomStatPayload> Bonuses, IReadOnlyList<RoomSetPayload> Sets, string DrawIntervalSeconds,
     int ChargeLevel = 0);
-public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false);
+public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false,
+    string? UniqueAffix = null,string? UniqueElement = null,string? StatsVersion = null);
 public sealed record RoomInventoryItemPayload(string ItemId, string Kind, int Quantity, bool IsSafe, RoomEquipmentPayload? Equipment = null, int SlotIndex = -1);
 public sealed record RoomRelicPilePayload(Guid PileId, string OwnerName, long Version, IReadOnlyList<RoomInventoryItemPayload> Items,
     bool OwnerNameIsFallback = false);

@@ -179,11 +179,11 @@ public sealed partial class RoomReadyCoordinator(
                 var item = player.Equipment?.SingleOrDefault(value => value.ItemId == id);
                 var details = item is null ? null : new EquipmentRewardData(
                     item.Slot, item.Quality, item.Element.ToString(), item.EffectAffix,
-                    item.SecondaryTrait ?? "DrawInterval", item.Level);
+                    item.SecondaryTrait ?? "DrawInterval", item.Level,UniqueAffix:item.UniqueAffix,UniqueElement:item.UniqueElement?.ToString(),StatsVersion:assignment.Season?.StatsVersion);
                 return new ExplorationItem(id.ToString("D"), ExplorationItemKind.Equipment,
                     Equipment: details, IsGenerated: false);
             }).ToArray();
-            var equipment = EquipmentCombatRules.Calculate(player.Equipment, configuration);
+            var equipment = EquipmentCombatRules.Calculate(player.Equipment, configuration,assignment.Season?.StatsVersion);
             var state = room.AddPlayer(new BattleRoomPlayerSetup(player.PlayerId, player.HeroClass,
                 player.CardIds, null, WeaponLevel: player.WeaponLevel,
                 InventoryCapacity: player.InventoryCapacity, SafeSlots: player.SafeSlots,

@@ -4,6 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
+const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -71,7 +72,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -99,6 +100,9 @@ func _selected(scenario: String) -> bool:
 	var selected := OS.get_environment("FANTASYCARD_REVIEW_SCREENS")
 	if selected.is_empty(): return true
 	for value in selected.split(","):
+		if value.begins_with("="):
+			if scenario == value.substr(1): return true
+			continue
 		if scenario == value or scenario.begins_with(value + "_"): return true
 	return false
 
@@ -194,6 +198,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c05_"): return await _prepare_equipment_scene(scenario)
 	if scenario.begins_with("mail_template_"):
 		var template_id := scenario.trim_prefix("mail_template_").trim_suffix("_bottom")
 		var arguments: Array = []
@@ -366,6 +371,52 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 		"settlement_success", "settlement_death":
 			Game.settlement = {"result": "Extracted" if scenario == "settlement_success" else "Dead", "settlementId": "review-settlement", "details": {"items": [{"item": {"kind": "HealthPotion", "quantity": 2}}, {"item": {"kind": "EquipmentFragments", "quantity": 123456}}, {"item": _item(35)}]}}
 		"recovery": Game._settlement_recovery_match_id = "review-recovery"
+	return true
+
+func _c05_gear(id: String, slot: String, red: bool = false, unique: String = "") -> Dictionary:
+	return {"instanceId":id,"slot":slot,"quality":"Red" if red else "Purple","element":"Fire","effectAffix":"Piercing","secondaryTrait":"DrawInterval","level":5,"version":7,"location":"Equipped","isBound":false,"statsVersion":"season-equipment-v1","uniqueAffix":unique if red else null,"uniqueElement":"Fire" if red and unique=="Inferno" else null}
+
+func _c05_item(id: String,slot: String,red: bool=false,unique: String="") -> Dictionary:
+	return {"item_id":id,"kind":"Equipment","quantity":1,"slot_index":0,"is_safe":false,"equipment":{"slot":slot,"quality":"Red" if red else "Purple","element":"Fire","effect_affix":"Piercing","secondary_trait":"DrawInterval","level":5,"stats_version":"season-equipment-v1","unique_affix":unique if red else null,"unique_element":"Fire" if red and unique=="Inferno" else null}}
+
+func _prepare_equipment_scene(scenario: String) -> bool:
+	var armor: Array=[]
+	for slot in ["Head","Chest","Hands","Legs","Feet"]:
+		armor.append(_c05_gear("c05-"+str(slot),str(slot),slot=="Head","Inferno"))
+	$UI.inventory.equipments=armor
+	Game.lobby.inventory=$UI.inventory
+	Game.lobby["equippedLoadouts"]=[{"heroClass":"Mage","equipmentIds":armor.map(func(item):return item.instanceId),"version":7}]
+	$UI.gear_draft=armor.map(func(item):return item.instanceId)
+	Game.lobby["season"]={"state":"Active","seasonId":"review","highestOpenDifficulty":5,"highestUnlockedDifficulty":5,"statsVersion":"season-equipment-v1","configVersion":Game.CATALOG.data.version}
+	Game.preparation_difficulty=5
+	match scenario:
+		"c05_gear": $UI.screen="gear"
+		"c05_prep": $UI.screen="prep"
+		"c05_enhance":
+			$UI.screen="enhance";$UI._enhance_item="c05-Head"
+		"c05_compare":
+			$UI.screen="gear";await _render_base()
+			$UI._show_equipment_details(_c05_gear("c05-selected","Head",true,"RapidDraw"))
+			return false
+		"c05_numbers":
+			$UI.screen="gear";await _render_base()
+			load("res://ui/numerical_details.gd").show_compare($UI,armor,_c05_gear("c05-selected","Head",true,"RapidDraw"))
+			return false
+		"c05_inventory","c05_inventory_details","c05_relic":
+			Game.room=_room_fixture()
+			Game.room["config_version"]=Game.CATALOG.data.version
+			Game.room["season"]={"season_id":"review","difficulty_id":"D5","ruleset_id":"season-v1","config_version":Game.CATALOG.data.version,"stats_version":"season-equipment-v1"}
+			Game.room.player.equipped_items=[]
+			for slot in ["Head","Chest","Hands","Legs","Feet"]: Game.room.player.equipped_items.append(_c05_item("worn-"+str(slot),str(slot),slot=="Head","Inferno"))
+			Game.room.player.inventory[35]=_c05_item("pack-35","Feet",true,"GoldenCicada")
+			Game.room.player.inventory[35].slot_index=35
+			await _render_base()
+			$UI.set_meta("inventory_open",true)
+			if scenario=="c05_inventory_details":$UI.set_meta("inventory_selected","pack-35")
+			if scenario=="c05_relic":
+				Game.relic_details={"pile-a":{"pile_id":"pile-a","owner_name":"Traveler","version":7,"items":[_c05_item("relic-1","Head",true,"ChainDraw"),_c05_item("relic-2","Chest",true,"Scavenge")]}}
+				$UI.set_meta("relic_pile","pile-a")
+				$UI.set_meta("relic_selected","relic-1")
 	return true
 
 func _review_window_position() -> Vector2i:

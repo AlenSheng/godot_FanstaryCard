@@ -49,6 +49,7 @@ public static class SeasonLootRules
     public static void RequireCatalog(SeasonContext context,GameConfigCatalog configuration)
     {
         if(context.ConfigVersion!=configuration.Version) throw new DomainValidationException("Seasonal loot configuration differs from its frozen context.");
+        _=configuration.ResolveSeasonEquipment(context.StatsVersion);
     }
 
     public static void RequireGeneratedQuality(SeasonContext context,string quality,GameConfigCatalog configuration)
@@ -68,6 +69,8 @@ public static class SeasonLootRules
 
     public static void RequireOrigin(EquipmentRewardData item,SeasonContext context,GameConfigCatalog configuration)
     {
+        if(item.StatsVersion is not null && item.StatsVersion!=context.StatsVersion)
+            throw new DomainValidationException("The generated item's stats version differs from its original season.");
         RequireGeneratedQuality(context,item.Quality,configuration);
         if(item.SeasonOrigin is not { } origin) throw new DomainValidationException("New seasonal equipment is missing its original source policy.");
         context.RequireSameDomain(origin.Season);

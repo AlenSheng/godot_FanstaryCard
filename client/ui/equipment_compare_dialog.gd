@@ -164,6 +164,12 @@ func _attribute_card(parent: Node, item: Dictionary, heading: String, footer: St
 			var value := _label(line, _signed_percent(float(entry.value)), 20, P.ELEMENT.get(entry.element, P.PAPER), "number")
 			value.custom_minimum_size.x = 110
 			value.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		var unique: String = EquipmentDetails.unique_name(CompareModel.gear(item))
+		if not unique.is_empty():
+			_label(panel,unique,20,P.GOLD)
+			var hint := _label(panel,EquipmentDetails.unique_description(item,_catalog_index),19,P.PAPER)
+			hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			hint.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	var footer_label := _label(panel, footer, 18, footer_color)
 	footer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 

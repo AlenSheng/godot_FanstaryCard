@@ -290,6 +290,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("Room configuration does not match its loaded published catalog.");
         if (season is not null && season.ConfigVersion != configVersion)
             throw new DomainValidationException("Room and season configuration versions differ.");
+        if(season is not null && catalog.UsesPublishedConfiguration)_=catalog.Configuration.ResolveSeasonEquipment(season.StatsVersion);
         Season = season;
         Numerics = numerics ?? (season is null ? NumericalRules.Legacy : NumericalRules.SeasonV1);
         Numerics.Validate();
@@ -420,12 +421,20 @@ public sealed partial class BattleRoom
             _catalog.Get(setup.CardIds[index], setup.CardLevels?[index] ?? 0);
         }
 
+        var equipment=setup.Equipment;
+        if(Season is not null && _catalog.UsesPublishedConfiguration && _catalog.Configuration.SeasonEquipment is not null)
+        {
+            var actual=CalculateArmor(setup.WornArmor??[]);
+            if(equipment is not null && equipment!=actual)
+                throw new DomainValidationException("Supplied equipment attributes differ from the frozen item stats version.");
+            equipment=actual;
+        }
         var combat = new PlayerCombatState(
             setup.HeroClass,
             setup.CardIds,
             new Random(PlayerSeedRandom.Next()),
             setup.WeaponLevel,
-            setup.Equipment,
+            equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
         var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration, setup.BorrowedTemplateId);
         if(setup.Pve is not null)player.Combat.BeginBattle(setup.Pve.BattleId);

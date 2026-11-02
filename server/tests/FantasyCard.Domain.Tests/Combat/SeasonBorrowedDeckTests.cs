@@ -19,7 +19,7 @@ public sealed class SeasonBorrowedDeckTests
         {
             var configuration = GameConfigCatalog.Current;var template = configuration.BorrowedDeck(hero);
             SeasonFenxianTests.ValidateDeck(hero,template.CardIds.ToArray());
-            var context = new SeasonContext("loan",cap,"season-v1",configuration.Version,"loan-stats");
+            var context = new SeasonContext("loan",cap,"season-v1",configuration.Version,"season-equipment-v1");
             var catalog = CombatCardCatalog.Create(configuration);
             var room = new BattleRoom(Guid.NewGuid(),configuration.Version,catalog,73,season:context);
             var player = room.AddPlayer(new(Guid.NewGuid(),hero,template.CardIds,null,WeaponLevel:cap,
@@ -41,7 +41,7 @@ public sealed class SeasonBorrowedDeckTests
     public void MonsterCardsCanAccumulateWithoutTurningBorrowedOriginalsIntoPermanentOrHigherLevelCopies()
     {
         var template = GameConfigCatalog.Current.BorrowedDeck(HeroClass.Mage);var catalog = CombatCardCatalog.Create(GameConfigCatalog.Current);
-        var context = new SeasonContext("pool",3,"season-v1",GameConfigCatalog.Current.Version,"loan-stats");
+        var context = new SeasonContext("pool",3,"season-v1",GameConfigCatalog.Current.Version,"season-equipment-v1");
         var room = new BattleRoom(Guid.NewGuid(),context.ConfigVersion,catalog,73,season:context);
         var player = room.AddPlayer(new(Guid.NewGuid(),HeroClass.Mage,template.CardIds,null,WeaponLevel:3,
             CardLevels:Enumerable.Repeat(3,20).ToArray(),BorrowedTemplateId:template.TemplateId));
@@ -60,7 +60,7 @@ public sealed class SeasonBorrowedDeckTests
     public void BorrowedSourceCannotChangeItsTemplateLevelsOrScope(string mutation)
     {
         var config = GameConfigCatalog.Current;var template = config.BorrowedDeck(HeroClass.Mage);
-        var context = mutation=="legacy" ? null : new SeasonContext("guard",2,"season-v1",config.Version,"loan-stats");
+        var context = mutation=="legacy" ? null : new SeasonContext("guard",2,"season-v1",config.Version,"season-equipment-v1");
         var room = new BattleRoom(Guid.NewGuid(),config.Version,CombatCardCatalog.Create(config),73,season:context);
         var ids = template.CardIds.ToArray();if(mutation=="cards")ids[0]="C14";
         Assert.Throws<DomainValidationException>(()=>room.AddPlayer(new(Guid.NewGuid(),HeroClass.Mage,ids,null,

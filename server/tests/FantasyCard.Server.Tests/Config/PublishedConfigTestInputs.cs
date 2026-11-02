@@ -17,6 +17,10 @@ internal static class PublishedConfigTestInputs
         tables = Set(tables, "Cards", "C01", "elemental_damage", alternate ? 400L : 200L);
         tables = Set(tables, "CardLevels", "C01:1", "value_bonus", alternate ? 7L : 3L);
         tables = Set(tables, "EquipmentQuality", "White", "damage_percent", alternate ? .27 : .13);
+        tables = Set(tables,"SeasonEquipment","white","damage_base",alternate ? .27 : .13);
+        foreach(var quality in EquipmentQualities)
+            tables=Set(tables,"SeasonEquipment",quality,"stats_version","archive-control-stats");
+        tables=Set(tables,"SeasonEquipmentRules","season-equipment-v1","stats_version","archive-control-stats");
         tables = Set(tables, "Backpacks", "Free", "capacity", alternate ? 22L : 21L);
         tables = Set(tables, "Economy", "health-potion-heal-rate", "double_value", alternate ? .6 : .4);
         tables = Set(tables, "LootRules", "heal-outer", "gold", alternate ? 91L : 71L);
@@ -37,6 +41,7 @@ internal static class PublishedConfigTestInputs
         var bytes = ConfigCompiler.Compile(version, tables, out var hash);
         return (GameConfigCatalog.Load(bytes), bytes, hash);
     }
+    private static readonly string[] EquipmentQualities=["white","green","blue","purple","orange","red"];
 
     public static BattleRoom Room(GameConfigCatalog configuration, Guid playerId, bool withMap = false,bool legacy = false)
     {

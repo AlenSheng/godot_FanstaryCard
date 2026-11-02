@@ -8,6 +8,33 @@ static func equipment(item: Dictionary) -> Dictionary:
 	var gear: Variant = item.get("equipment")
 	return gear if gear is Dictionary else {}
 
+static func stats_version(item: Dictionary) -> String:
+	var gear := equipment(item)
+	var value: Variant = gear.get("stats_version",gear.get("statsVersion"))
+	return "" if value == null else str(value)
+
+static func unique_key(gear: Dictionary) -> String:
+	var value: Variant = gear.get("unique_affix",gear.get("uniqueAffix"))
+	return "" if value == null else str(value)
+
+static func unique_name(gear: Dictionary) -> String:
+	var keys := {"Inferno":"equipment_unique_inferno","RapidDraw":"equipment_unique_rapid_draw","ChainDraw":"equipment_unique_chain_draw","Scavenge":"equipment_unique_scavenge","GoldenCicada":"equipment_unique_golden_cicada"}
+	return P.localized(keys[unique_key(gear)]) if keys.has(unique_key(gear)) else ""
+
+static func unique_description(item: Dictionary, index: Dictionary = {}) -> String:
+	var gear := equipment(item)
+	var policy := CatalogIndex.equipment_rules(stats_version(item),index)
+	match unique_key(gear):
+		"Inferno":
+			var value: Variant = gear.get("unique_element",gear.get("uniqueElement",gear.get("element","Fire")))
+			var element := str(gear.get("element","Fire")) if not policy.is_empty() or value == null else str(value)
+			return P.localized("equipment_unique_inferno_hint") % [P.word(element),percent(float(policy.get("inferno_bonus",.35)))]
+		"RapidDraw": return P.localized("equipment_unique_rapid_draw_hint") % [percent(float(policy.get("rapid_draw_reduction",.25))),str(policy.get("rapid_draw_floor_seconds",1.5))]
+		"ChainDraw": return P.localized("equipment_unique_chain_draw_hint") % percent(float(policy.get("chain_draw_chance",.20)))
+		"Scavenge": return P.localized("equipment_unique_scavenge_hint") % str(int(policy.get("opening_draw_count",1)))
+		"GoldenCicada": return P.localized("equipment_unique_golden_cicada_hint") % percent(float(policy.get("golden_cicada_bonus",.15)))
+	return ""
+
 static func title(item: Dictionary) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return P.word(item.get("kind", P.localized("item")))
@@ -22,8 +49,9 @@ static func title(item: Dictionary) -> String:
 static func description(item: Dictionary, index: Dictionary = {}) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return "%s ×%s" % [title(item), item.get("quantity", 1)]
-	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index)
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index, stats_version(item))
 	var lines: Array[String] = [title(item)]
+	if quality.is_empty(): return "\n".join([title(item),P.localized("config_archive_unavailable")])
 	var level: int = int(gear.get("level", 0))
 	if not quality.is_empty():
 		var attributes: Array[String] = []
@@ -47,6 +75,10 @@ static func description(item: Dictionary, index: Dictionary = {}) -> String:
 			if not is_zero_approx(contribution): lines.append("%s: %s +%s%%" % [P.localized("set_contribution"), field[1], percent(contribution)])
 		if affix == "Bulwark": lines.append(P.localized("bulwark_hint"))
 	if gear.get("is_bound", gear.get("isBound", false)): lines.append(P.localized("bound_unlisted"))
+	var unique := unique_name(gear)
+	if not unique.is_empty():
+		lines.append(unique)
+		lines.append(unique_description(item,index))
 	return P.localized_text("\n".join(lines))
 
 static func percent(value: float) -> String:
@@ -55,7 +87,7 @@ static func percent(value: float) -> String:
 static func enhancement_text(item: Dictionary, index: Dictionary = {}) -> String:
 	var gear := equipment(item)
 	var level: int = int(gear.get("level", 0))
-	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index)
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index, stats_version(item))
 	if quality.is_empty(): return ""
 	var lines: Array[String] = [P.localized("battle_current") + " +%s → +%s" % [level, mini(level + 1, 5)]]
 	var fields: Array = [["damage_percent", "damage_per_level", P.element_stat("damage", gear.get("element", ""))], ["resistance_percent", "resistance_per_level", P.element_stat("resistance", gear.get("element", ""))]]

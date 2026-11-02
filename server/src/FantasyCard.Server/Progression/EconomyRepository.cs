@@ -446,7 +446,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         await using var command = dataSource.CreateCommand(
             """
             SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
-                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait
+                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait,e.unique_affix,e.unique_element,e.stats_version
             FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
             WHERE l.status='Active' AND l.expires_at > $1 ORDER BY l.created_at DESC,l.listing_id DESC LIMIT $2 OFFSET $3
             """);
@@ -461,7 +461,8 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
                 Equipment = new(reader.GetGuid(2), reader.GetString(8), reader.GetString(9),
                     reader.GetInt32(10), reader.GetBoolean(11), reader.GetString(12), reader.GetInt64(13),
                     reader.IsDBNull(14) ? null : reader.GetString(14), reader.IsDBNull(15) ? null : reader.GetString(15),
-                    reader.IsDBNull(16) ? null : reader.GetString(16))
+                    reader.IsDBNull(16) ? null : reader.GetString(16),
+                    StatsVersion:reader.IsDBNull(19)?null:reader.GetString(19),UniqueAffix:reader.IsDBNull(17)?null:reader.GetString(17),UniqueElement:reader.IsDBNull(18)?null:reader.GetString(18))
             });
         return result;
     }
@@ -471,7 +472,7 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         await using var command = dataSource.CreateCommand(
             """
             SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
-                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait
+                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait,e.unique_affix,e.unique_element,e.stats_version
             FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
             WHERE l.listing_id=$1
             """);
@@ -485,7 +486,8 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
                 reader.GetBoolean(11), reader.GetString(12), reader.GetInt64(13),
                 reader.IsDBNull(14) ? null : reader.GetString(14),
                 reader.IsDBNull(15) ? null : reader.GetString(15),
-                reader.IsDBNull(16) ? null : reader.GetString(16))
+                reader.IsDBNull(16) ? null : reader.GetString(16),
+                    StatsVersion:reader.IsDBNull(19)?null:reader.GetString(19),UniqueAffix:reader.IsDBNull(17)?null:reader.GetString(17),UniqueElement:reader.IsDBNull(18)?null:reader.GetString(18))
         };
     }
 

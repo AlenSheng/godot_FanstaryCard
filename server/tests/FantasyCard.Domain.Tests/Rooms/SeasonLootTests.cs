@@ -150,7 +150,7 @@ public sealed class SeasonLootTests
         Assert.Equal(32,player.Inventory.GoldQuantity);
     }
 
-    private static SeasonContext Context(int difficulty)=>new("loot",difficulty,"season-v1",GameConfigCatalog.Current.Version,"loot-stats");
+    private static SeasonContext Context(int difficulty)=>new("loot",difficulty,"season-v1",GameConfigCatalog.Current.Version,"season-equipment-v1");
 
     [Fact]
     public void NewGeneratedOriginsSurviveInventoryAndBotBudgetRecoveryAndMissingOriginsAreRejected()

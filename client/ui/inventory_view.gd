@@ -109,8 +109,22 @@ static func _equipment(ui: Control, host: Control, player: Dictionary, selected:
 		var item: Dictionary = {}
 		for candidate in worn:
 			if candidate.get("equipment") is Dictionary and candidate.equipment.get("slot", "") == slot: item = candidate; break
-		var button: Button = ui.button(P.word(slot) + " · " + (Details.title(item) if not item.is_empty() else P.localized("not_equipped")), Rect2(112, 235 + index * 69, 586, 60), func(): host._confirm(P.localized("unequip_confirm"), func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
+		var button: Button = ui.button("", Rect2(112, 235 + index * 69, 740, 66), func(): host._confirm(P.localized("unequip_confirm"), func(): Game.command("inventory.unequip", {"slot": slot})), item.is_empty() or not Game.allowed("inventory.unequip"))
 		button.add_theme_font_size_override("font_size", 24)
+		var caption := Label.new()
+		caption.name = "WornEquipmentCaption_" + slot
+		caption.text = Details.title(item) if not item.is_empty() else P.word(slot) + " · " + P.localized("not_equipped")
+		caption.position = Vector2(20, 3)
+		caption.size = Vector2(700, 60)
+		caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		caption.add_theme_font_override("font", P.font_for_text(caption.text, 24))
+		caption.add_theme_font_size_override("font_size", 24)
+		caption.add_theme_color_override("font_color", P.MUTED if button.disabled else P.PAPER)
+		button.add_child(caption)
+		P.apply_text_direction(caption)
 		button.tooltip_text = P.localized_text(Details.description(item) if not item.is_empty() else P.localized("not_equipped"))
 	ui.text("%s +%s · %s" % [P.localized("signature_weapon"), player.get("weapon_level", 0), P.localized("locked")], Rect2(118, 598, 740, 44), 27, P.TEAL)
 	if selected.is_empty():

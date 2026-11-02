@@ -292,7 +292,7 @@ public sealed partial class PostgresSeasonSettlementTests
         Assert.Equal(current, await db.ScalarAsync<Guid>("SELECT feet_id FROM player_loadouts WHERE player_id=$1 AND hero_class=2", fixture.Player));
     }
 
-    private static SeasonDefinition Define() => SeasonDefinition.FromCalendarDays("original", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "original-stats", highestOpenDifficulty: 5);
+    private static SeasonDefinition Define() => SeasonDefinition.FromCalendarDays("original", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "season-equipment-v1", highestOpenDifficulty: 5);
     private static async Task<Fixture> SetupAsync(PostgresTestSchema db, Clock clock, SeasonDefinition definition)
     {
         var seasons = new SeasonRepository(db.DataSource, clock);

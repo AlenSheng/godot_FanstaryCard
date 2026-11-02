@@ -61,8 +61,31 @@ static func card_level(card_id: String, level: int, index: Dictionary = {}) -> D
 	var found: Variant = _levels.get("%s:%d" % [card_id, level], {})
 	return found if found is Dictionary else {}
 
-static func quality(id: String, index: Dictionary = {}) -> Dictionary:
-	if not index.is_empty(): return index.get("qualities", {}).get(id, {})
+static func equipment_rules(stats_version: String, index: Dictionary = {}) -> Dictionary:
+	if stats_version.is_empty(): return {}
+	var tables: Dictionary = index.get("tables", {}) if not index.is_empty() else CATALOG.data.tables
+	for row in tables.get("SeasonEquipmentRules", []):
+		if str(row.get("stats_version", "")) == stats_version: return row
+	return {}
+
+static func quality(id: String, index: Dictionary = {}, stats_version: String = "") -> Dictionary:
 	ensure()
-	var found: Variant = _qualities.get(id, {})
-	return found if found is Dictionary else {}
+	var source: Dictionary = index.get("qualities", {}) if not index.is_empty() else _qualities
+	var found: Variant = source.get(id, {})
+	if not found is Dictionary or found.is_empty(): return {}
+	if stats_version.is_empty(): return found
+	var tables: Dictionary = index.get("tables", {}) if not index.is_empty() else CATALOG.data.tables
+	if not tables.has("SeasonEquipmentRules"): return found # Explicit pre-C05 archive policy.
+	if equipment_rules(stats_version, index).is_empty(): return {}
+	for row in tables.get("SeasonEquipment", []):
+		if str(row.get("quality_id", "")).to_lower() != id.to_lower() or str(row.get("stats_version", "")) != stats_version: continue
+		var resolved: Dictionary = found.duplicate(true)
+		resolved["damage_percent"] = float(row.damage_base)
+		resolved["resistance_percent"] = float(row.resist_base)
+		resolved["damage_per_level"] = float(row.damage_per_level)
+		resolved["resistance_per_level"] = float(row.resist_per_level)
+		resolved["draw_interval_percent"] = -float(row.speed_base)
+		resolved["draw_interval_per_level"] = -float(row.speed_per_level)
+		resolved["stats_version"] = stats_version
+		return resolved
+	return {}

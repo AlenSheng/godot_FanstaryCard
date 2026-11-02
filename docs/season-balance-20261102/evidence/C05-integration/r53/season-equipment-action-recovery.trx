@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="796f0cca-59e0-4495-84ba-3eae0a9709b3" name="@803968e39001 2026-11-02 22:40:53" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-02T22:40:53.6521046+00:00" queuing="2026-11-02T22:40:53.6521047+00:00" start="2026-11-02T22:40:47.9658087+00:00" finish="2026-11-02T22:40:54.7803814+00:00" />
+  <TestSettings name="default" id="276d95fe-d4bf-4b9f-ab8c-b86a06924191">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-02_22_40_53" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="41085331-3a19-4584-a02c-16e63fb10bd2" testId="2e4569b5-52a7-7b4d-e39e-3e3b45853299" testName="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" computerName="803968e39001" duration="00:00:01.2370532" startTime="2026-11-02T22:40:53.4274757+00:00" endTime="2026-11-02T22:40:54.6650367+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41085331-3a19-4584-a02c-16e63fb10bd2" />
+    <UnitTestResult executionId="bfc28f3b-a186-4830-a0d2-da3b5091dfa1" testId="dbfa712d-2cc9-4134-5ee0-a5c551d3b380" testName="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" computerName="803968e39001" duration="00:00:02.0161381" startTime="2026-11-02T22:40:51.3339391+00:00" endTime="2026-11-02T22:40:53.4119650+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bfc28f3b-a186-4830-a0d2-da3b5091dfa1" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="2e4569b5-52a7-7b4d-e39e-3e3b45853299">
+      <Execution id="41085331-3a19-4584-a02c-16e63fb10bd2" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests" name="AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="dbfa712d-2cc9-4134-5ee0-a5c551d3b380">
+      <Execution id="bfc28f3b-a186-4830-a0d2-da3b5091dfa1" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests" name="OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2e4569b5-52a7-7b4d-e39e-3e3b45853299" executionId="41085331-3a19-4584-a02c-16e63fb10bd2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dbfa712d-2cc9-4134-5ee0-a5c551d3b380" executionId="bfc28f3b-a186-4830-a0d2-da3b5091dfa1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="2" executed="2" passed="2" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.29]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.40]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.67]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:06.15]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

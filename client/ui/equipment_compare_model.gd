@@ -22,7 +22,19 @@ static func gear(item: Dictionary) -> Dictionary:
 	return EquipmentDetails.equipment(item)
 
 static func quality_row(item: Dictionary, index: Dictionary = {}) -> Dictionary:
-	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize(), index)
+	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize(), index, stats_version(item))
+
+static func stats_version(item: Dictionary) -> String:
+	var value: Dictionary = gear(item)
+	return str(value.get("stats_version", value.get("statsVersion", ""))) if value.get("stats_version", value.get("statsVersion")) != null else ""
+
+static func rules(item: Dictionary, index: Dictionary = {}) -> Dictionary:
+	return CatalogIndex.equipment_rules(stats_version(item), index)
+
+static func can_inspect(loadout: Array, index: Dictionary = {}) -> bool:
+	for item in loadout:
+		if not gear(item).is_empty() and quality_row(item, index).is_empty(): return false
+	return true
 
 static func attribute_rows(item: Dictionary, index: Dictionary = {}) -> Array[Dictionary]:
 	var equipment := gear(item)
@@ -36,12 +48,22 @@ static func attribute_rows(item: Dictionary, index: Dictionary = {}) -> Array[Di
 	if not is_zero_approx(damage): rows.append({"key": "damage_" + element, "kind": "damage", "element": element, "value": damage})
 	if not is_zero_approx(resistance): rows.append({"key": "resistance_" + element, "kind": "resistance", "element": element, "value": resistance})
 	var secondary := str(equipment.get("secondary_trait", equipment.get("secondaryTrait", "")))
-	if secondary == "DrawInterval":
+	var policy := rules(item, index)
+	if secondary == "DrawInterval" or policy.is_empty() and str(equipment.get("quality", "")) == "Red":
 		var interval: float = float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)
 		if not is_zero_approx(interval): rows.append({"key": "draw_interval", "kind": "draw_interval", "element": "None", "value": interval})
-	elif secondary == "ForcedEscape":
+	if secondary == "ForcedEscape":
 		var escape: float = float(quality.forced_escape_percent)
 		if not is_zero_approx(escape): rows.append({"key": "forced_escape", "kind": "forced_escape", "element": "None", "value": escape})
+	var unique := str(equipment.get("unique_affix", equipment.get("uniqueAffix", "")))
+	if unique == "Inferno":
+		var chosen: Variant = equipment.get("unique_element", equipment.get("uniqueElement", element))
+		var unique_element: String = element if not policy.is_empty() or chosen == null else str(chosen)
+		rows.append({"key":"damage_"+unique_element,"kind":"damage","element":unique_element,"value":float(policy.get("inferno_bonus",.35))})
+	elif unique == "RapidDraw":
+		rows.append({"key":"draw_interval","kind":"draw_interval","element":"None","value":-float(policy.get("rapid_draw_reduction",.25))})
+	elif unique == "GoldenCicada":
+		rows.append({"key":"forced_escape","kind":"forced_escape","element":"None","value":float(policy.get("golden_cicada_bonus",.15))})
 	return rows
 
 static func aggregate_attributes(loadout: Array, index: Dictionary = {}) -> Dictionary:
