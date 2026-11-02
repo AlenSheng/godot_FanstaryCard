@@ -252,7 +252,7 @@ internal static class RoomSnapshotProjection
                 monster.Hp,
                 monster.Shield,
                 intent.Kind.ToString(),
-                intent.Value,
+                MonsterCombatState.PublishedIntentValue(monster),
                 intent.Element.ToString(),
                 (long)monster.IntervalProgress.TotalMilliseconds,
                 (long)monster.WindupRemaining.TotalMilliseconds,

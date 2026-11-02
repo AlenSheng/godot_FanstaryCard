@@ -1,11 +1,12 @@
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Configuration;
 
 namespace FantasyCard.Domain.Combat;
 
 public static class PveBattleFactory
 {
-    public static PveBattleState Create(ChaosMapCell cell)
+    public static PveBattleState Create(ChaosMapCell cell, SeasonDifficultyConfig? difficulty = null)
     {
         ArgumentNullException.ThrowIfNull(cell);
         MonsterCombatState[] monsters = cell.MonsterGroupId switch
@@ -34,6 +35,13 @@ public static class PveBattleFactory
             "BOSS" => [Monster("annihilation-core", 280, 20, 4.4, [new(MonsterIntentKind.Attack, 4, CardElement.Fire), new(MonsterIntentKind.Attack, 4, CardElement.Wood), new(MonsterIntentKind.Shield, 10, CardElement.None), new(MonsterIntentKind.Attack, 5, CardElement.Fire), new(MonsterIntentKind.Charge, 0, CardElement.None), new(MonsterIntentKind.Direct, 6, CardElement.None)])],
             _ => throw new DomainValidationException($"Unknown monster group '{cell.MonsterGroupId}'.")
         };
+        if (difficulty is not null)
+            monsters = monsters.Select(monster => new MonsterCombatState(monster.MonsterId,
+                Math.Max(1,SeasonDifficultyConfig.Scale(monster.MaximumHp,difficulty.HpBasisPoints)),
+                Math.Max(1,SeasonDifficultyConfig.Scale(monster.MaximumHp,difficulty.HpBasisPoints)),
+                SeasonDifficultyConfig.Scale(monster.Shield,difficulty.ShieldBasisPoints),
+                SeasonDifficultyConfig.ScaleInterval(monster.AttackInterval,difficulty.IntervalBasisPoints),
+                monster.Intents,monster.ElementalAmplification,SeasonMonsterProfile.For(difficulty,monster.MonsterId))).ToArray();
         return new PveBattleState(Guid.CreateVersion7(), monsters[0].MonsterId, monsters);
     }
 

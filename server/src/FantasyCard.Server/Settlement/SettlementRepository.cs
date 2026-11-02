@@ -357,6 +357,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
             AddContextParameters(insert, context);
             await insert.ExecuteNonQueryAsync(cancellationToken);
         }
+        await CreditDifficultyProgressAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
         foreach (var asset in assets)
         {
             await using var hold = new NpgsqlCommand(

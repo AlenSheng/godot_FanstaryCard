@@ -43,6 +43,7 @@ public sealed class SettlementCoordinator(
                         ? ExtractedAssets(player)
                         : DeadAssets(snapshot, player);
                     var items = SettlementItems(player, result);
+                    var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position)).ToArray();
                     using var details = JsonDocument.Parse(JsonSerializer.Serialize(new
                     {
                         snapshot.RoomId,
@@ -53,6 +54,11 @@ public sealed class SettlementCoordinator(
                         player.Position,
                         heroClass = player.HeroClass.ToString(),
                         assetCount = assets.Length,
+                        difficultyProgress = new
+                        {
+                            eliteCleared = cleared.Any(cell => cell.MonsterGroupId.StartsWith('E')),
+                            bossCleared = cleared.Any(cell => cell.IsBoss || cell.MonsterGroupId == "BOSS")
+                        },
                         items
                     }, Json));
                     await repository.SettleAsync(

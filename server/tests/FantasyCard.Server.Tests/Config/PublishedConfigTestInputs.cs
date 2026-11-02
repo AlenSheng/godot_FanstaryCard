@@ -55,13 +55,13 @@ internal static class PublishedConfigTestInputs
         player.Combat.Deck.Restore(new([card], all.Where(c => c.InstanceId != card.InstanceId).ToArray(), [], 0));
     }
 
-    public static PveBattleSnapshot Target(int hp = 1000) => new PveBattleState(Guid.NewGuid(), "fire-bat",
-        [new MonsterCombatState("fire-bat",hp,hp,0,TimeSpan.FromDays(1),[new(MonsterIntentKind.Attack,2,CardElement.Fire)])]).Capture();
+    public static PveBattleSnapshot Target(int hp = 1000, SeasonMonsterProfile? profile = null) => new PveBattleState(Guid.NewGuid(), "fire-bat",
+        [new MonsterCombatState("fire-bat",hp,hp,0,TimeSpan.FromDays(1),[new(MonsterIntentKind.Attack,2,CardElement.Fire)],difficultyProfile:profile)]).Capture();
 
     public static BattleRoom WithTarget(BattleRoom room, GameConfigCatalog configuration, int hp = 1000)
     {
         var snapshot = room.Capture();
-        snapshot = snapshot with { Players = snapshot.Players.Select(p => p with { Phase = RoomPlayerPhase.Pve, Pve = Target(hp) }).ToArray() };
+        snapshot = snapshot with { Players = snapshot.Players.Select(p => p with { Phase = RoomPlayerPhase.Pve, Pve = Target(hp,SeasonMonsterProfile.For(configuration.SeasonDifficulty(5),"fire-bat")) }).ToArray() };
         return BattleRoom.Restore(snapshot, CombatCardCatalog.Create(configuration), 73);
     }
 

@@ -159,6 +159,10 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<ShopCardPriceConfig> ShopCardPrices { get; }
     public IReadOnlyList<ItemConfigDefinition> Items { get; }
     public EconomyConfig Economy { get; }
+    public IReadOnlyList<SeasonDifficultyConfig> SeasonDifficulties { get; private init; } = [];
+    public SeasonDifficultyConfig SeasonDifficulty(int difficulty) =>
+        SeasonDifficulties.SingleOrDefault(value => value.Id == $"D{difficulty}")
+        ?? throw new InvalidDataException($"Season difficulty D{difficulty} is not published in configuration '{Version}'.");
 
     public EquipmentQualityConfig EquipmentQuality(string quality) =>
         EquipmentQualities.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
@@ -290,7 +294,23 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle) };
+    }
+
+    private static SeasonDifficultyConfig[] ReadSeasonDifficulties(ConfigBundle bundle)
+    {
+        var table = bundle.Tables.SingleOrDefault(value => value.Name == "SeasonDifficulty");
+        if (table is null) return [];
+        var rows = table.Rows.Select(row => new SeasonDifficultyConfig(table.Text(row,"difficulty_id"),table.Text(row,"name_key"),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"hp_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"shield_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"damage_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"interval_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"gold_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"soul_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"fragment_scale")),table.Int(row,"quality_cap"),table.Int(row,"entry_quality_cap"),
+            table.Double(row,"purple_affix_chance"),table.Bool(row,"red_boss_enabled"))).ToArray();
+        if (rows.Length != 6 || !rows.Select(value => value.Id).ToHashSet(StringComparer.Ordinal).SetEquals(Enumerable.Range(0,6).Select(value => $"D{value}")) ||
+            rows.Any(value => value.QualityCap is < 0 or > 4 || value.EntryQualityCap is < 0 or > 5 || !double.IsFinite(value.PurpleAffixChance) || value.PurpleAffixChance is < 0 or > 1))
+            throw new InvalidDataException("SeasonDifficulty must contain valid D0 through D5 rows.");
+        return rows;
     }
 
     private static NumericalRules ReadNumerics(ConfigBundle bundle)

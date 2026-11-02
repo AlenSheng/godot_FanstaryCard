@@ -1,6 +1,6 @@
 param(
     [string]$InputWorkbook = "config/FantasyCard_Config.xlsx",
-    [string]$ConfigVersion = "gdd-0.70-numerical-1",
+    [string]$ConfigVersion = "season-v1-config-1",
     [string]$PythonExecutable = "python"
 )
 $ErrorActionPreference = "Stop"

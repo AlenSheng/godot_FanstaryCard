@@ -1,5 +1,5 @@
 {
-  "version": "gdd-0.70-numerical-1",
+  "version": "season-v1-config-1",
   "tables": {
     "Cards": [
       {
@@ -16346,6 +16346,612 @@
         "budgeted_bot_loot": false,
         "bot_loot_count": 2,
         "mortal_bot_pve": false
+      }
+    ],
+    "SeasonDifficulty": [
+      {
+        "difficulty_id": "D0",
+        "name_key": "difficulty_D0",
+        "hp_scale": 1.0,
+        "shield_scale": 1.0,
+        "damage_scale": 1.0,
+        "interval_scale": 1.0,
+        "gold_scale": 1.0,
+        "soul_scale": 1.0,
+        "fragment_scale": 1.0,
+        "quality_cap": 2,
+        "purple_affix_chance": 0.0,
+        "entry_quality_cap": 2,
+        "red_boss_enabled": false
+      },
+      {
+        "difficulty_id": "D1",
+        "name_key": "difficulty_D1",
+        "hp_scale": 1.6,
+        "shield_scale": 1.6,
+        "damage_scale": 1.25,
+        "interval_scale": 1.0,
+        "gold_scale": 1.2,
+        "soul_scale": 1.15,
+        "fragment_scale": 1.4,
+        "quality_cap": 3,
+        "purple_affix_chance": 0.5,
+        "entry_quality_cap": 3,
+        "red_boss_enabled": false
+      },
+      {
+        "difficulty_id": "D2",
+        "name_key": "difficulty_D2",
+        "hp_scale": 2.6,
+        "shield_scale": 2.6,
+        "damage_scale": 1.5,
+        "interval_scale": 0.98,
+        "gold_scale": 1.4,
+        "soul_scale": 1.3,
+        "fragment_scale": 1.9,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.6,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true
+      },
+      {
+        "difficulty_id": "D3",
+        "name_key": "difficulty_D3",
+        "hp_scale": 4.0,
+        "shield_scale": 4.0,
+        "damage_scale": 1.85,
+        "interval_scale": 0.96,
+        "gold_scale": 1.65,
+        "soul_scale": 1.45,
+        "fragment_scale": 2.5,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.7,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true
+      },
+      {
+        "difficulty_id": "D4",
+        "name_key": "difficulty_D4",
+        "hp_scale": 5.8,
+        "shield_scale": 5.8,
+        "damage_scale": 2.2,
+        "interval_scale": 0.94,
+        "gold_scale": 1.9,
+        "soul_scale": 1.6,
+        "fragment_scale": 3.2,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.8,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true
+      },
+      {
+        "difficulty_id": "D5",
+        "name_key": "difficulty_D5",
+        "hp_scale": 8.0,
+        "shield_scale": 8.0,
+        "damage_scale": 2.6,
+        "interval_scale": 0.92,
+        "gold_scale": 2.2,
+        "soul_scale": 1.75,
+        "fragment_scale": 4.0,
+        "quality_cap": 4,
+        "purple_affix_chance": 1.0,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true
+      }
+    ],
+    "SeasonEquipment": [
+      {
+        "quality_id": "white",
+        "damage_base": 0.04,
+        "resist_base": 0.02,
+        "damage_per_level": 0.01,
+        "resist_per_level": 0.0025,
+        "speed_base": 0.0,
+        "speed_per_level": 0.0025,
+        "cost_1": 1,
+        "cost_2": 1,
+        "cost_3": 2,
+        "cost_4": 8,
+        "cost_5": 16
+      },
+      {
+        "quality_id": "green",
+        "damage_base": 0.07,
+        "resist_base": 0.04,
+        "damage_per_level": 0.015,
+        "resist_per_level": 0.004,
+        "speed_base": 0.03,
+        "speed_per_level": 0.003,
+        "cost_1": 1,
+        "cost_2": 2,
+        "cost_3": 3,
+        "cost_4": 12,
+        "cost_5": 24
+      },
+      {
+        "quality_id": "blue",
+        "damage_base": 0.11,
+        "resist_base": 0.06,
+        "damage_per_level": 0.02,
+        "resist_per_level": 0.005,
+        "speed_base": 0.05,
+        "speed_per_level": 0.0035,
+        "cost_1": 2,
+        "cost_2": 3,
+        "cost_3": 3,
+        "cost_4": 20,
+        "cost_5": 40
+      },
+      {
+        "quality_id": "purple",
+        "damage_base": 0.15,
+        "resist_base": 0.09,
+        "damage_per_level": 0.025,
+        "resist_per_level": 0.006,
+        "speed_base": 0.07,
+        "speed_per_level": 0.004,
+        "cost_1": 2,
+        "cost_2": 3,
+        "cost_3": 5,
+        "cost_4": 40,
+        "cost_5": 80
+      },
+      {
+        "quality_id": "orange",
+        "damage_base": 0.22,
+        "resist_base": 0.13,
+        "damage_per_level": 0.03,
+        "resist_per_level": 0.008,
+        "speed_base": 0.1,
+        "speed_per_level": 0.005,
+        "cost_1": 4,
+        "cost_2": 6,
+        "cost_3": 10,
+        "cost_4": 80,
+        "cost_5": 160
+      }
+    ],
+    "SeasonLoot": [
+      {
+        "loot_rule_id": "0_0",
+        "difficulty_id": "D0",
+        "layer_id": "outer",
+        "white_weight": 0.7,
+        "green_weight": 0.3,
+        "blue_weight": 0.0,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_1",
+        "difficulty_id": "D0",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.6,
+        "blue_weight": 0.4,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_2",
+        "difficulty_id": "D0",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.2,
+        "blue_weight": 0.8,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_3",
+        "difficulty_id": "D0",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 1.0,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "1_0",
+        "difficulty_id": "D1",
+        "layer_id": "outer",
+        "white_weight": 0.2,
+        "green_weight": 0.6,
+        "blue_weight": 0.2,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_1",
+        "difficulty_id": "D1",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.25,
+        "blue_weight": 0.65,
+        "purple_weight": 0.1,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_2",
+        "difficulty_id": "D1",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.65,
+        "purple_weight": 0.35,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_3",
+        "difficulty_id": "D1",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.2,
+        "purple_weight": 0.8,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_0",
+        "difficulty_id": "D2",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.3,
+        "blue_weight": 0.65,
+        "purple_weight": 0.05,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_1",
+        "difficulty_id": "D2",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.55,
+        "purple_weight": 0.43,
+        "orange_weight": 0.02,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_2",
+        "difficulty_id": "D2",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.25,
+        "purple_weight": 0.65,
+        "orange_weight": 0.1,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_3",
+        "difficulty_id": "D2",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.7,
+        "orange_weight": 0.3,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_0",
+        "difficulty_id": "D3",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.1,
+        "blue_weight": 0.6,
+        "purple_weight": 0.3,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_1",
+        "difficulty_id": "D3",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.3,
+        "purple_weight": 0.65,
+        "orange_weight": 0.05,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_2",
+        "difficulty_id": "D3",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.1,
+        "purple_weight": 0.7,
+        "orange_weight": 0.2,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_3",
+        "difficulty_id": "D3",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.5,
+        "orange_weight": 0.5,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_0",
+        "difficulty_id": "D4",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.45,
+        "purple_weight": 0.55,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_1",
+        "difficulty_id": "D4",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.15,
+        "purple_weight": 0.75,
+        "orange_weight": 0.1,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_2",
+        "difficulty_id": "D4",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.65,
+        "orange_weight": 0.35,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_3",
+        "difficulty_id": "D4",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.35,
+        "orange_weight": 0.65,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_0",
+        "difficulty_id": "D5",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.25,
+        "purple_weight": 0.75,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_1",
+        "difficulty_id": "D5",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.05,
+        "purple_weight": 0.8,
+        "orange_weight": 0.15,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_2",
+        "difficulty_id": "D5",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.5,
+        "orange_weight": 0.5,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_3",
+        "difficulty_id": "D5",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.2,
+        "orange_weight": 0.8,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      }
+    ],
+    "SeasonProgression": [
+      {
+        "level_id": "SL0",
+        "level": 0,
+        "xp_to_next_42": 200
+      },
+      {
+        "level_id": "SL1",
+        "level": 1,
+        "xp_to_next_42": 215
+      },
+      {
+        "level_id": "SL2",
+        "level": 2,
+        "xp_to_next_42": 230
+      },
+      {
+        "level_id": "SL3",
+        "level": 3,
+        "xp_to_next_42": 245
+      },
+      {
+        "level_id": "SL4",
+        "level": 4,
+        "xp_to_next_42": 260
+      },
+      {
+        "level_id": "SL5",
+        "level": 5,
+        "xp_to_next_42": 275
+      },
+      {
+        "level_id": "SL6",
+        "level": 6,
+        "xp_to_next_42": 290
+      },
+      {
+        "level_id": "SL7",
+        "level": 7,
+        "xp_to_next_42": 305
+      },
+      {
+        "level_id": "SL8",
+        "level": 8,
+        "xp_to_next_42": 320
+      },
+      {
+        "level_id": "SL9",
+        "level": 9,
+        "xp_to_next_42": 335
+      },
+      {
+        "level_id": "SL10",
+        "level": 10,
+        "xp_to_next_42": 350
+      },
+      {
+        "level_id": "SL11",
+        "level": 11,
+        "xp_to_next_42": 365
+      },
+      {
+        "level_id": "SL12",
+        "level": 12,
+        "xp_to_next_42": 380
+      },
+      {
+        "level_id": "SL13",
+        "level": 13,
+        "xp_to_next_42": 395
+      },
+      {
+        "level_id": "SL14",
+        "level": 14,
+        "xp_to_next_42": 410
+      },
+      {
+        "level_id": "SL15",
+        "level": 15,
+        "xp_to_next_42": 425
+      },
+      {
+        "level_id": "SL16",
+        "level": 16,
+        "xp_to_next_42": 440
+      },
+      {
+        "level_id": "SL17",
+        "level": 17,
+        "xp_to_next_42": 455
+      },
+      {
+        "level_id": "SL18",
+        "level": 18,
+        "xp_to_next_42": 470
+      },
+      {
+        "level_id": "SL19",
+        "level": 19,
+        "xp_to_next_42": 485
+      },
+      {
+        "level_id": "SL20",
+        "level": 20,
+        "xp_to_next_42": 500
+      },
+      {
+        "level_id": "SL21",
+        "level": 21,
+        "xp_to_next_42": 515
+      },
+      {
+        "level_id": "SL22",
+        "level": 22,
+        "xp_to_next_42": 530
+      },
+      {
+        "level_id": "SL23",
+        "level": 23,
+        "xp_to_next_42": 545
+      },
+      {
+        "level_id": "SL24",
+        "level": 24,
+        "xp_to_next_42": 560
+      },
+      {
+        "level_id": "SL25",
+        "level": 25,
+        "xp_to_next_42": 575
+      },
+      {
+        "level_id": "SL26",
+        "level": 26,
+        "xp_to_next_42": 590
+      },
+      {
+        "level_id": "SL27",
+        "level": 27,
+        "xp_to_next_42": 605
+      },
+      {
+        "level_id": "SL28",
+        "level": 28,
+        "xp_to_next_42": 620
+      },
+      {
+        "level_id": "SL29",
+        "level": 29,
+        "xp_to_next_42": 635
       }
     ]
   }

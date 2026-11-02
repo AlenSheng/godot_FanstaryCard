@@ -1,3 +1,5 @@
+using FantasyCard.Domain.Configuration;
+
 namespace FantasyCard.Domain.Combat;
 
 public sealed class MonsterCombatState
@@ -12,7 +14,8 @@ public sealed class MonsterCombatState
         int shield,
         TimeSpan attackInterval,
         IReadOnlyList<MonsterIntentState> intents,
-        double elementalAmplification = 0)
+        double elementalAmplification = 0,
+        SeasonMonsterProfile? difficultyProfile = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(monsterId);
         if (maximumHp <= 0 || hp is < 0 || hp > maximumHp || shield < 0)
@@ -32,6 +35,7 @@ public sealed class MonsterCombatState
         ArgumentOutOfRangeException.ThrowIfNegative(elementalAmplification);
         ElementalAmplification = elementalAmplification;
         _intents = intents.ToList();
+        SetDifficultyProfile(difficultyProfile);
     }
 
     public string MonsterId { get; }
@@ -50,6 +54,15 @@ public sealed class MonsterCombatState
     public int BossPhase { get; private set; } = 1;
     public bool BossPhaseTransitionPending { get; private set; }
     public bool IsDead => Hp <= 0;
+    public SeasonMonsterProfile? DifficultyProfile { get; private set; }
+    internal void SetDifficultyProfile(SeasonMonsterProfile? profile)
+    {
+        profile?.Validate();
+        if (DifficultyProfile is not null && DifficultyProfile != profile)
+            throw new InvalidDataException("A live monster difficulty profile cannot change.");
+        DifficultyProfile = profile;
+        if (profile is not null) Shield = Math.Min(Shield,MaximumHp / 2);
+    }
 
     public (int ShieldDamage, int HpDamage) TakeDamage(int damage)
     {
@@ -66,7 +79,7 @@ public sealed class MonsterCombatState
 
     public int GainShield(int amount)
     {
-        var applied = Math.Max(0, amount);
+        var applied = DifficultyProfile is null ? Math.Max(0, amount) : Math.Min(Math.Max(0,amount),Math.Max(0,MaximumHp / 2 - Shield));
         Shield += applied;
         return applied;
     }
@@ -146,6 +159,24 @@ public sealed class MonsterCombatState
             return null;
         }
 
+        if (DifficultyProfile is not null)
+        {
+            // GDD 5.13.1 includes the windup in the interval; carry sub-tick overshoot forward.
+            IntervalProgress += delta;
+            var current = _intents[IntentIndex];
+            var windup = current.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower
+                ? TimeSpan.FromMilliseconds(1200) : TimeSpan.FromMilliseconds(DifficultyProfile.WindupMilliseconds);
+            if (IntervalProgress >= AttackInterval)
+            {
+                IntervalProgress -= AttackInterval;
+                WindupRemaining = TimeSpan.Zero;
+                IntentIndex = (IntentIndex + 1) % _intents.Count;
+                return current;
+            }
+            WindupRemaining = IntervalProgress >= AttackInterval - windup ? AttackInterval - IntervalProgress : TimeSpan.Zero;
+            return null;
+        }
+
         if (WindupRemaining > TimeSpan.Zero)
         {
             WindupRemaining = Reduce(WindupRemaining, delta);
@@ -169,7 +200,7 @@ public sealed class MonsterCombatState
         var intent = _intents[IntentIndex];
         WindupRemaining = intent.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower
             ? TimeSpan.FromSeconds(1.2)
-            : TimeSpan.FromSeconds(0.6);
+            : TimeSpan.FromMilliseconds(DifficultyProfile?.WindupMilliseconds ?? 600);
         return null;
     }
 
@@ -188,13 +219,27 @@ public sealed class MonsterCombatState
     public int ResolveIntentDamage(MonsterIntentState intent, double targetResistance = 0) =>
         ResolveIntentDamage(intent, targetResistance, out _);
 
+    public static int PublishedIntentValue(MonsterCombatSnapshot monster)
+    {
+        var intent = monster.Intents[monster.IntentIndex % monster.Intents.Count];
+        if (monster.DifficultyProfile is not { } profile) return intent.Value;
+        if (intent.Kind == MonsterIntentKind.Shield) return SeasonDifficultyConfig.Scale(intent.Value,profile.ShieldBasisPoints);
+        if (intent.Kind is not (MonsterIntentKind.Attack or MonsterIntentKind.Direct)) return intent.Value;
+        var value = checked(intent.Value + monster.EmpowerBonus);
+        if (monster.IsCharging) value = checked((int)((long)value * 3 / 2));
+        return SeasonDifficultyConfig.Scale(value,profile.DamageBasisPoints);
+    }
+
     public int ResolveIntentDamage(MonsterIntentState intent, double targetResistance, out int effectiveBaseValue)
     {
         var value = ResolveIntentValue(intent);
+        if (DifficultyProfile is { } profile) value = SeasonDifficultyConfig.Scale(value,profile.DamageBasisPoints);
         effectiveBaseValue = value;
         var damage = intent.Element == CardElement.None
             ? value
-            : (int)Math.Floor(value * (1 + ElementalAmplification) * (1 - targetResistance));
+            : DifficultyProfile is null
+                ? (int)Math.Floor(value * (1 + ElementalAmplification) * (1 - targetResistance))
+                : checked((int)decimal.Floor(value * (1 + (decimal)ElementalAmplification) * (1 - (decimal)targetResistance)));
         CompleteBossStep();
         return damage;
     }
@@ -242,7 +287,7 @@ public sealed class MonsterCombatState
         }
         else if (intent.Kind == MonsterIntentKind.Shield)
         {
-            GainShield(intent.Value);
+            GainShield(DifficultyProfile is null ? intent.Value : SeasonDifficultyConfig.Scale(intent.Value,DifficultyProfile.ShieldBasisPoints));
         }
         CompleteBossStep();
     }
@@ -267,7 +312,8 @@ public sealed class MonsterCombatState
                 .Select(value => new TimedCombatStatusSnapshot(value.Key, value.Value))
                 .ToArray(),
             BossPhase,
-            BossPhaseTransitionPending);
+            BossPhaseTransitionPending,
+            DifficultyProfile);
 
     public static MonsterCombatState Restore(MonsterCombatSnapshot snapshot)
     {
@@ -278,7 +324,8 @@ public sealed class MonsterCombatState
             snapshot.Shield,
             snapshot.AttackInterval,
             snapshot.Intents,
-            snapshot.ElementalAmplification);
+            snapshot.ElementalAmplification,
+            snapshot.DifficultyProfile);
         monster.SetRuntimeState(
             snapshot.IntentIndex,
             snapshot.IntervalProgress,
@@ -330,7 +377,8 @@ public sealed class MonsterCombatState
 
     private void SetBossPhaseTwoValues()
     {
-        AttackInterval = TimeSpan.FromSeconds(3.8);
+        AttackInterval = DifficultyProfile is null ? TimeSpan.FromSeconds(3.8)
+            : SeasonDifficultyConfig.ScaleInterval(TimeSpan.FromMilliseconds(3800),DifficultyProfile.IntervalBasisPoints);
         _intents.Clear();
         _intents.AddRange([
             new(MonsterIntentKind.Attack, 5, CardElement.Metal),

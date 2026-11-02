@@ -112,7 +112,8 @@ public sealed record MonsterCombatSnapshot(
     TimeSpan StunRemaining,
     IReadOnlyList<TimedCombatStatusSnapshot> StatusRemaining,
     int BossPhase = 1,
-    bool BossPhaseTransitionPending = false);
+    bool BossPhaseTransitionPending = false,
+    Configuration.SeasonMonsterProfile? DifficultyProfile = null);
 
 public enum PveBattlePhase : short
 {

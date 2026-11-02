@@ -60,6 +60,10 @@ public static class SeasonConfigValidator
         foreach (var row in table.Rows)
         {
             Check(DifficultyScales.All(f => N(table,row,f) > 0), table, "scales must be positive");
+            Check(DifficultyScales.All(f => N(table,row,f) <= int.MaxValue / 10000d &&
+                (decimal)N(table,row,f) * 10000 >= 1 &&
+                (decimal)N(table,row,f) * 10000 == decimal.Truncate((decimal)N(table,row,f) * 10000)), table,
+                "scales must fit positive basis points with at most four decimal places");
             Check(N(table,row,"quality_cap") is >= 0 and <= 4 && N(table,row,"entry_quality_cap") is >= 0 and <= 5, table, "quality caps are outside ordinary/entry ranks");
             Probability(table,row,"purple_affix_chance");
             Check(!B(table,row,"red_boss_enabled") || S(table,row,"difficulty_id") is not ("D0" or "D1"), table, "red Boss rewards require at least D2");

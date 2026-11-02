@@ -15,7 +15,7 @@ public sealed class SeasonPveMinimumTests
     public void ActualIntentClockFloorsAfterResistanceAndGuardianReduction(HeroClass hero, int hp, int intentValue)
     {
         var room = Room(hero, true, new(MonsterIntentKind.Attack, intentValue, CardElement.Fire), out var player);
-        room.Advance(TimeSpan.FromSeconds(1));
+        room.Advance(TimeSpan.FromSeconds(.4));
         Assert.Equal(hp, player.Combat.Hp);
         room.Advance(TimeSpan.FromSeconds(.6));
         Assert.Equal(hp - 1, player.Combat.Hp);
@@ -54,7 +54,7 @@ public sealed class SeasonPveMinimumTests
     public void CancelledWindupAndStunnedMonsterDoNotReceiveTheFloor()
     {
         var room = Room(HeroClass.Guardian, true, new(MonsterIntentKind.Attack, 2, CardElement.Fire), out var player);
-        room.Advance(TimeSpan.FromSeconds(1));
+        room.Advance(TimeSpan.FromSeconds(.4));
         player.Pve!.Monsters[0].ApplyStun(TimeSpan.FromSeconds(.2));
         room.Advance(TimeSpan.FromSeconds(.6));
         Assert.Equal(100, player.Combat.Hp); Assert.Empty(room.DrainCombatFeedback());

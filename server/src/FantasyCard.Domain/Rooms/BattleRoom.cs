@@ -335,7 +335,7 @@ public sealed partial class BattleRoom
         foreach (var (player, index) in _players.Values.OrderBy(player => player.PlayerId).Select((player, index) => (player, index)))
         {
             player.Position = map.SpawnPositions[index];
-            player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value));
+            player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty));
             player.Phase = RoomPlayerPhase.Pve;
             StartBotPveSimulation(player);
         }
@@ -357,7 +357,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("A player cannot move while drinking from a spring.");
         if (player.Position is not { } current || !Map.CanMove(current, target))
             throw new DomainValidationException("The target cell is not a legal inward or same-layer move.");
-        var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target));
+        var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty));
         if (player.Pve?.IsCleared == true) player.ClearedCells.Add(current);
         if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;
@@ -411,6 +411,12 @@ public sealed partial class BattleRoom
             setup.Equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
         var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration);
+        if (Season is not null && setup.Pve is not null)
+        {
+            var difficulty = _catalog.Configuration.SeasonDifficulty(Season.Difficulty);
+            foreach (var monster in setup.Pve.Monsters)
+                monster.SetDifficultyProfile(SeasonMonsterProfile.For(difficulty,monster.MonsterId));
+        }
         if (setup.IsBot && Numerics.BudgetedBotLoot)
             player.BotLoot = BotLootRules.Generate(RoomId, player.PlayerId, Numerics.BotLootCount);
         _players.Add(player.PlayerId, player);
@@ -568,6 +574,12 @@ public sealed partial class BattleRoom
             if (room.Numerics.BudgetedBotLoot && player.IsBot)
                 BotLootRules.Validate(player.BotLoot, room.Numerics.BotLootCount);
             player.Pve = playerSnapshot.Pve is null ? null : PveBattleState.Rehydrate(playerSnapshot.Pve);
+            if (room.Season is not null && catalog.UsesPublishedConfiguration && player.Pve is not null)
+            {
+                var difficulty = catalog.Configuration.SeasonDifficulty(room.Season.Difficulty);
+                if (player.Pve.Monsters.Any(monster => monster.DifficultyProfile != SeasonMonsterProfile.For(difficulty,monster.MonsterId)))
+                    throw new DomainValidationException("Saved seasonal monster scaling differs from the room's published configuration.");
+            }
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
             player.CurrentDuelId = playerSnapshot.CurrentDuelId;
