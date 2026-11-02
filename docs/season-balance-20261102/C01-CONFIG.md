@@ -24,7 +24,9 @@ r27 最终 37 项配置/发布检查通过，零失败零跳过；实际导出 2
 
 ## 后续运行时接入边界
 
-`GameConfigCatalog.LoadEmbedded` 当前只加载嵌入包，`ConfigBundleReader` 尚不校验包内内容哈希。引入归档包时必须先校验版本和内容哈希，拒绝缺失或损坏的目标版本，不能回退当前包。
+`GameConfigCatalog.Load` 现会先校验 Protobuf 内容哈希，再构造配置目录，现有嵌入包也经过同一路径。`ConfigCatalogRegistry` 按确切版本保存校验后的目录，注册同时核验发布版本和预期内容哈希；同版本不同内容会拒绝，缺版本不会回退当前目录。服务端归档目录和发布身份来源仍待接入，没有据此将实际旧房恢复算作通过。
+
+证据见 `evidence/C01-config-integrity`：r28 的43项配置检查和4项原配置领域检查全部通过，零失败零跳过。两份具有不同卡牌基础伤害和成长加值的完整配置分别可读；内容损坏/截断/缺哈希/重复哈希、预期身份错误、同版本替换均拒绝，并发重复注册保留同一目录。重导候选包与r27双端原件逐字节相同。首次传输未完成即解包导致EOF，尚未启动SDK或执行测试；已保留原始传输失败记录，等待同一上传结束并验SHA后才实际启动。
 
 `RoomReadyCoordinator` 的创建/补读和 `RoomRecoveryWorker` 仍构造当前 `CombatCardCatalog.CreatePrototype()`；卡级成长又通过 `CardEconomyRules.Level` 读取当前目录。房间内的奖励刷新、药水、怪物卡来源、`RewardChoice`、`EquipmentCombatRules` 和 `ExplorationInventory` 也有当前目录依赖。仅给房间新增版本字符串或只换卡牌基础定义不能算跨配置恢复通过，需将这些实际消费点一起固定到房间版本，并以两份数值确有差别的配置验证。
 

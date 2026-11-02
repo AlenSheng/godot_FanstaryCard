@@ -1,5 +1,6 @@
 using System.Buffers.Binary;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
@@ -117,6 +118,7 @@ public sealed class GameConfigCatalog
 
     private GameConfigCatalog(
         string version,
+        string contentHash,
         IReadOnlyList<CardConfigDefinition> cards,
         IReadOnlyList<CardLevelConfig> cardLevels,
         IReadOnlyList<EquipmentQualityConfig> equipmentQualities,
@@ -128,6 +130,7 @@ public sealed class GameConfigCatalog
         EconomyConfig economy)
     {
         Version = version;
+        ContentHash = contentHash;
         Cards = cards;
         CardLevels = cardLevels;
         EquipmentQualities = equipmentQualities;
@@ -142,6 +145,7 @@ public sealed class GameConfigCatalog
     public static GameConfigCatalog Current => Active.Value;
     public NumericalRules Numerics { get; private init; } = NumericalRules.Legacy;
     public string Version { get; }
+    public string ContentHash { get; }
     public IReadOnlyList<CardConfigDefinition> Cards { get; }
     public IReadOnlyList<CardLevelConfig> CardLevels { get; }
     public IReadOnlyList<EquipmentQualityConfig> EquipmentQualities { get; }
@@ -186,7 +190,13 @@ public sealed class GameConfigCatalog
             ?? throw new InvalidOperationException($"Embedded game config '{ResourceName}' is missing.");
         using var memory = new MemoryStream();
         stream.CopyTo(memory);
-        var bundle = ConfigBundleReader.Read(memory.ToArray());
+        return Load(memory.ToArray());
+    }
+
+    /// <summary>Loads a complete published bundle after checking its embedded content hash.</summary>
+    public static GameConfigCatalog Load(ReadOnlySpan<byte> bytes)
+    {
+        var bundle = ConfigBundleReader.Read(bytes);
         var cardsTable = bundle.Table("Cards");
         var levelsTable = bundle.Table("CardLevels");
         var equipmentTable = bundle.Table("EquipmentQuality");
@@ -275,7 +285,7 @@ public sealed class GameConfigCatalog
         ValidateEconomy(economy, shopCardPrices, cards);
         ValidateItems(items);
         return new GameConfigCatalog(
-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
+            bundle.Version, bundle.ContentHash, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
             { Numerics = ReadNumerics(bundle) };
     }
 
@@ -418,7 +428,7 @@ public sealed class GameConfigCatalog
         : Enum.Parse<CardElement>(value, ignoreCase: false);
 }
 
-internal sealed record ConfigBundle(string Version, IReadOnlyList<ConfigTable> Tables)
+internal sealed record ConfigBundle(string Version, string ContentHash, IReadOnlyList<ConfigTable> Tables)
 {
     public ConfigTable Table(string name) => Tables.Single(table => table.Name == name);
 }
@@ -442,6 +452,7 @@ internal static class ConfigBundleReader
 {
     public static ConfigBundle Read(ReadOnlySpan<byte> data)
     {
+        var contentHash = ValidateContentHash(data);
         var reader = new ProtoReader(data);
         var version = string.Empty;
         var tables = new List<ConfigTable>();
@@ -452,7 +463,35 @@ internal static class ConfigBundleReader
             else reader.Skip(wire);
         }
         if (string.IsNullOrWhiteSpace(version)) throw new InvalidDataException("Config bundle version is missing.");
-        return new ConfigBundle(version, tables);
+        return new ConfigBundle(version, contentHash, tables);
+    }
+
+    private static string ValidateContentHash(ReadOnlySpan<byte> data)
+    {
+        var reader = new ProtoReader(data);
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        byte[]? expected = null;
+        while (true)
+        {
+            var start = reader.Position;
+            if (!reader.TryTag(out var field, out var wire)) break;
+            if (field == 2)
+            {
+                if (wire != 2 || expected is not null)
+                    throw new InvalidDataException("Config bundle must contain one SHA-256 content hash.");
+                expected = reader.Bytes().ToArray();
+                if (expected.Length != 32)
+                    throw new InvalidDataException("Config bundle content hash must have 32 bytes.");
+            }
+            else
+            {
+                reader.Skip(wire);
+                hash.AppendData(data.Slice(start, reader.Position - start));
+            }
+        }
+        if (expected is null || !CryptographicOperations.FixedTimeEquals(expected, hash.GetHashAndReset()))
+            throw new InvalidDataException("Config bundle content hash is missing or does not match its data.");
+        return Convert.ToHexString(expected).ToLowerInvariant();
     }
 
     private static ConfigTable ReadTable(ReadOnlySpan<byte> data)
@@ -520,6 +559,7 @@ internal static class ConfigBundleReader
     {
         private readonly ReadOnlySpan<byte> _data = data;
         private int _offset;
+        public int Position => _offset;
         public bool TryTag(out int field, out int wire)
         {
             if (_offset >= _data.Length) { field = wire = 0; return false; }
@@ -538,8 +578,9 @@ internal static class ConfigBundleReader
         }
         public ReadOnlySpan<byte> Bytes()
         {
-            var length = checked((int)Varint());
-            if (_offset + length > _data.Length) throw new InvalidDataException("Invalid protobuf length.");
+            var encodedLength = Varint();
+            if (encodedLength > (ulong)(_data.Length - _offset)) throw new InvalidDataException("Invalid protobuf length.");
+            var length = (int)encodedLength;
             var result = _data.Slice(_offset, length); _offset += length; return result;
         }
         public string String() => Encoding.UTF8.GetString(Bytes());

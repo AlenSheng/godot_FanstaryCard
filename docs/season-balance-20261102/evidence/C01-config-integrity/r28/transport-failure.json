@@ -1,0 +1,11 @@
+{
+  "stage": "storage-r28",
+  "classification": "premature_extraction_before_SCP_completion",
+  "tar_exit_code": 2,
+  "tar_message": "gzip: stdin: unexpected end of file; tar: Unexpected EOF in archive",
+  "start_exit_code": 2,
+  "start_message": "start-storage-tests.py was not yet extracted",
+  "actual_sdk_containers_started": 0,
+  "actual_tests_executed": 0,
+  "recovery": "Wait for the same SCP session to complete, verify its archive SHA and source manifest before extracting into the same never-started owned stage."
+}
