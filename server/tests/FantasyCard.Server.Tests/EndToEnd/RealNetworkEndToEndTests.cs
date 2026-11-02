@@ -163,7 +163,7 @@ public sealed partial class RealNetworkEndToEndTests
         return port;
     }
 
-    private static NetworkServerProcess StartServer(string connectionString, int port)
+    private static NetworkServerProcess StartServer(string connectionString, int port, string? configArchiveDirectory = null, bool legacy = true)
     {
         var serverProjectDirectory = FindServerProjectDirectory();
         // Use this test build, not a Release binary left by another machine or checkout.
@@ -186,8 +186,9 @@ public sealed partial class RealNetworkEndToEndTests
         startInfo.Environment["ConnectionStrings__Postgres"] = connectionString;
         startInfo.Environment["Identity__EnableLocalAuth"] = "true";
         // This suite exercises the explicitly supported legacy client rollout path.
-        startInfo.Environment["ProtobufHttp__AllowLegacyJson"] = "true";
-        startInfo.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "true";
+        startInfo.Environment["ProtobufHttp__AllowLegacyJson"] = legacy ? "true" : "false";
+        startInfo.Environment["Realtime__AllowLegacyAccessTokenQuery"] = legacy ? "true" : "false";
+        if (configArchiveDirectory is not null) startInfo.Environment["GameConfig__ArchiveDirectory"] = configArchiveDirectory;
         startInfo.Environment.Remove("OTEL_EXPORTER_OTLP_ENDPOINT");
         return NetworkServerProcess.Start(startInfo);
     }

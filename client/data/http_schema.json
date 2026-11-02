@@ -1,7 +1,27 @@
 {
-  "sha256": "50641005596cf48647f4aa648baa939ccd77d2a85ced5dd70713dbe7333699b7",
+  "sha256": "c4514ada37ff155f79c8d1de8eacc5fd5b679ba6163c2e22667c1aa1012357e8",
   "messages": {
     "Empty": {},
+    "PublishedConfigurationResponse": {
+      "1": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "content_hash",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "bundle",
+        "type": "bytes",
+        "repeated": false,
+        "optional": false
+      }
+    },
     "UnfinishedMatchResponse": {
       "1": {
         "name": "match_id",

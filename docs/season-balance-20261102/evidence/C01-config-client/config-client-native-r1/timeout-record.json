@@ -1,0 +1,10 @@
+{
+  "stage": "config-client-native-r1",
+  "command_phase": "tests",
+  "timeout_seconds": 90,
+  "owned_child_terminated_by_existing_guard": true,
+  "original_inputs_and_successful_import_log_retained": true,
+  "native_tests_stdout_retained": false,
+  "evidence_limitation": "The first helper did not catch TimeoutExpired and persist its attached native stdout. The tool-visible Python timeout trace is retained separately; the next helper captures native output and per-case progress.",
+  "status": "not_passed"
+}

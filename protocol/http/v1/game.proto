@@ -12,6 +12,12 @@ option csharp_namespace = "FantasyCard.Contracts.Http.V1";
 
 message Empty {}
 
+message PublishedConfigurationResponse {
+  string config_version = 1;
+  string content_hash = 2;
+  bytes bundle = 3;
+}
+
 message UnfinishedMatchResponse {
   string match_id = 1;
   string room_id = 2;

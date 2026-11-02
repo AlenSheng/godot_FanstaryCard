@@ -16,6 +16,8 @@ const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
+const ConfigBundle = preload("res://data/config_bundle.gd")
+var _room_catalogs: Dictionary = {}
 const ElementRules = preload("res://state/element_rules.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const CATALOG = preload("res://data/catalog.json")
@@ -248,6 +250,7 @@ func reconnect() -> void:
 	changed.emit()
 
 func _clear_authenticated_state() -> void:
+	_room_catalogs.clear()
 	_login_deadline = 0
 	_login_generation = -1
 	lobby = {}
@@ -411,6 +414,7 @@ func _refresh_server_info() -> bool:
 # Source labels use stable keys; translated display text can be ambiguous.
 func validate_config(version: String, source: String) -> bool:
 	if not version.is_empty() and version == str(CATALOG.data.version): return true
+	if source == "room" and _room_catalogs.has(version) and _room_catalogs[version].get("_origin", "") == gateway.base_url: return true
 	var source_argument: Variant = source
 	var source_key := source
 	if source_key in ["server", "hall", "room", "preparation"]:
@@ -419,6 +423,47 @@ func validate_config(version: String, source: String) -> bool:
 	configuration_error = P.message("config_mismatch_details", [source_argument, CATALOG.data.version, version_argument])
 	gateway.end_session(configuration_error)
 	return false
+
+func room_catalog_index() -> Dictionary:
+	var version := str(room.get("config_version", ""))
+	if room.is_empty() and settlement.get("season") is Dictionary: version = str(settlement.season.get("configVersion", ""))
+	if version.is_empty() or version == str(CATALOG.data.version): return {}
+	var index: Dictionary = _room_catalogs.get(version, {})
+	if not index.is_empty() and index.get("_origin", "") == gateway.base_url: return index
+	# A missing archive is explicit; index readers must not silently select the built-in catalog.
+	return {"version": version, "cards": {}, "levels": {}, "qualities": {}, "tables": {}}
+
+func _ensure_room_catalog(version: String) -> bool:
+	if version == str(CATALOG.data.version): return true
+	if version.is_empty() or version.length() > 80: return false
+	var generation: int = gateway.session_generation
+	var address: String = gateway.base_url
+	if _room_catalogs.has(version) and _room_catalogs[version].get("_origin", "") == address: return true
+	var response: Dictionary = await gateway.request("/api/v1/config/" + version.uri_encode(), HTTPClient.METHOD_GET, null, [404])
+	if generation != gateway.session_generation or address != gateway.base_url: return false
+	if not response.ok or not response.data is Dictionary: return false
+	var envelope: Dictionary = response.data
+	if str(envelope.get("configVersion", "")) != version or not envelope.get("bundle") is PackedByteArray: return false
+	var reader := ConfigBundle.new()
+	var decoded: Dictionary = reader.decode(envelope.bundle, version, str(envelope.get("contentHash", "")))
+	if decoded.is_empty(): return false
+	var index: Dictionary = CatalogIndex.from_data(decoded)
+	if index.is_empty(): return false
+	index["_origin"] = address
+	_room_catalogs[version] = index
+	return true
+
+func _bootstrap_catalog_versions(snapshot: Dictionary) -> Array[String]:
+	var versions: Array[String] = []
+	var unfinished: Variant = snapshot.get("unfinishedMatch")
+	if unfinished is Dictionary:
+		var version := str(unfinished.get("configVersion", ""))
+		if not version.is_empty(): versions.append(version)
+	var receipt: Variant = snapshot.get("unfinishedSettlement")
+	if receipt is Dictionary and receipt.get("season") is Dictionary:
+		var version := str(receipt.season.get("configVersion", ""))
+		if not version.is_empty() and version not in versions: versions.append(version)
+	return versions
 
 func refresh_lobby() -> void:
 	var generation: int = gateway.session_generation
@@ -459,6 +504,13 @@ func refresh_lobby() -> void:
 			next_lobby["activePreparation"] = active.data
 		elif active.status == 404: next_lobby["activePreparation"] = null
 	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	for version in _bootstrap_catalog_versions(next_lobby):
+		var loaded: bool = await _ensure_room_catalog(version)
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		if not loaded:
+			configuration_error = P.message("config_archive_unavailable", [])
+			gateway.end_session(configuration_error)
+			return
 	lobby = next_lobby
 	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
 	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
@@ -1055,9 +1107,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	for id in ids:
 		var instance: Dictionary = hand_by_id.get(id, {})
 		if instance.is_empty(): return {}
-		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")))
+		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")), room_catalog_index())
 		if definition.is_empty(): return {}
-		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0))), str(instance.get("element_override", ""))))
+		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0)), room_catalog_index()), str(instance.get("element_override", ""))))
 	var target_monster := _monster_by_id(battle)
 	var status := _status_bonuses(room.get("player", {}).get("battle_status", {}))
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
@@ -1141,11 +1193,15 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var player: Dictionary = room.get("player", {})
 	if str(player.get("hero_class", "")) == "Mage" and core_count > 0:
 		var passive: Dictionary = player.get("battle_status", {})
+		var policy := str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm"))
 		var combo := int(passive.get("combo", 0)) + 1 if str(passive.get("core_element", "")) == core else 1
 		var rhythm := mini(5, core_count + combo - 1)
+		if policy == "SeasonBoundedRhythm" and core_count < 2: rhythm = 1
 		draw_charge += minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
-		var draw_basis := core_count if str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm")) == "CoreCardsSpent" else rhythm
-		immediate_draw += 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+		var draw_basis := core_count if policy == "CoreCardsSpent" else rhythm
+		var passive_draw := 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+		if policy == "SeasonBoundedRhythm": passive_draw = 0 if core_count < 2 else mini(passive_draw, cards.size() - 1)
+		immediate_draw += passive_draw
 	var stun := float(cards.map(func(card): return float(card.get("stun_seconds", 0))).max())
 	var block := float(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max())
 	return {"authoritative": false, "control_estimated": true, "core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments,

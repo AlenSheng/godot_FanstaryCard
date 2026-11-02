@@ -39,7 +39,7 @@ static func _pool_label(value: String, width: float, color: Color = P.PAPER) -> 
     return label
 
 static func _active_title(card: Dictionary, index: int) -> String:
-    var result := "%d. %s" % [index + 1, CardDetails.localized_name(str(card.get("card_id", "")), CatalogIndex.card(str(card.get("card_id", ""))))]
+    var result := "%d. %s" % [index + 1, CardDetails.localized_name(str(card.get("card_id", "")), CatalogIndex.card(str(card.get("card_id", "")), Game.room_catalog_index()))]
     for held in Game.room.get("player", {}).get("hand", []):
         if str(held.get("instance_id", "")) == str(card.get("instance_id", "")):
             return result + " · " + P.localized("own_hand")
@@ -92,7 +92,7 @@ static func open(host: Control) -> void:
         var candidate: Dictionary = pending[0]
         var card_id := str(candidate.get("card_id", ""))
         var level := int(candidate.get("level", 0))
-        var info := CardDetails.with_element(CatalogIndex.card(card_id), str(candidate.get("element_override", "")))
+        var info := CardDetails.with_element(CatalogIndex.card(card_id, Game.room_catalog_index()), str(candidate.get("element_override", "")))
         var row := HBoxContainer.new()
         row.add_theme_constant_override("separation", 28)
         var preview := CardView.new()
@@ -100,7 +100,7 @@ static func open(host: Control) -> void:
         preview.disabled = true
         preview.focus_mode = Control.FOCUS_NONE
         preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
-        preview.configure(card_id, info, CardDetails.face_description(card_id, level, info), false, {"preview":true, "level":level})
+        preview.configure(card_id, info, CardDetails.face_description(card_id, level, info, Game.room_catalog_index()), false, {"preview":true, "level":level, "configured_description":true})
         preview.size = preview.custom_minimum_size
         # CardView authors its children at218x376. Scale it inside a plain
         # wrapper so the row container cannot reset the preview scale.
@@ -116,7 +116,7 @@ static func open(host: Control) -> void:
         var title := _pool_label(CardDetails.localized_name(card_id, info), detail_width, P.GOLD)
         title.add_theme_font_size_override("font_size", 32)
         details.add_child(title)
-        details.add_child(_pool_label(CardDetails.face_description(card_id, level, info), detail_width))
+        details.add_child(_pool_label(CardDetails.face_description(card_id, level, info, Game.room_catalog_index()), detail_width))
         var active_panel := PanelContainer.new()
         active_panel.name = "MonsterPoolActiveCards"
         active_panel.size_flags_vertical = Control.SIZE_EXPAND_FILL

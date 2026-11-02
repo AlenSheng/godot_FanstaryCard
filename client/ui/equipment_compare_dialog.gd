@@ -17,8 +17,10 @@ var _loadout: Array
 var _action: Callable
 var _action_title := ""
 var _busy := false
+var _catalog_index: Dictionary = {}
 
-func open(selected: Dictionary, current: Dictionary, loadout: Array, action: Callable = Callable(), action_title: String = "", busy: bool = false) -> void:
+func open(selected: Dictionary, current: Dictionary, loadout: Array, action: Callable = Callable(), action_title: String = "", busy: bool = false, catalog_index: Dictionary = {}) -> void:
+	_catalog_index = catalog_index
 	_selected = selected
 	_current = current
 	_loadout = loadout
@@ -88,7 +90,7 @@ func _build() -> void:
 	_section_title(content, _t("set_changes"))
 	var before := _loadout
 	var after := CompareModel.replace_slot(_loadout, _selected)
-	var changes := CompareModel.changed_sets(before, after)
+	var changes := CompareModel.changed_sets(before, after, _catalog_index)
 	var set_row := HBoxContainer.new()
 	set_row.add_theme_constant_override("separation", 12)
 	content.add_child(set_row)
@@ -154,7 +156,7 @@ func _attribute_card(parent: Node, item: Dictionary, heading: String, footer: St
 	if item.is_empty():
 		_label(panel, _t("empty"), 19, P.MUTED)
 	else:
-		for entry in CompareModel.attribute_rows(item):
+		for entry in CompareModel.attribute_rows(item, _catalog_index):
 			var line := HBoxContainer.new()
 			panel.add_child(line)
 			var text := _label(line, _attribute_name(entry), 19, P.PAPER)
@@ -168,7 +170,7 @@ func _attribute_card(parent: Node, item: Dictionary, heading: String, footer: St
 func _affix_card(parent: Node, item: Dictionary, tint: Color) -> void:
 	var panel := _panel(parent, PANEL)
 	panel.get_parent().size_flags_stretch_ratio = 1.0
-	var contribution := CompareModel.affix_contributions(item)
+	var contribution := CompareModel.affix_contributions(item, _catalog_index)
 	if contribution.kind.is_empty():
 		_label(panel, "—", 20, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		return

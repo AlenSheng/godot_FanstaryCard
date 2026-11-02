@@ -547,6 +547,7 @@ func _render() -> void:
 		_left_pointer_down = false
 		_pointer_render_context.clear()
 	_render_pending = false
+	cards = CatalogIndex.cards(Game.room_catalog_index())
 	_sync_combat_feedback_context()
 	tips_overlay.set_viewport_anchor(_notice_anchor(), _notice_width_ratio())
 	_sync_draw_charge_visual()
@@ -966,11 +967,11 @@ func _ready_screen() -> void:
 
 func card_description(id: String, kind: String = "face", level: int = 0) -> String:
 	if kind == "face":
-		var summary := CardDetails.face_description(id, level, cards.get(id, {}))
+		var summary := CardDetails.face_description(id, level, cards.get(id, {}), Game.room_catalog_index())
 		if not summary.is_empty(): return summary
 	var locale := P.language()
 	if locale not in ["zh-CN", "en"]:
-		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level))
+		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level, Game.room_catalog_index()))
 	var descriptions: Dictionary = P.language_pack_section("card_descriptions")
 	var description := str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 	# Existing full descriptions use the legacy `card.desc.full.<id>` order.
@@ -980,13 +981,13 @@ func card_description(id: String, kind: String = "face", level: int = 0) -> Stri
 	return description
 
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
-	var cache_key := "%s|%s|%s|%s" % [P.language(), id, level, element_override]
+	var cache_key := "%s|%s|%s|%s|%s" % [P.language(), Game.room_catalog_index().get("version", Game.CATALOG.data.version), id, level, element_override]
 	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := P.localized("monster") if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name := CardDetails.localized_name(id, info)
-	var description: String = CardDetails.face_description(id, level, info)
+	var description: String = CardDetails.face_description(id, level, info, Game.room_catalog_index())
 	if description.is_empty(): description = card_description(id, "face", level)
 	if description.is_empty():
 		# Cards without a configured face description use the structured fallback.
@@ -1000,6 +1001,8 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 	return result
 
 func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
+	options = options.duplicate()
+	options["configured_description"] = not Game.room_catalog_index().is_empty()
 	var element_override: String = options.get("element_override", "")
 	return _card_pool.acquire(parent, id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, disabled, options, callback)
 
@@ -1256,7 +1259,7 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 		return
 	var dialog := EquipmentCompareDialog.new()
 	add_child(dialog)
-	dialog.open(item, current, worn, action, action_title, Game.busy)
+	dialog.open(item, current, worn, action, action_title, Game.busy, Game.room_catalog_index())
 
 func _show_battle_details(status: Dictionary) -> void:
 	var existing := get_node_or_null("BattleDetailsModal")

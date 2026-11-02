@@ -115,10 +115,12 @@ public sealed class GameConfigCatalog
 {
     private const string ResourceName = "FantasyCard.Config.fantasycard.config.bytes";
     private static readonly Lazy<GameConfigCatalog> Active = new(LoadEmbedded);
+    private readonly byte[] _publishedBytes;
 
     private GameConfigCatalog(
         string version,
         string contentHash,
+        byte[] publishedBytes,
         IReadOnlyList<CardConfigDefinition> cards,
         IReadOnlyList<CardLevelConfig> cardLevels,
         IReadOnlyList<EquipmentQualityConfig> equipmentQualities,
@@ -131,6 +133,7 @@ public sealed class GameConfigCatalog
     {
         Version = version;
         ContentHash = contentHash;
+        _publishedBytes = publishedBytes;
         Cards = cards;
         CardLevels = cardLevels;
         EquipmentQualities = equipmentQualities;
@@ -146,6 +149,7 @@ public sealed class GameConfigCatalog
     public NumericalRules Numerics { get; private init; } = NumericalRules.Legacy;
     public string Version { get; }
     public string ContentHash { get; }
+    public byte[] ExportPublishedBytes() => _publishedBytes.ToArray();
     public IReadOnlyList<CardConfigDefinition> Cards { get; }
     public IReadOnlyList<CardLevelConfig> CardLevels { get; }
     public IReadOnlyList<EquipmentQualityConfig> EquipmentQualities { get; }
@@ -285,7 +289,7 @@ public sealed class GameConfigCatalog
         ValidateEconomy(economy, shopCardPrices, cards);
         ValidateItems(items);
         return new GameConfigCatalog(
-            bundle.Version, bundle.ContentHash, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
+            bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
             { Numerics = ReadNumerics(bundle) };
     }
 

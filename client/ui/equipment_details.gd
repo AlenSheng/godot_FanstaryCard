@@ -19,10 +19,10 @@ static func title(item: Dictionary) -> String:
 		return "%s%s %s +%s" % [P.word(gear.get("quality", "")), P.word(gear.get("element", "")), P.word(gear.get("slot", P.localized("word_equipment"))), gear.get("level", 0)]
 	return "%s +%s" % [attributes, gear.get("level", 0)]
 
-static func description(item: Dictionary) -> String:
+static func description(item: Dictionary, index: Dictionary = {}) -> String:
 	var gear: Dictionary = equipment(item)
 	if gear.is_empty(): return "%s ×%s" % [title(item), item.get("quantity", 1)]
-	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index)
 	var lines: Array[String] = [title(item)]
 	var level: int = int(gear.get("level", 0))
 	if not quality.is_empty():
@@ -52,10 +52,10 @@ static func description(item: Dictionary) -> String:
 static func percent(value: float) -> String:
 	return ("%.2f" % (value * 100)).trim_suffix("0").trim_suffix("0").trim_suffix(".")
 
-static func enhancement_text(item: Dictionary) -> String:
+static func enhancement_text(item: Dictionary, index: Dictionary = {}) -> String:
 	var gear := equipment(item)
 	var level: int = int(gear.get("level", 0))
-	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")))
+	var quality: Dictionary = CatalogIndex.quality(str(gear.get("quality", "")), index)
 	if quality.is_empty(): return ""
 	var lines: Array[String] = [P.localized("battle_current") + " +%s → +%s" % [level, mini(level + 1, 5)]]
 	var fields: Array = [["damage_percent", "damage_per_level", P.element_stat("damage", gear.get("element", ""))], ["resistance_percent", "resistance_per_level", P.element_stat("resistance", gear.get("element", ""))]]

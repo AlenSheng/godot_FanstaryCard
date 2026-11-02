@@ -748,7 +748,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		for state in ["normal", "hover", "pressed", "disabled"]:
 			slot.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		add_child(slot)
-		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
+		slot.tooltip_text = host.EquipmentDetails.description(item, Game.room_catalog_index()) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
 		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
 		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
 		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
@@ -903,7 +903,7 @@ func _gear() -> void:
 				else: host._show_equipment_details(item, func(): host._equip(item)),
 			Game.busy or item.get("location") not in ["Inventory", "Equipped"], BLUE if selected else ORANGE)
 		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
-		entry.tooltip_text = host.EquipmentDetails.description(item) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
+		entry.tooltip_text = host.EquipmentDetails.description(item, Game.room_catalog_index()) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
@@ -959,7 +959,7 @@ func _equipment_summary_scroll(scroll_name: String, label_name: String, value: S
 	return scroll
 
 func _equipment_attribute_lines(loadout: Array) -> Array[String]:
-	var totals := EquipmentCompareModel.aggregate_attributes(loadout)
+	var totals := EquipmentCompareModel.aggregate_attributes(loadout, Game.room_catalog_index())
 	var lines: Array[String] = []
 	for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
 		var damage := float(totals.get("damage_" + element, 0.0))
@@ -979,7 +979,7 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 
 func _equipment_set_lines(loadout: Array) -> Array[String]:
 	var lines: Array[String] = []
-	for state in EquipmentCompareModel.present_set_states(loadout):
+	for state in EquipmentCompareModel.present_set_states(loadout, Game.room_catalog_index()):
 		var status := P.localized("battle_active") if state.active else P.localized("battle_inactive")
 		var line := P.localized("equipment_set_progress") % [P.word(state.kind), state.count, state.required, status]
 		if state.active:
@@ -1032,7 +1032,7 @@ func _enhance() -> void:
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 315, 350, 350))
-	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
+	var benefit: String = host.EquipmentDetails.enhancement_text(selected, Game.room_catalog_index()) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	_equipment_summary_scroll("EnhancementBenefitScroll", "EnhancementBenefit", benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 230), 24, P.TEAL)
 	if not selected.is_empty():
 		button(preload("res://ui/numerical_details.gd").text("title"), Rect2(730, 920, 350, 54), func(): preload("res://ui/numerical_details.gd").show_compare(host, host._equipped_items(), selected, true))
@@ -1304,7 +1304,7 @@ func _market() -> void:
 		list.add_child(row)
 		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
 		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable"), func(): host._show_equipment_details(gear), gear.is_empty())
-		name.tooltip_text = host.EquipmentDetails.description(gear) if not gear.is_empty() else ""
+		name.tooltip_text = host.EquipmentDetails.description(gear, Game.room_catalog_index()) if not gear.is_empty() else ""
 		name.custom_minimum_size.x = 660
 		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
 		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):

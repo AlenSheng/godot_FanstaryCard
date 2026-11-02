@@ -87,7 +87,7 @@ internal static class PublishedConfigTestInputs
         return tables.Select(t => t == table ? t with { Rows = rows } : t).ToArray();
     }
 
-    private static string FindRoot()
+    internal static string FindRoot()
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
         while (directory is not null)
