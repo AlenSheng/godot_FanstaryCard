@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Server.Rooms;
@@ -8,8 +9,10 @@ public sealed partial class RoomRecoveryWorker(
     RoomRegistry registry,
     RoomRecoveryState recoveryState,
     TimeProvider timeProvider,
-    ILogger<RoomRecoveryWorker> logger) : IHostedService
+    ILogger<RoomRecoveryWorker> logger,
+    PublishedConfigCatalogs? configurations = null) : IHostedService
 {
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         IReadOnlyList<PersistedRoomSnapshot> persisted;
@@ -45,7 +48,7 @@ public sealed partial class RoomRecoveryWorker(
                         throw new InvalidOperationException($"Room '{room.RoomId}' checkpoint disagrees with durable settlement for player '{playerId}'.");
                 }
                 var actor = registry.Register(
-                    BattleRoom.Restore(snapshot, CombatCardCatalog.CreatePrototype(), room.Seed),
+                    BattleRoom.Restore(snapshot, CombatCardCatalog.Create(_configurations.Resolve(snapshot.ConfigVersion)), room.Seed),
                     room.MatchId);
                 registered = true;
                 var now = timeProvider.GetUtcNow();

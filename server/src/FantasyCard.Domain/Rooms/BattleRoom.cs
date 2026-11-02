@@ -37,13 +37,14 @@ public sealed class RoomPlayerState
         IReadOnlyList<ExplorationItem>? wornArmor,
         bool isBot,
         IReadOnlyList<int>? safeSlotIndexes,
-        string? displayName)
+        string? displayName,
+        GameConfigCatalog configuration)
     {
         PlayerId = playerId;
         HeroClass = heroClass;
         Combat = combat;
         Pve = pve;
-        Inventory = new ExplorationInventory(inventoryCapacity, safeSlots, safeSlotIndexes);
+        Inventory = new ExplorationInventory(inventoryCapacity, safeSlots, safeSlotIndexes, configuration);
         WornArmor = (wornArmor ?? []).Select(item => item with { SlotIndex = -1, IsSafe = false }).ToArray();
         DisplayName = displayName;
         IsBot = isBot;
@@ -280,6 +281,9 @@ public sealed partial class BattleRoom
             throw new ArgumentException("Room id cannot be empty.", nameof(roomId));
         }
         ArgumentException.ThrowIfNullOrWhiteSpace(configVersion);
+        ArgumentNullException.ThrowIfNull(catalog);
+        if (catalog.UsesPublishedConfiguration && catalog.Configuration.Version != configVersion)
+            throw new DomainValidationException("Room configuration does not match its loaded published catalog.");
         if (season is not null && season.ConfigVersion != configVersion)
             throw new DomainValidationException("Room and season configuration versions differ.");
         Season = season;
@@ -291,7 +295,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("Season combat policies require a seasonal room context.");
         RoomId = roomId;
         ConfigVersion = configVersion;
-        _catalog = catalog ?? throw new ArgumentNullException(nameof(catalog));
+        _catalog = catalog;
         _legacyRandom = new CombatRandom(seed);
         _playerSeedRandom = new CombatRandom(_legacyRandom.Next());
         _rewardRandom = new CombatRandom(_legacyRandom.Next());
@@ -406,7 +410,7 @@ public sealed partial class BattleRoom
             setup.WeaponLevel,
             setup.Equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
-        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName);
+        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration);
         if (setup.IsBot && Numerics.BudgetedBotLoot)
             player.BotLoot = BotLootRules.Generate(RoomId, player.PlayerId, Numerics.BotLootCount);
         _players.Add(player.PlayerId, player);
@@ -450,7 +454,7 @@ public sealed partial class BattleRoom
         var choice = player.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
         if (player.Phase != RoomPlayerPhase.Choice)
             throw new DomainValidationException("Rewards can only be refreshed during the choice phase.");
-        var cost = GameConfigCatalog.Current.RewardRefreshGold(choice.RefreshCount + 1);
+        var cost = _catalog.Configuration.RewardRefreshGold(choice.RefreshCount + 1);
         var accountGoldRequired = cost - player.Inventory.GoldQuantity;
         if (accountGoldRequired > accountGoldAvailable)
             throw new DomainValidationException($"Insufficient gold; account gold required: {accountGoldRequired}.");
@@ -567,7 +571,7 @@ public sealed partial class BattleRoom
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
             player.CurrentDuelId = playerSnapshot.CurrentDuelId;
-            player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice);
+            player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice, catalog.Configuration);
             player.RewardRefreshCount = playerSnapshot.RewardRefreshCount ?? player.RewardChoice?.RefreshCount ?? 0;
             foreach (var receipt in playerSnapshot.RewardRefreshReceipts ?? [])
             {
@@ -582,7 +586,7 @@ public sealed partial class BattleRoom
             if (player.RewardRefreshCount is < 0 or > 3 ||
                 player.RewardChoice is { } restoredChoice && restoredChoice.RefreshCount != player.RewardRefreshCount)
                 throw new InvalidOperationException("The snapshot contains inconsistent reward refresh counts.");
-            player.Inventory.Apply(ExplorationInventory.Restore(inventory));
+            player.Inventory.Apply(ExplorationInventory.Restore(inventory, catalog.Configuration));
             player.RecycledEquipment.AddRange(playerSnapshot.RecycledEquipment ?? []);
             if (playerSnapshot.ExtractionRemaining is { } extraction && extraction > TimeSpan.Zero)
                 room._extractions[player.PlayerId] = extraction;
@@ -850,7 +854,7 @@ public sealed partial class BattleRoom
             throw new InvalidOperationException("The selected health potion disappeared before it could be consumed.");
 
         var baseRecovery = (int)Math.Floor(
-            player.Combat.MaximumHp * Configuration.GameConfigCatalog.Current.Economy.HealthPotionHealRate);
+            player.Combat.MaximumHp * _catalog.Configuration.Economy.HealthPotionHealRate);
         var healed = player.Combat.Heal(player.Combat.ResolveRecovery(baseRecovery));
         Revision++;
         return new PotionUseResult(potion.ItemId, healed, Revision);
@@ -1062,7 +1066,7 @@ public sealed partial class BattleRoom
             "stone-guard" => "StoneGuard", "thorn-guard" => "ThornGuard", "annihilation-core" => "VoidCore",
             _ => null
         };
-        var card = monsterType is null ? null : GameConfigCatalog.Current.Cards.FirstOrDefault(value => value.MonsterType == monsterType);
+        var card = monsterType is null ? null : _catalog.Configuration.Cards.FirstOrDefault(value => value.MonsterType == monsterType);
         if (card is not null && _catalog.Contains(card.CardId))
         {
             var instance = new CombatCardInstance(Guid.CreateVersion7(), card.CardId,
@@ -1082,7 +1086,7 @@ public sealed partial class BattleRoom
         player.Pve!.RefreshPhase();
         var cell = Map.GetCell(position);
         player.RewardChoice = RewardChoiceState.Create(cell.Layer, RewardRandom, cell.IsBoss, player.RewardRefreshCount,
-            isTreasure: cell.MonsterGroupId == "BOX");
+            isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration);
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
     }
@@ -1090,7 +1094,7 @@ public sealed partial class BattleRoom
     private void AddPveVictoryDrops(RoomPlayerState player, ChaosMapCell cell)
     {
         var isBoss = cell.IsBoss || string.Equals(cell.MonsterGroupId, "BOSS", StringComparison.Ordinal);
-        var loot = GameConfigCatalog.Current.LootLayer(cell.Layer, isBoss);
+        var loot = _catalog.Configuration.LootLayer(cell.Layer, isBoss);
         var gold = loot.Gold;
         var warriorSoul = LootRandom.Next(loot.WarriorSoulMin, checked(loot.WarriorSoulMax + 1));
         var classSoul = loot.ClassSoul;

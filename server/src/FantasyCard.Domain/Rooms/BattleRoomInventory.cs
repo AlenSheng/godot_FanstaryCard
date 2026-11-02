@@ -19,7 +19,7 @@ public sealed partial class BattleRoom
         var item = player.Inventory.Items.SingleOrDefault(value => value.ItemId == itemId)
             ?? throw new DomainValidationException("The equipment is not in the backpack.");
         var (armor, previous, profile) = PrepareEquipmentChange(player, item);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
+        var staged = player.Inventory.Clone();
         if (!staged.TryRemove(itemId, out _) || previous is not null &&
             !staged.TryAdd(previous with { SlotIndex = item.SlotIndex, IsSafe = item.IsSafe }))
             throw new DomainValidationException("The previous equipment cannot be returned to the backpack.");
@@ -36,7 +36,7 @@ public sealed partial class BattleRoom
             ?? throw new DomainValidationException("There is no armor in that slot.");
         var armor = player.WornArmor.Where(item => item.ItemId != previous.ItemId).ToArray();
         var profile = CalculateArmor(armor);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
+        var staged = player.Inventory.Clone();
         if (!staged.TryAdd(previous with { SlotIndex = -1, IsSafe = false }))
             throw new DomainValidationException("The backpack is full.");
         player.Inventory.Apply(staged);
@@ -62,7 +62,7 @@ public sealed partial class BattleRoom
         return player;
     }
 
-    private static (ExplorationItem[] Armor, ExplorationItem? Previous, CombatEquipmentProfile Profile)
+    private (ExplorationItem[] Armor, ExplorationItem? Previous, CombatEquipmentProfile Profile)
         PrepareEquipmentChange(RoomPlayerState player, ExplorationItem item)
     {
         var incoming = ToCombatEquipment(item);
@@ -75,8 +75,8 @@ public sealed partial class BattleRoom
         return (armor, previous, CalculateArmor(armor));
     }
 
-    private static CombatEquipmentProfile CalculateArmor(IReadOnlyList<ExplorationItem> armor) =>
-        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray());
+    private CombatEquipmentProfile CalculateArmor(IReadOnlyList<ExplorationItem> armor) =>
+        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray(), _catalog.Configuration);
 
     private static CombatEquipmentItem ToCombatEquipment(ExplorationItem item)
     {
@@ -87,10 +87,10 @@ public sealed partial class BattleRoom
         return new(id, data.Slot, data.Quality, data.Level, element, data.EffectAffix, data.SecondaryTrait);
     }
 
-    private static int EquipReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)
+    private int EquipReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)
     {
         var (armor, previous, profile) = PrepareEquipmentChange(player, item);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
+        var staged = player.Inventory.Clone();
         ExplorationItem? recycled = null;
         if (replaceItemId is not null)
         {

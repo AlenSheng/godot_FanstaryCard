@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
@@ -23,9 +24,11 @@ public sealed partial class RoomReadyCoordinator(
     ConnectionRegistry connections,
     TimeProvider timeProvider,
     ILogger<RoomReadyCoordinator> logger,
-    ServerMetrics? metrics = null) : BackgroundService, IRoomReadyService
+    ServerMetrics? metrics = null,
+    PublishedConfigCatalogs? configurations = null) : BackgroundService, IRoomReadyService
 {
     private ReadyMatchLaunch? _pendingLaunch;
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
 
     public Task<ReadyLobbyView?> GetAsync(Guid playerId, CancellationToken cancellationToken) =>
         repository.GetReadyLobbyAsync(playerId, cancellationToken);
@@ -113,7 +116,7 @@ public sealed partial class RoomReadyCoordinator(
                 assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion, assignment.Season);
         var room = persisted is null
             ? CreateRoom(assignment)
-            : BattleRoom.Restore(persisted, CombatCardCatalog.CreatePrototype(), assignment.Seed);
+            : BattleRoom.Restore(persisted, CombatCardCatalog.Create(_configurations.Resolve(persisted.ConfigVersion)), assignment.Seed);
         metrics?.ObserveMatchLaunchPhase("build", Stopwatch.GetElapsedTime(startedAt));
         startedAt = Stopwatch.GetTimestamp();
         await snapshots.SaveIfDueAsync(room.Capture(), cancellationToken);
@@ -161,14 +164,13 @@ public sealed partial class RoomReadyCoordinator(
         }
     }
 
-    private static BattleRoom CreateRoom(MatchAssignment assignment)
+    private BattleRoom CreateRoom(MatchAssignment assignment)
     {
         var configVersion = assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion;
-        if (configVersion != BootstrapRepository.CurrentConfigVersion)
-            throw new InvalidOperationException("The assigned room configuration is not loaded by this server.");
+        var configuration = _configurations.Resolve(configVersion);
         var room = new BattleRoom(assignment.RoomId, configVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed, assignment.Season is null
-                ? FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics : FantasyCard.Domain.Configuration.NumericalRules.SeasonV1,
+            CombatCardCatalog.Create(configuration), assignment.Seed, assignment.Season is null
+                ? configuration.Numerics : NumericalRules.SeasonV1,
             assignment.Season);
         foreach (var player in assignment.Players)
         {
@@ -181,7 +183,7 @@ public sealed partial class RoomReadyCoordinator(
                 return new ExplorationItem(id.ToString("D"), ExplorationItemKind.Equipment,
                     Equipment: details, IsGenerated: false);
             }).ToArray();
-            var equipment = EquipmentCombatRules.Calculate(player.Equipment);
+            var equipment = EquipmentCombatRules.Calculate(player.Equipment, configuration);
             var state = room.AddPlayer(new BattleRoomPlayerSetup(player.PlayerId, player.HeroClass,
                 player.CardIds, null, WeaponLevel: player.WeaponLevel,
                 InventoryCapacity: player.InventoryCapacity, SafeSlots: player.SafeSlots,

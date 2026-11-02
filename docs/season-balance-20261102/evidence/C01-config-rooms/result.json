@@ -1,0 +1,66 @@
+{
+  "status": "partial_C01_server_room_consumption_passed_client_and_season_content_pending",
+  "domain_tests_passed": 477,
+  "domain_evidence": "r30; all domain/test/config input hashes unchanged in r31",
+  "server_tests_passed": 93,
+  "server_evidence": "r31",
+  "tests_skipped": 0,
+  "public_archive_sha256": {
+    "r30": "52a1e7ec16dacb1043bf9c4d72d308f4ca7a88e294f4b2f5f191908eb38ec54c",
+    "r31": "5793a1805003fd7edf04970e1fbed50dd522f917525e2eb5703994bcf4a713f0"
+  },
+  "verified": [
+    "Published archive version/hash loading and no current-version fallback",
+    "Actual Resolver and card growth use selected catalog; 172 and 345 after the unchanged 15% resistance",
+    "Two legal full 20-card controls with distinct 21/22-slot backpacks, equipment, potion, loot and refresh prices",
+    "Inventory transaction copies, unequip and relic transfer retain the selected catalog",
+    "Controlled full-health fire-bat kill adds the real monster card and selected cell rewards",
+    "PostgreSQL recovery restores old and next-season rooms with their distinct values",
+    "Missing/corrupt old bundles quarantine only affected rooms and preserve raw checkpoints",
+    "Terminal reads use old configuration without registering an actor or writing settlement",
+    "Current preparation/ready launch, lifecycle, terminal ownership and action recovery regressions"
+  ],
+  "fixture_limits": [
+    "Control configurations are deliberately different and not written to the formal workbook",
+    "Damage probes use a declared high-health target and fixed hand selection preserving all 20 real instances",
+    "The kill probe uses a declared full-health 78 HP fire bat; no claim of final six-difficulty or human balance",
+    "Client archived-configuration acquisition and UI compatibility remain pending",
+    "Bot generation/version projection and remaining typed seasonal content still require later work"
+  ],
+  "history": [
+    {
+      "run": "r29",
+      "status": "prestart draft; Shanghai-calendar fixture corrected before upload",
+      "executed_tests": 0
+    },
+    {
+      "run": "r30",
+      "domain_passed": 477,
+      "server_passed": 86,
+      "server_failed": 7,
+      "causes": [
+        "Five pre-resistance damage expectations",
+        "One missing map in terminal fixture",
+        "One incorrect expected command-rejection event name"
+      ]
+    },
+    {
+      "run": "r31",
+      "server_passed": 93,
+      "server_failed": 0,
+      "domain_reused": 477,
+      "runtime_sources_changed_since_r30": false
+    }
+  ],
+  "production_deployed": false,
+  "active_runtime_bundle_replaced": false,
+  "capacity_retest_performed": false,
+  "B05_matches_consumed": 0,
+  "B05_remaining": 9,
+  "pending": [
+    "Client archived configuration delivery/consumption and languages/resolutions UI validation",
+    "Remaining typed seasonal tables/fields and actual season difficulty/equipment/economy consumption",
+    "Bot-generation version projection and full old-admitted-launch scenario",
+    "Unified final configuration publication and production archive mount/deployment"
+  ]
+}

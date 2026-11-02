@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace FantasyCard.Domain.Configuration;
 
@@ -18,6 +19,12 @@ public sealed class ConfigCatalogRegistry
         ArgumentException.ThrowIfNullOrWhiteSpace(version);
         return _catalogs.TryGetValue(version, out var catalog) ? catalog
             : throw new InvalidDataException($"Published configuration '{version}' is not loaded.");
+    }
+
+    public bool TryResolve(string version, [NotNullWhen(true)] out GameConfigCatalog? catalog)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(version);
+        return _catalogs.TryGetValue(version, out catalog);
     }
 
     public GameConfigCatalog Register(string expectedVersion, string expectedContentHash, ReadOnlySpan<byte> bytes)

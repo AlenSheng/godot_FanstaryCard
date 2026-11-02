@@ -35,7 +35,8 @@ public sealed record RewardRefreshReceiptSnapshot(string RequestId, RewardChoice
 public sealed class RewardChoiceState
 {
     private readonly List<RewardChoiceOption> _options;
-    private RewardChoiceState(ChaosMapLayer layer, IReadOnlyList<RewardChoiceOption> options, int refreshCount, bool isBoss, bool isTreasure)
+    private readonly GameConfigCatalog _configuration;
+    private RewardChoiceState(ChaosMapLayer layer, IReadOnlyList<RewardChoiceOption> options, int refreshCount, bool isBoss, bool isTreasure, GameConfigCatalog configuration)
     {
         if (refreshCount is < 0 or > 3)
             throw new DomainValidationException("Reward refresh count must be between zero and three.");
@@ -44,36 +45,42 @@ public sealed class RewardChoiceState
         if (isTreasure && (layer != ChaosMapLayer.Outer || isBoss))
             throw new DomainValidationException("Treasure encounters must use outer-layer rewards.");
         Layer = layer; IsBoss = isBoss; IsTreasure = isTreasure; _options = options.ToList(); RefreshCount = refreshCount;
+        _configuration = configuration;
     }
     public ChaosMapLayer Layer { get; }
     public bool IsBoss { get; }
     public bool IsTreasure { get; }
     public IReadOnlyList<RewardChoiceOption> Options => _options;
     public int RefreshCount { get; private set; }
-    public static RewardChoiceState Create(ChaosMapLayer layer, Random random, bool isBoss = false, int refreshCount = 0, bool isTreasure = false) => new(layer, CreateOptions(layer, random, isBoss, isTreasure), refreshCount, isBoss, isTreasure);
-    public static RewardChoiceState Restore(RewardChoiceSnapshot snapshot) => new(snapshot.Layer, snapshot.Options, snapshot.RefreshCount, snapshot.IsBoss, snapshot.IsTreasure);
+    public static RewardChoiceState Create(ChaosMapLayer layer, Random random, bool isBoss = false, int refreshCount = 0, bool isTreasure = false, GameConfigCatalog? configuration = null)
+    {
+        var catalog = configuration ?? GameConfigCatalog.Current;
+        return new(layer, CreateOptions(layer, random, isBoss, isTreasure, catalog), refreshCount, isBoss, isTreasure, catalog);
+    }
+    public static RewardChoiceState Restore(RewardChoiceSnapshot snapshot, GameConfigCatalog? configuration = null) =>
+        new(snapshot.Layer, snapshot.Options, snapshot.RefreshCount, snapshot.IsBoss, snapshot.IsTreasure, configuration ?? GameConfigCatalog.Current);
     public RewardChoiceSnapshot Capture() => new(Layer, _options.ToArray(), RefreshCount, IsBoss, IsTreasure);
     public RewardChoiceOption Get(string optionId) => _options.SingleOrDefault(o => o.OptionId == optionId)
         ?? throw new DomainValidationException("The reward option is not available.");
     public void Refresh(Random random)
     {
         if (RefreshCount >= 3) throw new DomainValidationException("The reward refresh limit has been reached.");
-        _options.Clear(); _options.AddRange(CreateOptions(Layer, random, IsBoss, IsTreasure)); RefreshCount++;
+        _options.Clear(); _options.AddRange(CreateOptions(Layer, random, IsBoss, IsTreasure, _configuration)); RefreshCount++;
     }
-    private static IReadOnlyList<RewardChoiceOption> CreateOptions(ChaosMapLayer layer, Random random, bool isBoss, bool isTreasure)
+    private static IReadOnlyList<RewardChoiceOption> CreateOptions(ChaosMapLayer layer, Random random, bool isBoss, bool isTreasure, GameConfigCatalog configuration)
     {
-        var loot = GameConfigCatalog.Current.LootLayer(layer, isBoss);
+        var loot = configuration.LootLayer(layer, isBoss);
         var quantity = random.Next(loot.FragmentMin, checked(loot.FragmentMax + 1));
         var heal = loot.HealPercentagePoints;
         var suffix = CreateDeterministicId(random).ToString("N");
-        var equipment = CreateEquipment(loot, random, isTreasure);
+        var equipment = CreateEquipment(loot, random, isTreasure, configuration);
         return [
             new($"equipment:{suffix}", RewardChoiceKind.Equipment, new ExplorationItem(CreateDeterministicId(random).ToString("D"), ExplorationItemKind.Equipment, Equipment: equipment, IsGenerated: true)),
             new($"fragments:{suffix}", RewardChoiceKind.EquipmentFragments, new ExplorationItem("equipment_fragments", ExplorationItemKind.EquipmentFragments, quantity)),
             new($"heal:{suffix}", RewardChoiceKind.ImmediateHeal, HealPercent: heal)];
     }
 
-    private static EquipmentRewardData CreateEquipment(LootLayerConfig loot, Random random, bool isTreasure)
+    private static EquipmentRewardData CreateEquipment(LootLayerConfig loot, Random random, bool isTreasure, GameConfigCatalog configuration)
     {
         string[] slots = ["Head", "Chest", "Hands", "Legs", "Feet"];
         string[] elements = ["Wood", "Fire", "Earth", "Metal", "Water"];
@@ -82,7 +89,7 @@ public sealed class RewardChoiceState
         if (isTreasure)
             quality = quality switch { "White" => "Green", "Green" => "Blue", "Blue" => "Purple", _ => "Orange" };
         var slot = slots[random.Next(slots.Length)];
-        var affixRate = GameConfigCatalog.Current.EquipmentQuality(quality).AffixDropRate;
+        var affixRate = configuration.EquipmentQuality(quality).AffixDropRate;
         var hasAffix = affixRate >= 1 || affixRate > 0 && random.Next(100) < Math.Round(affixRate * 100);
         var effectAffix = hasAffix ? affixes[random.Next(affixes.Length)] : null;
         var secondaryTrait = slot == "Feet" && random.Next(2) == 1 ? "ForcedEscape" : "DrawInterval";

@@ -8,11 +8,16 @@ public sealed class CombatCardCatalog
 {
     private readonly Dictionary<string, CombatCardDefinition> _definitions;
 
-    public CombatCardCatalog(IEnumerable<CombatCardDefinition> definitions)
+    public CombatCardCatalog(IEnumerable<CombatCardDefinition> definitions, GameConfigCatalog? configuration = null)
     {
         ArgumentNullException.ThrowIfNull(definitions);
         _definitions = definitions.ToDictionary(definition => definition.CardId, StringComparer.Ordinal);
+        Configuration = configuration ?? GameConfigCatalog.Current;
+        UsesPublishedConfiguration = configuration is not null;
     }
+
+    public GameConfigCatalog Configuration { get; }
+    public bool UsesPublishedConfiguration { get; }
 
     public CombatCardDefinition Get(string cardId, int level = 0, CardElement? elementOverride = null)
     {
@@ -35,15 +40,23 @@ public sealed class CombatCardCatalog
         }
         return level == 0 ? definition : definition with
         {
-            Effect = CardEconomyRules.ApplyLevel(cardId, definition.Effect, level)
+            Effect = CardEconomyRules.ApplyLevel(cardId, definition.Effect, level, Configuration)
         };
     }
 
     public bool Contains(string cardId) => _definitions.ContainsKey(cardId);
 
-    public static CombatCardCatalog CreatePrototype()
+    public static CombatCardCatalog CreatePrototype() => CreateDefinitions(GameConfigCatalog.Current, published: false);
+
+    public static CombatCardCatalog Create(GameConfigCatalog configuration)
     {
-        var cards = GameConfigCatalog.Current.Cards
+        ArgumentNullException.ThrowIfNull(configuration);
+        return CreateDefinitions(configuration, published: true);
+    }
+
+    private static CombatCardCatalog CreateDefinitions(GameConfigCatalog configuration, bool published)
+    {
+        var cards = configuration.Cards
             .Select(card => new CombatCardDefinition(card.CardId, card.Effect))
             .ToList();
         cards.AddRange(new List<CombatCardDefinition>
@@ -82,7 +95,7 @@ public sealed class CombatCardCatalog
         cards.AddRange(ClassCards("priest", HeroClass.Priest));
         cards.AddRange(ClassCards("mage", HeroClass.Mage));
         cards.AddRange(ClassCards("guardian", HeroClass.Guardian));
-        return new CombatCardCatalog(cards);
+        return new CombatCardCatalog(cards, published ? configuration : null);
     }
 
     private static IEnumerable<CombatCardDefinition> ClassCards(string prefix, HeroClass heroClass) =>

@@ -1179,16 +1179,17 @@ public sealed class PostgresRuntimeIntegrationTests
         const int seed = 73;
 
         await using (var command = database.DataSource.CreateCommand(
-            "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',$3,'test','Running',$4)"))
+            "INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at) VALUES($1,$2,'ChaosRealm','Standard',$3,$5,'Running',$4)"))
         {
             command.Parameters.AddWithValue(matchId);
             command.Parameters.AddWithValue(roomId);
             command.Parameters.AddWithValue(seed);
             command.Parameters.AddWithValue(time.GetUtcNow());
+            command.Parameters.AddWithValue(GameConfigCatalog.Current.Version);
             await command.ExecuteNonQueryAsync(cancellationToken);
         }
 
-        var room = new BattleRoom(roomId, "test", CombatCardCatalog.CreatePrototype(), seed);
+        var room = new BattleRoom(roomId, GameConfigCatalog.Current.Version, CombatCardCatalog.Create(GameConfigCatalog.Current), seed);
         room.AddPlayer(new BattleRoomPlayerSetup(
             playerId,
             HeroClass.Mage,

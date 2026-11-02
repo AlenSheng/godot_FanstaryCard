@@ -23,6 +23,7 @@ public sealed partial class RealtimeCommandRouter
     private readonly IRoomReadyService? _roomReadyService;
     private readonly RoomSnapshotRepository? _roomSnapshotRepository;
     private readonly ILogger<RealtimeCommandRouter>? _logger;
+    private readonly PublishedConfigCatalogs _configurations;
     private readonly RealtimeRequestStore _requestStore = new();
 
     public RealtimeCommandRouter(
@@ -33,7 +34,8 @@ public sealed partial class RealtimeCommandRouter
         ServerMetrics? metrics = null,
         IRoomReadyService? roomReadyService = null,
         RoomSnapshotRepository? roomSnapshotRepository = null,
-        ILogger<RealtimeCommandRouter>? logger = null)
+        ILogger<RealtimeCommandRouter>? logger = null,
+        PublishedConfigCatalogs? configurations = null)
     {
         _eventStore = eventStore;
         _timeProvider = timeProvider;
@@ -43,6 +45,7 @@ public sealed partial class RealtimeCommandRouter
         _roomReadyService = roomReadyService;
         _roomSnapshotRepository = roomSnapshotRepository;
         _logger = logger;
+        _configurations = configurations ?? new(GameConfigCatalog.Current);
     }
 
     public IReadOnlyList<ServerEvent> Route(

@@ -23,11 +23,11 @@ public static class CardEconomyRules
     public static long CraftCost(CardConfigDefinition card, bool owned) =>
         card.InitiallyUnlocked ? card.CopyCost : card.UnlockCost;
 
-    public static CardLevelConfig Level(string cardId, int level)
+    public static CardLevelConfig Level(string cardId, int level, GameConfigCatalog? configuration = null)
     {
         if (level is < 0 or > 5)
             throw new DomainValidationException("Card level must be between zero and five.");
-        return GameConfigCatalog.Current.CardLevels.SingleOrDefault(item => item.CardId == cardId && item.Level == level)
+        return (configuration ?? GameConfigCatalog.Current).CardLevels.SingleOrDefault(item => item.CardId == cardId && item.Level == level)
             ?? throw new DomainValidationException("Card level is not present in the active config.");
     }
 
@@ -39,10 +39,10 @@ public static class CardEconomyRules
         return null;
     }
 
-    public static CombatCardEffect ApplyLevel(string cardId, CombatCardEffect effect, int level)
+    public static CombatCardEffect ApplyLevel(string cardId, CombatCardEffect effect, int level, GameConfigCatalog? configuration = null)
     {
         if (level == 0) return effect;
-        var growth = Level(cardId, level);
+        var growth = Level(cardId, level, configuration);
         // Upgrade existing components only; costs, elements and combo structure remain unchanged.
         return effect with
         {

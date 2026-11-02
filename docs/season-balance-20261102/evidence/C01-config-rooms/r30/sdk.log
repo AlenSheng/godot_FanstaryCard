@@ -1,0 +1,112 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 516 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/config-room-domain.trx
+
+Passed!  - Failed:     0, Passed:   477, Skipped:     0, Total:   477, Duration: 9 s - FantasyCard.Domain.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 103 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 302 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 6 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  1 of 5 projects are up-to-date for restore.
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:26.62]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: False, damage: 203, capacity: 21) [FAIL]
+[xUnit.net 00:00:26.76]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: True, damage: 407, capacity: 22) [FAIL]
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: False, damage: 203, capacity: 21) [126 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 797
+Actual:   828
+  Stack Trace:
+     at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(Boolean alternate, Int32 damage, Int32 capacity) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 25
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: True, damage: 407, capacity: 22) [139 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 593
+Actual:   655
+  Stack Trace:
+     at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(Boolean alternate, Int32 damage, Int32 capacity) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 25
+   at InvokeStub_ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:28.48]     FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "corrupt") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "corrupt") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 593
+Actual:   655
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.AssertCastAsync(RoomRegistry rooms, Guid playerId, Int32 damage, Int32 capacity, Clock clock) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 119
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 60
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:30.20]     FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "valid") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "valid") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 593
+Actual:   655
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.AssertCastAsync(RoomRegistry rooms, Guid playerId, Int32 damage, Int32 capacity, Clock clock) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 119
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 60
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:31.61]     FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "missing") [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(archiveState: "missing") [1 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 593
+Actual:   655
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.AssertCastAsync(RoomRegistry rooms, Guid playerId, Int32 damage, Int32 capacity, Clock clock) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 119
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 60
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.RecoveryUsesActualArchivedValuesAndQuarantinesOnlyTheUnavailableVersion(String archiveState) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 73
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:33.11]     FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(available: True) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(available: True) [1 s]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The room map is not initialized.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.BattleRoom.GetMapProjection(Guid playerId) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 381
+   at FantasyCard.Server.Rooms.GetRoomClientStateCommand.Execute(BattleRoom room) in /workspace/server/src/FantasyCard.Server/Rooms/RoomCommands.cs:line 73
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.ResolveTerminalCommandAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 68
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 162
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteContextualCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 19
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RealtimeRequestStore.ExecuteAsync(Guid playerId, String requestId, String fingerprint, Func`1 execute) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 1021
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 102
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 107
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 107
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:34.40]     FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(available: False) [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(available: False) [1 s]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "command.rejected"
+Actual:   "error.command_rejected"
+           ↑ (pos 0)
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 104
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 107
+   at FantasyCard.Server.Tests.Persistence.PostgresConfigVersionRoomTests.TerminalReadRequiresTheArchivedCatalogAndNeverRegistersOrRewritesTheRoom(Boolean available) in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresConfigVersionRoomTests.cs:line 107
+--- End of stack trace from previous location ---
+Results File: /workspace/results/config-room-server.trx
+
+Failed!  - Failed:     7, Passed:    86, Skipped:     0, Total:    93, Duration: 46 s - FantasyCard.Server.Tests.dll (net10.0)

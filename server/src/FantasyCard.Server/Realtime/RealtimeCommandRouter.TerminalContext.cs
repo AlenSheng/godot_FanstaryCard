@@ -55,7 +55,16 @@ public sealed partial class RealtimeCommandRouter
             {
                 // This temporary domain projection has no actor, ticker,
                 // observer, persistence writer or asset/settlement side effects.
-                var room = BattleRoom.Restore(checkpoint.Snapshot, CombatCardCatalog.CreatePrototype(), checkpoint.Seed);
+                FantasyCard.Domain.Configuration.GameConfigCatalog configuration;
+                try
+                {
+                    configuration = _configurations.Resolve(checkpoint.Snapshot.ConfigVersion);
+                }
+                catch (IOException)
+                {
+                    return [Reject(player.UserId, traceId, command.RequestId, "COMMAND_REJECTED", "The room's published configuration is unavailable.")];
+                }
+                var room = BattleRoom.Restore(checkpoint.Snapshot, CombatCardCatalog.Create(configuration), checkpoint.Seed);
                 var state = new GetRoomClientStateCommand(player.UserId).Execute(room);
                 if (command.Type == "room.snapshot.read")
                     return [CreateRoomSnapshot(player.UserId, traceId, command.RequestId, state, matchId)];

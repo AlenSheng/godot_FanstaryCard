@@ -62,7 +62,7 @@ public sealed class RelicPile
         var itemIndex = _items.FindIndex(item => item.ItemId == itemId);
         if (itemIndex < 0) return false;
         var taken = _items[itemIndex];
-        var staged = ExplorationInventory.Restore(inventory.Capture());
+        var staged = inventory.Clone();
         ExplorationItem? replaced = null;
         if (replaceItemId is not null && !staged.TryRemove(replaceItemId, out replaced)) return false;
         if (!staged.TryAdd(taken with { SlotIndex = replaced?.SlotIndex ?? -1, IsSafe = false })) return false;
