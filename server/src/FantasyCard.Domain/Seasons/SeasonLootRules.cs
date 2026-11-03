@@ -6,7 +6,8 @@ namespace FantasyCard.Domain.Seasons;
 
 public enum SeasonRewardBias { None, Equipment, Fragments }
 
-public sealed record SeasonRewardContext(SeasonContext Season, SeasonRewardBias Bias);
+public sealed record SeasonRewardContext(SeasonContext Season, SeasonRewardBias Bias,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 /// <summary>Original mint context follows a generated item through swaps, piles and settlement.</summary>
 public sealed record SeasonEquipmentOrigin(SeasonContext Season,string Source,string LootRuleId,string LayerId,

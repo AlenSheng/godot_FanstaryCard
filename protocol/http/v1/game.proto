@@ -175,6 +175,7 @@ message CreatePreparationRequest {
   optional string difficulty = 7;
   optional string season_id = 8;
   bool use_borrowed_deck = 9;
+  optional string loot_preference_element = 10;
 }
 
 message PreparationSnapshotResponse {
@@ -195,6 +196,7 @@ message PreparationSnapshotResponse {
   repeated int32 actual_card_levels = 15;
   optional int32 actual_class_weapon_level = 16;
   optional string borrowed_template_id = 17;
+  optional string loot_preference_element = 18;
 }
 
 message PreparationEquipmentSnapshotResponse {

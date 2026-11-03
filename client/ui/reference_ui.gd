@@ -893,6 +893,22 @@ func _preparation() -> void:
 	add_child(count)
 	count.position = Vector2(1560, 773)
 	count.size = Vector2(270, 66)
+	var preference: String=str(snap.get("lootPreferenceElement","")) if locked else Game.season_loot_preference()
+	if not preference.is_empty():
+		text(P.localized("season_loot_preference_locked" if locked else "season_loot_preference"),Rect2(850,844,490,66),24,P.GOLD,null,false)
+		var selector := OptionButton.new()
+		selector.name="LootPreferenceSelector"
+		var elements := ["Wood","Fire","Earth","Metal","Water"]
+		for element in elements: selector.add_item(P.word(element))
+		selector.select(elements.find(preference))
+		selector.disabled=locked or Game.busy
+		selector.position=Vector2(1350,850);selector.size=Vector2(390,52)
+		selector.tooltip_text=P.localized("season_loot_preference_hint")
+		selector.add_theme_font_size_override("font_size",24)
+		_season_selector_style(selector);P.apply_text_direction(selector)
+		selector.item_selected.connect(func(index):Game.select_loot_preference(str(elements[index])))
+		add_child(selector)
+		button("?",Rect2(1750,850,90,52),host._show_loot_preference_info)
 	if locked:
 		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
 		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)

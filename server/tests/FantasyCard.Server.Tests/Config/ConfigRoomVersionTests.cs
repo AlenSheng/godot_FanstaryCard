@@ -116,8 +116,9 @@ public sealed class ConfigRoomVersionTests
         room.PlayCards(playerId,player.Pve!.BattleId,"fire-bat",player.Combat.Deck.Hand.Select(c => c.InstanceId).ToArray(),
             room.Revision,DateTimeOffset.UnixEpoch,room.NewCombatActionId(playerId));
         Assert.Equal(RoomPlayerPhase.Choice,player.Phase);
-        Assert.Equal(gold,player.Inventory.GoldQuantity);
-        Assert.Equal(fragments,player.Inventory.Items.Single(i => i.Kind == ExplorationItemKind.EquipmentFragments).Quantity);
+        // The fixture uses D5: base integers receive2.2x gold and4x fragments.
+        Assert.Equal(gold*22000/10000,player.Inventory.GoldQuantity);
+        Assert.Equal(fragments*40000/10000,player.Inventory.Items.Single(i => i.Kind == ExplorationItemKind.EquipmentFragments).Quantity);
         var deck = player.Combat.Deck.Capture();var pool = deck.Hand.Concat(deck.Library).Concat(deck.Discard).ToArray();
         Assert.Equal(21,pool.Length);
         Assert.Single(pool,c => fixture.Catalog.Cards.Single(d => d.CardId == c.CardId).MonsterType == "FireBat");

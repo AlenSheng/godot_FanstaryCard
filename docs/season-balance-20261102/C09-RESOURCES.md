@@ -1,4 +1,6 @@
-# C09 基础资源倍率批次与接续
+# C09 基础资源倍率批次历史
+
+后续寻宝偏好和UI已收口，当前结论见[C09完整范围验收](C09-LOOT-PREFERENCE.md)，整体14/35。以下保留dede928b时的批次状态与未完成项。
 
 C09保持进行中，整体仍13/35。本批只完成基础格掉落的正式难度资源倍率；寻宝偏好、准备/进图锁定和自然元素40%/15%尚未接入。证据在[evidence/C09-base-resources/result.json](evidence/C09-base-resources/result.json)，不提前放通C09或整体验收。
 

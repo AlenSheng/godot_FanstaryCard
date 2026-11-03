@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 namespace FantasyCard.Domain.Combat;
 
 public enum CardElement : short
@@ -167,7 +168,8 @@ public sealed record RoomPlayerSnapshot(
     long LastCombatActionSequence = 0,
     TimeSpan? LastSuccessfulCombatAt = null,
     IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null,
-    string? BorrowedTemplateId = null);
+    string? BorrowedTemplateId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 public enum DuelEndReason : short
 {

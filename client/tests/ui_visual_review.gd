@@ -4,7 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
-const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom"]
+const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -162,12 +162,13 @@ func _reset_fixture() -> void:
 	var audio: Node = $UI.get_node("AudioSettings")
 	if is_instance_valid(audio._popup): audio._popup.hide()
 	for child in $UI.get_children():
-		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal"]:
+		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal", "LootPreferenceInfo"]:
 			if child.has_method("dismiss"): child.dismiss()
 			else: child.queue_free()
 	await get_tree().process_frame
 	Game.selected_cards = []; Game.combat_preview = {}
 	Game.room = {}; Game.settlement = {}; Game.ready_prompt = {}; Game.preparation = {}; Game.relic_details = {}
+	Game.preparation_loot_preference="";Game._loot_preference_scope=""
 	Game._settlement_recovery_match_id = ""
 	Game.gateway.recovering = false; Game.gateway.online = true
 	Game.lobby = _initial_lobby.duplicate(true); Game.hero_class = "Mage"; Game.busy = false
@@ -198,6 +199,21 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c09_"):
+		await _prepare_equipment_scene("c05_prep")
+		Game.season_loot_preference()
+		if scenario!="c09_default":Game.preparation_loot_preference="Water"
+		if scenario=="c09_locked":
+			Game.preparation={"snapshot":{"heroClass":"Mage","maximumHp":70,"cardIds":Game.deck().get("cardIds",[]),"equipmentIds":Game.loadout().get("equipmentIds",[]),"equipmentSnapshots":$UI._equipped_items(),"classWeaponLevel":5,"backpackTier":"Free","backpackCapacity":20,"safeSlotIndexes":[],"potionCount":0,"lootPreferenceElement":"Water"}}
+		await _render_base()
+		if scenario=="c09_info":
+			$UI._show_loot_preference_info()
+			await get_tree().process_frame
+			var frame: Panel=$UI.get_node("LootPreferenceInfo/LootPreferencePanel")
+			for child in frame.get_children():
+				if child is Control:
+					review_checks[Palette.language()+"_"+str(get_window().size.x)+"_c09_info: content inside decorated panel "+str(child.name)]=frame.get_global_rect().grow(-16).encloses(child.get_global_rect())
+		return false
 	if scenario.begins_with("c05_"): return await _prepare_equipment_scene(scenario)
 	if scenario.begins_with("c06_"): return await _prepare_enhancement_scene(scenario)
 	if scenario.begins_with("c07_") or scenario.begins_with("c08_"): return await _prepare_crafting_scene(scenario)

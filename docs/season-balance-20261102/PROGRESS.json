@@ -212,13 +212,16 @@
     },
     {
       "id": "C09",
-      "status": "in_progress",
+      "status": "complete",
       "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整",
-      "note": "基础PVE格掉落已接正式冻结难度倍率：原整数先掷，再分别乘金/双魂/碎片并floor一次，三选一偏置不作用于基础掉落。领域针对联合569（首轮568+配置原件定位修正1，非一次全跑）、新增真实PG终击/原季落库去重1通过，服务端编译零警告。自然元素40%/15%、正式偏好配置及准备/进图/恢复锁定仍待，C09保持进行中。",
+      "note": "基础资源原整数×冻结倍率floor一次及寻宝40/15偏好已贯通正式配置5、准备/队列/房间/奖励刷新/原始来源恢复；旧配置4和旧请求幂等输入保留。领域581、服务端针对联合298（非一次全跑；2个F02跳过未算通过）、原生213通过；132最终帧覆盖11语言三分辨率，19665检查含99父面板边界通过。4个旧夹具/断言失败、原生语言夹具缺失与说明弹窗退回/57项边界失败原件保留，未放宽规则。",
       "evidence": [
         "C09-RESOURCES.md",
         "evidence/C09-base-resources/result.json",
-        "evidence/C09-base-resources/domain-case-union.json"
+        "evidence/C09-base-resources/domain-case-union.json",
+        "C09-LOOT-PREFERENCE.md",
+        "evidence/C09-loot-preference/result.json",
+        "evidence/C09-loot-preference/final-frame-manifest.json"
       ]
     },
     {

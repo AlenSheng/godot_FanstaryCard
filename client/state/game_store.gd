@@ -47,6 +47,8 @@ var _combat_ready_at := 0
 var preparation: Dictionary = {}
 var preparation_difficulty := 0
 var use_borrowed_deck := false
+var preparation_loot_preference := ""
+var _loot_preference_scope := ""
 var ticket: Dictionary = {}
 var ready_prompt: Dictionary = {}
 var mail: Dictionary = {"items": [], "unreadCount": 0}
@@ -264,6 +266,8 @@ func _clear_authenticated_state() -> void:
 	preparation = {}
 	preparation_difficulty = 0
 	use_borrowed_deck = false
+	preparation_loot_preference = ""
+	_loot_preference_scope = ""
 	ticket = {}
 	ready_prompt = {}
 	mail = {"items": [], "unreadCount": 0}
@@ -777,6 +781,22 @@ func season_preparation_cap() -> int:
 	if not season_preparation_active(): return 0
 	return clampi(mini(int(lobby.season.get("highestOpenDifficulty", 0)), int(lobby.season.get("highestUnlockedDifficulty", 0))), 0, 5)
 
+func season_loot_preference() -> String:
+	if not season_preparation_active(): return ""
+	var rows: Array=CATALOG.data.tables.get("SeasonLootPreference",[])
+	if rows.size()!=1: return ""
+	var scope: String=str(lobby.season.get("seasonId",""))+"|"+str(lobby.season.get("configVersion",CATALOG.data.version))
+	if scope!=_loot_preference_scope:
+		_loot_preference_scope=scope
+		preparation_loot_preference=str(rows[0].default_element)
+	return preparation_loot_preference
+
+func select_loot_preference(element: String) -> void:
+	if busy or not preparation.is_empty() or not ticket.is_empty() or season_loot_preference().is_empty(): return
+	if element not in ["Wood","Fire","Earth","Metal","Water"]: return
+	preparation_loot_preference=element
+	changed.emit()
+
 func prepare(tier: String, potion_count: int) -> void:
 	var borrowed: bool = season_preparation_active() and use_borrowed_deck
 	if busy or (deck().is_empty() and not borrowed) or not configuration_error.is_empty(): return
@@ -799,6 +819,8 @@ func prepare(tier: String, potion_count: int) -> void:
 		payload["difficulty"] = "D%d" % preparation_difficulty
 		payload["seasonId"] = str(lobby.season.seasonId)
 		if borrowed: payload["useBorrowedDeck"] = true
+		var preference := season_loot_preference()
+		if not preference.is_empty(): payload["lootPreferenceElement"] = preference
 	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, payload)
 	if generation != gateway.session_generation: return
 	if result.ok and _preparation_config_valid(result.data):

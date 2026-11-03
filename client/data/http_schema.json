@@ -1,5 +1,5 @@
 {
-  "sha256": "ac714db5d23cfcf3d5d31d99891d78f1347d7bcdb049edf40e3c640ac3a7767f",
+  "sha256": "69cf898e55d77ae6d5c988f21a4f95d09c85a17556408c246c083f848309b4cb",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -698,6 +698,12 @@
         "type": "bool",
         "repeated": false,
         "optional": false
+      },
+      "10": {
+        "name": "loot_preference_element",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "PreparationSnapshotResponse": {
@@ -799,6 +805,12 @@
       },
       "17": {
         "name": "borrowed_template_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "18": {
+        "name": "loot_preference_element",
         "type": "string",
         "repeated": false,
         "optional": true

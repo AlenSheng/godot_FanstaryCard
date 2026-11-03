@@ -19,7 +19,7 @@ using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresSeasonRoomTests
+public sealed partial class PostgresSeasonRoomTests
 {
     public static bool HasTestDatabase => PostgresRuntimeIntegrationTests.HasTestDatabase;
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
@@ -36,8 +36,9 @@ public sealed class PostgresSeasonRoomTests
         await Sql(db, "WITH cards AS (UPDATE player_cards SET level=5 WHERE player_id=$1 AND unlocked RETURNING player_id) UPDATE class_weapons SET level=5 WHERE player_id=$1", player);
         var version = await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2", player);
         var preparation = await new PreparationRepository(db.DataSource, clock).CreateAsync(player, "prepare",
-            new(HeroClassDto.Mage, version, [null, null, null, null, null], FantasyCard.Contracts.Matchmaking.BackpackTierDto.Free, [], 0, "D0", season.SeasonId), Ct);
+            new(HeroClassDto.Mage, version, [null, null, null, null, null], FantasyCard.Contracts.Matchmaking.BackpackTierDto.Free, [], 0, "D0", season.SeasonId, LootPreferenceElement:"Water"), Ct);
         Assert.Equal(CreatePreparationStatus.Created, preparation.Status);
+        Assert.Equal("Water",preparation.Preparation!.Snapshot.LootPreferenceElement);
         using var metrics = new ServerMetrics();
         var settings = new ConfigurationBuilder().AddInMemoryCollection(new Dictionary<string, string?> { ["Matchmaking:BotFillDelaySeconds"] = "0" }).Build();
         var matchmaking = new MatchmakingRepository(db.DataSource, clock, metrics, settings);
@@ -52,6 +53,7 @@ public sealed class PostgresSeasonRoomTests
             Assert.True(await coordinator.ProcessNextAsync(clock.Now, Ct));
             var snapshot = await snapshots.GetAsync(pending.RoomId, Ct);
             Assert.Equal(season.ContextFor(0), snapshot!.Season);
+            Assert.Equal("Water",snapshot.Players.Single(value=>value.PlayerId==player).LootPreferenceElement);
             Assert.All(snapshot.Players, value => Assert.Equal(0, value.Combat.WeaponLevel));
             Assert.Equal(70, snapshot.Players.Single(p => p.PlayerId == player).Combat.MaximumHp);
         }
@@ -67,6 +69,7 @@ public sealed class PostgresSeasonRoomTests
         Assert.Equal(pending.MatchId, match);
         var restored = await actor!.ExecuteAsync(new GetRoomSnapshotCommand(), Ct);
         Assert.Equal(season.ContextFor(0), restored.Season);
+        Assert.Equal("Water",restored.Players.Single(value=>value.PlayerId==player).LootPreferenceElement);
         Assert.Equal(0, restored.Players.Single(p => p.PlayerId == player).Combat.WeaponLevel);
         Assert.Equal(5, await db.ScalarAsync<int>("SELECT level FROM class_weapons WHERE player_id=$1 AND hero_class=2", player));
     }
@@ -185,15 +188,21 @@ public sealed class PostgresSeasonRoomTests
     private static async Task<(BattleRoom Room, Guid Match, Guid Player)> RoomAsync(PostgresTestSchema db, Clock clock, SeasonContext context)
     {
         var player = await PlayerAsync(db, clock);
+        var deckVersion=await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2",player);
+        var prepared=await new PreparationRepository(db.DataSource,clock).CreateAsync(player,"fixture-preparation",
+            new(HeroClassDto.Mage,deckVersion,[null,null,null,null,null],FantasyCard.Contracts.Matchmaking.BackpackTierDto.Free,[],0,
+                context.DifficultyId,context.SeasonId,LootPreferenceElement:"Water"),Ct);
+        Assert.Equal(CreatePreparationStatus.Created,prepared.Status);
+        var source=prepared.Preparation!.Snapshot;
         var room = new BattleRoom(Guid.NewGuid(), context.ConfigVersion, CombatCardCatalog.Create(GameConfigCatalog.Current), 73, season: context);
-        room.AddPlayer(new(player, HeroClass.Mage, Enumerable.Range(1, 20).Select(i => $"common-{i:D2}").ToArray(), null));
+        room.AddPlayer(new(player, HeroClass.Mage,source.CardIds,null,CardLevels:source.CardLevels,LootPreferenceElement:source.LootPreferenceElement));
         room.InitializeMap(ChaosMapGenerator.Generate(73, 1));
         var match = Guid.NewGuid();
         await Sql(db, """
             INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at,season_id,ruleset_id,stats_version)
             VALUES($1,$2,'ChaosRealm',$3,73,$4,'Running',$5,$6,$7,$8)
             """, match, room.RoomId, context.DifficultyId, context.ConfigVersion, clock.Now, context.SeasonId, context.RulesetId, context.StatsVersion);
-        await Sql(db, "INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Active')", match, player);
+        await Sql(db, "INSERT INTO match_players(match_id,player_id,is_bot,state,preparation_id) VALUES($1,$2,false,'Active',$3)", match, player,prepared.Preparation.PreparationId);
         return (room, match, player);
     }
     private static async Task Sql(PostgresTestSchema db, string sql, params object[] values)

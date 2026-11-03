@@ -196,6 +196,10 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         if (season is not null)
             await SeasonRepository.EnsurePlayerWithinTransactionAsync(connection, transaction, playerId, season,
                 timeProvider.GetUtcNow(), cancellationToken);
+        var preferencePolicy=season is null ? null : GameConfigCatalog.Current.SeasonLootPreference;
+        if(preferencePolicy is null && request.LootPreferenceElement is not null)
+            throw new DomainValidationException("This preparation has no seasonal loot preference policy.");
+        var lootPreference=preferencePolicy?.Resolve(request.LootPreferenceElement);
         var snapshot = new PreparationSnapshotResponse(
             request.HeroClass,
             MaximumHp(heroClass),
@@ -214,7 +218,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             season is null ? null : new SeasonContextResponse(season.SeasonId, season.DifficultyId, season.RulesetId, season.ConfigVersion, season.StatsVersion),
             season is null ? null : actualCardLevels,
             season is null ? null : weaponLevel,
-            borrowed?.TemplateId);
+            borrowed?.TemplateId, lootPreference);
         var preparation = new PreparationResponse(
             Guid.CreateVersion7(),
             "Active",

@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(24, tables.Count); // _README stays private; crafting and typed blueprint sources add two tables.
+        Assert.Equal(25, tables.Count); // _README stays private; loot preference adds one frozen policy.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
@@ -39,6 +39,8 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonMarketRules", "tax_rate", -0.01)]
     [InlineData("SeasonMarketRules", "orange_price_cap", 0)]
     [InlineData("SeasonActivityExchange", "cost_tokens", 0)]
+    [InlineData("SeasonLootPreference", "preferred_weight", 3999)]
+    [InlineData("SeasonLootPreference", "other_weight", 1501)]
     [InlineData("SeasonCrafting", "mark_cost", 0)]
     [InlineData("SeasonCrafting", "reforge_fragment_cost", 0)]
     [InlineData("SeasonCrafting", "wish_attempts", 4)]
@@ -108,6 +110,11 @@ public sealed class SeasonConfigCompilerTests
         columns[1] = table.Columns[1] with { Required = false };
         Assert.Throws<InvalidDataException>(() => ConfigCompiler.Validate(tables.Select(t => t == table ? t with { Columns = columns } : t).ToArray()));
     }
+
+    [Theory]
+    [InlineData("None")] [InlineData("fire")]
+    public void InvalidLootPreferenceDefaultsAreRejected(string element) =>
+        Assert.Throws<InvalidDataException>(()=>ConfigCompiler.Compile("invalid",Change(Read(),"SeasonLootPreference","default_element",element),out _));
 
     [Fact]
     public void DuplicateDifficultyLayerPairsCannotHideAMissingPair()

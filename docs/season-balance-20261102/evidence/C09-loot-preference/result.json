@@ -1,0 +1,172 @@
+{
+  "status": "C09_completed_current_scope",
+  "C09_complete": true,
+  "whole_goal_complete": false,
+  "configuration": {
+    "version": "season-v1-config-5",
+    "content_hash": "dddc6fb9c53c96bc862a8fc236055f79e15ef16ed9df8519403635d8ea51d3e1",
+    "binary_sha256": "5162e1e32237ae0297a98fdf12bddb37df1973ff0e5f36c341df6e25cfc837ad",
+    "old_table_bodies_unchanged": 24,
+    "published_tables": 25,
+    "published_rows": 1742,
+    "production_activated": false
+  },
+  "workbook_preservation": {
+    "before_sha256": "e3465608a1a1b54ef394e5b6fb6a2d947881fae2de392c24005894f7305bf5b5",
+    "after_sha256": "da72c57d4f6e6038f9ef03bb25afe1489445218f23702ab430458d7ea8e9167b",
+    "original_sheets_preserved": 25,
+    "old_nonformula_cells_verified": 18056,
+    "old_style_cells_verified": 18912,
+    "old_formulas_preserved": 8,
+    "native_tables_preserved": 2,
+    "new_tables": {
+      "SeasonLootPreference": 1
+    },
+    "rendered_changed_views_reviewed": true,
+    "production_activated": false
+  },
+  "domain_current_targeted_passed": 581,
+  "new_preference_domain_cases": 12,
+  "server_current_targeted_union_passed": 298,
+  "server_union_not_single_full_run": true,
+  "r71_passed": 294,
+  "r71_failed": 4,
+  "r71_skipped": 2,
+  "r72_corrected_passed": 4,
+  "runtime_sources_identical_between_r71_and_r72": 196,
+  "native_current_checks": 213,
+  "ui": {
+    "unique_final_frames": 132,
+    "all_captured_frames_including_rejected": 231,
+    "final_checks_passed": 19665,
+    "new_parent_boundary_checks": 99,
+    "locales": 11,
+    "widths": [
+      960,
+      1280,
+      1920
+    ],
+    "runs": {
+      "loot-preference-ui-a-r1": {
+        "selected_states": [
+          "c09_default",
+          "c09_preference"
+        ],
+        "final_frames_used": 66,
+        "final_checks_used": 9606,
+        "captured_frames": 66,
+        "raw_failed_checks": 0,
+        "seconds": 92.14
+      },
+      "loot-preference-ui-b-r1": {
+        "selected_states": [
+          "c09_locked"
+        ],
+        "final_frames_used": 33,
+        "final_checks_used": 4869,
+        "captured_frames": 66,
+        "raw_failed_checks": 0,
+        "seconds": 81.94
+      },
+      "loot-preference-ui-info-r2": {
+        "selected_states": [],
+        "final_frames_used": 0,
+        "final_checks_used": 0,
+        "captured_frames": 33,
+        "raw_failed_checks": 0,
+        "seconds": 46.33
+      },
+      "loot-preference-ui-info-r3": {
+        "selected_states": [],
+        "final_frames_used": 0,
+        "final_checks_used": 0,
+        "captured_frames": 33,
+        "raw_failed_checks": 57,
+        "seconds": 48.89
+      },
+      "loot-preference-ui-info-r4": {
+        "selected_states": [
+          "c09_info"
+        ],
+        "final_frames_used": 33,
+        "final_checks_used": 5190,
+        "captured_frames": 33,
+        "raw_failed_checks": 0,
+        "seconds": 41.59
+      }
+    },
+    "private_desktop_only": true,
+    "whole_project_E02_complete": false,
+    "manual_reviewed": [
+      "en960 preference",
+      "hi1920 default",
+      "ar960 locked",
+      "fr1280 final info",
+      "ar960 final info",
+      "ru1920 preference"
+    ],
+    "branch_reuse": "Only the info dialog and its test bounds/cleanup changed after first UI batches. Default/selection/locked visual paths are unchanged; final info33 frames replace all earlier info frames."
+  },
+  "retained_failures": [
+    {
+      "stage": "local-config-r5",
+      "SDK_started": false,
+      "reason": "Local resource admission below6GiB+1GiB; cloud compiler used within unchanged guards"
+    },
+    {
+      "stage": "r71",
+      "cases": 4,
+      "reason": "Two historical D5 base-drop assertions omitted2.2x/4x factors; two action-recovery fixtures omitted original preparation. Test inputs corrected; runtime checks not relaxed."
+    },
+    {
+      "stage": "loot-preference-native-r1",
+      "reason": "Borrowed suite depended on isolated-only languages.json. It now iterates all eleven actual registered packs; interrupted test cleanup caused the retained exit leaks, final native run is clean."
+    },
+    {
+      "stage": "loot-preference-ui-b-r1/info",
+      "automated_checks_passed": true,
+      "visual_accepted": false,
+      "reason": "Oversized flat info panel, excessive blank area; replaced with existing ornate panel and one Close button."
+    },
+    {
+      "stage": "loot-preference-ui-info-r2",
+      "automated_checks_passed": true,
+      "visual_accepted": false,
+      "reason": "French representative visibly overflowed; old geometry assertions did not check parent bounds."
+    },
+    {
+      "stage": "loot-preference-ui-info-r3",
+      "failed_checks": 57,
+      "reason": "New parent-bound assertions exposed Label minimum-height expansion. Authored text rectangles now stay fixed and wrapped; final99 boundary checks pass."
+    }
+  ],
+  "retained_skips": {
+    "count": 2,
+    "scope": "A05 dedicated process fault tests; F02 pending; not counted as passed"
+  },
+  "source_semantics": [
+    "Preference defaults from frozen table; initial candidateFire follows first reusable fire-theme direction, C16 full theme implementation still separate",
+    "Prepared preference is optional in old requests, explicit in new snapshots, owned per player and immutable in room",
+    "Durable preparation is checked during queue launch and every room snapshot read/save/recovery/owned-terminal path",
+    "Natural choice/treasure equipment40% preference and four15% alternatives; no combat bonus",
+    "No extra reward RNG draws; separate base loot, reward, bot, duel and player streams retained; crafting uses independent cryptographic RNG",
+    "Actual configuration4 archive retains absent preference; new fields are additive and null omitted from old request hash inputs"
+  ],
+  "public_archive_sha256": {
+    "70": "336b6a8a9bd365a8231c3d8667a7e0c1388728efd97cbd5c9ef1b71c3797960a",
+    "71": "0075322a179b0709448232c36fc3f72e7e0ae649b7d8de851d223b497cff68bd",
+    "72": "b125de4abdddc09dd7ea19bf786e024a6c1a5d11b050857cd28ff0fd0a77104a"
+  },
+  "production_deployed": false,
+  "production_restarted": false,
+  "season_activated": false,
+  "capacity_retested": false,
+  "complete_gameplay_routes_added": 0,
+  "B05_routes_used": 291,
+  "B05_routes_remaining": 9,
+  "remaining": [
+    "C10 bot projection/real-loot provenance and once-per-human reward",
+    "C11-C16 source/economy/theme gates",
+    "Remaining A/D/E/F, final integration and deployment"
+  ]
+}

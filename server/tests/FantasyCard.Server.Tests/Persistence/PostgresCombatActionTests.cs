@@ -1,3 +1,6 @@
+using FantasyCard.Contracts.Matchmaking;
+using FantasyCard.Contracts.Players;
+using FantasyCard.Server.Matchmaking;
 using System.Security.Cryptography;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Combat;
@@ -112,8 +115,13 @@ public sealed class PostgresCombatActionTests
             "Action " + key[..10], RandomNumberGenerator.GetBytes(32), clock.GetUtcNow(), clock.GetUtcNow().AddHours(1), Ct);
         await seasons.EnsurePlayerAsync(player.UserId, season.ContextFor(0), Ct);
         var room = new BattleRoom(Guid.NewGuid(), season.ConfigVersion, CombatCardCatalog.Create(GameConfigCatalog.Current), 73, season: season.ContextFor(0));
-        var cards = Enumerable.Range(1, 13).Select(i => $"C{i:D2}").Concat(Enumerable.Range(1, 7).Select(i => $"MAG-{i:D2}")).ToArray();
-        room.AddPlayer(new(player.UserId, HeroClass.Mage, cards, null)); room.InitializeMap(ChaosMapGenerator.Generate(73, 1));
+        var deckVersion=await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2",player.UserId);
+        var prepared=await new PreparationRepository(db.DataSource,clock).CreateAsync(player.UserId,"combat-action-preparation",
+            new(HeroClassDto.Mage,deckVersion,[null,null,null,null,null],BackpackTierDto.Free,[],0,"D0",season.SeasonId,LootPreferenceElement:"Water"),Ct);
+        Assert.Equal(CreatePreparationStatus.Created,prepared.Status);var source=prepared.Preparation!.Snapshot;
+        room.AddPlayer(new(player.UserId,HeroClass.Mage,source.CardIds,null,CardLevels:source.CardLevels,LootPreferenceElement:source.LootPreferenceElement));
+        room.InitializeMap(ChaosMapGenerator.Generate(73,1));
+        await CraftingTestInputs.SqlAsync(db,"UPDATE preparations SET status='Matched' WHERE preparation_id=$1",prepared.Preparation.PreparationId);
         var match = Guid.NewGuid();
         await using (var command = db.DataSource.CreateCommand("""
             INSERT INTO matches(match_id,room_id,mode,difficulty,seed,config_version,status,created_at,season_id,ruleset_id,stats_version)
@@ -123,9 +131,9 @@ public sealed class PostgresCombatActionTests
             command.Parameters.AddWithValue(match); command.Parameters.AddWithValue(room.RoomId);
             command.Parameters.AddWithValue(season.ConfigVersion); command.Parameters.AddWithValue(clock.GetUtcNow()); await command.ExecuteNonQueryAsync(Ct);
         }
-        await using (var command = db.DataSource.CreateCommand("INSERT INTO match_players(match_id,player_id,is_bot,state) VALUES($1,$2,false,'Active')"))
+        await using (var command = db.DataSource.CreateCommand("INSERT INTO match_players(match_id,player_id,is_bot,state,preparation_id) VALUES($1,$2,false,'Active',$3)"))
         {
-            command.Parameters.AddWithValue(match); command.Parameters.AddWithValue(player.UserId); await command.ExecuteNonQueryAsync(Ct);
+            command.Parameters.AddWithValue(match); command.Parameters.AddWithValue(player.UserId);command.Parameters.AddWithValue(prepared.Preparation.PreparationId); await command.ExecuteNonQueryAsync(Ct);
         }
         return new(room, match, player, clock);
     }

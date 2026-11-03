@@ -167,6 +167,7 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<SeasonLootConfig> SeasonLootRules { get; private init; } = [];
     public SeasonEquipmentConfig? SeasonEquipment { get; private init; }
     public SeasonCraftingConfig? SeasonCrafting { get; private init; }
+    public SeasonLootPreferenceConfig? SeasonLootPreference { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -316,7 +317,18 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle) };
+    }
+
+    private static SeasonLootPreferenceConfig? ReadSeasonLootPreference(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonLootPreference");
+        if(table is null)return null;
+        if(table.Rows.Count!=1 || table.Text(table.Rows[0],"rule_id")!="season-v1")
+            throw new InvalidDataException("Season loot preference requires one season-v1 policy.");
+        var row=table.Rows[0];var policy=new SeasonLootPreferenceConfig(table.Text(row,"default_element"),
+            table.Int(row,"preferred_weight"),table.Int(row,"other_weight"));
+        policy.Validate();return policy;
     }
 
     private static SeasonCraftingConfig? ReadSeasonCrafting(ConfigBundle bundle)

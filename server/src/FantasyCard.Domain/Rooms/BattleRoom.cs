@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Bots;
 using FantasyCard.Domain.Configuration;
@@ -20,7 +21,8 @@ public sealed record BattleRoomPlayerSetup(
     IReadOnlyList<int>? SafeSlotIndexes = null,
     string? DisplayName = null,
     IReadOnlyList<int>? CardLevels = null,
-    string? BorrowedTemplateId = null);
+    string? BorrowedTemplateId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 public sealed record DuelEscapeRequestResult(Guid DuelId, double Probability, long RoomRevision);
 public sealed record RoomMoveResult(MapPosition Position, DuelStateSnapshot? StartedDuel, long RoomRevision);
@@ -40,7 +42,8 @@ public sealed class RoomPlayerState
         IReadOnlyList<int>? safeSlotIndexes,
         string? displayName,
         GameConfigCatalog configuration,
-        string? borrowedTemplateId)
+        string? borrowedTemplateId,
+        string? lootPreferenceElement)
     {
         PlayerId = playerId;
         HeroClass = heroClass;
@@ -51,6 +54,7 @@ public sealed class RoomPlayerState
         DisplayName = displayName;
         IsBot = isBot;
         BorrowedTemplateId = borrowedTemplateId;
+        LootPreferenceElement = lootPreferenceElement;
         Phase = pve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
     }
 
@@ -70,6 +74,7 @@ public sealed class RoomPlayerState
     internal CombatActionLedger CombatActions { get; } = new();
     public bool IsBot { get; }
     public string? BorrowedTemplateId { get; }
+    public string? LootPreferenceElement { get; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
@@ -103,7 +108,7 @@ public sealed class RoomPlayerState
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
-            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId);
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement);
 }
 
 public sealed class DuelState
@@ -429,6 +434,10 @@ public sealed partial class BattleRoom
                 throw new DomainValidationException("Supplied equipment attributes differ from the frozen item stats version.");
             equipment=actual;
         }
+        var preferencePolicy=Season is not null && _catalog.UsesPublishedConfiguration ? _catalog.Configuration.SeasonLootPreference : null;
+        if(preferencePolicy is null && setup.LootPreferenceElement is not null)
+            throw new DomainValidationException("This frozen room configuration has no loot preference policy.");
+        var lootPreference=preferencePolicy?.Resolve(setup.LootPreferenceElement);
         var combat = new PlayerCombatState(
             setup.HeroClass,
             setup.CardIds,
@@ -436,7 +445,7 @@ public sealed partial class BattleRoom
             setup.WeaponLevel,
             equipment,
             setup.CardLevels, Numerics.FenxianPolicy, Numerics.GuardianPolicy);
-        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration, setup.BorrowedTemplateId);
+        var player = new RoomPlayerState(setup.PlayerId, setup.HeroClass, combat, setup.Pve, setup.InventoryCapacity, setup.SafeSlots, setup.WornArmor, setup.IsBot, setup.SafeSlotIndexes, setup.DisplayName, _catalog.Configuration, setup.BorrowedTemplateId, lootPreference);
         if(setup.Pve is not null)player.Combat.BeginBattle(setup.Pve.BattleId);
         if (Season is not null && setup.Pve is not null)
         {
@@ -592,6 +601,8 @@ public sealed partial class BattleRoom
                         .Order(StringComparer.Ordinal).SequenceEqual(template.CardIds.Order(StringComparer.Ordinal),StringComparer.Ordinal))
                     throw new DomainValidationException("Saved borrowed cards or levels differ from the original template.");
             }
+            if(snapshot.Season is not null && catalog.UsesPublishedConfiguration && catalog.Configuration.SeasonLootPreference is not null && playerSnapshot.LootPreferenceElement is null)
+                throw new DomainValidationException("Saved seasonal player is missing its frozen loot preference.");
             var player = room.AddPlayer(new BattleRoomPlayerSetup(
                 playerSnapshot.PlayerId,
                 playerSnapshot.HeroClass,
@@ -606,7 +617,7 @@ public sealed partial class BattleRoom
                 SafeSlotIndexes: inventory.SafeSlotIndexes,
                 DisplayName: playerSnapshot.DisplayName,
                 CardLevels: template is null ? cards.Select(card => card.Level).ToArray() : Enumerable.Repeat(snapshot.Season!.Difficulty,20).ToArray(),
-                BorrowedTemplateId: playerSnapshot.BorrowedTemplateId));
+                BorrowedTemplateId: playerSnapshot.BorrowedTemplateId, LootPreferenceElement: playerSnapshot.LootPreferenceElement));
             if (room.Season is not null && playerSnapshot.Combat.FenxianPolicy != FenxianImmediateDrawPolicy.SeasonBoundedRhythm)
                 throw new DomainValidationException("The seasonal player snapshot has another Fenxian policy.");
             player.Combat.Restore(playerSnapshot.Combat);
@@ -629,6 +640,9 @@ public sealed partial class BattleRoom
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
             player.CurrentDuelId = playerSnapshot.CurrentDuelId;
+            if(room.Season is not null && catalog.UsesPublishedConfiguration && catalog.Configuration.SeasonLootPreference is not null &&
+                playerSnapshot.RewardChoice is { } savedChoice && savedChoice.SeasonLoot?.LootPreferenceElement!=player.LootPreferenceElement)
+                throw new DomainValidationException("Saved reward choice differs from the player's frozen loot preference.");
             player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice, catalog.Configuration,
                 catalog.UsesPublishedConfiguration?room.Season:playerSnapshot.RewardChoice.SeasonLoot?.Season);
             if(room.Season is not null && catalog.UsesPublishedConfiguration && player.RewardChoice is { } reward)
@@ -645,6 +659,9 @@ public sealed partial class BattleRoom
                 if (string.IsNullOrWhiteSpace(receipt.RequestId) || receipt.RoomRevision < 1 ||
                     player.RewardRefreshReceipts.Any(existing => existing.RequestId == receipt.RequestId))
                     throw new InvalidOperationException("The snapshot contains invalid reward refresh receipts.");
+                if(room.Season is not null && catalog.UsesPublishedConfiguration && catalog.Configuration.SeasonLootPreference is not null &&
+                    receipt.Choice.SeasonLoot?.LootPreferenceElement!=player.LootPreferenceElement)
+                    throw new DomainValidationException("Saved reward receipt differs from the player's frozen loot preference.");
                 _ = RewardChoiceState.Restore(receipt.Choice,catalog.Configuration,
                     catalog.UsesPublishedConfiguration?room.Season:receipt.Choice.SeasonLoot?.Season);
                 player.RewardRefreshReceipts.Add(receipt);
@@ -1165,7 +1182,7 @@ public sealed partial class BattleRoom
         player.RewardChoice = RewardChoiceState.Create(layer, RewardRandom, cell.IsBoss || cell.MonsterGroupId=="BOSS", player.RewardRefreshCount,
             isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration,
             season:Season is not null && _catalog.UsesPublishedConfiguration ? new(Season,
-                SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items)) : null);
+                SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items),player.LootPreferenceElement) : null);
         if (Season is not null && _catalog.UsesPublishedConfiguration && _catalog.Configuration.SeasonCrafting is not null)
             player.ClearedCells.Add(position);
         player.Phase = RoomPlayerPhase.Choice;

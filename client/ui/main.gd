@@ -531,7 +531,7 @@ func _reset_account_ui() -> void:
 		if has_meta(key): remove_meta(key)
 	# Account-bound dialogs must not retain actions against the next login.
 	for child in get_children():
-		if child is Window or child.name == "ConfirmationModal":
+		if child is Window or child.name in ["ConfirmationModal", "LootPreferenceInfo"]:
 			remove_child(child)
 			child.queue_free()
 
@@ -1957,6 +1957,9 @@ func _notice_width_ratio() -> float:
 func _toast(message: String) -> void:
 	if is_instance_valid(tips_overlay):
 		tips_overlay.show_tip(message, _notice_anchor(), _notice_width_ratio())
+
+func _show_loot_preference_info() -> void:
+	preload("res://ui/loot_preference_dialog.gd").show_dialog(self)
 
 func _show_ban_dialog(reason: String) -> void:
 	var ban := RemoteCopy.account_ban(reason)

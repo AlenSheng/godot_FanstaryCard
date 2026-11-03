@@ -36,7 +36,8 @@ func run_test() -> Dictionary:
 		checks["virtual mode has explicit flag and no permanent deck version"] = data.useBorrowedDeck == true and data.deckVersion == 0
 		var contract := Http.route("/api/v1/preparations",HTTPClient.METHOD_POST)
 		var wire := Proto.new(true).encode(contract.request,Http.to_wire(contract.request,data))
-		checks["new request flag has independent protobuf tag nine"] = wire.has(72) and wire[wire.size()-1] == 1
+		checks["new request flag has independent protobuf tag nine"] = wire.has(72) and Proto.new(true).decode_http(contract.request,wire).useBorrowedDeck == true
+		checks["borrowed request also freezes configured loot preference"] = data.lootPreferenceElement == Index.CATALOG.data.tables.SeasonLootPreference[0].default_element
 	store.use_borrowed_deck = false
 	await store.prepare("Free",0)
 	checks["owned mode still needs saved deck"] = gateway.requests.size() == 1
@@ -47,14 +48,14 @@ func run_test() -> Dictionary:
 	var rows: Array = Index.CATALOG.data.tables.get("SeasonBorrowedDecks",[])
 	checks["public current catalog has all sixty borrowed slots"] = rows.size() == 60
 	var previous := P.language()
-	var languages: Array = JSON.parse_string(FileAccess.get_file_as_string("res://tests/config-client/languages.json"))
+	var languages: Array = P.languages().keys()
 	for language in languages:
 		P.set_language(str(language))
 		for key in ["season_borrowed_deck","season_borrowed_deck_hint","season_level_cap_hint"]:
 			checks[str(language)+" "+key] = not P.localized(key).is_empty() and P.localized(key) != key
 	P.set_language(previous)
 	store._clear_authenticated_state()
-	checks["logout clears borrowed selection and difficulty"] = not store.use_borrowed_deck and store.preparation_difficulty == 0
+	checks["logout clears borrowed selection and difficulty"] = not store.use_borrowed_deck and store.preparation_difficulty == 0 and store.preparation_loot_preference.is_empty() and store._loot_preference_scope.is_empty()
 	store.free()
 	gateway.free()
 	return {"ok":not checks.values().has(false),"checks":checks,"scope":"Offline real GameStore + generated request schema + eleven locale values. No rendered-frame or server-capacity claim."}

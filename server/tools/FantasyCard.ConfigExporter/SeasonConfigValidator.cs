@@ -35,7 +35,7 @@ public static class SeasonConfigValidator
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
         if (present.Count == 0)
         {
-            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules"))
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference"))
                 throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
             return; // Archived pre-season workbooks remain valid.
         }
@@ -57,6 +57,7 @@ public static class SeasonConfigValidator
         ValidateEquipment(present["SeasonEquipment"]);
         ValidateEquipmentRules(tables,present["SeasonEquipment"]);
         ValidateCrafting(tables);
+        ValidateLootPreference(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -175,6 +176,22 @@ public static class SeasonConfigValidator
             N(table,row,"rapid_draw_floor_seconds")>=N(table,row,"draw_floor_seconds") && N(table,row,"rapid_draw_floor_seconds")<=N(table,row,"draw_ceiling_seconds"),table,"invalid resistance or draw interval bounds");
         Probability(table,row,"inferno_bonus");Probability(table,row,"rapid_draw_reduction");Probability(table,row,"chain_draw_chance");Probability(table,row,"golden_cicada_bonus");
         Check(N(table,row,"opening_draw_count") is >=0 and <=1,table,"opening draw count exceeds hand-opening policy");
+    }
+
+    private static void ValidateLootPreference(IReadOnlyList<ConfigTable> tables)
+    {
+        var table=tables.SingleOrDefault(value=>value.Name=="SeasonLootPreference");
+        if(table is null)return;
+        foreach(var field in "rule_id:s,default_element:s,preferred_weight:i,other_weight:i".Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both &&
+                column.Type==(parts[1]=="s"?ConfigValueType.Text:ConfigValueType.WholeNumber),table,"invalid loot preference metadata");
+        }
+        Check(table.Rows.Count==1,table,"requires one frozen loot preference policy");
+        var row=table.Rows[0];
+        Check(S(table,row,"rule_id")=="season-v1" && S(table,row,"default_element") is "Wood" or "Fire" or "Earth" or "Metal" or "Water" &&
+            N(table,row,"preferred_weight")==4000 && N(table,row,"other_weight")==1500,table,"requires theme default and40/15/15/15/15");
     }
 
     private static void ValidateCrafting(IReadOnlyList<ConfigTable> tables)

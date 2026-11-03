@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresSeasonPreparationTests
+public sealed partial class PostgresSeasonPreparationTests
 {
     public static bool HasTestDatabase => !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FANTASYCARD_TEST_POSTGRES"));
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
@@ -35,6 +35,7 @@ public sealed class PostgresSeasonPreparationTests
         Assert.Equal(CreatePreparationStatus.Created, result.Status);
         var snapshot = result.Preparation!.Snapshot;
         Assert.Equal(70, snapshot.MaximumHp);
+        Assert.Equal(GameConfigCatalog.Current.SeasonLootPreference!.DefaultElement,snapshot.LootPreferenceElement);
         Assert.Equal(0, snapshot.ClassWeaponLevel);
         Assert.Equal(5, snapshot.ActualClassWeaponLevel);
         Assert.All(snapshot.CardLevels!, value => Assert.Equal(0, value));

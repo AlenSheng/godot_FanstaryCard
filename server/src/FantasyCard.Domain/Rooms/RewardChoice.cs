@@ -57,7 +57,7 @@ public sealed class RewardChoiceState
             throw new DomainValidationException("Treasure encounters must use outer-layer rewards.");
         Layer = layer; IsBoss = isBoss; IsTreasure = isTreasure; _options = options.ToList(); RefreshCount = refreshCount;
         _configuration = configuration;
-        _season = season;
+        _season = season is not null && configuration.SeasonLootPreference is { } preference ? season with {LootPreferenceElement=preference.Resolve(season.LootPreferenceElement)} : season;
         if(season is not null)
         {
             SeasonLootRules.RequireCatalog(season.Season,configuration);
@@ -143,7 +143,10 @@ public sealed class RewardChoiceState
         var hasAffix = affixRate >= 1 || affixRate > 0 && random.Next(100) < Math.Round(affixRate * 100);
         var effectAffix = hasAffix ? affixes[random.Next(affixes.Length)] : null;
         var secondaryTrait = slot == "Feet" && random.Next(2) == 1 ? "ForcedEscape" : "DrawInterval";
-        return new(slot, quality, elements[random.Next(elements.Length)], effectAffix, secondaryTrait,SeasonOrigin:origin,StatsVersion:season?.Season.StatsVersion);
+        var element = season is not null && configuration.SeasonLootPreference is { } preference
+            ? preference.Roll(preference.Resolve(season.LootPreferenceElement),random.Next(SeasonLootPreferenceConfig.Basis))
+            : elements[random.Next(elements.Length)];
+        return new(slot, quality, element, effectAffix, secondaryTrait,SeasonOrigin:origin,StatsVersion:season?.Season.StatsVersion);
     }
 
     private static Guid CreateDeterministicId(Random random)

@@ -39,7 +39,8 @@ public sealed record MatchPlayerAssignment(
     IReadOnlyList<int>? CardLevels = null,
     IReadOnlyList<int>? SafeSlotIndexes = null,
     string? DisplayName = null,
-    string? BorrowedTemplateId = null);
+    string? BorrowedTemplateId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
 
 public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics, IConfiguration? configuration = null,
     PublishedConfigCatalogs? configurations = null)
@@ -492,6 +493,10 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                     context.SeasonId != season.SeasonId || context.DifficultyId != season.DifficultyId ||
                     context.RulesetId != season.RulesetId || context.ConfigVersion != season.ConfigVersion || context.StatsVersion != season.StatsVersion))
                 throw new InvalidOperationException("Prepared snapshot and match contexts differ.");
+            var preferencePolicy=season is null ? null : _configurations.Resolve(configVersion).SeasonLootPreference;
+            if(preferencePolicy is null ? snapshot.LootPreferenceElement is not null :
+                snapshot.LootPreferenceElement is null || preferencePolicy.Resolve(snapshot.LootPreferenceElement)!=snapshot.LootPreferenceElement)
+                throw new InvalidOperationException("Prepared loot preference differs from its frozen configuration.");
             if (snapshot.BorrowedTemplateId is { } templateId)
             {
                 if (season is null || snapshot.ActualClassWeaponLevel is not (>=0 and <=5) ||
@@ -517,7 +522,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 item.UniqueAffix,item.UniqueElement is null?null:Enum.Parse<CardElement>(item.UniqueElement,true))).ToArray();
             result.Add(new(reader.GetGuid(0), false, (HeroClass)(int)snapshot.HeroClass, snapshot.CardIds,
                 snapshot.BackpackCapacity, snapshot.SafeSlotIndexes.Count, snapshot.PotionCount, equipmentIds,
-                snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2), snapshot.BorrowedTemplateId));
+                snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2), snapshot.BorrowedTemplateId, snapshot.LootPreferenceElement));
         }
         return result;
     }
