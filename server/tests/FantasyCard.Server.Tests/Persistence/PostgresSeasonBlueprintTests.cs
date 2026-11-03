@@ -67,6 +67,46 @@ public sealed class PostgresSeasonBlueprintTests
         Assert.Equal(0,(await p.Seasons.GetWalletAsync(p.Player,next.ContextFor(0),Ct))!.OrangeBlueprintMarks);
     }
 
+    [Fact(Skip="Requires isolated PostgreSQL.",SkipUnless=nameof(HasTestDatabase))]
+    [Trait("Category","PostgresIntegration")]
+    public async Task ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce()
+    {
+        await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
+        var p=await CraftingTestInputs.CreateAsync(db);
+        var fixture=await TerminalAsync(db,p,2,RoomPlayerPhase.Extracted);
+        var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);
+        var map=ChaosMapGenerator.Generate(73,1).Capture();var start=map.SpawnPositions[0];
+        map=map with {Cells=map.Cells.Select(cell=>cell.Position==start?cell with {Layer=ChaosMapLayer.Core,MonsterGroupId="E1",IsBoss=false}:cell).ToArray()};
+        var room=new BattleRoom(fixture.Snapshot.RoomId,config.Version,catalog,73,season:p.Season.ContextFor(2));
+        var cards=Enumerable.Range(1,13).Select(i=>$"C{i:D2}").Concat(Enumerable.Range(1,7).Select(i=>$"MAG-{i:D2}")).ToArray();
+        var player=room.AddPlayer(new(p.Player,HeroClass.Mage,cards,null));room.InitializeMap(ChaosMapState.Restore(map));
+        var random=new CombatRandom(0);random.Restore(room.Capture().RandomStreams!.Loot);
+        _=random.Next(6,11);var fragments=random.Next(4,8)*19000/10000;
+        foreach(var monster in player.Pve!.Monsters.ToArray())
+        {
+            monster.TakeDamage(monster.Hp+monster.Shield-1);
+            var deck=player.Combat.Deck.Capture();var all=deck.Hand.Concat(deck.Library).Concat(deck.Discard).ToArray();
+            var card=all.Single(value=>value.CardId=="C01");
+            player.Combat.Deck.Restore(new([card],all.Where(value=>value.InstanceId!=card.InstanceId).ToArray(),[],0));
+            room.PlayCards(p.Player,player.Pve.BattleId,monster.MonsterId,[card.InstanceId],room.Revision,p.Clock.Now,room.NewCombatActionId(p.Player));
+            room.Advance(TimeSpan.FromMilliseconds(500),p.Clock.Now);
+        }
+        Assert.Equal(RoomPlayerPhase.Choice,player.Phase);
+        Assert.Equal(44,player.Inventory.GoldQuantity);
+        Assert.Equal(fragments,player.Inventory.Items.Single(item=>item.Kind==ExplorationItemKind.EquipmentFragments).Quantity);
+        // Declared extracted checkpoint after real reward generation; this is
+        // asset/settlement interoperability, not a completed gameplay route.
+        var snapshot=room.Capture();snapshot=snapshot with {Players=snapshot.Players.Select(value=>value with {Phase=RoomPlayerPhase.Extracted,Pve=null,RewardChoice=null}).ToArray()};
+        using var metrics=new ServerMetrics();var repository=new SettlementRepository(db.DataSource,p.Clock,metrics);
+        var coordinator=new SettlementCoordinator(repository,p.Clock);
+        await coordinator.ObserveAsync(fixture.Match,snapshot);await coordinator.ObserveAsync(fixture.Match,snapshot);
+        var id=await db.ScalarAsync<Guid>("SELECT settlement_id FROM match_settlements WHERE match_id=$1",fixture.Match);
+        await repository.CommitHoldsAsync(id,Ct);await repository.CommitHoldsAsync(id,Ct);
+        var wallet=(await p.Seasons.GetWalletAsync(p.Player,p.Season.ContextFor(0),Ct))!;
+        Assert.Equal(44,wallet.Gold);Assert.Equal(5000+fragments,wallet.EquipmentFragments);
+        Assert.Equal(1,wallet.OrangeBlueprintMarks);Assert.Equal(77,wallet.ChallengeMarks);
+    }
+
     private static async Task<(Guid Match,BattleRoomSnapshot Snapshot)> TerminalAsync(PostgresTestSchema db,CraftingPlayer p,int difficulty,RoomPlayerPhase phase)
     {
         // Declared terminal checkpoint for source/transaction verification, not a gameplay-route pass.

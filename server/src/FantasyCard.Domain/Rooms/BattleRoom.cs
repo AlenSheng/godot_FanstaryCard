@@ -1181,6 +1181,18 @@ public sealed partial class BattleRoom
         var classSoul = loot.ClassSoul;
         var fragments = LootRandom.Next(loot.FragmentMin, checked(loot.FragmentMax + 1));
 
+        if (Season is not null && _catalog.UsesPublishedConfiguration)
+        {
+            SeasonLootRules.RequireCatalog(Season, _catalog.Configuration);
+            var difficulty = _catalog.Configuration.SeasonDifficulty(Season.Difficulty);
+            // Roll the original integer first. Each resource is floored exactly
+            // once; choice bias is separate and never scales these base drops.
+            gold = SeasonDifficultyConfig.Scale(gold, difficulty.GoldBasisPoints);
+            warriorSoul = SeasonDifficultyConfig.Scale(warriorSoul, difficulty.SoulBasisPoints);
+            classSoul = SeasonDifficultyConfig.Scale(classSoul, difficulty.SoulBasisPoints);
+            fragments = SeasonDifficultyConfig.Scale(fragments, difficulty.FragmentBasisPoints);
+        }
+
         // These are non-choice drops. If a new stack cannot be created, the drop is intentionally recycled.
         player.Inventory.TryAdd(new ExplorationItem("gold", ExplorationItemKind.Gold, gold));
         player.Inventory.TryAdd(new ExplorationItem("warrior_soul", ExplorationItemKind.WarriorSoul, warriorSoul));

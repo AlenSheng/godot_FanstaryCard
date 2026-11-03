@@ -212,9 +212,14 @@
     },
     {
       "id": "C09",
-      "status": "pending",
+      "status": "in_progress",
       "requirement": "独立掉落与心愿RNG、各资源倍率、三选一偏置的先乘后取整",
-      "note": "C04已接血包价值偏置与候选碎片floor(raw×档位×偏置)；基础资源倍率、独立心愿随机流、元素与其余来源预算仍待，保持未完成。"
+      "note": "基础PVE格掉落已接正式冻结难度倍率：原整数先掷，再分别乘金/双魂/碎片并floor一次，三选一偏置不作用于基础掉落。领域针对联合569（首轮568+配置原件定位修正1，非一次全跑）、新增真实PG终击/原季落库去重1通过，服务端编译零警告。自然元素40%/15%、正式偏好配置及准备/进图/恢复锁定仍待，C09保持进行中。",
+      "evidence": [
+        "C09-RESOURCES.md",
+        "evidence/C09-base-resources/result.json",
+        "evidence/C09-base-resources/domain-case-union.json"
+      ]
     },
     {
       "id": "C10",
