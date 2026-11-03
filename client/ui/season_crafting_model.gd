@@ -24,3 +24,21 @@ static func wish_progress(state: Dictionary, selection: Dictionary) -> int:
 			and row.get("element")==selection.get("element") and row.get("wishedEffect")==selection.get("wishedEffect"):
 			return int(row.get("failures",0))
 	return 0
+
+static func sample_status(item: Dictionary) -> String:
+	if item.get("sourceKind")=="TemplateReforge": return "season_craft_status_reforged"
+	if item.get("recipeExtracted",false): return "season_craft_status_extracted"
+	if item.get("quality") in ["Purple","Orange"] and item.get("sourceKind") in ["NaturalDrop","MarkCraft"]: return "season_craft_status_sample"
+	return "season_craft_status_unavailable"
+
+static func wallet_summary(summary: Dictionary, wallet: Dictionary) -> Dictionary:
+	var result := summary.duplicate(true)
+	var source: String=str(wallet.get("seasonId",""))
+	var current: Variant=result.get("wallet")
+	if current is Dictionary and current.get("seasonId")==source and int(wallet.get("version",0))>=int(current.get("version",0)):
+		result["wallet"]=wallet.duplicate(true)
+	var rows: Array=result.get("fragmentWallets",[])
+	for index in rows.size():
+		if rows[index].get("seasonId")==source and int(wallet.get("version",0))>=int(rows[index].get("version",0)):
+			rows[index]=wallet.duplicate(true)
+	return result

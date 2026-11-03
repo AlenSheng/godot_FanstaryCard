@@ -1,0 +1,176 @@
+{
+  "status": "C07_C08_completed_current_scope",
+  "C07_complete": true,
+  "C08_complete": true,
+  "whole_goal_complete": false,
+  "configuration_version": "season-v1-config-4",
+  "workbook_and_config_unchanged_since_backend": true,
+  "runtime_sources_unchanged_since_r64": 195,
+  "domain_targeted_union_passed": 561,
+  "server_targeted_union_passed": 265,
+  "server_not_one_full_run": true,
+  "r67_real_Protobuf_HTTP_session": {
+    "passed": 1,
+    "routes_exercised": 5,
+    "real_server_process": true,
+    "isolated_PostgreSQL": true
+  },
+  "r68_PostgreSQL_recipe_tests": {
+    "passed": 11,
+    "failed": 0,
+    "skipped": 0,
+    "new_case_count": 5
+  },
+  "native_checks": 154,
+  "native_rendered_claim": false,
+  "ui": {
+    "C07_unique_frames": 231,
+    "C08_unique_frames": 264,
+    "checks_used": 30723,
+    "locales": 11,
+    "widths": [
+      960,
+      1280,
+      1920
+    ],
+    "runs": {
+      "crafting-ui-c07-r1": {
+        "scenes": [
+          "c07_entry"
+        ],
+        "frames_used": 33,
+        "checks_used": 2502,
+        "full_run_frames": 165,
+        "full_run_failed_checks": 36,
+        "seconds": 171.44
+      },
+      "crafting-ui-c07-r2": {
+        "scenes": [
+          "c07_make",
+          "c07_orange",
+          "c07_locked",
+          "c07_confirm"
+        ],
+        "frames_used": 132,
+        "checks_used": 8532,
+        "full_run_frames": 132,
+        "full_run_failed_checks": 0,
+        "seconds": 136.34
+      },
+      "crafting-ui-c08-a-r1": {
+        "scenes": [
+          "c08_list",
+          "c08_learn"
+        ],
+        "frames_used": 66,
+        "checks_used": 4290,
+        "full_run_frames": 66,
+        "full_run_failed_checks": 0,
+        "seconds": 68.14
+      },
+      "crafting-ui-c08-b-r1": {
+        "scenes": [
+          "c08_preview",
+          "c08_confirm",
+          "c08_blocked"
+        ],
+        "frames_used": 99,
+        "checks_used": 7395,
+        "full_run_frames": 99,
+        "full_run_failed_checks": 0,
+        "seconds": 101.48
+      },
+      "crafting-ui-states-r1": {
+        "scenes": [
+          "c07_notjoined",
+          "c07_error",
+          "c08_numbers"
+        ],
+        "frames_used": 99,
+        "checks_used": 3747,
+        "full_run_frames": 99,
+        "full_run_failed_checks": 0,
+        "seconds": 100.62
+      },
+      "crafting-ui-market-r1": {
+        "scenes": [
+          "c08_market"
+        ],
+        "frames_used": 33,
+        "checks_used": 1920,
+        "full_run_frames": 33,
+        "full_run_failed_checks": 0,
+        "seconds": 43.48
+      },
+      "crafting-ui-preview-tail-r1": {
+        "scenes": [
+          "c08_preview_bottom"
+        ],
+        "frames_used": 33,
+        "checks_used": 2337,
+        "full_run_frames": 33,
+        "full_run_failed_checks": 0,
+        "seconds": 41.41
+      }
+    },
+    "manual_reviewed": [
+      "fr 960 craft and market",
+      "hi 1280 orange",
+      "ru 1920 locked",
+      "ja 960 craft confirm",
+      "ar 960 unaffixed purple learn",
+      "ru 1280 preview",
+      "hi 1920 reforge confirm",
+      "ja 960 numerical comparison",
+      "ru 960 preview bottom"
+    ],
+    "scroll_warning_reachable_33_frames": true,
+    "private_desktop_only": true,
+    "whole_project_E02_complete": false,
+    "branch_reuse_note": "Earlier core frames retain their original source pins. Later production changes are market-only layout and a nonvisual preview-scroll node name, plus quote ownership guard; new fixtures and controller tests do not alter earlier visuals. Entry subset comes from first run; its failing craft frames are excluded and preserved."
+  },
+  "retained_failures": [
+    {
+      "run": "crafting-ui-c07-r1",
+      "failed_checks": 36,
+      "reason": "French/Indonesian/Russian income hints clipped; panel and hint expanded; corrected132 frames passed"
+    },
+    {
+      "run": "r66",
+      "failed_cases": 1,
+      "reason": "Test key rebuild had7 characters; existing minimum8 rejected. Corrected test keys only; real HTTP r67 passed"
+    },
+    {
+      "run": "crafting-native-r4,r5,r6",
+      "assertions_passed": true,
+      "acceptance_passed": false,
+      "reason": "Controller fixture played audio on short-lived headless process. Verbose r5 identified upgrade/error WAV; fixture muted without persistence; r7 exit clean"
+    }
+  ],
+  "previous_failures_and_skips_retained": "C07-C08-backend/result.json; no old result overwritten",
+  "public_archive_sha256": {
+    "r66": "66f76ff690f64aa769c53236ffe04b8dbc31fc7ed0354bc713c7e10a13a20aa0",
+    "r67": "eedd5ac2cc7e6bd026d39766811d6c7a5407cd01034f0caa59543ac71f326673",
+    "r68": "9d60d0207167c9ca2cc96270ec018b3cc4fc623c0b86c3b051ca12c8dc6c946b"
+  },
+  "current_UI_source_hashes": {
+    "client/ui/main.gd": "39387bdcfe0844a765776f271fe593eac98d9cf43c02543b6962c44ee8bcf31e",
+    "client/ui/season_crafting_view.gd": "f39ee1edafecace6d5e95d2e9b4cb7b1b67edd2b91b912057d02b8e8522c999f",
+    "client/ui/reference_ui.gd": "59ba87550176d7765da20c800d60eafe108456cbf246a077eaa8e4ce8b903c6f",
+    "client/ui/season_crafting_model.gd": "b0694bcc834e4708ebae478e8c60c01821185030b7f460b9749183288390d64e",
+    "client/tests/ui_visual_review.gd": "e98980f6576048e140e892c14f60dcd9d84be33accfb553737dfd6ea4163caaa",
+    "client/tests/test_season_crafting_controller.gd": "0ef99ee406aacff437a9066c37f790710aa5ba59366d4b7126fd920769ba1047"
+  },
+  "production_deployed": false,
+  "production_restarted": false,
+  "capacity_retested": false,
+  "actual_game_matches_added": 0,
+  "B05_used": 291,
+  "B05_remaining": 9,
+  "still_required": [
+    "C09 natural preferred-element weighting and non-choice resource scales",
+    "C10 bot reward provenance",
+    "C11 red mint quota",
+    "Remaining A/C/D/E/F gates and final deployment"
+  ]
+}

@@ -4,7 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
-const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error"]
+const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
 var _frame_log: FileAccess
@@ -200,6 +200,7 @@ func _render_base() -> void:
 func _prepare_scene(scenario: String, locale: String) -> bool:
 	if scenario.begins_with("c05_"): return await _prepare_equipment_scene(scenario)
 	if scenario.begins_with("c06_"): return await _prepare_enhancement_scene(scenario)
+	if scenario.begins_with("c07_") or scenario.begins_with("c08_"): return await _prepare_crafting_scene(scenario)
 	if scenario.begins_with("mail_template_"):
 		var template_id := scenario.trim_prefix("mail_template_").trim_suffix("_bottom")
 		var arguments: Array = []
@@ -450,6 +451,71 @@ func _prepare_enhancement_scene(scenario: String) -> bool:
 	var cost: String=(Palette.localized("enhance_cost_confirm") % [40,4])+"\n"+$UI.EnhancementWallets.source_text($UI._enhancement_quote)
 	if scenario=="c06_material":$UI._show_enhance_material_dialog(target,{"expectedVersion":7},cost)
 	if scenario=="c06_confirm":$UI._confirm(Palette.localized("enhance_material_confirm") % [cost,$UI._equipment_name(material)],Callable())
+	return false
+
+func _prepare_crafting_scene(scenario: String) -> bool:
+	if scenario=="c07_entry":return await _prepare_equipment_scene("c05_gear")
+	$UI.screen="crafting"
+	var sample:=_c05_gear("sample","Head")
+	sample["level"]=3
+	sample["location"]="Inventory"
+	sample["seasonId"]="review"
+	sample["assetScope"]="ActiveSeason"
+	sample["sourceKind"]="NaturalDrop"
+	sample["recipeExtracted"]=false
+	var extracted:=sample.duplicate(true)
+	extracted["instanceId"]="extracted"
+	extracted["recipeExtracted"]=true
+	var reforged:=sample.duplicate(true)
+	reforged["instanceId"]="reforged"
+	reforged["sourceKind"]="TemplateReforge"
+	var body:=sample.duplicate(true)
+	body["instanceId"]="body"
+	body["slot"]="Feet"
+	body["level"]=5
+	body["isBound"]=true
+	body["secondaryTrait"]="ForcedEscape"
+	var recipe:={"recipeId":"recipe","seasonId":"review","quality":"Purple","slot":"Head","element":"Water","effectAffix":"Vitality","secondaryTrait":"DrawInterval","statsVersion":"season-equipment-v1","sourceItemId":"sample"}
+	var after:=body.duplicate(true)
+	after["slot"]="Head"
+	after["element"]="Water"
+	after["effectAffix"]="Vitality"
+	after["level"]=0
+	after["secondaryTrait"]="DrawInterval"
+	after["sourceKind"]="TemplateReforge"
+	$UI.inventory.equipments=[sample,extracted,reforged,body]
+	Game.lobby.inventory=$UI.inventory
+	Game.lobby.season={"state":"Active","seasonId":"review","hasJoined":true}
+	$UI._crafting_selection={"quality":"Purple","slot":"Hands","element":"Water","wishedEffect":"Vitality"}
+	$UI._crafting_state={"season":{"seasonId":"review"},"wallet":{"seasonId":"review","version":10,"blueprintMarks":5,"orangeBlueprintMarks":14,"equipmentFragments":80},"maximumDifficulty":5,
+		"offers":[{"quality":"Purple","minimumDifficulty":1,"markKind":"Blueprint","markCost":4,"reforgeFragmentCost":1,"wishAttempts":3},{"quality":"Orange","minimumDifficulty":2,"markKind":"OrangeBlueprint","markCost":14,"reforgeFragmentCost":2,"wishAttempts":3}],
+		"wishes":[{"quality":"Purple","slot":"Hands","element":"Water","wishedEffect":"Vitality","failures":2}],"recipes":[recipe]}
+	$UI._crafting_tab="recipes" if scenario.begins_with("c08_") else "craft"
+	$UI._craft_recipe="recipe" if scenario in ["c08_preview","c08_preview_bottom","c08_confirm","c08_blocked","c08_numbers"] else ""
+	$UI._craft_body="body" if not $UI._craft_recipe.is_empty() else ""
+	$UI._craft_quote={}
+	if scenario=="c07_orange":$UI._crafting_selection.quality="Orange"
+	if scenario=="c07_locked":$UI._crafting_state.maximumDifficulty=0
+	if scenario=="c07_notjoined":$UI._crafting_state={"notJoined":true}
+	if scenario=="c07_error":$UI._crafting_state={"error":true}
+	if scenario=="c08_learn":sample["effectAffix"]=null
+	if not $UI._craft_recipe.is_empty():$UI._craft_quote={"recipe":recipe,"before":body,"after":after,"fragmentCost":1,"availableFragments":80,"expectedWalletVersion":10,"canReforge":scenario!="c08_blocked"}
+	if scenario=="c08_market":
+		$UI.screen="market"
+		$UI.listings=[]
+		for item in [sample,extracted,reforged]:
+			$UI.listings.append({"listingId":"listing-"+item.instanceId,"sellerId":"other-review-player","priceGold":123,"version":7,"equipment":item})
+	await _render_base()
+	if scenario=="c07_confirm":$UI._confirm_craft()
+	if scenario=="c08_learn":$UI._confirm_learn(sample)
+	if scenario=="c08_confirm":$UI._confirm_reforge()
+	if scenario=="c08_numbers":load("res://ui/numerical_details.gd").show_compare($UI,[body],after)
+	if scenario=="c08_preview_bottom":
+		var scroll: ScrollContainer=$UI._reference.get_node("CraftingPreviewScroll")
+		scroll.scroll_vertical=int(scroll.get_v_scroll_bar().max_value)
+		await get_tree().process_frame
+		var warning: Label=scroll.get_child(0).get_child(2)
+		review_checks[Palette.language()+"_"+str(get_viewport().get_visible_rect().size.x)+": reforge warning reachable in preview"]=scroll.get_global_rect().grow(1).encloses(warning.get_global_rect())
 	return false
 
 func _review_window_position() -> Vector2i:

@@ -11,6 +11,7 @@ const ConfirmationModalScene = preload("res://ui/confirmation_modal.tscn")
 const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const EnhancementWallets = preload("res://ui/enhancement_wallets.gd")
+const CraftingModel = preload("res://ui/season_crafting_model.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -93,6 +94,14 @@ var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
 var _enhancement_quote_key := ""
+var _crafting_state: Dictionary = {}
+var _crafting_selection := {"quality":"Purple","slot":"Head","element":"Fire","wishedEffect":"Piercing"}
+var _crafting_tab := "craft"
+var _craft_recipe := ""
+var _craft_body := ""
+var _craft_quote: Dictionary = {}
+var _crafting_epoch := 0
+var _craft_quote_epoch := 0
 var _game_title: Label
 var _login_version_label: Label
 var _login_language_selector: LoginLanguageSelector
@@ -432,7 +441,7 @@ func _set_battle_status_label(label_name: String, stun_ms: int, block_ms: int, e
 func _refresh_after_admin_update() -> void:
 	if not Game.room.is_empty(): return
 	_codex_ready = false
-	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep"]:
+	if screen in ["cards", "deck", "gear", "enhance", "shop", "market", "prep","crafting"]:
 		_navigate.call_deferred(screen)
 
 func _on_cache_changed(module: String) -> void:
@@ -441,7 +450,8 @@ func _on_cache_changed(module: String) -> void:
 		if bool(_reference.call("sync_shop_state", _shop_purchase_product_id)): return
 	var affected := {
 		"shop": ["shop"], "market": ["market"],
-		"inventory": ["gear", "enhance", "prep", "shop", "market"],
+		"inventory": ["gear", "enhance", "prep", "shop", "market","crafting"],
+		"season":["crafting"],
 		"cards": ["cards", "deck"], "decks": ["cards", "deck", "prep"], "mail": ["hall"],
 		"wallet": ["hall", "shop", "market", "prep"]
 	}
@@ -507,6 +517,14 @@ func _reset_account_ui() -> void:
 	_enhancement_quote = {}
 	_enhancement_quote_key = ""
 	_combat_panels.clear()
+	_crafting_state = {}
+	_crafting_selection = {"quality":"Purple","slot":"Head","element":"Fire","wishedEffect":"Piercing"}
+	_crafting_tab = "craft"
+	_craft_recipe = ""
+	_craft_body = ""
+	_craft_quote = {}
+	_crafting_epoch += 1
+	_craft_quote_epoch += 1
 	_reset_draw_charge_visual()
 	if is_instance_valid(tips_overlay): tips_overlay.clear()
 	for key in ["exploration_map_open", "inventory_open", "relic_pile", "inventory_selected", "relic_selected", "pending_move", "item_detail_scroll"]:
@@ -853,6 +871,112 @@ func _navigate(value: String) -> void:
 		gear_draft.resize(5)
 	screen_loading = false
 	_render()
+	if value == "crafting": _reload_crafting()
+
+func _reload_crafting() -> void:
+	_crafting_epoch += 1
+	var epoch := _crafting_epoch
+	var generation: int = Game.gateway.session_generation
+	var summary: Dictionary = Game.lobby.get("season",{})
+	if summary.get("state") != "Active":
+		_crafting_state={"unavailable":true}
+		_schedule_render()
+		return
+	if not summary.get("hasJoined",false):
+		_crafting_state={"notJoined":true}
+		_schedule_render()
+		return
+	_crafting_state={"loading":true}
+	_schedule_render()
+	var result: Dictionary = await Game.gateway.request("/api/v1/season-crafting")
+	if not _session_result_current(generation,result) or epoch != _crafting_epoch or screen != "crafting": return
+	var data: Dictionary = result.get("data",{}) if result.get("data") is Dictionary else {}
+	if result.ok and data.get("season",{}).get("seasonId") == Game.lobby.get("season",{}).get("seasonId"):
+		_crafting_state=data
+	else: _crafting_state={"error":true}
+	_schedule_render()
+
+func _craft_choose(field: String,value: String) -> void:
+	_crafting_selection[field]=value
+	_schedule_render()
+
+func _craft_select_recipe(id: String) -> void:
+	_craft_quote_epoch += 1
+	_craft_recipe=id
+	_craft_body=""
+	_craft_quote={}
+	_schedule_render()
+
+func _craft_select_body(item: Dictionary) -> void:
+	_craft_quote_epoch += 1
+	var quote_epoch := _craft_quote_epoch
+	_craft_body=str(item.get("instanceId",""))
+	_craft_quote={"loading":true}
+	_schedule_render()
+	var generation: int=Game.gateway.session_generation
+	var recipe := _craft_recipe
+	var body := _craft_body
+	var epoch := _crafting_epoch
+	var season_id: String=str(_crafting_state.get("season",{}).get("seasonId",""))
+	var result: Dictionary=await Game.gateway.request("/api/v1/season-crafting/reforge-quote?seasonId="+season_id.uri_encode()+"&recipeId="+recipe.uri_encode()+"&bodyEquipmentId="+body.uri_encode())
+	if not _session_result_current(generation,result) or epoch!=_crafting_epoch or quote_epoch!=_craft_quote_epoch or recipe!=_craft_recipe or body!=_craft_body or screen!="crafting": return
+	_craft_quote=result.data if result.ok else {"error":true}
+	_schedule_render()
+
+func _confirm_craft() -> void:
+	if Game.busy or not _crafting_state.get("wallet") is Dictionary: return
+	var offer: Dictionary={}
+	for row in _crafting_state.get("offers",[]):
+		if row.get("quality")==_crafting_selection.quality: offer=row
+	var payment := CraftingModel.payment(offer,_crafting_state.wallet)
+	if not payment.canAfford or int(_crafting_state.get("maximumDifficulty",0))<int(offer.get("minimumDifficulty",6)): return
+	var body: Dictionary=_crafting_selection.duplicate(true)
+	body["seasonId"]=_crafting_state.season.seasonId
+	body["expectedWalletVersion"]=_crafting_state.wallet.version
+	var label := "%s · %s · %s · %s" % [P.word(body.quality),P.word(body.slot),P.word(body.element),P.word(body.wishedEffect)]
+	_confirm(P.localized("season_craft_confirm") % [label,payment.blueprints,payment.orangeBlueprints],_change_crafting.bind("craft",body))
+
+func _confirm_learn(item: Dictionary) -> void:
+	if Game.busy: return
+	var season_id: String=str(_crafting_state.get("season",{}).get("seasonId",""))
+	if not CraftingModel.learnable(item,season_id): return
+	_confirm(P.localized("season_craft_learn_confirm") % _equipment_name(item),_change_crafting.bind("recipes/learn",{"seasonId":season_id,"equipmentId":item.instanceId,"expectedVersion":item.version}))
+
+func _confirm_reforge() -> void:
+	if Game.busy or not _craft_quote.get("canReforge",false): return
+	var quote: Dictionary=_craft_quote.duplicate(true)
+	var label := P.localized("season_craft_reforge_confirm") % [_equipment_name(quote.before),_equipment_name(quote.after),quote.fragmentCost]
+	_change_crafting_after_confirm(label,{"seasonId":quote.recipe.seasonId,"recipeId":quote.recipe.recipeId,"bodyEquipmentId":quote.before.instanceId,"expectedBodyVersion":quote.before.version,"expectedWalletVersion":quote.expectedWalletVersion})
+
+func _change_crafting_after_confirm(label: String,body: Dictionary) -> void:
+	_confirm(label,_change_crafting.bind("reforge",body))
+
+func _change_crafting(action: String,body: Dictionary) -> void:
+	if Game.busy: return
+	Game.busy=true
+	var generation: int=Game.gateway.session_generation
+	var result: Dictionary=await Game.gateway.request("/api/v1/season-crafting/"+action,HTTPClient.METHOD_POST,body)
+	if not _session_result_current(generation,result): return
+	if result.ok:
+		var data: Dictionary=result.data
+		if data.get("wallet") is Dictionary:
+			Game.update_cache("season",CraftingModel.wallet_summary(Game.lobby.get("season",{}),data.wallet))
+		await Game.refresh_cache("inventory")
+		if generation!=Game.gateway.session_generation: return
+		if action=="reforge":
+			var loadouts: Array=[]
+			for hero in ["Mage","Priest","Guardian"]:
+				var response: Dictionary=await Game.gateway.request("/api/v1/loadouts/"+hero)
+				if not _session_result_current(generation,response): return
+				if response.ok: loadouts.append(response.data)
+			if loadouts.size()==3: Game.update_cache("equippedLoadouts",loadouts)
+		Sound.play_cue("upgrade")
+		_toast(P.localized("operation_success"))
+	else: Sound.play_cue("error")
+	Game.busy=false
+	_craft_quote={}
+	if screen=="crafting": _reload_crafting()
+	_schedule_render()
 
 func _hall() -> void:
 	_label(content, P.localized("camp_title"), 56, P.GOLD)

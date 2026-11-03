@@ -9,6 +9,7 @@ const Codex = preload("res://ui/codex_view.gd")
 const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const EquipmentCompareModel = preload("res://ui/equipment_compare_model.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const SeasonCrafting = preload("res://ui/season_crafting_view.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -44,6 +45,7 @@ func build(source: Control) -> void:
 			"enhance": _enhance()
 			"shop": _shop()
 			"market": _market()
+			"crafting": SeasonCrafting.build(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -119,7 +121,7 @@ func _header() -> void:
 		Codex.header(self, host, P.localized("cards_title") if host.screen == "cards" else P.localized("deck_builder_title"))
 		return
 	panel(Rect2(24, 18, 1872, 82))
-	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market")}
+	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"),"crafting":P.localized("season_craft_title")}
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
@@ -959,8 +961,9 @@ func _gear() -> void:
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
 	if list.get_child_count() == 0: text(P.localized("ui_stored_empty_multiline"), Rect2(1255, 362, 530, 160), 28, P.MUTED)
-	var enhance_button := button(P.localized("enhance_title"), Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+	var enhance_button := button(P.localized("enhance_title"), Rect2(1245, 910, 565, 46), host._navigate.bind("enhance"))
 	enhance_button.set_meta("sound_cue", "")
+	button(P.localized("season_craft_title"),Rect2(1245,964,565,46),host._navigate.bind("crafting"),Game.busy)
 
 func _equipment_summary(loadout: Array, rect: Rect2 = Rect2(225, 760, 755, 165), maximum_hp: int = -1) -> void:
 	var compact := rect.size.x < 720.0
@@ -1359,11 +1362,32 @@ func _market() -> void:
 	scroll.add_child(list)
 	for listing in host.listings:
 		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
 		list.add_child(row)
 		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
-		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable"), func(): host._show_equipment_details(gear), gear.is_empty())
+		var seasonal: bool = host.EquipmentDetails.stats_version(gear) == "season-equipment-v1"
+		var caption: String = host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable")
+		if seasonal: caption += "\n" + P.localized(host.CraftingModel.sample_status(gear))
+		var name: Button = host._button(row, "" if seasonal else caption, func(): host._show_equipment_details(gear), gear.is_empty())
 		name.tooltip_text = host.EquipmentDetails.description(gear, Game.room_catalog_index()) if not gear.is_empty() else ""
 		name.custom_minimum_size.x = 660
+		if seasonal:
+			var label := Label.new()
+			label.text = caption
+			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			label.add_theme_font_override("font", P.font_for_text(caption, 24))
+			label.add_theme_font_size_override("font_size", 24)
+			name.add_child(label)
+			P.apply_text_direction(label)
+			var fit := func():
+				label.position = Vector2(20, 10)
+				label.size = Vector2(maxf(1, name.size.x - 40), maxf(1, name.size.y - 20))
+				name.custom_minimum_size.y = maxf(92, label.get_line_count() * label.get_theme_font("font").get_height(24) + 20)
+			name.resized.connect(fit)
+			fit.call_deferred()
 		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
 		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):
 			host._button(row, P.localized("remove_listing"), func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
