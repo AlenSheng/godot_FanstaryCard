@@ -1166,6 +1166,8 @@ public sealed partial class BattleRoom
             isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration,
             season:Season is not null && _catalog.UsesPublishedConfiguration ? new(Season,
                 SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items)) : null);
+        if (Season is not null && _catalog.UsesPublishedConfiguration && _catalog.Configuration.SeasonCrafting is not null)
+            player.ClearedCells.Add(position);
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
     }

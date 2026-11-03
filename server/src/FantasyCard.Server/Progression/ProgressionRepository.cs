@@ -27,9 +27,10 @@ public enum SaveLoadoutStatus { Updated, VersionConflict, NotFound, AssetUnavail
 public sealed record SaveLoadoutResult(SaveLoadoutStatus Status, LoadoutResponse? Loadout = null, string? Detail = null);
 
 public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, TimeProvider? timeProvider = null,
-    PublishedConfigCatalogs? configurations = null)
+    PublishedConfigCatalogs? configurations = null, Func<int,int>? craftingRandom = null)
 {
     private readonly PublishedConfigCatalogs _enhancementConfigurations = configurations ?? new(GameConfigCatalog.Current);
+    private readonly Func<int,int> _craftingRandom = craftingRandom ?? RandomNumberGenerator.GetInt32;
     private static readonly string[] EquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
 
     public async Task<InventoryResponse> GetInventoryAsync(Guid playerId, CancellationToken cancellationToken)

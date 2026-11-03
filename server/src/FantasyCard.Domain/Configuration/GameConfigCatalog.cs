@@ -166,6 +166,7 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<SeasonBorrowedDeckConfig> SeasonBorrowedDecks { get; private init; } = [];
     public IReadOnlyList<SeasonLootConfig> SeasonLootRules { get; private init; } = [];
     public SeasonEquipmentConfig? SeasonEquipment { get; private init; }
+    public SeasonCraftingConfig? SeasonCrafting { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -315,8 +316,30 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle) };
     }
+
+    private static SeasonCraftingConfig? ReadSeasonCrafting(ConfigBundle bundle)
+    {
+        var crafting = bundle.Tables.SingleOrDefault(table => table.Name == "SeasonCrafting");
+        var marks = bundle.Tables.SingleOrDefault(table => table.Name == "SeasonMarkRules");
+        if (crafting is null && marks is null) return null;
+        if (crafting is null || marks is null) throw new InvalidDataException("Season crafting and blueprint rules must be published together.");
+        var offers = crafting.Rows.Select(row => new SeasonCraftingOffer(crafting.Text(row,"quality_id"),
+            crafting.Int(row,"minimum_difficulty"), ReadBlueprintKind(crafting.Text(row,"mark_kind")),
+            crafting.Int(row,"mark_cost"), crafting.Int(row,"reforge_fragment_cost"), crafting.Int(row,"wish_attempts"))).ToArray();
+        var sources = marks.Rows.Select(row => new SeasonMarkRule(marks.Text(row,"difficulty_id") switch
+            { "D0" => 0, "D1" => 1, "D2" => 2, "D3" => 3, "D4" => 4, "D5" => 5, _ => -1 },
+            ReadBlueprintKind(marks.Text(row,"mark_kind")), marks.Int(row,"elite_marks"), marks.Int(row,"boss_marks"), marks.Int(row,"match_cap"))).ToArray();
+        var policy = new SeasonCraftingConfig(offers, sources); policy.Validate(); return policy;
+    }
+
+    private static BlueprintKind ReadBlueprintKind(string value) => value switch
+    {
+        "None" => BlueprintKind.None, "Blueprint" => BlueprintKind.Blueprint,
+        "OrangeBlueprint" => BlueprintKind.OrangeBlueprint,
+        _ => throw new InvalidDataException("Unknown seasonal blueprint currency.")
+    };
 
     private static SeasonEquipmentConfig? ReadSeasonEquipment(ConfigBundle bundle,EquipmentQualityConfig[] legacy)
     {

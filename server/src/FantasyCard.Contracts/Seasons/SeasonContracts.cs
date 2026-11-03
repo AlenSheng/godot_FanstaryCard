@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FantasyCard.Contracts.Seasons;
 
 public sealed record SeasonContextResponse(
@@ -5,7 +7,9 @@ public sealed record SeasonContextResponse(
 
 public sealed record SeasonWalletResponse(
     string SeasonId, long Gold, long EquipmentFragments, long ChallengeMarks,
-    long Version, DateTimeOffset? ArchivedAt, bool CanFundWeapon);
+    long Version, DateTimeOffset? ArchivedAt, bool CanFundWeapon,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] long BlueprintMarks = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] long OrangeBlueprintMarks = 0);
 
 public sealed record SeasonSummaryResponse(
     string State, string? SeasonId, string? RulesetId, string? ConfigVersion, string? StatsVersion,

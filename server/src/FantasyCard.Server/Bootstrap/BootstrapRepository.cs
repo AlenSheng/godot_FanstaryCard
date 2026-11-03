@@ -102,7 +102,7 @@ public sealed class BootstrapRepository(
 
     private static SeasonWalletResponse WalletResponseFor(SeasonWalletSnapshot wallet, bool canFundWeapon) =>
         new(wallet.SeasonId, wallet.Gold, wallet.EquipmentFragments, wallet.ChallengeMarks,
-            wallet.Version, wallet.ArchivedAt, canFundWeapon);
+            wallet.Version, wallet.ArchivedAt, canFundWeapon,wallet.BlueprintMarks,wallet.OrangeBlueprintMarks);
 
     public async Task<BootstrapSettlementProjection> GetSettlementAsync(
         Guid playerId,

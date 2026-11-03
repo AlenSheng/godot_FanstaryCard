@@ -9,7 +9,9 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(22, tables.Count); // _README stays private; versioned equipment rules add one published table.
+        Assert.Equal(24, tables.Count); // _README stays private; crafting and typed blueprint sources add two tables.
+        Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
+        Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
         Assert.Equal(24, tables.Single(t => t.Name == "SeasonLoot").Rows.Count);
         var first = ConfigCompiler.Compile("season-config-stage-1", tables, out var hash);
@@ -37,6 +39,11 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonMarketRules", "tax_rate", -0.01)]
     [InlineData("SeasonMarketRules", "orange_price_cap", 0)]
     [InlineData("SeasonActivityExchange", "cost_tokens", 0)]
+    [InlineData("SeasonCrafting", "mark_cost", 0)]
+    [InlineData("SeasonCrafting", "reforge_fragment_cost", 0)]
+    [InlineData("SeasonCrafting", "wish_attempts", 4)]
+    [InlineData("SeasonMarkRules", "match_cap", 5)]
+    [InlineData("SeasonMarkRules", "elite_marks", 2)]
     public void InvalidSeasonNumbersAreRejectedBeforePublishing(string table, string field, double value)
     {
         var tables = Change(Read(),table,field,value);
@@ -60,6 +67,9 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonRedRules", "timezone", "UTC")]
     [InlineData("SeasonMarketRules", "currency", "fragments")]
     [InlineData("SeasonActivityExchange", "reward_kind", "red-equipment")]
+    [InlineData("SeasonCrafting", "quality_id", "Red")]
+    [InlineData("SeasonCrafting", "mark_kind", "opaque-marks")]
+    [InlineData("SeasonMarkRules", "mark_kind", "opaque-marks")]
     public void UnknownSeasonReferencesAreRejected(string table, string field, string value)
     {
         Assert.Throws<InvalidDataException>(() => ConfigCompiler.Compile("invalid",Change(Read(),table,field,value),out _));

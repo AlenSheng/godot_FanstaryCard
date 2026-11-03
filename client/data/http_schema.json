@@ -1,5 +1,5 @@
 {
-  "sha256": "9db009c8cee2be512ef42f886708b1220e01d6a5dcd9fd86c230bfa789bc7da9",
+  "sha256": "ac714db5d23cfcf3d5d31d99891d78f1347d7bcdb049edf40e3c640ac3a7767f",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -204,6 +204,18 @@
       "7": {
         "name": "can_fund_weapon",
         "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "blueprint_marks",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "orange_blueprint_marks",
+        "type": "int64",
         "repeated": false,
         "optional": false
       }
@@ -2286,6 +2298,382 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      }
+    },
+    "CraftingOfferResponse": {
+      "1": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "minimum_difficulty",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "mark_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "mark_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "reforge_fragment_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "wish_attempts",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CraftingWishResponse": {
+      "1": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "wished_effect",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "failures",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "attempts_until_guaranteed",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonRecipeResponse": {
+      "1": {
+        "name": "recipe_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "effect_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "secondary_trait",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "source_item_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonCraftingResponse": {
+      "1": {
+        "name": "season",
+        "type": "SeasonContextResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "wallet",
+        "type": "SeasonWalletResponse",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "maximum_difficulty",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "offers",
+        "type": "CraftingOfferResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "wishes",
+        "type": "CraftingWishResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "recipes",
+        "type": "SeasonRecipeResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "CraftEquipmentRequest": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "wished_effect",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "expected_wallet_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CraftEquipmentResponse": {
+      "1": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "wallet",
+        "type": "SeasonWalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "wish",
+        "type": "CraftingWishResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "blueprints_spent",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "orange_blueprints_spent",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "LearnSeasonRecipeRequest": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "LearnSeasonRecipeResponse": {
+      "1": {
+        "name": "recipe",
+        "type": "SeasonRecipeResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "already_learned",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ReforgeEquipmentRequest": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "recipe_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "body_equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "expected_body_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "expected_wallet_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ReforgeQuoteResponse": {
+      "1": {
+        "name": "recipe",
+        "type": "SeasonRecipeResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "before",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "after",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "fragment_cost",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "available_fragments",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "expected_wallet_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "can_reforge",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "blocked_reason",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ReforgeEquipmentResponse": {
+      "1": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "wallet",
+        "type": "SeasonWalletResponse",
+        "repeated": false,
+        "optional": false
       }
     }
   }

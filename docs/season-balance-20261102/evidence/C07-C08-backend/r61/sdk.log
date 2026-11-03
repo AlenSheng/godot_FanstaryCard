@@ -1,0 +1,33 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 546 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 3 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:05.75]     FantasyCard.Domain.Tests.Combat.SeasonCraftingTests.AnActualFinishingPlayRecordsTheOwnClearBeforeRewardChoiceAndRestoreOrRefreshCannotDuplicateIt [FAIL]
+  Failed FantasyCard.Domain.Tests.Combat.SeasonCraftingTests.AnActualFinishingPlayRecordsTheOwnClearBeforeRewardChoiceAndRestoreOrRefreshCannotDuplicateIt [2 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : combatActionId must be nextSequence:32-lowercase-hex.
+  Stack Trace:
+     at FantasyCard.Domain.Rooms.CombatActionLedger.Replay(String id, String hash) in /workspace/server/src/FantasyCard.Domain/Rooms/CombatActionLedger.cs:line 48
+   at FantasyCard.Domain.Rooms.BattleRoom.PlayCards(Guid playerId, Guid battleId, String targetId, IReadOnlyList`1 cardInstanceIds, Int64 expectedRevision, DateTimeOffset now, String combatActionId) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 1003
+   at FantasyCard.Domain.Tests.Combat.SeasonCraftingTests.AnActualFinishingPlayRecordsTheOwnClearBeforeRewardChoiceAndRestoreOrRefreshCannotDuplicateIt() in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonCraftingTests.cs:line 78
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:08.20]     FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet [FAIL]
+  Failed FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet [2 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+                            ↓ (pos 17)
+Expected: "season-v1-config-3"
+Actual:   "season-v1-config-4"
+                            ↑ (pos 17)
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 17
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: /workspace/results/season-crafting-domain.trx
+
+Failed!  - Failed:     2, Passed:   559, Skipped:     0, Total:   561, Duration: 5 s - FantasyCard.Domain.Tests.dll (net10.0)

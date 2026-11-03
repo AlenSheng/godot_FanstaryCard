@@ -320,6 +320,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var context = await ReadMatchContextAsync(connection, transaction, matchId, cancellationToken);
         RequireStoredContext(season, configVersion, context);
+        await ValidateBlueprintAssetsAsync(connection, transaction, context, playerId, result, assets, cancellationToken);
         if (context.Season is not null && context.Status is not ("Running" or "Completed"))
             throw new InvalidOperationException("Only an admitted running match can settle seasonal assets.");
         if (details.ValueKind == JsonValueKind.Object && details.TryGetProperty("roomId", out var sourceRoom) &&
@@ -487,6 +488,11 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         if (asset.Quantity <= 0) throw new InvalidOperationException("Settlement asset quantity is invalid.");
         if (asset.AssetKind != hold.AssetKind || asset.AssetId != hold.AssetId)
             throw new InvalidOperationException("Settlement hold and asset snapshot identities differ.");
+        if (IsBlueprintAsset(asset))
+        {
+            await CreditBlueprintAssetAsync(connection, transaction, hold, realm, asset, cancellationToken);
+            return;
+        }
         if (asset.AssetKind == "Equipment")
         {
             if (!Guid.TryParse(asset.AssetId, out var equipmentId)) throw new InvalidOperationException("Equipment asset id is invalid.");

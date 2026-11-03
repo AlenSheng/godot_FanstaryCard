@@ -22,6 +22,12 @@ public static class SeasonConfigValidator
     private static readonly string[] DifficultyScales = ["hp_scale", "shield_scale", "damage_scale", "interval_scale", "gold_scale", "soul_scale", "fragment_scale"];
     private static readonly string[] EquipmentStats = ["damage_base", "resist_base", "damage_per_level", "resist_per_level", "speed_base", "speed_per_level"];
     private static readonly string[] Currencies = ["gold", "diamond"];
+    private static readonly string[] CraftedQualities = ["Orange","Purple"];
+    private static readonly Dictionary<string,string> CraftingSchemas = new(StringComparer.Ordinal)
+    {
+        ["SeasonCrafting"]="quality_id:s,minimum_difficulty:i,mark_kind:s,mark_cost:i,reforge_fragment_cost:i,wish_attempts:i",
+        ["SeasonMarkRules"]="difficulty_id:s,mark_kind:s,elite_marks:i,boss_marks:i,match_cap:i"
+    };
     private static readonly string[] EquipmentRuleFields=["stats_version","resistance_cap","draw_floor_seconds","draw_ceiling_seconds","inferno_bonus","rapid_draw_reduction","rapid_draw_floor_seconds","chain_draw_chance","opening_draw_count","golden_cicada_bonus"];
 
     public static void Validate(IReadOnlyList<ConfigTable> tables)
@@ -29,7 +35,7 @@ public static class SeasonConfigValidator
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
         if (present.Count == 0)
         {
-            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules"))
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules"))
                 throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
             return; // Archived pre-season workbooks remain valid.
         }
@@ -50,6 +56,7 @@ public static class SeasonConfigValidator
         ValidateLoot(present["SeasonLoot"], present["SeasonDifficulty"]);
         ValidateEquipment(present["SeasonEquipment"]);
         ValidateEquipmentRules(tables,present["SeasonEquipment"]);
+        ValidateCrafting(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -168,6 +175,37 @@ public static class SeasonConfigValidator
             N(table,row,"rapid_draw_floor_seconds")>=N(table,row,"draw_floor_seconds") && N(table,row,"rapid_draw_floor_seconds")<=N(table,row,"draw_ceiling_seconds"),table,"invalid resistance or draw interval bounds");
         Probability(table,row,"inferno_bonus");Probability(table,row,"rapid_draw_reduction");Probability(table,row,"chain_draw_chance");Probability(table,row,"golden_cicada_bonus");
         Check(N(table,row,"opening_draw_count") is >=0 and <=1,table,"opening draw count exceeds hand-opening policy");
+    }
+
+    private static void ValidateCrafting(IReadOnlyList<ConfigTable> tables)
+    {
+        var crafting=tables.SingleOrDefault(table=>table.Name=="SeasonCrafting");
+        var marks=tables.SingleOrDefault(table=>table.Name=="SeasonMarkRules");
+        if(crafting is null && marks is null)return;
+        if(crafting is null || marks is null)throw new InvalidDataException("Crafting offers and blueprint sources must be published together.");
+        foreach(var table in new[]{crafting,marks})
+        foreach(var field in CraftingSchemas[table.Name].Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both &&
+                column.Type==(parts[1]=="s"?ConfigValueType.Text:ConfigValueType.WholeNumber),table,"invalid crafting metadata");
+        }
+        Check(crafting.Rows.Count==2 && crafting.Rows.Select(row=>S(crafting,row,"quality_id")).Order(StringComparer.Ordinal).SequenceEqual(CraftedQualities),crafting,"only Purple and Orange can be crafted");
+        foreach(var row in crafting.Rows)
+        {
+            var purple=S(crafting,row,"quality_id")=="Purple";
+            Check(N(crafting,row,"minimum_difficulty")>=(purple?1:2) && N(crafting,row,"minimum_difficulty")<=5 &&
+                S(crafting,row,"mark_kind")== (purple?"Blueprint":"OrangeBlueprint") && N(crafting,row,"mark_cost")>0 &&
+                N(crafting,row,"reforge_fragment_cost")>0 && N(crafting,row,"wish_attempts") is >=1 and <=3,crafting,"invalid offer or wish bound");
+        }
+        Check(marks.Rows.Count==6 && marks.Rows.Select(row=>S(marks,row,"difficulty_id")).ToHashSet(StringComparer.Ordinal).SetEquals(DifficultyIds),marks,"requires D0 through D5");
+        foreach(var row in marks.Rows)
+        {
+            var difficulty=S(marks,row,"difficulty_id");var kind=difficulty=="D0"?"None":difficulty=="D1"?"Blueprint":"OrangeBlueprint";
+            Check(S(marks,row,"mark_kind")==kind && N(marks,row,"elite_marks") is >=0 and <=1 &&
+                N(marks,row,"boss_marks") is >=0 and <=2 && N(marks,row,"match_cap") is >=0 and <=4 &&
+                (difficulty!="D0" || N(marks,row,"elite_marks")+N(marks,row,"boss_marks")+N(marks,row,"match_cap")==0),marks,"invalid source kind or per-match cap");
+        }
     }
 
     private static void ValidateProgression(ConfigTable table)

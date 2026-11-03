@@ -55,6 +55,8 @@ message SeasonWalletResponse {
   int64 version = 5;
   optional string archived_at = 6;
   bool can_fund_weapon = 7;
+  int64 blueprint_marks = 8;
+  int64 orange_blueprint_marks = 9;
 }
 
 message SeasonContextResponse {
@@ -504,3 +506,15 @@ message SettlementDisplayAsset { string item_id = 1; string kind = 2; int32 quan
 message SettlementEquipment { int32 slot = 1; int32 quality = 2; int32 element = 3; optional string effect_affix = 4; optional string secondary_trait = 5; int32 level = 6; bool is_bound = 7; optional string slot_name = 8; optional string quality_name = 9; optional string element_name = 10; }
 
 message ShopProductPayload { optional string card_id = 1; optional string quality = 2; optional string rarity = 3; optional int32 count = 4; optional int64 amount = 5; optional string hero_class = 6; }
+
+message CraftingOfferResponse { string quality = 1; int32 minimum_difficulty = 2; string mark_kind = 3; int32 mark_cost = 4; int32 reforge_fragment_cost = 5; int32 wish_attempts = 6; }
+message CraftingWishResponse { string quality = 1; string slot = 2; string element = 3; string wished_effect = 4; int32 failures = 5; int32 attempts_until_guaranteed = 6; }
+message SeasonRecipeResponse { string recipe_id = 1; string season_id = 2; string quality = 3; string slot = 4; string element = 5; optional string effect_affix = 6; string secondary_trait = 7; string stats_version = 8; string source_item_id = 9; }
+message SeasonCraftingResponse { SeasonContextResponse season = 1; optional SeasonWalletResponse wallet = 2; int32 maximum_difficulty = 3; repeated CraftingOfferResponse offers = 4; repeated CraftingWishResponse wishes = 5; repeated SeasonRecipeResponse recipes = 6; }
+message CraftEquipmentRequest { string season_id = 1; string quality = 2; string slot = 3; string element = 4; string wished_effect = 5; int64 expected_wallet_version = 6; }
+message CraftEquipmentResponse { EquipmentResponse equipment = 1; SeasonWalletResponse wallet = 2; CraftingWishResponse wish = 3; int64 blueprints_spent = 4; int64 orange_blueprints_spent = 5; }
+message LearnSeasonRecipeRequest { string season_id = 1; string equipment_id = 2; int64 expected_version = 3; }
+message LearnSeasonRecipeResponse { SeasonRecipeResponse recipe = 1; EquipmentResponse equipment = 2; bool already_learned = 3; }
+message ReforgeEquipmentRequest { string season_id = 1; string recipe_id = 2; string body_equipment_id = 3; int64 expected_body_version = 4; int64 expected_wallet_version = 5; }
+message ReforgeQuoteResponse { SeasonRecipeResponse recipe = 1; EquipmentResponse before = 2; EquipmentResponse after = 3; int64 fragment_cost = 4; int64 available_fragments = 5; int64 expected_wallet_version = 6; bool can_reforge = 7; optional string blocked_reason = 8; }
+message ReforgeEquipmentResponse { EquipmentResponse equipment = 1; SeasonWalletResponse wallet = 2; }

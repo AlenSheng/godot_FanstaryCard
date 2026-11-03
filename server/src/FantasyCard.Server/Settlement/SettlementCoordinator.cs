@@ -40,7 +40,7 @@ public sealed class SettlementCoordinator(
                 else
                 {
                     var assets = result == "Extracted"
-                        ? ExtractedAssets(player)
+                        ? ExtractedAssets(snapshot,player)
                         : DeadAssets(snapshot, player);
                     var items = SettlementItems(player, result);
                     var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position)).ToArray();
@@ -116,13 +116,20 @@ public sealed class SettlementCoordinator(
     private static SettlementDisplayItem DisplayItem(ExplorationItem item, bool equipped) =>
         new(new(item.ItemId, item.Kind.ToString(), item.Quantity, item.IsSafe, item.Equipment), equipped);
 
-    private static SettlementAsset[] ExtractedAssets(RoomPlayerSnapshot player)
+    private SettlementAsset[] ExtractedAssets(BattleRoomSnapshot snapshot,RoomPlayerSnapshot player)
     {
         var assets = (player.Inventory?.Items ?? [])
             .Select(item => ToAsset(item, "Inventory"))
             .Concat((player.WornArmor ?? []).Select(item => ToAsset(item, "Equipped")))
             .Concat((player.RecycledEquipment ?? []).Select(item => ToAsset(item, "Recycled")))
             .ToList();
+        if (snapshot.Season is { } season && repository.ConfigurationFor(snapshot.ConfigVersion).SeasonCrafting is { } crafting)
+        {
+            var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position));
+            var pending = crafting.Pending(season.Difficulty,player.IsBot,cleared);
+            if (pending.Blueprints > 0) assets.Add(new("BlueprintMarks","blueprint",false,pending.Blueprints));
+            if (pending.OrangeBlueprints > 0) assets.Add(new("OrangeBlueprintMarks","orange-blueprint",false,pending.OrangeBlueprints));
+        }
         return [.. assets];
     }
 

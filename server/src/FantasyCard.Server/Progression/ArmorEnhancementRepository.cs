@@ -59,6 +59,13 @@ public sealed partial class ProgressionRepository
         if (equipment.SeasonId != season.SeasonId || equipment.AssetScope != "ActiveSeason" ||
             equipment.StatsVersion != season.StatsVersion)
             throw new DomainValidationException("Equipment belongs to another season or archive.");
+        var configuration = await ResolveEquipmentSeasonCatalogAsync(connection, transaction, season, ct);
+        return new(schedule, configuration);
+    }
+
+    private async Task<GameConfigCatalog> ResolveEquipmentSeasonCatalogAsync(NpgsqlConnection connection,
+        NpgsqlTransaction? transaction, SeasonDefinition season, CancellationToken ct)
+    {
         GameConfigCatalog configuration;
         try { configuration = _enhancementConfigurations.Resolve(season.ConfigVersion); }
         catch (IOException) { throw new DomainValidationException("The original equipment configuration is unavailable."); }
@@ -67,7 +74,7 @@ public sealed partial class ProgressionRepository
         if (await hash.ExecuteScalarAsync(ct) is not string expected || expected != configuration.ContentHash)
             throw new DomainValidationException("The original equipment configuration hash differs from its published season.");
         _ = configuration.ResolveSeasonEquipment(season.StatsVersion);
-        return new(schedule, configuration);
+        return configuration;
     }
 
     private static bool SameEnhancementDomain(EquipmentResponse target, EquipmentResponse material) =>
