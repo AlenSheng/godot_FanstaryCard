@@ -311,7 +311,7 @@ public sealed class PostgresSeasonMatchmakingTests
         {
             await using var insert = db.DataSource.CreateCommand("""
                 INSERT INTO equipments(instance_id,owner_id,slot,quality,level,location,created_at,element,origin_season_id,season_id,asset_scope,stats_version,source_kind,generated_difficulty)
-                VALUES ($1,$2,'Head',CASE WHEN $8=0 THEN 'Green' ELSE 'Blue' END,0,'Equipped',$3,'Fire',$4,$4,$5,$6,$7,$8)
+                VALUES ($1,$2,'Head','Blue',0,'Equipped',$3,'Fire',$4,$4,$5,$6,$7,$8)
                 """);
             insert.Parameters.AddWithValue(item.Value); insert.Parameters.AddWithValue(player); insert.Parameters.AddWithValue(clock.Now);
             insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)season?.SeasonId ?? DBNull.Value);

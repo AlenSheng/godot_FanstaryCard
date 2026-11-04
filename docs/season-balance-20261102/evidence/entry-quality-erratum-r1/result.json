@@ -1,0 +1,36 @@
+{
+  "status": "entry_quality_reporting_error_corrected",
+  "production_rule_changed": false,
+  "incorrect_prior_inference": "EntryQualityCap2 incorrectly interpreted using one-based card rarity as Green",
+  "correct_equipment_mapping": [
+    "White",
+    "Green",
+    "Blue",
+    "Purple",
+    "Orange",
+    "Red"
+  ],
+  "correct_caps": {
+    "D0": "Blue",
+    "D1": "Purple"
+  },
+  "source_sha256": "2340a6d7ef7193b5a2518148e2c4a258e24412b0a6716a0c3abee6682e0bde6e",
+  "actual_PG_passed": 15,
+  "actual_PG_skipped": 0,
+  "new_positive_cap_cases": [
+    "D0 Blue accepted and equipment locked",
+    "D1 Purple accepted and equipment locked"
+  ],
+  "retained_negative_cap_cases": [
+    "D0 Purple rejected without locking",
+    "D1 Orange rejected without locking"
+  ],
+  "original_Blue_matchmaking_fixture_restored": true,
+  "prior_r92_Green_fixture_was_legal_but_not_upper_boundary_proof": true,
+  "prior_commit_and_evidence_preserved": "78414732c68daabd3c85973e2a04584fe19bd342",
+  "latest_case_union": 108,
+  "capacity100_retest": false,
+  "new_full_routes": 0,
+  "production_deployed": false,
+  "production_restarted": false
+}

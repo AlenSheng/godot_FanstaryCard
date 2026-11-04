@@ -54,7 +54,9 @@ public sealed partial class PostgresSeasonPreparationTests
     }
 
     [Theory(Skip = "Requires isolated PostgreSQL.", SkipUnless = nameof(HasTestDatabase))]
+    [InlineData(0, "Blue", true)]
     [InlineData(0, "Purple", false)]
+    [InlineData(1, "Purple", true)]
     [InlineData(1, "Orange", false)]
     [InlineData(2, "Orange", true)]
     [Trait("Category", "PostgresIntegration")]
