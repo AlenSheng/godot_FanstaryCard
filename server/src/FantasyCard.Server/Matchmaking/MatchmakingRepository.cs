@@ -122,6 +122,8 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             preparationStatus = found ? reader.GetString(0) : null;
             admission = found && reader.GetBoolean(1);
         }
+        if (preparationStatus == "Active" && admission)
+            admission = await HasValidPreparedEquipmentAsync(connection, transaction, request.PreparationId, cancellationToken);
         if (preparationStatus != "Active" || !admission)
         {
             if (preparationStatus == "Active" && !admission)
@@ -381,6 +383,21 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         }
 
         // A Starting match has not consumed prepared assets. Launching is already admitted and drains with its pinned context.
+        var unavailableReason = "context_unavailable";
+        if (firstClaim && admission)
+        {
+            var readyPreparations = new List<Guid>();
+            await using (var ready = new NpgsqlCommand("SELECT preparation_id FROM match_players WHERE match_id=$1 AND NOT is_bot AND state='Ready'", connection, transaction))
+            {
+                ready.Parameters.AddWithValue(matchId);await using var reader=await ready.ExecuteReaderAsync(cancellationToken);
+                while(await reader.ReadAsync(cancellationToken))readyPreparations.Add(reader.GetGuid(0));
+            }
+            foreach(var preparationId in readyPreparations)
+            {
+                if(await HasValidPreparedEquipmentAsync(connection,transaction,preparationId,cancellationToken))continue;
+                admission=false;unavailableReason="equipment_unavailable";break;
+            }
+        }
         if (firstClaim && !admission)
         {
             var removedPlayers = new List<Guid>();
@@ -413,7 +430,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             }
             await transaction.CommitAsync(cancellationToken);
             return new(new(matchId, roomId, seed, [], season, configVersion), [], removedPlayers.ToArray(),
-                Aborted: true, RemovalReason: "context_unavailable");
+                Aborted: true, RemovalReason: unavailableReason);
         }
 
         Guid[] removed = [];
@@ -526,16 +543,55 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                 !actualCards.Select(season.ProjectPermanentLevel).SequenceEqual(projectedCards)))
                 throw new InvalidOperationException("Prepared permanent level projection is invalid.");
             var equipmentIds = snapshot.EquipmentIds.Where(id => id.HasValue).Select(id => id!.Value).ToArray();
-            var equipmentSnapshots = snapshot.EquipmentSnapshots ?? [];
-            if(season is not null && equipmentSnapshots.Any(item=>item.StatsVersion is not null && item.StatsVersion!=season.StatsVersion))
-                throw new InvalidOperationException("Prepared equipment has another stats version.");
-            var equipment = equipmentSnapshots.Select(item => new CombatEquipmentItem(item.InstanceId, item.Slot, item.Quality, item.Level, Enum.Parse<CardElement>(item.Element, true), item.EffectAffix, item.SecondaryTrait,
-                item.UniqueAffix,item.UniqueElement is null?null:Enum.Parse<CardElement>(item.UniqueElement,true))).ToArray();
+            var equipment = ValidatePreparedEquipment(snapshot,originalConfiguration,season);
             result.Add(new(reader.GetGuid(0), false, (HeroClass)(int)snapshot.HeroClass, snapshot.CardIds,
                 snapshot.BackpackCapacity, snapshot.SafeSlotIndexes.Count, snapshot.PotionCount, equipmentIds,
                 snapshot.ClassWeaponLevel, equipment, snapshot.CardLevels, snapshot.SafeSlotIndexes, reader.GetString(2), snapshot.BorrowedTemplateId, snapshot.LootPreferenceElement));
         }
         return result;
+    }
+
+    private async Task<bool> HasValidPreparedEquipmentAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
+        Guid preparationId,CancellationToken ct)
+    {
+        await using var query=new NpgsqlCommand("""
+            SELECT p.snapshot_json::text,p.season_id,p.difficulty_id,p.config_version,p.ruleset_id,p.stats_version,d.config_sha256
+            FROM preparations p LEFT JOIN season_definitions d ON d.season_id=p.season_id WHERE p.preparation_id=$1
+            """,connection,transaction);
+        query.Parameters.AddWithValue(preparationId);await using var reader=await query.ExecuteReaderAsync(ct);
+        if(!await reader.ReadAsync(ct))return false;
+        try
+        {
+            var snapshot=JsonSerializer.Deserialize<PreparationSnapshotResponse>(reader.GetString(0),SnapshotSerializerOptions);
+            if(snapshot is null)return false;
+            var configuration=_configurations.Resolve(reader.GetString(3));
+            var season=reader.IsDBNull(1)?null:new SeasonContext(reader.GetString(1),reader.GetInt16(2),reader.GetString(4),reader.GetString(3),reader.GetString(5));
+            if(season is not null&&(reader.IsDBNull(6)||reader.GetString(6)!=configuration.ContentHash))return false;
+            _=ValidatePreparedEquipment(snapshot,configuration,season);return true;
+        }
+        catch(Exception error) when(error is JsonException or IOException or InvalidDataException or DomainValidationException or ArgumentException)
+        {
+            return false;
+        }
+    }
+
+    private static CombatEquipmentItem[] ValidatePreparedEquipment(PreparationSnapshotResponse snapshot,
+        GameConfigCatalog configuration,SeasonContext? season)
+    {
+        if(snapshot.EquipmentIds is not {Count:5} slots)
+            throw new DomainValidationException("Prepared armor requires the original five-slot layout.");
+        var ids=slots.Where(id=>id.HasValue).Select(id=>id!.Value).ToArray();
+        var items=snapshot.EquipmentSnapshots??[];
+        if(ids.Length!=items.Count||ids.Distinct().Count()!=ids.Length||items.Select(item=>item.InstanceId).Distinct().Count()!=items.Count||
+            items.Any(item=>!ids.Contains(item.InstanceId)))
+            throw new DomainValidationException("Prepared armor identities do not match their frozen attributes.");
+        if(season is not null&&items.Any(item=>item.StatsVersion is not null&&item.StatsVersion!=season.StatsVersion))
+            throw new DomainValidationException("Prepared equipment has another stats version.");
+        var equipment=items.Select(item=>new CombatEquipmentItem(item.InstanceId,item.Slot,item.Quality,item.Level,
+            Enum.Parse<CardElement>(item.Element,true),item.EffectAffix,item.SecondaryTrait,item.UniqueAffix,
+            item.UniqueElement is null?null:Enum.Parse<CardElement>(item.UniqueElement,true))).ToArray();
+        _=EquipmentCombatRules.Calculate(equipment,configuration,season?.StatsVersion);
+        return equipment;
     }
 
     private async Task ReserveMatchAssetsAsync(

@@ -9,6 +9,7 @@ const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_re
 const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
 const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
 const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
+const HISTORICAL_SCENARIOS := ["historical_gear_none","ready_removed_equipment","ready_removed_timeout"]
 const THEME_SCENARIOS := ["c16_fire_info","c16_wood_info","c16_earth_info","c16_metal_info","c16_water_info","c16_wood_regen","c16_map","c16_action","c16_pvp","c16_choice"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
@@ -30,6 +31,9 @@ func _ready() -> void:
 	$UI._codex_ready = true
 	if Game.notice.is_connected($UI._toast): Game.notice.disconnect($UI._toast)
 	# This is a silent layout review, not audio playback validation.
+	if Game.changed.is_connected(Sound._sync_context): Game.changed.disconnect(Sound._sync_context)
+	if Game.sound_requested.is_connected(Sound._handle_sound_request): Game.sound_requested.disconnect(Sound._handle_sound_request)
+	Sound.stop_music()
 	Sound.stop_all()
 	Sound._headless_runtime = true
 	Sound.set_process(false)
@@ -78,7 +82,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -99,6 +103,7 @@ func _run() -> void:
 	file.store_string(JSON.stringify(report, "  ")); file.close()
 	Sound.stop_all()
 	await get_tree().process_frame
+	Sound.stop_all(); Sound.stop_music()
 	await get_tree().create_timer(0.15).timeout
 	get_tree().quit(0 if layout_errors.is_empty() and not review_checks.values().has(false) else 1)
 
@@ -233,6 +238,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in HISTORICAL_SCENARIOS: return await _prepare_historical_equipment_scene(scenario,locale)
 	if scenario.begins_with("c16_"):return await _prepare_theme_scene(scenario,locale)
 	if scenario.begins_with("c15_"): return await _prepare_journey_scene(scenario)
 	if scenario.begins_with("c14_"): return await _prepare_activity_scene(scenario)
@@ -1038,3 +1044,32 @@ func _collect_text(root: Node, rows: Array) -> void:
 				"visible_lines": root.get_visible_line_count() if root is Label else 1})
 	for child in root.get_children():
 		_collect_text(child, rows)
+
+
+func _prepare_historical_equipment_scene(scenario: String,locale: String) -> bool:
+	var key: String=locale+"_"+str(get_window().size.x)+"_"+scenario
+	if scenario=="historical_gear_none":
+		var gear: Dictionary=_c05_gear("historical-no-trait","Head")
+		gear.quality="Green";gear.level=0;gear.effectAffix=null;gear.secondaryTrait=null;gear.element="Wood"
+		$UI.inventory.equipments=[gear];Game.lobby.inventory=$UI.inventory
+		$UI.gear_draft=[gear.instanceId,null,null,null,null];$UI.screen="gear"
+		Game.lobby["season"]={"state":"Active","seasonId":"review","statsVersion":"season-equipment-v1","configVersion":Game.CATALOG.data.version}
+		await _render_base();$UI._show_equipment_details(gear)
+		var text: String=preload("res://ui/equipment_details.gd").description(gear)
+		review_checks[key+": absent trait stays absent"]=gear.secondaryTrait==null
+		review_checks[key+": no invented draw label"]=not text.contains(Palette.localized("battle_draw_interval_seconds"))
+		return false
+	$UI.screen="hall";await _render_base()
+	Game.ready_prompt={"match_id":"fixture-match"};Game.ticket={"ticket_id":"fixture-ticket"};Game.preparation={"preparation_id":"fixture-preparation"}
+	Game.lobby["activePreparation"]=Game.preparation
+	var captured: Array[String]=[]
+	var record := func(value: String): captured.append(value)
+	Game.notice.connect(record)
+	var token: String=Game.gateway.token;Game.gateway.token=""
+	Game._on_event("room.ready_removed",{"reason":"equipment_unavailable" if scenario=="ready_removed_equipment" else "ready_timeout"})
+	Game.gateway.token=token;Game.notice.disconnect(record)
+	var expected: String=Palette.localized("state_changed" if scenario=="ready_removed_equipment" else "ready_timeout")
+	review_checks[key+": reason uses correct localized text"]=captured.size()==1 and captured[0]==expected
+	review_checks[key+": cancelled preparation state cleared"]=Game.ready_prompt.is_empty() and Game.ticket.is_empty() and Game.preparation.is_empty() and Game.lobby.activePreparation==null
+	$UI._toast(expected)
+	return false

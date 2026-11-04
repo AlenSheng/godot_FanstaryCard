@@ -546,7 +546,8 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                 create.Parameters.AddWithValue(destination);
                 create.Parameters.AddWithValue(generated.Element);
                 create.Parameters.AddWithValue(generated.EffectAffix ?? (object)DBNull.Value);
-                create.Parameters.AddWithValue(generated.SecondaryTrait);
+                create.Parameters.AddWithValue(generated.SecondaryTrait
+                    ?? throw new DomainValidationException("Generated equipment requires an explicit secondary trait."));
                 create.Parameters.AddWithValue(generated.Level);
                 create.Parameters.AddWithValue(generated.IsBound);
                 var season = realm.Context.Season;

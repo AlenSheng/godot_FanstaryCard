@@ -78,7 +78,8 @@ public sealed class SeasonRedMintRepository(NpgsqlDataSource dataSource,TimeProv
                     VALUES($1,$2,$3,'Red',0,false,'InMatchBackpack',1,$4,$5,$6,$7,$8,$8,'ActiveSeason',$9,$10,$11,'RedBoss',$12,$13,$14,$15,$16,$17,$18)
                     """,connection,tx);
                 mint.Parameters.AddWithValue(id);mint.Parameters.AddWithValue(playerId);mint.Parameters.AddWithValue(gear.Slot);mint.Parameters.AddWithValue(now);
-                mint.Parameters.AddWithValue(gear.Element);mint.Parameters.AddWithValue(gear.EffectAffix!);mint.Parameters.AddWithValue(gear.SecondaryTrait);
+                mint.Parameters.AddWithValue(gear.Element);mint.Parameters.AddWithValue(gear.EffectAffix!);mint.Parameters.AddWithValue(gear.SecondaryTrait
+                    ?? throw new DomainValidationException("Generated red equipment requires an explicit secondary trait."));
                 mint.Parameters.AddWithValue(season.SeasonId);mint.Parameters.AddWithValue(matchId);mint.Parameters.AddWithValue((short)season.Difficulty);
                 mint.Parameters.AddWithValue(season.StatsVersion);mint.Parameters.AddWithValue(policy.RuleId);mint.Parameters.AddWithValue(pending.AttemptId);
                 mint.Parameters.AddWithValue(_scope);mint.Parameters.AddWithValue(week);mint.Parameters.AddWithValue(gear.UniqueAffix!);

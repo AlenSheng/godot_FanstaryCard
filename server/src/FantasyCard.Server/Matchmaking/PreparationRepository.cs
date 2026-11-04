@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Domain.Cards;
+using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Matches;
 using FantasyCard.Domain.Players;
@@ -651,6 +652,17 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         if (snapshots.Count(item => item.Quality is "Orange" or "Red") > 1)
         {
             return ("A loadout can contain at most one Orange or Red armor item.", []);
+        }
+
+        try
+        {
+            _ = EquipmentCombatRules.Calculate(snapshots.Select(item=>new CombatEquipmentItem(item.InstanceId,item.Slot,item.Quality,
+                item.Level,Enum.Parse<CardElement>(item.Element,true),item.EffectAffix,item.SecondaryTrait,item.UniqueAffix,
+                item.UniqueElement is null?null:Enum.Parse<CardElement>(item.UniqueElement,true))).ToArray(),configuration,season?.StatsVersion);
+        }
+        catch (DomainValidationException error)
+        {
+            return (error.Message, []);
         }
 
         return (null, snapshots);

@@ -12,6 +12,24 @@ public sealed class SeasonEquipmentRuntimeTests
     private static readonly string[] Slots=["Head","Chest","Hands","Legs","Feet"];
 
     [Fact]
+    public void HistoricalAbsentTraitStaysAbsentThroughSwapAndJsonRecoveryWithoutInventedDrawBonus()
+    {
+        var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var room=Room(catalog);var id=Guid.NewGuid();
+        var gear=new EquipmentRewardData("Head","Green","Wood",null,null,StatsVersion:Stats);
+        Assert.False(EquipmentRewardRules.IsValid(gear)); // An unminted new reward still needs explicit attributes.
+        var item=new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,Equipment:gear,IsGenerated:false);
+        var profile=EquipmentCombatRules.Calculate([new(Guid.Parse(item.ItemId),"Head","Green",0,CardElement.Wood,null,null)],config,Stats);
+        var player=room.AddPlayer(new(id,HeroClass.Mage,SeasonFenxianTests.Starter(HeroClass.Mage),null,WornArmor:[item],Equipment:profile));
+        Assert.Equal(0,player.Combat.Equipment.DrawIntervalModifier);Assert.Equal(4,player.Combat.NaturalDrawIntervalSeconds,8);
+        room.UnequipArmor(id,"Head");Assert.Null(Assert.Single(player.Inventory.Items).Equipment!.SecondaryTrait);
+        room.EquipInventoryItem(id,item.ItemId);Assert.Null(Assert.Single(player.WornArmor).Equipment!.SecondaryTrait);
+        var saved=room.Capture();var bytes=System.Text.Json.JsonSerializer.SerializeToUtf8Bytes(saved);
+        var recovered=BattleRoom.Restore(System.Text.Json.JsonSerializer.Deserialize<BattleRoomSnapshot>(bytes)!,catalog,73).Capture();
+        Assert.Null(Assert.Single(recovered.Players[0].WornArmor!).Equipment!.SecondaryTrait);
+        Assert.Equal(0,recovered.Players[0].Combat.Equipment!.DrawIntervalModifier);Assert.Equivalent(saved,recovered,strict:true);
+    }
+
+    [Fact]
     public void PublishedRoomDerivesNewStatsFromActualArmorAndRejectsChangedSavedAttributes()
     {
         var catalog=CombatCardCatalog.Create(GameConfigCatalog.Current);var room=Room(catalog);var id=Guid.NewGuid();

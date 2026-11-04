@@ -1737,9 +1737,10 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			preparation = {}
 			lobby["activePreparation"] = null
 			# Preparation locking removes equipped items from the inventory cache.
-			# The server releases them on timeout; reload their saved item details.
+			# The server releases cancelled preparations; reload their saved item details.
 			refresh_cache("inventory")
-			notice.emit(P.localized("ready_timeout"))
+			var ready_reason: String = str(payload.get("reason", "ready_timeout"))
+			notice.emit(P.localized("ready_timeout" if ready_reason == "ready_timeout" else "state_changed"))
 		"settlement.ready", "match.settled":
 			if not str(payload.get("settlement_id", "")).is_empty() and not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
 				_close_room_actions()

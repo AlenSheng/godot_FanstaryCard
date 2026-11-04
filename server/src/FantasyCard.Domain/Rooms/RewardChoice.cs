@@ -12,7 +12,7 @@ public sealed record EquipmentRewardData(
     string Quality,
     string Element,
     string? EffectAffix,
-    string SecondaryTrait,
+    string? SecondaryTrait,
     int Level = 0,
     bool IsBound = false,
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] SeasonEquipmentOrigin? SeasonOrigin = null,
