@@ -123,6 +123,8 @@ message RoomPlayer {
   RoomNumericalState numerical_state = 21;
   RoomCombatActionState combat_action = 22;
   optional string borrowed_template_id = 23;
+  bool red_evaluation_pending = 24;
+  RoomInventoryItem pending_red_item = 25;
 }
 message RoomCombatActionState { int64 next_sequence = 1; int64 remaining_ms = 2; }
 message RoomSnapshotEvent {

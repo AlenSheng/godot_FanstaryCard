@@ -1,5 +1,5 @@
 {
-  "sha256": "771e51d6beac9d6a3ffa5e928245426f81cb091a42e84b2bd01c81532b7425df",
+  "sha256": "766b2b7c7cd157b43d6d76d93e4b94c5838bac220265eb258f633f7b2df6ded8",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -947,6 +947,18 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      },
+      "24": {
+        "name": "red_evaluation_pending",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "25": {
+        "name": "pending_red_item",
+        "type": "RoomInventoryItem",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomCombatActionState": {

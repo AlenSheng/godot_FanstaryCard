@@ -252,6 +252,8 @@ public static class SeasonConfigValidator
 
     private static void ValidateRed(ConfigTable table)
     {
+        if(table.Columns.SingleOrDefault(column=>column.Name=="enabled") is { } enabled)
+            Check(enabled.Type==ConfigValueType.Logical && enabled.Required && enabled.Scope==PublishScope.Server,table,"invalid red enabled metadata");
         Check(table.Rows.Count == 1, table, "requires one shared red quota policy");
         foreach (var row in table.Rows)
         {

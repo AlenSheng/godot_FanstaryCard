@@ -1,0 +1,213 @@
+{
+  "status": "C11_completed_current_scope",
+  "C11_complete": true,
+  "whole_goal_complete": false,
+  "configuration": {
+    "version": "season-v1-config-7",
+    "content_hash": "88ef440fb7e1f500b755fef3811c028b599cd8aea650b7c1b1fb629d1e4398a5",
+    "binary_sha256": "440881b28e4db129c872232544952c3f4b75407e84217f562a19f02260cff425",
+    "workbook_sha256": "83a72df582be97876a8f899bf7003f37c3c13b90f8111cc9b55ef9719b8b1c48",
+    "old_tables_unchanged": 25,
+    "changed_tables": [
+      "SeasonRedRules"
+    ],
+    "rows": 1743,
+    "tables": 26,
+    "server_client_pairs_equal": true,
+    "archive6_originals": {
+      "fantasycard.config.bytes": {
+        "archived_raw_sha256": "f6c190f5a76885742ea684af4ea08c76235841b102a63c784b856f20395eb9fd",
+        "git_blob_sha256": "f6c190f5a76885742ea684af4ea08c76235841b102a63c784b856f20395eb9fd",
+        "byte_equal_to_git_blob": true,
+        "text_line_endings_only": false
+      },
+      "fantasycard.config.sha256": {
+        "archived_raw_sha256": "3530d03ec2c5511008352c35f17e1a48c3cc2df58be9a52f70faa15f94325c10",
+        "git_blob_sha256": "f9ce9ccdac3980bfff14d1549b50980e15cbd6d91168ce1db1bda5602f7a6f72",
+        "byte_equal_to_git_blob": false,
+        "text_line_endings_only": true
+      },
+      "fantasycard.config.version.txt": {
+        "archived_raw_sha256": "2eb231ff23ebfd568bb9d0ae631c1ddf7bb69aaaa54cd2daf99b995c7245055f",
+        "git_blob_sha256": "1e51d01916e523e3614941dbddfad7b623098dd744d0a72d11aa8fd2a152a299",
+        "byte_equal_to_git_blob": false,
+        "text_line_endings_only": true
+      }
+    },
+    "production_activated": false
+  },
+  "workbook_preservation": {
+    "before_sha256": "8bfc407fdd146888ed32dbed2559a94a9f673eb10108ddd95e9e35f0268ec923",
+    "after_sha256": "83a72df582be97876a8f899bf7003f37c3c13b90f8111cc9b55ef9719b8b1c48",
+    "original_sheets_preserved": 27,
+    "old_nonformula_cells_verified": 18128,
+    "old_style_cells_verified": 18984,
+    "old_formulas_preserved": 8,
+    "native_tables_preserved": 2,
+    "added_cells": "SeasonRedRules!I1:I6 only",
+    "production_activated": false
+  },
+  "domain_targeted_union_passed": 614,
+  "domain_union_not_one_physical_run": true,
+  "domain_original_full_passed": 610,
+  "domain_original_full_failed": 1,
+  "domain_final_focused_passed": 20,
+  "server_targeted_union_passed": 257,
+  "server_union_not_one_physical_run": true,
+  "server_latest_non_database_passed": 248,
+  "database_union_passed": 9,
+  "database_original_passed": 7,
+  "database_original_failed": 1,
+  "native_targeted_union_checks": 238,
+  "native_gameplay_and_controller_checks": 224,
+  "native_final_changed_UI_controller_checks": 11,
+  "interoperability_Godot_checks": 14,
+  "interoperability_server_frames": 3,
+  "interoperability_Godot_commands": 1,
+  "interoperability_is_offline_not_live_network": true,
+  "ui": {
+    "unique_final_frames": 231,
+    "raw_frames_including_rejected": 396,
+    "final_checks_passed": 5973,
+    "locales": 11,
+    "widths": [
+      960,
+      1280,
+      1920
+    ],
+    "runs": {
+      "red-ui-a-r1": {
+        "frames": 66,
+        "checks": 1002,
+        "failed": 36,
+        "layout_errors": 0,
+        "final": false,
+        "native_exit": 1
+      },
+      "red-ui-a-r2": {
+        "frames": 99,
+        "checks": 1746,
+        "failed": 6,
+        "layout_errors": 0,
+        "final": false,
+        "native_exit": 1
+      },
+      "red-ui-a-r3": {
+        "frames": 99,
+        "checks": 1746,
+        "failed": 0,
+        "layout_errors": 0,
+        "final": true,
+        "native_exit": 0
+      },
+      "red-ui-b-r1": {
+        "frames": 66,
+        "checks": 1899,
+        "failed": 0,
+        "layout_errors": 0,
+        "final": true,
+        "native_exit": 0
+      },
+      "red-ui-c-r1": {
+        "frames": 66,
+        "checks": 2328,
+        "failed": 0,
+        "layout_errors": 0,
+        "final": true,
+        "native_exit": 0
+      }
+    },
+    "private_desktop_only": true,
+    "manual_representatives_reviewed": [
+      "zh-CN960 pending",
+      "zh-CN1920 pending and confirm",
+      "ru960 pending and confirm",
+      "ar1280 pending bottom",
+      "ar960 confirm bottom",
+      "hi960 replacement list bottom"
+    ],
+    "whole_project_E02_complete": false
+  },
+  "runtime_delta_after_original_database_batch": [
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+    "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs"
+  ],
+  "delta_verification": "Final20 Domain controls cover real duel/resume/death red custody; current248 server controls cover all affected Rooms/Realtime/Config; final original-mint database case includes real disconnect death and original-item RelicPile settlement. Other seven original database controls plus populated-upgrade case have unchanged mint/quota/migration runtime inputs.",
+  "source_semantics": [
+    "Only new candidate7 seasonal rooms enable the policy; actual candidate6 original bundle remains archived",
+    "D2+ core Boss:independent40/10000 roll; D0/D1 and ordinary choice never mint red; chest disabled and activity does not create red in current enabled rules",
+    "Logical economy binding and scope/week primary key shared by Boss/ShopChest/Activity primitive; no season/process/channel key and no rollover",
+    "Monday04:00 Shanghai; source season expiry closes a new pending mint; original attempts replay unchanged across weeks",
+    "Pending roll and property seed are checkpointed; attempt advisory lock and one PostgreSQL transaction claim quota, create original item, record delivery hold",
+    "Real red item holds original ID and attributes before temporary bag; full bag remains pending until explicit replacement and confirmation",
+    "Independent pending red may pause for PVP; battle actions remain available, victory restores original choice; disconnect death moves the original into relic custody",
+    "No refund for death, transfer or recycle; real original-mint database death settlement preserves RedBoss/mint/source fields",
+    "Actor awaits authoritative persistence before ACK; recovery after item transaction but before delivery resolves the original attempt without another mint",
+    "Future disabled chest/activity channels are not claimed as live enabled-route tests; their shared quota primitive is tested and their later features remain separate C12-C16 gates"
+  ],
+  "retained_failures": [
+    {
+      "run": "local-red-build-r1",
+      "reason": "Configuration accessor and analyzer corrections; no tests counted passed"
+    },
+    {
+      "run": "local-red-build-r2",
+      "reason": "New actor tests lacked explicit xUnit cancellation tokens; originals retained"
+    },
+    {
+      "run": "local-red-domain-r1",
+      "reason": "New test Json options allocation and indexed First analyzer errors; test-only corrections"
+    },
+    {
+      "run": "local-red-domain-r3",
+      "passed": 610,
+      "failed": 1,
+      "reason": "Embedded config contract still expected candidate6; explicit version7 assertion corrected; no runtime rule loosened"
+    },
+    {
+      "run": "local-red-postgres-r1",
+      "passed": 7,
+      "failed": 1,
+      "reason": "New custody fixture used unsupported Destroyed location at the final recycle control; existing Recycled location used, unchanged database check retained; corrected source then extended through actual death/RelicPile settlement"
+    },
+    {
+      "run": "red-ui-a-r1",
+      "failed_checks": 36,
+      "reason": "Fixed-height red detail text clipped, and Russian button too long; originals retained"
+    },
+    {
+      "run": "red-ui-a-r2",
+      "failed_checks": 6,
+      "reason": "Scrolling detail fixed clipping; Russian inherited full-bag button still too long; all eleven locales received a short dedicated label"
+    },
+    {
+      "run": "local-red-server-r4",
+      "reason": "New projection test constant array violated CA1861; static readonly expected actions corrected"
+    }
+  ],
+  "resource_protection": {
+    "local_reserve_GiB": 6,
+    "local_startup_GiB": 1,
+    "local_admission_samples": 3,
+    "cloud_RAM_floor_MiB": 500,
+    "cloud_disk_floor_GiB": 3,
+    "cloud_disk_fraction": 0.05,
+    "cloud_SDK_started": false,
+    "own_SSH_tunnels_exited_normally": 3,
+    "other_project_processes_modified": false
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "season_activated": false,
+  "capacity_retested": false,
+  "complete_gameplay_routes_added": 0,
+  "B05_routes_used": 291,
+  "B05_routes_remaining": 9,
+  "remaining": [
+    "C12-C16 market/shop/activity/progression/theme",
+    "Remaining A/D/E/F including full population/season rollover and final integration/deployment/restart"
+  ],
+  "controlled_database_Boss_fixtures_including_retries": 7,
+  "route_accounting_note": "Raw local helper new_game_matches=0 denotes zero complete acceptance/gameplay routes; seven controlled Boss/preparation/match fixtures were created across the three database runs. They are not zero combat operations and not capacity evidence."
+}

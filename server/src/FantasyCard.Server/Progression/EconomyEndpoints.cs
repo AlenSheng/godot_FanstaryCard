@@ -4,6 +4,7 @@ using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Realtime;
+using FantasyCard.Server.Rooms;
 
 namespace FantasyCard.Server.Progression;
 
@@ -13,6 +14,8 @@ public static class EconomyEndpoints
     {
         services.AddSingleton<EconomyRepository>();
         services.AddSingleton<RedEquipmentQuotaRepository>();
+        services.AddSingleton<SeasonRedMintRepository>();
+        services.AddSingleton<SeasonRedDropCoordinator>();
         services.AddHostedService<RewardRefreshRecoveryWorker>();
         services.AddSingleton<EconomyReconciliationRepository>();
         services.AddHostedService<EconomyMaintenanceWorker>();

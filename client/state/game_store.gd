@@ -1557,6 +1557,8 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 		# A shared room revision can advance while our old reward is still visible.
 		# The success event has no revision; wait until its unique option is gone.
 		var option_id := str(pending.get("payload", {}).get("option_id", ""))
+		var red: Variant=snapshot.get("player",{}).get("pending_red_item")
+		if red is Dictionary and option_id=="red:"+str(red.get("item_id","")): return false
 		if not option_id.is_empty() and snapshot.get("reward_choice", {}).get("options", []).any(func(option): return str(option.get("option_id", "")) == option_id): return false
 	return true
 
@@ -1860,6 +1862,8 @@ func _intent_valid(action: String, payload: Dictionary) -> bool:
 	if action == "battle.select_target":
 		return payload.get("battle_id") == room.get("pve", {}).get("battle_id", "") and target_alive(payload.get("target_id", ""))
 	if action == "reward.choice.claim":
+		var red: Variant=room.get("player",{}).get("pending_red_item")
+		if red is Dictionary and payload.get("option_id")=="red:"+str(red.get("item_id","")): return true
 		return room.get("reward_choice", {}).get("options", []).any(func(option): return option.option_id == payload.get("option_id"))
 	return true
 

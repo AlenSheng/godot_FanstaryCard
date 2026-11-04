@@ -76,6 +76,9 @@ public sealed class RoomPlayerState
     public string? BorrowedTemplateId { get; }
     public string? LootPreferenceElement { get; }
     public BotVictoryRewardReceipt? BotVictoryReward { get; internal set; }
+    public RedDropEvaluation? PendingRedEvaluation { get; internal set; }
+    public RedDropReceipt? RedReward { get; internal set; }
+    public ExplorationItem? PendingRedItem { get; internal set; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
@@ -109,7 +112,7 @@ public sealed class RoomPlayerState
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
-            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward);
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem);
 }
 
 public sealed class DuelState
@@ -315,6 +318,7 @@ public sealed partial class BattleRoom
         _botRandom = new CombatRandom(_legacyRandom.Next());
         _duelRandom = new CombatRandom(_legacyRandom.Next());
         _botRewardRandom = new CombatRandom(unchecked(seed ^ 0x42525744));
+        _redRandom=new CombatRandom(unchecked(seed ^ 0x52454431));
     }
 
     public Guid RoomId { get; }
@@ -503,6 +507,7 @@ public sealed partial class BattleRoom
         }
         if (expectedRevision > Revision)
             throw new DomainValidationException($"Room revision conflict. Expected {expectedRevision}, current {Revision}.");
+        RequireRedChoiceResolved(player);
         var choice = player.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
         if (player.Phase != RoomPlayerPhase.Choice)
             throw new DomainValidationException("Rewards can only be refreshed during the choice phase.");
@@ -523,6 +528,12 @@ public sealed partial class BattleRoom
     public int ClaimReward(Guid playerId, string optionId, string? replaceItemId = null, bool equip = false)
     {
         var player = GetPlayer(playerId);
+        if(player.PendingRedItem is { } pendingRed && optionId=="red:"+pendingRed.ItemId)
+        {
+            if(equip)throw new DomainValidationException("Pending independent red must enter the real backpack before equipping.");
+            ClaimPendingRed(playerId,replaceItemId);return 1;
+        }
+        RequireRedChoiceResolved(player);
         if (player.Phase != RoomPlayerPhase.Choice || player.RewardChoice is null)
             throw new DomainValidationException("The player has no pending reward choice.");
         var option = player.RewardChoice.Get(optionId);
@@ -574,7 +585,7 @@ public sealed partial class BattleRoom
                 _lootRandom.State,
                 _escapeRandom.State,
                 _botRandom.State,
-                _duelRandom.State,BotRewardPolicy is null ? null : _botRewardRandom.State), Numerics, Season);
+                _duelRandom.State,BotRewardPolicy is null ? null : _botRewardRandom.State,RedPolicy is null?null:_redRandom.State), Numerics, Season);
 
     public static BattleRoom Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, int seed)
     {
@@ -634,6 +645,9 @@ public sealed partial class BattleRoom
                 player.MonsterPool.Restore(pool, player.Combat.Deck, room.Numerics.MonsterCapacity);
             player.BotLoot = playerSnapshot.BotLoot ?? [];
             player.BotVictoryReward=playerSnapshot.BotVictoryReward;
+            player.PendingRedEvaluation=playerSnapshot.PendingRedEvaluation;
+            player.RedReward=playerSnapshot.RedReward;
+            player.PendingRedItem=playerSnapshot.PendingRedItem;
             if (room.Numerics.BudgetedBotLoot && player.IsBot)
                 BotLootRules.Validate(player.BotLoot, room.Numerics.BotLootCount);
             player.Pve = playerSnapshot.Pve is null ? null : PveBattleState.Rehydrate(playerSnapshot.Pve);
@@ -730,6 +744,7 @@ public sealed partial class BattleRoom
             room._useLegacyRandom = true;
         }
         room.ValidateBotRewardState(snapshot.RandomStreams);
+        room.ValidateRedState(snapshot.RandomStreams);
         if(room.Season is not null && catalog.UsesPublishedConfiguration)
         {
             var items=room._players.Values.SelectMany(player=>player.Inventory.Items.Concat(player.WornArmor).Concat(player.RecycledEquipment).Concat(player.BotLoot))
@@ -1124,7 +1139,7 @@ public sealed partial class BattleRoom
             var pve = attacker.Pve!;
             pve.RefreshPhase();
             battleEnded = pve.IsCleared;
-            if (battleEnded) OpenRewardChoice(attacker);
+            if (battleEnded) OpenRewardChoice(attacker,now);
             if (!battleEnded) Revision++;
         }
 
@@ -1179,7 +1194,7 @@ public sealed partial class BattleRoom
         }
     }
 
-    private void OpenRewardChoice(RoomPlayerState player)
+    private void OpenRewardChoice(RoomPlayerState player,DateTimeOffset now)
     {
         if (player.Position is not { } position || Map is null)
             throw new DomainValidationException("A cleared PVE battle must have a map position.");
@@ -1187,6 +1202,7 @@ public sealed partial class BattleRoom
         {
             player.Pve!.RefreshPhase();player.ClearedCells.Add(position);player.Phase=RoomPlayerPhase.ActionBar;Revision++;return;
         }
+        var alreadyCleared=player.ClearedCells.Contains(position);
         AddPveVictoryDrops(player, Map.GetCell(position));
         player.Pve!.RefreshPhase();
         var cell = Map.GetCell(position);
@@ -1197,6 +1213,7 @@ public sealed partial class BattleRoom
                 SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items),player.LootPreferenceElement) : null);
         if (Season is not null && _catalog.UsesPublishedConfiguration && _catalog.Configuration.SeasonCrafting is not null)
             player.ClearedCells.Add(position);
+        QueueBossRed(player,cell,alreadyCleared,now);
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
     }
@@ -1492,7 +1509,7 @@ public sealed partial class BattleRoom
             monster.TakeDamage(int.MaxValue);
             AddMonsterCard(player, monster);
         }
-        OpenRewardChoice(player);
+        OpenRewardChoice(player,now);
         return true;
     }
 
@@ -1649,6 +1666,7 @@ public sealed partial class BattleRoom
                 pile.Add(item with { IsSafe = false });
             player.Inventory.TryRemove(item.ItemId, out _);
         }
+        if(player.PendingRedItem is { } pendingRed){pile.Add(pendingRed);player.PendingRedItem=null;RedStateNeedsPersistence=true;}
         foreach (var armor in player.IsBot && Numerics.BudgetedBotLoot && BotRewardPolicy is null ? player.BotLoot : player.WornArmor)
             if(!armor.IsCombatProjection)pile.Add(armor);
         player.WornArmor = [];

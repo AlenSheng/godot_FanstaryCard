@@ -104,7 +104,8 @@ public sealed record RoomPlayerPayload(
     RoomMonsterPoolPayload? MonsterPool = null,
     RoomNumericalStatePayload? NumericalState = null,
     RoomCombatActionStatePayload? CombatAction = null,
-    string? BorrowedTemplateId = null);
+    string? BorrowedTemplateId = null,
+    bool RedEvaluationPending=false,RoomInventoryItemPayload? PendingRedItem=null);
 public sealed record RoomCombatActionStatePayload(long NextSequence, long RemainingMs);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,

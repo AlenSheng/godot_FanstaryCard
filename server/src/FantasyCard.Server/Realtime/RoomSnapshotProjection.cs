@@ -78,7 +78,7 @@ internal static class RoomSnapshotProjection
                 snapshot.Season is null ? null : new RoomCombatActionStatePayload(
                     player.LastCombatActionSequence == long.MaxValue ? 0 : player.LastCombatActionSequence + 1,
                     player.LastSuccessfulCombatAt is { } last ? Math.Clamp((long)Math.Ceiling((last + TimeSpan.FromMilliseconds(500) - snapshot.Elapsed).TotalMilliseconds), 0, 500) : 0),
-                player.BorrowedTemplateId),
+                player.BorrowedTemplateId,player.PendingRedEvaluation is not null,player.PendingRedItem is null?null:ToInventoryItem(player.PendingRedItem)),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,
@@ -99,7 +99,8 @@ internal static class RoomSnapshotProjection
         long? springRemaining,
         DateTimeOffset now)
     {
-        if (extractionRemaining is not null || springRemaining is not null) return [];
+        if (extractionRemaining is not null || springRemaining is not null || player.PendingRedEvaluation is not null) return [];
+        if(player.Phase==RoomPlayerPhase.Choice && player.PendingRedItem is not null)return ["choice.read","choice.pick"];
         var actions = player.Phase switch
         {
             RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active => BuildPveActions(player),

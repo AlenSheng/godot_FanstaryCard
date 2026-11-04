@@ -4,6 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
+const RED_SCENARIOS := ["c11_waiting","c11_pending","c11_pending_bottom","c11_replace","c11_replace_bottom","c11_confirm","c11_confirm_bottom"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -72,7 +73,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -199,6 +200,40 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c11_"):
+		Game.room=_room_fixture()
+		Game.room.config_version=Game.CATALOG.data.version
+		Game.room["season"]={"season_id":"review","difficulty_id":"D2","ruleset_id":"season-v1","config_version":Game.CATALOG.data.version,"stats_version":"season-equipment-v1"}
+		Game.room.player.phase="Choice"
+		Game.room.player.equipped_items=[]
+		Game.room.player.erase("monster_pool")
+		Game.room.allowed_actions=["choice.read","choice.pick"]
+		Game.room.player["red_evaluation_pending"]=scenario=="c11_waiting"
+		if scenario!="c11_waiting":
+			var item := _c05_item("reserved-red","Head",true,"Inferno")
+			item.equipment.level=0
+			Game.room.player["pending_red_item"]=item
+		await _render_base()
+		if scenario.begins_with("c11_replace") or scenario.begins_with("c11_confirm"):
+			$UI.set_meta("red_reward_stage","confirm" if scenario.begins_with("c11_confirm") else "replace")
+			$UI.set_meta("red_reward_replacement",str(Game.room.player.inventory[0].item_id))
+			await _render_base()
+		if scenario.ends_with("_bottom"):
+			for child in $UI._reference.get_children():
+				if child is ScrollContainer:
+					child.set_deferred("scroll_vertical",100000)
+			await get_tree().process_frame
+			await get_tree().process_frame
+			for child in $UI._reference.get_children():
+				if child is ScrollContainer:
+					var bar: VScrollBar=child.get_v_scroll_bar()
+					review_checks[locale+"_"+str(get_window().size.x)+"_"+scenario+": bottom accessible "+str(child.name)]=is_equal_approx(bar.value,maxf(0,bar.max_value-bar.page))
+		var frame: Control=$UI._reference.get_node("RedRewardPanel")
+		for child in $UI._reference.get_children():
+			if child is Control and child!=frame:
+				if child is Label and child.text.is_empty(): continue
+				review_checks[locale+"_"+str(get_window().size.x)+"_"+scenario+": content inside decorated panel "+str(child.name)]=frame.get_rect().grow(-16).encloses(child.get_rect())
+		return false
 	if scenario.begins_with("c09_"):
 		await _prepare_equipment_scene("c05_prep")
 		Game.season_loot_preference()

@@ -169,6 +169,7 @@ public sealed class GameConfigCatalog
     public SeasonCraftingConfig? SeasonCrafting { get; private init; }
     public SeasonLootPreferenceConfig? SeasonLootPreference { get; private init; }
     public SeasonBotRewardConfig? SeasonBotRewards { get; private init; }
+    public SeasonRedConfig? SeasonRed { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -318,7 +319,17 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle) };
+    }
+
+    private static SeasonRedConfig? ReadSeasonRed(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonRedRules");
+        if(table is null || table.Rows.Count!=1 || !table.OptionalBool(table.Rows[0],"enabled"))return null;
+        var row=table.Rows[0];var policy=new SeasonRedConfig(table.Text(row,"rule_id"),table.Int(row,"weekly_quota"),table.Int(row,"min_difficulty"),
+            checked((int)((decimal)table.Double(row,"boss_chance")*10000)),table.Bool(row,"chest_enabled"),
+            checked((int)((decimal)table.Double(row,"chest_chance")*10000)),table.Text(row,"timezone"),table.Int(row,"week_start_hour"));
+        policy.Validate();return policy;
     }
 
     private static SeasonBotRewardConfig? ReadSeasonBotRewards(ConfigBundle bundle)
@@ -611,6 +622,7 @@ internal sealed class ConfigTable(string name, IReadOnlyList<string> columns, IR
         ? checked((int)(long)(row[index] ?? 0L)) : 0;
     public int Int(object?[] row, string name) => checked((int)(long)(row[_indexes[name]] ?? 0L));
     public double Double(object?[] row, string name) => row[_indexes[name]] is double value ? value : 0;
+    public bool OptionalBool(object?[] row,string name) => _indexes.TryGetValue(name,out var index) && row[index] is true;
     public bool Bool(object?[] row, string name) => row[_indexes[name]] is true;
 }
 

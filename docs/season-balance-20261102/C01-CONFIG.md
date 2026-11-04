@@ -8,7 +8,7 @@ C01 保持进行中。本批把源包七份五行元数据 CSV 的 72 条数据�
 | SeasonLoot | 24 | 六档 × 外/中/精英/Boss，品质概率和最终/升档帽 |
 | SeasonEquipment | 5 | 白至橙属性步长、+1 至 +5 费用；红装扩展待 C05/C06 |
 | SeasonProgression | 30 | 42 日基准逐级经验，周期缩放与契约待 C15 |
-| SeasonRedRules | 1 | 服务端独立周配额参数；原子铸造和全渠道接入待 C11 |
+| SeasonRedRules | 1 | 服务端独立周配额参数；候选7启用开关及C11原子铸造/共享额度已验收，后续活动仍归C14 |
 | SeasonMarketRules | 2 | 服务端双币税费、共用栏位、期限、价格帽；交易接入待 C12 |
 | SeasonActivityExchange | 4 | 服务端徽记兑换；活动实例和共享预算待 C14 |
 

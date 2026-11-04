@@ -28,6 +28,8 @@ static func build(ui: Control, host: Control) -> void:
 		_battle(ui, host, state)
 	elif phase in ["Extracted", "Dead"]:
 		_settlement_pending(ui, phase)
+	elif bool(state.get("player",{}).get("red_evaluation_pending",false)) or state.get("player",{}).get("pending_red_item") is Dictionary:
+		preload("res://ui/red_reward_view.gd").build(ui,host,state.get("player",{}))
 	elif state.has("reward_choice"):
 		_rewards(ui, host, state.reward_choice)
 	elif host.get_meta("inventory_open", false) and phase == "ActionBar":

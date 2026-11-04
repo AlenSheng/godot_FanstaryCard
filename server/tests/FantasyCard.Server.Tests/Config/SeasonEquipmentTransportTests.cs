@@ -15,6 +15,34 @@ namespace FantasyCard.Server.Tests.Config;
 
 public sealed class SeasonEquipmentTransportTests
 {
+    private static readonly string[] RedChoiceActions=["choice.read","choice.pick"];
+    [Theory]
+    [InlineData(RoomPlayerPhase.Choice)] [InlineData(RoomPlayerPhase.Pvp)]
+    [InlineData(RoomPlayerPhase.Dead)] [InlineData(RoomPlayerPhase.Extracted)]
+    public void PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(RoomPlayerPhase phase)
+    {
+        var config=GameConfigCatalog.Current;var id=Guid.NewGuid();var peer=Guid.NewGuid();
+        var room=new BattleRoom(Guid.NewGuid(),config.Version,CombatCardCatalog.Create(config),73,
+            season:new("red-projection",2,"season-v1",config.Version,"season-equipment-v1"));
+        foreach(var player in new[]{id,peer})room.AddPlayer(new(player,HeroClass.Mage,Enumerable.Range(1,20).Select(value=>$"C{value:D2}").ToArray(),null));
+        room.InitializeMap(ChaosMapGenerator.Generate(73,2));room.StartDuel(id,peer,DateTimeOffset.UnixEpoch);
+        var state=new GetRoomClientStateCommand(id).Execute(room);
+        var item=new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,
+            Equipment:SeasonRedConfig.Equipment(73,"season-equipment-v1","Fire",config.SeasonLootPreference),IsGenerated:false);
+        // A projection-only control: actual mint/custody is covered by the
+        // independent Domain and PostgreSQL tests, not by this authored snapshot.
+        state=state with {Snapshot=state.Snapshot with {Players=state.Snapshot.Players.Select(value=>value.PlayerId==id
+            ?value with {Phase=phase,PendingRedItem=item}:value).ToArray()}};
+        var payload=RoomSnapshotProjection.Build(state,id,Guid.NewGuid(),DateTimeOffset.UnixEpoch);
+        Assert.NotNull(payload.Player.PendingRedItem);
+        if(phase==RoomPlayerPhase.Pvp)
+        {
+            Assert.Contains("battle.play_cards",payload.AllowedActions);Assert.DoesNotContain("choice.pick",payload.AllowedActions);
+        }
+        else if(phase==RoomPlayerPhase.Choice)Assert.Equal(RedChoiceActions,payload.AllowedActions);
+        else Assert.Empty(payload.AllowedActions);
+    }
+
     [Fact]
     public void HttpEquipmentAndPreparationKeepUniqueAffixAndOriginalStatsVersion()
     {

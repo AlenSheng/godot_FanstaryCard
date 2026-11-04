@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="459a7b37-9380-4874-adfc-cca1f69896a5" name="shengjiahao@YK-SHENGJIAHAO 2026-11-04 18:06:27" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-04T18:06:27.3902901+08:00" queuing="2026-11-04T18:06:27.3902904+08:00" start="2026-11-04T18:02:58.8382535+08:00" finish="2026-11-04T18:23:33.8604781+08:00" />
+  <TestSettings name="default" id="41205dde-6b76-4b39-8588-03a7a559c539">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-04_18_06_27" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="8f448487-48be-47d7-b466-3029553b9e89" testId="8c4c8f83-ea1d-7589-04eb-693044b6e95e" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.EveryChannelSharesTheDurableEconomyBindingAndMondayFourAmBoundary" computerName="YK-SHENGJIAHAO" duration="00:01:06.0964589" startTime="2026-11-04T18:20:25.1576063+08:00" endTime="2026-11-04T18:21:31.2546040+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8f448487-48be-47d7-b466-3029553b9e89" />
+    <UnitTestResult executionId="d7f33539-6872-4d27-8e49-20399773766d" testId="9de03781-1dce-1863-fe41-b78ec2ce6f13" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.FailureAfterQuotaAndItemInsertRollsBackEverythingAndRetryUsesTheOriginalSeed" computerName="YK-SHENGJIAHAO" duration="00:03:26.4581439" startTime="2026-11-04T18:03:00.8853901+08:00" endTime="2026-11-04T18:06:27.3582589+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7f33539-6872-4d27-8e49-20399773766d" />
+    <UnitTestResult executionId="7425ae31-a2ac-4703-97cb-d1262ea25bfa" testId="f02ac64c-8ebc-2eac-7748-c65a01ee2644" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Exhausted&quot;)" computerName="YK-SHENGJIAHAO" duration="00:03:27.6905875" startTime="2026-11-04T18:13:33.4973963+08:00" endTime="2026-11-04T18:17:01.1896270+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7425ae31-a2ac-4703-97cb-d1262ea25bfa" />
+    <UnitTestResult executionId="d8e230cc-ebea-4ed8-b937-cfbae9ce809f" testId="c8efb2f7-0f13-64fc-17e5-2662a4cdee61" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" computerName="YK-SHENGJIAHAO" duration="00:03:39.6055108" startTime="2026-11-04T18:06:27.3708886+08:00" endTime="2026-11-04T18:10:07.0040497+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d8e230cc-ebea-4ed8-b937-cfbae9ce809f">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "equipments_location_check"&#xD;
+&#xD;
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)&#xD;
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56&#xD;
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 51&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 55&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ccf21e04-3b4e-43ce-a095-9df78265c321" testId="9639374f-3793-48e6-5c79-387ccf8afbb0" testName="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week" computerName="YK-SHENGJIAHAO" duration="00:01:04.8006259" startTime="2026-11-04T18:21:31.2662128+08:00" endTime="2026-11-04T18:22:36.0675375+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ccf21e04-3b4e-43ce-a095-9df78265c321" />
+    <UnitTestResult executionId="251e85d2-237b-443b-8056-7dbd316e2f2f" testId="1e56a242-96b0-cb96-f17d-0b6716310f72" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Closed&quot;)" computerName="YK-SHENGJIAHAO" duration="00:03:23.9653279" startTime="2026-11-04T18:17:01.1900188+08:00" endTime="2026-11-04T18:20:25.1570359+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="251e85d2-237b-443b-8056-7dbd316e2f2f" />
+    <UnitTestResult executionId="2b019dcf-5ffc-4d02-bd65-c3d51b2a152f" testId="c02afc9f-ee24-2cad-3155-a9922eccaf86" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Miss&quot;)" computerName="YK-SHENGJIAHAO" duration="00:03:26.4853405" startTime="2026-11-04T18:10:07.0080987+08:00" endTime="2026-11-04T18:13:33.4951766+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b019dcf-5ffc-4d02-bd65-c3d51b2a152f" />
+    <UnitTestResult executionId="a08730de-4500-4f7d-978e-c28a4745dbd5" testId="00a38c76-0d54-7c79-149d-79b6640bd7b4" testName="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot" computerName="YK-SHENGJIAHAO" duration="00:00:57.7140153" startTime="2026-11-04T18:22:36.0680943+08:00" endTime="2026-11-04T18:23:33.7827787+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a08730de-4500-4f7d-978e-c28a4745dbd5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Exhausted&quot;)" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="f02ac64c-8ebc-2eac-7748-c65a01ee2644">
+      <Execution id="7425ae31-a2ac-4703-97cb-d1262ea25bfa" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.EveryChannelSharesTheDurableEconomyBindingAndMondayFourAmBoundary" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="8c4c8f83-ea1d-7589-04eb-693044b6e95e">
+      <Execution id="8f448487-48be-47d7-b466-3029553b9e89" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="EveryChannelSharesTheDurableEconomyBindingAndMondayFourAmBoundary" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.Concurrent_red_drops_allow_only_one_claim_per_server_week" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="9639374f-3793-48e6-5c79-387ccf8afbb0">
+      <Execution id="ccf21e04-3b4e-43ce-a095-9df78265c321" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests" name="Concurrent_red_drops_allow_only_one_claim_per_server_week" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.FailureAfterQuotaAndItemInsertRollsBackEverythingAndRetryUsesTheOriginalSeed" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="9de03781-1dce-1863-fe41-b78ec2ce6f13">
+      <Execution id="d7f33539-6872-4d27-8e49-20399773766d" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="FailureAfterQuotaAndItemInsertRollsBackEverythingAndRetryUsesTheOriginalSeed" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Closed&quot;)" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="1e56a242-96b0-cb96-f17d-0b6716310f72">
+      <Execution id="251e85d2-237b-443b-8056-7dbd316e2f2f" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult(expected: &quot;Miss&quot;)" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="c02afc9f-ee24-2cad-3155-a9922eccaf86">
+      <Execution id="2b019dcf-5ffc-4d02-bd65-c3d51b2a152f" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="ExpiredSeasonLosingRollAndConsumedWeekRecordAStableNonMintedResult" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests.New_server_week_can_claim_again_and_exposes_audit_snapshot" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="00a38c76-0d54-7c79-149d-79b6640bd7b4">
+      <Execution id="a08730de-4500-4f7d-978e-c28a4745dbd5" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresRedEquipmentQuotaTests" name="New_server_week_can_claim_again_and_exposes_audit_snapshot" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" storage="g:\pr13evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="c8efb2f7-0f13-64fc-17e5-2662a4cdee61">
+      <Execution id="d8e230cc-ebea-4ed8-b937-cfbae9ce809f" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8c4c8f83-ea1d-7589-04eb-693044b6e95e" executionId="8f448487-48be-47d7-b466-3029553b9e89" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9de03781-1dce-1863-fe41-b78ec2ce6f13" executionId="d7f33539-6872-4d27-8e49-20399773766d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f02ac64c-8ebc-2eac-7748-c65a01ee2644" executionId="7425ae31-a2ac-4703-97cb-d1262ea25bfa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c8efb2f7-0f13-64fc-17e5-2662a4cdee61" executionId="d8e230cc-ebea-4ed8-b937-cfbae9ce809f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9639374f-3793-48e6-5c79-387ccf8afbb0" executionId="ccf21e04-3b4e-43ce-a095-9df78265c321" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1e56a242-96b0-cb96-f17d-0b6716310f72" executionId="251e85d2-237b-443b-8056-7dbd316e2f2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c02afc9f-ee24-2cad-3155-a9922eccaf86" executionId="2b019dcf-5ffc-4d02-bd65-c3d51b2a152f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="00a38c76-0d54-7c79-149d-79b6640bd7b4" executionId="a08730de-4500-4f7d-978e-c28a4745dbd5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="8" executed="8" passed="7" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.32]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.11]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.53]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:07:07.62]       Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "equipments_location_check"&#xD;
+[xUnit.net 00:07:07.62]       &#xD;
+[xUnit.net 00:07:07.62]       DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+[xUnit.net 00:07:07.62]       Stack Trace:&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+[xUnit.net 00:07:07.62]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:07:07.62]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)&#xD;
+[xUnit.net 00:07:07.62]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)&#xD;
+[xUnit.net 00:07:07.62]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs(51,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek()&#xD;
+[xUnit.net 00:07:07.62]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs(55,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek()&#xD;
+[xUnit.net 00:07:07.62]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:20:34.40]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-04T18:10:07.0104871+08:00">
+        <Text>[xUnit.net 00:07:07.62]     FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
