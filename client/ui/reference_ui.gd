@@ -1368,76 +1368,7 @@ func _product_art(kind: String, payload: Dictionary) -> Texture2D:
 	return _item(kind)
 
 func _market() -> void:
-	panel(Rect2(28, 135, 1300, 884))
-	panel(Rect2(1344, 135, 546, 884))
-	text(P.localized("buy_or_listings"), Rect2(76, 183, 770, 57), 34, P.GOLD)
-	text(P.localized("ui_market_header"), Rect2(76, 238, 1140, 50), 24, P.MUTED)
-	var scroll := _scroll(Rect2(72, 316, 1210, 635))
-	var list := VBoxContainer.new()
-	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(list)
-	for listing in host.listings:
-		var row := HBoxContainer.new()
-		row.alignment = BoxContainer.ALIGNMENT_CENTER
-		list.add_child(row)
-		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
-		var seasonal: bool = host.EquipmentDetails.stats_version(gear) == "season-equipment-v1"
-		var caption: String = host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable")
-		if seasonal: caption += "\n" + P.localized(host.CraftingModel.sample_status(gear))
-		var name: Button = host._button(row, "" if seasonal else caption, func(): host._show_equipment_details(gear), gear.is_empty())
-		name.tooltip_text = host.EquipmentDetails.description(gear, Game.room_catalog_index()) if not gear.is_empty() else ""
-		name.custom_minimum_size.x = 660
-		if seasonal:
-			var label := Label.new()
-			label.text = caption
-			label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-			label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-			label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			label.add_theme_font_override("font", P.font_for_text(caption, 24))
-			label.add_theme_font_size_override("font_size", 24)
-			name.add_child(label)
-			P.apply_text_direction(label)
-			var fit := func():
-				label.position = Vector2(20, 10)
-				label.size = Vector2(maxf(1, name.size.x - 40), maxf(1, name.size.y - 20))
-				name.custom_minimum_size.y = maxf(92, label.get_line_count() * label.get_theme_font("font").get_height(24) + 20)
-			name.resized.connect(fit)
-			fit.call_deferred()
-		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
-		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):
-			host._button(row, P.localized("remove_listing"), func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
-		else:
-			host._button(row, P.localized("buy"), func(): host._confirm(P.localized("equipment_buy_confirm") % [listing.priceGold, host._equipment_name(gear)], func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or gear.is_empty() or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
-	if list.get_child_count() == 0: text(P.localized("no_listings"), Rect2(356, 453, 730, 100), 32, P.MUTED)
-	text(P.localized("current_listing"), Rect2(1390, 183, 440, 67), 34, P.GOLD)
-	var choices := OptionButton.new()
-	choices.add_item(P.localized("select_stored_equipment"))
-	var items: Array = []
-	for item in host.inventory.get("equipments", []):
-		if item.get("isBound", false) or item.get("location") != "Inventory": continue
-		items.append(item)
-		choices.add_item(host._equipment_name(item))
-		if item.instanceId == host._market_item: choices.selected = items.size()
-	if not items.any(func(item): return item.instanceId == host._market_item): host._market_item = ""
-	choices.item_selected.connect(func(index): host._market_item = items[index - 1].instanceId if index > 0 else ""; host._render())
-	add_child(choices)
-	choices.position = Vector2(1385, 320)
-	choices.size = Vector2(460, 66)
-	text(P.localized("listing_price"), Rect2(1390, 449, 440, 50), 27)
-	var price := SpinBox.new()
-	price.min_value = 1
-	price.max_value = 100000000
-	price.value = host._market_price
-	price.value_changed.connect(func(value): host._market_price = int(value))
-	add_child(price)
-	price.position = Vector2(1385, 515)
-	price.size = Vector2(460, 72)
-	text(P.localized("listing_terms"), Rect2(1390, 643, 455, 121), 25, P.MUTED)
-	button(P.localized("list_item"), Rect2(1400, 868, 435, 88), func():
-		var selected_id: String = host._market_item
-		var price_gold: int = host._market_price
-		host._confirm(P.localized("confirm_listing_price") % price_gold, func(): host._mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": selected_id, "priceGold": price_gold})), Game.busy or host._market_item.is_empty(), ORANGE)
+	preload("res://ui/season_market_view.gd").build(self,host)
 
 func _ready_prompt() -> void:
 	panel(Rect2(520, 245, 880, 600))

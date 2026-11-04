@@ -287,7 +287,14 @@ message ShopPurchaseResponse {
 message CreateMarketListingRequest {
   string equipment_id = 1;
   int64 price_gold = 2;
+  optional string currency = 3;
+  optional int64 price = 4;
+  optional string season_id = 5;
+  optional int64 expected_equipment_version = 6;
 }
+
+message RelistMarketListingRequest { string currency = 1; int64 price = 2; int64 expected_version = 3; optional string season_id = 4; }
+message ClaimMarketReturnRequest { int64 expected_equipment_version = 1; optional string season_id = 2; }
 
 message MarketListingResponse {
   string listing_id = 1;
@@ -299,11 +306,39 @@ message MarketListingResponse {
   string created_at = 7;
   string expires_at = 8;
   EquipmentResponse equipment = 9;
+  optional string currency = 10;
+  optional int64 price = 11;
+  optional string season_id = 12;
+  optional string config_version = 13;
+  optional string season_ends_at = 14;
+  optional int64 fee = 15;
+  optional int64 seller_net = 16;
 }
+
+message MarketCurrencyResponse { string currency = 1; int64 orange_price_cap = 2; int64 red_price_cap = 3; }
+message MarketPolicyResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string config_version = 3;
+  optional string season_ends_at = 4;
+  int32 shared_slots = 5;
+  int32 listing_hours = 6;
+  int32 tax_basis_points = 7;
+  int64 minimum_fee = 8;
+  bool can_trade = 9;
+  WalletResponse wallet = 10;
+  repeated MarketCurrencyResponse currencies = 11;
+}
+message MarketReturnResponse { string return_id = 1; string listing_id = 2; EquipmentResponse equipment = 3; string held_at = 4; bool can_claim = 5; }
+message MarketReturnsResponse { repeated MarketReturnResponse items = 1; optional int32 next_offset = 2; }
 
 message MarketInventoryContextResponse {
   repeated MarketListingResponse listings = 1;
   InventoryResponse inventory = 2;
+  MarketPolicyResponse policy = 3;
+  repeated MarketListingResponse own_listings = 4;
+  repeated MarketReturnResponse returns = 5;
+  optional int32 returns_next_offset = 6;
 }
 
 message EconomyContextResponse {
@@ -315,6 +350,8 @@ message EconomyContextResponse {
 message MarketPurchaseResponse {
   MarketListingResponse listing = 1;
   int64 buyer_gold_after = 2;
+  WalletResponse wallet = 3;
+  optional string season_id = 4;
 }
 
 message WalletResponse {

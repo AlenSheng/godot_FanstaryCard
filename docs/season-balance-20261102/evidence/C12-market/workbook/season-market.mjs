@@ -1,0 +1,25 @@
+import fs from 'node:fs/promises';
+import {fileURLToPath} from 'node:url';
+import {FileBlob,SpreadsheetFile} from '@oai/artifact-tool';
+const repo='C:/Users/SHENGJIAHAO/.codex/worktrees/sync-release-targets/godot_FanstaryCard';
+const output=new URL('outputs/01a1737c-c1cf-7342-92cd-7cea01eded79/dual-market/',import.meta.url);
+await fs.mkdir(output,{recursive:true});
+const before=process.argv.includes('--before');
+const book=await SpreadsheetFile.importXlsx(await FileBlob.load(repo+'/config/FantasyCard_Config.xlsx'));
+const sheet=book.worksheets.getItem('SeasonMarketRules');
+if(!before){
+ sheet.getRange('I1:I7').values=[['enabled'],['bool'],['true'],['server'],['新季双币市场；旧版本保持原路径'],[true],[true]];
+ sheet.getRange('I1:I7').format.font={name:'Microsoft YaHei',size:10,color:'#17324D'};
+ sheet.getRange('I1:I7').format.columnWidth=32;
+ sheet.getRange('I1:I7').format.wrapText=true;
+ sheet.getRange('I1').format={fill:'#1F4E78',font:{name:'Microsoft YaHei',size:10,bold:true,color:'#FFFFFF'},wrapText:true,horizontalAlignment:'center',verticalAlignment:'center'};
+ sheet.getRange('I2:I4').format.fill='#DCEAF7';sheet.getRange('I5').format.fill='#F5E5C3';
+ book.recalculate();
+}
+console.log((await book.inspect({kind:'table',range:'SeasonMarketRules!A1:'+ (before?'H':'I')+'7',maxChars:1800,tableMaxRows:7,tableMaxCols:9})).ndjson);
+const image=await book.render({sheetName:'SeasonMarketRules',range:'A1:'+(before?'H':'I')+'7',scale:1.25,format:'png'});
+await fs.writeFile(new URL(before?'SeasonMarketRules.before.png':'SeasonMarketRules.png',output),new Uint8Array(await image.arrayBuffer()));
+if(!before){
+ console.log((await book.inspect({kind:'match',searchTerm:'#REF!|#DIV/0!|#VALUE!|#NAME\\?|#N/A|#NUM!|#NULL!|#SPILL!|#CALC!',options:{useRegex:true,maxResults:20},maxChars:800})).ndjson);
+ await(await SpreadsheetFile.exportXlsx(book)).save(fileURLToPath(new URL('FantasyCard_Config.xlsx',output)));
+}

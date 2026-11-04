@@ -156,6 +156,8 @@ public sealed class PostgresSeasonRedMintTests
         var previous=new List<string>();string? upgrade=null;
         foreach(var name in resources)
         {
+            var version=int.Parse(name.Split(".Migrations.V",StringSplitOptions.None)[1].AsSpan(0,3),System.Globalization.CultureInfo.InvariantCulture);
+            if(version>42)continue;
             await using var stream=assembly.GetManifestResourceStream(name)!;using var reader=new StreamReader(stream);
             var sql=await reader.ReadToEndAsync(Ct);
             if(name.Contains(".V042__",StringComparison.Ordinal))upgrade=sql;else previous.Add(sql);

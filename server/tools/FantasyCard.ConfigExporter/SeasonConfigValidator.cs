@@ -265,6 +265,11 @@ public static class SeasonConfigValidator
 
     private static void ValidateMarket(ConfigTable table)
     {
+        if(table.Columns.SingleOrDefault(column=>column.Name=="enabled") is { } enabled)
+        {
+            Check(enabled.Type==ConfigValueType.Logical && enabled.Required && enabled.Scope==PublishScope.Server,table,"invalid market enabled metadata");
+            Check(table.Rows.Select(row=>B(table,row,"enabled")).Distinct().Count()==1,table,"both currencies must be enabled together");
+        }
         Check(table.Rows.Count == 2 && table.Rows.Select(r => S(table,r,"currency")).ToHashSet(StringComparer.Ordinal).SetEquals(Currencies), table, "requires separate gold and diamond policies");
         double? slots = null;
         foreach (var row in table.Rows)

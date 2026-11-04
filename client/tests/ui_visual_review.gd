@@ -5,6 +5,7 @@ const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
 const RED_SCENARIOS := ["c11_waiting","c11_pending","c11_pending_bottom","c11_replace","c11_replace_bottom","c11_confirm","c11_confirm_bottom"]
+const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_relist","c12_confirm","c12_returns","c12_error","c12_hall"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -73,7 +74,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -175,6 +176,7 @@ func _reset_fixture() -> void:
 	Game.lobby = _initial_lobby.duplicate(true); Game.hero_class = "Mage"; Game.busy = false
 	Game.configuration_error = ""; Game.connection = ""
 	$UI.screen = "hall"; $UI.screen_loading = false; $UI.mail_modal_lock = false
+	$UI.market_controller.reset()
 	$UI._quality = ""; $UI._search = ""; $UI._codex_card = ""; $UI._codex_ready = true
 	$UI._enhance_item = ""; $UI._enhancement_quote_key = ""; $UI._enhancement_quote = {}
 	$UI._owned_index_ready = false; $UI._owned_by_id.clear()
@@ -200,6 +202,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c12_"):return await _prepare_market_scene(scenario)
 	if scenario.begins_with("c11_"):
 		Game.room=_room_fixture()
 		Game.room.config_version=Game.CATALOG.data.version
@@ -431,6 +434,62 @@ func _c05_gear(id: String, slot: String, red: bool = false, unique: String = "")
 
 func _c05_item(id: String,slot: String,red: bool=false,unique: String="") -> Dictionary:
 	return {"item_id":id,"kind":"Equipment","quantity":1,"slot_index":0,"is_safe":false,"equipment":{"slot":slot,"quality":"Red" if red else "Purple","element":"Fire","effect_affix":"Piercing","secondary_trait":"DrawInterval","level":5,"stats_version":"season-equipment-v1","unique_affix":unique if red else null,"unique_element":"Fire" if red and unique=="Inferno" else null}}
+
+func _market_item_fixture(id: String,quality: String="Orange",slot: String="Head",source: String="NaturalDrop") -> Dictionary:
+	return {"instanceId":id,"slot":slot,"quality":quality,"element":"Fire","effectAffix":"Piercing","secondaryTrait":"DrawInterval","level":0,"version":7,
+		"location":"Inventory","isBound":false,"originSeasonId":"market-review","seasonId":"market-review","assetScope":"ActiveSeason","statsVersion":"season-equipment-v1",
+		"sourceKind":source,"recipeExtracted":source=="TemplateReforge","uniqueAffix":"Inferno" if quality=="Red" else null,"uniqueElement":"Fire" if quality=="Red" else null}
+
+func _market_listing_fixture(id: String,item: Dictionary,currency: String,price: int,owner: bool=false) -> Dictionary:
+	var gear: Dictionary=item.duplicate(true);gear.location="MarketListed"
+	return {"listingId":id,"equipmentId":item.instanceId,"sellerId":Game.lobby.get("player",{}).get("userId") if owner else "other-market-owner",
+		"currency":currency,"price":price,"priceGold":price if currency=="Gold" else 0,"version":9,"status":"Active","createdAt":"2026-11-04T00:00:00Z",
+		"expiresAt":"2099-12-31T00:00:00Z","seasonId":"market-review","seasonEndsAt":"2099-12-31T00:00:00Z","fee":maxi(1,int(price/10.0)),
+		"sellerNet":price-maxi(1,int(price/10.0)),"equipment":gear}
+
+func _prepare_market_scene(scenario: String) -> bool:
+	Game.lobby["season"]={"state":"Active","seasonId":"market-review","hasJoined":true,"configVersion":Game.CATALOG.data.version,"statsVersion":"season-equipment-v1","wallet":{"seasonId":"market-review","gold":120000,"version":7}}
+	Game.lobby.wallet={"gold":120000,"diamond":10000}
+	if scenario=="c12_hall":$UI.screen="hall";return true
+	var controller=$UI.market_controller
+	controller.reset();controller.attach($UI);$UI.screen="market"
+	var red := _market_item_fixture("market-red","Red")
+	var orange := _market_item_fixture("market-orange")
+	var reforged := _market_item_fixture("market-reforge","Purple","Chest","TemplateReforge")
+	var policy := {"state":"Active","seasonId":"market-review","configVersion":Game.CATALOG.data.version,"seasonEndsAt":"2099-12-31T00:00:00Z","canTrade":true,
+		"wallet":Game.lobby.wallet,"sharedSlots":8,"listingHours":48,"taxBasisPoints":1000,"minimumFee":1,
+		"currencies":[{"currency":"Gold","orangePriceCap":99999,"redPriceCap":99999},{"currency":"Diamond","orangePriceCap":2000,"redPriceCap":8000}]}
+	controller.state={"policy":policy,"inventory":{"equipments":[red,orange,reforged],"summary":{"capacity":50,"equipmentCount":3,"freeSlots":47}},
+		"listings":[_market_listing_fixture("market-orange-list",orange,"Gold",99999),_market_listing_fixture("market-red-list",red,"Gold",99999),_market_listing_fixture("market-reforge-list",reforged,"Gold",250)],"ownListings":[],"returns":[]}
+	if scenario in ["c12_diamond","c12_confirm"]:
+		controller.filters.currency="Diamond";controller.state.listings=[_market_listing_fixture("market-orange-diamond",orange,"Diamond",2000),_market_listing_fixture("market-red-diamond",red,"Diamond",8000)]
+	elif scenario=="c12_own":
+		controller.tab="own"
+		for index in 8:
+			var original: Dictionary=(red if index%2==0 else orange).duplicate(true)
+			original.instanceId="own-original-"+str(index)
+			controller.state.ownListings.append(_market_listing_fixture("own-list-"+str(index),original,"Gold" if index%2==0 else "Diamond",99999 if index%2==0 else 2000,true))
+		review_checks[Palette.language()+"_"+str(get_window().size.x)+"_"+scenario+": eight distinct held originals"]=controller.state.ownListings.map(func(row):return row.equipmentId).size()==8 and controller.state.ownListings.all(func(row):return controller.state.ownListings.filter(func(other):return other.equipmentId==row.equipmentId).size()==1)
+	elif scenario in ["c12_sell","c12_relist"]:
+		controller.tab="sell";controller.listing_currency="Diamond";controller.listing_price=2000;controller.selected_item=orange.instanceId
+		if scenario=="c12_relist":
+			controller.relist_target=_market_listing_fixture("relist-original",red,"Gold",99999,true);controller.listing_price=8000
+			controller.state.ownListings=[controller.relist_target.duplicate(true)]
+	elif scenario=="c12_returns":
+		controller.tab="returns"
+		var old: Dictionary=red.duplicate(true);old.seasonId="old-market-season";old.originSeasonId="old-market-season";old.assetScope="ArchivedSeason";old.location="MarketReturnPending"
+		var current: Dictionary=orange.duplicate(true);current.location="MarketReturnPending"
+		controller.state.returns=[{"returnId":"old-return","listingId":"expired-old","equipment":old,"canClaim":false},{"returnId":"current-return","listingId":"cancelled-current","equipment":current,"canClaim":true}]
+		controller.state["returnsNextOffset"]=32
+	elif scenario=="c12_error":controller.state={"error":true}
+	await _render_base()
+	if scenario=="c12_confirm":controller.confirm_buy(controller.state.listings[1]);await get_tree().process_frame
+	if scenario in ["c12_own","c12_returns"]:
+		var scroll: ScrollContainer=$UI._reference.get_node("MarketReturnsScroll" if scenario=="c12_returns" else "MarketListingsScroll")
+		scroll.set_deferred("scroll_vertical",100000)
+		await get_tree().process_frame;await get_tree().process_frame
+		review_checks[Palette.language()+"_"+str(get_window().size.x)+"_"+scenario+": bottom accessible"]=is_equal_approx(scroll.get_v_scroll_bar().value,maxf(0,scroll.get_v_scroll_bar().max_value-scroll.get_v_scroll_bar().page))
+	return false
 
 func _prepare_equipment_scene(scenario: String) -> bool:
 	var armor: Array=[]

@@ -149,6 +149,14 @@
     },
     {
       "method": "GET",
+      "path": "/api/v1/market/returns",
+      "request": "Empty",
+      "response": "MarketReturnsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "GET",
       "path": "/api/v1/matches/tickets/{ticketId:guid}",
       "request": "Empty",
       "response": "MatchTicketResponse",
@@ -312,6 +320,22 @@
       "path": "/api/v1/market/listings",
       "request": "CreateMarketListingRequest",
       "response": "MarketListingResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/market/listings/{listingId:guid}/relist",
+      "request": "RelistMarketListingRequest",
+      "response": "MarketListingResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/market/returns/{returnId:guid}/claim",
+      "request": "ClaimMarketReturnRequest",
+      "response": "EquipmentResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/EconomyEndpoints.cs"
     },

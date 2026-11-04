@@ -72,7 +72,7 @@ public sealed partial class EconomyMaintenanceWorker(
                         report.OrphanMarketListedEquipmentCount,
                         report.SoldListingMismatchCount,
                         report.MarketTransactionAmountMismatchCount,
-                        report.LedgerChainMismatchCount);
+                        report.LedgerChainMismatchCount,report.PendingMarketReturnMismatchCount);
                 }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
@@ -93,7 +93,7 @@ public sealed partial class EconomyMaintenanceWorker(
     [LoggerMessage(
         EventId = 4202,
         Level = LogLevel.Critical,
-        Message = "Economy reconciliation found {Total} violation(s): negativeAccounts={NegativeAccounts}, activeListingAssetMismatches={ActiveListingAssetMismatches}, orphanMarketListedEquipment={OrphanMarketListedEquipment}, soldListingMismatches={SoldListingMismatches}, transactionAmountMismatches={TransactionAmountMismatches}, ledgerChainMismatches={LedgerChainMismatches}.")]
+        Message = "Economy reconciliation found {Total} violation(s): negativeAccounts={NegativeAccounts}, activeListingAssetMismatches={ActiveListingAssetMismatches}, orphanMarketListedEquipment={OrphanMarketListedEquipment}, soldListingMismatches={SoldListingMismatches}, transactionAmountMismatches={TransactionAmountMismatches}, ledgerChainMismatches={LedgerChainMismatches}, pendingMarketReturnMismatches={PendingMarketReturnMismatches}.")]
     private static partial void ReconciliationViolation(
         ILogger logger,
         long total,
@@ -102,7 +102,7 @@ public sealed partial class EconomyMaintenanceWorker(
         long orphanMarketListedEquipment,
         long soldListingMismatches,
         long transactionAmountMismatches,
-        long ledgerChainMismatches);
+        long ledgerChainMismatches,long pendingMarketReturnMismatches);
 }
 
 public sealed record RewardRefreshReservation(string State, RewardRefreshReceiptSnapshot? Receipt);
@@ -116,7 +116,8 @@ public sealed record PersistedRewardRefresh(
 public sealed record PendingRewardRefresh(Guid PlayerId, string RequestId, Guid MatchId, Guid RoomId);
 public sealed record ShopRefreshResult(ShopResponse Shop, bool Replayed);
 
-public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider) : IDisposable
+public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider,
+    FantasyCard.Server.Rooms.PublishedConfigCatalogs? configurations=null) : IDisposable
 {
     private readonly SemaphoreSlim _dailyStateGate = new(1, 1);
     private string? _initializedShopResetKey;
@@ -430,250 +431,6 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
         return new(request.ProductId, request.Quantity, goldAfter, granted);
     }
 
-    public async Task<WalletResponse> GetWalletAsync(Guid playerId, CancellationToken cancellationToken)
-    {
-        await using var command = dataSource.CreateCommand(
-            "SELECT gold,diamond FROM player_wallets WHERE player_id=$1");
-        command.Parameters.AddWithValue(playerId);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        if (!await reader.ReadAsync(cancellationToken))
-            throw new InvalidOperationException("Player wallet was not found.");
-        return new WalletResponse(reader.GetInt64(0), reader.GetInt64(1));
-    }
-
-    public async Task<IReadOnlyList<MarketListingResponse>> GetMarketAsync(CancellationToken cancellationToken, int limit = 200, int offset = 0)
-    {
-        await using var command = dataSource.CreateCommand(
-            """
-            SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
-                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait,e.unique_affix,e.unique_element,e.stats_version
-            FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
-            WHERE l.status='Active' AND l.expires_at > $1 ORDER BY l.created_at DESC,l.listing_id DESC LIMIT $2 OFFSET $3
-            """);
-        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
-        command.Parameters.AddWithValue(limit);
-        command.Parameters.AddWithValue(offset);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        var result = new List<MarketListingResponse>();
-        while (await reader.ReadAsync(cancellationToken))
-            result.Add(ReadListing(reader) with
-            {
-                Equipment = new(reader.GetGuid(2), reader.GetString(8), reader.GetString(9),
-                    reader.GetInt32(10), reader.GetBoolean(11), reader.GetString(12), reader.GetInt64(13),
-                    reader.IsDBNull(14) ? null : reader.GetString(14), reader.IsDBNull(15) ? null : reader.GetString(15),
-                    reader.IsDBNull(16) ? null : reader.GetString(16),
-                    StatsVersion:reader.IsDBNull(19)?null:reader.GetString(19),UniqueAffix:reader.IsDBNull(17)?null:reader.GetString(17),UniqueElement:reader.IsDBNull(18)?null:reader.GetString(18))
-            });
-        return result;
-    }
-
-    public async Task<MarketListingResponse?> GetListingForEventAsync(Guid listingId, CancellationToken cancellationToken)
-    {
-        await using var command = dataSource.CreateCommand(
-            """
-            SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,
-                   e.slot,e.quality,e.level,e.is_bound,e.location,e.version,e.element,e.effect_affix,e.secondary_trait,e.unique_affix,e.unique_element,e.stats_version
-            FROM market_listings l JOIN equipments e ON e.instance_id=l.equipment_id
-            WHERE l.listing_id=$1
-            """);
-        command.Parameters.AddWithValue(listingId);
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        if (!await reader.ReadAsync(cancellationToken)) return null;
-        return ReadListing(reader) with
-        {
-            Equipment = new EquipmentResponse(
-                reader.GetGuid(2), reader.GetString(8), reader.GetString(9), reader.GetInt32(10),
-                reader.GetBoolean(11), reader.GetString(12), reader.GetInt64(13),
-                reader.IsDBNull(14) ? null : reader.GetString(14),
-                reader.IsDBNull(15) ? null : reader.GetString(15),
-                reader.IsDBNull(16) ? null : reader.GetString(16),
-                    StatsVersion:reader.IsDBNull(19)?null:reader.GetString(19),UniqueAffix:reader.IsDBNull(17)?null:reader.GetString(17),UniqueElement:reader.IsDBNull(18)?null:reader.GetString(18))
-        };
-    }
-
-    public async Task<MarketListingResponse> ListAsync(Guid sellerId, string requestId, CreateMarketListingRequest request, CancellationToken cancellationToken)
-    {
-        if (request.PriceGold <= 0) throw new InvalidOperationException("Price must be positive.");
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
-        await LockPlayerAsync(connection, transaction, sellerId, cancellationToken);
-        var requestHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(request)))).ToLowerInvariant();
-        await using (var replay = new NpgsqlCommand("SELECT listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at,request_hash FROM market_listings WHERE seller_id=$1 AND request_id=$2", connection, transaction))
-        {
-            replay.Parameters.AddWithValue(sellerId); replay.Parameters.AddWithValue(requestId);
-            await using var reader = await replay.ExecuteReaderAsync(cancellationToken);
-            if (await reader.ReadAsync(cancellationToken))
-            {
-                if (reader.IsDBNull(8) || reader.GetString(8) != requestHash) throw new IdempotencyConflictException();
-                var replayListing = ReadListing(reader);
-                await reader.DisposeAsync();
-                await transaction.CommitAsync(cancellationToken);
-                return replayListing;
-            }
-        }
-        await using (var count = new NpgsqlCommand("SELECT count(*) FROM market_listings WHERE seller_id=$1 AND status='Active'", connection, transaction))
-        {
-            count.Parameters.AddWithValue(sellerId);
-            if ((long)(await count.ExecuteScalarAsync(cancellationToken) ?? 0) >= GameConfigCatalog.Current.Economy.MarketActiveListings)
-                throw new InvalidOperationException("Market listing limit reached.");
-        }
-        string slot, location; bool bound;
-        await using (var item = new NpgsqlCommand("SELECT slot,location,is_bound FROM equipments WHERE instance_id=$1 AND owner_id=$2 FOR UPDATE", connection, transaction))
-        {
-            item.Parameters.AddWithValue(request.EquipmentId); item.Parameters.AddWithValue(sellerId);
-            await using var reader = await item.ExecuteReaderAsync(cancellationToken);
-            if (!await reader.ReadAsync(cancellationToken)) throw new InvalidOperationException("Equipment was not found.");
-            slot = reader.GetString(0); location = reader.GetString(1); bound = reader.GetBoolean(2);
-        }
-        if (bound || location != "Inventory") throw new InvalidOperationException("Only an unbound inventory equipment can be listed.");
-        var now = timeProvider.GetUtcNow(); var id = Guid.CreateVersion7();
-        var expires = now.AddHours(GameConfigCatalog.Current.Economy.MarketDurationHours);
-        await using (var update = new NpgsqlCommand("UPDATE equipments SET location='MarketListed',version=version+1 WHERE instance_id=$1", connection, transaction))
-        { update.Parameters.AddWithValue(request.EquipmentId); await update.ExecuteNonQueryAsync(cancellationToken); }
-        await using (var insert = new NpgsqlCommand("INSERT INTO market_listings(listing_id,seller_id,equipment_id,price_gold,status,version,request_id,request_hash,created_at,expires_at) VALUES($1,$2,$3,$4,'Active',1,$5,$6,$7,$8)", connection, transaction))
-        { insert.Parameters.AddWithValue(id); insert.Parameters.AddWithValue(sellerId); insert.Parameters.AddWithValue(request.EquipmentId); insert.Parameters.AddWithValue(request.PriceGold); insert.Parameters.AddWithValue(requestId); insert.Parameters.AddWithValue(requestHash); insert.Parameters.AddWithValue(now); insert.Parameters.AddWithValue(expires); await insert.ExecuteNonQueryAsync(cancellationToken); }
-        await WriteInventoryMovementAsync(
-            connection, transaction, sellerId, request.EquipmentId,
-            "Inventory", "MarketListed", "market.listed", cancellationToken, requestId);
-        await transaction.CommitAsync(cancellationToken);
-        return new(id, sellerId, request.EquipmentId, request.PriceGold, "Active", 1, now, expires);
-    }
-
-    public async Task<MarketPurchaseResponse> PurchaseMarketAsync(Guid buyerId, string requestId, Guid listingId, long expectedVersion, CancellationToken cancellationToken)
-    {
-        var requestHash = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{listingId:D}:{expectedVersion}"))).ToLowerInvariant();
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
-        Guid sellerId;
-        await using (var sellerQuery = new NpgsqlCommand(
-            "SELECT seller_id FROM market_listings WHERE listing_id=$1", connection, transaction))
-        {
-            sellerQuery.Parameters.AddWithValue(listingId);
-            sellerId = (Guid)(await sellerQuery.ExecuteScalarAsync(cancellationToken)
-                ?? throw new InvalidOperationException("Listing was not found."));
-        }
-        foreach (var playerId in new[] { buyerId, sellerId }.Distinct().Order())
-            await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
-        await using (var replay = new NpgsqlCommand("SELECT l.listing_id,l.seller_id,l.equipment_id,l.price_gold,l.status,l.version,l.created_at,l.expires_at,t.request_hash FROM market_transactions t JOIN market_listings l ON l.listing_id=t.listing_id WHERE t.buyer_id=$1 AND t.request_id=$2", connection, transaction))
-        {
-            replay.Parameters.AddWithValue(buyerId); replay.Parameters.AddWithValue(requestId);
-            await using var r = await replay.ExecuteReaderAsync(cancellationToken);
-            if (await r.ReadAsync(cancellationToken))
-            {
-                var replayListing = ReadListing(r);
-                if (r.IsDBNull(8) || r.GetString(8) != requestHash) throw new IdempotencyConflictException();
-                await r.DisposeAsync();
-                var replayGold = await CurrentGoldAsync(connection, transaction, buyerId, cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-                return new(replayListing, replayGold);
-            }
-        }
-        MarketListingResponse listing;
-        await using (var query = new NpgsqlCommand("SELECT listing_id,seller_id,equipment_id,price_gold,status,version,created_at,expires_at FROM market_listings WHERE listing_id=$1 FOR UPDATE", connection, transaction))
-        { query.Parameters.AddWithValue(listingId); await using var r = await query.ExecuteReaderAsync(cancellationToken); if (!await r.ReadAsync(cancellationToken)) throw new InvalidOperationException("Listing was not found."); listing = ReadListing(r); }
-        if (listing.Status != "Active" || listing.Version != expectedVersion || listing.ExpiresAt <= timeProvider.GetUtcNow() || listing.SellerId == buyerId) throw new InvalidOperationException("Listing is no longer available.");
-        var buyerGold = await SpendGoldAsync(connection, transaction, buyerId, listing.PriceGold, cancellationToken);
-        var fee = Math.Max(1, decimal.ToInt64(decimal.Floor(
-            listing.PriceGold * Convert.ToDecimal(GameConfigCatalog.Current.Economy.MarketFeeRate))));
-        var net = listing.PriceGold - fee;
-        await using (var seller = new NpgsqlCommand("UPDATE player_wallets SET gold=gold+$1,version=version+1 WHERE player_id=$2", connection, transaction)) { seller.Parameters.AddWithValue(net); seller.Parameters.AddWithValue(sellerId); await seller.ExecuteNonQueryAsync(cancellationToken); }
-        await using (var item = new NpgsqlCommand(
-            "UPDATE equipments SET owner_id=$1,location='Inventory',version=version+1 WHERE instance_id=$2 AND owner_id=$3 AND location='MarketListed'",
-            connection,
-            transaction))
-        {
-            item.Parameters.AddWithValue(buyerId);
-            item.Parameters.AddWithValue(listing.EquipmentId);
-            item.Parameters.AddWithValue(sellerId);
-            if (await item.ExecuteNonQueryAsync(cancellationToken) != 1)
-                throw new InvalidOperationException("The active listing no longer owns its equipment.");
-        }
-        await using (var update = new NpgsqlCommand("UPDATE market_listings SET status='Sold',version=version+1 WHERE listing_id=$1", connection, transaction)) { update.Parameters.AddWithValue(listingId); await update.ExecuteNonQueryAsync(cancellationToken); }
-        await using (var insert = new NpgsqlCommand("INSERT INTO market_transactions(transaction_id,listing_id,buyer_id,seller_id,price_gold,fee_gold,seller_net_gold,request_id,request_hash,completed_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)", connection, transaction)) { insert.Parameters.AddWithValue(Guid.CreateVersion7()); insert.Parameters.AddWithValue(listingId); insert.Parameters.AddWithValue(buyerId); insert.Parameters.AddWithValue(listing.SellerId); insert.Parameters.AddWithValue(listing.PriceGold); insert.Parameters.AddWithValue(fee); insert.Parameters.AddWithValue(net); insert.Parameters.AddWithValue(requestId); insert.Parameters.AddWithValue(requestHash); insert.Parameters.AddWithValue(timeProvider.GetUtcNow()); await insert.ExecuteNonQueryAsync(cancellationToken); }
-        await WriteInventoryMovementAsync(
-            connection, transaction, buyerId, listing.EquipmentId,
-            "MarketListed", "Inventory", "market.purchased", cancellationToken, requestId);
-        await WriteLedgerAsync(connection, transaction, buyerId, -listing.PriceGold, buyerGold, "Gold", "market.purchase", cancellationToken, requestId);
-        await WriteLedgerAsync(connection, transaction, sellerId, net, await CurrentGoldAsync(connection, transaction, sellerId, cancellationToken), "Gold", "market.sale", cancellationToken, requestId);
-        await transaction.CommitAsync(cancellationToken);
-        return new(listing with { Status = "Sold", Version = listing.Version + 1 }, buyerGold);
-    }
-
-    public async Task CancelListingAsync(Guid sellerId, Guid listingId, string requestId, CancellationToken cancellationToken)
-    {
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
-        await LockPlayerAsync(connection, transaction, sellerId, cancellationToken);
-        var now = timeProvider.GetUtcNow();
-        var requestHash = PersistentIdempotency.Hash(new { listingId });
-        var replay = await PersistentIdempotency.ReadAsync<IdempotencyAcknowledgement>(
-            connection, transaction, sellerId, "market.cancel", requestId, requestHash, cancellationToken);
-        if (replay is not null)
-        {
-            await transaction.CommitAsync(cancellationToken);
-            return;
-        }
-        Guid equipmentId;
-        string status;
-        await using (var query = new NpgsqlCommand("SELECT equipment_id,status FROM market_listings WHERE listing_id=$1 AND seller_id=$2 FOR UPDATE", connection, transaction))
-        {
-            query.Parameters.AddWithValue(listingId);
-            query.Parameters.AddWithValue(sellerId);
-            await using var reader = await query.ExecuteReaderAsync(cancellationToken);
-            if (!await reader.ReadAsync(cancellationToken))
-                throw new InvalidOperationException("Listing does not belong to the seller.");
-            equipmentId = reader.GetGuid(0);
-            status = reader.GetString(1);
-        }
-        if (status == "Cancelled")
-        {
-            await PersistentIdempotency.WriteAsync(
-                connection, transaction, sellerId, "market.cancel", requestId, requestHash,
-                new IdempotencyAcknowledgement(), now, cancellationToken);
-            await transaction.CommitAsync(cancellationToken);
-            return;
-        }
-        if (status != "Active") throw new InvalidOperationException("Listing is not active.");
-        await using (var command = new NpgsqlCommand("UPDATE market_listings SET status='Cancelled',version=version+1 WHERE listing_id=$1 AND status='Active'", connection, transaction))
-        {
-            command.Parameters.AddWithValue(listingId);
-            if (await command.ExecuteNonQueryAsync(cancellationToken) != 1)
-                throw new InvalidOperationException("Listing changed while it was being cancelled.");
-        }
-        await using var restore = new NpgsqlCommand("UPDATE equipments SET location='Inventory',version=version+1 WHERE instance_id=$1 AND owner_id=$2 AND location='MarketListed'", connection, transaction);
-        restore.Parameters.AddWithValue(equipmentId);
-        restore.Parameters.AddWithValue(sellerId);
-        if (await restore.ExecuteNonQueryAsync(cancellationToken) != 1)
-            throw new InvalidOperationException("The cancelled listing no longer owns its equipment.");
-        await WriteInventoryMovementAsync(connection, transaction, sellerId, equipmentId, "MarketListed", "Inventory", "market.cancelled", cancellationToken, requestId);
-        await PersistentIdempotency.WriteAsync(
-            connection, transaction, sellerId, "market.cancel", requestId, requestHash,
-            new IdempotencyAcknowledgement(), now, cancellationToken);
-        await transaction.CommitAsync(cancellationToken);
-    }
-
-    public async Task<IReadOnlyList<Guid>> ExpireListingsAsync(CancellationToken cancellationToken)
-    {
-        await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
-        await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
-        await using var command = new NpgsqlCommand("UPDATE market_listings SET status='Expired',version=version+1 WHERE status='Active' AND expires_at <= $1 RETURNING listing_id,equipment_id,seller_id", connection, transaction);
-        command.Parameters.AddWithValue(timeProvider.GetUtcNow());
-        await using var reader = await command.ExecuteReaderAsync(cancellationToken);
-        var expired = new List<(Guid ListingId, Guid EquipmentId, Guid SellerId)>();
-        while (await reader.ReadAsync(cancellationToken)) expired.Add((reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2)));
-        await reader.DisposeAsync();
-        foreach (var item in expired)
-        {
-            await using var restore = new NpgsqlCommand("UPDATE equipments SET location='Inventory',version=version+1 WHERE instance_id=$1 AND owner_id=$2 AND location='MarketListed'", connection, transaction);
-            restore.Parameters.AddWithValue(item.EquipmentId); restore.Parameters.AddWithValue(item.SellerId);
-            if (await restore.ExecuteNonQueryAsync(cancellationToken) != 1)
-                throw new InvalidOperationException("An expired listing no longer owns its equipment.");
-            await WriteInventoryMovementAsync(connection, transaction, item.SellerId, item.EquipmentId, "MarketListed", "Inventory", "market.expired", cancellationToken);
-        }
-        await transaction.CommitAsync(cancellationToken);
-        return expired.Select(item => item.ListingId).ToArray();
-    }
-
     private static async Task<ShopResponse> ReadShopAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction? transaction,
@@ -918,7 +675,6 @@ public sealed class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider 
     { await using var cmd = new NpgsqlCommand("INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8)", c, t); cmd.Parameters.AddWithValue(Guid.CreateVersion7()); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue((object?)requestId ?? DBNull.Value); cmd.Parameters.AddWithValue(currency); cmd.Parameters.AddWithValue(delta); cmd.Parameters.AddWithValue(balance); cmd.Parameters.AddWithValue(reason); cmd.Parameters.AddWithValue(DateTimeOffset.UtcNow); await cmd.ExecuteNonQueryAsync(ct); }
     private static async Task WriteInventoryMovementAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, Guid item, string from, string to, string reason, CancellationToken ct, string? requestId = null)
     { await using var cmd = new NpgsqlCommand("INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,CURRENT_TIMESTAMP)", c, t); cmd.Parameters.AddWithValue(Guid.CreateVersion7()); cmd.Parameters.AddWithValue(player); cmd.Parameters.AddWithValue(item); cmd.Parameters.AddWithValue(from); cmd.Parameters.AddWithValue(to); cmd.Parameters.AddWithValue(reason); cmd.Parameters.AddWithValue((object?)requestId ?? DBNull.Value); await cmd.ExecuteNonQueryAsync(ct); }
-    private static MarketListingResponse ReadListing(NpgsqlDataReader r) => new(r.GetGuid(0),r.GetGuid(1),r.GetGuid(2),r.GetInt64(3),r.GetString(4),r.GetInt64(5),r.GetFieldValue<DateTimeOffset>(6),r.GetFieldValue<DateTimeOffset>(7));
 
     private static async Task<string> GrantAsync(NpgsqlConnection c, NpgsqlTransaction t, Guid player, string kind, string payload, int quantity, string requestId, CancellationToken ct)
     {

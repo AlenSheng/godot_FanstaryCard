@@ -303,7 +303,8 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 				return _pagination_error(P.localized("invalid_page_cursor"), quiet_statuses)
 			previous = int(cursor)
 			pages += 1
-			var page: Dictionary = await _request_page(collection.path + "?offset=" + cursor + "&limit=200", method, null, quiet_statuses)
+			var page_path: String = _market_page_path(path, str(collection.path), cursor) if collection.path == "/api/v1/market" else collection.path + "?offset=" + cursor + "&limit=200"
+			var page: Dictionary = await _request_page(page_path, method, null, quiet_statuses)
 			if not page.ok: return page
 			if generation != session_generation: return {"ok": false, "status": 401, "error": P.localized("login_state_changed"), "stale_session": true}
 			aggregate_bytes += int(page.get("body_bytes", 0))
@@ -323,6 +324,16 @@ func request(path: String, method: int = HTTPClient.METHOD_GET, data: Variant = 
 			target.append_array(incoming)
 			cursor = HttpProtocol.header(page.get("headers", PackedStringArray()), collection.header)
 	return result
+
+static func _market_page_path(original: String,base: String,cursor: String) -> String:
+	var parameters: Array[String]=[]
+	if original.get_slice("?",0).trim_suffix("/") in ["/api/v1/market","/api/v1/market/context"]:
+		for pair in original.get_slice("?",1).split("&"):
+			if pair.get_slice("=",0).to_lower() in ["currency","quality","slot","element","effect","materialsonly","sort"]:
+				parameters.append(pair)
+	parameters.append("offset="+cursor)
+	parameters.append("limit=200")
+	return base+"?"+"&".join(parameters)
 
 func _pagination_error(message: String, quiet_statuses: Array) -> Dictionary:
 	if 0 not in quiet_statuses: _report_failure(message)

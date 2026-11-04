@@ -12,6 +12,7 @@ const BoundedBar = preload("res://ui/bounded_bar.gd")
 const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const EnhancementWallets = preload("res://ui/enhancement_wallets.gd")
 const CraftingModel = preload("res://ui/season_crafting_model.gd")
+const SeasonMarketController=preload("res://ui/season_market_controller.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -49,6 +50,7 @@ var _card_text_cache: Dictionary = {}
 var inventory: Dictionary = {}
 var shop: Dictionary = {}
 var listings: Array = []
+var market_controller=SeasonMarketController.new()
 var deck_draft: Array = []
 var gear_draft: Array = []
 var bag_tier := "Free"
@@ -446,6 +448,7 @@ func _refresh_after_admin_update() -> void:
 
 func _on_cache_changed(module: String) -> void:
 	_sync_account_session()
+	market_controller.on_cache_changed(module)
 	if screen == "shop" and module in ["shop", "inventory", "wallet"] and is_instance_valid(_reference) and not screen_loading:
 		if bool(_reference.call("sync_shop_state", _shop_purchase_product_id)): return
 	var affected := {
@@ -503,6 +506,7 @@ func _reset_account_ui() -> void:
 	_enhance_item = ""
 	_market_item = ""
 	_market_price = 100
+	market_controller.reset()
 	_view_cell = ""
 	_codex_card = ""
 	_codex_scroll = 0
@@ -872,6 +876,7 @@ func _navigate(value: String) -> void:
 	screen_loading = false
 	_render()
 	if value == "crafting": _reload_crafting()
+	if value == "market": market_controller.attach(self);market_controller.reload()
 
 func _reload_crafting() -> void:
 	_crafting_epoch += 1

@@ -237,6 +237,14 @@ message MarketEquipment {
   string element = 8;
   string effect_affix = 9;
   string secondary_trait = 10;
+  string unique_affix = 11;
+  string unique_element = 12;
+  string stats_version = 13;
+  string origin_season_id = 14;
+  string season_id = 15;
+  string asset_scope = 16;
+  string source_kind = 17;
+  optional bool recipe_extracted = 18;
 }
 message MarketListing {
   string listing_id = 1;
@@ -248,12 +256,20 @@ message MarketListing {
   int64 created_at_unix_ms = 7;
   int64 expires_at_unix_ms = 8;
   MarketEquipment equipment = 9;
+  string currency = 10;
+  optional int64 price = 11;
+  string season_id = 12;
+  string config_version = 13;
+  optional int64 season_ends_at_unix_ms = 14;
+  optional int64 fee = 15;
+  optional int64 seller_net = 16;
 }
 message InventoryChangedEvent {
   string action = 1;
   string item_id = 2;
   MarketListing listing = 3;
   optional int64 seller_gold_after = 4;
+  bool seller_wallet_changed = 5;
 }
 message RoomMoveCommand { int32 row = 1; int32 column = 2; }
 message DuelLeaveCommand { string duel_id = 1; }

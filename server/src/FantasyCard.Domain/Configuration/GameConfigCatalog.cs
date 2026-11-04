@@ -170,6 +170,7 @@ public sealed class GameConfigCatalog
     public SeasonLootPreferenceConfig? SeasonLootPreference { get; private init; }
     public SeasonBotRewardConfig? SeasonBotRewards { get; private init; }
     public SeasonRedConfig? SeasonRed { get; private init; }
+    public SeasonMarketConfig? SeasonMarket { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -319,7 +320,24 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle) };
+    }
+
+    private static SeasonMarketConfig? ReadSeasonMarket(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonMarketRules");
+        if(table is null || !table.Rows.Any(row=>table.OptionalBool(row,"enabled")))return null;
+        if(table.Rows.Count!=2 || table.Rows.Any(row=>!table.OptionalBool(row,"enabled")))
+            throw new InvalidDataException("Both market currencies must share one enabled policy.");
+        var first=table.Rows[0];
+        if(table.Rows.Any(row=>table.Double(row,"tax_rate")!=table.Double(first,"tax_rate") ||
+            table.Int(row,"min_fee")!=table.Int(first,"min_fee") || table.Int(row,"listing_hours")!=table.Int(first,"listing_hours") ||
+            table.Int(row,"shared_slots")!=table.Int(first,"shared_slots")))throw new InvalidDataException("Currency market terms must agree.");
+        var policy=new SeasonMarketConfig(checked((int)((decimal)table.Double(first,"tax_rate")*10000)),table.Int(first,"min_fee"),
+            table.Int(first,"listing_hours"),table.Int(first,"shared_slots"),table.Rows.Select(row=>new SeasonMarketCurrencyConfig(
+                table.Text(row,"currency") switch {"gold"=>"Gold","diamond"=>"Diamond",_=>throw new InvalidDataException("Unknown market currency.")},
+                table.Int(row,"orange_price_cap"),table.Int(row,"red_price_cap"))).ToArray());
+        policy.Validate();return policy;
     }
 
     private static SeasonRedConfig? ReadSeasonRed(ConfigBundle bundle)

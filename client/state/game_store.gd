@@ -1791,6 +1791,7 @@ func _apply_market_event(payload: Dictionary) -> void:
 	var wire: Dictionary = payload.get("listing", {})
 	if wire.is_empty():
 		refresh_cache("market")
+		if payload.get("action")=="market.returned": refresh_cache("inventory")
 		return
 	var item_wire: Dictionary = wire.get("equipment", {})
 	var item := {
@@ -1810,15 +1811,29 @@ func _apply_market_event(payload: Dictionary) -> void:
 		"expiresAt": Time.get_datetime_string_from_unix_time(int(int(wire.get("expires_at_unix_ms", 0)) / 1000)) + "Z",
 		"equipment": item
 	}
+	for pair in [["unique_affix","uniqueAffix"],["unique_element","uniqueElement"],["stats_version","statsVersion"],["origin_season_id","originSeasonId"],["season_id","seasonId"],["asset_scope","assetScope"],["source_kind","sourceKind"],["recipe_extracted","recipeExtracted"]]:
+		var value: Variant=item_wire.get(pair[0])
+		if value!=null and (not value is String or not str(value).is_empty()): item[pair[1]]=value
+	for pair in [["currency","currency"],["price","price"],["season_id","seasonId"],["config_version","configVersion"],["fee","fee"],["seller_net","sellerNet"]]:
+		if wire.get(pair[0])!=null and str(wire.get(pair[0],""))!="": entry[pair[1]]=wire[pair[0]]
+	if wire.get("season_ends_at_unix_ms")!=null:
+		entry["seasonEndsAt"]=Time.get_datetime_string_from_unix_time(int(int(wire.season_ends_at_unix_ms)/1000))+"Z"
+	var season_summary: Dictionary=lobby.get("season",{}) if lobby.get("season") is Dictionary else {}
+	var current_season: Variant=season_summary.get("seasonId") if season_summary.get("state")=="Active" else null
+	var legacy_visible: bool=season_summary.is_empty() or season_summary.get("state")=="Upcoming"
+	var visible_domain: bool=(entry.get("seasonId")==current_season) if current_season!=null else (legacy_visible and entry.get("seasonId")==null)
+	var gold_listing: bool=entry.get("currency","Gold")=="Gold"
 	var updated: Array = lobby.get("market", []).duplicate(true)
 	for existing in updated:
 		if str(existing.get("listingId", "")) == listing_id and int(existing.get("version", 0)) > int(entry.version): return
 	updated = updated.filter(func(existing): return str(existing.get("listingId", "")) != listing_id)
-	if entry.status == "Active" and int(wire.get("expires_at_unix_ms", 0)) > Time.get_unix_time_from_system() * 1000:
+	if visible_domain and gold_listing and entry.status == "Active" and int(wire.get("expires_at_unix_ms", 0)) > Time.get_unix_time_from_system() * 1000:
 		updated.push_front(entry)
 	update_cache("market", updated)
 	if entry.sellerId != str(lobby.get("player", {}).get("userId", "")): return
-	if payload.has("seller_gold_after"):
+	if payload.get("seller_wallet_changed",false) or entry.get("seasonId")!=null:
+		refresh_cache("wallet")
+	elif payload.get("seller_gold_after")!=null and legacy_visible:
 		var wallet: Dictionary = lobby.get("wallet", {}).duplicate(true)
 		wallet["gold"] = int(payload.seller_gold_after)
 		update_cache("wallet", wallet)
@@ -1827,7 +1842,8 @@ func _apply_market_event(payload: Dictionary) -> void:
 	if account_inventory.is_empty(): return
 	var items: Array = account_inventory.get("equipments", []).duplicate(true)
 	items = items.filter(func(value): return str(value.get("instanceId", "")) != entry.equipmentId)
-	if str(payload.get("action", "")) in ["market.cancelled", "market.expired"]: items.append(item)
+	if str(payload.get("action", "")) in ["market.cancelled", "market.expired"] and visible_domain and item.get("location")=="Inventory":
+		items.append(item)
 	account_inventory["equipments"] = items
 	var count := 0
 	for value in items:

@@ -1,5 +1,5 @@
 {
-  "sha256": "69cf898e55d77ae6d5c988f21a4f95d09c85a17556408c246c083f848309b4cb",
+  "sha256": "a20b790d0ebaedd32bfe36a9b5812dea2c330a3d01ebf4d39251e2a29f9aa03d",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -1162,6 +1162,70 @@
         "type": "int64",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "price",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "expected_equipment_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "RelistMarketListingRequest": {
+      "1": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "price",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ClaimMarketReturnRequest": {
+      "1": {
+        "name": "expected_equipment_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "MarketListingResponse": {
@@ -1218,6 +1282,182 @@
         "type": "EquipmentResponse",
         "repeated": false,
         "optional": false
+      },
+      "10": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "11": {
+        "name": "price",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "12": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "season_ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "fee",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "16": {
+        "name": "seller_net",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "MarketCurrencyResponse": {
+      "1": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "orange_price_cap",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "red_price_cap",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketPolicyResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "season_ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "shared_slots",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "listing_hours",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "tax_basis_points",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "minimum_fee",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "can_trade",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "wallet",
+        "type": "WalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "currencies",
+        "type": "MarketCurrencyResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "MarketReturnResponse": {
+      "1": {
+        "name": "return_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "listing_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "equipment",
+        "type": "EquipmentResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "held_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "can_claim",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "MarketReturnsResponse": {
+      "1": {
+        "name": "items",
+        "type": "MarketReturnResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     },
     "MarketInventoryContextResponse": {
@@ -1232,6 +1472,30 @@
         "type": "InventoryResponse",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "policy",
+        "type": "MarketPolicyResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "own_listings",
+        "type": "MarketListingResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "returns",
+        "type": "MarketReturnResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "returns_next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     },
     "EconomyContextResponse": {
@@ -1266,6 +1530,18 @@
         "type": "int64",
         "repeated": false,
         "optional": false
+      },
+      "3": {
+        "name": "wallet",
+        "type": "WalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "WalletResponse": {

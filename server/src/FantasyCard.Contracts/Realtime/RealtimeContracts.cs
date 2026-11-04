@@ -196,7 +196,7 @@ public sealed record InventoryChangedEventPayload(
     string Action,
     string ItemId,
     FantasyCard.Contracts.Progression.MarketListingResponse? Listing = null,
-    long? SellerGoldAfter = null);
+    long? SellerGoldAfter = null,bool SellerWalletChanged=false);
 public sealed record RewardChoiceRefreshCommandPayload;
 public sealed record RewardChoiceClaimCommandPayload(string OptionId, string? ReplaceItemId = null, bool Equip = false);
 public sealed record RewardChoiceClaimedEventPayload(string OptionId, int Applied);

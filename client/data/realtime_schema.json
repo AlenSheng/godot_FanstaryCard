@@ -1,5 +1,5 @@
 {
-  "sha256": "766b2b7c7cd157b43d6d76d93e4b94c5838bac220265eb258f633f7b2df6ded8",
+  "sha256": "95a63ceb18fa6541545221e25897dce1f7c38ed7cf4aebeed9ad09bba78a72b1",
   "messages": {
     "ClientEnvelope": {
       "1": {
@@ -1787,6 +1787,54 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "11": {
+        "name": "unique_affix",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "unique_element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "origin_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "asset_scope",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "source_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "recipe_extracted",
+        "type": "bool",
+        "repeated": false,
+        "optional": true
       }
     },
     "MarketListing": {
@@ -1843,6 +1891,48 @@
         "type": "MarketEquipment",
         "repeated": false,
         "optional": false
+      },
+      "10": {
+        "name": "currency",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "price",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "12": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "season_ends_at_unix_ms",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "fee",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "16": {
+        "name": "seller_net",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
       }
     },
     "InventoryChangedEvent": {
@@ -1869,6 +1959,12 @@
         "type": "int64",
         "repeated": false,
         "optional": true
+      },
+      "5": {
+        "name": "seller_wallet_changed",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
       }
     },
     "RoomMoveCommand": {

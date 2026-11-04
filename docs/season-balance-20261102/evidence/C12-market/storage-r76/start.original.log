@@ -1,0 +1,17 @@
+{
+  "container_id": "29cfb054aaf1337a3f5627df23d30f31d8ea4dd1c66fb56be66df6a2e85eefaf",
+  "name": "fc-season-a03-storage-20261102-r76",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "efbca70ebacc5a3e49d6a8a119dc59c6bff2c43d",
+  "archive_sha256": "bde6c2b78df391071cb57b5c05de26b03557ffb12ed41afe75c776ee9015f4be",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeasonMarketTests|FullyQualifiedName~PostgresMarketRelistingTests|FullyQualifiedName~PostgresSeasonReadModelTests|FullyQualifiedName~SeasonMarketEncodingTests|FullyQualifiedName~EconomyReconciliationReportTests\" --logger \"trx;LogFileName=market-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName!~SeasonResourceLoopTests&FullyQualifiedName!~MonsterPoolBaselineContractTests\" --logger \"trx;LogFileName=market-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2554372096,
+  "free_disk_before": 3533807616
+}
