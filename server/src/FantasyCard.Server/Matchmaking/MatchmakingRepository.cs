@@ -56,16 +56,22 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
 
     // Null season columns describe pre-season legacy preparations, not a fallback after a season has started.
     private const string PreparationAdmissionSql = """
-        p.config_version=$2 AND (p.season_id IS NULL AND NOT EXISTS (
+        (p.season_id IS NULL AND p.config_version=$2 AND NOT EXISTS (
             SELECT 1 FROM season_definitions d WHERE d.ruleset_id='season-v1' AND d.starts_at <= $1)
         OR p.season_id IS NOT NULL AND EXISTS (
-            SELECT 1 FROM season_definitions d WHERE d.season_id=p.season_id AND d.starts_at <= $1 AND d.ends_at > $1))
+            SELECT 1 FROM season_definitions d WHERE d.season_id=p.season_id AND d.ruleset_id='season-v1'
+                AND p.config_version=d.config_version AND p.ruleset_id=d.ruleset_id AND p.stats_version=d.stats_version
+                AND p.difficulty_id BETWEEN 0 AND 5 AND p.difficulty_id <= d.highest_open_difficulty
+                AND d.starts_at <= $1 AND d.ends_at > $1))
         """;
     private const string MatchAdmissionSql = """
-        m.config_version=$2 AND (m.season_id IS NULL AND NOT EXISTS (
+        (m.season_id IS NULL AND m.config_version=$2 AND NOT EXISTS (
             SELECT 1 FROM season_definitions d WHERE d.ruleset_id='season-v1' AND d.starts_at <= $1)
         OR m.season_id IS NOT NULL AND EXISTS (
-            SELECT 1 FROM season_definitions d WHERE d.season_id=m.season_id AND d.starts_at <= $1 AND d.ends_at > $1))
+            SELECT 1 FROM season_definitions d WHERE d.season_id=m.season_id AND d.ruleset_id='season-v1'
+                AND m.config_version=d.config_version AND m.ruleset_id=d.ruleset_id AND m.stats_version=d.stats_version
+                AND m.difficulty IN ('D0','D1','D2','D3','D4','D5') AND m.difficulty <= ('D'||d.highest_open_difficulty::text)
+                AND d.starts_at <= $1 AND d.ends_at > $1))
         """;
 
     public async Task<MatchTicketResponse> GetTicketAsync(Guid playerId, Guid ticketId, CancellationToken cancellationToken)
@@ -460,7 +466,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
             launching.Parameters.AddWithValue(matchId); await launching.ExecuteNonQueryAsync(cancellationToken);
         }
         await transaction.CommitAsync(cancellationToken);
-        var players = CompleteWithBots(humans, botIds, seed);
+        var players = CompleteWithBots(humans, botIds, seed, _configurations.Resolve(configVersion));
         return new(new(matchId, roomId, seed, players, season, configVersion), humans.Select(player => player.PlayerId).ToArray(), removed);
     }
 
@@ -481,7 +487,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         SeasonContext? season, string configVersion, CancellationToken cancellationToken)
     {
         var result = new List<MatchPlayerAssignment>();
-        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json::text,u.display_name FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id JOIN players u ON u.user_id=mp.player_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
+        await using var command = new NpgsqlCommand("SELECT mp.player_id,p.snapshot_json::text,u.display_name,d.config_sha256 FROM match_players mp JOIN preparations p ON p.preparation_id=mp.preparation_id JOIN players u ON u.user_id=mp.player_id LEFT JOIN season_definitions d ON d.season_id=p.season_id WHERE mp.match_id=$1 AND mp.is_bot=false AND mp.state='Active' ORDER BY mp.player_id", connection, transaction);
         command.Parameters.AddWithValue(matchId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
@@ -493,7 +499,12 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                     context.SeasonId != season.SeasonId || context.DifficultyId != season.DifficultyId ||
                     context.RulesetId != season.RulesetId || context.ConfigVersion != season.ConfigVersion || context.StatsVersion != season.StatsVersion))
                 throw new InvalidOperationException("Prepared snapshot and match contexts differ.");
-            var preferencePolicy=season is null ? null : _configurations.Resolve(configVersion).SeasonLootPreference;
+            var originalConfiguration=_configurations.Resolve(configVersion);
+            if (season is not null && (reader.IsDBNull(3) || reader.GetString(3)!=originalConfiguration.ContentHash))
+                throw new InvalidOperationException("Prepared configuration hash differs from the original published season.");
+            if (snapshot.BackpackCapacity!=originalConfiguration.Backpack(snapshot.BackpackTier.ToString()).Capacity)
+                throw new InvalidOperationException("Prepared backpack capacity differs from its original configuration.");
+            var preferencePolicy=season is null ? null : originalConfiguration.SeasonLootPreference;
             if(preferencePolicy is null ? snapshot.LootPreferenceElement is not null :
                 snapshot.LootPreferenceElement is null || preferencePolicy.Resolve(snapshot.LootPreferenceElement)!=snapshot.LootPreferenceElement)
                 throw new InvalidOperationException("Prepared loot preference differs from its frozen configuration.");
@@ -504,7 +515,7 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
                     snapshot.CardLevels is not {Count:20} borrowedLevels || borrowedLevels.Any(level => level != season.Difficulty) ||
                     snapshot.ClassWeaponLevel != season.Difficulty)
                     throw new InvalidOperationException("Prepared borrowed level projection is invalid.");
-                var template = _configurations.Resolve(configVersion).BorrowedDeck((HeroClass)(int)snapshot.HeroClass);
+                var template = originalConfiguration.BorrowedDeck((HeroClass)(int)snapshot.HeroClass);
                 if (template.TemplateId != templateId || !snapshot.CardIds.SequenceEqual(template.CardIds,StringComparer.Ordinal))
                     throw new InvalidOperationException("Prepared borrowed template differs from its published configuration.");
             }
@@ -613,16 +624,19 @@ public sealed class MatchmakingRepository(NpgsqlDataSource dataSource, TimeProvi
         }
     }
 
-    internal static IReadOnlyList<MatchPlayerAssignment> CompleteWithBots(IReadOnlyList<MatchPlayerAssignment> humans, IReadOnlyList<Guid> botIds, int seed)
+    internal static IReadOnlyList<MatchPlayerAssignment> CompleteWithBots(IReadOnlyList<MatchPlayerAssignment> humans, IReadOnlyList<Guid> botIds, int seed,
+        GameConfigCatalog? configuration = null)
     {
         var assignments = humans.ToList();
         var random = new Random(seed);
         var averageWeaponLevel = BotRules.AverageWeaponEnhance(new PartyWearSnapshot([], humans.Select(player => player.WeaponLevel).ToArray()));
+        var backpack = (configuration ?? GameConfigCatalog.Current).Backpack("Free");
         foreach (var botId in botIds)
         {
             var represented = Enum.GetValues<HeroClass>().Select(heroClass => (HeroClass: heroClass, Count: assignments.Count(player => player.HeroClass == heroClass))).GroupBy(value => value.Count).OrderBy(group => group.Key).First().Select(value => value.HeroClass).OrderBy(_ => random.Next()).First();
             var displayName = BotRules.PickDisplayName(assignments.Select(player => player.DisplayName).OfType<string>().ToArray(), random.Next());
-            assignments.Add(new(botId, true, represented, DefaultCards(represented), PotionCount: BotRules.StartingPotions, WeaponLevel: averageWeaponLevel, DisplayName: displayName));
+            assignments.Add(new(botId, true, represented, DefaultCards(represented), InventoryCapacity: backpack.Capacity, SafeSlots: backpack.SafeSlots,
+                PotionCount: BotRules.StartingPotions, WeaponLevel: averageWeaponLevel, DisplayName: displayName));
         }
         if (assignments.Count != 4) throw new InvalidOperationException("A ready match must launch with exactly four players.");
         return assignments;

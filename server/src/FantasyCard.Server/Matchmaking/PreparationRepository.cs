@@ -13,6 +13,7 @@ using FantasyCard.Contracts.Seasons;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Rooms;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -40,8 +41,10 @@ public enum CancelPreparationStatus
     StateConflict
 }
 
-public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
+public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider,
+    PublishedConfigCatalogs? configurations = null)
 {
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
     private static readonly string[] EquipmentSlots = ["Head", "Chest", "Hands", "Legs", "Feet"];
     private static readonly JsonSerializerOptions SerializerOptions = CreateSerializerOptions();
 
@@ -117,18 +120,18 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
 
         var schedule = await new SeasonRepository(dataSource, timeProvider).GetScheduleAtAsync(now, cancellationToken);
         SeasonContext? season = null;
+        var configuration = GameConfigCatalog.Current;
         if (schedule.Current is { } definition)
         {
             if (request.SeasonId is not null && request.SeasonId != definition.SeasonId)
                 throw new DomainValidationException("The requested season is not the current season.");
-            if (definition.ConfigVersion != BootstrapRepository.CurrentConfigVersion)
-                throw new DomainValidationException("The active season configuration is not loaded by this server.");
+            configuration = await ResolveOriginalConfigurationAsync(connection, transaction, definition, cancellationToken);
             var token = request.Difficulty ?? "D0";
             var difficulty = string.Equals(token, "Standard", StringComparison.OrdinalIgnoreCase) ? 0
                 : token.Length == 2 && (token[0] is 'D' or 'd') && token[1] is >= '0' and <= '5' ? token[1] - '0'
                 : throw new DomainValidationException("Season difficulty must be D0 through D5.");
             season = definition.ContextFor(difficulty);
-            _=GameConfigCatalog.Current.ResolveSeasonEquipment(season.StatsVersion);
+            _=configuration.ResolveSeasonEquipment(season.StatsVersion);
             await using var unlocked = new NpgsqlCommand("SELECT highest_unlocked_difficulty FROM player_season_state WHERE player_id=$1 AND season_id=$2 AND archived_at IS NULL", connection, transaction);
             unlocked.Parameters.AddWithValue(playerId);unlocked.Parameters.AddWithValue(season.SeasonId);
             var unlockedValue = await unlocked.ExecuteScalarAsync(cancellationToken);
@@ -146,7 +149,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         var heroClass = (HeroClass)(int)request.HeroClass;
         if (request.UseBorrowedDeck && season is null)
             throw new DomainValidationException("Borrowed templates are available only in an active season.");
-        var borrowed = request.UseBorrowedDeck ? GameConfigCatalog.Current.BorrowedDeck(heroClass) : null;
+        var borrowed = request.UseBorrowedDeck ? configuration.BorrowedDeck(heroClass) : null;
         var deck = borrowed is null ? await LoadDeckAsync(connection, transaction, playerId, heroClass, cancellationToken) : null;
         if (borrowed is null && (deck is null || deck.Value.Version != request.DeckVersion))
         {
@@ -162,6 +165,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             playerId,
             equipmentIds,
             season,
+            configuration,
             cancellationToken);
         if (equipmentValidation.Error is not null)
         {
@@ -188,7 +192,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             cancellationToken);
         var cardIds = borrowed?.CardIds ?? deck!.Value.CardIds;
         var actualCardLevels = borrowed is null
-            ? await LoadCardLevelsAsync(connection, transaction, playerId, cardIds, cancellationToken)
+            ? await LoadCardLevelsAsync(connection, transaction, playerId, heroClass, cardIds, configuration, cancellationToken)
             : await LoadBorrowedActualLevelsAsync(connection,transaction,playerId,cardIds,cancellationToken);
         if (schedule.Current is { } currentSeason && !currentSeason.Contains(timeProvider.GetUtcNow()) ||
             schedule.Current is null && schedule.Next is { } nextSeason && timeProvider.GetUtcNow() >= nextSeason.StartsAtUtc)
@@ -196,7 +200,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         if (season is not null)
             await SeasonRepository.EnsurePlayerWithinTransactionAsync(connection, transaction, playerId, season,
                 timeProvider.GetUtcNow(), cancellationToken);
-        var preferencePolicy=season is null ? null : GameConfigCatalog.Current.SeasonLootPreference;
+        var preferencePolicy=season is null ? null : configuration.SeasonLootPreference;
         if(preferencePolicy is null && request.LootPreferenceElement is not null)
             throw new DomainValidationException("This preparation has no seasonal loot preference policy.");
         var lootPreference=preferencePolicy?.Resolve(request.LootPreferenceElement);
@@ -207,7 +211,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             equipmentIds,
             borrowed is null ? season?.ProjectPermanentLevel(weaponLevel) ?? weaponLevel : season!.Difficulty,
             request.BackpackTier,
-            GameConfigCatalog.Current.Backpack(backpackTier.ToString()).Capacity,
+            configuration.Backpack(backpackTier.ToString()).Capacity,
             safeSlotIndexes,
             request.PotionCount,
             season?.DifficultyId ?? "Standard",
@@ -524,12 +528,29 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         return (version, cardIds);
     }
 
+    private async Task<GameConfigCatalog> ResolveOriginalConfigurationAsync(NpgsqlConnection connection,
+        NpgsqlTransaction transaction, SeasonDefinition season, CancellationToken ct)
+    {
+        GameConfigCatalog configuration;
+        try { configuration = _configurations.Resolve(season.ConfigVersion); }
+        catch (Exception e) when (e is IOException or InvalidDataException)
+        {
+            throw new DomainValidationException("The active season's original published configuration is unavailable.");
+        }
+        await using var hash = new NpgsqlCommand("SELECT config_sha256 FROM season_definitions WHERE season_id=$1 AND config_version=$2", connection, transaction);
+        hash.Parameters.AddWithValue(season.SeasonId);hash.Parameters.AddWithValue(season.ConfigVersion);
+        if (await hash.ExecuteScalarAsync(ct) is not string expected || expected != configuration.ContentHash)
+            throw new DomainValidationException("The original preparation configuration hash differs from its published season.");
+        return configuration;
+    }
+
     private static async Task<IReadOnlyList<int>> LoadCardLevelsAsync(
-        NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId,
-        IReadOnlyList<string> cardIds, CancellationToken cancellationToken)
+        NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, HeroClass heroClass,
+        IReadOnlyList<string> cardIds, GameConfigCatalog configuration, CancellationToken cancellationToken)
     {
         var levels = new Dictionary<string, int>(StringComparer.Ordinal);
-        var counts = new Dictionary<string, int>(StringComparer.Ordinal);
+        var definitions = configuration.Cards.Where(card=>card.IsCodex).ToDictionary(card=>card.CardId,StringComparer.Ordinal);
+        var owned = new Dictionary<string,OwnedCard>(StringComparer.Ordinal);
         await using var command = new NpgsqlCommand(
             "SELECT card_id,level,copy_count FROM player_cards WHERE player_id=$1 AND unlocked=true AND card_id=ANY($2) FOR SHARE",
             connection, transaction);
@@ -538,11 +559,13 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         while (await reader.ReadAsync(cancellationToken))
         {
-            levels.Add(reader.GetString(0), reader.GetInt32(1));
-            counts.Add(reader.GetString(0), reader.GetInt32(2));
+            var id=reader.GetString(0);
+            if (!definitions.TryGetValue(id,out var definition))
+                throw new DomainValidationException("A prepared card is unavailable in the original published configuration.");
+            levels.Add(id, reader.GetInt32(1));
+            owned.Add(id,new(id,definition.HeroClass,(CardRarity)definition.Rarity,reader.GetInt32(2),false));
         }
-        if (cardIds.GroupBy(id => id).Any(group => counts.GetValueOrDefault(group.Key) < group.Count()))
-            throw new DomainValidationException("A prepared deck requires owned copies for every slot.");
+        DeckRules.Validate(heroClass,cardIds,owned);
         return CardEconomyRules.DeckLevels(cardIds, levels);
     }
 
@@ -563,6 +586,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         Guid playerId,
         Guid?[] equipmentIds,
         SeasonContext? season,
+        GameConfigCatalog configuration,
         CancellationToken cancellationToken)
     {
         var snapshots = new List<PreparationEquipmentSnapshotResponse>();
@@ -597,7 +621,7 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
             if (season is not null)
             {
                 var rank = SeasonLootConfig.Rank(reader.GetString(2));
-                var entryCap = GameConfigCatalog.Current.SeasonDifficulty(season.Difficulty).EntryQualityCap;
+                var entryCap = configuration.SeasonDifficulty(season.Difficulty).EntryQualityCap;
                 if (rank > entryCap) return ("Equipment quality exceeds the selected difficulty entry cap.", []);
                 if (reader.GetString(10) is "BotProjection" or "Borrowed" or "ActivityMaterial")
                     return ("Projected, borrowed or material-only equipment cannot enter a preparation.", []);
