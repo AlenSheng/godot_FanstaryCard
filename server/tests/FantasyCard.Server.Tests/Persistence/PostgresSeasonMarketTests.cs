@@ -5,6 +5,8 @@ using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Progression;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Rooms;
+using FantasyCard.Server.Tests.Config;
 using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
@@ -38,6 +40,10 @@ public sealed class PostgresSeasonMarketTests
         Assert.Equal(before,await db.ScalarAsync<string>("SELECT jsonb_build_object('origin',origin_season_id,'mint',mint_id,'week',mint_week,'scope',quota_scope,'stats',stats_version,'source',source_kind,'recipe',recipe_extracted)::text FROM equipments WHERE instance_id=$1",item));
         Assert.Equal(fee,await db.ScalarAsync<long>("SELECT fee FROM market_transactions WHERE listing_id=$1",listing.ListingId));
         Assert.Equal(currency,await db.ScalarAsync<string>("SELECT currency FROM market_transactions WHERE listing_id=$1",listing.ListingId));
+        Assert.Equal(2L,await db.ScalarAsync<long>("""
+            SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND source_kind='MarketTransfer'
+                AND season_id=$2 AND difficulty_id='D0' AND ruleset_id=$3 AND config_version=$4 AND stats_version=$5
+            """,item,f.Owner.Season.SeasonId,f.Owner.Season.RulesetId,f.Owner.Season.ConfigVersion,f.Owner.Season.StatsVersion));
         var ledger=await db.ScalarAsync<long>("SELECT sum(delta)::bigint FROM economy_ledger WHERE reason IN ('market.purchase','market.sale') AND currency=$1",currency);Assert.Equal(-fee,ledger);
         await db.ExecuteAsync("DELETE FROM idempotency_records");
         f.Owner.Clock.Now=f.Owner.Season.EndsAtUtc;
@@ -102,6 +108,7 @@ public sealed class PostgresSeasonMarketTests
     public async Task FullInventoryReturnStaysDurableAcrossSeasonClosureAndNeverEntersTheNewSeason()
     {
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);var f=await Create(db);using var market=new EconomyRepository(db.DataSource,f.Owner.Clock);
+        using var archive=new ConfigArchiveDirectory();
         f.Owner.Clock.Now=f.Owner.Season.EndsAtUtc.AddHours(-1);var item=await Item(db,f);var listing=await market.ListAsync(f.Owner.Player,"late-list",Request(item,"Gold",100,f),Ct);
         await FillInventory(db,f,50);f.Owner.Clock.Now=f.Owner.Season.EndsAtUtc;
         await Assert.ThrowsAsync<DomainValidationException>(()=>market.PurchaseMarketAsync(f.Buyer,"closed-buy",listing.ListingId,listing.Version,Ct));
@@ -112,18 +119,24 @@ public sealed class PostgresSeasonMarketTests
         Assert.Empty((await market.GetMarketReturnsAsync(f.Buyer,Ct)).Items);
         await Assert.ThrowsAsync<DomainValidationException>(()=>market.ClaimMarketReturnAsync(f.Buyer,held.ReturnId,"foreign-return",new(held.Equipment.Version,f.Owner.Season.SeasonId),Ct));
         await Assert.ThrowsAsync<DomainValidationException>(()=>market.ClaimMarketReturnAsync(f.Owner.Player,held.ReturnId,"full-return",new(held.Equipment.Version,f.Owner.Season.SeasonId),Ct));
-        var next=new SeasonDefinition("market-next",f.Owner.Season.RulesetId,f.Owner.Season.ConfigVersion,f.Owner.Season.StatsVersion,
+        var nextConfig=SeasonThemeConfigIntegrationTests.Variant("Wood");
+        var next=new SeasonDefinition("market-next",f.Owner.Season.RulesetId,nextConfig.Version,f.Owner.Season.StatsVersion,
             f.Owner.Season.EndsAtUtc,f.Owner.Season.EndsAtUtc.AddDays(42),5);
-        await f.Owner.Seasons.PublishAsync(next,GameConfigCatalog.Current.ContentHash,Ct);await f.Owner.Seasons.EnsurePlayerAsync(f.Owner.Player,next.ContextFor(0),Ct);
+        await f.Owner.Seasons.PublishAsync(next,nextConfig.ContentHash,Ct,nextConfig);await f.Owner.Seasons.EnsurePlayerAsync(f.Owner.Player,next.ContextFor(0),Ct);
+        PublishedConfigTestInputs.Store(archive.Root,GameConfigCatalog.Current.Version,GameConfigCatalog.Current.ExportPublishedBytes(),GameConfigCatalog.Current.ContentHash);
         var surplus=await db.ScalarAsync<Guid>("SELECT instance_id FROM equipments WHERE owner_id=$1 AND location='Inventory' AND season_id=$2 LIMIT 1",f.Owner.Player,f.Owner.Season.SeasonId);
         await CraftingTestInputs.SqlAsync(db,"UPDATE equipments SET location='Recycled' WHERE instance_id=$1",surplus);
-        using var restarted=new EconomyRepository(db.DataSource,f.Owner.Clock);var request=new ClaimMarketReturnRequest(held.Equipment.Version,f.Owner.Season.SeasonId);
+        using var restarted=new EconomyRepository(db.DataSource,f.Owner.Clock,new PublishedConfigCatalogs(nextConfig,archive.Root));var request=new ClaimMarketReturnRequest(held.Equipment.Version,f.Owner.Season.SeasonId);
         var claimed=await restarted.ClaimMarketReturnAsync(f.Owner.Player,held.ReturnId,"claim-original",request,Ct);
         Assert.Equal("ArchivedSeason",claimed.AssetScope);Assert.Equal(f.Owner.Season.SeasonId,claimed.SeasonId);Assert.Equal(item,claimed.InstanceId);
         Assert.Equal(claimed,await restarted.ClaimMarketReturnAsync(f.Owner.Player,held.ReturnId,"claim-original",request,Ct));
         Assert.Empty((await new ProgressionRepository(db.DataSource,f.Owner.Clock).GetInventoryAsync(f.Owner.Player,Ct)).Equipments);
         Assert.Equal(0,(await restarted.GetWalletAsync(f.Owner.Player,Ct)).Gold);
         Assert.Equal(1L,await db.ScalarAsync<long>("SELECT count(*) FROM market_return_holds WHERE state='Claimed'"));
+        Assert.Equal(3L,await db.ScalarAsync<long>("""
+            SELECT count(*) FROM inventory_movements WHERE item_id=$1 AND source_kind='MarketTransfer'
+                AND season_id=$2 AND difficulty_id='D0' AND ruleset_id=$3 AND config_version=$4 AND stats_version=$5
+            """,item,f.Owner.Season.SeasonId,f.Owner.Season.RulesetId,f.Owner.Season.ConfigVersion,f.Owner.Season.StatsVersion));
         Assert.True((await new EconomyReconciliationRepository(db.DataSource).InspectAsync(Ct)).IsHealthy);
     }
 
