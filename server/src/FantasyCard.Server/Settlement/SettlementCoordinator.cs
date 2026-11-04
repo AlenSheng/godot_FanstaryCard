@@ -53,6 +53,7 @@ public sealed class SettlementCoordinator(
                         player.Phase,
                         player.Position,
                         player.BotVictoryReward,
+                        player.ExtractionCompletedAt,
                         heroClass = player.HeroClass.ToString(),
                         assetCount = assets.Length,
                         difficultyProgress = new

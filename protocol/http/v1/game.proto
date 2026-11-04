@@ -287,6 +287,24 @@ message ShopInventoryContextResponse {
   InventoryResponse inventory = 2;
 }
 
+message ActivityExchangeRequest { string season_id = 1; string rule_id = 2; int64 expected_account_version = 3; optional int32 quantity = 4; optional string hero_class = 5; }
+message ActivityExchangeOptionResponse { string rule_id = 1; int32 cost_tokens = 2; string reward_kind = 3; int32 reward_count = 4; int32 event_limit = 5; int32 used = 6; }
+message ActivityRewardResponse {
+  string reward_id = 1; string season_id = 2; string event_id = 3; string rule_id = 4;
+  string reward_kind = 5; int32 reward_amount = 6; optional string hero_class = 7;
+  int32 token_cost = 8; int32 quantity = 9; string state = 10; string created_at = 11;
+  optional string claimed_at = 12; bool can_claim = 13; string config_version = 14;
+}
+message ActivityEventResponse {
+  string season_id = 1; string event_id = 2; string state = 3; string starts_at = 4; string ends_at = 5;
+  int32 earned = 6; int32 spent = 7; int32 available = 8; int32 token_cap = 9;
+  int64 account_version = 10; bool can_exchange = 11; string config_version = 12;
+  repeated ActivityExchangeOptionResponse options = 13; repeated ActivityRewardResponse rewards = 14;
+}
+message SeasonActivitiesResponse { repeated ActivityEventResponse events = 1; optional int32 next_offset = 2; }
+message ActivityExchangeResponse { ActivityRewardResponse reward = 1; int32 tokens_remaining = 2; int64 account_version = 3; }
+message ActivityClaimResponse { ActivityRewardResponse reward = 1; int64 balance_after = 2; }
+
 message PurchaseShopRequest {
   string product_id = 1;
   optional int32 quantity = 2;

@@ -8,11 +8,11 @@ public sealed record EconomyReconciliationReport(
     long OrphanMarketListedEquipmentCount,
     long SoldListingMismatchCount,
     long MarketTransactionAmountMismatchCount,
-    long LedgerChainMismatchCount,long PendingMarketReturnMismatchCount=0,long CardCopyLedgerMismatchCount=0)
+    long LedgerChainMismatchCount,long PendingMarketReturnMismatchCount=0,long CardCopyLedgerMismatchCount=0,long ActivityBudgetMismatchCount=0)
 {
     public long TotalViolationCount => NegativeAccountCount + ActiveListingAssetMismatchCount
         + OrphanMarketListedEquipmentCount + SoldListingMismatchCount
-        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount + PendingMarketReturnMismatchCount + CardCopyLedgerMismatchCount;
+        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount + PendingMarketReturnMismatchCount + CardCopyLedgerMismatchCount + ActivityBudgetMismatchCount;
 
     public bool IsHealthy => TotalViolationCount == 0;
 }
@@ -36,6 +36,11 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                     lag(balance_after) OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence) AS previous_balance,
                     row_number() OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence DESC) AS latest
                 FROM card_copy_ledger
+            ), activity_chain AS (
+                SELECT player_id,season_id,event_id,delta,balance_after,
+                    lag(balance_after) OVER(PARTITION BY player_id,season_id,event_id ORDER BY ledger_sequence) AS previous_balance,
+                    row_number() OVER(PARTITION BY player_id,season_id,event_id ORDER BY ledger_sequence DESC) AS latest
+                FROM season_activity_token_ledger
             )
             SELECT
                 (SELECT count(*) FROM player_wallets WHERE gold < 0 OR diamond < 0)
@@ -77,7 +82,17 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                 + (SELECT count(*) FROM card_copy_chain l
                    LEFT JOIN player_cards c USING(player_id,card_id)
                    LEFT JOIN player_card_reserves r USING(player_id,card_id)
-                   WHERE l.latest=1 AND (c.player_id IS NULL OR l.balance_after<>c.copy_count+COALESCE(r.extra_count,0)))
+                   WHERE l.latest=1 AND (c.player_id IS NULL OR l.balance_after<>c.copy_count+COALESCE(r.extra_count,0))),
+                (SELECT count(*) FROM activity_chain WHERE previous_balance IS NOT NULL AND previous_balance+delta<>balance_after)
+                + (SELECT count(*) FROM player_season_activity_accounts a WHERE
+                    a.earned-a.spent<>COALESCE((SELECT balance_after FROM activity_chain l WHERE l.player_id=a.player_id AND l.season_id=a.season_id AND l.event_id=a.event_id AND l.latest=1),0)
+                    OR a.spent<>(SELECT COALESCE(sum(r.token_cost),0) FROM season_activity_redemptions r WHERE r.player_id=a.player_id AND r.season_id=a.season_id AND r.event_id=a.event_id)
+                    OR a.earned<>(SELECT COALESCE(sum(r.credited_tokens),0) FROM season_activity_completions r WHERE r.player_id=a.player_id AND r.season_id=a.season_id AND r.event_id=a.event_id))
+                + (SELECT count(*) FROM season_activity_redemptions r LEFT JOIN season_activity_reward_ledger l USING(reward_id)
+                   WHERE (r.state='Claimed')<>(l.reward_id IS NOT NULL) OR l.reward_id IS NOT NULL AND
+                    (l.player_id<>r.player_id OR l.season_id<>r.season_id OR l.event_id<>r.event_id OR l.reward_kind<>r.reward_kind OR l.reward_amount<>r.reward_amount))
+                + (SELECT count(*) FROM season_activity_completions c JOIN season_activity_events e USING(season_id,event_id)
+                   WHERE c.occurred_at<e.starts_at OR c.occurred_at>=e.ends_at OR c.config_version<>e.config_version)
             """;
 
         await using var command = dataSource.CreateCommand(sql);
@@ -87,6 +102,6 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
 
         return new EconomyReconciliationReport(
             reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2),
-            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5),reader.GetInt64(6),reader.GetInt64(7));
+            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5),reader.GetInt64(6),reader.GetInt64(7),reader.GetInt64(8));
     }
 }

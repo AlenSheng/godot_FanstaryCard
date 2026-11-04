@@ -7,6 +7,7 @@ const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_l
 const RED_SCENARIOS := ["c11_waiting","c11_pending","c11_pending_bottom","c11_replace","c11_replace_bottom","c11_confirm","c11_confirm_bottom"]
 const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_relist","c12_confirm","c12_returns","c12_error","c12_hall"]
 const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
+const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -75,7 +76,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -203,6 +204,7 @@ func _reset_fixture() -> void:
 	Game.configuration_error = ""; Game.connection = ""
 	$UI.screen = "hall"; $UI.screen_loading = false; $UI.mail_modal_lock = false
 	$UI.market_controller.reset()
+	$UI.activity_controller.reset()
 	$UI._quality = ""; $UI._search = ""; $UI._codex_card = ""; $UI._codex_ready = true
 	$UI._enhance_item = ""; $UI._enhancement_quote_key = ""; $UI._enhancement_quote = {}
 	$UI._owned_index_ready = false; $UI._owned_by_id.clear()
@@ -228,6 +230,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c14_"): return await _prepare_activity_scene(scenario)
 	if scenario.begins_with("c13_"): return await _prepare_shop_scene(scenario)
 	if scenario.begins_with("c12_"):return await _prepare_market_scene(scenario)
 	if scenario.begins_with("c11_"):
@@ -474,6 +477,52 @@ func _market_listing_fixture(id: String,item: Dictionary,currency: String,price:
 		"expiresAt":"2099-12-31T00:00:00Z","seasonId":"market-review","seasonEndsAt":"2099-12-31T00:00:00Z","fee":maxi(1,int(price/10.0)),
 		"sellerNet":price-maxi(1,int(price/10.0)),"equipment":gear}
 
+func _prepare_activity_scene(scenario: String) -> bool:
+	if scenario=="c14_hall":
+		$UI.screen="hall";await _render_base();return false
+	$UI.screen="activities"
+	var c=$UI.activity_controller
+	c.attach($UI)
+	var event: Dictionary=preload("res://tests/test_season_activity_model.gd").event()
+	event.accountVersion=4;event.configVersion=Game.CATALOG.data.version
+	event.startsAt="2026-11-12T00:00:00+08:00";event.endsAt="2026-11-15T00:00:00+08:00"
+	event.options.insert(1,{"ruleId":"event-warrior","costTokens":3,"rewardKind":"bound_warrior_soul","rewardCount":6,"eventLimit":4,"used":0})
+	if scenario=="c14_upcoming":event.state="Upcoming";event.canExchange=false;event.earned=0;event.available=0
+	if scenario in ["c14_spent","c14_late","c14_claim_confirm"]:
+		event.spent=12;event.available=0;event.state="Ended" if scenario!="c14_spent" else "Active"
+		for index in 4:
+			var option: Dictionary=event.options[index%3]
+			var claimed: bool=scenario=="c14_spent" or index==3
+			event.rewards.append({"rewardId":"original-reward-"+str(index),"seasonId":event.seasonId,"eventId":event.eventId,"configVersion":event.configVersion,"ruleId":option.ruleId,"rewardKind":option.rewardKind,"rewardAmount":option.rewardCount,"heroClass":"Priest" if option.rewardKind=="bound_class_soul" else null,"tokenCost":3,"quantity":1,"state":"Claimed" if claimed else "Pending","canClaim":not claimed})
+		for option in event.options:
+			option.used=event.rewards.filter(func(reward):return reward.ruleId==option.ruleId).size()
+	if scenario=="c14_unavailable":
+		event.state="Unavailable";event.canExchange=false;event.options=[];c.failed=true;c.notice=Palette.localized("activity_unavailable")
+	c.events=[event];c.selected=preload("res://ui/season_activity_model.gd").key(event);c.next_offset=50
+	if scenario=="c14_empty":c.events=[];c.next_offset=null
+	await _render_base()
+	if scenario=="c14_exchange_confirm":c.confirm_exchange(event.options[2]);await get_tree().process_frame
+	if scenario=="c14_claim_confirm":c.confirm_claim(event.rewards[0]);await get_tree().process_frame
+	return false
+
+func _check_activity_scene(frame_name: String) -> void:
+	var view: Control=$UI._reference
+	if frame_name.ends_with("_c14_hall"):
+		review_checks[frame_name+": camp activity entry"] = view.get_node("ActivityEntry").is_visible_in_tree()
+		return
+	if frame_name.ends_with("_c14_empty"):
+		review_checks[frame_name+": empty original-event list"]=$UI.activity_controller.events.is_empty()
+		return
+	review_checks[frame_name+": original event selector"]=view.get_node("ActivitySelector").is_visible_in_tree()
+	review_checks[frame_name+": shared budget visible"]=view.get_node("ActivityBudget").is_visible_in_tree()
+	if Palette.language()=="ar":review_checks[frame_name+": chronological range isolated from RTL sentence"]=view.get_node("ActivityWindow").text.contains(String.chr(0x2066)+"2026-11-12 00:00 → 2026-11-15 00:00 · UTC+8"+String.chr(0x2069))
+	review_checks[frame_name+": original-source late claim hint"]=view.get_node("ActivitySourceHint").is_visible_in_tree()
+	if frame_name.ends_with("_c14_spent") or frame_name.ends_with("_c14_upcoming"):
+		for index in 4:review_checks[frame_name+": no exchange without current budget "+str(index)]=view.get_node("ActivityExchange"+str(index)).disabled
+	if frame_name.ends_with("_c14_late"):
+		for index in 4:review_checks[frame_name+": original pending claim "+str(index)]=view.get_node("ActivityClaim"+str(index)).disabled==(index==3)
+	if frame_name.ends_with("_confirm"):review_checks[frame_name+": original event confirmation"]=$UI.get_node_or_null("ConfirmationModal")!=null
+
 func _prepare_shop_scene(scenario: String) -> bool:
 	$UI._shop_scroll=0
 	var products: Array=[]
@@ -716,6 +765,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 		await _capture(frame_name, rebuild)
 	_check_login_language(frame_name, on_login)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
+	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)

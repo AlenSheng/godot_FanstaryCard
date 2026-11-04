@@ -118,6 +118,7 @@ public sealed class GameConfigCatalog
 {
     private const string ResourceName = "FantasyCard.Config.fantasycard.config.bytes";
     private static readonly Lazy<GameConfigCatalog> Active = new(LoadEmbedded);
+    private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
     private readonly byte[] _publishedBytes;
 
     private GameConfigCatalog(
@@ -172,6 +173,7 @@ public sealed class GameConfigCatalog
     public SeasonRedConfig? SeasonRed { get; private init; }
     public SeasonMarketConfig? SeasonMarket { get; private init; }
     public SeasonShopConfig? SeasonShop { get; private init; }
+    public SeasonActivityConfig? SeasonActivity { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -321,7 +323,24 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle) };
+    }
+
+    private static SeasonActivityConfig? ReadSeasonActivity(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonActivityRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The activity group requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        if(ActivityDirectFields.Any(k=>rules.Int(row,k)!=0))
+            throw new InvalidDataException("Direct activity injections are disabled in this ruleset.");
+        var calendar=bundle.Table("SeasonActivityCalendar");var exchanges=bundle.Table("SeasonActivityExchange");
+        var policy=new SeasonActivityConfig(rules.Text(row,"rule_id"),rules.Text(row,"completion_kind"),rules.Int(row,"tokens_per_completion"),
+            rules.Int(row,"token_cap"),rules.Text(row,"time_zone"),rules.Int(row,"start_hour"),rules.Bool(row,"late_exchange"),
+            calendar.Rows.Select(r=>new SeasonActivityCalendarConfig(calendar.Text(r,"event_id"),calendar.Int(r,"first_day_42"),calendar.Int(r,"days"))).ToArray(),
+            exchanges.Rows.Select(r=>new SeasonActivityExchangeConfig(exchanges.Text(r,"rule_id"),exchanges.Int(r,"cost_tokens"),
+                exchanges.Text(r,"reward_kind"),exchanges.Int(r,"reward_count"),exchanges.Int(r,"per_event_limit"))).ToArray());
+        policy.Validate();return policy;
     }
 
     private static SeasonShopConfig? ReadSeasonShop(ConfigBundle bundle,IReadOnlyList<CardConfigDefinition> cards,

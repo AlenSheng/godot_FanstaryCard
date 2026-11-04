@@ -85,7 +85,7 @@ public sealed partial class PostgresSeasonSettlementTests
                 new("Equipment", generated.ToString("D"), false, Equipment: new("Head", "Blue", "Fire", null, "DrawInterval"), Destination: "Equipped")]);
         var next = new SeasonDefinition("next", "season-v1", definition.ConfigVersion, "next-stats", definition.EndsAtUtc, definition.EndsAtUtc.AddDays(42), 5);
         var seasons = new SeasonRepository(db.DataSource, clock);
-        await seasons.PublishAsync(next, new string('b', 64), Ct);
+        await seasons.PublishAsync(next, GameConfigCatalog.Current.ContentHash, Ct);
         clock.Now = next.StartsAtUtc;
         await seasons.EnsurePlayerAsync(fixture.Player, next.ContextFor(0), Ct);
         await Sql(db, "WITH states AS (UPDATE player_season_state SET archived_at=$3 WHERE player_id=$1 AND season_id=$2 RETURNING player_id) UPDATE player_season_wallets SET archived_at=$3 WHERE player_id=$1 AND season_id=$2", fixture.Player, definition.SeasonId, clock.Now);
@@ -242,7 +242,7 @@ public sealed partial class PostgresSeasonSettlementTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var definition = Define(); var clock = new Clock(definition.StartsAtUtc.AddMinutes(-1));
         var seasons = new SeasonRepository(db.DataSource, clock);
-        await seasons.PublishAsync(definition, new string('a', 64), Ct);
+        await seasons.PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         var key = Guid.NewGuid().ToString("N");
         var player = (await new IdentityRepository(db.DataSource, new PlayerProvisioningService()).SignInLocalAsync(key,
             "Legacy " + key[..10], RandomNumberGenerator.GetBytes(32), clock.Now, clock.Now.AddHours(1), Ct)).UserId;
@@ -296,7 +296,7 @@ public sealed partial class PostgresSeasonSettlementTests
     private static async Task<Fixture> SetupAsync(PostgresTestSchema db, Clock clock, SeasonDefinition definition)
     {
         var seasons = new SeasonRepository(db.DataSource, clock);
-        await seasons.PublishAsync(definition, new string('a', 64), Ct);
+        await seasons.PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         var key = Guid.NewGuid().ToString("N");
         var profile = await new IdentityRepository(db.DataSource, new PlayerProvisioningService()).SignInLocalAsync(key,
             "Settle " + key[..10], RandomNumberGenerator.GetBytes(32), clock.Now, clock.Now.AddHours(1), Ct);

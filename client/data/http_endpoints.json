@@ -442,6 +442,30 @@
       "response": "PlayerProfileResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-activities",
+      "request": "Empty",
+      "response": "SeasonActivitiesResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-activities/{eventId}/exchanges",
+      "request": "ActivityExchangeRequest",
+      "response": "ActivityExchangeResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-activities/rewards/{rewardId}/claim",
+      "request": "Empty",
+      "response": "ActivityClaimResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
     }
   ]
 }

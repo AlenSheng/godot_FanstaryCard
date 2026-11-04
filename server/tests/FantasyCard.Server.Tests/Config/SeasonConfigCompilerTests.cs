@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(28, tables.Count); // _README stays private; shop policy and fixed offers are compiled together.
+        Assert.Equal(30, tables.Count); // _README stays private; activity policy and calendar are compiled together.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
@@ -74,6 +74,11 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonShopProducts", "amount", 4)]
     [InlineData("SeasonShopProducts", "price_gold", 249)]
     [InlineData("SeasonShopProducts", "daily_limit", 6)]
+    [InlineData("SeasonActivityRules", "token_cap", 24)]
+    [InlineData("SeasonActivityRules", "tokens_per_completion", 12)]
+    [InlineData("SeasonActivityRules", "direct_gold", 1)]
+    [InlineData("SeasonActivityRules", "direct_red_materials", 1)]
+    [InlineData("SeasonActivityCalendar", "days", 4)]
     public void InvalidSeasonNumbersAreRejectedBeforePublishing(string table, string field, double value)
     {
         var tables = Change(Read(),table,field,value);

@@ -1,0 +1,42 @@
+{
+  "checks": 26,
+  "ok": false,
+  "suites": {
+    "test_season_activity_controller.gd": {
+      "checks": {
+        "A B A confirmation invalidated": true,
+        "actual intent submits original shared budget version": true,
+        "authoritative read restores pending entitlement": true,
+        "changed budget version invalidates confirmation": true,
+        "changed class invalidates previous confirmation": true,
+        "changed reward cannot claim twice": true,
+        "claim path uses immutable original reward": true,
+        "current authenticated read loads its own budget": true,
+        "fresh bootstrap supplies current balance": true,
+        "mutation response cannot credit funds or budget": true,
+        "old A read cannot replace current A": true,
+        "old account reply neither credits nor clears new busy state": true
+      },
+      "ok": true
+    },
+    "test_season_activity_model.gd": {
+      "checks": {
+        "all class choices share original rule counter": false,
+        "class choice captured": true,
+        "client may not widen reward amounts": false,
+        "different period has a distinct balance key": false,
+        "earned cap cannot be widened by client": false,
+        "inconsistent shared budget rejected": false,
+        "late original event can use only its own balance": true,
+        "one potion limit shared": false,
+        "red and gold cannot be injected": false,
+        "source event and exact int64 account version captured": true,
+        "spent balance blocks potion": false,
+        "unavailable never redeemable": false,
+        "unknown class cannot submit": true,
+        "upcoming is never redeemable": false
+      },
+      "ok": false
+    }
+  }
+}

@@ -10,7 +10,7 @@ public sealed class SeasonMarketRulesTests
     [Fact]
     public void PublishedCandidateEnablesBothCurrenciesAndTheActualVersionSevenArchiveKeepsThemDisabled()
     {
-        var current=GameConfigCatalog.Current;Assert.Equal("season-v1-config-9",current.Version);Assert.NotNull(current.SeasonMarket);current.SeasonMarket.Validate();
+        var current=GameConfigCatalog.Current;Assert.Equal("season-v1-config-10",current.Version);Assert.NotNull(current.SeasonMarket);current.SeasonMarket.Validate();
         var directory=new DirectoryInfo(AppContext.BaseDirectory);string? path=null;
         while(directory is not null)
         {

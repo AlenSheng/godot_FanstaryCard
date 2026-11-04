@@ -79,6 +79,7 @@ public sealed class RoomPlayerState
     public RedDropEvaluation? PendingRedEvaluation { get; internal set; }
     public RedDropReceipt? RedReward { get; internal set; }
     public ExplorationItem? PendingRedItem { get; internal set; }
+    public DateTimeOffset? ExtractionCompletedAt { get; internal set; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
@@ -112,7 +113,7 @@ public sealed class RoomPlayerState
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
-            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem);
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem,ExtractionCompletedAt);
 }
 
 public sealed class DuelState
@@ -659,6 +660,12 @@ public sealed partial class BattleRoom
             }
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
+            if(playerSnapshot.ExtractionCompletedAt is {} completedAt)
+            {
+                if(player.Phase!=RoomPlayerPhase.Extracted)
+                    throw new DomainValidationException("Saved extraction completion time has no successful extraction.");
+                player.ExtractionCompletedAt=completedAt.ToUniversalTime();
+            }
             player.CurrentDuelId = playerSnapshot.CurrentDuelId;
             if(room.Season is not null && catalog.UsesPublishedConfiguration && catalog.Configuration.SeasonLootPreference is not null &&
                 playerSnapshot.RewardChoice is { } savedChoice && savedChoice.SeasonLoot?.LootPreferenceElement!=player.LootPreferenceElement)
@@ -1310,6 +1317,7 @@ public sealed partial class BattleRoom
                 if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
                 if(player.IsBot && BotRewardPolicy is not null)CreateDeathRelicPile(player);
                 player.Phase = RoomPlayerPhase.Extracted;
+                player.ExtractionCompletedAt=(tickNow+remaining).ToUniversalTime();
                 player.Pve = null;
             }
         }

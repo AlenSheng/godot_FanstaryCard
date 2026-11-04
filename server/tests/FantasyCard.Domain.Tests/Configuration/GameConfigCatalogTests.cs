@@ -14,7 +14,7 @@ public sealed class GameConfigCatalogTests
     {
         var catalog = GameConfigCatalog.Current;
 
-        Assert.Equal("season-v1-config-9", catalog.Version);
+        Assert.Equal("season-v1-config-10", catalog.Version);
         Assert.Equal(232, catalog.Cards.Count);
         Assert.Equal(220, catalog.Cards.Count(card => card.IsCodex));
         Assert.Equal(12, catalog.Cards.Count(card => !card.IsCodex));

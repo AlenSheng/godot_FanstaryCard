@@ -320,6 +320,9 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var context = await ReadMatchContextAsync(connection, transaction, matchId, cancellationToken);
         RequireStoredContext(season, configVersion, context);
+        // Activity awards and claims use the same account-first lock order.
+        await using(var account=new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE",connection,transaction))
+        {account.Parameters.AddWithValue(playerId);if(await account.ExecuteScalarAsync(cancellationToken) is null)throw new InvalidOperationException("The settlement account is missing.");}
         await ValidateBlueprintAssetsAsync(connection, transaction, context, playerId, result, assets, cancellationToken);
         if (context.Season is not null && context.Status is not ("Running" or "Completed"))
             throw new InvalidOperationException("Only an admitted running match can settle seasonal assets.");
@@ -361,6 +364,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
             await insert.ExecuteNonQueryAsync(cancellationToken);
         }
         await CreditDifficultyProgressAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
+        await CreditActivityCompletionAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
         foreach (var asset in assets)
         {
             await using var hold = new NpgsqlCommand(

@@ -72,7 +72,7 @@ public sealed partial class EconomyMaintenanceWorker(
                         report.OrphanMarketListedEquipmentCount,
                         report.SoldListingMismatchCount,
                         report.MarketTransactionAmountMismatchCount,
-                        report.LedgerChainMismatchCount,report.PendingMarketReturnMismatchCount,report.CardCopyLedgerMismatchCount);
+                        report.LedgerChainMismatchCount,report.PendingMarketReturnMismatchCount,report.CardCopyLedgerMismatchCount,report.ActivityBudgetMismatchCount);
                 }
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
@@ -93,7 +93,7 @@ public sealed partial class EconomyMaintenanceWorker(
     [LoggerMessage(
         EventId = 4202,
         Level = LogLevel.Critical,
-        Message = "Economy reconciliation found {Total} violation(s): negativeAccounts={NegativeAccounts}, activeListingAssetMismatches={ActiveListingAssetMismatches}, orphanMarketListedEquipment={OrphanMarketListedEquipment}, soldListingMismatches={SoldListingMismatches}, transactionAmountMismatches={TransactionAmountMismatches}, ledgerChainMismatches={LedgerChainMismatches}, pendingMarketReturnMismatches={PendingMarketReturnMismatches}, cardCopyLedgerMismatches={CardCopyLedgerMismatches}.")]
+        Message = "Economy reconciliation found {Total} violation(s): negativeAccounts={NegativeAccounts}, activeListingAssetMismatches={ActiveListingAssetMismatches}, orphanMarketListedEquipment={OrphanMarketListedEquipment}, soldListingMismatches={SoldListingMismatches}, transactionAmountMismatches={TransactionAmountMismatches}, ledgerChainMismatches={LedgerChainMismatches}, pendingMarketReturnMismatches={PendingMarketReturnMismatches}, cardCopyLedgerMismatches={CardCopyLedgerMismatches}, activityBudgetMismatches={ActivityBudgetMismatches}.")]
     private static partial void ReconciliationViolation(
         ILogger logger,
         long total,
@@ -102,7 +102,7 @@ public sealed partial class EconomyMaintenanceWorker(
         long orphanMarketListedEquipment,
         long soldListingMismatches,
         long transactionAmountMismatches,
-        long ledgerChainMismatches,long pendingMarketReturnMismatches,long cardCopyLedgerMismatches);
+        long ledgerChainMismatches,long pendingMarketReturnMismatches,long cardCopyLedgerMismatches,long activityBudgetMismatches);
 }
 
 public sealed record RewardRefreshReservation(string State, RewardRefreshReceiptSnapshot? Receipt);

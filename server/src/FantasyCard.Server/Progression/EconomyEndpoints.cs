@@ -16,6 +16,7 @@ public static class EconomyEndpoints
     public static IServiceCollection AddEconomyModule(this IServiceCollection services)
     {
         services.AddSingleton<EconomyRepository>();
+        services.AddSingleton<SeasonActivityRepository>();
         services.AddSingleton<RedEquipmentQuotaRepository>();
         services.AddSingleton<SeasonRedMintRepository>();
         services.AddSingleton<SeasonRedDropCoordinator>();
@@ -27,6 +28,7 @@ public static class EconomyEndpoints
 
     public static IEndpointRouteBuilder MapEconomyEndpoints(this IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapSeasonActivityEndpoints();
         var economy = endpoints.MapGroup("/api/v1/economy").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Economy");
         economy.MapGet("/context", GetEconomyContextAsync)
             .RequireRateLimiting(RequestLimitOptions.ReadPolicy)

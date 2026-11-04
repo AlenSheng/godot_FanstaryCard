@@ -173,7 +173,8 @@ public sealed record RoomPlayerSnapshot(
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.BotVictoryRewardReceipt? BotVictoryReward = null,
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RedDropEvaluation? PendingRedEvaluation = null,
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RedDropReceipt? RedReward = null,
-    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.ExplorationItem? PendingRedItem = null);
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.ExplorationItem? PendingRedItem = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? ExtractionCompletedAt = null);
 
 public enum DuelEndReason : short
 {

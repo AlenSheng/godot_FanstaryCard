@@ -1,5 +1,5 @@
 {
-  "sha256": "a2941254bf0e59289b3dcf5b630f7842044b9d8c4705855ece8c3aaa8718ba7c",
+  "sha256": "54f342df3330fbe10e5538d6cde2e39e7034b9df99e33efa65fec33819e4fce3",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -1212,6 +1212,296 @@
       "2": {
         "name": "inventory",
         "type": "InventoryResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActivityExchangeRequest": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "rule_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "expected_account_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ActivityExchangeOptionResponse": {
+      "1": {
+        "name": "rule_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "cost_tokens",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "reward_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "reward_count",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "event_limit",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "used",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActivityRewardResponse": {
+      "1": {
+        "name": "reward_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "event_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "rule_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "reward_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "reward_amount",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "token_cost",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "quantity",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "created_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "claimed_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "13": {
+        "name": "can_claim",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActivityEventResponse": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "event_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "earned",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "spent",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "available",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "token_cap",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "account_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "can_exchange",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "options",
+        "type": "ActivityExchangeOptionResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "14": {
+        "name": "rewards",
+        "type": "ActivityRewardResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "SeasonActivitiesResponse": {
+      "1": {
+        "name": "events",
+        "type": "ActivityEventResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ActivityExchangeResponse": {
+      "1": {
+        "name": "reward",
+        "type": "ActivityRewardResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "tokens_remaining",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "account_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ActivityClaimResponse": {
+      "1": {
+        "name": "reward",
+        "type": "ActivityRewardResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "balance_after",
+        "type": "int64",
         "repeated": false,
         "optional": false
       }

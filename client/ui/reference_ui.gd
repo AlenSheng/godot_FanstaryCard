@@ -47,6 +47,7 @@ func build(source: Control) -> void:
 			"shop": _shop()
 			"market": _market()
 			"crafting": SeasonCrafting.build(self,host)
+			"activities": preload("res://ui/season_activity_view.gd").build(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -123,6 +124,7 @@ func _header() -> void:
 		return
 	panel(Rect2(24, 18, 1872, 82))
 	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"),"crafting":P.localized("season_craft_title")}
+	names["activities"]=P.localized("activity_title")
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
@@ -219,6 +221,7 @@ func _hall() -> void:
 	# portrait layer over the generated layered backdrop; no GLB is instantiated.
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
+	button(P.localized("activity_title"),Rect2(56,714,430,66),host._navigate.bind("activities"),Game.busy or not Game.ticket.is_empty(),BLUE).name="ActivityEntry"
 	var portal_rect := Rect2(990, 153, 835, 550)
 	picture(Art.texture("UI/Hall/portal_background_clean.png"), portal_rect)
 	var portal_frame := Panel.new()

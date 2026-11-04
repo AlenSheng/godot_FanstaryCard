@@ -5,6 +5,7 @@ namespace FantasyCard.ConfigExporter;
 /// <summary>Validates the seasonal configuration group before either bundle is published.</summary>
 public static class SeasonConfigValidator
 {
+    private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
     private static readonly Dictionary<string, string> Schemas = new(StringComparer.Ordinal)
     {
         ["SeasonDifficulty"] = "difficulty_id:s,name_key:s,hp_scale:d,shield_scale:d,damage_scale:d,interval_scale:d,gold_scale:d,soul_scale:d,fragment_scale:d,quality_cap:i,purple_affix_chance:d,entry_quality_cap:i,red_boss_enabled:b",
@@ -60,6 +61,7 @@ public static class SeasonConfigValidator
         ValidateLootPreference(tables);
         ValidateBotRewards(tables);
         ValidateShop(tables);
+        ValidateActivity(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -329,6 +331,41 @@ public static class SeasonConfigValidator
         }
         var levels=tables.Single(t=>t.Name=="CardLevels");
         Check(levels.Rows.All(r=>B(levels,r,"requires_copy")== (N(levels,r,"level")>=4)),levels,"extra copies are required only at +4 and +5");
+    }
+
+    private static void ValidateActivity(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonActivityRules");var calendar=tables.SingleOrDefault(t=>t.Name=="SeasonActivityCalendar");
+        if(rules is null&&calendar is null)return;
+        if(rules is null||calendar is null)throw new InvalidDataException("Activity calendar and policy must publish together.");
+        foreach(var pair in new[]{(Table:rules,Scope:PublishScope.Server,Schema:"rule_id:s,enabled:b,completion_kind:s,tokens_per_completion:i,token_cap:i,time_zone:s,start_hour:i,late_exchange:b,direct_gold:i,direct_diamonds:i,direct_equipment:i,direct_red_materials:i"),
+                     (Table:calendar,Scope:PublishScope.Both,Schema:"event_id:s,first_day_42:i,days:i")})
+            foreach(var field in pair.Schema.Split(','))
+            {
+                var parts=field.Split(':');var col=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(col is not null&&col.Required&&col.Scope==pair.Scope&&col.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text),pair.Table,"invalid limited-activity metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-limited-activity-v1"&&S(rules,row,"completion_kind")=="Extracted"&&N(rules,row,"tokens_per_completion")==4&&
+            N(rules,row,"token_cap")==12&&S(rules,row,"time_zone")=="Asia/Shanghai"&&N(rules,row,"start_hour")==0&&B(rules,row,"late_exchange"),rules,"limited activity budget or completion terms differ");
+        Check(ActivityDirectFields.All(f=>N(rules,row,f)==0),rules,"direct activity injections are disabled");
+        Check(calendar.Rows.Count==2,calendar,"requires two events");
+        Check(calendar.Rows.All(r=>N(calendar,r,"first_day_42") is >=1 and <=40&&N(calendar,r,"days")==3),calendar,"requires three-day windows inside the season");
+        foreach(var duration in new[]{30,42,60})
+        {
+            var starts=calendar.Rows.Select(r=>(int)(N(calendar,r,"first_day_42")-1)*duration/42).Order().ToArray();
+            Check(starts[0]+3<=starts[1]&&starts[1]+3<=duration,calendar,"scaled event windows overlap or exceed the season");
+        }
+        var exchanges=tables.Single(t=>t.Name=="SeasonActivityExchange");
+        (string Id,int Cost,string Kind,int Count,int Limit)[] expected=[("event-fragments",3,"bound_fragments",10,4),
+            ("event-warrior",3,"bound_warrior_soul",6,4),("event-class",3,"bound_class_soul",2,4),("event-potion",6,"potion",1,1)];
+        Check(exchanges.Rows.Count==4,exchanges,"requires exactly the four bound-resource choices");
+        foreach(var e in expected)
+        {
+            var r=exchanges.Rows.SingleOrDefault(r=>S(exchanges,r,"rule_id")==e.Id);
+            Check(r is not null,exchanges,"missing resource choice");
+            Check(N(exchanges,r!,"cost_tokens")==e.Cost&&S(exchanges,r!,"reward_kind")==e.Kind&&N(exchanges,r!,"reward_count")==e.Count&&N(exchanges,r!,"per_event_limit")==e.Limit,exchanges,"activity exchange differs from the shared-budget contract");
+        }
     }
 
     private static object Value(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) =>

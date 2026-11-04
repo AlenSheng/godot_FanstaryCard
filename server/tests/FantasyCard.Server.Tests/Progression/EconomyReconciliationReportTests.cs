@@ -16,9 +16,9 @@ public sealed class EconomyReconciliationReportTests
     [Fact]
     public void Report_aggregates_all_violation_categories()
     {
-        var report = new EconomyReconciliationReport(1, 2, 3, 4, 5, 6, 7, 8);
+        var report = new EconomyReconciliationReport(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
         Assert.False(report.IsHealthy);
-        Assert.Equal(36, report.TotalViolationCount);
+        Assert.Equal(45, report.TotalViolationCount);
     }
 }
