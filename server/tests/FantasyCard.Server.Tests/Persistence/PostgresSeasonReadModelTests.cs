@@ -28,7 +28,7 @@ public sealed class PostgresSeasonReadModelTests
         var prior = Define("prior", new DateOnly(2026, 9, 21));
         var clock = new Clock(current.StartsAtUtc.AddDays(1));
         var seasons = new SeasonRepository(database.DataSource, clock);
-        foreach (var definition in new[] { prior, current, future }) await seasons.PublishAsync(definition, new string('a', 64), Ct);
+        foreach (var definition in new[] { prior, current, future }) await seasons.PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         await EquipmentAsync(database, player.UserId, null, null);
         var currentId = await EquipmentAsync(database, player.UserId, current.SeasonId, "ActiveSeason");
         await EquipmentAsync(database, player.UserId, future.SeasonId, "ActiveSeason");
@@ -58,7 +58,7 @@ public sealed class PostgresSeasonReadModelTests
         var current = Define("current", new DateOnly(2026, 11, 2));
         var clock = new Clock(current.StartsAtUtc.AddDays(1));
         var seasons = new SeasonRepository(database.DataSource, clock);
-        await seasons.PublishAsync(current, new string('a', 64), Ct);
+        await seasons.PublishAsync(current, GameConfigCatalog.Current.ContentHash, Ct);
         await SeedPermanentAsync(database, player.UserId);
         await seasons.EnsurePlayerAsync(player.UserId, current.ContextFor(0), Ct);
         await seasons.ApplyAsync(player.UserId, current.ContextFor(0), 30, 20, 3, "test.reward", "fund", SeasonWalletPurpose.General, Ct);
@@ -104,7 +104,7 @@ public sealed class PostgresSeasonReadModelTests
         var current = Define("first", new DateOnly(2026, 11, 2));
         var clock = new Clock(current.StartsAtUtc.AddTicks(-1));
         var seasons = new SeasonRepository(database.DataSource, clock);
-        await seasons.PublishAsync(current, new string('a', 64), Ct);
+        await seasons.PublishAsync(current, GameConfigCatalog.Current.ContentHash, Ct);
         await SeedPermanentAsync(database, player.UserId);
         await EquipmentAsync(database, player.UserId, null, null);
         using var economy = new EconomyRepository(database.DataSource, clock);

@@ -26,7 +26,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
         var prepared = new List<(Prepared Value, int Difficulty)>();
@@ -70,7 +70,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
         var waiting = await PrepareAsync(db, clock, season, 0);
@@ -95,7 +95,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
         var players = new List<Guid>();
@@ -119,7 +119,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.EndsAtUtc.AddSeconds(-10));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var value = await PrepareAsync(db, clock, season, 0);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
@@ -138,7 +138,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc.AddSeconds(-10));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var queued = await PrepareAsync(db, clock, null, 0);
         var active = await PrepareAsync(db, clock, null, 0);
         using var metrics = new ServerMetrics();
@@ -159,7 +159,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.EndsAtUtc.AddSeconds(-45));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var value = await PrepareAsync(db, clock, season, 0);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
@@ -180,6 +180,10 @@ public sealed class PostgresSeasonMatchmakingTests
         Assert.Equal(0L, await db.ScalarAsync<long>("SELECT count(*) FROM inventory_movements WHERE reason='match.start'"));
         Assert.False(await coordinator.ProcessNextAsync(clock.Now, Ct));
         await AssertEquipmentAndPotionsAsync(db, value, "Equipped", 1);
+        var archived=await new SeasonRepository(db.DataSource,clock).AdvanceArchivePageAsync(value.Player,season.SeasonId,32,Ct);
+        Assert.Equal("Completed",archived.Status);
+        await AssertEquipmentAndPotionsAsync(db,value,"SeasonArchive",1);
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM match_settlements WHERE match_id=$1",pending.MatchId));
     }
 
     [Fact(Skip = "Requires isolated PostgreSQL.", SkipUnless = nameof(HasTestDatabase))]
@@ -188,7 +192,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.EndsAtUtc.AddMinutes(-2));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var value = await PrepareAsync(db, clock, season, 2);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
@@ -214,7 +218,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var value = await PrepareAsync(db, clock, season, 0);
         using var metrics = new ServerMetrics();
         var repository = new MatchmakingRepository(db.DataSource, clock, metrics);
@@ -240,7 +244,7 @@ public sealed class PostgresSeasonMatchmakingTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.EndsAtUtc.AddMinutes(-2));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var value = await PrepareAsync(db, clock, season, 0);
         using var metrics = new ServerMetrics();
         var applicationName = "season-claim-" + Guid.NewGuid().ToString("N");
@@ -307,7 +311,7 @@ public sealed class PostgresSeasonMatchmakingTests
         {
             await using var insert = db.DataSource.CreateCommand("""
                 INSERT INTO equipments(instance_id,owner_id,slot,quality,level,location,created_at,element,origin_season_id,season_id,asset_scope,stats_version,source_kind,generated_difficulty)
-                VALUES ($1,$2,'Head','Blue',0,'Equipped',$3,'Fire',$4,$4,$5,$6,$7,$8)
+                VALUES ($1,$2,'Head',CASE WHEN $8=0 THEN 'Green' ELSE 'Blue' END,0,'Equipped',$3,'Fire',$4,$4,$5,$6,$7,$8)
                 """);
             insert.Parameters.AddWithValue(item.Value); insert.Parameters.AddWithValue(player); insert.Parameters.AddWithValue(clock.Now);
             insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar, (object?)season?.SeasonId ?? DBNull.Value);

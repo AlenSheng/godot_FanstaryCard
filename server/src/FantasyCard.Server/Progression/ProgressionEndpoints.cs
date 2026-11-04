@@ -15,6 +15,7 @@ public static class ProgressionEndpoints
     {
         services.AddSingleton<ProgressionRepository>();
         services.AddSingleton<SeasonRepository>();
+        services.AddHostedService<SeasonArchiveWorker>();
         return services;
     }
 

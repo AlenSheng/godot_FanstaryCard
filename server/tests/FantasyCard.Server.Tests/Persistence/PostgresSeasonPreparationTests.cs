@@ -24,7 +24,7 @@ public sealed partial class PostgresSeasonPreparationTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var player = await PlayerAsync(db);
         var definition = Define();var clock = new Clock(definition.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         await using (var seed = db.DataSource.CreateCommand("WITH c AS (UPDATE player_cards SET level=5 WHERE player_id=$1 AND unlocked RETURNING player_id) UPDATE class_weapons SET level=5 WHERE player_id=$1"))
         {
             seed.Parameters.AddWithValue(player);await seed.ExecuteNonQueryAsync(Ct);
@@ -63,7 +63,7 @@ public sealed partial class PostgresSeasonPreparationTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var player = await PlayerAsync(db);var definition = Define();var clock = new Clock(definition.StartsAtUtc);
         var seasons = new SeasonRepository(db.DataSource, clock);
-        await seasons.PublishAsync(definition, new string('a', 64), Ct);
+        await seasons.PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         await seasons.EnsurePlayerAsync(player, definition.ContextFor(0), Ct);
         await using (var unlock = db.DataSource.CreateCommand("UPDATE player_season_state SET highest_unlocked_difficulty=5 WHERE player_id=$1"))
         {
@@ -85,7 +85,7 @@ public sealed partial class PostgresSeasonPreparationTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var player = await PlayerAsync(db);var definition = Define();var clock = new Clock(definition.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         var item = await ItemAsync(db, player, season, stats, "Blue");
         var result = await new PreparationRepository(db.DataSource, clock).CreateAsync(player, "bad-item", await RequestAsync(db, player, "D0", item), Ct);
         Assert.Equal(CreatePreparationStatus.AssetUnavailable, result.Status);
@@ -99,7 +99,7 @@ public sealed partial class PostgresSeasonPreparationTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var player = await PlayerAsync(db);var definition = Define();var clock = new Clock(definition.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         var repository = new PreparationRepository(db.DataSource, clock);
         var lockedRequest = await RequestAsync(db, player, "D2");
         await Assert.ThrowsAsync<DomainValidationException>(() => repository.CreateAsync(player, "locked", lockedRequest, Ct));
@@ -115,7 +115,7 @@ public sealed partial class PostgresSeasonPreparationTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var player = await PlayerAsync(db);var definition = Define();var clock = new Clock(definition.EndsAtUtc.AddSeconds(-10));
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(definition, GameConfigCatalog.Current.ContentHash, Ct);
         var repository = new PreparationRepository(db.DataSource, clock);
         var request = await RequestAsync(db, player, "D0");
         var created = await repository.CreateAsync(player, "before-end", request, Ct);

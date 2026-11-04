@@ -1,5 +1,6 @@
 using System.Text.Json;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Matchmaking;
 using FantasyCard.Server.Rooms;
@@ -16,7 +17,7 @@ public sealed partial class PostgresSeasonPreparationTests
     {
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
         var player=await PlayerAsync(db);var season=Define();var clock=new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,new string('a',64),Ct);
+        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         var request=await RequestAsync(db,player,"D0");
         var repository=new PreparationRepository(db.DataSource,clock);
         await Assert.ThrowsAsync<DomainValidationException>(()=>repository.CreateAsync(player,"same-preference",request with {LootPreferenceElement=preference},Ct));
@@ -33,7 +34,7 @@ public sealed partial class PostgresSeasonPreparationTests
     {
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
         var player=await PlayerAsync(db);var season=Define();var clock=new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,new string('a',64),Ct);
+        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         var request=(await RequestAsync(db,player,"D0")) with {LootPreferenceElement="Water"};
         var repository=new PreparationRepository(db.DataSource,clock);
         var first=await repository.CreateAsync(player,"preference-replay",request,Ct);
@@ -57,7 +58,7 @@ public sealed partial class PostgresSeasonRoomTests
     {
         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
         var season=Define();var clock=new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,new string('a',64),Ct);
+        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,GameConfigCatalog.Current.ContentHash,Ct);
         var fixture=await RoomAsync(db,clock,season.ContextFor(0));
         using var metrics=new ServerMetrics();var repository=new RoomSnapshotRepository(db.DataSource,clock,metrics);
         var original=fixture.Room.Capture();await repository.SaveIfDueAsync(original,Ct);

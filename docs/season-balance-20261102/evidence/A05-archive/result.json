@@ -1,0 +1,59 @@
+{
+  "status": "A05_backend_complete_current_scope",
+  "A05_complete": true,
+  "whole_goal_complete": false,
+  "completed_items": 20,
+  "configuration": "season-v1-config-12",
+  "migration": "V048__season_archive_pages.sql",
+  "new_archive_PG_tests": 8,
+  "server_case_union": 106,
+  "union_not_one_physical_run": true,
+  "r91_initial": {
+    "passed": 73,
+    "failed": 32,
+    "skipped": 0
+  },
+  "runtime_r92": {
+    "passed": 34,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 67.951,
+    "precompiled_on_local": true,
+    "SDK": "10.0.400",
+    "cloud_SDK_started": false,
+    "payload_sha256": "a6407b48c78e50dbcf5dc326951925621f5bd21feb7122daec989c71fb64d6a5"
+  },
+  "cloud_guard_samples": 36,
+  "cloud_min_ram": 2486108160,
+  "cloud_min_disk": 3274985472,
+  "cloud_min_disk_fraction": 0.05174567561249698,
+  "owned_runtime_removed": true,
+  "SDK_r91_removed": true,
+  "new_full_routes": 0,
+  "B05_budget": "291/300",
+  "C16_encounter_budget": "121/300",
+  "capacity100_retest": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "season_activated": false,
+  "retained_failures": [
+    "r91 native positional SQL combined multiple commands: seven archive tests failed",
+    "r91 current-version fixture hashes were placeholders: twenty-five tests failed",
+    "r2 missing Configuration namespace: compiler failed, zero PG cases",
+    "r3 observer timed out after900s; eventual TRX7passed27connection failures, whole batch rejected; incomplete stdout explicitly retained as a gap",
+    "r92 runtime helper preparation syntax failed before any cloud action; preserved separate from actual test outcomes"
+  ],
+  "scope": [
+    "Real PostgreSQL page atomicity, stable item identity, source-season isolation, preserved original armor references and permanent aggregate",
+    "Concurrent account-first workers, injected mid-page rollback and original durable cursor through repository recreation",
+    "Full-warehouse market hold identity, old-room waiting, original late wallet credit",
+    "Hosted background execution without an online client; actual pre-start cancellation releases assets and no longer prevents archive"
+  ],
+  "remaining": [
+    "Full OS-process crash/restart fault matrix remains F02; repository recreation is not claimed as that proof.",
+    "Archive collection UI remains E01/E02.",
+    "C15 exact tier rewards and C16 combat balance remain unaccepted."
+  ],
+  "runtime_log_note": "Runtime image emitted a missing optional libgssapi_krb5.so.2 notice. The configured password PostgreSQL path passed; Kerberos authentication is not asserted.",
+  "external_original_evidence_root": "G:\\PR13Evidence\\season-balance-20261102-r1"
+}

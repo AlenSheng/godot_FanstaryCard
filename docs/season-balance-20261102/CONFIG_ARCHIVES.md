@@ -41,3 +41,8 @@ Godot原生验证使用真实C#编码的两个包和HTTP外层：209项布尔检
 ## C15 候选10原包追加归档
 
 `server/config/archive/season-v1-config-10/`保存上一版的原三件套，内容哈希`c4e4bf5b9cc425f176c2c4a5568fe05ef4f2bb7a3384dd3d90cdd2e3af20396a`，bytes SHA`068b8c49129d4aa528ad163b368a85017ea6d8055793b374e1663aa302dd37a7`。旧候选10无季程策略，不能按新进程的当前规则/时钟追补经验；其活动规则仍按原版加载。
+
+
+## C16 候选11原包追加归档
+
+server/config/archive/season-v1-config-11/保存候选11的原三件套，内容哈希88b5b9dab936d3e24e2a2ecd950a0e56e6445b245011f8dd9615d9f08f2a4176，bytes SHA102507840f05eff1efc0029a21a9dd858e4027c0f40e8f767d523ebb09f6cc02。该包没有具名主题表，旧房不附加当前主题。候选12的五主题策略继续锁定各房的原配置；源包缺失或损坏仍拒绝恢复，不回退当前主题。

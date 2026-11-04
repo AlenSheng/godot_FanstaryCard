@@ -17,7 +17,7 @@ public sealed record SeasonWalletSnapshot(
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] long OrangeBlueprintMarks = 0);
 public sealed record SeasonWalletListEntry(SeasonWalletSnapshot Wallet, bool CanFundWeapon);
 
-public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
+public sealed partial class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
 {
     private const long PublicationLock = 6_202_611_020_000_001;
 

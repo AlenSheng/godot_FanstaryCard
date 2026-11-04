@@ -53,7 +53,7 @@ public sealed partial class EconomyRepository
         while(await reader.ReadAsync(ct))ids.Add(reader.GetGuid(0));return ids;
     }
 
-    private static async Task<IReadOnlyList<Guid>> ExpireSellerMarketListingsAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,Guid sellerId,DateTimeOffset now,CancellationToken ct)
+    internal static async Task<IReadOnlyList<Guid>> ExpireSellerMarketListingsAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,Guid sellerId,DateTimeOffset now,CancellationToken ct)
     {
         var ids=await SellerExpiredListingIdsAsync(connection,transaction,sellerId,now,ct);var expired=new List<Guid>();
         foreach(var id in ids)
