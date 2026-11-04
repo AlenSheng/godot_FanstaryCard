@@ -66,7 +66,7 @@ public sealed partial class SeasonActivityRepository(NpgsqlDataSource dataSource
                 throw new DomainValidationException("The activity differs from its original published rules.");
             return new(season,hash,window,config);
         }
-        catch(Exception e) when(e is IOException or DomainValidationException)
+        catch(Exception e) when(e is IOException or InvalidDataException or DomainValidationException)
         {
             if(required)throw new DomainValidationException("The original activity configuration is unavailable.");
             return new(season,hash,window,null);

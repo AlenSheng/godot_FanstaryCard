@@ -1,0 +1,37 @@
+{
+  "container_id": "bc3299ffe27479fdc39c3ca3ba4b3338aeb69a3d392b8fb7819f06c0f857b0bf",
+  "name": "fc-season-archive-runtime-r94",
+  "label": "season-balance-20261102-a03-runtime-r94",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "image_id": "sha256:b34b01ff381aa920264e3920d7a7a49e6c1056091999dfc6268107d07029b9f4",
+  "payload_sha256": "d26029e87e4a5d4a61d7bfea4852790cfb6fee9971d8a33c41990261257d6f61",
+  "precompiled_on_local": true,
+  "cloud_SDK_started": false,
+  "production_database_used": false,
+  "new_game_matches": 0,
+  "memory_mib": 1200,
+  "cpus": 1,
+  "command": [
+    "/workspace/bin/FantasyCard.Server.Tests.dll",
+    "-noLogo",
+    "-noColor",
+    "-noAutoReporters",
+    "-failSkips",
+    "-parallel",
+    "none",
+    "-reporter",
+    "verbose",
+    "-trx",
+    "/results/season-archive-runtime.trx",
+    "-xml",
+    "/results/xunit.original.xml",
+    "-class",
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests"
+  ],
+  "admission_after_staging": {
+    "available_ram": 2564673536,
+    "free_disk": 3298082816,
+    "disk_fraction": 0.05211062003144256
+  },
+  "started_at": 1793830580.4966648
+}

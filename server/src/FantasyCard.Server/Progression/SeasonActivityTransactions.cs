@@ -99,9 +99,16 @@ public sealed partial class SeasonActivityRepository
             var column=currency switch {"WarriorSoul"=>"warrior_soul","PriestSoul"=>"priest_soul","MageSoul"=>"mage_soul","GuardianSoul"=>"guardian_soul",_=>throw new DomainValidationException("The held activity soul class is invalid.")};
             await using(var q=new NpgsqlCommand($"UPDATE player_materials SET {column}={column}+$1,version=version+1 WHERE player_id=$2 RETURNING {column}",c,t))
             {q.Parameters.AddWithValue(reward.RewardAmount);q.Parameters.AddWithValue(player);balance=await q.ExecuteScalarAsync(ct) is long value?value:throw new DomainValidationException("The permanent activity soul aggregate is missing.");}
-            await using var ledger=new NpgsqlCommand("INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,season_id) VALUES($1,$2,$3,$4,$5,$6,'activity.claim',$7,$8)",c,t);
+            // D0 is the account-level accounting context, not a combat completion.
+            await using var ledger=new NpgsqlCommand("""
+                INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,
+                    season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version)
+                VALUES($1,$2,$3,$4,$5,$6,'activity.claim',$7,$8,'SeasonActivity','D0',$9,$10,$11)
+                """,c,t);
             ledger.Parameters.AddWithValue(Guid.CreateVersion7());ledger.Parameters.AddWithValue(player);ledger.Parameters.AddWithValue(rewardId.ToString("D"));ledger.Parameters.AddWithValue(currency);
-            ledger.Parameters.AddWithValue((long)reward.RewardAmount);ledger.Parameters.AddWithValue(balance);ledger.Parameters.AddWithValue(now);ledger.Parameters.AddWithValue(reward.SeasonId);await ledger.ExecuteNonQueryAsync(ct);
+            ledger.Parameters.AddWithValue((long)reward.RewardAmount);ledger.Parameters.AddWithValue(balance);ledger.Parameters.AddWithValue(now);ledger.Parameters.AddWithValue(reward.SeasonId);
+            ledger.Parameters.AddWithValue(realm.Season.RulesetId);ledger.Parameters.AddWithValue(realm.Season.ConfigVersion);
+            ledger.Parameters.AddWithValue(realm.Season.StatsVersion);await ledger.ExecuteNonQueryAsync(ct);
         }
         var result=new ActivityClaimResponse(reward with {State="Claimed",ClaimedAt=now,CanClaim=false},balance);
         await using(var q=new NpgsqlCommand("UPDATE season_activity_redemptions SET state='Claimed',claimed_at=$1,claim_json=$2 WHERE reward_id=$3",c,t))

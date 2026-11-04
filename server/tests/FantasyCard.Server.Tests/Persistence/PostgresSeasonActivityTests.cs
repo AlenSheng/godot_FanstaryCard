@@ -5,6 +5,7 @@ using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Progression;
 using FantasyCard.Server.Rooms;
+using FantasyCard.Server.Tests.Config;
 using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
@@ -85,11 +86,14 @@ public sealed class PostgresSeasonActivityTests
         e=await ActivityTestInputs.First(p);var soul=await p.Activities.ExchangeAsync(p.Player,e.EventId,"reserve-soul",ActivityTestInputs.Request(p,e,"event-warrior"),Ct);
         e=await ActivityTestInputs.First(p);var hero=await p.Activities.ExchangeAsync(p.Player,e.EventId,"reserve-class",ActivityTestInputs.Request(p,e,"event-class",hero:"Priest"),Ct);
         p.Clock.Now=p.Season.EndsAtUtc.AddDays(1);
-        var next=SeasonDefinition.FromCalendarDays("next-event-season",DateOnly.FromDateTime(p.Season.EndsAtUtc.ToOffset(TimeSpan.FromHours(8)).Date),GameConfigCatalog.Current.Version,"season-equipment-v1");
-        await p.Seasons.PublishAsync(next,GameConfigCatalog.Current.ContentHash,Ct);await p.Seasons.EnsurePlayerAsync(p.Player,next.ContextFor(0),Ct);
+        var nextConfig=SeasonThemeConfigIntegrationTests.Variant("Wood");using var archive=new ConfigArchiveDirectory();
+        PublishedConfigTestInputs.Store(archive.Root,GameConfigCatalog.Current.Version,GameConfigCatalog.Current.ExportPublishedBytes(),GameConfigCatalog.Current.ContentHash);
+        var next=SeasonDefinition.FromCalendarDays("next-event-season",DateOnly.FromDateTime(p.Season.EndsAtUtc.ToOffset(TimeSpan.FromHours(8)).Date),nextConfig.Version,"season-equipment-v1");
+        await p.Seasons.PublishAsync(next,nextConfig.ContentHash,Ct,configuration:nextConfig);await p.Seasons.EnsurePlayerAsync(p.Player,next.ContextFor(0),Ct);
         await p.Seasons.ApplyAsync(p.Player,next.ContextFor(0),0,7,0,"test.new-season-fragments","new-season",FantasyCard.Server.Seasons.SeasonWalletPurpose.General,Ct);
         await CraftingTestInputs.SqlAsync(db,"UPDATE player_season_wallets SET archived_at=$1 WHERE player_id=$2 AND season_id=$3",p.Clock.Now,p.Player,p.Season.SeasonId);
-        foreach(var reward in new[]{fragment.Reward,soul.Reward,hero.Reward})await p.Activities.ClaimAsync(p.Player,reward.RewardId,"late-"+reward.RewardId.ToString("N"),Ct);
+        var restarted=new SeasonActivityRepository(db.DataSource,p.Clock,new PublishedConfigCatalogs(nextConfig,archive.Root));
+        foreach(var reward in new[]{fragment.Reward,soul.Reward,hero.Reward})await restarted.ClaimAsync(p.Player,reward.RewardId,"late-"+reward.RewardId.ToString("N"),Ct);
         var wallet=await p.Seasons.GetWalletAsync(p.Player,p.Season.ContextFor(0),Ct);Assert.Equal(20,wallet!.EquipmentFragments);Assert.NotNull(wallet.ArchivedAt);
         Assert.Equal(7,(await p.Seasons.GetWalletAsync(p.Player,next.ContextFor(0),Ct))!.EquipmentFragments);
         Assert.Equal(0,await db.ScalarAsync<long>("SELECT equipment_fragments FROM player_materials WHERE player_id=$1",p.Player));
@@ -97,6 +101,11 @@ public sealed class PostgresSeasonActivityTests
         Assert.Equal(2,await db.ScalarAsync<long>("SELECT priest_soul FROM player_materials WHERE player_id=$1",p.Player));
         Assert.Equal(3,await db.ScalarAsync<long>("SELECT count(*) FROM season_activity_reward_ledger WHERE player_id=$1 AND season_id=$2",p.Player,p.Season.SeasonId));
         Assert.Equal(2,await db.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND reason='activity.claim' AND season_id=$2 AND currency IN ('WarriorSoul','PriestSoul')",p.Player,p.Season.SeasonId));
+        Assert.Equal(3L,await db.ScalarAsync<long>("""
+            SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND season_id=$2 AND reason='activity.claim'
+                AND difficulty_id='D0' AND ruleset_id=$3 AND config_version=$4 AND stats_version=$5 AND source_kind IS NOT NULL
+            """,p.Player,p.Season.SeasonId,p.Season.RulesetId,p.Season.ConfigVersion,p.Season.StatsVersion));
+        Assert.Equal(2L,await db.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND source_kind='SeasonActivity' AND config_version=$2",p.Player,p.Season.ConfigVersion));
     }
 
     [Fact(Skip=Required,SkipUnless=nameof(HasTestDatabase))][Trait("Category","PostgresIntegration")]
@@ -164,5 +173,46 @@ public sealed class PostgresSeasonActivityTests
         Assert.True((await new EconomyReconciliationRepository(db.DataSource).InspectAsync(Ct)).IsHealthy);
         await CraftingTestInputs.SqlAsync(db,"UPDATE player_season_activity_accounts SET spent=0 WHERE player_id=$1",p.Player);
         Assert.True((await new EconomyReconciliationRepository(db.DataSource).InspectAsync(Ct)).ActivityBudgetMismatchCount>0);
+    }
+
+    [Fact(Skip=Required,SkipUnless=nameof(HasTestDatabase))][Trait("Category","PostgresIntegration")]
+    public async Task SoulClaimFailureRollsBackPermanentBalanceAndContextLedgerThenTheSameKeyRetriesOnce()
+    {
+        await using var db=await PostgresTestSchema.CreateAsync(true);var p=await ActivityTestInputs.Create(db);await ActivityTestInputs.Earn(db,p);
+        var e=await ActivityTestInputs.First(p);var held=await p.Activities.ExchangeAsync(p.Player,e.EventId,"hold-soul",ActivityTestInputs.Request(p,e,"event-warrior"),Ct);
+        await db.ExecuteAsync("CREATE FUNCTION fail_activity_soul() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'isolated soul claim fault'; END $$; CREATE TRIGGER activity_soul_fault BEFORE INSERT ON season_activity_reward_ledger FOR EACH ROW EXECUTE FUNCTION fail_activity_soul();");
+        await Assert.ThrowsAsync<PostgresException>(()=>p.Activities.ClaimAsync(p.Player,held.Reward.RewardId,"same-soul-claim",Ct));
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT warrior_soul FROM player_materials WHERE player_id=$1",p.Player));
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND reason='activity.claim'",p.Player));
+        Assert.Equal("Pending",Assert.Single((await ActivityTestInputs.First(p)).Rewards).State);
+        await db.ExecuteAsync("DROP TRIGGER activity_soul_fault ON season_activity_reward_ledger;");
+        var claimed=await p.Activities.ClaimAsync(p.Player,held.Reward.RewardId,"same-soul-claim",Ct);
+        Assert.Equal(claimed,await p.Activities.ClaimAsync(p.Player,held.Reward.RewardId,"same-soul-claim",Ct));
+        Assert.Equal((long)held.Reward.RewardAmount,await db.ScalarAsync<long>("SELECT warrior_soul FROM player_materials WHERE player_id=$1",p.Player));
+        Assert.Equal(1L,await db.ScalarAsync<long>("""
+            SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND reason='activity.claim' AND source_kind='SeasonActivity'
+                AND season_id=$2 AND difficulty_id='D0' AND ruleset_id=$3 AND config_version=$4 AND stats_version=$5
+            """,p.Player,p.Season.SeasonId,p.Season.RulesetId,p.Season.ConfigVersion,p.Season.StatsVersion));
+        Assert.True((await new EconomyReconciliationRepository(db.DataSource).InspectAsync(Ct)).IsHealthy);
+    }
+
+    [Theory(Skip=Required,SkipUnless=nameof(HasTestDatabase))][Trait("Category","PostgresIntegration")]
+    [InlineData("missing")][InlineData("corrupt")]
+    public async Task MissingOrCorruptOriginalActivityBundleCannotFallBackToAnotherLobbyAndMintSouls(string source)
+    {
+        await using var db=await PostgresTestSchema.CreateAsync(true);var p=await ActivityTestInputs.Create(db);await ActivityTestInputs.Earn(db,p);
+        var e=await ActivityTestInputs.First(p);var held=await p.Activities.ExchangeAsync(p.Player,e.EventId,"held-original-soul",ActivityTestInputs.Request(p,e,"event-warrior"),Ct);
+        using var archive=new ConfigArchiveDirectory();
+        if(source=="corrupt")
+        {
+            var bytes=GameConfigCatalog.Current.ExportPublishedBytes();bytes[^1]^=1;
+            PublishedConfigTestInputs.Store(archive.Root,GameConfigCatalog.Current.Version,bytes,GameConfigCatalog.Current.ContentHash);
+        }
+        var restarted=new SeasonActivityRepository(db.DataSource,p.Clock,new PublishedConfigCatalogs(SeasonThemeConfigIntegrationTests.Variant("Wood"),archive.Root));
+        await Assert.ThrowsAsync<DomainValidationException>(()=>restarted.ClaimAsync(p.Player,held.Reward.RewardId,"unavailable-source",Ct));
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT warrior_soul FROM player_materials WHERE player_id=$1",p.Player));
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND reason='activity.claim'",p.Player));
+        Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM season_activity_reward_ledger WHERE player_id=$1",p.Player));
+        Assert.Equal("Pending",Assert.Single((await ActivityTestInputs.First(p)).Rewards).State);
     }
 }
