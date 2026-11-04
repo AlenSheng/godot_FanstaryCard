@@ -1,2500 +1,1037 @@
 {
-  "accepted_distinct_server_cases": 189,
-  "windows_non_pg": 167,
-  "cloud_current_server": 24,
-  "shared_report_cases": [
-    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy",
-    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories"
-  ],
-  "theory_row_ids_retained": true,
-  "adapter_ids_not_assumed_equal_across_runs": true,
-  "windows_cases": [
-    {
-      "executionId": "9356dbe5-0633-407b-8a18-482adb6221a0",
-      "testId": "21b83b28-636b-b97d-52f2-629643a982c5",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_writes_identical_bundle_to_server_and_client",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0279946",
-      "startTime": "2026-11-04T21:17:47.6236962+08:00",
-      "endTime": "2026-11-04T21:17:47.6517394+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9356dbe5-0633-407b-8a18-482adb6221a0"
-    },
-    {
-      "executionId": "dd1b5d33-259d-4495-b4c1-8ec414b62da0",
-      "testId": "0418ddde-32ee-4b6a-6856-335c1c68fbf6",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"mark_cost\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0870781",
-      "startTime": "2026-11-04T21:17:52.9033736+08:00",
-      "endTime": "2026-11-04T21:17:52.9905310+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "dd1b5d33-259d-4495-b4c1-8ec414b62da0"
-    },
-    {
-      "executionId": "d2e6f2cf-82a0-4b68-96c2-1fef9a5cefd8",
-      "testId": "f579dafa-e81e-0cd4-841e-0a4ff2633314",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"tax_rate\", value: -0.01)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0839814",
-      "startTime": "2026-11-04T21:17:52.6317635+08:00",
-      "endTime": "2026-11-04T21:17:52.7158242+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d2e6f2cf-82a0-4b68-96c2-1fef9a5cefd8"
-    },
-    {
-      "executionId": "6cd5ee8a-d684-4dcc-91d9-fe6de77ef545",
-      "testId": "58f541e8-26f2-e244-633e-0ef7029bac77",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"Weapon\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000626",
-      "startTime": "2026-11-04T21:17:47.2175374+08:00",
-      "endTime": "2026-11-04T21:17:47.2176301+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6cd5ee8a-d684-4dcc-91d9-fe6de77ef545"
-    },
-    {
-      "executionId": "d0d80073-38ba-4c31-81d6-f76dce7dad72",
-      "testId": "c9de3f58-6b5d-fa48-c3a6-ae590425f152",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"shared_slots\", value: 9)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0833298",
-      "startTime": "2026-11-04T21:17:50.9747829+08:00",
-      "endTime": "2026-11-04T21:17:51.0581871+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d0d80073-38ba-4c31-81d6-f76dce7dad72"
-    },
-    {
-      "executionId": "6d3393e2-545a-4a6f-bb94-0137df999b12",
-      "testId": "4c8a4933-009d-d090-3a85-5ffb35339e98",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: True, damage: 345, capacity: 22)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1676269",
-      "startTime": "2026-11-04T21:17:49.1540188+08:00",
-      "endTime": "2026-11-04T21:17:49.3217045+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6d3393e2-545a-4a6f-bb94-0137df999b12"
-    },
-    {
-      "executionId": "1c7979cc-9d33-419b-a526-dc5161746465",
-      "testId": "4bbe10ea-6cf1-0191-613a-e35c6fe0013d",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Dead)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0003542",
-      "startTime": "2026-11-04T21:17:47.6208408+08:00",
-      "endTime": "2026-11-04T21:17:47.6212269+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "1c7979cc-9d33-419b-a526-dc5161746465"
-    },
-    {
-      "executionId": "9db0b92e-2475-4bec-b64e-60fe2c33b9f4",
-      "testId": "d6b3e177-c75d-8d88-49ee-1f667b30ea4a",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.DistinctPublishedVersionsRetainTheirOwnCardAndGrowthData",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1285018",
-      "startTime": "2026-11-04T21:17:55.1092724+08:00",
-      "endTime": "2026-11-04T21:17:55.2378310+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9db0b92e-2475-4bec-b64e-60fe2c33b9f4"
-    },
-    {
-      "executionId": "0c6f7337-9484-4c51-911e-ba4cd98f6145",
-      "testId": "dc9a60a9-f3a5-0bdd-b6eb-ced83aca491f",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"cost_1\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0797858",
-      "startTime": "2026-11-04T21:17:51.9847489+08:00",
-      "endTime": "2026-11-04T21:17:52.0646031+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0c6f7337-9484-4c51-911e-ba4cd98f6145"
-    },
-    {
-      "executionId": "d7255d7b-959d-4637-9259-8d175c360213",
-      "testId": "bf4bf32d-81cb-a72e-06e3-5d52c2e3f067",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"layer_id\", value: \"unknown\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0814809",
-      "startTime": "2026-11-04T21:17:54.0425506+08:00",
-      "endTime": "2026-11-04T21:17:54.1241030+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d7255d7b-959d-4637-9259-8d175c360213"
-    },
-    {
-      "executionId": "49c57fb5-c395-4a4f-805a-cee64d88a710",
-      "testId": "aefff80f-aba5-a624-8434-4191aa10641e",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityExchange\", field: \"cost_tokens\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0918815",
-      "startTime": "2026-11-04T21:17:51.8909717+08:00",
-      "endTime": "2026-11-04T21:17:51.9829250+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "49c57fb5-c395-4a4f-805a-cee64d88a710"
-    },
-    {
-      "executionId": "6b69d7e7-cfd8-4d3b-b765-3a0dc06eafde",
-      "testId": "9d308d78-23e3-49ad-fc4b-faa9bf7df6e2",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"preferred_weight\", value: 3999)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0893507",
-      "startTime": "2026-11-04T21:17:51.5190907+08:00",
-      "endTime": "2026-11-04T21:17:51.6085157+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6b69d7e7-cfd8-4d3b-b765-3a0dc06eafde"
-    },
-    {
-      "executionId": "4db0ae71-98bd-4141-8492-3d45bef9de48",
-      "testId": "8e572ec1-be22-4398-c8b8-8c881ccae0f2",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Legs\", quality: \"Purple\", element: \"Metal\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0328000",
-      "startTime": "2026-11-04T21:17:47.2188754+08:00",
-      "endTime": "2026-11-04T21:17:47.2517206+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "4db0ae71-98bd-4141-8492-3d45bef9de48"
-    },
-    {
-      "executionId": "9365ec9f-ff6e-4e0b-bc9e-c2e9f9ca99cd",
-      "testId": "43b65a70-17c2-e8ec-a528-0977717b4a8b",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Chest\", quality: \"Green\", element: \"Wood\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0005147",
-      "startTime": "2026-11-04T21:17:47.2520370+08:00",
-      "endTime": "2026-11-04T21:17:47.2525877+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9365ec9f-ff6e-4e0b-bc9e-c2e9f9ca99cd"
-    },
-    {
-      "executionId": "07bebab8-1bf1-4a2a-a5cb-7845292e79ef",
-      "testId": "ee6d0d8b-1d3f-1feb-e716-afe820c18d7c",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000378",
-      "startTime": "2026-11-04T21:17:50.5534426+08:00",
-      "endTime": "2026-11-04T21:17:50.5535130+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "07bebab8-1bf1-4a2a-a5cb-7845292e79ef"
-    },
-    {
-      "executionId": "691c3ea7-6abe-4205-91fe-e86bf32de5d7",
-      "testId": "e68ad4ca-6fbf-0313-7b6b-dc9a820bf6a9",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Duplicate_argument_keys_are_rejected_without_case_folding_raw_values",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0061409",
-      "startTime": "2026-11-04T21:17:47.3528776+08:00",
-      "endTime": "2026-11-04T21:17:47.3590678+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "691c3ea7-6abe-4205-91fe-e86bf32de5d7"
-    },
-    {
-      "executionId": "3871c7f3-f2b4-42dc-843c-f62fa239eea9",
-      "testId": "1b08e5d3-792c-0df9-e6f9-48c841953a3e",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.CraftAndReforgeRequestsKeepTheOriginalSeasonAndExactVersionFields",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0102507",
-      "startTime": "2026-11-04T21:17:55.4144091+08:00",
-      "endTime": "2026-11-04T21:17:55.4247253+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3871c7f3-f2b4-42dc-843c-f62fa239eea9"
-    },
-    {
-      "executionId": "085a5d16-043c-40a0-9ca0-7e795bac5e16",
-      "testId": "8c53e67c-5e9a-7c98-3af7-52f932ddbf11",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.SameVersionCannotBeReplacedAndOriginalRemainsReadable",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1443987",
-      "startTime": "2026-11-04T21:17:54.9631619+08:00",
-      "endTime": "2026-11-04T21:17:55.1076141+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "085a5d16-043c-40a0-9ca0-7e795bac5e16"
-    },
-    {
-      "executionId": "87449ca6-00d7-4480-8976-c2404e83c4eb",
-      "testId": "ecb140e3-9ab2-2988-78d4-bf7141f25d7e",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.LootPreferenceEncodingTests.NullPreferenceDoesNotChangeTheHistoricalPreparationRequestJsonHashInput",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0038886",
-      "startTime": "2026-11-04T21:17:55.4098616+08:00",
-      "endTime": "2026-11-04T21:17:55.4137822+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "87449ca6-00d7-4480-8976-c2404e83c4eb"
-    },
-    {
-      "executionId": "df39d8dd-8bcc-415a-8953-b850052a767b",
-      "testId": "26bc141f-18ba-0dcd-aab3-925016d7ffc9",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0051949",
-      "startTime": "2026-11-04T21:17:48.1848548+08:00",
-      "endTime": "2026-11-04T21:17:48.1901099+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "df39d8dd-8bcc-415a-8953-b850052a767b"
-    },
-    {
-      "executionId": "7e48e2ad-32ce-4456-a662-cd31160715d3",
-      "testId": "86aecca8-8e35-99c8-0780-108aabd2debe",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.TamperedTruncatedMissingAndRepeatedHashesAreRejected",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0628877",
-      "startTime": "2026-11-04T21:17:55.3351698+08:00",
-      "endTime": "2026-11-04T21:17:55.3981186+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7e48e2ad-32ce-4456-a662-cd31160715d3"
-    },
-    {
-      "executionId": "9b1dda50-6001-4860-8a0e-49e82333ad2c",
-      "testId": "3737e702-aad6-d63c-28bc-507bada05600",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: False)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.2144902",
-      "startTime": "2026-11-04T21:17:46.9572037+08:00",
-      "endTime": "2026-11-04T21:17:47.1822300+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9b1dda50-6001-4860-8a0e-49e82333ad2c"
-    },
-    {
-      "executionId": "67773bcf-dfe2-478c-8690-3850c2f2f2d3",
-      "testId": "2eb6acd4-41ff-d8ce-cd0a-9fd84c6aa5ca",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T20:00:00Z\", expected: \"2027-01-01\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000291",
-      "startTime": "2026-11-04T21:17:54.8884625+08:00",
-      "endTime": "2026-11-04T21:17:54.8885168+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "67773bcf-dfe2-478c-8690-3850c2f2f2d3"
-    },
-    {
-      "executionId": "b96fa3a8-64cd-41ed-ab88-126d47ba4cfb",
-      "testId": "543eb185-c879-d619-a1a9-046431f655a9",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Legacy_payload_has_no_template_or_role_and_keeps_original_copy",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0005957",
-      "startTime": "2026-11-04T21:17:47.3680288+08:00",
-      "endTime": "2026-11-04T21:17:47.3686578+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b96fa3a8-64cd-41ed-ab88-126d47ba4cfb"
-    },
-    {
-      "executionId": "ce3b117c-6bad-43c7-821e-c35a761705ee",
-      "testId": "0cac2b22-25de-4ef8-9d57-f4848c7d8ad3",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002508",
-      "startTime": "2026-11-04T21:17:50.5454398+08:00",
-      "endTime": "2026-11-04T21:17:50.5457280+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ce3b117c-6bad-43c7-821e-c35a761705ee"
-    },
-    {
-      "executionId": "f71ab17a-abdd-461e-b0f1-ea79eefafa11",
-      "testId": "d4173395-6ffc-6503-6aa4-21cfbafafabf",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0.1, application/json;q=0.9\", legacy: True, expected: False)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0005485",
-      "startTime": "2026-11-04T21:17:50.5194885+08:00",
-      "endTime": "2026-11-04T21:17:50.5200673+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f71ab17a-abdd-461e-b0f1-ea79eefafa11"
-    },
-    {
-      "executionId": "e47b7159-ac62-4ca2-9c55-cc34cafa2325",
-      "testId": "04f5d6de-bca7-8957-2e76-d6f6148da8fd",
-      "testName": "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.BorrowedSourceAndEffectiveLevelsRoundTripPublicRealtimeAndHttpSnapshots",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0106503",
-      "startTime": "2026-11-04T21:17:50.5903023+08:00",
-      "endTime": "2026-11-04T21:17:50.6010065+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e47b7159-ac62-4ca2-9c55-cc34cafa2325"
-    },
-    {
-      "executionId": "b92f0f40-6732-465d-a94c-7fbb16d4cc3b",
-      "testId": "0993deb8-181e-f55e-fecd-f929f1d284b0",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.RequestPreservesLegacyTagsAndOptionalSeasonPresence",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0034603",
-      "startTime": "2026-11-04T21:17:48.1675538+08:00",
-      "endTime": "2026-11-04T21:17:48.1710640+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b92f0f40-6732-465d-a94c-7fbb16d4cc3b"
-    },
-    {
-      "executionId": "2f739257-ba6f-474a-9d71-a4674d532846",
-      "testId": "6df9f0e5-8be2-2bf8-b852-17afc9daffe4",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Historical_numeric_strings_keep_the_original_numeric_tags",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0004347",
-      "startTime": "2026-11-04T21:17:47.2590376+08:00",
-      "endTime": "2026-11-04T21:17:47.2595009+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "2f739257-ba6f-474a-9d71-a4674d532846"
-    },
-    {
-      "executionId": "5de42025-d559-46fd-ba8b-e642122f4266",
-      "testId": "6ec763f7-1c2c-9dd4-9e51-95c0e3c71895",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: True)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0120143",
-      "startTime": "2026-11-04T21:17:47.1879605+08:00",
-      "endTime": "2026-11-04T21:17:47.2000678+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "5de42025-d559-46fd-ba8b-e642122f4266"
-    },
-    {
-      "executionId": "bce1ad1b-e6ce-4a91-ad7f-bc31e4c30311",
-      "testId": "b33b1bb5-7605-e5ec-2415-4744f405dbf5",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_PreservesFalseLogicalValueAsPresentEmptyMessage",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0008062",
-      "startTime": "2026-11-04T21:17:48.2312006+08:00",
-      "endTime": "2026-11-04T21:17:48.2320482+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "bce1ad1b-e6ce-4a91-ad7f-bc31e4c30311"
-    },
-    {
-      "executionId": "b55565b2-b544-4d23-8c1f-d3fc7023726e",
-      "testId": "49842fcd-2572-72c5-388e-53ab5235e0bc",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"orange_price_cap\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0895470",
-      "startTime": "2026-11-04T21:17:52.4470493+08:00",
-      "endTime": "2026-11-04T21:17:52.5366890+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b55565b2-b544-4d23-8c1f-d3fc7023726e"
-    },
-    {
-      "executionId": "005f8e58-44e9-401e-8e9e-15ba23987763",
-      "testId": "76cc3a27-bd19-1f9f-6f2d-dbcbbf459bce",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Red\", element: \"Fire\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002313",
-      "startTime": "2026-11-04T21:17:47.2533183+08:00",
-      "endTime": "2026-11-04T21:17:47.2535749+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "005f8e58-44e9-401e-8e9e-15ba23987763"
-    },
-    {
-      "executionId": "b857673b-7fb8-47a5-9483-b87b741d2b11",
-      "testId": "5cf449be-f429-786e-c395-b9f8bf39a38c",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE different (\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0007403",
-      "startTime": "2026-11-04T21:17:50.5417246+08:00",
-      "endTime": "2026-11-04T21:17:50.5425134+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b857673b-7fb8-47a5-9483-b87b741d2b11"
-    },
-    {
-      "executionId": "6b471462-3980-494d-9a2a-730f7e968e8b",
-      "testId": "ade5c694-9959-0cbb-0493-9db7a76f79e4",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.LegacyPendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: False, fragments: 9, cost: 7, quality: \"White\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1308914",
-      "startTime": "2026-11-04T21:17:49.8658173+08:00",
-      "endTime": "2026-11-04T21:17:49.9977152+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6b471462-3980-494d-9a2a-730f7e968e8b"
-    },
-    {
-      "executionId": "d2763fd7-7400-414a-89c3-81c9473c220e",
-      "testId": "24620668-6cb8-a654-ee8a-2365473e77b1",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.EquipmentPotionAndRelicInventoryStagingRetainTheRoomCatalog(alternate: False, bonus: 0.13, heal: 28)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1404104",
-      "startTime": "2026-11-04T21:17:49.0118491+08:00",
-      "endTime": "2026-11-04T21:17:49.1523274+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d2763fd7-7400-414a-89c3-81c9473c220e"
-    },
-    {
-      "executionId": "87cfec83-70e3-40b6-9c61-4664bb8659d4",
-      "testId": "22797a7f-9df8-ee01-aa4e-e37c273d0358",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LegacyEquipmentIdempotencyJsonRemainsByteCompatible",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0040191",
-      "startTime": "2026-11-04T21:17:48.1441445+08:00",
-      "endTime": "2026-11-04T21:17:48.1482353+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "87cfec83-70e3-40b6-9c61-4664bb8659d4"
-    },
-    {
-      "executionId": "3d63a31e-7064-4d1f-98a4-04200139f197",
-      "testId": "72949852-833e-504c-b6ac-fa9b0cc23d4c",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_restores_server_bundle_when_client_commit_fails",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0488047",
-      "startTime": "2026-11-04T21:17:47.6973683+08:00",
-      "endTime": "2026-11-04T21:17:47.7462341+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3d63a31e-7064-4d1f-98a4-04200139f197"
-    },
-    {
-      "executionId": "e5127fbf-72cb-4d82-ad57-03f05bc73cb3",
-      "testId": "910b2c1e-12e7-fb00-094d-36ca3d231a39",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"fragments\", value: 2)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0900603",
-      "startTime": "2026-11-04T21:17:51.4271628+08:00",
-      "endTime": "2026-11-04T21:17:51.5172931+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e5127fbf-72cb-4d82-ad57-03f05bc73cb3"
-    },
-    {
-      "executionId": "080b032d-adbd-41fc-9c60-5c836245ff0d",
-      "testId": "7dbfc5be-40eb-14b3-5440-8414727558c5",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigurationTransportTests.RealPublishedBundlesRoundTripTypedHttpBytesAndProduceNativeInteropInputs",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.3878388",
-      "startTime": "2026-11-04T21:17:47.7536535+08:00",
-      "endTime": "2026-11-04T21:17:48.1415669+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "080b032d-adbd-41fc-9c60-5c836245ff0d"
-    },
-    {
-      "executionId": "4f52593e-53a7-446c-bfd9-e13d0e2b26f2",
-      "testId": "82c67c50-25f8-febe-21fe-16d639c05bde",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Extracted)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0206390",
-      "startTime": "2026-11-04T21:17:47.5946450+08:00",
-      "endTime": "2026-11-04T21:17:47.6153363+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "4f52593e-53a7-446c-bfd9-e13d0e2b26f2"
-    },
-    {
-      "executionId": "f10ed897-3f73-487a-b361-ddee3cc7bbe5",
-      "testId": "270dfd3e-f995-6707-1af3-6c201616edc2",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_replaces_existing_files_on_both_sides",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0449392",
-      "startTime": "2026-11-04T21:17:47.6519936+08:00",
-      "endTime": "2026-11-04T21:17:47.6969762+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f10ed897-3f73-487a-b361-ddee3cc7bbe5"
-    },
-    {
-      "executionId": "d8ced6e6-03c0-40db-bd48-0a8d46e5f620",
-      "testId": "5697d02d-4477-ea56-ccd8-b8b7838c99e5",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.SeasonalPendingChoiceRefreshUsesTheOriginalMatrixScaleAndPrice(alternate: True, fragments: 44, cost: 11, quality: \"Purple\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1405324",
-      "startTime": "2026-11-04T21:17:48.4363335+08:00",
-      "endTime": "2026-11-04T21:17:48.5773122+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d8ced6e6-03c0-40db-bd48-0a8d46e5f620"
-    },
-    {
-      "executionId": "0fc1a37a-eafa-4ecb-9137-4280f3d6ad7c",
-      "testId": "d4bf929f-149d-b137-55e0-608a0831218d",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: -1)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0715722",
-      "startTime": "2026-11-04T21:17:53.5340514+08:00",
-      "endTime": "2026-11-04T21:17:53.6056904+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0fc1a37a-eafa-4ecb-9137-4280f3d6ad7c"
-    },
-    {
-      "executionId": "fad9752d-9808-40d5-9ecf-7efd20071af6",
-      "testId": "a7ae56e6-2b90-de89-8a03-bd558bf228cf",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"template_id\", value: \"other\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0885066",
-      "startTime": "2026-11-04T21:17:53.3628237+08:00",
-      "endTime": "2026-11-04T21:17:53.4513896+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "fad9752d-9808-40d5-9ecf-7efd20071af6"
-    },
-    {
-      "executionId": "026a9b76-d7a7-4c78-b7cb-f4b399468a06",
-      "testId": "e5239541-80ad-9eb7-29fe-1388e6f76a17",
-      "testName": "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.TypedHttpRequestPreservesBorrowedChoiceWithoutChangingDefaultOwnedRequest(borrowed: True)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0346193",
-      "startTime": "2026-11-04T21:17:50.5543373+08:00",
-      "endTime": "2026-11-04T21:17:50.5890142+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "026a9b76-d7a7-4c78-b7cb-f4b399468a06"
-    },
-    {
-      "executionId": "aa06f18c-52cb-44aa-a615-56251c43bd45",
-      "testId": "d09a8829-6bc9-40d7-995a-8b5d1b60a810",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0070808",
-      "startTime": "2026-11-04T21:17:47.2093131+08:00",
-      "endTime": "2026-11-04T21:17:47.2164407+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "aa06f18c-52cb-44aa-a615-56251c43bd45"
-    },
-    {
-      "executionId": "4fe51094-6383-4157-81d2-2a1c93e5c704",
-      "testId": "fa00663e-e868-7a28-0c32-33c427317ffd",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.SeasonalPendingChoiceRefreshUsesTheOriginalMatrixScaleAndPrice(alternate: False, fragments: 36, cost: 7, quality: \"Blue\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.2008141",
-      "startTime": "2026-11-04T21:17:48.2339501+08:00",
-      "endTime": "2026-11-04T21:17:48.4348259+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "4fe51094-6383-4157-81d2-2a1c93e5c704"
-    },
-    {
-      "executionId": "fffc7280-3315-42c6-81db-68399b478bfc",
-      "testId": "a0d28fce-0f16-8e3d-0f80-ec66ef58622d",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"speed_base\", value: 1)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0812423",
-      "startTime": "2026-11-04T21:17:52.9922433+08:00",
-      "endTime": "2026-11-04T21:17:53.0735548+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "fffc7280-3315-42c6-81db-68399b478bfc"
-    },
-    {
-      "executionId": "5aa84f86-3331-4b65-a7f0-1d02d12681ca",
-      "testId": "dc4a1aa1-606f-7ac5-8453-1d46fd7ee02f",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000463",
-      "startTime": "2026-11-04T21:17:50.5437892+08:00",
-      "endTime": "2026-11-04T21:17:50.5438665+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "5aa84f86-3331-4b65-a7f0-1d02d12681ca"
-    },
-    {
-      "executionId": "616ee3c1-dcba-4e01-8767-1f26a7124055",
-      "testId": "19d80d10-2f3d-79b7-fa02-1469561b24d6",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonDifficulty\", field: \"difficulty_id\", value: \"D9\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0706162",
-      "startTime": "2026-11-04T21:17:53.9702605+08:00",
-      "endTime": "2026-11-04T21:17:54.0409305+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "616ee3c1-dcba-4e01-8767-1f26a7124055"
-    },
-    {
-      "executionId": "946fe71b-cd5f-41fd-ad32-3c56707d2a24",
-      "testId": "5736f119-a721-b25c-d257-5f95cff2e0c7",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000727",
-      "startTime": "2026-11-04T21:17:50.5512273+08:00",
-      "endTime": "2026-11-04T21:17:50.5513534+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "946fe71b-cd5f-41fd-ad32-3c56707d2a24"
-    },
-    {
-      "executionId": "339fa9e0-941a-43fc-bc30-b47e94d6defe",
-      "testId": "49171aad-3d6c-3f1f-8b3c-eb4aeb8c423f",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.IncorrectPublishedIdentityDoesNotRegisterAnyVersion",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0621527",
-      "startTime": "2026-11-04T21:17:54.8901319+08:00",
-      "endTime": "2026-11-04T21:17:54.9523293+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "339fa9e0-941a-43fc-bc30-b47e94d6defe"
-    },
-    {
-      "executionId": "f5f9d15f-56a2-41e7-a1d9-1b9b5b740bb0",
-      "testId": "932f99b4-57cf-12bd-9e3c-09f9ef4f5523",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Real_http_binds_binary_and_preserves_int64_errors_and_empty_responses",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0565936",
-      "startTime": "2026-11-04T21:17:50.4371954+08:00",
-      "endTime": "2026-11-04T21:17:50.4938376+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f5f9d15f-56a2-41e7-a1d9-1b9b5b740bb0"
-    },
-    {
-      "executionId": "1daab86d-770c-448a-bc54-ebf24f9d6d29",
-      "testId": "676a3381-393c-36ad-8645-2527591b241c",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: 1)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0762547",
-      "startTime": "2026-11-04T21:17:53.6759768+08:00",
-      "endTime": "2026-11-04T21:17:53.7522909+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "1daab86d-770c-448a-bc54-ebf24f9d6d29"
-    },
-    {
-      "executionId": "6b05155c-98d2-4a94-8715-ffb937c32c22",
-      "testId": "dbdc9977-1dd6-4565-2328-7326bd4ab80e",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7, checksum: \"2c1337ba7df966d058414f2885f658c897388e498e4ba2eb97\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0001654",
-      "startTime": "2026-11-04T21:17:50.5449538+08:00",
-      "endTime": "2026-11-04T21:17:50.5451528+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6b05155c-98d2-4a94-8715-ffb937c32c22"
-    },
-    {
-      "executionId": "726ca948-ad37-4f09-ba29-62fa9334222b",
-      "testId": "44b80d94-7901-da3b-36cd-1c1cc33af8af",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7, checksum: \"98bd25c14eb0a9e8576f036f87e1fb1c872d9b53c4b4890f7c\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000354",
-      "startTime": "2026-11-04T21:17:50.5465985+08:00",
-      "endTime": "2026-11-04T21:17:50.5466651+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "726ca948-ad37-4f09-ba29-62fa9334222b"
-    },
-    {
-      "executionId": "3388b099-f00c-42d8-8818-032f2b0e126b",
-      "testId": "cea9c5f0-4a60-3ac4-e0c2-636fccf3f345",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"quality_id\", value: \"Red\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0536782",
-      "startTime": "2026-11-04T21:17:54.1262864+08:00",
-      "endTime": "2026-11-04T21:17:54.1800468+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3388b099-f00c-42d8-8818-032f2b0e126b"
-    },
-    {
-      "executionId": "d5f9ceeb-a5c7-49a2-b0ef-3996839825ec",
-      "testId": "c9b69679-e2ae-7875-4db2-4c5d7a5683bc",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1299967",
-      "startTime": "2026-11-04T21:17:49.4765820+08:00",
-      "endTime": "2026-11-04T21:17:49.6066439+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d5f9ceeb-a5c7-49a2-b0ef-3996839825ec"
-    },
-    {
-      "executionId": "cce5d89d-09a3-410a-9968-1b19dfa792d5",
-      "testId": "3cdc9d09-ff92-3bfd-92b9-e298b9f20b52",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0, */*;q=1\", legacy: False, expected: null)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000391",
-      "startTime": "2026-11-04T21:17:50.5202215+08:00",
-      "endTime": "2026-11-04T21:17:50.5202774+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cce5d89d-09a3-410a-9968-1b19dfa792d5"
-    },
-    {
-      "executionId": "8825d323-1419-47ae-bab7-e689aede78d6",
-      "testId": "ea1edbb3-7ace-0637-8eb5-7cd5e81417f6",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"mark_kind\", value: \"opaque-marks\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0372122",
-      "startTime": "2026-11-04T21:17:54.3464511+08:00",
-      "endTime": "2026-11-04T21:17:54.3837208+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "8825d323-1419-47ae-bab7-e689aede78d6"
-    },
-    {
-      "executionId": "cba089fa-abff-4e1c-aa14-1544beb7ce7d",
-      "testId": "ee6b3422-ad40-aab0-c793-b40b1620621c",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"Unknown\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0004755",
-      "startTime": "2026-11-04T21:17:47.2167251+08:00",
-      "endTime": "2026-11-04T21:17:47.2172350+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cba089fa-abff-4e1c-aa14-1544beb7ce7d"
-    },
-    {
-      "executionId": "a6ae2c6f-afa5-40d5-b269-0532d662e473",
-      "testId": "afae4156-69ee-c463-1f95-8deafa30da91",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonEquipment\", field: \"quality_id\", value: \"red\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0540791",
-      "startTime": "2026-11-04T21:17:54.1808326+08:00",
-      "endTime": "2026-11-04T21:17:54.2349702+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a6ae2c6f-afa5-40d5-b269-0532d662e473"
-    },
-    {
-      "executionId": "3217c754-28a0-4b13-a1b5-d0df2101ba45",
-      "testId": "c3c6dc65-2a91-ed16-9678-e3a95926f34d",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0001502",
-      "startTime": "2026-11-04T21:17:47.6229378+08:00",
-      "endTime": "2026-11-04T21:17:47.6231160+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3217c754-28a0-4b13-a1b5-d0df2101ba45"
-    },
-    {
-      "executionId": "cdec1856-6f85-45f9-aa78-faaa29495250",
-      "testId": "8187ca4b-7803-4ac1-0b73-10ba59fa0a42",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_chance_bp\", value: 1001)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0859081",
-      "startTime": "2026-11-04T21:17:51.3394085+08:00",
-      "endTime": "2026-11-04T21:17:51.4253803+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cdec1856-6f85-45f9-aa78-faaa29495250"
-    },
-    {
-      "executionId": "6d456f5b-cf78-4cc9-9a9e-661b90d9aef3",
-      "testId": "444f0072-882d-be43-289a-580197441a06",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigurationTransportTests.OversizedPublishedEnvelopeCannotBypassHttpBudget",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0061975",
-      "startTime": "2026-11-04T21:17:47.7469302+08:00",
-      "endTime": "2026-11-04T21:17:47.7531837+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6d456f5b-cf78-4cc9-9a9e-661b90d9aef3"
-    },
-    {
-      "executionId": "d8fb6843-772d-4b4d-a724-ff82905616bc",
-      "testId": "cf61af7d-6b5f-b1eb-ff93-aa6344994688",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"entry_quality_cap\", value: 6)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0935603",
-      "startTime": "2026-11-04T21:17:51.6094135+08:00",
-      "endTime": "2026-11-04T21:17:51.7030388+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d8fb6843-772d-4b4d-a724-ff82905616bc"
-    },
-    {
-      "executionId": "f0bb3fc0-eaae-4b26-b071-487fa52e1b95",
-      "testId": "e5cf96a3-80a3-d40b-349c-bca468604fff",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T20:00:00Z\", expected: \"2026-09-05\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0003691",
-      "startTime": "2026-11-04T21:17:54.8871038+08:00",
-      "endTime": "2026-11-04T21:17:54.8875042+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f0bb3fc0-eaae-4b26-b071-487fa52e1b95"
-    },
-    {
-      "executionId": "53d3ae3d-030b-43f8-8286-04e03dc68d97",
-      "testId": "0c9a0316-8473-1728-6f12-d60b889cefea",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.SeasonTablesMustBePublishedAsOneValidatedGroup",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0464573",
-      "startTime": "2026-11-04T21:17:54.8296997+08:00",
-      "endTime": "2026-11-04T21:17:54.8762158+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "53d3ae3d-030b-43f8-8286-04e03dc68d97"
-    },
-    {
-      "executionId": "eba48d66-7c0e-4b6c-818a-9695ac1731ea",
-      "testId": "6b997d8b-fcc4-a1d2-a122-27d776700b0b",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"boss_chance\", value: 1.01)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0910847",
-      "startTime": "2026-11-04T21:17:52.1781895+08:00",
-      "endTime": "2026-11-04T21:17:52.2693399+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "eba48d66-7c0e-4b6c-818a-9695ac1731ea"
-    },
-    {
-      "executionId": "d0dc0c41-223e-4373-ade8-393278953f68",
-      "testId": "3d4087db-48c5-cac3-182c-3e265a7aa117",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000310",
-      "startTime": "2026-11-04T21:17:50.5469032+08:00",
-      "endTime": "2026-11-04T21:17:50.5469644+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d0dc0c41-223e-4373-ade8-393278953f68"
-    },
-    {
-      "executionId": "39eb1b35-5157-45bd-8672-ae346ad16a82",
-      "testId": "a4ed9231-37fd-838c-f99f-56305a729575",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonMarketEncodingTests.HttpKeepsDiamondPriceDistinctFromGoldAndPreservesTheFrozenItemSource",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0596910",
-      "startTime": "2026-11-04T21:17:47.2827117+08:00",
-      "endTime": "2026-11-04T21:17:47.3424566+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "39eb1b35-5157-45bd-8672-ae346ad16a82"
-    },
-    {
-      "executionId": "abac4b25-0656-4b1e-8a72-0f5d1560d4fc",
-      "testId": "fa19a211-8eeb-c370-660c-ab416b8ed790",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ResponseCarriesWalletIdentityAndExactInt64Version",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0059177",
-      "startTime": "2026-11-04T21:17:48.1611211+08:00",
-      "endTime": "2026-11-04T21:17:48.1670967+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "abac4b25-0656-4b1e-8a72-0f5d1560d4fc"
-    },
-    {
-      "executionId": "a5335dbc-4ce6-4b61-9db0-54df97948873",
-      "testId": "84cb2608-18b4-4f4d-d35f-512aaa27f46c",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"unknown\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0816548",
-      "startTime": "2026-11-04T21:17:53.2803426+08:00",
-      "endTime": "2026-11-04T21:17:53.3620546+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a5335dbc-4ce6-4b61-9db0-54df97948873"
-    },
-    {
-      "executionId": "fd58cfc5-5a34-4473-8cf0-7cdb30c94a8b",
-      "testId": "be27c51a-bd47-75c2-5399-d45abe02354b",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0008333",
-      "startTime": "2026-11-04T21:17:47.6217488+08:00",
-      "endTime": "2026-11-04T21:17:47.6226156+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "fd58cfc5-5a34-4473-8cf0-7cdb30c94a8b"
-    },
-    {
-      "executionId": "82010720-673c-449f-9a31-32a55a573749",
-      "testId": "92bf59b1-2dc1-7586-4c49-405f32ba9226",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.QuoteUsesNewTagsWithoutChangingLegacyFields",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0116575",
-      "startTime": "2026-11-04T21:17:48.1487406+08:00",
-      "endTime": "2026-11-04T21:17:48.1604700+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "82010720-673c-449f-9a31-32a55a573749"
-    },
-    {
-      "executionId": "cbca5339-c582-4e11-b09c-f9db75e35bcf",
-      "testId": "158e5fe6-74ae-d73e-1940-b05f4ebba024",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"None\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000562",
-      "startTime": "2026-11-04T21:17:47.2181274+08:00",
-      "endTime": "2026-11-04T21:17:47.2182098+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cbca5339-c582-4e11-b09c-f9db75e35bcf"
-    },
-    {
-      "executionId": "d523075a-33a4-4247-b8c4-a97c95397d8a",
-      "testId": "82f15481-63a9-16e0-97d8-9ec5fd5f61d4",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"None\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0753671",
-      "startTime": "2026-11-04T21:17:53.8289352+08:00",
-      "endTime": "2026-11-04T21:17:53.9043548+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d523075a-33a4-4247-b8c4-a97c95397d8a"
-    },
-    {
-      "executionId": "0cce8e56-6c45-4fc7-9603-06e72bcb0e31",
-      "testId": "1a0ad30f-e649-df25-74ac-6d1ab6ca84af",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"hero_class\", value: \"Mage\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0676996",
-      "startTime": "2026-11-04T21:17:53.6064935+08:00",
-      "endTime": "2026-11-04T21:17:53.6742604+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0cce8e56-6c45-4fc7-9603-06e72bcb0e31"
-    },
-    {
-      "executionId": "c30752ae-8c68-4d81-ac97-f76c14804597",
-      "testId": "86a905d8-5ffe-860c-1aa7-05f5b54fe6dd",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonProgression\", field: \"xp_to_next_42\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0860651",
-      "startTime": "2026-11-04T21:17:50.6022073+08:00",
-      "endTime": "2026-11-04T21:17:50.6883407+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "c30752ae-8c68-4d81-ac97-f76c14804597"
-    },
-    {
-      "executionId": "7870ab2d-34ad-4386-9e41-a8144cd6be2b",
-      "testId": "8d097ba8-1c11-9ed9-ed7d-ae5e2a3364d7",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Legacy_reader_can_skip_new_fields_and_still_read_old_title_and_body",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0082758",
-      "startTime": "2026-11-04T21:17:47.3593637+08:00",
-      "endTime": "2026-11-04T21:17:47.3676775+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7870ab2d-34ad-4386-9e41-a8144cd6be2b"
-    },
-    {
-      "executionId": "200ed799-bde5-48a5-b93f-8732f13ec302",
-      "testId": "8350894d-31a9-7847-7e72-5fccd8564396",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-19T23:59:59Z\", expected: \"2026-09-19\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002363",
-      "startTime": "2026-11-04T21:17:54.8892600+08:00",
-      "endTime": "2026-11-04T21:17:54.8895265+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "200ed799-bde5-48a5-b93f-8732f13ec302"
-    },
-    {
-      "executionId": "5d5c2e69-e465-41af-a07c-1e68bc177d46",
-      "testId": "e3020ba2-d76a-a2b4-f91e-efaf05fe2793",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonMarketEncodingTests.LegacyListingRequestKeepsItsExactOriginalHashInputWhenNewFieldsAreAbsent",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0093151",
-      "startTime": "2026-11-04T21:17:47.3428862+08:00",
-      "endTime": "2026-11-04T21:17:47.3522405+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "5d5c2e69-e465-41af-a07c-1e68bc177d46"
-    },
-    {
-      "executionId": "bfb0b8f2-688c-445f-80d5-2ca1fed8e347",
-      "testId": "302ca350-0022-6de7-ee43-93c89863bc11",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarketRules\", field: \"currency\", value: \"fragments\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0411667",
-      "startTime": "2026-11-04T21:17:54.3037042+08:00",
-      "endTime": "2026-11-04T21:17:54.3449346+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "bfb0b8f2-688c-445f-80d5-2ca1fed8e347"
-    },
-    {
-      "executionId": "308298dd-3a0b-4215-8a88-860196b25258",
-      "testId": "cde3978f-bbf4-36e7-a5de-a6752dd7d388",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.ARealUnaffixedPurpleRecipeIsNotDecodedAsAnInventedEffect",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0068617",
-      "startTime": "2026-11-04T21:17:55.4250165+08:00",
-      "endTime": "2026-11-04T21:17:55.4319152+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "308298dd-3a0b-4215-8a88-860196b25258"
-    },
-    {
-      "executionId": "f9f39513-7bed-4b8d-992f-2db7dcd90457",
-      "testId": "fec9108c-d585-df03-cb99-b73175e29cea",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 409)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.3599827",
-      "startTime": "2026-11-04T21:17:50.0001533+08:00",
-      "endTime": "2026-11-04T21:17:50.3618253+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f9f39513-7bed-4b8d-992f-2db7dcd90457"
-    },
-    {
-      "executionId": "ec07e898-c3e4-41b1-b3c4-fbc4e9ca280c",
-      "testId": "0a7377e1-a60c-20e7-ad96-f58250ec5923",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"quality_cap\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0934750",
-      "startTime": "2026-11-04T21:17:50.6892208+08:00",
-      "endTime": "2026-11-04T21:17:50.7827678+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ec07e898-c3e4-41b1-b3c4-fbc4e9ca280c"
-    },
-    {
-      "executionId": "01041842-28e0-4774-9a49-f532758bdf8d",
-      "testId": "a4a03b30-65e5-2a28-1194-0f5c306491ae",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T19:59:59Z\", expected: \"2026-12-31\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002173",
-      "startTime": "2026-11-04T21:17:54.8877665+08:00",
-      "endTime": "2026-11-04T21:17:54.8880137+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "01041842-28e0-4774-9a49-f532758bdf8d"
-    },
-    {
-      "executionId": "98c3ac42-09e9-4ab9-81ac-6c604482c348",
-      "testId": "7bad122f-514e-01fc-527d-13f55dc4229e",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: -\u221e)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0536476",
-      "startTime": "2026-11-04T21:17:54.5642823+08:00",
-      "endTime": "2026-11-04T21:17:54.6179877+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "98c3ac42-09e9-4ab9-81ac-6c604482c348"
-    },
-    {
-      "executionId": "57beca4d-a7e4-4a01-9433-1859724fe074",
-      "testId": "fa3dd9a8-9856-723e-2e7c-6bb6adb702e1",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: \u221e)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0331194",
-      "startTime": "2026-11-04T21:17:54.5303385+08:00",
-      "endTime": "2026-11-04T21:17:54.5635112+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "57beca4d-a7e4-4a01-9433-1859724fe074"
-    },
-    {
-      "executionId": "229d4d4f-6da7-4347-8622-b860d83db1da",
-      "testId": "0c29b342-6577-ec0a-0adb-de0d2c412859",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.OriginalSeasonUsesAppendOnlyReceiptTagSevenAndReachesBootstrap",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0186996",
-      "startTime": "2026-11-04T21:17:47.2598263+08:00",
-      "endTime": "2026-11-04T21:17:47.2785709+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "229d4d4f-6da7-4347-8622-b860d83db1da"
-    },
-    {
-      "executionId": "472825a2-2c93-4e86-a6fd-cd2780d777b9",
-      "testId": "b25017d6-69f4-a735-367c-cfabd454a86a",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000437",
-      "startTime": "2026-11-04T21:17:50.5441187+08:00",
-      "endTime": "2026-11-04T21:17:50.5441909+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "472825a2-2c93-4e86-a6fd-cd2780d777b9"
-    },
-    {
-      "executionId": "e1265457-e9b1-44bd-97bb-451ce4541685",
-      "testId": "099cd3df-4ffc-b958-0d92-1e6c6b2d83f5",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"maximum_per_human\", value: 2)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0826067",
-      "startTime": "2026-11-04T21:17:52.2710387+08:00",
-      "endTime": "2026-11-04T21:17:52.3537181+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e1265457-e9b1-44bd-97bb-451ce4541685"
-    },
-    {
-      "executionId": "a7cb7956-473b-4dc9-8e40-ccab691e931f",
-      "testId": "ece8cd45-95b3-0f43-f165-1eb05e466dba",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Validate_RejectsDuplicatePrimaryKey",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0004938",
-      "startTime": "2026-11-04T21:17:48.2324715+08:00",
-      "endTime": "2026-11-04T21:17:48.2330059+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a7cb7956-473b-4dc9-8e40-ccab691e931f"
-    },
-    {
-      "executionId": "d0a913b0-7658-4b89-8272-55c339e7187e",
-      "testId": "92d48cb1-eb11-16c2-cd7c-e84b0d2ed15b",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"feet\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000551",
-      "startTime": "2026-11-04T21:17:47.2178442+08:00",
-      "endTime": "2026-11-04T21:17:47.2179254+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d0a913b0-7658-4b89-8272-55c339e7187e"
-    },
-    {
-      "executionId": "3531775c-9037-426c-be4a-b38881d54136",
-      "testId": "d853b3f3-f689-98fd-7943-472d5990a404",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0826635",
-      "startTime": "2026-11-04T21:17:54.7450568+08:00",
-      "endTime": "2026-11-04T21:17:54.8277776+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3531775c-9037-426c-be4a-b38881d54136"
-    },
-    {
-      "executionId": "ac7592a0-768f-48ec-bd27-c2aecfdf2749",
-      "testId": "ee8dde9f-f2f2-17c1-7ba3-707dc99c7bed",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.ConcurrentIdenticalRegistrationRetainsOneCatalog",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0942182",
-      "startTime": "2026-11-04T21:17:55.2394334+08:00",
-      "endTime": "2026-11-04T21:17:55.3337145+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ac7592a0-768f-48ec-bd27-c2aecfdf2749"
-    },
-    {
-      "executionId": "095ed118-1bbd-4285-99c7-44db246c5a4b",
-      "testId": "6133f6c6-ac87-c3d4-ae8d-bc6a31f05d9a",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"promotion_cap\", value: 3)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0974641",
-      "startTime": "2026-11-04T21:17:51.0594698+08:00",
-      "endTime": "2026-11-04T21:17:51.1570249+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "095ed118-1bbd-4285-99c7-44db246c5a4b"
-    },
-    {
-      "executionId": "a2cf1a86-1ad3-46fc-ad44-48c4cf0759ca",
-      "testId": "813c79c3-73c3-1234-18a2-cc55439b2684",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarkRules\", field: \"mark_kind\", value: \"opaque-marks\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0410722",
-      "startTime": "2026-11-04T21:17:54.4874092+08:00",
-      "endTime": "2026-11-04T21:17:54.5285434+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a2cf1a86-1ad3-46fc-ad44-48c4cf0759ca"
-    },
-    {
-      "executionId": "55f30dd6-68bd-42b3-a8d6-bdebf5773a23",
-      "testId": "7b29d781-6c24-c220-1242-a217f397f110",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonActivityExchange\", field: \"reward_kind\", value: \"red-equipment\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0644042",
-      "startTime": "2026-11-04T21:17:54.2366545+08:00",
-      "endTime": "2026-11-04T21:17:54.3011209+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "55f30dd6-68bd-42b3-a8d6-bdebf5773a23"
-    },
-    {
-      "executionId": "d5e3ce1e-2555-4a4b-8790-63ad3cd1528c",
-      "testId": "e9e0bf40-d87b-c2b9-1c60-2298e57592db",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"difficulty_id\", value: \"D9\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0549539",
-      "startTime": "2026-11-04T21:17:54.4305113+08:00",
-      "endTime": "2026-11-04T21:17:54.4855278+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d5e3ce1e-2555-4a4b-8790-63ad3cd1528c"
-    },
-    {
-      "executionId": "d82c4329-a2ed-4d96-9c34-5f22ff0b0bbf",
-      "testId": "99aa2cb4-2008-c129-7b31-68315fefbe2c",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"reforge_fragment_cost\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1108915",
-      "startTime": "2026-11-04T21:17:52.0655743+08:00",
-      "endTime": "2026-11-04T21:17:52.1765540+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d82c4329-a2ed-4d96-9c34-5f22ff0b0bbf"
-    },
-    {
-      "executionId": "43427ae8-5e0a-4d79-aa3a-40ff245542ff",
-      "testId": "626059bb-6383-d2e0-4abf-8237b1ab8eb9",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000321",
-      "startTime": "2026-11-04T21:17:50.5459888+08:00",
-      "endTime": "2026-11-04T21:17:50.5460547+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "43427ae8-5e0a-4d79-aa3a-40ff245542ff"
-    },
-    {
-      "executionId": "f5bf78fe-909a-4ca4-8be0-4a8f36dfc4cd",
-      "testId": "5fd53b0d-5d3c-f631-7d6b-ab43214378e0",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Extracted\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0029087",
-      "startTime": "2026-11-04T21:17:47.2548583+08:00",
-      "endTime": "2026-11-04T21:17:47.2577978+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f5bf78fe-909a-4ca4-8be0-4a8f36dfc4cd"
-    },
-    {
-      "executionId": "e6eb4644-6437-48d4-a53e-917fdcbce620",
-      "testId": "ab9c11ed-9995-de36-1c09-ec8a17a15e47",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0003427",
-      "startTime": "2026-11-04T21:17:50.5522253+08:00",
-      "endTime": "2026-11-04T21:17:50.5526074+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e6eb4644-6437-48d4-a53e-917fdcbce620"
-    },
-    {
-      "executionId": "474d61e8-3c3e-40eb-aef8-9cbe5e9ea67a",
-      "testId": "9dc88d43-8e50-d656-0190-d3012979d454",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"min_difficulty\", value: 1)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0845347",
-      "startTime": "2026-11-04T21:17:51.2537798+08:00",
-      "endTime": "2026-11-04T21:17:51.3383910+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "474d61e8-3c3e-40eb-aef8-9cbe5e9ea67a"
-    },
-    {
-      "executionId": "21740f53-e5d5-4906-bdc7-c7de69dd052f",
-      "testId": "2962326e-6dc4-a77b-dd49-287d4f406fbe",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Orange\", element: \"Water\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002302",
-      "startTime": "2026-11-04T21:17:47.2537872+08:00",
-      "endTime": "2026-11-04T21:17:47.2540417+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "21740f53-e5d5-4906-bdc7-c7de69dd052f"
-    },
-    {
-      "executionId": "0f1843c0-6442-44ae-9026-a9322d3b7471",
-      "testId": "27cc40bc-7062-d527-0f0f-aec9de0baeea",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Json_requires_explicit_compatibility_and_never_replays_a_bad_body",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0178187",
-      "startTime": "2026-11-04T21:17:50.5204352+08:00",
-      "endTime": "2026-11-04T21:17:50.5382872+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0f1843c0-6442-44ae-9026-a9322d3b7471"
-    },
-    {
-      "executionId": "5854adda-80de-482c-8db3-383fcc711b50",
-      "testId": "26c4958b-d0c5-387f-5f19-10c86c9c92e0",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\r    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002374",
-      "startTime": "2026-11-04T21:17:50.5427880+08:00",
-      "endTime": "2026-11-04T21:17:50.5430635+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "5854adda-80de-482c-8db3-383fcc711b50"
-    },
-    {
-      "executionId": "81be9bc1-30a6-4909-b12f-0038bc1444f9",
-      "testId": "9bb2652c-3a45-779b-ecf6-6ebc679e18e2",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: False, damage: 172, capacity: 21)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1522841",
-      "startTime": "2026-11-04T21:17:49.3224999+08:00",
-      "endTime": "2026-11-04T21:17:49.4748442+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "81be9bc1-30a6-4909-b12f-0038bc1444f9"
-    },
-    {
-      "executionId": "49047d1f-dac6-46ac-b32d-7539482b36aa",
-      "testId": "69d400cd-b27e-fcff-b6ca-7ea5d993e0ea",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"gold\", value: 6)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0932783",
-      "startTime": "2026-11-04T21:17:51.1587403+08:00",
-      "endTime": "2026-11-04T21:17:51.2520874+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "49047d1f-dac6-46ac-b32d-7539482b36aa"
-    },
-    {
-      "executionId": "942beb0c-d5d1-479b-9779-87dd332629c6",
-      "testId": "8dc37d83-63e6-7bbd-05ec-dde8b0042937",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Head\", quality: \"White\", element: \"Fire\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002356",
-      "startTime": "2026-11-04T21:17:47.2528254+08:00",
-      "endTime": "2026-11-04T21:17:47.2530857+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "942beb0c-d5d1-479b-9779-87dd332629c6"
-    },
-    {
-      "executionId": "6b8d6dab-8b84-4db3-a8fb-0a436a3ef255",
-      "testId": "c06f33af-90d6-2385-26a9-3775b079b682",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.DuplicateDifficultyLayerPairsCannotHideAMissingPair",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0455570",
-      "startTime": "2026-11-04T21:17:54.6977628+08:00",
-      "endTime": "2026-11-04T21:17:54.7433751+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6b8d6dab-8b84-4db3-a8fb-0a436a3ef255"
-    },
-    {
-      "executionId": "ed0d079d-bc9f-4802-b0eb-3ec5bccfa473",
-      "testId": "77418b08-ffce-084b-121f-b5b2142ba207",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.InventoryCarriesProvenanceWithoutInventingRecipeEligibilityForLegacyItems",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0128059",
-      "startTime": "2026-11-04T21:17:48.1715071+08:00",
-      "endTime": "2026-11-04T21:17:48.1843709+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ed0d079d-bc9f-4802-b0eb-3ec5bccfa473"
-    },
-    {
-      "executionId": "cdf7ea4c-4fa7-49e7-b4e2-55dfe286ffdd",
-      "testId": "7bb4a12b-2de2-9955-6620-84bf5bc4c65d",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf\", legacy: False, expected: True)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0011217",
-      "startTime": "2026-11-04T21:17:50.5181807+08:00",
-      "endTime": "2026-11-04T21:17:50.5193376+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cdf7ea4c-4fa7-49e7-b4e2-55dfe286ffdd"
-    },
-    {
-      "executionId": "9170adb9-2dea-4213-b4c5-abf95910b1a3",
-      "testId": "db9494a4-a9b0-0f04-123a-27bce0d7db04",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ArchiveProviderValidatesIdentityAndKeepsAlreadyLoadedVersionsImmutable",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.2962024",
-      "startTime": "2026-11-04T21:17:48.5789329+08:00",
-      "endTime": "2026-11-04T21:17:48.8752126+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9170adb9-2dea-4213-b4c5-abf95910b1a3"
-    },
-    {
-      "executionId": "d2e2d01a-4424-42bd-836c-f9e1685a4c3b",
-      "testId": "e04e1778-f569-4a7a-a0a2-843238d8bb53",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.ExistingEmbeddedBundlePassesIntegrityValidation",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0088229",
-      "startTime": "2026-11-04T21:17:54.9539034+08:00",
-      "endTime": "2026-11-04T21:17:54.9627731+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d2e2d01a-4424-42bd-836c-f9e1685a4c3b"
-    },
-    {
-      "executionId": "0b8472c6-1cc3-4318-934d-1d5fa9e161e1",
-      "testId": "f690b38f-505c-9d0a-9770-97bdb01dfa21",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 403)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0460149",
-      "startTime": "2026-11-04T21:17:50.3651890+08:00",
-      "endTime": "2026-11-04T21:17:50.4112785+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0b8472c6-1cc3-4318-934d-1d5fa9e161e1"
-    },
-    {
-      "executionId": "a8bfdfd8-199c-4c7c-9673-0929803c578d",
-      "testId": "44007118-cb91-2a87-c954-1b8d6636b891",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ServerOnlyQuotaMetadataCannotBeChangedToClientOrOptional",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0377523",
-      "startTime": "2026-11-04T21:17:54.6584307+08:00",
-      "endTime": "2026-11-04T21:17:54.6962340+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a8bfdfd8-199c-4c7c-9673-0929803c578d"
-    },
-    {
-      "executionId": "a51804c4-a5f5-4c3a-a27a-e659b5a9c2d4",
-      "testId": "fff5980f-06aa-c5ca-9fbf-e4a50b270ca2",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"weekly_quota\", value: 2)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0899283",
-      "startTime": "2026-11-04T21:17:52.8113069+08:00",
-      "endTime": "2026-11-04T21:17:52.9013008+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a51804c4-a5f5-4c3a-a27a-e659b5a9c2d4"
-    },
-    {
-      "executionId": "922086fb-d167-4ce8-82b7-885410d2f0c1",
-      "testId": "b1d675dc-3532-3b13-745f-5cb7a963dc93",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T19:59:59Z\", expected: \"2026-09-04\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000274",
-      "startTime": "2026-11-04T21:17:54.8882201+08:00",
-      "endTime": "2026-11-04T21:17:54.8882721+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "922086fb-d167-4ce8-82b7-885410d2f0c1"
-    },
-    {
-      "executionId": "4984f9ba-b6da-4f23-a585-28594c051d5a",
-      "testId": "bd0310f0-02de-4ef7-b795-155477e72139",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id bigint PRIMARY KEY\\\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000642",
-      "startTime": "2026-11-04T21:17:50.5433400+08:00",
-      "endTime": "2026-11-04T21:17:50.5434410+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "4984f9ba-b6da-4f23-a585-28594c051d5a"
-    },
-    {
-      "executionId": "00bb6c95-fed5-4b4e-bbbf-90459198b814",
-      "testId": "5b73afe8-0288-4f8e-0a3e-7c3fd750b9a3",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonRedRules\", field: \"timezone\", value: \"UTC\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0442643",
-      "startTime": "2026-11-04T21:17:54.3844889+08:00",
-      "endTime": "2026-11-04T21:17:54.4288119+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "00bb6c95-fed5-4b4e-bbbf-90459198b814"
-    },
-    {
-      "executionId": "858b164e-0465-4551-9bf5-372a48d65af9",
-      "testId": "1861b70e-d444-7fea-1f68-de4fedab8695",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: NaN)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0379321",
-      "startTime": "2026-11-04T21:17:54.6196034+08:00",
-      "endTime": "2026-11-04T21:17:54.6575899+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "858b164e-0465-4551-9bf5-372a48d65af9"
-    },
-    {
-      "executionId": "2b06d5dc-b124-494f-9069-87d7cfb27b29",
-      "testId": "fb10cc0c-70ee-4908-2dcc-8058c734c379",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"match_cap\", value: 5)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0961263",
-      "startTime": "2026-11-04T21:17:50.7845462+08:00",
-      "endTime": "2026-11-04T21:17:50.8807430+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "2b06d5dc-b124-494f-9069-87d7cfb27b29"
-    },
-    {
-      "executionId": "173a1a50-9610-4418-8710-97ea8bd8ee6d",
-      "testId": "1fef77c8-c8b1-12df-1812-ce86d7eca6b3",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0155395",
-      "startTime": "2026-11-04T21:17:48.1905090+08:00",
-      "endTime": "2026-11-04T21:17:48.2061190+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "173a1a50-9610-4418-8710-97ea8bd8ee6d"
-    },
-    {
-      "executionId": "3952222b-d7b5-48cb-ac84-8c1a019b8d8b",
-      "testId": "bb406fff-4a57-de60-c70e-fa2767eb8d02",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Empty_contract_validates_supplied_body_before_mutation",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0213417",
-      "startTime": "2026-11-04T21:17:50.4943572+08:00",
-      "endTime": "2026-11-04T21:17:50.5157400+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3952222b-d7b5-48cb-ac84-8c1a019b8d8b"
-    },
-    {
-      "executionId": "7c8b0cec-0711-43f1-9c28-2daf82ec749d",
-      "testId": "7fcb7bd1-4f23-3fd4-7445-891797b1fcf2",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.TypedBlueprintWalletsUseAdditiveFieldsAndDoNotRenameOpaqueLegacyMarks",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0016019",
-      "startTime": "2026-11-04T21:17:55.4322343+08:00",
-      "endTime": "2026-11-04T21:17:55.4338688+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7c8b0cec-0711-43f1-9c28-2daf82ec749d"
-    },
-    {
-      "executionId": "b475f735-bac9-4d82-9a9d-89c4c5257620",
-      "testId": "47d95742-d7f4-ce19-c47c-0e231ac5bcbb",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T20:00:00Z\", expected: \"2026-09-07\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000252",
-      "startTime": "2026-11-04T21:17:54.8867230+08:00",
-      "endTime": "2026-11-04T21:17:54.8867739+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b475f735-bac9-4d82-9a9d-89c4c5257620"
-    },
-    {
-      "executionId": "1834b994-092f-48c0-9ff1-733c65407856",
-      "testId": "95f4868b-6932-f9ad-4cc9-ed1e61aa186a",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"wish_attempts\", value: 4)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0923990",
-      "startTime": "2026-11-04T21:17:52.5384120+08:00",
-      "endTime": "2026-11-04T21:17:52.6308785+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "1834b994-092f-48c0-9ff1-733c65407856"
-    },
-    {
-      "executionId": "3e87fbd7-304c-440c-9780-b74c2320a5cb",
-      "testId": "1f06545c-8dcf-3f2f-24e6-f6d8a1c8b747",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"hp_scale\", value: 0)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0912414",
-      "startTime": "2026-11-04T21:17:50.8824568+08:00",
-      "endTime": "2026-11-04T21:17:50.9737633+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3e87fbd7-304c-440c-9780-b74c2320a5cb"
-    },
-    {
-      "executionId": "06f10f98-b844-4720-a77a-af55ce84bf38",
-      "testId": "d1b7890f-0241-466c-d31c-1ecc5fd7439c",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"elite_marks\", value: 2)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0915505",
-      "startTime": "2026-11-04T21:17:51.7976086+08:00",
-      "endTime": "2026-11-04T21:17:51.8892340+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "06f10f98-b844-4720-a77a-af55ce84bf38"
-    },
-    {
-      "executionId": "243cacfa-d592-4d71-8e9f-9b238a4e50be",
-      "testId": "85a234f1-e63f-198f-c2d7-3ae79f407490",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T19:59:59Z\", expected: \"2026-09-07\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000288",
-      "startTime": "2026-11-04T21:17:54.8864834+08:00",
-      "endTime": "2026-11-04T21:17:54.8865378+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "243cacfa-d592-4d71-8e9f-9b238a4e50be"
-    },
-    {
-      "executionId": "771f6dab-eaba-48b3-990d-782aa386fefd",
-      "testId": "56ca5c45-4219-05ab-b05b-e516c19c7b6a",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"Black\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000513",
-      "startTime": "2026-11-04T21:17:47.2184034+08:00",
-      "endTime": "2026-11-04T21:17:47.2184801+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "771f6dab-eaba-48b3-990d-782aa386fefd"
-    },
-    {
-      "executionId": "d5cd16d9-5753-408c-9ee7-6579bb59a6ca",
-      "testId": "9e051ca3-fdf6-29e7-3b02-b097f02256c0",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-20T00:00:00Z\", expected: \"2026-09-20\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002531",
-      "startTime": "2026-11-04T21:17:54.8887651+08:00",
-      "endTime": "2026-11-04T21:17:54.8890492+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d5cd16d9-5753-408c-9ee7-6579bb59a6ca"
-    },
-    {
-      "executionId": "3939f7c0-54c9-44b3-b403-3c45c6a3c5e9",
-      "testId": "9faf3cc0-9c1c-c00e-234d-aaef89e4de4a",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_IsDeterministicAndEmbedsHash",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0010519",
-      "startTime": "2026-11-04T21:17:48.2297779+08:00",
-      "endTime": "2026-11-04T21:17:48.2308827+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3939f7c0-54c9-44b3-b403-3c45c6a3c5e9"
-    },
-    {
-      "executionId": "f93de4c2-2335-43b5-ba89-2e8427c5095d",
-      "testId": "08c9b609-b610-1faf-9608-30dd6b9aab1f",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Dead\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0005205",
-      "startTime": "2026-11-04T21:17:47.2580482+08:00",
-      "endTime": "2026-11-04T21:17:47.2586009+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f93de4c2-2335-43b5-ba89-2e8427c5095d"
-    },
-    {
-      "executionId": "f93d7554-24c6-4dcf-b63a-c3b1e4e36e9b",
-      "testId": "eb9bb20e-4d24-af4a-80f6-b8e2853a1ddc",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Changes_other_than_lf_crlf_conversion_still_reject_applied_checksums(changedSql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000430",
-      "startTime": "2026-11-04T21:17:50.5444318+08:00",
-      "endTime": "2026-11-04T21:17:50.5445067+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f93d7554-24c6-4dcf-b63a-c3b1e4e36e9b"
-    },
-    {
-      "executionId": "7a2adb1e-62a3-458f-93b5-5783f0dd6bed",
-      "testId": "c19452a9-2d31-90fe-2589-0348fe59f4e7",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T20:00:00Z\", expected: \"2026-09-14\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0010460",
-      "startTime": "2026-11-04T21:17:54.8846894+08:00",
-      "endTime": "2026-11-04T21:17:54.8857708+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7a2adb1e-62a3-458f-93b5-5783f0dd6bed"
-    },
-    {
-      "executionId": "f9aea721-6ab6-4715-9555-bd1760511038",
-      "testId": "c7f15c33-1d13-2f05-a7fa-c10a16bcfd9b",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"fire\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0629730",
-      "startTime": "2026-11-04T21:17:53.9062448+08:00",
-      "endTime": "2026-11-04T21:17:53.9692750+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f9aea721-6ab6-4715-9555-bd1760511038"
-    },
-    {
-      "executionId": "ad97013a-1031-4391-b3ba-376701d7f7a7",
-      "testId": "39210598-961b-bd9b-2608-3c5b996ec483",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.LegacyPendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: True, fragments: 11, cost: 11, quality: \"Green\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1305813",
-      "startTime": "2026-11-04T21:17:49.7331925+08:00",
-      "endTime": "2026-11-04T21:17:49.8638357+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ad97013a-1031-4391-b3ba-376701d7f7a7"
-    },
-    {
-      "executionId": "a27192cd-2ff7-48a3-bb60-003d140aa72f",
-      "testId": "a6ff40b0-6b95-8539-a453-474ba8d90586",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.Previously_applied_migrations_accept_legacy_line_ending_checksums(sql: \"CREATE TABLE example (\\n    id integer PRIMARY KEY\"\u00b7\u00b7\u00b7, checksum: \"ecc5d96c1087f107748f2722e7b4e8a4e7f807a0eb72032160\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0000324",
-      "startTime": "2026-11-04T21:17:50.5462973+08:00",
-      "endTime": "2026-11-04T21:17:50.5463613+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a27192cd-2ff7-48a3-bb60-003d140aa72f"
-    },
-    {
-      "executionId": "e447e9c0-9482-46af-b09b-3ca2fc25d280",
-      "testId": "2964cc1b-867f-eeee-3c23-f24389e527af",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PublicRoomProjectionAndRealBinaryCodecKeepRedDetailsAndPublishedNaturalFloor",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.2017667",
-      "startTime": "2026-11-04T21:17:47.3921204+08:00",
-      "endTime": "2026-11-04T21:17:47.5939390+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e447e9c0-9482-46af-b09b-3ca2fc25d280"
-    },
-    {
-      "executionId": "e5e3ab27-2d34-4f0c-8f33-9d28172f3193",
-      "testId": "b2d1a845-ef07-404c-73e6-d54412b36b26",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ArmorMaterialVersionUsesAnOptionalInt64FieldInTheActualRequestMapper",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0033619",
-      "startTime": "2026-11-04T21:17:48.2255061+08:00",
-      "endTime": "2026-11-04T21:17:48.2289123+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e5e3ab27-2d34-4f0c-8f33-9d28172f3193"
-    },
-    {
-      "executionId": "fc9ebb37-3fea-4c80-834e-037a7e3f36b3",
-      "testId": "fb94fba0-7615-962e-839d-11a228673ed2",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.HttpEquipmentAndPreparationKeepUniqueAffixAndOriginalStatsVersion",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0088185",
-      "startTime": "2026-11-04T21:17:47.3829708+08:00",
-      "endTime": "2026-11-04T21:17:47.3918344+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "fc9ebb37-3fea-4c80-834e-037a7e3f36b3"
-    },
-    {
-      "executionId": "68b599d3-d764-45b5-bad6-c8ef3aaa10c6",
-      "testId": "75cc4de0-844f-7f4b-f9e0-878fd767bd31",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Typed_equipment_names_use_the_same_wire_adapter",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0026408",
-      "startTime": "2026-11-04T21:17:47.2793784+08:00",
-      "endTime": "2026-11-04T21:17:47.2820601+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "68b599d3-d764-45b5-bad6-c8ef3aaa10c6"
-    },
-    {
-      "executionId": "0dfc46b5-5c51-491a-bce2-12e297795f67",
-      "testId": "2debd352-79d2-4307-e278-137d08202f3c",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1230877",
-      "startTime": "2026-11-04T21:17:49.6082130+08:00",
-      "endTime": "2026-11-04T21:17:49.7313638+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "0dfc46b5-5c51-491a-bce2-12e297795f67"
-    },
-    {
-      "executionId": "6815891a-0f0b-4bbd-95f1-ea26a4118483",
-      "testId": "7f90aa60-ad76-32c1-2a7b-fb3bb047cf49",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"white_weight\", value: 0.70999999999999996)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0989309",
-      "startTime": "2026-11-04T21:17:53.0752452+08:00",
-      "endTime": "2026-11-04T21:17:53.1742508+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6815891a-0f0b-4bbd-95f1-ea26a4118483"
-    },
-    {
-      "executionId": "cd0f59d2-6079-41a1-8797-2686a5e845c4",
-      "testId": "00bea172-23d9-cd69-6181-a5b1c522dbd6",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_level\", value: 1)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0910227",
-      "startTime": "2026-11-04T21:17:51.7048216+08:00",
-      "endTime": "2026-11-04T21:17:51.7959225+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cd0f59d2-6079-41a1-8797-2686a5e845c4"
-    },
-    {
-      "executionId": "b46216b2-fe6e-4daa-80f1-510ee5665d52",
-      "testId": "b52d1d80-e95f-e3b6-db3d-c0a5f4cd4df4",
-      "testName": "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.TypedHttpRequestPreservesBorrowedChoiceWithoutChangingDefaultOwnedRequest(borrowed: False)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0005027",
-      "startTime": "2026-11-04T21:17:50.5893720+08:00",
-      "endTime": "2026-11-04T21:17:50.5899195+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b46216b2-fe6e-4daa-80f1-510ee5665d52"
-    },
-    {
-      "executionId": "6a9498bd-7421-4ef4-957f-81fd161a1903",
-      "testId": "338aecf7-2d5a-37ad-d28f-93c4a7ce2ad8",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"M-FIREBAT\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0791798",
-      "startTime": "2026-11-04T21:17:53.4529512+08:00",
-      "endTime": "2026-11-04T21:17:53.5321934+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6a9498bd-7421-4ef4-957f-81fd161a1903"
-    },
-    {
-      "executionId": "6866258d-5335-4a08-8e21-e1e4c68c8f07",
-      "testId": "79fa38c5-d886-7434-6f9b-d9cce628c5e9",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Pvp)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0028580",
-      "startTime": "2026-11-04T21:17:47.6176642+08:00",
-      "endTime": "2026-11-04T21:17:47.6205625+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6866258d-5335-4a08-8e21-e1e4c68c8f07"
-    },
-    {
-      "executionId": "5bc4a3b2-5297-476d-ad75-00371693280d",
-      "testId": "c8c1d29d-a891-e458-7717-c2b1d3c611be",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T19:59:59Z\", expected: \"2026-08-31\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002468",
-      "startTime": "2026-11-04T21:17:54.8859937+08:00",
-      "endTime": "2026-11-04T21:17:54.8862716+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "5bc4a3b2-5297-476d-ad75-00371693280d"
-    },
-    {
-      "executionId": "f3aa2d48-a195-4565-9624-be2c85ecabd4",
-      "testId": "1f5a9189-f89b-ef20-3066-c3d0cbf2ab9b",
-      "testName": "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.EquipmentPotionAndRelicInventoryStagingRetainTheRoomCatalog(alternate: True, bonus: 0.27000000000000002, heal: 42)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1341191",
-      "startTime": "2026-11-04T21:17:48.8769161+08:00",
-      "endTime": "2026-11-04T21:17:49.0110925+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f3aa2d48-a195-4565-9624-be2c85ecabd4"
-    },
-    {
-      "executionId": "dabb86d6-1d0b-4764-927e-8a2078906a7a",
-      "testId": "64c6bbc5-5595-b68d-e780-37089999438d",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"week_start_hour\", value: 24)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0917674",
-      "startTime": "2026-11-04T21:17:52.7176556+08:00",
-      "endTime": "2026-11-04T21:17:52.8095078+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "dabb86d6-1d0b-4764-927e-8a2078906a7a"
-    },
-    {
-      "executionId": "95a9407c-7465-4d10-ad20-57d05776a9e4",
-      "testId": "9624bd41-0ce3-a395-c36d-86d098a738e0",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"purple_affix_chance\", value: -0.10000000000000001)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0907377",
-      "startTime": "2026-11-04T21:17:52.3545654+08:00",
-      "endTime": "2026-11-04T21:17:52.4453720+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "95a9407c-7465-4d10-ad20-57d05776a9e4"
-    },
-    {
-      "executionId": "51195888-d632-4c01-8308-c50409e9bddf",
-      "testId": "fc60f693-cf55-ab84-f578-27b02112eb77",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 401)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0228695",
-      "startTime": "2026-11-04T21:17:50.4120821+08:00",
-      "endTime": "2026-11-04T21:17:50.4350190+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "51195888-d632-4c01-8308-c50409e9bddf"
-    },
-    {
-      "executionId": "177fb196-f15d-4a8d-bd5f-811035aa2625",
-      "testId": "fea49220-52b8-7171-b30c-25fcc1ef795b",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Mail_metadata_uses_appended_typed_fields_and_preserves_raw_arguments",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0131930",
-      "startTime": "2026-11-04T21:17:47.3690162+08:00",
-      "endTime": "2026-11-04T21:17:47.3822564+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "177fb196-f15d-4a8d-bd5f-811035aa2625"
-    },
-    {
-      "executionId": "bb86074c-64e1-495c-922f-6fd56ec3ac06",
-      "testId": "19ec3254-8066-7794-82ac-c54d149794f8",
-      "testName": "FantasyCard.Server.Tests.Persistence.MigrationChecksumTests.New_migrations_use_the_same_checksum_across_checkout_line_endings(sql: \"CREATE TABLE example (\\r\\n    id integer PRIMARY K\"\u00b7\u00b7\u00b7)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002363",
-      "startTime": "2026-11-04T21:17:50.5528724+08:00",
-      "endTime": "2026-11-04T21:17:50.5531460+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "bb86074c-64e1-495c-922f-6fd56ec3ac06"
-    },
-    {
-      "executionId": "cb600d50-bfa9-4f10-910a-f37c73fa0486",
-      "testId": "0a538ec7-0adf-ede2-a670-96c1da1a13ec",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Hands\", quality: \"Blue\", element: \"Earth\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0002516",
-      "startTime": "2026-11-04T21:17:47.2542458+08:00",
-      "endTime": "2026-11-04T21:17:47.2545214+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cb600d50-bfa9-4f10-910a-f37c73fa0486"
-    },
-    {
-      "executionId": "7398012e-3b9d-45b3-8697-51e01b206efd",
-      "testId": "3386837b-8bd8-e620-4416-94c737d5936a",
-      "testName": "FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0052465",
-      "startTime": "2026-11-04T21:17:54.8785705+08:00",
-      "endTime": "2026-11-04T21:17:54.8838674+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7398012e-3b9d-45b3-8697-51e01b206efd"
-    },
-    {
-      "executionId": "78aa8194-1697-4e1d-8b34-b0f51e9450d3",
-      "testId": "2b7b0155-5a25-6b30-78a5-c6324d806a41",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"MAG-01\")",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0732962",
-      "startTime": "2026-11-04T21:17:53.7538444+08:00",
-      "endTime": "2026-11-04T21:17:53.8272001+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "78aa8194-1697-4e1d-8b34-b0f51e9450d3"
-    },
-    {
-      "executionId": "f80eb704-6f8a-4370-8814-71810abbee63",
-      "testId": "54820a95-ea71-3c52-70f0-de5c47dba223",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"other_weight\", value: 1501)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.1023678",
-      "startTime": "2026-11-04T21:17:53.1759299+08:00",
-      "endTime": "2026-11-04T21:17:53.2783748+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "f80eb704-6f8a-4370-8814-71810abbee63"
-    },
-    {
-      "executionId": "907c5d6b-a049-43b5-b36d-07bdbf6d7bfd",
-      "testId": "d8364b20-ff67-3457-d4bc-a71a27177a5d",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.LootPreferenceEncodingTests.NewPreferenceUsesAdditiveOptionalFieldsAndOldMessagesKeepItAbsent",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0092659",
-      "startTime": "2026-11-04T21:17:55.4002570+08:00",
-      "endTime": "2026-11-04T21:17:55.4095672+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "907c5d6b-a049-43b5-b36d-07bdbf6d7bfd"
-    },
-    {
-      "executionId": "d97c30d7-9d46-4ace-9eb1-63691f5bfe57",
-      "testId": "9be3075f-a5ae-fdbb-378c-72e2385ea9ee",
-      "testName": "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Choice)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0016637",
-      "startTime": "2026-11-04T21:17:47.6156623+08:00",
-      "endTime": "2026-11-04T21:17:47.6173688+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "d97c30d7-9d46-4ace-9eb1-63691f5bfe57"
-    },
-    {
-      "executionId": "966d921a-7200-41d7-985a-250bbfdfb932",
-      "testId": "f6295038-c030-9f6d-30f5-991ccbb3797e",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/json\", legacy: False, expected: null)",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0017503",
-      "startTime": "2026-11-04T21:17:50.5161870+08:00",
-      "endTime": "2026-11-04T21:17:50.5179732+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "966d921a-7200-41d7-985a-250bbfdfb932"
-    },
-    {
-      "executionId": "7670b989-5cd3-4103-ad37-af746b96053d",
-      "testId": "ee251ff8-ff22-6166-6b7d-d44ae12aea00",
-      "testName": "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues",
-      "computerName": "YK-SHENGJIAHAO",
-      "duration": "00:00:00.0183106",
-      "startTime": "2026-11-04T21:17:48.2066379+08:00",
-      "endTime": "2026-11-04T21:17:48.2250110+08:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7670b989-5cd3-4103-ad37-af746b96053d"
+  "count": 203,
+  "not_one_physical_run": true,
+  "r82": {
+    "passed": 184,
+    "failed": 13
+  },
+  "r84": {
+    "passed": 82,
+    "failed": 0
+  },
+  "cases": {
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Dead\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "aa2a15df-aae8-da6f-d9b2-2a509c9dd0f3"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"PRI-10\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "63bafc12-e6c2-8f54-6c9d-b517b697a51d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "c4bfa9ef-7c1d-cf8d-34d7-64a14ee8e9e5"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T19:59:59Z\", expected: \"2026-12-31\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "2779f906-a110-9343-e358-673a08ca002d"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"unknown\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "34482f67-945a-c4b9-6d99-4aee0eff30cb"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"quality_cap\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "0fed116d-0cdc-d0b6-d6f9-6bd367307fb4"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: 1)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "e7ded093-0e08-122a-d7d3-cee29c7a47db"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"wish_attempts\", value: 4)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "7e2537b3-7b1d-14f2-b43e-ec74bce8ae35"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonEquipment\", field: \"quality_id\", value: \"red\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "acfdb1c2-70da-64a9-0723-55200b3be5da"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"cost_1\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "7bfc7b4f-64d6-6881-d94b-64cc233d4bb0"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonProgression\", field: \"xp_to_next_42\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "afb777e9-6028-09d7-5649-7ca32550ec3b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PublicRoomProjectionAndRealBinaryCodecKeepRedDetailsAndPublishedNaturalFloor": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "8296e9a0-2573-f7ff-f83b-40ff009022e5"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Choice)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "ed57bfb3-9e01-6322-b669-141fd2be8794"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "f8a0ac8f-f396-4584-faf0-0b6afd46054e"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"MAG-01\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "85ee2e9d-f495-fbcf-058b-2bec904bd3bd"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T20:00:00Z\", expected: \"2026-09-05\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b98a1cdd-b962-ae35-eea7-07e05680fe0d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "1f18efe4-c828-5f7b-fdb1-06d98d1c5930"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 401)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "65263054-4daf-5804-76f4-2e5069227148"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Opt_in_preserves_all_permanent_rows_and_keeps_its_first_configuration_after_restart": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "60f5054b-7a6c-7d16-ddce-551d2a3354b3"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"quality_id\", value: \"Red\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "444c50ce-2c65-14cf-ab61-b358a41e70f5"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: -1)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "4e4466d9-ca16-474c-406a-c790d45d9547"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/json\", legacy: False, expected: null)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "4b4f2951-3e34-eee6-5be4-d8b57d25eb15"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9991b4fd-a83e-001e-6ee8-cdfd10ee04a2"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PermanentCopyAdoptionSurvivesClosureAndCannotBeBypassedByOpeningCardsBeforeTheShop": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "867da9af-4a6d-7ec2-a490-70703e67e144"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.EquipmentPotionAndRelicInventoryStagingRetainTheRoomCatalog(alternate: True, bonus: 0.27000000000000002, heal: 42)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "fa7bedc3-aa4f-2786-5535-8d9e76c4acfc"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.SeasonTablesMustBePublishedAsOneValidatedGroup": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "fb4e7033-d348-aa69-3f41-d54e51c0f344"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.TypedBlueprintWalletsUseAdditiveFieldsAndDoNotRenameOpaqueLegacyMarks": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "26130c6a-0535-ee8a-f86e-063d3b4d1bfb"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "4a5b9c7f-28cd-6053-5d3c-561bcb40505d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Overflowing_a_grouped_grant_leaves_the_base_version_and_copy_ledger_unchanged": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9ddde80a-19bb-2a87-2859-b3e48ea9bb33"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "a048a492-4e1f-2c5e-6158-1f7ce03ec298"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"gold\", value: 6)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "63f1b0bc-f36e-dbb2-8267-851a54a7a772"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"fragments\", value: 2)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "78517df4-2951-652f-dfbc-5854b9da8ac6"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: False)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "f71bd4ae-f75e-087b-1357-fe4c4cce9209"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_PreservesFalseLogicalValueAsPresentEmptyMessage": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "a6306c04-0bbd-88ca-f9ad-dc93ca0f5b25"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.HttpEquipmentAndPreparationKeepUniqueAffixAndOriginalStatsVersion": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "8156066d-0e39-cd9a-53eb-8f3d697f4d14"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"Black\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d1ea4158-f93b-f1a3-5a86-42e7c3f0d623"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Dead)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "226b712c-749d-2c45-8cc9-a479679ca64e"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.EquipmentPotionAndRelicInventoryStagingRetainTheRoomCatalog(alternate: False, bonus: 0.13, heal: 28)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "ca121c26-1a7a-d403-d9ad-d8cbeca76370"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonDifficulty\", field: \"difficulty_id\", value: \"D9\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "27b0ae6a-a88c-8da0-ca7d-0b60fbc3f9b9"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: True, damage: 345, capacity: 22)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "3ddd6dbd-bad0-5fa8-70a5-08e2e2f7dd41"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Real_http_binds_binary_and_preserves_int64_errors_and_empty_responses": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b402ee1a-2348-b054-5473-714493a95707"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"promotion_cap\", value: 3)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "7bcb4551-82d6-2c1b-c872-c7cf5ca1d7cd"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "2eba6c83-fee1-ceaa-7822-6fc087768431"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.InventoryCarriesProvenanceWithoutInventingRecipeEligibilityForLegacyItems": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "bdab81e7-76b1-8650-23de-d119d7007d82"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"reforge_fragment_cost\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "b5b7712b-1ce4-ecb8-3896-6b492abb934c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"white_weight\", value: 0.70999999999999996)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "ca1d4b21-ff61-d91a-4fa9-601693e86c52"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "22dabe37-2176-cc37-54d3-9acf45eeb415"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"maximum_per_human\", value: 2)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "782ea762-6694-cc5c-a94c-f088cba4c9c9"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.IncorrectPublishedIdentityDoesNotRegisterAnyVersion": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "294029e5-3ab1-34d2-e80c-b34b30dedaed"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Legs\", quality: \"Purple\", element: \"Metal\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "2a822c2b-266d-ede9-f38c-f0dbced51029"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_chance_bp\", value: 1001)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "0cc6c881-408c-968e-03eb-1ab1a1d78318"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"speed_base\", value: 1)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "3fb433ec-6afb-a948-a870-2c1ace9eea09"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityExchange\", field: \"cost_tokens\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "5b5417b0-96a2-2c70-417d-dda77067ce8e"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.ARealUnaffixedPurpleRecipeIsNotDecodedAsAnInventedEffect": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "6d28223b-8dc4-1780-20c0-19b22a641f0b"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.PreparationCarriesPinnedSeasonAndBothEffectiveAndActualLevels": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "10debd5b-d6e1-cda4-a2f5-0e3adee94ac3"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "80b22dd9-5822-7c49-a8d2-8c63eec6f825"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"Weapon\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "269cfeed-f54b-6a99-35f5-0ac1b62ea2a4"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 409)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "0bf4db4b-4727-9940-2f06-790f5065276e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_level\", value: 1)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "d6001714-661b-5840-f595-fbf7dbc24ee8"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "3b88193c-084d-7ad1-b83e-a1c36d9eb8b4"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5ef4fdd2-79dc-8566-975b-7199fdedef21"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"Unknown\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d2466f9c-ff8a-43ef-e878-36d8d337c522"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Existing_version_43_card_rows_decks_and_souls_are_unchanged_by_the_forward_migration": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "82da49bb-5357-ad14-3f90-45a93183fabc"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "a14d6b14-9a84-3451-4f71-884255aa4f36"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-09-04T19:59:59Z\", expected: \"2026-09-04\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5befdf34-27d8-ce81-e5c1-a7f7f00feff9"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ArchiveProviderValidatesIdentityAndKeepsAlreadyLoadedVersionsImmutable": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "6ff8fcfe-8d6d-1c48-a177-bd2ae1c874af"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.ExistingEmbeddedBundlePassesIntegrityValidation": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "7adbafce-8c80-6afa-32bd-9183c96b65c4"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonShopEncodingTests.OldPurchaseHashInputRemainsTwoFieldsAndNewIntentKeepsEveryConfirmationField": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "671cc765-0a95-c773-4318-d2e85897ef22"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigurationTransportTests.RealPublishedBundlesRoundTripTypedHttpBytesAndProduceNativeInteropInputs": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5c2c7da4-e626-f1f0-c8dc-4fd3e9e5ebeb"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"week_start_hour\", value: 24)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "ca67886a-0f93-66cc-84e3-0cd6b00449da"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"amount\", value: 4)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "52d5740b-1405-bc11-d6e5-13948ab23ef4"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Red\", element: \"Fire\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9c12e0c8-de75-713d-d01f-566757ec4db9"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"fire\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "bfa1e146-c8e1-8c09-53f5-e62d669b4dd8"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: NaN)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2a89186d-7970-719b-f717-1ea091b1350d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Copy_ledger_failure_rolls_back_the_soul_debit_base_version_and_reserve_together": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "c5f90f7c-f146-780d-0cc0-153f9ace0eca"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarkRules\", field: \"mark_kind\", value: \"opaque-marks\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "afa3ce9c-cc02-ff39-872c-a3b1405b5dcc"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Legacy_reader_can_skip_new_fields_and_still_read_old_title_and_body": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "945b55e7-c8d0-1b5b-7332-4c2e13d97ea0"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"elite_marks\", value: 2)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "4c59a681-7a38-7077-4b26-4e00423477b2"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Head\", quality: \"White\", element: \"Fire\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "20ddc378-2a1c-4c92-a870-42ff8f0e1db0"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"GUA-09\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "393298e1-8144-a26b-90e0-54e257f306e1"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "6887c764-3ede-e03c-ff49-0cafee23138b"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.BootstrapSeasonMetadataUsesAdditiveMessageTagAndKeepsExactWalletValues": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "0787e3f3-4485-0527-ae39-e0fd15ac96f1"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.SameVersionCannotBeReplacedAndOriginalRemainsReadable": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "3244483a-7bb7-5be9-594f-63490705602d"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Feet\", quality: \"Orange\", element: \"Water\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "df1325ba-eede-e385-1b90-cf506b2e8151"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.QuoteUsesNewTagsWithoutChangingLegacyFields": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "73f9730e-b821-78de-245f-d705418e7335"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T19:59:59Z\", expected: \"2026-09-07\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "40e46fa4-f17b-ac26-d63a-02fff6adeeb6"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"tax_rate\", value: -0.01)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "aceea50c-adfa-6724-097e-e22d70dc4063"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_writes_identical_bundle_to_server_and_client": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "f84d5d9e-83bf-9b53-967e-655e7c20e2f2"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Compile_IsDeterministicAndEmbedsHash": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "66a8e330-f1ff-487f-5727-c46862f32191"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "3288eb1c-34df-c321-8d4c-64d0d9b2e768"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.SeasonalPendingChoiceRefreshUsesTheOriginalMatrixScaleAndPrice(alternate: True, fragments: 44, cost: 11, quality: \"Purple\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "4053bcae-e83f-5bd5-d290-8ed00baec810"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"slot\", value: \"feet\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "8d151ea3-a0ca-2d89-fd0f-528e1a1962eb"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Pvp)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "1d1c938e-28dc-cf66-8859-c2ff6ff25682"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T20:00:00Z\", expected: \"2026-09-07\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "f521ccce-e84b-9f40-e9a5-64365be11da6"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.LegacyPendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: False, fragments: 9, cost: 7, quality: \"White\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b498e150-2e40-07a5-21e9-fad420624847"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ActualResolverAndSnapshotUseTheSelectedCardGrowthAndBackpack(alternate: False, damage: 172, capacity: 21)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "250a8801-3da5-1e76-b23e-1a1fc2b26f68"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"white_weight\", value: 51)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "686f7815-df79-9a8a-eb34-96b92b1e983f"
+    },
+    "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.TypedHttpRequestPreservesBorrowedChoiceWithoutChangingDefaultOwnedRequest(borrowed: True)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "535e406a-8ecc-8eed-054d-c3a66a84d47c"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Daily_reset_occurs_at_0400_china_time(timestamp: \"2026-12-31T20:00:00Z\", expected: \"2027-01-01\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "e9f0dbd0-ef02-6406-b455-5c4449142aa7"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonMarketEncodingTests.LegacyListingRequestKeepsItsExactOriginalHashInputWhenNewFieldsAreAbsent": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "cfd9db8b-a893-0b35-4923-25d847d6f4c1"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"entry_quality_cap\", value: 6)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "1e99e139-5632-a0ae-6320-1ed8f0c140ef"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"boss_chance\", value: 1.01)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "bf403533-5594-4d2d-5c4d-9b1c61f82922"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: -Infinity)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "3986e002-8618-23d8-05f6-d51b7cf91933"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"reset_hour\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "5265407a-d3df-7957-f3dd-64665bd0e69d"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"M-FIREBAT\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "79ab432c-095b-08b0-1389-7cbecf60ddb0"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_restores_server_bundle_when_client_commit_fails": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "ee53fd25-a2e6-57f3-6a06-cd619ee17ed1"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.BootstrapProjectionEncodingTests.Projection_uses_existing_bootstrap_wire_fields_without_catalogs(ready: True)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "284260c6-6633-12a3-c587-51fa223da887"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-13T20:00:00Z\", expected: \"2026-09-14\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "7b9f6a31-6f6f-c0e0-d679-7ef15652552b"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "0531c8a9-8acc-8419-568c-150865d36690"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "ed01a865-268c-82fa-2074-46578bdecb13"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"element\", value: \"None\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9901e725-9c73-c722-995e-64ca16859b1a"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"class_soul_daily_limit\", value: 3)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "fc6da886-fd0e-9d6d-dd47-68290fcec59c"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Hands\", quality: \"Blue\", element: \"Earth\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b59172a9-b0f6-1aaf-b378-b8c2b7ea6327"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "14be133a-ab2c-2982-c6bc-80ddafdcce32"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"MAG-01\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "f92dbe72-dccb-0d6d-00ff-d9149ec6fd1f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"min_difficulty\", value: 1)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "cbd80bab-9f73-9351-aabc-8d67b06b8ebe"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LegacyEquipmentIdempotencyJsonRemainsByteCompatible": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "095ddd35-3f43-50a5-0010-1cc4808ebbcd"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonMarketEncodingTests.HttpKeepsDiamondPriceDistinctFromGoldAndPreservesTheFrozenItemSource": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9dbf62fc-30f9-c58a-dbf9-3328072a7527"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-19T23:59:59Z\", expected: \"2026-09-19\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "28f00856-1be4-8ca8-5dfb-d885afc11286"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"hero_class\", value: \"Mage\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "9adc44be-60f3-85f3-b48f-fdb8afb18129"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Historical_numeric_strings_keep_the_original_numeric_tags": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "eb5362ed-146f-dccd-520e-44fe0b1df8df"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"mark_cost\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "eb01872a-32a3-c18a-946c-c696a9448f32"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "4c972502-f862-02b0-220c-fd396020efef"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"difficulty_id\", value: \"D9\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "f7de2c06-23ad-0cae-e5fa-05bea535509d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "09f99091-fe3d-c7e3-290c-410cff0f1f10"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_failures_and_replays_do_not_partially_debit_or_grant_assets": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d71c5b4d-d7d8-342b-3e85-b0e31ba74dda"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.SeasonalPendingChoiceRefreshUsesTheOriginalMatrixScaleAndPrice(alternate: False, fragments: 36, cost: 7, quality: \"Blue\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "228af445-7e10-377d-4f12-27aead685f76"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Real_persisted_equipment_names_encode_in_receipt_and_bootstrap(slot: \"Chest\", quality: \"Green\", element: \"Wood\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5e5fa611-b6cd-90d9-3faf-50bea0c73807"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCompilerTests.Validate_RejectsDuplicatePrimaryKey": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d9f88f96-b05b-c68d-7d0a-372942d7ffdd"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"daily_limit\", value: 6)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "02916e33-efc2-bb39-3a04-7ce91a5c0dda"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Weekly_quota_resets_on_monday_at_0400_china_time(timestamp: \"2026-09-06T19:59:59Z\", expected: \"2026-08-31\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "fa5d0cb4-d566-0b9a-966d-5022ec7fdaa6"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.LegacyPendingChoiceRefreshAndItsPriceUseTheRestoredRoomCatalog(alternate: True, fragments: 11, cost: 11, quality: \"Green\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "09eb030e-e0bf-8893-0d6a-388fc749e31f"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.LoadoutSeasonTagIsAdditiveAndAbsentForLegacyResponses": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "ee19b1bc-5c16-e3cd-4b80-8c6f4f539fe5"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"orange_price_cap\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "a8e1280d-0dd4-6d39-92e9-a09de24c543f"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "2df2df10-8eea-e8dd-d946-a759cafd1df3"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "ad2f73af-3668-8bb4-e8cb-e0dfc4ac482b"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Invalid_persisted_equipment_names_are_rejected_without_default_success(field: \"quality\", value: \"\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "6a77c263-a6ae-108e-bc02-8e5029811129"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5bf22fae-ce81-c8d5-e36c-aebbb73d1197"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"match_cap\", value: 5)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "8cb15bf4-57a6-3a21-766f-e16a582e7400"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"preferred_weight\", value: 3999)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "16f4ae8d-d314-4a99-9b7d-fcfb2198ce21"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"other_weight\", value: 1501)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2cd22f21-6a94-9584-1ea3-19e966eddbe1"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Empty_contract_validates_supplied_body_before_mutation": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "98c151e2-b9c7-9e67-163f-8539c07c3928"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0, */*;q=1\", legacy: False, expected: null)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "6f207507-0eb5-7228-e95a-f989a8efccad"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.ConcurrentIdenticalRegistrationRetainsOneCatalog": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "9926b17e-c831-689b-7b6a-09a7f2c4f55b"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigurationTransportTests.OversizedPublishedEnvelopeCannotBypassHttpBudget": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b8d9e9f9-c922-4809-428a-f185b1319e46"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf;q=0.1, application/json;q=0.9\", legacy: True, expected: False)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "4e0a6080-a25f-e462-7351-0145ca4a9fe7"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.LootPreferenceEncodingTests.NullPreferenceDoesNotChangeTheHistoricalPreparationRequestJsonHashInput": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "96eb2d2d-c997-81ae-25db-574f8ef2552b"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Repeated_pack_draws_count_copies_and_only_the_first_unowned_copy_unlocks_the_card": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "f089e074-0e0c-2b15-2ade-bb575d833d52"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"template_id\", value: \"other\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "e7de64f9-d433-6a66-f47a-cb0b569ee4dc"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonActivityExchange\", field: \"reward_kind\", value: \"red-equipment\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "c69f5959-af64-2912-b43d-3199b36de715"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Duplicate_argument_keys_are_rejected_without_case_folding_raw_values": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "51c043e3-558a-c53d-b051-d1b8ca05510c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"price_gold\", value: 249)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "a9edca8d-e709-19f4-6e4d-8c13b61d373c"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "d9570152-e42f-2519-c431-88e0076032d6"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"purple_affix_chance\", value: -0.10000000000000001)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "83eb1cbe-6245-3430-efb9-088909175a4c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"hp_scale\", value: 0)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "12562121-3bad-df56-7b9c-1d89e54b472c"
+    },
+    "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.BorrowedSourceAndEffectiveLevelsRoundTripPublicRealtimeAndHttpSnapshots": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d59942ce-d70e-e4c2-6bb5-8d40db690c75"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2793f58e-5879-382a-c142-642adc272f30"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: Infinity)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "8cf2c844-a4d6-0a84-8448-4373080a7fe7"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigBundlePublisherTests.Publish_replaces_existing_files_on_both_sides": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "cd917116-e015-4ae7-c61d-321e33f6f263"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"layer_id\", value: \"unknown\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "4004d8d9-46a0-b45a-9528-923584c560ad"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Concurrent_same_key_is_one_copy_and_distinct_stale_keys_cannot_both_spend": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "ff821e26-b0ec-c6f5-57f1-57fd203cf3bd"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"mark_kind\", value: \"opaque-marks\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "4bd382f1-a1b7-d3c0-6bef-2d6e758fa98f"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ResponseCarriesWalletIdentityAndExactInt64Version": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "d4d7ad20-50fa-e925-88d3-d2f8c689e163"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.LootPreferenceEncodingTests.NewPreferenceUsesAdditiveOptionalFieldsAndOldMessagesKeepItAbsent": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "4530431d-45b7-18f3-845a-c14b28c122ff"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "3f032862-5fb4-2be2-e315-69b0241feace"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.DistinctPublishedVersionsRetainTheirOwnCardAndGrowthData": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "bb04618e-f0b8-1111-16a1-c4790947e03c"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonShopEncodingTests.ShopPolicyAndActualCopyReceiptUseTypedFieldsAndKeepLargeIntegerBalancesExact": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "aabb611f-1bfa-457b-9a80-69ae15c04706"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ServerOnlyQuotaMetadataCannotBeChangedToClientOrOptional": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2f25b5c4-ff1e-5c48-0b0a-c85571039671"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"weekly_quota\", value: 2)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "b0c92526-6193-5bc4-900d-3242834f24bc"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Mail_metadata_uses_appended_typed_fields_and_preserves_raw_arguments": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "2b1c07e2-c310-7f2e-6ac3-16e31dca900d"
+    },
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "20a1e176-de45-81a8-2920-4a4162ab0dd8"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Dismantling_an_extra_does_not_refund_the_trained_base_or_remove_a_saved_deck_card": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "a2e86aa4-7af0-c6de-df0f-6cc87846a64e"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.MailTemplateEncodingTests.Legacy_payload_has_no_template_or_role_and_keeps_original_copy": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "e54e423e-9c5e-45d7-1526-b48cead54723"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Copy_reconciliation_detects_both_a_changed_ledger_delta_and_a_changed_terminal_count": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "bda4c2d6-f332-97f4-222e-ee4b49803f3f"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonCraftingEncodingTests.CraftAndReforgeRequestsKeepTheOriginalSeasonAndExactVersionFields": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "44452d0d-d87a-e0d0-4970-0ea9df7a0b3b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"shared_slots\", value: 9)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "618dde31-312b-d6a6-9602-38dc28c5bf6a"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Persisted_items_encode_in_receipt_and_bootstrap(result: \"Extracted\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "b9c896b8-29fd-fa6a-eb51-730d285bb2e1"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarketRules\", field: \"currency\", value: \"fragments\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "557b5a1f-90aa-0532-df64-1e4004464461"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.Typed_equipment_names_use_the_same_wire_adapter": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "700889de-7e30-5b66-9500-89563c632c80"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"None\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2b116d31-39ed-0d2f-f49a-b8be16de35a7"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonRedRules\", field: \"timezone\", value: \"UTC\")": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "dda2dde0-92a3-c732-9639-6293c19c03ba"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Json_requires_explicit_compatibility_and_never_replays_a_bad_body": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "eda92ff0-95b2-4aea-628f-03d93d3d71c0"
+    },
+    "FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "517213e1-3e60-6bb8-37cd-11be89256624"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"paid_bag_cap\", value: 4)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "c003e5e0-1042-b89e-8150-fc3adc9c2b94"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "d76b8928-d5b5-a9a0-4552-7767fb173125"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.DuplicateDifficultyLayerPairsCannotHideAMissingPair": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "a6a187c1-a5ac-7fee-2134-83ac51db6462"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyScheduleTests.Shop_refresh_quota_resets_at_server_utc_midnight(timestamp: \"2026-09-20T00:00:00Z\", expected: \"2026-09-20\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "afab6c27-93a5-beac-86a5-3dfd1f8576ae"
+    },
+    "FantasyCard.Server.Tests.Config.BorrowedDeckTransportTests.TypedHttpRequestPreservesBorrowedChoiceWithoutChangingDefaultOwnedRequest(borrowed: False)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "0f3fe7e1-23e8-718a-083d-a2f83ac682cc"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Accept_negotiation_honors_quality_and_explicit_exclusion(accept: \"application/protobuf\", legacy: False, expected: True)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "e600cd80-b3d6-f13f-c415-4624385cbdc5"
+    },
+    "FantasyCard.Server.Tests.Config.ConfigCatalogRegistryTests.TamperedTruncatedMissingAndRepeatedHashesAreRejected": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "58e3eb1b-9672-ae8c-9f56-806be678ccc0"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Database_rejects_orphan_reserves_and_unenabled_grants_without_rewriting_the_legacy_constraint": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "a05a0d68-8446-9e25-d48d-a88bb4591757"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.ArmorMaterialVersionUsesAnOptionalInt64FieldInTheActualRequestMapper": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "5a4ee2ee-095c-1ab2-724a-79f1174c2ce0"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonWalletEncodingTests.RequestPreservesLegacyTagsAndOptionalSeasonPresence": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "f553711f-5555-d09a-af0a-5a72e1aca626"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"C01\")": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "c237d01f-aaf9-5921-3677-c840368a55c3"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SettlementEncodingTests.OriginalSeasonUsesAppendOnlyReceiptTagSevenAndReachesBootstrap": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "37d0eef3-1893-3866-0802-51dd04f75dcf"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonEquipmentTransportTests.PendingRedOnlyReplacesChoicePermissionsAndNeverSuppressesAPlayersDuel(phase: Extracted)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "57e9bcf6-6d91-771e-5e41-86aef2f0c375"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.ServerApiBoundaryTests.Error_statuses_are_typed_and_private(status: 403)": {
+      "outcome": "Passed",
+      "source": "r82",
+      "run_local_id": "1d359737-76f2-721d-8156-464a06bdaf02"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"Economy\", key: \"daily-shop-refresh-limit\", field: \"int_value\", value: 5)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "94fcc4a5-9b76-d4ba-67a3-25e78d5aabfd"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"ShopCardPrices\", key: \"White\", field: \"price_gold\", value: 79)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "abf5f995-4165-18a9-b60a-0686ce706d17"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"Backpacks\", key: \"Advanced\", field: \"price_gold\", value: 799)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "43fadd5a-da47-8946-d127-8be84cca6572"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"CardLevels\", key: \"C01:4\", field: \"requires_copy\", value: False)": {
+      "outcome": "Passed",
+      "source": "r84",
+      "run_local_id": "2d56d6b9-eed7-6458-9cd8-022caf96aa20"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.FirstSeasonShopAdoptionKeepsLegacySingleCardsRefreshesAndUsedAccountQuotas": {
+      "outcome": "Passed",
+      "source": "r85",
+      "run_local_id": "1152b749-9b94-9f28-309a-2c137f0afc34"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms": {
+      "outcome": "Passed",
+      "source": "local-clock-r1",
+      "run_local_id": "63cb37e0-38e6-f367-e5ba-7f5cfde6edf4"
     }
-  ],
-  "cloud_cases": [
-    {
-      "executionId": "9ce83b6e-5b5d-45c9-8948-096689e11ddb",
-      "testId": "2eba6c83-fee1-ceaa-7822-6fc087768431",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Each_upgrade_uses_its_own_soul_pool_and_replays_without_changing_quality",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4490098",
-      "startTime": "2026-11-04T14:11:13.4061662+00:00",
-      "endTime": "2026-11-04T14:11:14.8552439+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "9ce83b6e-5b5d-45c9-8948-096689e11ddb"
-    },
-    {
-      "executionId": "cef215a5-4452-48e8-9b94-37cb07796cf6",
-      "testId": "f089e074-0e0c-2b15-2ade-bb575d833d52",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Repeated_pack_draws_count_copies_and_only_the_first_unowned_copy_unlocks_the_card",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.7610003",
-      "startTime": "2026-11-04T14:10:34.3306154+00:00",
-      "endTime": "2026-11-04T14:10:36.1065612+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "cef215a5-4452-48e8-9b94-37cb07796cf6"
-    },
-    {
-      "executionId": "b0b8e261-ed19-4700-b5d6-c15570bdabcd",
-      "testId": "63bafc12-e6c2-8f54-6c9d-b517b697a51d",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"PRI-10\")",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4806452",
-      "startTime": "2026-11-04T14:10:42.4001519+00:00",
-      "endTime": "2026-11-04T14:10:43.8809111+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b0b8e261-ed19-4700-b5d6-c15570bdabcd"
-    },
-    {
-      "executionId": "6a0fcdc4-8ec2-4f21-9818-a819eda2e078",
-      "testId": "14be133a-ab2c-2982-c6bc-80ddafdcce32",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Saved_decks_are_protected_and_owned_cards_cannot_be_acquired_again",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.3692549",
-      "startTime": "2026-11-04T14:11:19.2904117+00:00",
-      "endTime": "2026-11-04T14:11:20.6597455+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "6a0fcdc4-8ec2-4f21-9818-a819eda2e078"
-    },
-    {
-      "executionId": "e0ef0f96-97ce-43f0-9dcf-b746da51b39a",
-      "testId": "0531c8a9-8acc-8419-568c-150865d36690",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Preparation_freezes_trained_level_despite_later_upgrades",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4988178",
-      "startTime": "2026-11-04T14:11:14.8561016+00:00",
-      "endTime": "2026-11-04T14:11:16.3550739+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "e0ef0f96-97ce-43f0-9dcf-b746da51b39a"
-    },
-    {
-      "executionId": "76877579-4ffd-49c3-a095-2ac8d20de567",
-      "testId": "85ee2e9d-f495-fbcf-058b-2bec904bd3bd",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"MAG-01\")",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.6216755",
-      "startTime": "2026-11-04T14:10:43.8824175+00:00",
-      "endTime": "2026-11-04T14:10:45.5041998+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "76877579-4ffd-49c3-a095-2ac8d20de567"
-    },
-    {
-      "executionId": "b96fcc28-18dc-4779-8bb3-e5e4bbb3260e",
-      "testId": "2df2df10-8eea-e8dd-d946-a759cafd1df3",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy",
-      "computerName": "803968e39001",
-      "duration": "00:00:00.0001889",
-      "startTime": "2026-11-04T14:11:22.2079834+00:00",
-      "endTime": "2026-11-04T14:11:22.2082154+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "b96fcc28-18dc-4779-8bb3-e5e4bbb3260e"
-    },
-    {
-      "executionId": "20491ca9-e65f-43a1-ad4d-c1fc027681bb",
-      "testId": "f6614d49-e9a2-b1cd-2377-dbb697ef37d8",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection",
-      "computerName": "803968e39001",
-      "duration": "00:00:15.2165344",
-      "startTime": "2026-11-04T14:10:55.3901941+00:00",
-      "endTime": "2026-11-04T14:11:10.6068592+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "20491ca9-e65f-43a1-ad4d-c1fc027681bb"
-    },
-    {
-      "executionId": "86c14387-8833-473f-a8c8-ebba4ad33e49",
-      "testId": "ff821e26-b0ec-c6f5-57f1-57fd203cf3bd",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Concurrent_same_key_is_one_copy_and_distinct_stale_keys_cannot_both_spend",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.6853498",
-      "startTime": "2026-11-04T14:10:39.3081516+00:00",
-      "endTime": "2026-11-04T14:10:40.9939668+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "86c14387-8833-473f-a8c8-ebba4ad33e49"
-    },
-    {
-      "executionId": "ce9cdd6a-c3b0-42f5-a0f3-b98f4c9a1377",
-      "testId": "393298e1-8144-a26b-90e0-54e257f306e1",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"GUA-09\")",
-      "computerName": "803968e39001",
-      "duration": "00:00:02.0082226",
-      "startTime": "2026-11-04T14:10:47.1570874+00:00",
-      "endTime": "2026-11-04T14:10:49.1654570+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "ce9cdd6a-c3b0-42f5-a0f3-b98f4c9a1377"
-    },
-    {
-      "executionId": "7a30ac66-0fe1-4cc0-afe2-f9d8dc0530fb",
-      "testId": "a05a0d68-8446-9e25-d48d-a88bb4591757",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Database_rejects_orphan_reserves_and_unenabled_grants_without_rewriting_the_legacy_constraint",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.7159291",
-      "startTime": "2026-11-04T14:10:53.6588963+00:00",
-      "endTime": "2026-11-04T14:10:55.3749239+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "7a30ac66-0fe1-4cc0-afe2-f9d8dc0530fb"
-    },
-    {
-      "executionId": "a229f8ac-87a9-4df7-9e93-b446d7bfe800",
-      "testId": "c5f90f7c-f146-780d-0cc0-153f9ace0eca",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Copy_ledger_failure_rolls_back_the_soul_debit_base_version_and_reserve_together",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.7354740",
-      "startTime": "2026-11-04T14:10:36.1212387+00:00",
-      "endTime": "2026-11-04T14:10:37.8571192+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "a229f8ac-87a9-4df7-9e93-b446d7bfe800"
-    },
-    {
-      "executionId": "de91722c-13ce-4d7c-86be-57c1fc8d31d1",
-      "testId": "c4bfa9ef-7c1d-cf8d-34d7-64a14ee8e9e5",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Cumulative_upgrade_spend_is_refunded_once_and_last_copy_resets_level",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.5449306",
-      "startTime": "2026-11-04T14:11:20.6607658+00:00",
-      "endTime": "2026-11-04T14:11:22.2057834+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "de91722c-13ce-4d7c-86be-57c1fc8d31d1"
-    },
-    {
-      "executionId": "2b1825ef-3d1d-4d5a-b582-626406e48ccb",
-      "testId": "5bf22fae-ce81-c8d5-e36c-aebbb73d1197",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Full_codex_craft_and_dismantle_use_each_soul_pool_and_replay_once",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.5173366",
-      "startTime": "2026-11-04T14:11:17.7702398+00:00",
-      "endTime": "2026-11-04T14:11:19.2880528+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "2b1825ef-3d1d-4d5a-b582-626406e48ccb"
-    },
-    {
-      "executionId": "57699300-9c9e-415c-b24f-90b5e843a49a",
-      "testId": "82da49bb-5357-ad14-3f90-45a93183fabc",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Existing_version_43_card_rows_decks_and_souls_are_unchanged_by_the_forward_migration",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4025342",
-      "startTime": "2026-11-04T14:10:40.9950747+00:00",
-      "endTime": "2026-11-04T14:10:42.3977150+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "57699300-9c9e-415c-b24f-90b5e843a49a"
-    },
-    {
-      "executionId": "1977fb4d-7b3c-46da-a4b3-6d03c26e80a0",
-      "testId": "4a5b9c7f-28cd-6053-5d3c-561bcb40505d",
-      "testName": "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories",
-      "computerName": "803968e39001",
-      "duration": "00:00:00.0003594",
-      "startTime": "2026-11-04T14:11:22.2070564+00:00",
-      "endTime": "2026-11-04T14:11:22.2074749+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "1977fb4d-7b3c-46da-a4b3-6d03c26e80a0"
-    },
-    {
-      "executionId": "feee78f3-b52f-400f-92c2-b19144ba4506",
-      "testId": "a048a492-4e1f-2c5e-6158-1f7ce03ec298",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardEconomyTests.Insufficient_souls_and_concurrent_requests_cannot_duplicate_or_partially_apply",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4125305",
-      "startTime": "2026-11-04T14:11:16.3564263+00:00",
-      "endTime": "2026-11-04T14:11:17.7692337+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "feee78f3-b52f-400f-92c2-b19144ba4506"
-    },
-    {
-      "executionId": "c2b8dff0-023f-48e9-9d29-95c5c1d6b325",
-      "testId": "c237d01f-aaf9-5921-3677-c840368a55c3",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Every_soul_pool_consumes_exactly_one_extra_copy_at_four_and_five_and_replays_once(cardId: \"C01\")",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.6510421",
-      "startTime": "2026-11-04T14:10:45.5048424+00:00",
-      "endTime": "2026-11-04T14:10:47.1560024+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "c2b8dff0-023f-48e9-9d29-95c5c1d6b325"
-    },
-    {
-      "executionId": "64144eb3-5f43-40cd-96e9-0b915618eaa6",
-      "testId": "22dabe37-2176-cc37-54d3-9acf45eeb415",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Fourth_and_fifth_levels_consume_souls_without_card_copies",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.3289818",
-      "startTime": "2026-11-04T14:11:12.0753674+00:00",
-      "endTime": "2026-11-04T14:11:13.4048450+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "64144eb3-5f43-40cd-96e9-0b915618eaa6"
-    },
-    {
-      "executionId": "2ed2070a-fcb5-4d61-852d-643a830c4044",
-      "testId": "3288eb1c-34df-c321-8d4c-64d0d9b2e768",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresCardUpgradeTests.Insufficient_souls_roll_back_and_concurrent_upgrade_replays_spend_once",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4660207",
-      "startTime": "2026-11-04T14:11:10.6083389+00:00",
-      "endTime": "2026-11-04T14:11:12.0747008+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "2ed2070a-fcb5-4d61-852d-643a830c4044"
-    },
-    {
-      "executionId": "961ed58f-53d2-44b7-902e-2366535788c6",
-      "testId": "9ddde80a-19bb-2a87-2859-b3e48ea9bb33",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Overflowing_a_grouped_grant_leaves_the_base_version_and_copy_ledger_unchanged",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4897692",
-      "startTime": "2026-11-04T14:10:50.6037110+00:00",
-      "endTime": "2026-11-04T14:10:52.0936343+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "961ed58f-53d2-44b7-902e-2366535788c6"
-    },
-    {
-      "executionId": "bfbe1ad1-c58b-49f8-8e6d-73ec00c38980",
-      "testId": "bda4c2d6-f332-97f4-222e-ee4b49803f3f",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Copy_reconciliation_detects_both_a_changed_ledger_delta_and_a_changed_terminal_count",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.5593846",
-      "startTime": "2026-11-04T14:10:52.0960557+00:00",
-      "endTime": "2026-11-04T14:10:53.6555349+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "bfbe1ad1-c58b-49f8-8e6d-73ec00c38980"
-    },
-    {
-      "executionId": "3c9f4f63-909c-468b-8001-0cfbf6a5c84b",
-      "testId": "a2e86aa4-7af0-c6de-df0f-6cc87846a64e",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Dismantling_an_extra_does_not_refund_the_trained_base_or_remove_a_saved_deck_card",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4343333",
-      "startTime": "2026-11-04T14:10:49.1671397+00:00",
-      "endTime": "2026-11-04T14:10:50.6015702+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "3c9f4f63-909c-468b-8001-0cfbf6a5c84b"
-    },
-    {
-      "executionId": "aeb379d2-3eae-48b8-a64b-559d79f5b53a",
-      "testId": "60f5054b-7a6c-7d16-ddce-551d2a3354b3",
-      "testName": "FantasyCard.Server.Tests.Persistence.PostgresPermanentCardCopyTests.Opt_in_preserves_all_permanent_rows_and_keeps_its_first_configuration_after_restart",
-      "computerName": "803968e39001",
-      "duration": "00:00:01.4426370",
-      "startTime": "2026-11-04T14:10:37.8592045+00:00",
-      "endTime": "2026-11-04T14:10:39.3020836+00:00",
-      "testType": "13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b",
-      "outcome": "Passed",
-      "testListId": "8c84fa94-04c1-424b-9868-57a2d4851a1d",
-      "relativeResultsDirectory": "aeb379d2-3eae-48b8-a64b-559d79f5b53a"
-    }
-  ],
-  "interrupted_local_pg_batch_excluded": true,
-  "not_a_single_189_case_run": true
+  },
+  "r85": {
+    "passed": 1,
+    "failed": 1
+  },
+  "corrected_clock": {
+    "passed": 1,
+    "failed": 0
+  }
 }

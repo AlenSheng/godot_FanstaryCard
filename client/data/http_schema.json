@@ -1,5 +1,5 @@
 {
-  "sha256": "a20b790d0ebaedd32bfe36a9b5812dea2c330a3d01ebf4d39251e2a29f9aa03d",
+  "sha256": "a2941254bf0e59289b3dcf5b630f7842044b9d8c4705855ece8c3aaa8718ba7c",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -1094,6 +1094,112 @@
         "type": "int32",
         "repeated": false,
         "optional": false
+      },
+      "5": {
+        "name": "policy",
+        "type": "ShopPolicyResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "rotation_key",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ShopPolicyResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "catalog_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "season_ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "resets_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "can_purchase",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "wallet",
+        "type": "WalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "grants_permanent_copies",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "ShopGrantResponse": {
+      "1": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "amount",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "card_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "newly_unlocked",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "copies_after",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
       }
     },
     "ShopInventoryContextResponse": {
@@ -1122,6 +1228,36 @@
         "type": "int32",
         "repeated": false,
         "optional": true
+      },
+      "3": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "reset_key",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "rotation_key",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "expected_price_gold",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "catalog_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "ShopPurchaseResponse": {
@@ -1148,6 +1284,42 @@
         "type": "string",
         "repeated": false,
         "optional": false
+      },
+      "5": {
+        "name": "grants",
+        "type": "ShopGrantResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "wallet",
+        "type": "WalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "catalog_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "reset_key",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "CreateMarketListingRequest": {
@@ -1702,6 +1874,12 @@
       "19": {
         "name": "next_effect",
         "type": "CardEffectResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "20": {
+        "name": "permanent_copies",
+        "type": "bool",
         "repeated": false,
         "optional": false
       }

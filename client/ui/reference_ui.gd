@@ -10,6 +10,7 @@ const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const EquipmentCompareModel = preload("res://ui/equipment_compare_model.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const SeasonCrafting = preload("res://ui/season_crafting_view.gd")
+const ShopModel=preload("res://ui/season_shop_model.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -1178,6 +1179,10 @@ func _enhance_progress(level: int) -> void:
 
 func _shop() -> void:
 	panel(Rect2(28, 138, 1864, 864))
+	if not ShopModel.policy(host.shop).is_empty():
+		var rules := text(P.localized("season_shop_rules"),Rect2(76,154,1740,50),22,P.GOLD)
+		rules.name="ShopRules"
+		rules.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
 	var scroll := DragScroll.new()
@@ -1223,9 +1228,7 @@ func _shop() -> void:
 			image.size = Vector2(180, 230)
 		var detail := Label.new()
 		detail.name = "ShopDetail"
-		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
-		detail.text = quantity_line + (P.localized("shop_purchase_count") % [item.purchased, item.limit]) + "\n" + (P.localized("shop_price") % item.priceGold)
+		detail.text=_shop_detail(item,payload)
 		detail.position = Vector2(44, 432) if is_guaranteed_card else Vector2(44, 371)
 		detail.size = Vector2(206, 94) if is_guaranteed_card else Vector2(206, 155)
 		detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1234,17 +1237,16 @@ func _shop() -> void:
 		detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		item_panel.add_child(detail)
 		P.fit_control_font(detail, P.font("body"), 18 if is_guaranteed_card else 22, 8.0)
-		var is_bag: bool = kind in ["AdvancedBag", "TopBag"]
-		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
-		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
-		var already_owned: bool = is_guaranteed_card and bool(item.get("alreadyOwned", false))
-		var buy_text := P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
-		var buy: Button = host._button(item_panel, buy_text, func(): host._purchase_shop_item(item, product_title), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+		var blocked := ShopModel.reason(item,host.shop,consumables,host._shop_inventory_ready,Game.lobby.get("wallet",{}))
+		var copy_label := "season_shop_buy_copy" if is_guaranteed_card and item.get("alreadyOwned",false) and ShopModel.copies_enabled(host.shop) else "buy"
+		var buy_text := P.localized(copy_label) if blocked.is_empty() else P.localized(blocked)
+		var buy: Button = host._button(item_panel,buy_text,func(): host._purchase_shop_item(item,product_title),Game.busy or not blocked.is_empty())
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
-		buy.position = Vector2(44, 534)
-		buy.size = Vector2(206, 66)
-	if row.get_child_count() == 0: text(P.localized("no_products"), Rect2(640, 440, 790, 95), 34, P.MUTED)
+		buy.position = Vector2(28,534)
+		buy.size = Vector2(238,66)
+		_fit_shop_button(buy)
+	if row.get_child_count() == 0: text(P.localized("season_shop_closed") if not ShopModel.policy(host.shop).is_empty() else P.localized("no_products"),Rect2(470,440,980,95),34,P.MUTED)
 	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
 	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
 	text(stock_text, Rect2(85, 884, 950, 34), 20, P.MUTED).name = "ShopStockSummary"
@@ -1252,9 +1254,25 @@ func _shop() -> void:
 	var refresh_limit := int(host.shop.get("refreshLimit", 0))
 	var refresh_remaining := maxi(0, refresh_limit - refresh_used)
 	text(P.localized("equipment_daily_refresh") % [refresh_remaining, refresh_limit], Rect2(85, 920, 950, 42), 24, P.GOLD)
-	var refresh_button := button(P.localized("refresh"), Rect2(1630, 908, 190, 54), host._refresh_shop, Game.busy or refresh_remaining <= 0, ORANGE)
+	var refresh_button := button(P.localized("refresh"),Rect2(1630,908,190,54),host._refresh_shop,Game.busy or refresh_remaining<=0 or not ShopModel.open(host.shop),ORANGE)
 	refresh_button.name = "RefreshShopButton"
 	host._restore_shop_scroll(scroll)
+	var wallet := get_node_or_null("WalletGold") as Label
+	if wallet!=null: wallet.text="%s %s" % [P.localized("word_gold"),ShopModel.gold(host.shop,Game.lobby.get("wallet",{}))]
+
+func _shop_detail(item: Dictionary,payload: Dictionary) -> String:
+	var amount := int(payload.get("amount",payload.get("count",0)))
+	var key := "season_shop_copies_qty" if item.get("kind")=="Cards" and ShopModel.copies_enabled(host.shop) else "shop_quantity_line"
+	var lines: Array[String]=[]
+	if amount>0: lines.append(P.localized(key)%amount)
+	lines.append(P.localized("shop_purchase_count")%[item.get("purchased",0),item.get("limit",0)] if int(item.get("limit",0))>0 else P.localized("season_shop_unlimited"))
+	lines.append(P.localized("shop_price")%item.get("priceGold",0))
+	return "\n".join(lines)
+
+func _fit_shop_button(control: Button) -> void:
+	var style: StyleBox=control.get_theme_stylebox("normal")
+	var padding: float=style.get_content_margin(SIDE_LEFT)+style.get_content_margin(SIDE_RIGHT)+8.0
+	P.fit_control_font(control,control.get_theme_font("font"),22,padding)
 
 func sync_shop_state(changed_product_id: String = "") -> bool:
 	var row := get_node_or_null("ShopScroll/ShopProductRow") as HBoxContainer
@@ -1268,7 +1286,7 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		if panel_node.get_meta("kind", "") != product.get("kind", "") or panel_node.get_meta("payload", "") != str(product.get("payload", "")): return false
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
-	var gold: int = int(Game.lobby.get("wallet", {}).get("gold", 0))
+	var gold: int=ShopModel.gold(host.shop,Game.lobby.get("wallet",{}))
 	for index in products.size():
 		var product: Dictionary = products[index]
 		var panel_node := row.get_child(index) as Panel
@@ -1277,16 +1295,13 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		if detail == null or buy == null: return false
 		var parsed: Variant = product.get("payload", {})
 		var payload: Dictionary = parsed if parsed is Dictionary else {}
-		var amount: int = int(payload.get("amount", payload.get("count", 0)))
 		if changed_product_id.is_empty() or str(product.get("productId", "")) == changed_product_id:
-			var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
-			detail.text = quantity_line + (P.localized("shop_purchase_count") % [product.get("purchased", 0), product.get("limit", 0)]) + "\n" + (P.localized("shop_price") % product.get("priceGold", 0))
-		var is_bag: bool = product.get("kind", "") in ["AdvancedBag", "TopBag"]
-		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
-		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
-		var already_owned: bool = product.get("kind", "") == "Cards" and payload.has("cardId") and bool(product.get("alreadyOwned", false))
-		buy.text = P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
-		buy.disabled = Game.busy or stock_unknown or stock_full or already_owned or int(product.get("purchased", 0)) >= int(product.get("limit", 0)) or int(product.get("priceGold", 0)) > gold
+			detail.text=_shop_detail(product,payload)
+		var blocked := ShopModel.reason(product,host.shop,consumables,host._shop_inventory_ready,Game.lobby.get("wallet",{}))
+		var copy_label := "season_shop_buy_copy" if product.get("kind")=="Cards" and payload.has("cardId") and product.get("alreadyOwned",false) and ShopModel.copies_enabled(host.shop) else "buy"
+		buy.text=P.localized(copy_label) if blocked.is_empty() else P.localized(blocked)
+		buy.disabled=Game.busy or not blocked.is_empty()
+		_fit_shop_button(buy)
 	var wallet_label := get_node_or_null("WalletGold") as Label
 	if wallet_label != null: wallet_label.text = "%s %s" % [P.localized_text(P.localized("word_gold")), gold]
 	var stock_label := get_node_or_null("ShopStockSummary") as Label

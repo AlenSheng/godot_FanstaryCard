@@ -245,6 +245,7 @@ static func _details(ui: Control, host: Control) -> void:
 		_cost_row(modal, P.localized("craft_cost"), kind, "%s %s" % [cost, material] if known else P.localized("reading"), 701)
 		_cost_row(modal, P.localized("current_owned"), kind, "%s %s" % [balance, material], 756)
 	var hint := P.localized("dismantle_hint") if owned else P.localized("craft_hint")
+	if owned and entry.get("permanentCopies",false) and copies>1: hint=P.localized("season_shop_duplicate_refund")
 	if owned and not entry.get("canDismantle", false): hint = P.localized("saved_deck_in_use")
 	var used_in_draft: bool = owned and host.deck_draft.count(id) >= copies
 	if used_in_draft: hint = P.localized("deck_in_use")
@@ -264,9 +265,19 @@ static func _details(ui: Control, host: Control) -> void:
 		var upgrade_title := P.localized("codex_upgrade_to") % (int(entry.get("level", 0)) + 1)
 		if int(entry.get("level", 0)) >= 5: upgrade_title = P.localized("max_level_short")
 		var upgrade: Button = modal.button(upgrade_title, Rect2(400, 795, 315, 67), func():
-			host._confirm(P.localized("codex_upgrade_confirm") % [upgrade_cost, material, int(entry.get("level", 0)) + 1], host._card_action.bind(id, "upgrade")), Game.busy or not upgrade_ready)
+			var message := P.localized("codex_upgrade_confirm")%[upgrade_cost,material,int(entry.get("level",0))+1]
+			if int(entry.get("upgradeCopyCost",0))>0: message+="\n"+P.localized("season_shop_copy_material")%int(entry.upgradeCopyCost)
+			host._confirm(message,host._card_action.bind(id,"upgrade")),Game.busy or not upgrade_ready)
 		upgrade.name = "UpgradeCard"
-		upgrade.tooltip_text = P.localized_text(P.localized("max_level") if int(entry.get("level", 0)) >= 5 else P.localized("soul_only"))
+		upgrade.tooltip_text=P.localized_text(P.localized("max_level") if int(entry.get("level",0))>=5 else P.localized("season_shop_copy_required") if int(entry.get("upgradeCopyCost",0))>0 else P.localized("soul_only"))
+		if int(entry.get("upgradeCopyCost",0))>0:
+			var copy_cost: Label=modal.text(P.localized("season_shop_copy_material")%int(entry.upgradeCopyCost),Rect2(400,751,315,38),18,P.GOLD)
+			copy_cost.name="UpgradeCopyCost"
+			copy_cost.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
+		if entry.get("permanentCopies",false):
+			var duplicate: Button=modal.button(P.localized("season_shop_create_copy")%int(entry.get("craftCost",0)),Rect2(400,881,315,67),func():
+				host._confirm(P.localized("season_shop_copy_confirm")%[int(entry.get("craftCost",0)),material],host._card_action.bind(id,"craft")),Game.busy or not known or balance<int(entry.get("craftCost",0)),ui.BLUE)
+			duplicate.name="CopyCard"
 
 static func _open_details(ui: Control, host: Control, id: String, scroll: ScrollContainer) -> void:
 	if not host._codex_card.is_empty(): return

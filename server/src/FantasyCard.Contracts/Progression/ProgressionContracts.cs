@@ -31,7 +31,8 @@ public sealed record CardResponse(
     bool CanUpgrade = false,
     string? UpgradeBlockedReason = null,
     CardEffectResponse? CurrentEffect = null,
-    CardEffectResponse? NextEffect = null);
+    CardEffectResponse? NextEffect = null,
+    bool PermanentCopies = false);
 
 public sealed record CardEffectResponse(
     int ElementalDamage,

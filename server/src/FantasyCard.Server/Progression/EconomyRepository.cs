@@ -117,7 +117,7 @@ public sealed record PendingRewardRefresh(Guid PlayerId, string RequestId, Guid 
 public sealed record ShopRefreshResult(ShopResponse Shop, bool Replayed);
 
 public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider,
-    FantasyCard.Server.Rooms.PublishedConfigCatalogs? configurations=null) : IDisposable
+    FantasyCard.Server.Rooms.PublishedConfigCatalogs? configurations=null,Func<int,int>? shopRandom=null) : IDisposable
 {
     private readonly SemaphoreSlim _dailyStateGate = new(1, 1);
     private string? _initializedShopResetKey;
@@ -287,7 +287,7 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
         return result;
     }
 
-    public async Task<ShopResponse> GetShopAsync(Guid playerId, CancellationToken cancellationToken)
+    private async Task<ShopResponse> GetLegacyShopAsync(Guid playerId, CancellationToken cancellationToken)
     {
         var now = timeProvider.GetUtcNow();
         var resetKey = EconomySchedule.GetDailyResetKey(now);
@@ -306,7 +306,7 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             cancellationToken);
     }
 
-    public async Task<ShopRefreshResult> RefreshShopAsync(Guid playerId, string requestId, CancellationToken cancellationToken)
+    private async Task<ShopRefreshResult> RefreshLegacyShopAsync(Guid playerId, string requestId, CancellationToken cancellationToken)
     {
         var now = timeProvider.GetUtcNow();
         var shopResetKey = EconomySchedule.GetDailyResetKey(now);
@@ -332,7 +332,12 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             return new(replay, true);
         }
 
+        if(!(await ReadMarketScheduleAsync(connection,transaction,timeProvider.GetUtcNow(),cancellationToken)).LegacyAllowed)
+            throw new FantasyCard.Domain.Players.DomainValidationException("The shop domain changed. Reload before refreshing.");
+
         var state = await ReadRefreshStateAsync(connection, transaction, refreshResetKey, cancellationToken);
+        if(!(await ReadMarketScheduleAsync(connection,transaction,timeProvider.GetUtcNow(),cancellationToken)).LegacyAllowed)
+            throw new FantasyCard.Domain.Players.DomainValidationException("The shop domain changed. Reload before refreshing.");
         if (state.UsedCount >= config.Economy.DailyShopRefreshLimit)
             throw new InvalidOperationException("Daily shop refresh limit reached.");
 
@@ -374,7 +379,7 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
         return new(result, false);
     }
 
-    public async Task<ShopPurchaseResponse> PurchaseAsync(Guid playerId, string requestId, PurchaseShopRequest request, CancellationToken cancellationToken)
+    private async Task<ShopPurchaseResponse> PurchaseLegacyShopAsync(Guid playerId, string requestId, PurchaseShopRequest request, CancellationToken cancellationToken)
     {
         if (request.Quantity is < 1 or > 10) throw new InvalidOperationException("Quantity must be between 1 and 10.");
         var resetKey = EconomySchedule.GetDailyResetKey(timeProvider.GetUtcNow());
@@ -401,7 +406,11 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             }
         }
 
+        if(!(await ReadMarketScheduleAsync(connection,transaction,timeProvider.GetUtcNow(),cancellationToken)).LegacyAllowed)
+            throw new FantasyCard.Domain.Players.DomainValidationException("The shop domain changed. Reload before purchasing.");
         var rotationKey = (await ReadRefreshStateAsync(connection, transaction, refreshResetKey, cancellationToken)).RotationKey;
+        if(!(await ReadMarketScheduleAsync(connection,transaction,timeProvider.GetUtcNow(),cancellationToken)).LegacyAllowed)
+            throw new FantasyCard.Domain.Players.DomainValidationException("The shop domain changed. Reload before purchasing.");
         string kind, payload; long price; int limit;
         await using (var product = new NpgsqlCommand("SELECT kind, payload_json::text, price_gold, limit_count FROM shop_rotations WHERE reset_key=$1 AND product_id=$2", connection, transaction))
         {

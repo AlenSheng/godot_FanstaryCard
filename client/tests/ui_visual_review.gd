@@ -6,6 +6,7 @@ const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bot
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
 const RED_SCENARIOS := ["c11_waiting","c11_pending","c11_pending_bottom","c11_replace","c11_replace_bottom","c11_confirm","c11_confirm_bottom"]
 const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_relist","c12_confirm","c12_returns","c12_error","c12_hall"]
+const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -74,7 +75,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -123,6 +124,31 @@ func _check_login_language(frame_name: String, on_login: bool) -> void:
 			review_checks[frame_name + ": all registered language choices"] = scroll.get_node("LoginLanguageChoices").get_child_count() == Palette.languages().size()
 			for choice in scroll.get_node("LoginLanguageChoices").get_children():
 				review_checks[frame_name + ": readable language choice " + str(choice.name)] = choice.get_theme_font_size("font_size") >= 24
+
+func _check_shop_season_scene(frame_name: String) -> void:
+	if frame_name.contains("_c13_copy") or frame_name.ends_with("_c13_upgrade_confirm"):
+		var modal: Control=$UI._reference.get_node("CardDetails")
+		var copy: Button=modal.get_node("CopyCard");var upgrade: Button=modal.get_node("UpgradeCard");var cost: Label=modal.get_node("UpgradeCopyCost")
+		review_checks[frame_name+": permanent copy action visible and funded"]=copy.is_visible_in_tree() and not copy.disabled
+		review_checks[frame_name+": material requirement visible"]=cost.is_visible_in_tree() and cost.text.contains("1")
+		review_checks[frame_name+": missing material controls upgrade"]=upgrade.disabled==frame_name.ends_with("_missing")
+		review_checks[frame_name+": copy action clears upgrade"]=copy.position.y>=upgrade.get_rect().end.y+8
+		for node in [copy,upgrade,cost]:
+			review_checks[frame_name+": copy controls inside detail panel "+str(node.name)]=modal.get_node("DetailsPanel").get_rect().encloses(node.get_rect())
+		if frame_name.ends_with("_confirm"):review_checks[frame_name+": material or copy confirmation visible"]=$UI.get_node_or_null("ConfirmationModal")!=null
+		return
+	var rules: Label=$UI._reference.get_node("ShopRules")
+	review_checks[frame_name+": business reset and shared soul note visible"]=rules.is_visible_in_tree() and rules.get_visible_line_count()==rules.get_line_count()
+	if frame_name.ends_with("_c13_closed"):
+		review_checks[frame_name+": closed catalog empty"]=$UI.shop.products.is_empty()
+		review_checks[frame_name+": closed refresh disabled"]=$UI._reference.get_node("RefreshShopButton").disabled
+		return
+	for row in $UI._reference.get_node("ShopScroll/ShopProductRow").get_children():
+		var id := str(row.name).trim_prefix("Product_");var button: Button=row.get_node("Purchase")
+		if id in ["advanced_bag","top_bag"]:review_checks[frame_name+": bags have no artificial daily limit "+id]=not button.disabled
+		if id.begins_with("daily_card_"):review_checks[frame_name+": owned daily cards remain purchasable "+id]=not button.disabled
+		if frame_name.ends_with("_c13_shared") and id in ["priest_soul","mage_soul","guardian_soul"]:
+			review_checks[frame_name+": shared class quota disabled "+id]=button.disabled
 
 func _check_season_preparation(frame_name: String) -> void:
 	var view: Control = $UI._reference
@@ -202,6 +228,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c13_"): return await _prepare_shop_scene(scenario)
 	if scenario.begins_with("c12_"):return await _prepare_market_scene(scenario)
 	if scenario.begins_with("c11_"):
 		Game.room=_room_fixture()
@@ -447,6 +474,46 @@ func _market_listing_fixture(id: String,item: Dictionary,currency: String,price:
 		"expiresAt":"2099-12-31T00:00:00Z","seasonId":"market-review","seasonEndsAt":"2099-12-31T00:00:00Z","fee":maxi(1,int(price/10.0)),
 		"sellerNet":price-maxi(1,int(price/10.0)),"equipment":gear}
 
+func _prepare_shop_scene(scenario: String) -> bool:
+	$UI._shop_scroll=0
+	var products: Array=[]
+	for row in [["card_pack","Cards",250,5,3],["warrior_soul","WarriorSoul",180,3,20],["equipment_fragments","EquipmentFragments",120,3,20],
+		["priest_soul","ClassSoul",400,1,12],["mage_soul","ClassSoul",400,1,12],["guardian_soul","ClassSoul",400,1,12],
+		["health_potion","HealthPotion",100,4,1],["advanced_bag","AdvancedBag",800,0,1],["top_bag","TopBag",2200,0,1]]:
+		var payload := {"count":int(row[4])} if row[1]=="Cards" else {"amount":int(row[4])}
+		if row[1]=="ClassSoul": payload["heroClass"]={"priest_soul":"Priest","mage_soul":"Mage","guardian_soul":"Guardian"}[str(row[0])]
+		products.append({"productId":str(row[0]),"kind":str(row[1]),"priceGold":int(row[2]),"limit":int(row[3]),"purchased":1 if scenario=="c13_shared" and row[1]=="ClassSoul" else 0,"payload":payload})
+	for index in 3:
+		products.append({"productId":"daily_card_"+str(index+1),"kind":"Cards","priceGold":80,"limit":1,"purchased":0,"alreadyOwned":true,"payload":{"cardId":["C01","MAG-01","GP01"][index],"count":1}})
+	$UI.shop={"resetKey":"2098-12-31","rotationKey":"2098-12-31~0","refreshesUsed":1,"refreshLimit":3,"products":products,
+		"policy":{"state":"Active","canPurchase":true,"grantsPermanentCopies":true,"seasonId":"review","configVersion":Game.CATALOG.data.version,
+			"catalogVersion":Game.CATALOG.data.version,"wallet":{"gold":5000,"diamond":500},"resetsAt":"2099-01-01T20:00:00Z","seasonEndsAt":"2099-02-01T00:00:00Z"}}
+	if scenario=="c13_closed":
+		$UI.shop.policy.state="Closed";$UI.shop.policy.canPurchase=false;$UI.shop.products=[]
+	Game.lobby.shop=$UI.shop;Game.lobby.wallet={"gold":5000,"diamond":500}
+	$UI.inventory["consumables"]={"advancedBagCount":1,"topBagCount":0};Game.lobby.inventory=$UI.inventory
+	$UI._shop_inventory_ready=true;$UI.screen="shop"
+	if scenario in ["c13_copy","c13_copy_missing","c13_copy_confirm","c13_upgrade_confirm"]:
+		var quote := _owned("MAG-01");quote["permanentCopies"]=true;quote.copyCount=1 if scenario=="c13_copy_missing" else 2
+		quote.upgradeCopyCost=1;quote.canUpgrade=scenario!="c13_copy_missing";quote.upgradeCost=64
+		quote.dismantleRefund=17 if quote.copyCount==1 else 3
+		for index in $UI.owned.size():
+			if $UI.owned[index].cardId=="MAG-01": $UI.owned[index]=quote
+		Game.lobby.cards=$UI.owned;$UI._owned_index_ready=false;$UI._owned_by_id.clear();$UI.screen="cards"
+		await _render_base()
+		load("res://ui/codex_view.gd")._open_details($UI._reference,$UI,"MAG-01",$UI._reference.get_node("CodexScroll"))
+		if scenario in ["c13_copy_confirm","c13_upgrade_confirm"]:
+			var modal: Control=$UI._reference.get_node("CardDetails")
+			modal.get_node("CopyCard" if scenario=="c13_copy_confirm" else "UpgradeCard").pressed.emit()
+			await get_tree().process_frame
+		return false
+	await _render_base()
+	if scenario in ["c13_tail","c13_shared"]:
+		$UI._reference.get_node("ShopScroll").scroll_horizontal=10000 if scenario=="c13_tail" else 3*314
+		await get_tree().process_frame;await get_tree().process_frame
+	if scenario=="c13_confirm":$UI._purchase_shop_item(products[0],$UI._reference._product_title("Cards",products[0].payload));await get_tree().process_frame
+	return false
+
 func _prepare_market_scene(scenario: String) -> bool:
 	Game.lobby["season"]={"state":"Active","seasonId":"market-review","hasJoined":true,"configVersion":Game.CATALOG.data.version,"statsVersion":"season-equipment-v1","wallet":{"seasonId":"market-review","gold":120000,"version":7}}
 	Game.lobby.wallet={"gold":120000,"diamond":10000}
@@ -648,6 +715,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	else:
 		await _capture(frame_name, rebuild)
 	_check_login_language(frame_name, on_login)
+	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)
@@ -708,7 +776,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			var settings_content: Control = popup.find_child("SettingsContent", true, false)
 			var scrollbar := settings_scroll.get_v_scroll_bar()
 			review_checks[frame_name + ": scrollbar stays clear of settings controls"] = settings_content.get_global_rect().end.x + 15.0 <= scrollbar.get_global_rect().position.x
-	if frame_name.ends_with("_shop") or frame_name.ends_with("_shop_tail"):
+	if frame_name.ends_with("_shop") or frame_name.ends_with("_shop_tail") or frame_name.ends_with("_c13_tail") or frame_name.ends_with("_c13_shared"):
 		_check_shop()
 		for product in $UI._reference.get_node("ShopScroll/ShopProductRow").get_children():
 			var detail: Label = product.get_node("ShopDetail")

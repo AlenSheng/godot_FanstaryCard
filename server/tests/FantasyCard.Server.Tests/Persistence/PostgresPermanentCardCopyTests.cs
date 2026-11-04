@@ -24,7 +24,7 @@ public sealed class PostgresPermanentCardCopyTests
         var before=await repo.GetCardsAsync(player,Ct);var decks=await repo.GetDecksAsync(player,Ct);
         await Enable(db,player,"season-shop-config-9");await Enable(db,player,"later-season-config");
         var after=await new ProgressionRepository(db.DataSource).GetCardsAsync(player,Ct);
-        Assert.Equal(before,after);
+        Assert.Equal(before.Select(c=>c with {PermanentCopies=true}),after);
         var afterDecks=await repo.GetDecksAsync(player,Ct);
         Assert.Equal(decks.Select(d=>(d.DeckId,d.HeroClass,d.Version,d.UpdatedAt)),afterDecks.Select(d=>(d.DeckId,d.HeroClass,d.Version,d.UpdatedAt)));
         Assert.Equal(decks.SelectMany(d=>d.CardIds),afterDecks.SelectMany(d=>d.CardIds));
@@ -215,6 +215,11 @@ public sealed class PostgresPermanentCardCopyTests
         Assert.Equal(decks,await db.ScalarAsync<string>("SELECT jsonb_agg(to_jsonb(d) ORDER BY deck_id)::text FROM player_decks d WHERE player_id=$1",player));
         Assert.Equal(souls,await db.ScalarAsync<string>("SELECT to_jsonb(m)::text FROM player_materials m WHERE player_id=$1",player));
         Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM player_card_copy_modes"));
+        // Current runtime reads use later additive schema as well. The V044
+        // preservation assertions above still run immediately after V044 alone.
+        var later=assembly.GetManifestResourceNames().Single(n=>n.Contains(".V045__",StringComparison.Ordinal));
+        using(var stream=assembly.GetManifestResourceStream(later)!)using(var reader=new StreamReader(stream))
+            await db.ExecuteAsync(await reader.ReadToEndAsync(Ct));
         Assert.Equal(5,(await Card(new(db.DataSource),player,"C01")).Level);
     }
 

@@ -36,6 +36,7 @@ public sealed partial class ProgressionRepository
             BlockedReason = blockedReason,
             UpgradeCost = upgrade?.SoulCost ?? 0,
             UpgradeCopyCost = permanentCopies && upgrade?.RequiresCopy == true ? 1 : 0,
+            PermanentCopies = permanentCopies,
             CanUpgrade = upgradeBlockedReason is null,
             UpgradeBlockedReason = upgradeBlockedReason,
             CurrentEffect = CardEffect(CardEconomyRules.ApplyLevel(card.CardId, definition.Effect, card.Level)),
@@ -78,6 +79,7 @@ public sealed partial class ProgressionRepository
             return replay;
         }
 
+        await PermanentCardCopies.EnsurePublishedPolicyAsync(connection,transaction,playerId,(timeProvider??TimeProvider.System).GetUtcNow(),cancellationToken);
         var permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection,transaction,playerId,cancellationToken);
         var definition = CardEconomyRules.GetCard(cardId);
         var card = EmptyCard(definition);

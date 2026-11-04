@@ -265,7 +265,22 @@ message ShopResponse {
   repeated ShopProductResponse products = 2;
   int32 refreshes_used = 3;
   int32 refresh_limit = 4;
+  ShopPolicyResponse policy = 5;
+  optional string rotation_key = 6;
 }
+
+message ShopPolicyResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string config_version = 3;
+  optional string catalog_version = 4;
+  optional string season_ends_at = 5;
+  string resets_at = 6;
+  bool can_purchase = 7;
+  WalletResponse wallet = 8;
+  bool grants_permanent_copies = 9;
+}
+message ShopGrantResponse { string kind = 1; int64 amount = 2; optional string card_id = 3; bool newly_unlocked = 4; int32 copies_after = 5; int64 version = 6; }
 
 message ShopInventoryContextResponse {
   ShopResponse shop = 1;
@@ -275,6 +290,11 @@ message ShopInventoryContextResponse {
 message PurchaseShopRequest {
   string product_id = 1;
   optional int32 quantity = 2;
+  optional string season_id = 3;
+  optional string reset_key = 4;
+  optional string rotation_key = 5;
+  optional int64 expected_price_gold = 6;
+  optional string catalog_version = 7;
 }
 
 message ShopPurchaseResponse {
@@ -282,6 +302,12 @@ message ShopPurchaseResponse {
   int32 quantity = 2;
   int64 gold_after = 3;
   string granted = 4;
+  repeated ShopGrantResponse grants = 5;
+  WalletResponse wallet = 6;
+  optional string season_id = 7;
+  optional string config_version = 8;
+  optional string catalog_version = 9;
+  optional string reset_key = 10;
 }
 
 message CreateMarketListingRequest {
@@ -387,6 +413,7 @@ message CardResponse {
   optional string upgrade_blocked_reason = 17;
   CardEffectResponse current_effect = 18;
   CardEffectResponse next_effect = 19;
+  bool permanent_copies = 20;
 }
 
 message CardEffectResponse {

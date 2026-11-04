@@ -15,19 +15,32 @@ public sealed record ShopResponse(
     string ResetKey,
     IReadOnlyList<ShopProductResponse> Products,
     int RefreshesUsed = 0,
-    int RefreshLimit = 0);
+    int RefreshLimit = 0,
+    ShopPolicyResponse? Policy = null,
+    string? RotationKey = null);
+
+public sealed record ShopPolicyResponse(string State,string? SeasonId,string? ConfigVersion,string? CatalogVersion,
+    DateTimeOffset? SeasonEndsAt,DateTimeOffset ResetsAt,bool CanPurchase,WalletResponse Wallet,bool GrantsPermanentCopies);
+public sealed record ShopGrantResponse(string Kind,long Amount,string? CardId=null,bool NewlyUnlocked=false,int CopiesAfter=0,long Version=0);
 
 public sealed record ShopInventoryContextResponse(
     ShopResponse Shop,
     InventoryResponse Inventory);
 
-public sealed record PurchaseShopRequest(string ProductId, int Quantity = 1);
+public sealed record PurchaseShopRequest(string ProductId,int Quantity=1,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? SeasonId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? ResetKey=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? RotationKey=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] long? ExpectedPriceGold=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? CatalogVersion=null);
 
 public sealed record ShopPurchaseResponse(
     string ProductId,
     int Quantity,
     long GoldAfter,
-    string Granted);
+    string Granted,
+    IReadOnlyList<ShopGrantResponse>? Grants=null,
+    WalletResponse? Wallet=null,string? SeasonId=null,string? ConfigVersion=null,string? CatalogVersion=null,string? ResetKey=null);
 
 public sealed record CreateMarketListingRequest(Guid EquipmentId,long PriceGold,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? Currency=null,

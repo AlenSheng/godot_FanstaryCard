@@ -502,7 +502,11 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         Guid playerId,
         CancellationToken cancellationToken)
     {
-        await using var command = dataSource.CreateCommand(
+        await using var connection=await dataSource.OpenConnectionAsync(cancellationToken);
+        await using var transaction=await connection.BeginTransactionAsync(cancellationToken);
+        await LockPlayerAsync(connection,transaction,playerId,cancellationToken);
+        await PermanentCardCopies.EnsurePublishedPolicyAsync(connection,transaction,playerId,(timeProvider??TimeProvider.System).GetUtcNow(),cancellationToken);
+        await using var command = new NpgsqlCommand(
             """
             SELECT c.card_id, c.hero_class, c.rarity, c.unlocked, c.copy_count+COALESCE(r.extra_count,0), c.level, c.version,
                    COALESCE((SELECT max(copies) FROM (
@@ -515,7 +519,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             LEFT JOIN player_card_reserves r USING(player_id,card_id)
             LEFT JOIN player_card_copy_modes mode ON mode.player_id=c.player_id
             WHERE c.player_id = $1
-            """);
+            """,connection,transaction);
         command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var owned = new Dictionary<string, CardResponse>(StringComparer.Ordinal);
@@ -535,6 +539,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
                 owned.Add(card.CardId, QuoteCard(definition, card, reader.GetInt32(7),reader.GetBoolean(8)));
         }
 
+        await reader.DisposeAsync();await transaction.CommitAsync(cancellationToken);
         return GameConfigCatalog.Current.Cards.Where(card => card.IsCodex && card.Enabled)
             .Select(card => owned.GetValueOrDefault(card.CardId) ?? QuoteCard(card, EmptyCard(card), 0))
             .ToArray();

@@ -171,6 +171,7 @@ public sealed class GameConfigCatalog
     public SeasonBotRewardConfig? SeasonBotRewards { get; private init; }
     public SeasonRedConfig? SeasonRed { get; private init; }
     public SeasonMarketConfig? SeasonMarket { get; private init; }
+    public SeasonShopConfig? SeasonShop { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -320,7 +321,23 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices) };
+    }
+
+    private static SeasonShopConfig? ReadSeasonShop(ConfigBundle bundle,IReadOnlyList<CardConfigDefinition> cards,
+        IReadOnlyList<CardLevelConfig> levels,EconomyConfig economy,IReadOnlyList<BackpackConfig> bags,IReadOnlyList<ShopCardPriceConfig> prices)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonShopRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The season shop requires exactly one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        var products=bundle.Table("SeasonShopProducts");
+        var policy=new SeasonShopConfig(rules.Text(row,"rule_id"),rules.Text(row,"time_zone"),rules.Int(row,"reset_hour"),
+            rules.Int(row,"pack_cards"),rules.Int(row,"white_weight"),rules.Int(row,"green_weight"),rules.Int(row,"blue_weight"),
+            rules.Int(row,"purple_weight"),rules.Int(row,"class_soul_daily_limit"),rules.Int(row,"paid_bag_cap"),
+            products.Rows.Select(p=>new SeasonShopOffer(products.Text(p,"product_id"),products.Text(p,"kind"),products.Int(p,"amount"),
+                products.Int(p,"price_gold"),products.Int(p,"daily_limit"),products.Text(p,"quota_group"),products.OptionalText(p,"hero_class"))).ToArray());
+        policy.Validate(cards,levels,economy,bags,prices);return policy;
     }
 
     private static SeasonMarketConfig? ReadSeasonMarket(ConfigBundle bundle)

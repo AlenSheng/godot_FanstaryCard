@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Seasons;
+using FantasyCard.Domain.Configuration;
 using Npgsql;
 
 namespace FantasyCard.Server.Seasons;
@@ -21,11 +22,17 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
     private const long PublicationLock = 6_202_611_020_000_001;
 
     /// <summary>Persist only an already compiled configuration snapshot; never mutate a published season.</summary>
-    public async Task<bool> PublishAsync(SeasonDefinition definition, string configSha256, CancellationToken cancellationToken)
+    public async Task<bool> PublishAsync(SeasonDefinition definition,string configSha256,CancellationToken cancellationToken,
+        GameConfigCatalog? configuration=null)
     {
         ArgumentNullException.ThrowIfNull(definition);
         if (configSha256.Length != 64 || configSha256.Any(character => !char.IsAsciiHexDigitLower(character)))
             throw new DomainValidationException("The season configuration hash is invalid.");
+        configuration??=GameConfigCatalog.Current;
+        if(configuration.Version==definition.ConfigVersion && configuration.ContentHash!=configSha256)
+            throw new DomainValidationException("The season configuration hash differs from its compiled bundle.");
+        var cardRule=configuration.Version==definition.ConfigVersion&&configuration.SeasonShop is not null
+            ?SeasonShopConfig.Version:null;
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         await using (var gate = new NpgsqlCommand("SELECT pg_advisory_xact_lock($1)", connection, transaction))
@@ -38,14 +45,19 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
         {
             if (existing.Value.Definition != definition || existing.Value.Hash != configSha256)
                 throw new DomainValidationException("A published season cannot change its rules, dates or configuration.");
+            if(cardRule is not null)
+            {
+                await using var policy=new NpgsqlCommand("UPDATE season_definitions SET permanent_card_rule=$1 WHERE season_id=$2 AND permanent_card_rule IS NULL",connection,transaction);
+                policy.Parameters.AddWithValue(cardRule);policy.Parameters.AddWithValue(definition.SeasonId);await policy.ExecuteNonQueryAsync(cancellationToken);
+            }
             await transaction.CommitAsync(cancellationToken);
             return false;
         }
         await using var insert = new NpgsqlCommand("""
             INSERT INTO season_definitions
                 (season_id,ruleset_id,config_version,config_sha256,stats_version,starts_at,ends_at,
-                 duration_days,highest_open_difficulty,published_at)
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+                 duration_days,highest_open_difficulty,published_at,permanent_card_rule)
+            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
             """, connection, transaction);
         insert.Parameters.AddWithValue(definition.SeasonId);
         insert.Parameters.AddWithValue(definition.RulesetId);
@@ -57,6 +69,7 @@ public sealed class SeasonRepository(NpgsqlDataSource dataSource, TimeProvider t
         insert.Parameters.AddWithValue(definition.DurationDays);
         insert.Parameters.AddWithValue((short)definition.HighestOpenDifficulty);
         insert.Parameters.AddWithValue(timeProvider.GetUtcNow());
+        insert.Parameters.AddWithValue(NpgsqlTypes.NpgsqlDbType.Varchar,(object?)cardRule??DBNull.Value);
         try { await insert.ExecuteNonQueryAsync(cancellationToken); }
         catch (PostgresException exception) when (exception.SqlState == PostgresErrorCodes.ExclusionViolation)
         {

@@ -1,5 +1,5 @@
 {
-  "version": "season-v1-config-8",
+  "version": "season-v1-config-9",
   "tables": {
     "Cards": [
       {
@@ -17490,6 +17490,104 @@
         "equipment_level": 0,
         "maximum_per_human": 1,
         "mortal_pve": true
+      }
+    ],
+    "SeasonShopRules": [
+      {
+        "rule_id": "season-gold-shop-v1",
+        "enabled": true,
+        "time_zone": "Asia/Shanghai",
+        "reset_hour": 4,
+        "pack_cards": 3,
+        "white_weight": 50,
+        "green_weight": 30,
+        "blue_weight": 15,
+        "purple_weight": 5,
+        "class_soul_daily_limit": 1,
+        "paid_bag_cap": 3
+      }
+    ],
+    "SeasonShopProducts": [
+      {
+        "product_id": "card_pack",
+        "kind": "Cards",
+        "amount": 3,
+        "price_gold": 250,
+        "daily_limit": 5,
+        "quota_group": "card_pack",
+        "hero_class": null
+      },
+      {
+        "product_id": "warrior_soul",
+        "kind": "WarriorSoul",
+        "amount": 20,
+        "price_gold": 180,
+        "daily_limit": 3,
+        "quota_group": "warrior_soul",
+        "hero_class": null
+      },
+      {
+        "product_id": "equipment_fragments",
+        "kind": "EquipmentFragments",
+        "amount": 20,
+        "price_gold": 120,
+        "daily_limit": 3,
+        "quota_group": "equipment_fragments",
+        "hero_class": null
+      },
+      {
+        "product_id": "priest_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Priest"
+      },
+      {
+        "product_id": "mage_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Mage"
+      },
+      {
+        "product_id": "guardian_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Guardian"
+      },
+      {
+        "product_id": "health_potion",
+        "kind": "HealthPotion",
+        "amount": 1,
+        "price_gold": 100,
+        "daily_limit": 4,
+        "quota_group": "health_potion",
+        "hero_class": null
+      },
+      {
+        "product_id": "advanced_bag",
+        "kind": "AdvancedBag",
+        "amount": 1,
+        "price_gold": 800,
+        "daily_limit": 0,
+        "quota_group": "advanced_bag",
+        "hero_class": null
+      },
+      {
+        "product_id": "top_bag",
+        "kind": "TopBag",
+        "amount": 1,
+        "price_gold": 2200,
+        "daily_limit": 0,
+        "quota_group": "top_bag",
+        "hero_class": null
       }
     ]
   }

@@ -13,6 +13,27 @@ internal sealed record PermanentCardGrant(string CardId,int Quantity,bool NewlyU
 /// </summary>
 internal static class PermanentCardCopies
 {
+    internal static async Task EnsurePublishedPolicyAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
+        Guid playerId,DateTimeOffset now,CancellationToken ct)
+    {
+        if(await IsEnabledAsync(connection,transaction,playerId,ct))return;
+        var config=GameConfigCatalog.Current;
+        if(config.SeasonShop is not null)
+        {
+            // Also recognize a definition installed by the deployment operator,
+            // but only when its version AND hash match this compiled bundle.
+            await using var adopt=new NpgsqlCommand("UPDATE season_definitions SET permanent_card_rule=$1 WHERE permanent_card_rule IS NULL AND config_version=$2 AND config_sha256=$3 AND starts_at<=$4",connection,transaction);
+            adopt.Parameters.AddWithValue(SeasonShopConfig.Version);adopt.Parameters.AddWithValue(config.Version);
+            adopt.Parameters.AddWithValue(config.ContentHash);adopt.Parameters.AddWithValue(now);await adopt.ExecuteNonQueryAsync(ct);
+        }
+        // Adoption survives the end of its first season and later shop closures.
+        // No archive lookup or seasonal balance is needed for permanent assets.
+        await using var q=new NpgsqlCommand("SELECT config_version FROM season_definitions WHERE permanent_card_rule=$1 AND starts_at<=$2 ORDER BY starts_at DESC LIMIT 1",connection,transaction);
+        q.Parameters.AddWithValue(SeasonShopConfig.Version);q.Parameters.AddWithValue(now);
+        if(await q.ExecuteScalarAsync(ct) is string version)
+            await EnableWithinTransactionAsync(connection,transaction,playerId,version,now,ct);
+    }
+
     // Only a validated, published new-season shop policy may call this method.
     // The first activation is permanent and retains its original config provenance.
     internal static async Task EnableWithinTransactionAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,

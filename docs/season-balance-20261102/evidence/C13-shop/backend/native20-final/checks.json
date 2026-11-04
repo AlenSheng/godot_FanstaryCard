@@ -1,0 +1,36 @@
+{
+  "checks": 20,
+  "ok": true,
+  "suites": {
+    "test_season_shop_controller.gd": {
+      "checks": {
+        "A B A cannot reuse the original identical offer confirmation": true,
+        "actual main sends all captured terms": true,
+        "confirmation rechecks latest quota instead of captured count": true,
+        "main does not credit receipt amounts while current read is pending": true,
+        "old account reply neither writes funds nor clears new account busy state": true,
+        "only current authority supplies balances and counters": true
+      },
+      "ok": true
+    },
+    "test_season_shop_model.gd": {
+      "checks": {
+        "both paid bag types share storage3": true,
+        "changed price confirmation rejected": true,
+        "confirmation pins all actual offer terms": true,
+        "cross-season confirmation rejected": true,
+        "current confirmation matches": true,
+        "current seasonal wallet overrides a richer permanent wallet": true,
+        "expired reset is closed": true,
+        "legacy owned single keeps its old rule": true,
+        "missing frozen catalog does not use legacy funds": true,
+        "no invented daily bag limit": true,
+        "owned single remains a purchasable copy": true,
+        "refreshed confirmation rejected": true,
+        "same daily slot cannot be bought twice": true,
+        "unknown stock cannot buy": true
+      },
+      "ok": true
+    }
+  }
+}

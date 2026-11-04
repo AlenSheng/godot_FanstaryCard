@@ -42,7 +42,7 @@ public sealed class BootstrapRepository(
         var cardsTask = progressionRepository.GetCardsAsync(player.UserId, cancellationToken);
         var coreTask = GetCoreStateAsync(player.UserId, cancellationToken);
         var inventoryFullTask = progressionRepository.GetInventoryForScheduleAsync(player.UserId, schedule, cancellationToken);
-        var shopTask = economyRepository.GetShopAsync(player.UserId, cancellationToken);
+        var shopTask = economyRepository.GetShopForScheduleAsync(player.UserId,schedule,cancellationToken);
         var marketTask = economyRepository.GetMarketForScheduleAsync(schedule,cancellationToken);
         var mailTask = mailRepository.GetAsync(player.UserId, cancellationToken);
         var activePreparationTask = preparationRepository.GetActiveAsync(player.UserId, cancellationToken);

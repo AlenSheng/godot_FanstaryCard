@@ -59,6 +59,7 @@ public static class SeasonConfigValidator
         ValidateCrafting(tables);
         ValidateLootPreference(tables);
         ValidateBotRewards(tables);
+        ValidateShop(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -279,6 +280,55 @@ public static class SeasonConfigValidator
             slots ??= N(table,row,"shared_slots");
             Check(slots == N(table,row,"shared_slots"), table, "currencies must share the same total listing slots");
         }
+    }
+
+    private static void ValidateShop(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonShopRules");var products=tables.SingleOrDefault(t=>t.Name=="SeasonShopProducts");
+        if(rules is null&&products is null)return;
+        if(rules is null||products is null)throw new InvalidDataException("Both season shop tables must be published together.");
+        foreach(var pair in new[]{(Table:rules,Schema:"rule_id:s,enabled:b,time_zone:s,reset_hour:i,pack_cards:i,white_weight:i,green_weight:i,blue_weight:i,purple_weight:i,class_soul_daily_limit:i,paid_bag_cap:i"),
+                     (Table:products,Schema:"product_id:s,kind:s,amount:i,price_gold:i,daily_limit:i,quota_group:s,hero_class:s")})
+            foreach(var item in pair.Schema.Split(','))
+            {
+                var parts=item.Split(':');var col=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(col is not null&&col.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text)&&
+                    col.Required==(parts[0]!="hero_class")&&col.Scope==PublishScope.Both,pair.Table,"invalid shop column metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-gold-shop-v1"&&S(rules,row,"time_zone")=="Asia/Shanghai"&&
+            N(rules,row,"reset_hour")==4&&N(rules,row,"pack_cards")==3&&N(rules,row,"white_weight")==50&&
+            N(rules,row,"green_weight")==30&&N(rules,row,"blue_weight")==15&&N(rules,row,"purple_weight")==5&&
+            N(rules,row,"class_soul_daily_limit")==1&&N(rules,row,"paid_bag_cap")==3,rules,"shop terms differ from the authorized baseline");
+        (string Id,string Kind,int Amount,int Price,int Limit,string Group,string? Hero)[] expected=[
+            ("card_pack","Cards",3,250,5,"card_pack",null),("warrior_soul","WarriorSoul",20,180,3,"warrior_soul",null),
+            ("equipment_fragments","EquipmentFragments",20,120,3,"equipment_fragments",null),
+            ("priest_soul","ClassSoul",12,400,1,"class_soul","Priest"),("mage_soul","ClassSoul",12,400,1,"class_soul","Mage"),
+            ("guardian_soul","ClassSoul",12,400,1,"class_soul","Guardian"),("health_potion","HealthPotion",1,100,4,"health_potion",null),
+            ("advanced_bag","AdvancedBag",1,800,0,"advanced_bag",null),("top_bag","TopBag",1,2200,0,"top_bag",null)];
+        Check(products.Rows.Count==expected.Length,products,"requires nine fixed products");
+        foreach(var e in expected)
+        {
+            var p=products.Rows.SingleOrDefault(p=>S(products,p,"product_id")==e.Id);Check(p is not null,products,"missing fixed product");
+            var heroIndex=products.Columns.Select((c,i)=>(c,i)).Single(v=>v.c.Name=="hero_class").i;
+            Check(S(products,p!,"kind")==e.Kind&&N(products,p!,"amount")==e.Amount&&N(products,p!,"price_gold")==e.Price&&
+                N(products,p!,"daily_limit")==e.Limit&&S(products,p!,"quota_group")==e.Group&&(string?)p![heroIndex].Value==e.Hero,
+                products,"fixed product differs from the authorized baseline");
+        }
+        var economy=tables.Single(t=>t.Name=="Economy");
+        foreach(var entry in new[]{(Id:"health-potion-price",Value:100),(Id:"daily-card-slots",Value:3),(Id:"daily-shop-refresh-limit",Value:3)})
+            Check(N(economy,economy.Rows.Single(r=>S(economy,r,"id")==entry.Id),"int_value")==entry.Value,economy,"existing shop terms must retain their original values");
+        var bags=tables.Single(t=>t.Name=="Backpacks");
+        foreach(var entry in new[]{(Id:"Advanced",Price:800),(Id:"Top",Price:2200)})
+            Check(N(bags,bags.Rows.Single(r=>S(bags,r,"id")==entry.Id),"price_gold")==entry.Price,bags,"paid bag prices differ from the baseline");
+        var prices=tables.Single(t=>t.Name=="ShopCardPrices");Check(prices.Rows.Count==4,prices,"requires four single-card prices");
+        foreach(var entry in new[]{(Id:"White",Price:80),(Id:"Green",Price:150),(Id:"Blue",Price:280),(Id:"Purple",Price:500)})
+        {
+            var p=prices.Rows.Single(r=>S(prices,r,"id")==entry.Id);
+            Check(N(prices,p,"price_gold")==entry.Price&&N(prices,p,"daily_limit")==1,prices,"single-card price or limit differs from the baseline");
+        }
+        var levels=tables.Single(t=>t.Name=="CardLevels");
+        Check(levels.Rows.All(r=>B(levels,r,"requires_copy")== (N(levels,r,"level")>=4)),levels,"extra copies are required only at +4 and +5");
     }
 
     private static object Value(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) =>

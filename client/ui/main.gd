@@ -13,6 +13,7 @@ const EquipmentDetails = preload("res://ui/equipment_details.gd")
 const EnhancementWallets = preload("res://ui/enhancement_wallets.gd")
 const CraftingModel = preload("res://ui/season_crafting_model.gd")
 const SeasonMarketController=preload("res://ui/season_market_controller.gd")
+const SeasonShopModel=preload("res://ui/season_shop_model.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -92,6 +93,7 @@ var _deck_builder_scroll := 0
 var _equipment_scroll := 0
 var _shop_scroll := 0
 var _shop_purchase_product_id := ""
+var _shop_epoch := 0
 var _codex_ready := false
 var _codex_mutating := false
 var _enhancement_quote: Dictionary = {}
@@ -481,6 +483,7 @@ func _sync_account_session() -> void:
 		_card_pool.begin_prewarm(cards, owned, func(id): return _card_text(id))
 
 func _reset_account_ui() -> void:
+	_shop_epoch+=1
 	if is_instance_valid(_card_pool):
 		_clear_card_page_cache()
 		if is_instance_valid(_reference):
@@ -856,6 +859,7 @@ func _nav() -> void:
 		if screen == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 
 func _navigate(value: String) -> void:
+	_shop_epoch+=1
 	var generation: int = Game.gateway.session_generation
 	if value != screen: Sound.play_cue("ui_open")
 	if value == "gear" and screen != "gear": _equipment_scroll = 0
@@ -877,6 +881,17 @@ func _navigate(value: String) -> void:
 	_render()
 	if value == "crafting": _reload_crafting()
 	if value == "market": market_controller.attach(self);market_controller.reload()
+	if value == "shop": _reload_shop_view(_shop_epoch)
+
+func _reload_shop_view(epoch: int) -> void:
+	var generation: int=Game.gateway.session_generation
+	await _refresh_shop_authority()
+	if not _session_result_current(generation) or epoch!=_shop_epoch or screen!="shop": return
+	_sync_account_session()
+	_schedule_render()
+
+func _refresh_shop_authority() -> void:
+	await Game.refresh_lobby()
 
 func _reload_crafting() -> void:
 	_crafting_epoch += 1
@@ -1167,9 +1182,10 @@ func _card_action_block_reason(id: String, action: String) -> String:
 		if int(entry.get("level", 0)) >= 5: return P.localized("max_level")
 		var cost := int(entry.get("upgradeCost", 0))
 		if balance < cost: return P.localized("codex_insufficient") % [material, cost - balance]
+		if int(entry.get("upgradeCopyCost",0))>0 and int(entry.get("copyCount",0))<=int(entry.upgradeCopyCost): return P.localized("season_shop_copy_required")
 		if not entry.get("canUpgrade", false): return P.localized("state_changed")
 	elif action == "craft":
-		if entry.get("unlocked", false) or int(entry.get("copyCount", 0)) > 0: return P.localized("ui_card_activated")
+		if (entry.get("unlocked",false) or int(entry.get("copyCount",0))>0) and not entry.get("permanentCopies",false): return P.localized("ui_card_activated")
 		var craft_cost := int(entry.get("craftCost", 0))
 		if balance < craft_cost: return P.localized("codex_insufficient") % [material, craft_cost - balance]
 	elif action == "dismantle" and deck_draft.count(id) >= int(entry.get("copyCount", 0)):
@@ -1189,7 +1205,7 @@ func _replace_owned_card(card: Dictionary) -> void:
 
 func _set_codex_action_busy(value: bool) -> void:
 	if not is_instance_valid(_reference): return
-	for node_name in ["UpgradeCard", "DismantleCard", "CraftCard", "CloseCardDetails"]:
+	for node_name in ["UpgradeCard","DismantleCard","CraftCard","CopyCard","CloseCardDetails"]:
 		var button := _reference.find_child(node_name, true, false) as Button
 		if button != null: button.disabled = value
 	var primary := _reference.find_child("UpgradeCard", true, false) as Button
@@ -1212,9 +1228,11 @@ func _card_action(id: String, action: String) -> void:
 		_codex_mutating = false
 		return
 	if result.ok:
-		if result.data.get("card") is Dictionary: _replace_owned_card(result.data.card)
-		Game.update_cache("cards", owned)
-		if result.data.get("materials") is Dictionary: Game.lobby["materials"] = result.data.materials
+		await Game.refresh_lobby()
+		if not _session_result_current(generation):
+			_codex_mutating=false
+			return
+		_sync_account_session()
 		_codex_ready = true
 		Sound.play_cue("upgrade" if action == "upgrade" else "reward")
 		_toast({"craft": P.localized("ui_crafted_card"), "dismantle": P.localized("ui_dismantled_card"), "upgrade": P.localized("upgrade_success")}.get(action, P.localized("operation_done")))
@@ -1524,7 +1542,8 @@ func _shop() -> void:
 			_label(panel, CardDetails.localized_name(card_id, cards.get(card_id, {})), 26, P.TEAL)
 		_label(panel, P.localized("shop_price") % item.priceGold, 36, P.GOLD)
 		_label(panel, P.localized("shop_purchase_count") % [item.purchased, item.limit], 22, P.MUTED)
-		_button(panel, P.localized("activated") if item.get("alreadyOwned", false) else P.localized("buy"), func(): _confirm(P.localized("ui_buy_confirm") % item.priceGold, func(): _complete_shop_purchase(item)), Game.busy or item.get("alreadyOwned", false) or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.wallet.gold))
+		var reason := SeasonShopModel.reason(item,shop,inventory.get("consumables",{}),_shop_inventory_ready,Game.lobby.get("wallet",{}))
+		_button(panel,P.localized("buy") if reason.is_empty() else P.localized(reason),func(): _purchase_shop_item(item,P.product_name(item.kind)),Game.busy or not reason.is_empty())
 	if shop.get("products", []).is_empty(): _label(content, P.localized("no_products_later"), 28)
 
 func _market() -> void:
@@ -1668,7 +1687,15 @@ func _set_inventory_items(items: Array) -> void:
 	Game.update_cache("inventory", next_inventory)
 
 func _purchase_shop_item(item: Dictionary, product_title: String) -> void:
-	var purchase := func(): _complete_shop_purchase(item)
+	var body := SeasonShopModel.purchase_body(item,shop)
+	if body.is_empty():
+		_reload_shop_view(_shop_epoch)
+		return
+	var epoch := _shop_epoch
+	var generation: int=Game.gateway.session_generation
+	var purchase := func():
+		if generation!=Game.gateway.session_generation or epoch!=_shop_epoch or screen!="shop": return
+		_complete_shop_purchase(item.duplicate(true),body,epoch)
 	if item.get("kind", "") == "Cards":
 		_confirm(P.localized("ui_buy_named_confirm") % [item.get("priceGold", 0), product_title], purchase)
 	else:
@@ -1678,36 +1705,51 @@ func _refresh_shop() -> void:
 	if Game.busy: return
 	Game.busy = true
 	var generation: int = Game.gateway.session_generation
+	var epoch := _shop_epoch
 	var result: Dictionary = await Game.gateway.request("/api/v1/shop/refresh", HTTPClient.METHOD_POST, {})
 	if not _session_result_current(generation, result): return
 	if result.ok:
-		shop = result.data
-		Game.update_cache("shop", shop)
 		Sound.play_cue("reward")
-		_toast(P.localized("ui_shop_refreshed"))
+		if epoch==_shop_epoch and screen=="shop": _toast(P.localized("ui_shop_refreshed"))
 	else:
 		Sound.play_cue("error")
-		_toast(result.error)
+		if epoch==_shop_epoch and screen=="shop": _toast(result.error)
+	await _refresh_shop_authority()
+	if not _session_result_current(generation): return
 	Game.busy = false
-	_render()
+	if epoch==_shop_epoch and screen=="shop": _render()
 
-func _complete_shop_purchase(item: Dictionary) -> void:
+func _complete_shop_purchase(item: Dictionary,intent: Dictionary={},epoch: int=-1) -> void:
 	if Game.busy: return
+	if epoch<0: epoch=_shop_epoch
+	if intent.is_empty(): intent=SeasonShopModel.purchase_body(item,shop)
+	if epoch!=_shop_epoch or screen!="shop" or not SeasonShopModel.current_intent(intent,shop):
+		_reload_shop_view(_shop_epoch)
+		return
+	var current_item: Dictionary={}
+	for candidate in shop.get("products",[]):
+		if candidate.get("productId")==intent.get("productId"): current_item=candidate;break
+	var blocked := SeasonShopModel.reason(current_item,shop,inventory.get("consumables",{}),_shop_inventory_ready,Game.lobby.get("wallet",{}))
+	if not blocked.is_empty():
+		_toast(P.localized(blocked))
+		return
 	Game.busy = true
 	var generation: int = Game.gateway.session_generation
 	var product_id: String = str(item.get("productId", ""))
-	var result: Dictionary = await Game.gateway.request("/api/v1/shop/purchases", HTTPClient.METHOD_POST, {"productId": product_id, "quantity": 1})
+	var result: Dictionary = await Game.gateway.request("/api/v1/shop/purchases",HTTPClient.METHOD_POST,intent)
 	if not _session_result_current(generation, result): return
 	if result.ok:
-		_shop_purchase_product_id = product_id
-		_apply_shop_purchase(product_id, result.data)
-		_shop_purchase_product_id = ""
 		Sound.play_cue("purchase")
-		_toast(P.localized("operation_success"))
+		if epoch==_shop_epoch and screen=="shop": _toast(P.localized("operation_success"))
 	else:
 		Sound.play_cue("error")
+		if epoch==_shop_epoch and screen=="shop": _toast(str(result.get("error",P.localized("state_changed"))))
+	# A receipt can be a replay from a closed season. Reload current authority;
+	# never add receipt amounts or apply its historical Gold balance locally.
+	await _refresh_shop_authority()
+	if not _session_result_current(generation): return
 	Game.busy = false
-	if screen == "shop" and is_instance_valid(_reference):
+	if epoch==_shop_epoch and screen == "shop" and is_instance_valid(_reference):
 		if not bool(_reference.call("sync_shop_state", product_id)): _render()
 
 func _restore_shop_scroll(scroll: ScrollContainer) -> void:
@@ -1718,41 +1760,6 @@ func _restore_shop_scroll(scroll: ScrollContainer) -> void:
 	scroll.get_h_scroll_bar().value_changed.connect(func(value: float):
 		if is_instance_valid(_reference) and _reference.get_node_or_null("ShopScroll") == scroll:
 			_shop_scroll = int(value))
-
-func _apply_shop_purchase(product_id: String, response: Dictionary) -> void:
-	var quantity: int = int(response.get("quantity", 1))
-	var products: Array = shop.get("products", [])
-	for index in products.size():
-		var product: Dictionary = products[index]
-		if str(product.get("productId", "")) != product_id: continue
-		product["purchased"] = int(product.get("purchased", 0)) + quantity
-		if product.get("kind", "") == "Cards" and product.get("payload") is Dictionary and product.payload.has("cardId"):
-			product["alreadyOwned"] = true
-		products[index] = product
-		var kind: String = str(product.get("kind", ""))
-		var parsed: Variant = product.get("payload", {})
-		var payload: Dictionary = parsed if parsed is Dictionary else {}
-		var amount: int = int(payload.get("amount", 1)) * quantity
-		if kind in ["AdvancedBag", "TopBag", "HealthPotion"]:
-			var consumables: Dictionary = inventory.get("consumables", {}).duplicate()
-			var key: String = {"AdvancedBag": "advancedBagCount", "TopBag": "topBagCount", "HealthPotion": "healthPotionCount"}[kind]
-			consumables[key] = int(consumables.get(key, 0)) + amount
-			inventory["consumables"] = consumables
-			Game.update_cache("inventory", inventory)
-		elif kind in ["WarriorSoul", "EquipmentFragments", "ClassSoul"]:
-			var materials: Dictionary = Game.lobby.get("materials", {}).duplicate(true)
-			var key := kind.left(1).to_lower() + kind.substr(1)
-			if kind == "ClassSoul": key = str(payload.get("heroClass", "")).to_lower() + "Soul"
-			materials[key] = int(materials.get(key, 0)) + amount
-			Game.update_cache("materials", materials)
-		elif kind == "Cards":
-			Game.refresh_cache("cards")
-		break
-	shop["products"] = products
-	Game.update_cache("shop", shop)
-	var wallet: Dictionary = Game.lobby.get("wallet", {}).duplicate()
-	wallet["gold"] = int(response.get("goldAfter", wallet.get("gold", 0)))
-	Game.update_cache("wallet", wallet)
 
 func _session_result_current(generation: int, result: Dictionary = {}) -> bool:
 	return generation == Game.gateway.session_generation and not result.get("stale_session", false)

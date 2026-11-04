@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(26, tables.Count); // _README stays private; bot victory adds one frozen budget.
+        Assert.Equal(28, tables.Count); // _README stays private; shop policy and fixed offers are compiled together.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
@@ -19,6 +19,22 @@ public sealed class SeasonConfigCompilerTests
         Assert.Equal(hash, againHash);
         Assert.Equal(first, again);
         Assert.Contains(Convert.FromHexString(hash), first);
+    }
+
+    [Theory]
+    [InlineData("Economy","daily-shop-refresh-limit","int_value",5L)]
+    [InlineData("Backpacks","Advanced","price_gold",799L)]
+    [InlineData("ShopCardPrices","White","price_gold",79L)]
+    [InlineData("CardLevels","C01:4","requires_copy",false)]
+    public void ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(string name,string key,string field,object value)
+    {
+        var tables=Read();var table=tables.Single(t=>t.Name==name);var index=table.Columns.Select((c,i)=>(c,i)).Single(x=>x.c.Name==field).i;
+        var rows=table.Rows.Select(row=>
+        {
+            if(!Equals(row[0].Value,key))return row;
+            var changed=row.ToArray();changed[index]=new(changed[index].Type,value);return changed;
+        }).ToArray();
+        Assert.Throws<InvalidDataException>(()=>ConfigCompiler.Compile("invalid-shop",tables.Select(t=>t==table?t with {Rows=rows}:t).ToArray(),out _));
     }
 
     [Theory]
@@ -51,6 +67,13 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonCrafting", "wish_attempts", 4)]
     [InlineData("SeasonMarkRules", "match_cap", 5)]
     [InlineData("SeasonMarkRules", "elite_marks", 2)]
+    [InlineData("SeasonShopRules", "reset_hour", 0)]
+    [InlineData("SeasonShopRules", "white_weight", 51)]
+    [InlineData("SeasonShopRules", "class_soul_daily_limit", 3)]
+    [InlineData("SeasonShopRules", "paid_bag_cap", 4)]
+    [InlineData("SeasonShopProducts", "amount", 4)]
+    [InlineData("SeasonShopProducts", "price_gold", 249)]
+    [InlineData("SeasonShopProducts", "daily_limit", 6)]
     public void InvalidSeasonNumbersAreRejectedBeforePublishing(string table, string field, double value)
     {
         var tables = Change(Read(),table,field,value);
