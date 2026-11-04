@@ -504,13 +504,16 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
     {
         await using var command = dataSource.CreateCommand(
             """
-            SELECT c.card_id, c.hero_class, c.rarity, c.unlocked, c.copy_count, c.level, c.version,
+            SELECT c.card_id, c.hero_class, c.rarity, c.unlocked, c.copy_count+COALESCE(r.extra_count,0), c.level, c.version,
                    COALESCE((SELECT max(copies) FROM (
                        SELECT count(*) AS copies FROM player_deck_cards dc
                        JOIN player_decks d ON d.deck_id=dc.deck_id
                        WHERE d.player_id=c.player_id AND dc.card_id=c.card_id
-                       GROUP BY d.deck_id) required), 0)::integer
+                       GROUP BY d.deck_id) required), 0)::integer,
+                   mode.player_id IS NOT NULL
             FROM player_cards c
+            LEFT JOIN player_card_reserves r USING(player_id,card_id)
+            LEFT JOIN player_card_copy_modes mode ON mode.player_id=c.player_id
             WHERE c.player_id = $1
             """);
         command.Parameters.AddWithValue(playerId);
@@ -529,7 +532,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
             var definition = GameConfigCatalog.Current.Cards.SingleOrDefault(item =>
                 item.CardId == card.CardId && item.IsCodex && item.Enabled);
             if (definition is not null)
-                owned.Add(card.CardId, QuoteCard(definition, card, reader.GetInt32(7)));
+                owned.Add(card.CardId, QuoteCard(definition, card, reader.GetInt32(7),reader.GetBoolean(8)));
         }
 
         return GameConfigCatalog.Current.Cards.Where(card => card.IsCodex && card.Enabled)

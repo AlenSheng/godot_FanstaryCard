@@ -8,11 +8,11 @@ public sealed record EconomyReconciliationReport(
     long OrphanMarketListedEquipmentCount,
     long SoldListingMismatchCount,
     long MarketTransactionAmountMismatchCount,
-    long LedgerChainMismatchCount,long PendingMarketReturnMismatchCount=0)
+    long LedgerChainMismatchCount,long PendingMarketReturnMismatchCount=0,long CardCopyLedgerMismatchCount=0)
 {
     public long TotalViolationCount => NegativeAccountCount + ActiveListingAssetMismatchCount
         + OrphanMarketListedEquipmentCount + SoldListingMismatchCount
-        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount + PendingMarketReturnMismatchCount;
+        + MarketTransactionAmountMismatchCount + LedgerChainMismatchCount + PendingMarketReturnMismatchCount + CardCopyLedgerMismatchCount;
 
     public bool IsHealthy => TotalViolationCount == 0;
 }
@@ -31,6 +31,11 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                         ORDER BY created_at,ledger_sequence,ledger_id) AS previous_balance
                 FROM economy_ledger
                 WHERE currency <> 'ClassSoul'
+            ), card_copy_chain AS (
+                SELECT player_id,card_id,delta,balance_after,
+                    lag(balance_after) OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence) AS previous_balance,
+                    row_number() OVER(PARTITION BY player_id,card_id ORDER BY ledger_sequence DESC) AS latest
+                FROM card_copy_ledger
             )
             SELECT
                 (SELECT count(*) FROM player_wallets WHERE gold < 0 OR diamond < 0)
@@ -66,7 +71,13 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
                  WHERE h.state='Pending' AND (e.instance_id IS NULL OR e.owner_id<>h.player_id OR e.location<>'MarketReturnPending'
                     OR e.season_id IS DISTINCT FROM h.season_id))
                 + (SELECT count(*) FROM equipments e LEFT JOIN market_return_holds h ON h.equipment_id=e.instance_id AND h.state='Pending'
-                   WHERE e.location='MarketReturnPending' AND h.return_id IS NULL)
+                   WHERE e.location='MarketReturnPending' AND h.return_id IS NULL),
+                (SELECT count(*) FROM card_copy_chain
+                 WHERE previous_balance IS NOT NULL AND previous_balance::bigint+delta<>balance_after)
+                + (SELECT count(*) FROM card_copy_chain l
+                   LEFT JOIN player_cards c USING(player_id,card_id)
+                   LEFT JOIN player_card_reserves r USING(player_id,card_id)
+                   WHERE l.latest=1 AND (c.player_id IS NULL OR l.balance_after<>c.copy_count+COALESCE(r.extra_count,0)))
             """;
 
         await using var command = dataSource.CreateCommand(sql);
@@ -76,6 +87,6 @@ public sealed class EconomyReconciliationRepository(NpgsqlDataSource dataSource)
 
         return new EconomyReconciliationReport(
             reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2),
-            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5),reader.GetInt64(6));
+            reader.GetInt64(3), reader.GetInt64(4), reader.GetInt64(5),reader.GetInt64(6),reader.GetInt64(7));
     }
 }

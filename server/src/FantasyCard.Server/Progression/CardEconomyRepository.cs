@@ -15,7 +15,7 @@ public sealed partial class ProgressionRepository
         definition.CardId, definition.HeroClass is { } heroClass ? (HeroClassDto)(short)heroClass : null,
         definition.Quality!, false, 0, 0, 0);
 
-    private static CardResponse QuoteCard(CardConfigDefinition definition, CardResponse card, int requiredCopies)
+    private static CardResponse QuoteCard(CardConfigDefinition definition, CardResponse card, int requiredCopies, bool permanentCopies = false)
     {
         var owned = card.Unlocked && card.CopyCount > 0;
         var dismantleLevel = card.Level;
@@ -23,18 +23,19 @@ public sealed partial class ProgressionRepository
             : card.CopyCount <= requiredCopies ? "Card is required by a saved deck." : null;
         var upgrade = card.Level < 5 ? CardEconomyRules.Level(card.CardId, card.Level + 1) : null;
         var upgradeBlockedReason = CardEconomyRules.UpgradeBlockedReason(
-            card.CardId, card.Unlocked, card.CopyCount, card.Level, requiredCopies);
+            card.CardId, card.Unlocked, card.CopyCount, card.Level, requiredCopies, permanentCopies);
         return card with
         {
             Rarity = definition.Quality!,
-            CraftCost = CardEconomyRules.CraftCost(definition, owned),
+            CraftCost = CardEconomyRules.CraftCost(definition, owned, permanentCopies),
             UpgradeSoulSpent = CardEconomyRules.UpgradeSoulSpent(card.CardId, dismantleLevel),
-            DismantleRefund = owned ? CardEconomyRules.DismantleRefund(definition, dismantleLevel) : 0,
+            DismantleRefund = !owned ? 0 : permanentCopies && card.CopyCount>1
+                ? definition.CopyCost/4 : CardEconomyRules.DismantleRefund(definition, dismantleLevel),
             CurrencyKind = CardEconomyRules.CurrencyKind(definition),
             CanDismantle = blockedReason is null,
             BlockedReason = blockedReason,
             UpgradeCost = upgrade?.SoulCost ?? 0,
-            UpgradeCopyCost = 0,
+            UpgradeCopyCost = permanentCopies && upgrade?.RequiresCopy == true ? 1 : 0,
             CanUpgrade = upgradeBlockedReason is null,
             UpgradeBlockedReason = upgradeBlockedReason,
             CurrentEffect = CardEffect(CardEconomyRules.ApplyLevel(card.CardId, definition.Effect, card.Level)),
@@ -77,10 +78,11 @@ public sealed partial class ProgressionRepository
             return replay;
         }
 
+        var permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection,transaction,playerId,cancellationToken);
         var definition = CardEconomyRules.GetCard(cardId);
         var card = EmptyCard(definition);
         await using (var query = new NpgsqlCommand(
-            "SELECT unlocked,copy_count,level,version FROM player_cards WHERE player_id=$1 AND card_id=$2 FOR UPDATE",
+            "SELECT c.unlocked,c.copy_count+COALESCE(r.extra_count,0),c.level,c.version FROM player_cards c LEFT JOIN player_card_reserves r USING(player_id,card_id) WHERE c.player_id=$1 AND c.card_id=$2 FOR UPDATE OF c",
             connection, transaction))
         {
             query.Parameters.AddWithValue(playerId);
@@ -109,8 +111,8 @@ public sealed partial class ProgressionRepository
             decks.Parameters.AddWithValue(cardId);
             requiredCopies = (int)(await decks.ExecuteScalarAsync(cancellationToken))!;
         }
-        card = QuoteCard(definition, card, requiredCopies);
-        if (craft && card.Unlocked)
+        card = QuoteCard(definition, card, requiredCopies, permanentCopies);
+        if (craft && card.Unlocked && !permanentCopies)
             throw new DomainValidationException("Card is already activated.");
         if (upgrade && !card.CanUpgrade)
             throw new DomainValidationException(card.UpgradeBlockedReason!);
@@ -139,8 +141,11 @@ public sealed partial class ProgressionRepository
             materials = new(reader.GetInt64(0), reader.GetInt64(1), reader.GetInt64(2), reader.GetInt64(3), reader.GetInt64(4));
         }
 
-        const int consumedCopies = 0;
-        var copiesAfter = upgrade || craft ? 1 : 0;
+        var consumedCopies = upgrade ? card.UpgradeCopyCost : 0;
+        var copiesBefore = card.CopyCount;
+        var copiesAfter = permanentCopies
+            ? checked(copiesBefore + (craft ? 1 : upgrade ? -consumedCopies : -1))
+            : upgrade || craft ? 1 : 0;
         card = card with
         {
             Unlocked = copiesAfter > 0, CopyCount = copiesAfter,
@@ -163,10 +168,16 @@ public sealed partial class ProgressionRepository
             });
             save.Parameters.AddWithValue(definition.Rarity);
             save.Parameters.AddWithValue(card.Unlocked);
-            save.Parameters.AddWithValue(card.CopyCount);
+            save.Parameters.AddWithValue(card.Unlocked ? 1 : 0);
             save.Parameters.AddWithValue(card.Level);
             save.Parameters.AddWithValue(card.Version);
             await save.ExecuteNonQueryAsync(cancellationToken);
+        }
+        if(permanentCopies)
+        {
+            await PermanentCardCopies.SaveReserveAsync(connection,transaction,playerId,cardId,copiesAfter,cancellationToken);
+            await PermanentCardCopies.WriteLedgerAsync(connection,transaction,playerId,cardId,copiesAfter-copiesBefore,
+                copiesAfter,scope,requestId,(timeProvider??TimeProvider.System).GetUtcNow(),cancellationToken);
         }
         var balance = currency switch
         {
@@ -175,7 +186,7 @@ public sealed partial class ProgressionRepository
         };
         await WriteEconomyLedgerAsync(connection, transaction, playerId, delta, balance,
             currency, scope, cancellationToken, requestId);
-        var result = new CardMutationResponse(QuoteCard(definition, card, requiredCopies), materials, currency, amount, consumedCopies);
+        var result = new CardMutationResponse(QuoteCard(definition, card, requiredCopies, permanentCopies), materials, currency, amount, consumedCopies);
         await WriteIdempotentResultAsync(connection, transaction, playerId, scope, requestId,
             requestHash, result, cancellationToken);
         await transaction.CommitAsync(cancellationToken);

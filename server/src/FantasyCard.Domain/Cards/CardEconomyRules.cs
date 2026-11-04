@@ -20,8 +20,8 @@ public static class CardEconomyRules
         _ => throw new DomainValidationException("Unknown card hero class.")
     };
 
-    public static long CraftCost(CardConfigDefinition card, bool owned) =>
-        card.InitiallyUnlocked ? card.CopyCost : card.UnlockCost;
+    public static long CraftCost(CardConfigDefinition card, bool owned, bool permanentCopies = false) =>
+        card.InitiallyUnlocked || permanentCopies && owned ? card.CopyCost : card.UnlockCost;
 
     public static CardLevelConfig Level(string cardId, int level, GameConfigCatalog? configuration = null)
     {
@@ -31,11 +31,14 @@ public static class CardEconomyRules
             ?? throw new DomainValidationException("Card level is not present in the active config.");
     }
 
-    public static string? UpgradeBlockedReason(string cardId, bool unlocked, int copies, int level, int requiredCopies)
+    public static string? UpgradeBlockedReason(string cardId, bool unlocked, int copies, int level, int requiredCopies,
+        bool permanentCopies = false)
     {
         if (!unlocked || copies < 1) return "Card is not owned.";
         if (level >= 5) return "Card has reached maximum level.";
-        _ = Level(cardId, level + 1);
+        var next = Level(cardId, level + 1);
+        if (permanentCopies && next.RequiresCopy && copies <= Math.Max(1,requiredCopies))
+            return "An extra copy of the same card is required.";
         return null;
     }
 
