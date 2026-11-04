@@ -19,7 +19,8 @@ public sealed record ExplorationItem(
     bool IsSafe = false,
     EquipmentRewardData? Equipment = null,
     int SlotIndex = -1,
-    bool? IsGenerated = null);
+    bool? IsGenerated = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)] bool IsCombatProjection = false);
 
 public sealed record PendingChoiceReplacement(
     Guid Token,

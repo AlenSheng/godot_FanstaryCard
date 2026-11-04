@@ -1,3 +1,5 @@
+using FantasyCard.Domain.Players;
+
 namespace FantasyCard.Domain.Rooms;
 
 public sealed record RelicPileSnapshot(
@@ -31,6 +33,7 @@ public sealed class RelicPile
 
     public void Add(ExplorationItem item)
     {
+        if(item.IsCombatProjection)throw new DomainValidationException("Combat projections cannot enter relic custody.");
         item = item with { IsSafe = false, SlotIndex = -1 };
         if (item.Kind is not (ExplorationItemKind.Equipment or ExplorationItemKind.HealthPotion) &&
             _items.FindIndex(value => value.Kind == item.Kind && value.ItemId == item.ItemId) is var existing && existing >= 0)
@@ -78,6 +81,7 @@ public sealed class RelicPile
     public static RelicPile Restore(RelicPileSnapshot snapshot)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
+        if(snapshot.Items.Any(item=>item.IsCombatProjection))throw new DomainValidationException("A saved relic cannot contain combat projections.");
         var pile = new RelicPile(snapshot.PileId, snapshot.VictimId, snapshot.Position, snapshot.VictimName);
         pile._items.AddRange(snapshot.Items.Select(item => item with { SlotIndex = -1, IsSafe = false }));
         pile.Version = snapshot.Version;

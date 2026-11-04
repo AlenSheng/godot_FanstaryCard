@@ -52,6 +52,7 @@ public sealed class SettlementCoordinator(
                         snapshot.Season,
                         player.Phase,
                         player.Position,
+                        player.BotVictoryReward,
                         heroClass = player.HeroClass.ToString(),
                         assetCount = assets.Length,
                         difficultyProgress = new
@@ -153,8 +154,11 @@ public sealed class SettlementCoordinator(
         return [.. assets.DistinctBy(asset => (asset.AssetKind, asset.AssetId))];
     }
 
-    private static SettlementAsset ToAsset(ExplorationItem item, string equipmentDestination) =>
-        new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity,
+    private static SettlementAsset ToAsset(ExplorationItem item, string equipmentDestination)
+    {
+        if(item.IsCombatProjection)throw new InvalidOperationException("Combat projections cannot be settled as assets.");
+        return new(item.Kind.ToString(), item.ItemId, item.IsSafe, item.Quantity,
             item.IsGenerated == false ? null : item.Equipment,
             item.Kind == ExplorationItemKind.Equipment ? equipmentDestination : null);
+    }
 }

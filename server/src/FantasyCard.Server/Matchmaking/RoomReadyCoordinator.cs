@@ -191,7 +191,7 @@ public sealed partial class RoomReadyCoordinator(
                 SafeSlotIndexes: player.SafeSlotIndexes, DisplayName: player.DisplayName, CardLevels: player.CardLevels,
                 BorrowedTemplateId: player.BorrowedTemplateId, LootPreferenceElement: player.LootPreferenceElement));
             for (var potion = 0; potion < player.PotionCount; potion++)
-                if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion)))
+                if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion,IsCombatProjection:player.IsBot && room.BotRewardPolicy is not null)))
                     throw new InvalidOperationException("Preparation potion count exceeds the exploration inventory capacity.");
         }
         room.InitializeMap(ChaosMapGenerator.Generate(assignment.Seed, assignment.Players.Count));

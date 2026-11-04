@@ -233,6 +233,7 @@ public static class RoomCheckpointPolicy
             player.PlayerId,
             player.BorrowedTemplateId,
             player.LootPreferenceElement,
+            player.BotVictoryReward,
             player.Phase,
             player.LastCombatActionSequence,
             player.CurrentDuelId,

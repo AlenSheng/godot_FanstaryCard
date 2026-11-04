@@ -20,7 +20,7 @@ public sealed partial class BattleRoom
             ?? throw new DomainValidationException("The equipment is not in the backpack.");
         var (armor, previous, profile) = PrepareEquipmentChange(player, item);
         var staged = player.Inventory.Clone();
-        if (!staged.TryRemove(itemId, out _) || previous is not null &&
+        if (!staged.TryRemove(itemId, out _) || previous is not null && !previous.IsCombatProjection &&
             !staged.TryAdd(previous with { SlotIndex = item.SlotIndex, IsSafe = item.IsSafe }))
             throw new DomainValidationException("The previous equipment cannot be returned to the backpack.");
         player.Inventory.Apply(staged);
@@ -37,7 +37,7 @@ public sealed partial class BattleRoom
         var armor = player.WornArmor.Where(item => item.ItemId != previous.ItemId).ToArray();
         var profile = CalculateArmor(armor);
         var staged = player.Inventory.Clone();
-        if (!staged.TryAdd(previous with { SlotIndex = -1, IsSafe = false }))
+        if (!previous.IsCombatProjection && !staged.TryAdd(previous with { SlotIndex = -1, IsSafe = false }))
             throw new DomainValidationException("The backpack is full.");
         player.Inventory.Apply(staged);
         player.WornArmor = armor;
@@ -103,7 +103,7 @@ public sealed partial class BattleRoom
             else if (!staged.TryRemove(replaceItemId, out recycled))
                 throw new DomainValidationException("The reward replacement item is not available.");
         }
-        if (previous is not null && previous != recycled &&
+        if (previous is not null && !previous.IsCombatProjection && previous != recycled &&
             !staged.TryAdd(previous with { SlotIndex = recycled?.SlotIndex ?? -1, IsSafe = false }))
             throw new DomainValidationException("The backpack is full; select the removed armor or a backpack item to recycle.");
         if (previous is null && staged.FreeSlots == 0 && replaceItemId is null)
@@ -117,7 +117,7 @@ public sealed partial class BattleRoom
 
     private static void TrackRecycled(RoomPlayerState player, ExplorationItem item)
     {
-        if (item.Kind == ExplorationItemKind.Equipment)
+        if (item.Kind == ExplorationItemKind.Equipment && !item.IsCombatProjection)
             player.RecycledEquipment.Add(item with { SlotIndex = -1, IsSafe = false });
     }
 }

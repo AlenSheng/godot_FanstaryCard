@@ -523,6 +523,8 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                     throw new InvalidOperationException("Generated equipment attributes are invalid.");
                 if(realm.Context.Season is { } originalSeason)
                     SeasonLootRules.RequireOrigin(generated,originalSeason,_configurations.Resolve(realm.Context.ConfigVersion));
+                if(generated.SeasonOrigin?.Source=="BotVictory")
+                    await RequireBotVictoryProofAsync(connection,transaction,realm,asset.AssetId,generated,cancellationToken);
                 await using var create = new NpgsqlCommand(
                     """
                     INSERT INTO equipments(
@@ -548,7 +550,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
                 create.Parameters.AddWithValue(NpgsqlDbType.Uuid, season is null ? DBNull.Value : realm.Context.MatchId);
                 create.Parameters.AddWithValue(NpgsqlDbType.Smallint, season is null ? DBNull.Value : (short)season.Difficulty);
                 create.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.StatsVersion ?? DBNull.Value);
-                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, season is null ? DBNull.Value : generated.SeasonOrigin?.Source=="BotBudget" ? "BotReward" : "NaturalDrop");
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, season is null ? DBNull.Value : generated.SeasonOrigin?.Source is "BotBudget" or "BotVictory" ? "BotReward" : "NaturalDrop");
                 create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.SeasonOrigin?.LootRuleId??DBNull.Value);
                 create.Parameters.AddWithValue(NpgsqlDbType.Jsonb,generated.SeasonOrigin is null?DBNull.Value:JsonSerializer.Serialize(generated.SeasonOrigin));
                 create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.UniqueAffix??DBNull.Value);

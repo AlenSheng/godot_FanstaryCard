@@ -168,6 +168,7 @@ public sealed class GameConfigCatalog
     public SeasonEquipmentConfig? SeasonEquipment { get; private init; }
     public SeasonCraftingConfig? SeasonCrafting { get; private init; }
     public SeasonLootPreferenceConfig? SeasonLootPreference { get; private init; }
+    public SeasonBotRewardConfig? SeasonBotRewards { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -317,7 +318,18 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle) };
+    }
+
+    private static SeasonBotRewardConfig? ReadSeasonBotRewards(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonBotRewards");
+        if(table is null)return null;
+        if(table.Rows.Count!=1)throw new InvalidDataException("Season bot rewards require one frozen policy.");
+        var row=table.Rows[0];var policy=new SeasonBotRewardConfig(table.Text(row,"rule_id"),table.Int(row,"gold"),table.Int(row,"fragments"),
+            table.Int(row,"equipment_chance_bp"),table.Text(row,"equipment_quality"),table.Int(row,"equipment_level"),
+            table.Int(row,"maximum_per_human"),table.Bool(row,"mortal_pve"));
+        policy.Validate();return policy;
     }
 
     private static SeasonLootPreferenceConfig? ReadSeasonLootPreference(ConfigBundle bundle)

@@ -35,7 +35,7 @@ public static class SeasonConfigValidator
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
         if (present.Count == 0)
         {
-            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference"))
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference" or "SeasonBotRewards"))
                 throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
             return; // Archived pre-season workbooks remain valid.
         }
@@ -58,6 +58,7 @@ public static class SeasonConfigValidator
         ValidateEquipmentRules(tables,present["SeasonEquipment"]);
         ValidateCrafting(tables);
         ValidateLootPreference(tables);
+        ValidateBotRewards(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -176,6 +177,23 @@ public static class SeasonConfigValidator
             N(table,row,"rapid_draw_floor_seconds")>=N(table,row,"draw_floor_seconds") && N(table,row,"rapid_draw_floor_seconds")<=N(table,row,"draw_ceiling_seconds"),table,"invalid resistance or draw interval bounds");
         Probability(table,row,"inferno_bonus");Probability(table,row,"rapid_draw_reduction");Probability(table,row,"chain_draw_chance");Probability(table,row,"golden_cicada_bonus");
         Check(N(table,row,"opening_draw_count") is >=0 and <=1,table,"opening draw count exceeds hand-opening policy");
+    }
+
+    private static void ValidateBotRewards(IReadOnlyList<ConfigTable> tables)
+    {
+        var table=tables.SingleOrDefault(value=>value.Name=="SeasonBotRewards");
+        if(table is null)return;
+        foreach(var field in "rule_id:s,gold:i,fragments:i,equipment_chance_bp:i,equipment_quality:s,equipment_level:i,maximum_per_human:i,mortal_pve:b".Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            var type=parts[1] switch {"s"=>ConfigValueType.Text,"b"=>ConfigValueType.Logical,_=>ConfigValueType.WholeNumber};
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both && column.Type==type,table,"invalid bot reward metadata");
+        }
+        Check(table.Rows.Count==1,table,"requires one bot victory budget");var row=table.Rows[0];
+        Check(S(table,row,"rule_id")=="season-bot-reward-v1" && N(table,row,"gold") is >=0 and <=5 &&
+            N(table,row,"fragments") is >=0 and <=1 && N(table,row,"equipment_chance_bp") is >=0 and <=1000 &&
+            S(table,row,"equipment_quality") is "White" or "Green" or "Blue" && N(table,row,"equipment_level")==0 &&
+            N(table,row,"maximum_per_human")==1 && B(table,row,"mortal_pve"),table,"bot victory must be once per human, low-value, at most blue+0, and mortal");
     }
 
     private static void ValidateLootPreference(IReadOnlyList<ConfigTable> tables)

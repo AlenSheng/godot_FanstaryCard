@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(25, tables.Count); // _README stays private; loot preference adds one frozen policy.
+        Assert.Equal(26, tables.Count); // _README stays private; bot victory adds one frozen budget.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
@@ -39,6 +39,11 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonMarketRules", "tax_rate", -0.01)]
     [InlineData("SeasonMarketRules", "orange_price_cap", 0)]
     [InlineData("SeasonActivityExchange", "cost_tokens", 0)]
+    [InlineData("SeasonBotRewards", "gold", 6)]
+    [InlineData("SeasonBotRewards", "fragments", 2)]
+    [InlineData("SeasonBotRewards", "equipment_chance_bp", 1001)]
+    [InlineData("SeasonBotRewards", "equipment_level", 1)]
+    [InlineData("SeasonBotRewards", "maximum_per_human", 2)]
     [InlineData("SeasonLootPreference", "preferred_weight", 3999)]
     [InlineData("SeasonLootPreference", "other_weight", 1501)]
     [InlineData("SeasonCrafting", "mark_cost", 0)]

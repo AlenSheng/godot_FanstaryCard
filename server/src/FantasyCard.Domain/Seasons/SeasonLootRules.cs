@@ -11,7 +11,9 @@ public sealed record SeasonRewardContext(SeasonContext Season, SeasonRewardBias 
 
 /// <summary>Original mint context follows a generated item through swaps, piles and settlement.</summary>
 public sealed record SeasonEquipmentOrigin(SeasonContext Season,string Source,string LootRuleId,string LayerId,
-    string BaseQuality,bool Promoted);
+    string BaseQuality,bool Promoted,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? BotRewardOwnerId = null,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? DefeatedBotId = null);
 
 public static class SeasonLootRules
 {
@@ -75,6 +77,13 @@ public static class SeasonLootRules
         RequireGeneratedQuality(context,item.Quality,configuration);
         if(item.SeasonOrigin is not { } origin) throw new DomainValidationException("New seasonal equipment is missing its original source policy.");
         context.RequireSameDomain(origin.Season);
+        if(origin.Source=="BotProjection")
+            throw new DomainValidationException("A bot combat projection cannot be used as a generated asset.");
+        if(origin.Source=="BotVictory")
+        {
+            var policy=configuration.SeasonBotRewards??throw new DomainValidationException("This configuration has no bot victory reward policy.");
+            policy.RequireOrigin(item,context);return;
+        }
         if(origin.Source=="BotBudget")
         {
             if(origin.LootRuleId!="bot-budget-v1" || origin.LayerId!="outer" || origin.BaseQuality!=item.Quality ||

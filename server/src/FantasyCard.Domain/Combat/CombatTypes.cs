@@ -169,7 +169,8 @@ public sealed record RoomPlayerSnapshot(
     TimeSpan? LastSuccessfulCombatAt = null,
     IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null,
     string? BorrowedTemplateId = null,
-    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null);
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.BotVictoryRewardReceipt? BotVictoryReward = null);
 
 public enum DuelEndReason : short
 {
@@ -208,7 +209,8 @@ public sealed record RoomRandomStreamsSnapshot(
     ulong Loot,
     ulong Escape,
     ulong Bot,
-    ulong Duel);
+    ulong Duel,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] ulong? BotReward = null);
 
 public sealed record BattleRoomSnapshot(
     Guid RoomId,

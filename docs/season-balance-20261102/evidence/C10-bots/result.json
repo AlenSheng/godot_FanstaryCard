@@ -1,0 +1,104 @@
+{
+  "status": "C10_completed_current_scope",
+  "C10_complete": true,
+  "whole_goal_complete": false,
+  "configuration": {
+    "version": "season-v1-config-6",
+    "content_hash": "aead2d955290d227e41b85fb628ba0020272f9ed224aeb51fb1146703631bd43",
+    "binary_sha256": "f6c190f5a76885742ea684af4ea08c76235841b102a63c784b856f20395eb9fd",
+    "old_table_bodies_unchanged": 25,
+    "published_tables": 26,
+    "published_rows": 1743,
+    "production_activated": false
+  },
+  "workbook_preservation": {
+    "before_sha256": "da72c57d4f6e6038f9ef03bb25afe1489445218f23702ab430458d7ea8e9167b",
+    "after_sha256": "8bfc407fdd146888ed32dbed2559a94a9f673eb10108ddd95e9e35f0268ec923",
+    "original_sheets_preserved": 26,
+    "old_nonformula_cells_verified": 18080,
+    "old_style_cells_verified": 18936,
+    "old_formulas_preserved": 8,
+    "native_tables_preserved": 2,
+    "new_tables": {
+      "SeasonBotRewards": 1
+    },
+    "rendered_changed_views_reviewed": true,
+    "production_activated": false
+  },
+  "domain_targeted_union_passed": 595,
+  "domain_union_not_single_physical_run": true,
+  "r2_domain_passed": 593,
+  "r2_domain_failed": 1,
+  "r3_corrected_domain_passed": 4,
+  "r4_bot_and_retreat_controls_passed": 28,
+  "server_targeted_union_passed": 309,
+  "server_union_not_single_physical_run": true,
+  "r73_server_passed": 308,
+  "r73_server_skipped": 2,
+  "new_original_database_custody_passed": 1,
+  "native_checks_passed": 213,
+  "new_UI_screens": 0,
+  "UI_unchanged_not_rerun": true,
+  "runtime_delta_after_r73": [
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs"
+  ],
+  "delta_verified_by": "local-bot-domain-r4 bot/extraction28 and local-bot-custody-r1 actual database extraction+transfer, current local server build zero warnings/errors",
+  "retained_failures": [
+    {
+      "stage": "local-bot-domain-r1",
+      "reason": "xUnit2029 requires DoesNotContain rather than Empty(predicate); no Domain cases executed"
+    },
+    {
+      "stage": "local-bot-domain-r2",
+      "passed": 593,
+      "failed": 1,
+      "reason": "Stripped projection was rejected as an unavailable loot rule (InvalidDataException); explicit DomainValidationException projection rejection added, targeted4 passed"
+    },
+    {
+      "stage": "local-bot-build-r2",
+      "reason": "New test used third positional argument for material version but it is the fragment-season string. Corrected named argument; no runtime rule relaxed"
+    },
+    {
+      "stage": "archive-early-v8",
+      "reason": "Missing original public archive rejected preparation before archive/retirement; no directory deleted"
+    },
+    {
+      "stage": "storage-r73 initial SSH attempts",
+      "reason": "Transient connection timeout; authoritative no handle/container checked before same-batch launch"
+    }
+  ],
+  "retained_skips": {
+    "count": 2,
+    "category": "A05 dedicated process fault; remains F02 pending; not counted passed"
+  },
+  "source_semantics": [
+    "New configuration only; old configurations lack the policy and retain their prior behavior",
+    "Projected combat armor and starting potions never become relic or settlement assets",
+    "Actual human items keep IDs, origin, enhancement and binding through bot custody/death/retreat",
+    "Once-per-human/match independent low reward:5gold1fragment10percent at most oneBlue0; no difficulty multiplier; candidate economy still D03/D04 pending",
+    "Separate bot-victory RNG and durable receipt; full bag consumes the claim and records recycle",
+    "Projected PVE may die and has no real normal choice/resources; its success is not balance evidence",
+    "Bot-versus-bot uses real cards/cooldown/draw clocks under new policy",
+    "BotReward gear cannot enhance, fund materials or teach recipes; durable room proof and database unique index prevent second mint after transfer"
+  ],
+  "r73_public_archive_sha256": "59b65a392bbf65d547b69500d79d67466725ac9bc29c69670ee43502359d4cd3",
+  "local_custody_TRX_sha256": "378950d73fca75d4afbde1f24f8523050dde4b6ee046e64666d5d512ca35c6af",
+  "local_custody_seconds": 595,
+  "cloud_storage_r74": {
+    "prepared_but_not_started": true,
+    "note": "Original SDK disk admission reserve not met; current local SDK + owned loopback SSH tunnel used instead"
+  },
+  "own_tunnel_exit": 0,
+  "production_database_used": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "capacity_retested": false,
+  "complete_gameplay_routes_added": 0,
+  "B05_routes_used": 291,
+  "B05_routes_remaining": 9,
+  "remaining": [
+    "C11 weekly red mint quota",
+    "C12-C16 market/shop/activity/progression/theme",
+    "Remaining A/D/E/F and final release/deploy/restart"
+  ]
+}

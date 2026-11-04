@@ -1,0 +1,26 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 96 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 308 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\local-bot-domain-r2\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\local-bot-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\local-bot-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Bots.SeasonBotRewardTests.RecoveryRejectsProjectionLeaksAndMissingRewardState(mutation: "stripped-flag") [38 ms]
+  Error Message:
+   Assert.Throws() Failure: Exception type was not an exact match
+Expected: typeof(FantasyCard.Domain.Players.DomainValidationException)
+Actual:   typeof(System.IO.InvalidDataException)
+---- System.IO.InvalidDataException : The frozen seasonal loot rule is not published.
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Bots.SeasonBotRewardTests.RecoveryRejectsProjectionLeaksAndMissingRewardState(String mutation) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Bots\SeasonBotRewardTests.cs:line 121
+   at InvokeStub_SeasonBotRewardTests.RecoveryRejectsProjectionLeaksAndMissingRewardState(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+----- Inner Stack Trace -----
+   at FantasyCard.Domain.Configuration.GameConfigCatalog.SeasonLoot(Int32 difficulty, String layerId) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Configuration\GameConfigCatalog.cs:line 181
+   at FantasyCard.Domain.Seasons.SeasonLootRules.RequireOrigin(EquipmentRewardData item, SeasonContext context, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Seasons\SeasonLootRules.cs:line 92
+   at FantasyCard.Domain.Rooms.BattleRoom.Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, Int32 seed) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 738
+   at FantasyCard.Domain.Tests.Bots.SeasonBotRewardTests.<>c__DisplayClass11_0.<RecoveryRejectsProjectionLeaksAndMissingRewardState>b__0() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Bots\SeasonBotRewardTests.cs:line 121
+Results File: G:\PR13Evidence\season-balance-20261102-r1\local-bot-domain-r2\results\bot-domain.trx
+
+Failed!  - Failed:     1, Passed:   593, Skipped:     0, Total:   594, Duration: 1 s - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:01.73]     FantasyCard.Domain.Tests.Bots.SeasonBotRewardTests.RecoveryRejectsProjectionLeaksAndMissingRewardState(mutation: "stripped-flag") [FAIL]
