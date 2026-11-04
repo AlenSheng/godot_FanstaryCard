@@ -619,6 +619,8 @@ func _render() -> void:
 		_backdrop.visible = not show_login_video
 		if not show_login_video:
 			_backdrop.call("set_mode", "exploration" if not Game.room.is_empty() else ("codex" if screen in ["cards", "deck"] else "hall"))
+			var theme: Dictionary=preload("res://ui/season_theme_model.gd").room_theme(Game.room,Game.room_catalog_index())
+			_backdrop.call("set_season_theme",str(theme.get("element","")))
 	if is_instance_valid(_background_video):
 		_background_video.visible = show_login_video and _login_video_available
 		if _background_video.visible and not _background_video.is_playing(): _background_video.play()

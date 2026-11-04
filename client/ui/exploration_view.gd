@@ -13,6 +13,7 @@ const CellIndex = preload("res://ui/cell_index.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
+const ThemeModel=preload("res://ui/season_theme_model.gd")
 const MOVE_ACTION_ICON: Texture2D = preload("res://assets/generated/ui/exploration_move_compass.png")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
@@ -38,6 +39,10 @@ static func build(ui: Control, host: Control) -> void:
 		_map(ui, host, state)
 	else:
 		_actions(ui, host, state)
+	var theme: Dictionary=ThemeModel.room_theme(state,Game.room_catalog_index())
+	if not theme.is_empty() and phase in ["ActionBar","Pve","Pvp","Choice"]:
+		var theme_button: Button=ui.button(ThemeModel.title(theme),Rect2(560,35,390,62),preload("res://ui/season_theme_dialog.gd").show_dialog.bind(host,theme))
+		theme_button.name="SeasonThemeInfoButton"
 	var pool: Dictionary = state.get("player", {}).get("monster_pool", {})
 	if not pool.is_empty() and phase in ["ActionBar", "Choice"]:
 		ui.button(MonsterPool.text("title") + " (%d)" % pool.get("pending", []).size(), Rect2(1210, 35, 340, 62), func(): MonsterPool.open(host))
@@ -226,6 +231,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			var boss_phase: int = maxi(1, int(monster.get("boss_phase", 1)))
 			var texture: Texture2D = Art.monster(monster.get("monster_id", ""), boss_phase)
 			var enemy: Control = _picture(ui, texture, Rect2(x - 45 * slot_scale, 301, 430 * slot_scale, 164 if can_select_target else 245))
+			if monster.get("monster_id")=="annihilation-core": enemy.modulate=ThemeModel.boss_tint(ThemeModel.room_theme(state,Game.room_catalog_index()))
 			enemy.name = "Monster_" + str(monster.get("monster_id", ""))
 			host._combat_panels[monster.get("monster_id", "")] = enemy
 			if texture == null:
@@ -234,11 +240,11 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 			if not alive: enemy.modulate.a = 0.35
 			var element: String = monster.get("intent_element", "None")
 			if alive:
-				var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield")}.get(monster.get("intent_kind", ""), P.word(element))
+				var intent: String = {"Charge": P.localized("charge_intent"), "Empower": P.localized("empower"), "Shield": P.localized("word_shield"),"Regenerate":P.localized("season_theme_regenerate")}.get(monster.get("intent_kind", ""), P.word(element))
 				var number: String = str(monster.get("intent_value", 0)) if int(monster.get("intent_value", 0)) > 0 else ""
 				if element != "None":
 					ui.picture(Art.element(element), Rect2(x + 25 * slot_scale, 121, 62 * slot_scale, 62))
-				ui.text("%s %s" % [intent, number], Rect2(x + 95 * slot_scale, 126, 250 * slot_scale, 58), 37, P.ELEMENT.get(element, P.PAPER))
+				ui.text(P.system_display_text("%s %s" % [intent, number]), Rect2(x + 95 * slot_scale, 126, 250 * slot_scale, 58), 37, P.ELEMENT.get(element, P.PAPER)).name="MonsterIntent_"+str(index)
 			else:
 				_center(ui.text(P.localized("defeated"), Rect2(x + 24 * slot_scale, 126, 315 * slot_scale, 58), 32, P.MUTED))
 			_health(ui, monster, Rect2(x + 24 * slot_scale, 190, 315 * slot_scale, 114), true)

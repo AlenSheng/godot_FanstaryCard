@@ -93,7 +93,7 @@ internal static class JourneyTestInputs
 
     private static BattleRoom AtCell(BattleRoom room,Guid player,ChaosMapCell cell,CombatCardCatalog catalog)
     {
-        var snapshot=room.Capture();var pve=PveBattleFactory.Create(cell,catalog.Configuration.SeasonDifficulty(0));
+        var snapshot=room.Capture();var pve=PveBattleFactory.Create(cell,catalog.Configuration.SeasonDifficulty(0),catalog.Configuration.SeasonThemes?.Selected);
         return BattleRoom.Restore(snapshot with {Players=snapshot.Players.Select(p=>p.PlayerId==player?p with
             {Position=cell.Position,Phase=RoomPlayerPhase.Pve,Pve=pve.Capture(),RewardChoice=null}:p).ToArray()},catalog,73);
     }

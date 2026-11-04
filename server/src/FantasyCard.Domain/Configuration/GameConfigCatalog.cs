@@ -175,6 +175,7 @@ public sealed class GameConfigCatalog
     public SeasonShopConfig? SeasonShop { get; private init; }
     public SeasonActivityConfig? SeasonActivity { get; private init; }
     public SeasonJourneyConfig? SeasonJourney { get; private init; }
+    public SeasonThemeConfig? SeasonThemes { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -324,7 +325,24 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=ReadSeasonJourney(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=ReadSeasonJourney(bundle),SeasonThemes=ReadSeasonThemes(bundle) };
+    }
+
+    private static SeasonThemeConfig? ReadSeasonThemes(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonThemeRules");if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The theme group requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        var themes=bundle.Table("SeasonThemes");var groups=bundle.Table("SeasonThemeGroups");
+        static CardElement Element(ConfigTable table,object?[] values,string field)=>Enum.Parse<CardElement>(table.Text(values,field));
+        var policy=new SeasonThemeConfig(rules.Text(row,"rule_id"),rules.Text(row,"selected_theme"),rules.Int(row,"preferred_weight"),rules.Int(row,"other_weight"),
+            rules.Text(row,"group_weight_mode"),rules.Int(row,"global_damage_bp"),rules.Text(row,"layout"),rules.Bool(row,"spawn_singles"),
+            themes.Rows.Select(r=>new SeasonThemeDefinition(themes.Text(r,"theme_id"),Element(themes,r,"element"),themes.Text(r,"name_key"),themes.Text(r,"strategy_id"),
+                Element(themes,r,"phase1_primary"),Element(themes,r,"phase1_secondary"),Element(themes,r,"phase2_primary"),Element(themes,r,"phase2_secondary"),
+                themes.Int(r,"regeneration_budget_bp"),themes.Int(r,"regeneration_step_bp"),themes.Int(r,"phase1_shield"),themes.Int(r,"phase2_shield"),themes.Text(r,"setup_kind"),themes.Int(r,"setup_value"))).ToArray(),
+            groups.Rows.Select(r=>new SeasonThemeGroup(groups.Text(r,"group_id"),groups.Text(r,"tier"),groups.Text(r,"member_elements"),groups.Bool(r,"spawn_allowed"),groups.Int(r,"base_weight"))).ToArray());
+        policy.Validate(ReadSeasonLootPreference(bundle)?.DefaultElement??throw new InvalidDataException("Theme needs the original loot preference policy."));
+        return policy;
     }
 
     private static SeasonJourneyConfig? ReadSeasonJourney(ConfigBundle bundle)

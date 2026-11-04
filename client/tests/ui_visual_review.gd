@@ -9,6 +9,7 @@ const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_re
 const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
 const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
 const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
+const THEME_SCENARIOS := ["c16_fire_info","c16_wood_info","c16_earth_info","c16_metal_info","c16_water_info","c16_wood_regen","c16_map","c16_action","c16_pvp","c16_choice"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -77,7 +78,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -192,7 +193,7 @@ func _reset_fixture() -> void:
 	var audio: Node = $UI.get_node("AudioSettings")
 	if is_instance_valid(audio._popup): audio._popup.hide()
 	for child in $UI.get_children():
-		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal", "LootPreferenceInfo"]:
+		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal", "LootPreferenceInfo","SeasonThemeInfo"]:
 			if child.has_method("dismiss"): child.dismiss()
 			else: child.queue_free()
 	await get_tree().process_frame
@@ -232,6 +233,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c16_"):return await _prepare_theme_scene(scenario,locale)
 	if scenario.begins_with("c15_"): return await _prepare_journey_scene(scenario)
 	if scenario.begins_with("c14_"): return await _prepare_activity_scene(scenario)
 	if scenario.begins_with("c13_"): return await _prepare_shop_scene(scenario)
@@ -479,6 +481,50 @@ func _market_listing_fixture(id: String,item: Dictionary,currency: String,price:
 		"currency":currency,"price":price,"priceGold":price if currency=="Gold" else 0,"version":9,"status":"Active","createdAt":"2026-11-04T00:00:00Z",
 		"expiresAt":"2099-12-31T00:00:00Z","seasonId":"market-review","seasonEndsAt":"2099-12-31T00:00:00Z","fee":maxi(1,int(price/10.0)),
 		"sellerNet":price-maxi(1,int(price/10.0)),"equipment":gear}
+
+var _theme_review_indices: Dictionary={}
+
+func _prepare_theme_scene(scenario: String,_locale: String) -> bool:
+	var element := "Wood" if scenario=="c16_wood_regen" else scenario.split("_")[1].capitalize() if scenario.ends_with("_info") else "Fire"
+	Game.room=_room_fixture()
+	if scenario=="c16_map":
+		Game.room.map=[]
+		for y in 6:
+			for x in 6:Game.room.map.append({"row":y,"column":x,"has_spring":y==0 and x==3,"is_boss":y==2 and x==2})
+		Game.room.legal_moves=[{"row":2,"column":2},{"row":3,"column":3}];Game.room.allowed_actions.append("room.move");$UI.set_meta("exploration_map_open",true)
+	if scenario in ["c16_wood_regen","c16_pvp"]:
+		Game.room.player.phase="Pve" if scenario=="c16_wood_regen" else "Pvp"
+		Game.room.allowed_actions+=["battle.play_cards","battle.select_target","duel.leave","duel.escape"]
+		if scenario=="c16_wood_regen":
+			Game.room.player.combat={"hp":80,"maximum_hp":70,"shield":6}
+			Game.room.pve={"battle_id":"theme-visual","current_target_id":"annihilation-core","monsters":[{"monster_id":"annihilation-core","maximum_hp":280,"hp":187,"shield":0,"intent_kind":"Regenerate","intent_element":"None","intent_value":5,"windup_remaining_ms":900,"boss_phase":1}]}
+		else:Game.room.duel={"duel_id":"review-duel","opponent_id":"review-opponent","opponent_class":"Guardian","opponent":{"hero_class":"Guardian","hp":60,"maximum_hp":100,"shield":8},"escape_remaining_ms":0}
+	if scenario=="c16_choice":
+		Game.room.player.phase="Choice";Game.room.allowed_actions=["choice.pick","choice.refresh"]
+		Game.room.reward_choice={"refresh_count":0,"options":[{"option_id":"equipment","kind":1,"quantity":1},{"option_id":"fragments","kind":2,"quantity":18},{"option_id":"heal","kind":3,"quantity":1,"heal_percent":14}]}
+	var version := "c16-visual-"+element.to_lower()
+	if not _theme_review_indices.has(element):
+		var data: Dictionary=Game.CATALOG.data.duplicate(true)
+		data.version=version;data.tables.SeasonThemeRules[0].selected_theme=element;data.tables.SeasonLootPreference[0].default_element=element
+		var index: Dictionary=preload("res://data/catalog_index.gd").from_data(data);index["_origin"]=Game.gateway.base_url;_theme_review_indices[element]=index
+	Game._room_catalogs[version]=_theme_review_indices[element]
+	Game.room.config_version=version;Game.room["season"]={"season_id":"theme-visual","difficulty_id":"D0","ruleset_id":"season-v1","config_version":version,"stats_version":"season-equipment-v1"}
+	await _render_base()
+	if scenario.ends_with("_info"):
+		$UI._reference.get_node("SeasonThemeInfoButton").pressed.emit();await get_tree().process_frame
+	return false
+
+func _check_theme_scene(frame_name: String) -> void:
+	var button: Button=$UI._reference.get_node("SeasonThemeInfoButton")
+	review_checks[frame_name+": pinned theme badge visible"]=button.is_visible_in_tree() and not button.disabled
+	if frame_name.ends_with("_info"):
+		var panel: Panel=$UI.get_node("SeasonThemeInfo/ThemeInfoPanel")
+		for child in panel.get_children():
+			if child is Control:review_checks[frame_name+": info content inside frame "+str(child.name)]=panel.get_global_rect().grow(-16).encloses(child.get_global_rect())
+	if frame_name.ends_with("_c16_wood_regen"):
+		var intent: Label=$UI._reference.get_node("MonsterIntent_0")
+		review_checks[frame_name+": regeneration label not None"]=Palette.without_bidi_isolates(intent.text).contains(Palette.localized("season_theme_regenerate"))
+		review_checks[frame_name+": actual bounded5HP shown"]=Palette.without_bidi_isolates(intent.text).contains("5") and not intent.text.contains("200")
 
 func _prepare_journey_scene(scenario: String) -> bool:
 	if scenario=="c15_entry":return await _prepare_activity_scene("c14_active")
@@ -820,6 +866,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
+	if frame_name.contains("_c16_"): _check_theme_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)

@@ -2,7 +2,7 @@ using FantasyCard.Domain.Configuration;
 
 namespace FantasyCard.Domain.Combat;
 
-public sealed class MonsterCombatState
+public sealed partial class MonsterCombatState
 {
     private readonly List<MonsterIntentState> _intents;
     private readonly Dictionary<string, TimeSpan> _statusRemaining = new(StringComparer.Ordinal);
@@ -15,7 +15,8 @@ public sealed class MonsterCombatState
         TimeSpan attackInterval,
         IReadOnlyList<MonsterIntentState> intents,
         double elementalAmplification = 0,
-        SeasonMonsterProfile? difficultyProfile = null)
+        SeasonMonsterProfile? difficultyProfile = null,
+        SeasonThemeDefinition? themeProfile = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(monsterId);
         if (maximumHp <= 0 || hp is < 0 || hp > maximumHp || shield < 0)
@@ -36,6 +37,9 @@ public sealed class MonsterCombatState
         ElementalAmplification = elementalAmplification;
         _intents = intents.ToList();
         SetDifficultyProfile(difficultyProfile);
+        SetThemeProfile(themeProfile);
+        if(themeProfile is null&&intents.Any(intent=>intent.Kind==MonsterIntentKind.Regenerate))
+            throw new InvalidDataException("Regeneration requires its original bounded theme profile.");
     }
 
     public string MonsterId { get; }
@@ -81,6 +85,7 @@ public sealed class MonsterCombatState
     {
         var applied = DifficultyProfile is null ? Math.Max(0, amount) : Math.Min(Math.Max(0,amount),Math.Max(0,MaximumHp / 2 - Shield));
         Shield += applied;
+        if(ThemeProfile is not null)ThemeShieldGenerated=checked(ThemeShieldGenerated+applied);
         return applied;
     }
 
@@ -112,7 +117,9 @@ public sealed class MonsterCombatState
         TimeSpan stunRemaining,
         IReadOnlyDictionary<string, TimeSpan> statusRemaining,
         int bossPhase = 1,
-        bool bossPhaseTransitionPending = false)
+        bool bossPhaseTransitionPending = false,
+        int themeRecoveredHp = 0,
+        long themeShieldGenerated = 0)
     {
         IntentIndex = Math.Abs(intentIndex) % _intents.Count;
         IntervalProgress = intervalProgress;
@@ -122,6 +129,7 @@ public sealed class MonsterCombatState
         StunRemaining = stunRemaining;
         BossPhase = bossPhase;
         BossPhaseTransitionPending = bossPhaseTransitionPending;
+        RestoreThemeCounters(themeRecoveredHp,themeShieldGenerated);
         if (MonsterId == "annihilation-core" && BossPhase == 2)
         {
             SetBossPhaseTwoValues();
@@ -164,7 +172,7 @@ public sealed class MonsterCombatState
             // GDD 5.13.1 includes the windup in the interval; carry sub-tick overshoot forward.
             IntervalProgress += delta;
             var current = _intents[IntentIndex];
-            var windup = current.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower
+            var windup = current.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower or MonsterIntentKind.Regenerate
                 ? TimeSpan.FromMilliseconds(1200) : TimeSpan.FromMilliseconds(DifficultyProfile.WindupMilliseconds);
             if (IntervalProgress >= AttackInterval)
             {
@@ -198,7 +206,7 @@ public sealed class MonsterCombatState
 
         IntervalProgress -= AttackInterval;
         var intent = _intents[IntentIndex];
-        WindupRemaining = intent.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower
+        WindupRemaining = intent.Kind is MonsterIntentKind.Charge or MonsterIntentKind.Empower or MonsterIntentKind.Regenerate
             ? TimeSpan.FromSeconds(1.2)
             : TimeSpan.FromMilliseconds(DifficultyProfile?.WindupMilliseconds ?? 600);
         return null;
@@ -222,6 +230,8 @@ public sealed class MonsterCombatState
     public static int PublishedIntentValue(MonsterCombatSnapshot monster)
     {
         var intent = monster.Intents[monster.IntentIndex % monster.Intents.Count];
+        if(intent.Kind==MonsterIntentKind.Regenerate)
+            return RegenerationAmount(monster.MaximumHp,monster.Hp,monster.ThemeRecoveredHp,monster.ThemeProfile);
         if (monster.DifficultyProfile is not { } profile) return intent.Value;
         if (intent.Kind == MonsterIntentKind.Shield) return SeasonDifficultyConfig.Scale(intent.Value,profile.ShieldBasisPoints);
         if (intent.Kind is not (MonsterIntentKind.Attack or MonsterIntentKind.Direct)) return intent.Value;
@@ -252,8 +262,8 @@ public sealed class MonsterCombatState
         }
         if (MonsterId == "annihilation-core")
         {
-            var main = BossPhase == 1 ? CardElement.Fire : CardElement.Metal;
-            var neighbor = BossPhase == 1 ? CardElement.Wood : CardElement.Earth;
+            var main = ThemeProfile is {} theme ? BossPhase==1?theme.PhaseOnePrimary:theme.PhaseTwoPrimary : BossPhase == 1 ? CardElement.Fire : CardElement.Metal;
+            var neighbor = ThemeProfile is {} other ? BossPhase==1?other.PhaseOneSecondary:other.PhaseTwoSecondary : BossPhase == 1 ? CardElement.Wood : CardElement.Earth;
             if (incoming == main) return .35;
             if (incoming == neighbor) return .20;
             if (Counters(incoming, main)) return -.30;
@@ -289,6 +299,11 @@ public sealed class MonsterCombatState
         {
             GainShield(DifficultyProfile is null ? intent.Value : SeasonDifficultyConfig.Scale(intent.Value,DifficultyProfile.ShieldBasisPoints));
         }
+        else if(intent.Kind==MonsterIntentKind.Regenerate)
+        {
+            var recovered=RegenerationAmount(MaximumHp,Hp,ThemeRecoveredHp,ThemeProfile);
+            Hp+=recovered;ThemeRecoveredHp+=recovered;
+        }
         CompleteBossStep();
     }
 
@@ -313,7 +328,7 @@ public sealed class MonsterCombatState
                 .ToArray(),
             BossPhase,
             BossPhaseTransitionPending,
-            DifficultyProfile);
+            DifficultyProfile,ThemeProfile,ThemeRecoveredHp,ThemeShieldGenerated);
 
     public static MonsterCombatState Restore(MonsterCombatSnapshot snapshot)
     {
@@ -325,7 +340,9 @@ public sealed class MonsterCombatState
             snapshot.AttackInterval,
             snapshot.Intents,
             snapshot.ElementalAmplification,
-            snapshot.DifficultyProfile);
+            snapshot.DifficultyProfile,snapshot.ThemeProfile);
+        if(snapshot.ThemeProfile is {} theme&&!snapshot.Intents.SequenceEqual(theme.Intents(snapshot.BossPhase)))
+            throw new InvalidDataException("Saved boss intents differ from the original phase strategy.");
         monster.SetRuntimeState(
             snapshot.IntentIndex,
             snapshot.IntervalProgress,
@@ -335,7 +352,7 @@ public sealed class MonsterCombatState
             snapshot.StunRemaining,
             snapshot.StatusRemaining.ToDictionary(value => value.Key, value => value.Remaining, StringComparer.Ordinal),
             snapshot.BossPhase,
-            snapshot.BossPhaseTransitionPending);
+            snapshot.BossPhaseTransitionPending,snapshot.ThemeRecoveredHp,snapshot.ThemeShieldGenerated);
         return monster;
     }
 
@@ -380,6 +397,11 @@ public sealed class MonsterCombatState
         AttackInterval = DifficultyProfile is null ? TimeSpan.FromSeconds(3.8)
             : SeasonDifficultyConfig.ScaleInterval(TimeSpan.FromMilliseconds(3800),DifficultyProfile.IntervalBasisPoints);
         _intents.Clear();
+        if(ThemeProfile is {} theme)
+        {
+            _intents.AddRange(theme.Intents(2));
+            return;
+        }
         _intents.AddRange([
             new(MonsterIntentKind.Attack, 5, CardElement.Metal),
             new(MonsterIntentKind.Attack, 5, CardElement.Earth),

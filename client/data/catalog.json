@@ -1,5 +1,5 @@
 {
-  "version": "season-v1-config-11",
+  "version": "season-v1-config-12",
   "tables": {
     "Cards": [
       {
@@ -17638,6 +17638,236 @@
         "completion_kind": "Boss",
         "target": 1,
         "xp_reward": 300
+      }
+    ],
+    "SeasonThemeRules": [
+      {
+        "rule_id": "season-theme-v1",
+        "enabled": true,
+        "selected_theme": "Fire",
+        "preferred_weight": 4000,
+        "other_weight": 1500,
+        "group_weight_mode": "member-mean-normalized",
+        "global_damage_bp": 10000,
+        "layout": "chaos-6x6",
+        "spawn_singles": true
+      }
+    ],
+    "SeasonThemes": [
+      {
+        "theme_id": "Fire",
+        "element": "Fire",
+        "name_key": "season_theme_fire",
+        "strategy_id": "ember-windows",
+        "phase1_primary": "Fire",
+        "phase1_secondary": "Wood",
+        "phase2_primary": "Metal",
+        "phase2_secondary": "Earth",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Wood",
+        "element": "Wood",
+        "name_key": "season_theme_wood",
+        "strategy_id": "thorn-regrowth",
+        "phase1_primary": "Wood",
+        "phase1_secondary": "Water",
+        "phase2_primary": "Water",
+        "phase2_secondary": "Wood",
+        "regeneration_budget_bp": 500,
+        "regeneration_step_bp": 200,
+        "phase1_shield": 0,
+        "phase2_shield": 0,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Earth",
+        "element": "Earth",
+        "name_key": "season_theme_earth",
+        "strategy_id": "stone-cycle",
+        "phase1_primary": "Earth",
+        "phase1_secondary": "Metal",
+        "phase2_primary": "Metal",
+        "phase2_secondary": "Earth",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 12,
+        "phase2_shield": 10,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Metal",
+        "element": "Metal",
+        "name_key": "season_theme_metal",
+        "strategy_id": "metal-telegraph",
+        "phase1_primary": "Metal",
+        "phase1_secondary": "Fire",
+        "phase2_primary": "Fire",
+        "phase2_secondary": "Metal",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Empower",
+        "setup_value": 2
+      },
+      {
+        "theme_id": "Water",
+        "element": "Water",
+        "name_key": "season_theme_water",
+        "strategy_id": "tide-shift",
+        "phase1_primary": "Water",
+        "phase1_secondary": "Metal",
+        "phase2_primary": "Wood",
+        "phase2_secondary": "Water",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      }
+    ],
+    "SeasonThemeGroups": [
+      {
+        "group_id": "O1",
+        "tier": "outer",
+        "member_elements": "Fire",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O2",
+        "tier": "outer",
+        "member_elements": "Wood",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O3",
+        "tier": "outer",
+        "member_elements": "Water",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O4",
+        "tier": "outer",
+        "member_elements": "Earth",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O5",
+        "tier": "outer",
+        "member_elements": "Metal",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O6",
+        "tier": "outer",
+        "member_elements": "Fire|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O7",
+        "tier": "outer",
+        "member_elements": "Metal|Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O8",
+        "tier": "outer",
+        "member_elements": "Water|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M1",
+        "tier": "middle",
+        "member_elements": "Fire|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M2",
+        "tier": "middle",
+        "member_elements": "Water|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M3",
+        "tier": "middle",
+        "member_elements": "Metal|Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M4",
+        "tier": "middle",
+        "member_elements": "Water|Water",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M5",
+        "tier": "middle",
+        "member_elements": "Fire|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E1",
+        "tier": "elite",
+        "member_elements": "Metal",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E2",
+        "tier": "elite",
+        "member_elements": "Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E3",
+        "tier": "elite",
+        "member_elements": "Water",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E4",
+        "tier": "elite",
+        "member_elements": "Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E5",
+        "tier": "elite",
+        "member_elements": "Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E6",
+        "tier": "elite",
+        "member_elements": "Metal|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
       }
     ]
   }

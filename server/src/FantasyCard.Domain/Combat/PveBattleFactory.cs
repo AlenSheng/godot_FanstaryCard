@@ -6,7 +6,7 @@ namespace FantasyCard.Domain.Combat;
 
 public static class PveBattleFactory
 {
-    public static PveBattleState Create(ChaosMapCell cell, SeasonDifficultyConfig? difficulty = null)
+    public static PveBattleState Create(ChaosMapCell cell, SeasonDifficultyConfig? difficulty = null,SeasonThemeDefinition? theme=null)
     {
         ArgumentNullException.ThrowIfNull(cell);
         MonsterCombatState[] monsters = cell.MonsterGroupId switch
@@ -42,6 +42,8 @@ public static class PveBattleFactory
                 SeasonDifficultyConfig.Scale(monster.Shield,difficulty.ShieldBasisPoints),
                 SeasonDifficultyConfig.ScaleInterval(monster.AttackInterval,difficulty.IntervalBasisPoints),
                 monster.Intents,monster.ElementalAmplification,SeasonMonsterProfile.For(difficulty,monster.MonsterId))).ToArray();
+        if(theme is not null)
+            foreach(var monster in monsters.Where(monster=>monster.MonsterId=="annihilation-core"))monster.SetThemeProfile(theme);
         return new PveBattleState(Guid.CreateVersion7(), monsters[0].MonsterId, monsters);
     }
 

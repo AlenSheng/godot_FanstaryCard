@@ -194,7 +194,7 @@ public sealed partial class RoomReadyCoordinator(
                 if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion,IsCombatProjection:player.IsBot && room.BotRewardPolicy is not null)))
                     throw new InvalidOperationException("Preparation potion count exceeds the exploration inventory capacity.");
         }
-        room.InitializeMap(ChaosMapGenerator.Generate(assignment.Seed, assignment.Players.Count));
+        room.InitializeMap(ChaosMapGenerator.Generate(assignment.Seed, assignment.Players.Count,assignment.Season is not null?configuration.SeasonThemes:null));
         return room;
     }
 

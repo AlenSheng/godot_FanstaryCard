@@ -88,7 +88,8 @@ public enum MonsterIntentKind : short
     Direct = 2,
     Shield = 3,
     Charge = 4,
-    Empower = 5
+    Empower = 5,
+    Regenerate = 6
 }
 
 public sealed record MonsterIntentState(
@@ -115,7 +116,10 @@ public sealed record MonsterCombatSnapshot(
     IReadOnlyList<TimedCombatStatusSnapshot> StatusRemaining,
     int BossPhase = 1,
     bool BossPhaseTransitionPending = false,
-    Configuration.SeasonMonsterProfile? DifficultyProfile = null);
+    Configuration.SeasonMonsterProfile? DifficultyProfile = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Configuration.SeasonThemeDefinition? ThemeProfile = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int ThemeRecoveredHp = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] long ThemeShieldGenerated = 0);
 
 public enum PveBattlePhase : short
 {

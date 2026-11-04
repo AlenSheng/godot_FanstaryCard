@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8b134b94-7bd0-4f4e-9ee3-0e622462763d" name="shengjiahao@YK-SHENGJIAHAO 2026-11-05 04:49:07" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-05T04:49:07.0426921+08:00" queuing="2026-11-05T04:49:07.0426925+08:00" start="2026-11-05T04:49:03.3738223+08:00" finish="2026-11-05T04:49:07.0508071+08:00" />
+  <TestSettings name="default" id="8a169199-9726-440d-bbeb-a294b31a2c49">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-05_04_49_07" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2f238fd5-9444-46ae-9b1b-bf84504d4e1c" testId="67e52161-5be8-200b-78f3-10f17a9359f1" testName="FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome" computerName="YK-SHENGJIAHAO" duration="00:00:00.8113210" startTime="2026-11-05T04:49:06.0055282+08:00" endTime="2026-11-05T04:49:06.8570643+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f238fd5-9444-46ae-9b1b-bf84504d4e1c">
+      <Output>
+        <ErrorInfo>
+          <Message>FantasyCard.Domain.Players.DomainValidationException : A health potion can only be used from the action bar.</Message>
+          <StackTrace>   at FantasyCard.Domain.Rooms.BattleRoom.UsePotion(Guid playerId) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 989&#xD;
+   at FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.Run(GameConfigCatalog config, Int32 difficulty, HeroClass hero, Boolean isBoss, Int32 seed) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeComparisonTests.cs:line 83&#xD;
+   at FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeComparisonTests.cs:line 37&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome" storage="g:\pr13evidence\season-balance-20261102-r1\local-theme-pilot-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="67e52161-5be8-200b-78f3-10f17a9359f1">
+      <Execution id="2f238fd5-9444-46ae-9b1b-bf84504d4e1c" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-theme-pilot-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests" name="ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="67e52161-5be8-200b-78f3-10f17a9359f1" executionId="2f238fd5-9444-46ae-9b1b-bf84504d4e1c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="1" executed="1" passed="0" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.49]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.45]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.89]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:02.73]       FantasyCard.Domain.Players.DomainValidationException : A health potion can only be used from the action bar.&#xD;
+[xUnit.net 00:00:02.73]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.73]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs(989,0): at FantasyCard.Domain.Rooms.BattleRoom.UsePotion(Guid playerId)&#xD;
+[xUnit.net 00:00:02.73]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeComparisonTests.cs(83,0): at FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.Run(GameConfigCatalog config, Int32 difficulty, HeroClass hero, Boolean isBoss, Int32 seed)&#xD;
+[xUnit.net 00:00:02.73]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeComparisonTests.cs(37,0): at FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome()&#xD;
+[xUnit.net 00:00:02.73]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:02.73]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.76]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T04:49:06.8666264+08:00">
+        <Text>[xUnit.net 00:00:02.72]     FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -3,7 +3,7 @@ using System.Globalization;
 namespace FantasyCard.ConfigExporter;
 
 /// <summary>Validates the seasonal configuration group before either bundle is published.</summary>
-public static class SeasonConfigValidator
+public static partial class SeasonConfigValidator
 {
     private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
     private static readonly string[] JourneyContractKinds=["Extracted","Elite","Boss"];
@@ -64,6 +64,7 @@ public static class SeasonConfigValidator
         ValidateShop(tables);
         ValidateActivity(tables);
         ValidateJourney(tables);
+        ValidateThemes(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);

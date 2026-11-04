@@ -355,7 +355,7 @@ public sealed partial class BattleRoom
         foreach (var (player, index) in _players.Values.OrderBy(player => player.PlayerId).Select((player, index) => (player, index)))
         {
             player.Position = map.SpawnPositions[index];
-            player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty));
+            player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty),Season is not null&&_catalog.UsesPublishedConfiguration?_catalog.Configuration.SeasonThemes?.Selected:null);
             player.Combat.BeginBattle(player.Pve.BattleId);
             player.Phase = RoomPlayerPhase.Pve;
             StartBotPveSimulation(player);
@@ -378,7 +378,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("A player cannot move while drinking from a spring.");
         if (player.Position is not { } current || !Map.CanMove(current, target))
             throw new DomainValidationException("The target cell is not a legal inward or same-layer move.");
-        var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty));
+        var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty),Season is not null&&_catalog.UsesPublishedConfiguration?_catalog.Configuration.SeasonThemes?.Selected:null);
         if (player.Pve?.IsCleared == true) player.ClearedCells.Add(current);
         if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;
@@ -464,7 +464,10 @@ public sealed partial class BattleRoom
         {
             var difficulty = _catalog.Configuration.SeasonDifficulty(Season.Difficulty);
             foreach (var monster in setup.Pve.Monsters)
+            {
                 monster.SetDifficultyProfile(SeasonMonsterProfile.For(difficulty,monster.MonsterId));
+                if(monster.MonsterId=="annihilation-core")monster.SetThemeProfile(_catalog.UsesPublishedConfiguration?_catalog.Configuration.SeasonThemes?.Selected:null);
+            }
         }
         if (setup.IsBot && Numerics.BudgetedBotLoot && BotRewardPolicy is null)
         {
@@ -660,6 +663,8 @@ public sealed partial class BattleRoom
                 var difficulty = catalog.Configuration.SeasonDifficulty(room.Season.Difficulty);
                 if (player.Pve.Monsters.Any(monster => monster.DifficultyProfile != SeasonMonsterProfile.For(difficulty,monster.MonsterId)))
                     throw new DomainValidationException("Saved seasonal monster scaling differs from the room's published configuration.");
+                if(player.Pve.Monsters.Any(monster=>monster.MonsterId=="annihilation-core"&&monster.ThemeProfile!=catalog.Configuration.SeasonThemes?.Selected))
+                    throw new DomainValidationException("Saved boss theme differs from the room's original published configuration.");
             }
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
@@ -1429,7 +1434,11 @@ public sealed partial class BattleRoom
                 }
                 else
                 {
+                    var hpBefore=monster.Hp;
                     monster.ResolveUtilityIntent(intent);
+                    if(monster.Hp>hpBefore)
+                        _combatFeedback.Add(new CombatFeedbackResolution(monster.MonsterId,new CombatResolution(
+                            player.Pve.BattleId,Guid.Empty,monster.MonsterId,0,0,0,monster.Hp-hpBefore,0,false,false,Revision)));
                 }
             }
         }
