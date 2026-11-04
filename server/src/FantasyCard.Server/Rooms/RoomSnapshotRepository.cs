@@ -235,6 +235,7 @@ public static class RoomCheckpointPolicy
             player.LootPreferenceElement,
             player.BotVictoryReward,
             player.PendingRedEvaluation,player.RedReward,player.PendingRedItem,
+            player.JourneyCompletions,
             player.Phase,
             player.LastCombatActionSequence,
             player.CurrentDuelId,

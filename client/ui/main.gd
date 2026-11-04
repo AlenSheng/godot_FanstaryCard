@@ -15,6 +15,7 @@ const CraftingModel = preload("res://ui/season_crafting_model.gd")
 const SeasonMarketController=preload("res://ui/season_market_controller.gd")
 const SeasonShopModel=preload("res://ui/season_shop_model.gd")
 const SeasonActivityController=preload("res://ui/season_activity_controller.gd")
+const SeasonJourneyController=preload("res://ui/season_journey_controller.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -54,6 +55,7 @@ var shop: Dictionary = {}
 var listings: Array = []
 var market_controller=SeasonMarketController.new()
 var activity_controller=SeasonActivityController.new()
+var journey_controller=SeasonJourneyController.new()
 var deck_draft: Array = []
 var gear_draft: Array = []
 var bag_tier := "Free"
@@ -513,6 +515,7 @@ func _reset_account_ui() -> void:
 	_market_price = 100
 	market_controller.reset()
 	activity_controller.reset()
+	journey_controller.reset()
 	_view_cell = ""
 	_codex_card = ""
 	_codex_scroll = 0
@@ -864,6 +867,7 @@ func _nav() -> void:
 func _navigate(value: String) -> void:
 	_shop_epoch+=1
 	activity_controller.leave()
+	journey_controller.leave()
 	var generation: int = Game.gateway.session_generation
 	if value != screen: Sound.play_cue("ui_open")
 	if value == "gear" and screen != "gear": _equipment_scroll = 0
@@ -886,6 +890,7 @@ func _navigate(value: String) -> void:
 	if value == "crafting": _reload_crafting()
 	if value == "market": market_controller.attach(self);market_controller.reload()
 	if value == "activities": activity_controller.attach(self);activity_controller.reload()
+	if value == "journey": journey_controller.attach(self);journey_controller.reload()
 	if value == "shop": _reload_shop_view(_shop_epoch)
 
 func _reload_shop_view(epoch: int) -> void:

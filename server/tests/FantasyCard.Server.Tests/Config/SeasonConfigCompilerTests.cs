@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(30, tables.Count); // _README stays private; activity policy and calendar are compiled together.
+        Assert.Equal(32, tables.Count); // _README stays private; journey policy and weekly contracts are compiled together.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);
@@ -47,6 +47,12 @@ public sealed class SeasonConfigCompilerTests
     [InlineData("SeasonEquipment", "cost_1", 0)]
     [InlineData("SeasonEquipment", "speed_base", 1)]
     [InlineData("SeasonProgression", "xp_to_next_42", 0)]
+    [InlineData("SeasonJourneyRules", "outer_xp", 7)]
+    [InlineData("SeasonJourneyRules", "catch_up_multiplier", 3)]
+    [InlineData("SeasonJourneyRules", "reference_days", 0)]
+    [InlineData("SeasonJourneyRules", "main_reward_levels", 30)]
+    [InlineData("SeasonWeeklyContracts", "target", 0)]
+    [InlineData("SeasonWeeklyContracts", "xp_reward", 600)]
     [InlineData("SeasonRedRules", "weekly_quota", 2)]
     [InlineData("SeasonRedRules", "min_difficulty", 1)]
     [InlineData("SeasonRedRules", "boss_chance", 1.01)]

@@ -27,6 +27,7 @@ public sealed record BattleRoomPlayerSetup(
 public sealed record DuelEscapeRequestResult(Guid DuelId, double Probability, long RoomRevision);
 public sealed record RoomMoveResult(MapPosition Position, DuelStateSnapshot? StartedDuel, long RoomRevision);
 public sealed record PotionUseResult(string ItemId, int Healed, long RoomRevision);
+public sealed record SeasonCellCompletionSnapshot(MapPosition Position,string MonsterGroupId,Guid BattleId,DateTimeOffset CompletedAt);
 
 public sealed class RoomPlayerState
 {
@@ -84,6 +85,7 @@ public sealed class RoomPlayerState
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
     internal HashSet<MapPosition> ClearedCells { get; } = [];
+    internal List<SeasonCellCompletionSnapshot> JourneyCompletions { get; } = [];
     internal HashSet<MapPosition> ConsumedSprings { get; } = [];
 
     internal RoomPlayerSnapshot Capture(
@@ -113,7 +115,8 @@ public sealed class RoomPlayerState
             RewardRefreshReceipts.ToArray(),
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
-            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem,ExtractionCompletedAt);
+            CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem,ExtractionCompletedAt,
+            JourneyCompletions.Count==0?null:JourneyCompletions.OrderBy(c=>c.CompletedAt).ThenBy(c=>c.Position.Row).ThenBy(c=>c.Position.Column).ToArray());
 }
 
 public sealed class DuelState
@@ -694,6 +697,19 @@ public sealed partial class BattleRoom
                 player.RewardRefreshReceipts.Add(receipt);
             }
             foreach (var clearedCell in playerSnapshot.ClearedCells ?? []) player.ClearedCells.Add(clearedCell);
+            if(playerSnapshot.JourneyCompletions is {} completions)
+            {
+                if(room.Season is null||catalog.Configuration.SeasonJourney is null||player.IsBot||room.Map is null)
+                    throw new DomainValidationException("Saved journey completions have no original seasonal player policy.");
+                foreach(var completion in completions)
+                {
+                    if(completion.BattleId==Guid.Empty||!player.ClearedCells.Contains(completion.Position)||
+                        room.Map.GetCell(completion.Position).MonsterGroupId!=completion.MonsterGroupId||
+                        player.JourneyCompletions.Any(c=>c.Position==completion.Position||c.BattleId==completion.BattleId))
+                        throw new DomainValidationException("Saved journey completion source is invalid or duplicated.");
+                    player.JourneyCompletions.Add(completion with {CompletedAt=completion.CompletedAt.ToUniversalTime()});
+                }
+            }
             foreach (var consumedSpring in playerSnapshot.ConsumedSprings ?? legacyConsumedSprings)
                 player.ConsumedSprings.Add(consumedSpring);
             if (player.RewardRefreshCount is < 0 or > 3 ||
@@ -1213,6 +1229,12 @@ public sealed partial class BattleRoom
         AddPveVictoryDrops(player, Map.GetCell(position));
         player.Pve!.RefreshPhase();
         var cell = Map.GetCell(position);
+        if(Season is not null&&_catalog.UsesPublishedConfiguration&&_catalog.Configuration.SeasonJourney is not null&&!player.IsBot)
+        {
+            if(!alreadyCleared)
+                player.JourneyCompletions.Add(new(position,cell.MonsterGroupId,player.Pve!.BattleId,now.ToUniversalTime()));
+            player.ClearedCells.Add(position);
+        }
         var layer=Season is not null && _catalog.UsesPublishedConfiguration ? SeasonLootRules.RewardLayer(cell):cell.Layer;
         player.RewardChoice = RewardChoiceState.Create(layer, RewardRandom, cell.IsBoss || cell.MonsterGroupId=="BOSS", player.RewardRefreshCount,
             isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration,

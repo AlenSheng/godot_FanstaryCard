@@ -1,5 +1,5 @@
 {
-  "sha256": "54f342df3330fbe10e5538d6cde2e39e7034b9df99e33efa65fec33819e4fce3",
+  "sha256": "b5d2a3012fbbc65748457c49242b9221c75cb56cf0f571298664469c13168e72",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -2776,6 +2776,260 @@
         "type": "CardResponse",
         "repeated": true,
         "optional": false
+      }
+    },
+    "JourneySeasonResponse": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "JourneyLevelResponse": {
+      "1": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "required_experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "cumulative_experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "stage",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "reached",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "WeeklyContractResponse": {
+      "1": {
+        "name": "contract_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "week",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "completion_kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "target",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "progress",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "experience_reward",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "experience_credited",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "opens_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "completed_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "10": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonJourneyResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "duration_days",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "day",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "experience_into_level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "11": {
+        "name": "experience_to_next",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "maximum_experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "main_reward_levels",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "reference_experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "maximum_catch_up_multiplier",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "16": {
+        "name": "catch_up_active",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "17": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "18": {
+        "name": "contracts",
+        "type": "WeeklyContractResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "19": {
+        "name": "levels",
+        "type": "JourneyLevelResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "20": {
+        "name": "seasons",
+        "type": "JourneySeasonResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "21": {
+        "name": "next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
       }
     },
     "DeckListResponse": {

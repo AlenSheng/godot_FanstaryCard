@@ -1,5 +1,5 @@
 {
-  "version": "season-v1-config-10",
+  "version": "season-v1-config-11",
   "tables": {
     "Cards": [
       {
@@ -17600,6 +17600,44 @@
         "event_id": "activity-two",
         "first_day_42": 33,
         "days": 3
+      }
+    ],
+    "SeasonJourneyRules": [
+      {
+        "rule_id": "season-journey-v1",
+        "enabled": true,
+        "outer_xp": 6,
+        "middle_xp": 10,
+        "elite_xp": 25,
+        "boss_xp": 80,
+        "extraction_xp": 70,
+        "catch_up_multiplier": 2,
+        "reference_days": 21,
+        "reference_xp_42": 6850,
+        "main_reward_levels": 20,
+        "contract_assignment": "oldest-open-incomplete",
+        "catch_up_sources": "cleared_cells",
+        "time_zone": "Asia/Shanghai"
+      }
+    ],
+    "SeasonWeeklyContracts": [
+      {
+        "contract_id": "weekly-extraction",
+        "completion_kind": "Extracted",
+        "target": 3,
+        "xp_reward": 300
+      },
+      {
+        "contract_id": "weekly-elite",
+        "completion_kind": "Elite",
+        "target": 5,
+        "xp_reward": 300
+      },
+      {
+        "contract_id": "weekly-boss",
+        "completion_kind": "Boss",
+        "target": 1,
+        "xp_reward": 300
       }
     ]
   }

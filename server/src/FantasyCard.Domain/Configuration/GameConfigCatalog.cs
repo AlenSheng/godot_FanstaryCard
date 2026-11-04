@@ -174,6 +174,7 @@ public sealed class GameConfigCatalog
     public SeasonMarketConfig? SeasonMarket { get; private init; }
     public SeasonShopConfig? SeasonShop { get; private init; }
     public SeasonActivityConfig? SeasonActivity { get; private init; }
+    public SeasonJourneyConfig? SeasonJourney { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -323,7 +324,28 @@ public sealed class GameConfigCatalog
         ValidateItems(items);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=ReadSeasonJourney(bundle) };
+    }
+
+    private static SeasonJourneyConfig? ReadSeasonJourney(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The season journey requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        if(rules.Text(row,"contract_assignment")!="oldest-open-incomplete"||rules.Text(row,"catch_up_sources")!="cleared_cells"||rules.Text(row,"time_zone")!="Asia/Shanghai")
+            throw new InvalidDataException("Journey assignment or source scope differs from the supported policy.");
+        var levels=bundle.Table("SeasonProgression");var ordered=levels.Rows.OrderBy(r=>levels.Int(r,"level")).ToArray();
+        if(!ordered.Select(r=>levels.Int(r,"level")).SequenceEqual(Enumerable.Range(0,30)))
+            throw new InvalidDataException("Journey levels must be exactly zero through twenty-nine.");
+        var contracts=bundle.Table("SeasonWeeklyContracts");
+        var policy=new SeasonJourneyConfig(rules.Text(row,"rule_id"),rules.Int(row,"outer_xp"),rules.Int(row,"middle_xp"),
+            rules.Int(row,"elite_xp"),rules.Int(row,"boss_xp"),rules.Int(row,"extraction_xp"),rules.Int(row,"catch_up_multiplier"),
+            rules.Int(row,"reference_days"),rules.Int(row,"reference_xp_42"),rules.Int(row,"main_reward_levels"),
+            ordered.Select(r=>levels.Int(r,"xp_to_next_42")).ToArray(),
+            contracts.Rows.Select(r=>new SeasonWeeklyContractConfig(contracts.Text(r,"contract_id"),contracts.Text(r,"completion_kind"),
+                contracts.Int(r,"target"),contracts.Int(r,"xp_reward"))).ToArray());
+        policy.Validate();return policy;
     }
 
     private static SeasonActivityConfig? ReadSeasonActivity(ConfigBundle bundle)

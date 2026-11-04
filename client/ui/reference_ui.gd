@@ -48,6 +48,7 @@ func build(source: Control) -> void:
 			"market": _market()
 			"crafting": SeasonCrafting.build(self,host)
 			"activities": preload("res://ui/season_activity_view.gd").build(self,host)
+			"journey": preload("res://ui/season_journey_view.gd").build(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -125,6 +126,7 @@ func _header() -> void:
 	panel(Rect2(24, 18, 1872, 82))
 	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"),"crafting":P.localized("season_craft_title")}
 	names["activities"]=P.localized("activity_title")
+	names["journey"]=P.localized("journey_title")
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:

@@ -36,3 +36,8 @@ Godot原生验证使用真实C#编码的两个包和HTTP外层：209项布尔检
 ## C14 候选9原包追加归档
 
 当前候选10发布前，候选9的bytes/hash/version原件保存到`server/config/archive/season-v1-config-9/`。其内容哈希`4b3ecfa560877e81da1b2a96a539467020dd70da17380af8b60ed3246edf4d99`、二进制SHA `e1e985a4c5758bf9e2b0cafe97657ac63bb0b7d7bcef36eb973deda51fc3a1de`保持原值；活动策略不存在时明确不发章，不回退到候选10的日历和获章规则。正式生产归档挂载和重启仍属于F03，当前未替换生产运行包。
+
+
+## C15 候选10原包追加归档
+
+`server/config/archive/season-v1-config-10/`保存上一版的原三件套，内容哈希`c4e4bf5b9cc425f176c2c4a5568fe05ef4f2bb7a3384dd3d90cdd2e3af20396a`，bytes SHA`068b8c49129d4aa528ad163b368a85017ea6d8055793b374e1663aa302dd37a7`。旧候选10无季程策略，不能按新进程的当前规则/时钟追补经验；其活动规则仍按原版加载。

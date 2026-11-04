@@ -8,6 +8,7 @@ const RED_SCENARIOS := ["c11_waiting","c11_pending","c11_pending_bottom","c11_re
 const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_relist","c12_confirm","c12_returns","c12_error","c12_hall"]
 const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
 const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
+const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
 var review_checks: Dictionary = {}
@@ -76,7 +77,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -205,6 +206,7 @@ func _reset_fixture() -> void:
 	$UI.screen = "hall"; $UI.screen_loading = false; $UI.mail_modal_lock = false
 	$UI.market_controller.reset()
 	$UI.activity_controller.reset()
+	$UI.journey_controller.reset()
 	$UI._quality = ""; $UI._search = ""; $UI._codex_card = ""; $UI._codex_ready = true
 	$UI._enhance_item = ""; $UI._enhancement_quote_key = ""; $UI._enhancement_quote = {}
 	$UI._owned_index_ready = false; $UI._owned_by_id.clear()
@@ -230,6 +232,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario.begins_with("c15_"): return await _prepare_journey_scene(scenario)
 	if scenario.begins_with("c14_"): return await _prepare_activity_scene(scenario)
 	if scenario.begins_with("c13_"): return await _prepare_shop_scene(scenario)
 	if scenario.begins_with("c12_"):return await _prepare_market_scene(scenario)
@@ -476,6 +479,56 @@ func _market_listing_fixture(id: String,item: Dictionary,currency: String,price:
 		"currency":currency,"price":price,"priceGold":price if currency=="Gold" else 0,"version":9,"status":"Active","createdAt":"2026-11-04T00:00:00Z",
 		"expiresAt":"2099-12-31T00:00:00Z","seasonId":"market-review","seasonEndsAt":"2099-12-31T00:00:00Z","fee":maxi(1,int(price/10.0)),
 		"sellerNet":price-maxi(1,int(price/10.0)),"equipment":gear}
+
+func _prepare_journey_scene(scenario: String) -> bool:
+	if scenario=="c15_entry":return await _prepare_activity_scene("c14_active")
+	$UI.screen="journey"
+	var c=$UI.journey_controller;c.attach($UI)
+	var inputs=preload("res://tests/test_season_journey.gd")
+	var state: Dictionary=inputs.snapshot()
+	match scenario:
+		"c15_catchup":state=inputs.snapshot(48)
+		"c15_complete":state=inputs.snapshot(12525)
+		"c15_upcoming":
+			state=inputs.snapshot(0,"Upcoming");state.startsAt="2027-01-01T00:00:00+08:00";state.endsAt="2027-02-12T00:00:00+08:00"
+			state.seasons[0]=state.seasons[0].merged({"state":"Upcoming","startsAt":state.startsAt,"endsAt":state.endsAt},true)
+		"c15_archive":state=inputs.snapshot(3200,"Ended","old")
+		"c15_disabled":state=inputs.snapshot(0,"Disabled")
+		"c15_unavailable":state=inputs.snapshot(3200,"Unavailable")
+		"c15_none":state=inputs.snapshot(0,"None");state.seasons=[]
+		"c15_error":state={};c.failed=true
+	c.state=state;c.seasons=state.get("seasons",[]);c.next_offset=50 if scenario in ["c15_active","c15_complete","c15_archive"] else null
+	await _render_base()
+	if scenario=="c15_complete":
+		$UI._reference.get_node("JourneyLevelsScroll").scroll_vertical=10000
+		$UI._reference.get_node("JourneyContractsScroll").scroll_vertical=10000
+		await get_tree().process_frame
+		await _render_base()
+	return false
+
+func _check_journey_scene(frame_name: String) -> void:
+	var view: Control=$UI._reference
+	if frame_name.ends_with("_c15_entry"):
+		review_checks[frame_name+": activity entry leads to journey"]=view.get_node("ActivityJourney").is_visible_in_tree() and not view.get_node("ActivityJourney").disabled
+		return
+	if frame_name.ends_with("_c15_none") or frame_name.ends_with("_c15_disabled") or frame_name.ends_with("_c15_unavailable") or frame_name.ends_with("_c15_error"):
+		review_checks[frame_name+": unavailable has no invented level bar"]=view.get_node_or_null("JourneyProgress")==null
+		review_checks[frame_name+": unavailable state shown"]=view.get_node("JourneyState").is_visible_in_tree()
+		return
+	review_checks[frame_name+": complete original30level track"]=$UI.journey_controller.state.levels.size()==30
+	review_checks[frame_name+": original progress bar"]=view.get_node("JourneyProgress").value==$UI.journey_controller.state.experience
+	review_checks[frame_name+": original season selector visible"]=view.get_node("JourneySeason").is_visible_in_tree()
+	if frame_name.ends_with("_c15_active"):
+		var scroll: Control=view.get_node("JourneyLevelsScroll")
+		var row: Control=scroll.find_child("JourneyLevel20",true,false)
+		review_checks[frame_name+": current level is fully in view"]=row!=null and scroll.get_global_rect().encloses(row.get_global_rect())
+		if Palette.language()=="ar":
+			review_checks[frame_name+": current total fraction isolated"]=view.get_node("JourneySummary").text.contains(String.chr(0x2066)+"7000 / 12525"+String.chr(0x2069))
+			review_checks[frame_name+": current next fraction isolated"]=view.get_node("JourneyNext").text.contains(String.chr(0x2066)+"150 / 500"+String.chr(0x2069))
+	if frame_name.ends_with("_c15_complete"):
+		review_checks[frame_name+": final level reachable"]=view.get_node("JourneyLevelsScroll").scroll_vertical>0
+		review_checks[frame_name+": final weekly row reachable"]=view.get_node("JourneyContractsScroll").scroll_vertical>0
+	if Palette.language()=="ar":review_checks[frame_name+": date range remains chronological"]=view.get_node("JourneyWindow").text.contains(String.chr(0x2066))
 
 func _prepare_activity_scene(scenario: String) -> bool:
 	if scenario=="c14_hall":
@@ -766,6 +819,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	_check_login_language(frame_name, on_login)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
+	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)

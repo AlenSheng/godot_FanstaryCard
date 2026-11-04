@@ -6,6 +6,7 @@ namespace FantasyCard.ConfigExporter;
 public static class SeasonConfigValidator
 {
     private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
+    private static readonly string[] JourneyContractKinds=["Extracted","Elite","Boss"];
     private static readonly Dictionary<string, string> Schemas = new(StringComparer.Ordinal)
     {
         ["SeasonDifficulty"] = "difficulty_id:s,name_key:s,hp_scale:d,shield_scale:d,damage_scale:d,interval_scale:d,gold_scale:d,soul_scale:d,fragment_scale:d,quality_cap:i,purple_affix_chance:d,entry_quality_cap:i,red_boss_enabled:b",
@@ -62,6 +63,7 @@ public static class SeasonConfigValidator
         ValidateBotRewards(tables);
         ValidateShop(tables);
         ValidateActivity(tables);
+        ValidateJourney(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);
         ValidateMarket(present["SeasonMarketRules"]);
@@ -331,6 +333,28 @@ public static class SeasonConfigValidator
         }
         var levels=tables.Single(t=>t.Name=="CardLevels");
         Check(levels.Rows.All(r=>B(levels,r,"requires_copy")== (N(levels,r,"level")>=4)),levels,"extra copies are required only at +4 and +5");
+    }
+
+    private static void ValidateJourney(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRules");var contracts=tables.SingleOrDefault(t=>t.Name=="SeasonWeeklyContracts");
+        if(rules is null&&contracts is null)return;
+        if(rules is null||contracts is null)throw new InvalidDataException("Journey policy and weekly contracts must publish together.");
+        foreach(var pair in new[]{(Table:rules,Schema:"rule_id:s,enabled:b,outer_xp:i,middle_xp:i,elite_xp:i,boss_xp:i,extraction_xp:i,catch_up_multiplier:i,reference_days:i,reference_xp_42:i,main_reward_levels:i,contract_assignment:s,catch_up_sources:s,time_zone:s"),
+                    (Table:contracts,Schema:"contract_id:s,completion_kind:s,target:i,xp_reward:i")})
+            foreach(var field in pair.Schema.Split(','))
+            {
+                var parts=field.Split(':');var column=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(column is not null&&column.Required&&column.Scope==PublishScope.Both&&column.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text),pair.Table,"invalid journey publication metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one journey policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-journey-v1"&&N(rules,row,"outer_xp")==6&&N(rules,row,"middle_xp")==10&&N(rules,row,"elite_xp")==25&&
+            N(rules,row,"boss_xp")==80&&N(rules,row,"extraction_xp")==70&&N(rules,row,"catch_up_multiplier")==2&&N(rules,row,"reference_days")==21&&
+            N(rules,row,"reference_xp_42")==6850&&N(rules,row,"main_reward_levels")==20&&S(rules,row,"contract_assignment")=="oldest-open-incomplete"&&
+            S(rules,row,"catch_up_sources")=="cleared_cells"&&S(rules,row,"time_zone")=="Asia/Shanghai",rules,"journey source, catch-up or assignment terms differ");
+        Check(contracts.Rows.Count==3,contracts,"requires exactly three weekly contracts");
+        Check(contracts.Rows.Select(r=>S(contracts,r,"completion_kind")).Order(StringComparer.Ordinal).SequenceEqual(JourneyContractKinds.Order(StringComparer.Ordinal)),contracts,"weekly event kinds differ");
+        Check(contracts.Rows.All(r=>N(contracts,r,"target") is >=1 and <=100&&N(contracts,r,"target")==Math.Truncate(N(contracts,r,"target"))&&N(contracts,r,"xp_reward")==300),contracts,"weekly contract target or experience is invalid");
     }
 
     private static void ValidateActivity(IReadOnlyList<ConfigTable> tables)

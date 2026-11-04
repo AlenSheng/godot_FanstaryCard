@@ -365,6 +365,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         }
         await CreditDifficultyProgressAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
         await CreditActivityCompletionAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
+        await CreditJourneyAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
         foreach (var asset in assets)
         {
             await using var hold = new NpgsqlCommand(

@@ -11,6 +11,7 @@ static func build(ui: Control,host: Control) -> void:
 	ui.panel(Rect2(28,130,1862,892)).name="ActivityPanel"
 	ui.text(P.localized("activity_rules"),Rect2(72,152,1480,76),26,P.PAPER).name="ActivityRules"
 	ui.button(P.localized("sync"),Rect2(1580,158,252,62),c.reload.bind(false),Game.busy or c.loading).name="ActivityRefresh"
+	ui.button(P.localized("journey_short"),Rect2(1240,246,272,66),host._navigate.bind("journey"),Game.busy).name="ActivityJourney"
 	if c.events.is_empty():
 		ui.text(P.localized("loading" if c.loading else "activity_unavailable" if c.failed else "activity_empty"),Rect2(210,380,1500,180),34,P.GOLD)
 		return
@@ -21,7 +22,7 @@ static func build(ui: Control,host: Control) -> void:
 		picker.add_item(Model.event_title(c.events[index]))
 		if Model.key(c.events[index])==c.selected: picker.select(index)
 	picker.disabled=Game.busy or c.loading;picker.item_selected.connect(c.choose);ui.add_child(picker);picker.position=Vector2(76,246);picker.size=Vector2(1130,66);P.apply_text_direction(picker)
-	if c.next_offset!=null: ui.button(P.localized("activity_more_history"),Rect2(1240,246,592,66),c.reload.bind(true),Game.busy or c.loading)
+	if c.next_offset!=null: ui.button(P.localized("activity_more_history"),Rect2(1560,246,272,66),c.reload.bind(true),Game.busy or c.loading)
 	var event := c.current()
 	if event.is_empty(): return
 	var state: String=str(event.get("state","Unavailable"))
