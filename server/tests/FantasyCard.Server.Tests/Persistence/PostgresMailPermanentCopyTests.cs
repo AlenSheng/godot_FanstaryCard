@@ -9,7 +9,7 @@ using FantasyCard.Server.Seasons;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresMailPermanentCopyTests
+public sealed partial class PostgresMailPermanentCopyTests
 {
     public static bool HasTestDatabase => PostgresMigrationTests.HasTestDatabase;
     private const string Required = "Requires isolated PostgreSQL.";

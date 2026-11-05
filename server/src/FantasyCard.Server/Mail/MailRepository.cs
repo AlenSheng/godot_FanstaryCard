@@ -269,7 +269,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         foreach (var attachment in attachments)
         {
             if (permanentCopies && attachment.Kind.Trim() == "Card") continue;
-            await GrantAsync(connection, transaction, playerId, attachment, cancellationToken);
+            await GrantAsync(connection, transaction, playerId, mailId, attachment, now, cancellationToken);
         }
     }
 
@@ -277,17 +277,20 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid playerId,
+        Guid mailId,
         MailAttachmentResponse attachment,
+        DateTimeOffset now,
         CancellationToken cancellationToken)
     {
         var kind = attachment.Kind.Trim();
         if (kind is "Gold" or "Diamond")
         {
             var column = kind == "Gold" ? "gold" : "diamond";
-            await using var wallet = new NpgsqlCommand($"UPDATE player_wallets SET {column}={column}+$1,version=version+1 WHERE player_id=$2", connection, transaction);
+            await using var wallet = new NpgsqlCommand($"UPDATE player_wallets SET {column}={column}+$1,version=version+1 WHERE player_id=$2 RETURNING {column}", connection, transaction);
             wallet.Parameters.AddWithValue(attachment.Amount);
             wallet.Parameters.AddWithValue(playerId);
-            if (await wallet.ExecuteNonQueryAsync(cancellationToken) != 1) throw new InvalidOperationException("Player wallet is missing.");
+            if (await wallet.ExecuteScalarAsync(cancellationToken) is not long balance) throw new InvalidOperationException("Player wallet is missing.");
+            await WriteLegacyCurrencyLedgerAsync(connection, transaction, playerId, mailId, kind, attachment.Amount, balance, now, cancellationToken);
             return;
         }
 
@@ -302,10 +305,11 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         };
         if (materialColumn is not null)
         {
-            await using var materials = new NpgsqlCommand($"UPDATE player_materials SET {materialColumn}={materialColumn}+$1,version=version+1 WHERE player_id=$2", connection, transaction);
+            await using var materials = new NpgsqlCommand($"UPDATE player_materials SET {materialColumn}={materialColumn}+$1,version=version+1 WHERE player_id=$2 RETURNING {materialColumn}", connection, transaction);
             materials.Parameters.AddWithValue(attachment.Amount);
             materials.Parameters.AddWithValue(playerId);
-            if (await materials.ExecuteNonQueryAsync(cancellationToken) != 1) throw new InvalidOperationException("Player materials are missing.");
+            if (await materials.ExecuteScalarAsync(cancellationToken) is not long balance) throw new InvalidOperationException("Player materials are missing.");
+            await WriteLegacyCurrencyLedgerAsync(connection, transaction, playerId, mailId, kind, attachment.Amount, balance, now, cancellationToken);
             return;
         }
 
@@ -350,7 +354,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                 throw new InvalidOperationException("Low-quality equipment cannot have an effectAffix.");
             var equipmentId = Guid.CreateVersion7();
             await using var equipment = new NpgsqlCommand(
-                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,now(),$5,$6,$7)",
+                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,$8,$5,$6,$7)",
                 connection, transaction);
             equipment.Parameters.AddWithValue(equipmentId);
             equipment.Parameters.AddWithValue(playerId);
@@ -359,10 +363,33 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             equipment.Parameters.AddWithValue(parts[1]);
             equipment.Parameters.AddWithValue((object?)attachment.EffectAffix ?? DBNull.Value);
             equipment.Parameters.AddWithValue((object?)attachment.SecondaryTrait ?? DBNull.Value);
+            equipment.Parameters.AddWithValue(now);
             await equipment.ExecuteNonQueryAsync(cancellationToken);
+            await using var movement = new NpgsqlCommand("""
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at)
+                VALUES($1,$2,$3,'Mail','Inventory','mail.claim',$4,$5)
+                """, connection, transaction);
+            movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
+            movement.Parameters.AddWithValue(equipmentId);movement.Parameters.AddWithValue(mailId.ToString("D"));
+            movement.Parameters.AddWithValue(now);await movement.ExecuteNonQueryAsync(cancellationToken);
             return;
         }
 
         throw new InvalidOperationException($"Unsupported mail attachment kind '{kind}'.");
+    }
+
+    private static async Task WriteLegacyCurrencyLedgerAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, Guid mailId, string currency, long amount, long balance, DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        // The original mail has no season/configuration declaration. Its legacy
+        // Gold/fragments and permanent souls must not acquire today's season.
+        await using var command = new NpgsqlCommand("""
+            INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,source_kind)
+            VALUES($1,$2,$3,$4,$5,$6,'mail.claim',$7,'LegacyMail')
+            """, connection, transaction);
+        command.Parameters.AddWithValue(Guid.CreateVersion7());command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(mailId.ToString("D"));command.Parameters.AddWithValue(currency);
+        command.Parameters.AddWithValue(amount);command.Parameters.AddWithValue(balance);command.Parameters.AddWithValue(now);
+        await command.ExecuteNonQueryAsync(cancellationToken);
     }
 }
