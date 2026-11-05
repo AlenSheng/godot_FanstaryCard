@@ -3,6 +3,7 @@ using FantasyCard.Domain.Configuration;
 using Npgsql;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Realtime;
+using FantasyCard.Server.Progression;
 
 namespace FantasyCard.Server.Admin;
 
@@ -230,6 +231,7 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         RunBulkOperationAsync(playerId, requestId, "unlock_all_cards", async (connection, transaction) =>
         {
             var changed = 0;
+            var permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection, transaction, playerId, cancellationToken);
             foreach (var card in GameConfigCatalog.Current.Cards.Where(card => card.IsCodex))
             {
                 await using var command = new NpgsqlCommand(
@@ -244,7 +246,11 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                 command.Parameters.AddWithValue(card.CardId);
                 command.Parameters.AddWithValue(card.HeroClass is { } heroClass ? (object)(short)heroClass : DBNull.Value);
                 command.Parameters.AddWithValue(card.Rarity);
-                changed += await command.ExecuteNonQueryAsync(cancellationToken);
+                var unlocked = await command.ExecuteNonQueryAsync(cancellationToken);
+                changed += unlocked;
+                if (permanentCopies && unlocked != 0)
+                    await PermanentCardCopies.WriteLedgerAsync(connection, transaction, playerId, card.CardId,
+                        1, 1, "admin.unlock_all_cards", requestId, timeProvider.GetUtcNow(), cancellationToken);
             }
             return new AdminBulkOperationResult("unlock_all_cards", Cards: changed);
         }, cancellationToken);

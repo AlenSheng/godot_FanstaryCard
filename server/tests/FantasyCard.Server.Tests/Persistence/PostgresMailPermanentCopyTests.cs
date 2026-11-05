@@ -14,6 +14,7 @@ public sealed class PostgresMailPermanentCopyTests
     public static bool HasTestDatabase => PostgresMigrationTests.HasTestDatabase;
     private const string Required = "Requires isolated PostgreSQL.";
     private static CancellationToken Ct => TestContext.Current.CancellationToken;
+    private static readonly JsonSerializerOptions WebJson = new(JsonSerializerDefaults.Web);
     private sealed record Fixture(Guid Player, CraftingClock Clock, MailRepository Mail, SeasonDefinition? Season);
     private static Task Sql(PostgresTestSchema db, string sql, params object[] values) => CraftingTestInputs.SqlAsync(db, sql, values);
 
@@ -37,7 +38,7 @@ public sealed class PostgresMailPermanentCopyTests
     private static async Task<Guid> Send(PostgresTestSchema db, Fixture f, params MailAttachmentResponse[] attachments)
     {
         var id = Guid.CreateVersion7();
-        var payload = JsonSerializer.Serialize(attachments, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        var payload = JsonSerializer.Serialize(attachments, WebJson);
         await using var command = db.DataSource.CreateCommand("""
             INSERT INTO mail_messages(mail_id,player_id,title,body,sender,attachments_json,sent_at)
             VALUES($1,$2,'declared fixture','permanent copy fixture','system',$3::jsonb,$4)
