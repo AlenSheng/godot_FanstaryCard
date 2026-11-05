@@ -1369,6 +1369,14 @@ func _save_deck() -> void:
 func _equipment_name(item: Dictionary) -> String:
 	return EquipmentDetails.title(item)
 
+func _show_inventory_management() -> void:
+	if Game.busy: return
+	var existing := get_node_or_null("InventoryManagement")
+	if existing != null: return
+	var dialog := preload("res://ui/inventory_management_view.gd").new()
+	add_child(dialog)
+	dialog.open(self)
+
 func _equipment() -> void:
 	_label(content, P.localized("gear_title"), 44, P.GOLD)
 	var weapon: Dictionary = {}
@@ -1379,6 +1387,7 @@ func _equipment() -> void:
 	_label(top, P.localized("locked_item_level") % [P.CLASSES[Game.hero_class][1], weapon.get("level", 0)], 30, P.GOLD)
 	_button(top, P.localized("enhance_weapon"), _enhance_weapon, Game.busy or int(weapon.get("level", 0)) >= 5)
 	_label(content, P.localized("ui_fragments_amount") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), 24, P.MUTED)
+	_button(content, P.localized("inventory_manage"), _show_inventory_management, Game.busy)
 	var slot_names := [P.localized("word_head"), P.localized("word_chest"), P.localized("word_hands"), P.localized("word_legs"), P.localized("word_feet")]
 	var row := _row(content)
 	for index in range(5):
@@ -1643,12 +1652,20 @@ func _mutate(path: String, method: int, body: Variant = null) -> void:
 		Sound.play_cue("error")
 		if path.begins_with("/market/"): Game.refresh_cache("market")
 		elif path.begins_with("/loadouts/"): Game.refresh_cache("inventory")
+		elif path == "/inventory/discard": Game.refresh_cache("inventory")
 	Game.busy = false
 	_render()
 
 func _apply_account_mutation(path: String, body: Variant, response: Variant) -> void:
 	var data: Dictionary = response if response is Dictionary else {}
-	if path.begins_with("/loadouts/") and not data.is_empty():
+	if path == "/inventory/discard":
+		var scope: Dictionary = inventory.scope if inventory.get("scope") is Dictionary else {}
+		if preload("res://ui/inventory_management_model.gd").season_id(data) == preload("res://ui/inventory_management_model.gd").season_id(scope):
+			var discarded := {}
+			for item in data.get("items", []): discarded[str(item.get("instanceId", ""))] = true
+			_set_inventory_items(inventory.get("equipments", []).filter(func(item): return not discarded.has(str(item.get("instanceId", "")))))
+		Game.refresh_cache("inventory")
+	elif path.begins_with("/loadouts/") and not data.is_empty():
 		var loadouts: Array = Game.lobby.get("equippedLoadouts", []).duplicate(true)
 		for index in loadouts.size():
 			if str(loadouts[index].get("heroClass", "")) == str(data.get("heroClass", "")):

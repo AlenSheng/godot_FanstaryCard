@@ -1,0 +1,10 @@
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "<string>", line 7, in <module>
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'inspect', '803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a']' returned non-zero exit status 1.

@@ -118,6 +118,10 @@ public sealed record InventoryResponse(
 
 public sealed record InventoryScopeResponse(string State, string? SeasonId, bool ReadOnly);
 
+public sealed record DiscardEquipmentItemRequest(Guid EquipmentId, long ExpectedVersion);
+public sealed record DiscardEquipmentRequest(IReadOnlyList<DiscardEquipmentItemRequest>? Items, string? SeasonId = null);
+public sealed record DiscardEquipmentResponse(IReadOnlyList<EquipmentResponse> Items, string? SeasonId);
+
 public sealed record UpdateLoadoutRequest(
     IReadOnlyList<Guid?>? EquipmentIds,
     long ExpectedVersion);

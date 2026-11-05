@@ -46,6 +46,8 @@ public static class ProgressionEndpoints
 
         var inventory = endpoints.MapGroup("/api/v1/inventory").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         inventory.MapGet("/", GetInventoryAsync).Produces<InventoryResponse>().ProducesProblem(401);
+        inventory.MapPost("/discard", DiscardEquipmentAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy)
+            .Produces<DiscardEquipmentResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
 
         var loadouts = endpoints.MapGroup("/api/v1/loadouts").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         loadouts.MapGet("/{heroClass}", GetLoadoutAsync)
@@ -124,6 +126,21 @@ public static class ProgressionEndpoints
         {
             return Problem(context, 409, "Card operation rejected", exception.Message);
         }
+    }
+
+    private static async Task<IResult> DiscardEquipmentAsync(
+        GameBody<DiscardEquipmentRequest> request, HttpContext context, IdentityService identityService,
+        ProgressionRepository repository, CancellationToken cancellationToken)
+    {
+        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        var requestId = IdempotencyKeys.Read(context);
+        if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
+        try { return Results.Ok(await repository.DiscardEquipmentAsync(player.UserId, requestId, request, cancellationToken)); }
+        catch (IdempotencyConflictException)
+        { return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used with a different request."); }
+        catch (DomainValidationException exception)
+        { return Problem(context, 400, "Cannot discard equipment", exception.Message); }
     }
 
     private static async Task<IResult> GetInventoryAsync(

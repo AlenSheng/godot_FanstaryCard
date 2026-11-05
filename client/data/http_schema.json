@@ -1,5 +1,5 @@
 {
-  "sha256": "8fb69eb92bdd407504d4e8d4fb725527ff2cf7cfdaa16157ed4e83f7fefd9442",
+  "sha256": "5da6f565964b52790e5c395b15e5c1950d8ea3f79a9fbf856db274b3189f93e3",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -2630,6 +2630,48 @@
         "type": "int64",
         "repeated": false,
         "optional": false
+      }
+    },
+    "DiscardEquipmentItemRequest": {
+      "1": {
+        "name": "equipment_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "DiscardEquipmentRequest": {
+      "1": {
+        "name": "items",
+        "type": "DiscardEquipmentItemRequest",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "DiscardEquipmentResponse": {
+      "1": {
+        "name": "items",
+        "type": "EquipmentResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
       }
     },
     "EnhanceEquipmentRequest": {

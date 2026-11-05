@@ -77,6 +77,14 @@
     },
     {
       "method": "GET",
+      "path": "/api/v1/cosmetics",
+      "request": "Empty",
+      "response": "CosmeticsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "GET",
       "path": "/api/v1/decks",
       "request": "Empty",
       "response": "DeckListResponse",
@@ -189,6 +197,14 @@
     },
     {
       "method": "GET",
+      "path": "/api/v1/season-activities",
+      "request": "Empty",
+      "response": "SeasonActivitiesResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "GET",
       "path": "/api/v1/season-crafting",
       "request": "Empty",
       "response": "SeasonCraftingResponse",
@@ -202,6 +218,22 @@
       "response": "ReforgeQuoteResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-journey",
+      "request": "Empty",
+      "response": "SeasonJourneyResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-journey/rewards",
+      "request": "Empty",
+      "response": "JourneyRewardsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
     },
     {
       "method": "GET",
@@ -280,6 +312,14 @@
       "path": "/api/v1/equipment/{equipmentId:guid}/enhance",
       "request": "EnhanceEquipmentRequest",
       "response": "EnhanceResult",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/inventory/discard",
+      "request": "DiscardEquipmentRequest",
+      "response": "DiscardEquipmentResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs"
     },
@@ -373,6 +413,22 @@
     },
     {
       "method": "POST",
+      "path": "/api/v1/season-activities/rewards/{rewardId}/claim",
+      "request": "Empty",
+      "response": "ActivityClaimResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-activities/{eventId}/exchanges",
+      "request": "ActivityExchangeRequest",
+      "response": "ActivityExchangeResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
+    },
+    {
+      "method": "POST",
       "path": "/api/v1/season-crafting/craft",
       "request": "CraftEquipmentRequest",
       "response": "CraftEquipmentResponse",
@@ -394,6 +450,14 @@
       "response": "ReforgeEquipmentResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-journey/rewards/{rewardId:guid}/claim",
+      "request": "JourneyClaimRequest",
+      "response": "JourneyClaimResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
     },
     {
       "method": "POST",
@@ -421,6 +485,14 @@
     },
     {
       "method": "PUT",
+      "path": "/api/v1/cosmetics/selection",
+      "request": "CosmeticSelectionRequest",
+      "response": "CosmeticSelectionResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "PUT",
       "path": "/api/v1/decks/{heroClass}",
       "request": "UpdateDeckRequest",
       "response": "DeckResponse",
@@ -442,70 +514,6 @@
       "response": "PlayerProfileResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Players/PlayerEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/season-activities",
-      "request": "Empty",
-      "response": "SeasonActivitiesResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
-    },
-    {
-      "method": "POST",
-      "path": "/api/v1/season-activities/{eventId}/exchanges",
-      "request": "ActivityExchangeRequest",
-      "response": "ActivityExchangeResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
-    },
-    {
-      "method": "POST",
-      "path": "/api/v1/season-activities/rewards/{rewardId}/claim",
-      "request": "Empty",
-      "response": "ActivityClaimResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonActivityEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/season-journey",
-      "request": "Empty",
-      "response": "SeasonJourneyResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/season-journey/rewards",
-      "request": "Empty",
-      "response": "JourneyRewardsResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
-    },
-    {
-      "method": "POST",
-      "path": "/api/v1/season-journey/rewards/{rewardId:guid}/claim",
-      "request": "JourneyClaimRequest",
-      "response": "JourneyClaimResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
-    },
-    {
-      "method": "GET",
-      "path": "/api/v1/cosmetics",
-      "request": "Empty",
-      "response": "CosmeticsResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
-    },
-    {
-      "method": "PUT",
-      "path": "/api/v1/cosmetics/selection",
-      "request": "CosmeticSelectionRequest",
-      "response": "CosmeticSelectionResponse",
-      "unwrap_items": false,
-      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
     }
   ]
 }

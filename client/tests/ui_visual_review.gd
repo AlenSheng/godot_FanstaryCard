@@ -1,6 +1,7 @@
 extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
+const INVENTORY_MANAGEMENT_SCENARIOS := ["e01_gear", "e01_manage", "e01_manage_bottom", "e01_manage_selected", "e01_manage_confirm", "e01_manage_closed"]
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
@@ -85,7 +86,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -203,7 +204,7 @@ func _reset_fixture() -> void:
 	var audio: Node = $UI.get_node("AudioSettings")
 	if is_instance_valid(audio._popup): audio._popup.hide()
 	for child in $UI.get_children():
-		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal", "LootPreferenceInfo","SeasonThemeInfo"]:
+		if child is Window or child.name in ["EquipmentComparisonDialog", "ConfirmationModal", "BattleDetailsModal", "LootPreferenceInfo","SeasonThemeInfo", "InventoryManagement"]:
 			if child.has_method("dismiss"): child.dismiss()
 			else: child.queue_free()
 	await get_tree().process_frame
@@ -245,6 +246,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in INVENTORY_MANAGEMENT_SCENARIOS: return await _prepare_inventory_management_scene(scenario)
 	if scenario in JOURNEY_CLAIM_SCENARIOS: return await _prepare_claim_scene(scenario, locale)
 	if scenario in PREPARATION_SOURCE_SCENARIOS: return await _prepare_original_preparation_scene(scenario)
 	if scenario in REFRESH_SCENARIOS: return await _prepare_refresh_scene(scenario)
@@ -879,6 +881,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	else:
 		await _capture(frame_name, rebuild)
 	_check_login_language(frame_name, on_login)
+	if "_e01_" in frame_name: _check_inventory_management_scene(frame_name)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
@@ -1361,3 +1364,74 @@ func _check_claim_scene(frame_name: String) -> void:
 	if frame_name.ends_with("_claim_hall_equipped"):
 		review_checks[frame_name + ": chosen frame applied to hall account"] = view.get_node("HeaderEquippedAvatarFrame").texture == art.texture(art.equipped("AvatarFrame"))
 		review_checks[frame_name + ": chosen title applied to hall account"] = view.get_node("AccountIdentity").text.contains(art.title())
+
+func _prepare_inventory_management_scene(scenario: String) -> bool:
+	$UI.screen = "gear"
+	$UI.gear_draft = [null, null, null, null, null]
+	var items := []
+	for index in 50:
+		var item: Dictionary = _gear("10000000-0000-0000-0000-%012d" % (index + 1), ["Head", "Chest", "Hands", "Legs", "Feet"][index % 5], ["White", "Green", "Blue", "Purple", "Orange"][index % 5])
+		item["level"] = index % 4
+		item["version"] = 1
+		item["location"] = "Equipped" if index == 2 else "Inventory"
+		item["sourceKind"] = "NaturalDrop"
+		item["seasonId"] = "inventory-review"
+		item["originSeasonId"] = "inventory-review"
+		item["assetScope"] = "ActiveSeason"
+		item["statsVersion"] = "season-equipment-v1"
+		item["recipeExtracted"] = index % 2 == 0
+		items.append(item)
+	Game.lobby.equippedLoadouts = [{"heroClass": "Priest", "equipmentIds": [items[0].instanceId, null, null, null, null], "version": 1}]
+	$UI.inventory = {"scope": {"state": "Closed" if scenario == "e01_manage_closed" else "ActiveSeason", "seasonId": "inventory-review", "readOnly": scenario == "e01_manage_closed"}, "equipments": items, "consumables": {"healthPotionCount": 0}, "summary": {"capacity": 50, "equipmentCount": 49, "freeSlots": 1}}
+	Game.lobby.inventory = $UI.inventory
+	await _render_base()
+	if scenario == "e01_gear": return false
+	$UI._show_inventory_management()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var manager: Control = $UI.get_node("InventoryManagement")
+	var panel: Control = manager.get_node("InventoryManagementPanel")
+	var inventory_scroll: ScrollContainer = panel.find_child("InventoryManagementScroll", true, false)
+	var geometry := []
+	for node in [manager, panel, panel.get_child(0), panel.get_child(0).get_child(0), inventory_scroll, inventory_scroll.get_child(0)]:
+		geometry.append({"name": str(node.name), "class": node.get_class(), "size": str(node.size), "min": str(node.get_combined_minimum_size()), "custom_min": str(node.custom_minimum_size)})
+	print("INVENTORY_LAYOUT " + JSON.stringify({"scenario": scenario, "nodes": geometry, "vertical_mode": inventory_scroll.vertical_scroll_mode}))
+	if scenario == "e01_manage_bottom":
+		manager.get_node("InventoryManagementPanel").find_child("InventoryManagementScroll", true, false).scroll_vertical = 100000
+		await get_tree().process_frame
+	if scenario in ["e01_manage_selected", "e01_manage_confirm"]:
+		var count := 0
+		for node in manager.find_children("InventorySelect_*", "CheckBox", true, false):
+			if not node.disabled and count < 2:
+				node.button_pressed = true
+				count += 1
+		assert(count == 2)
+		if scenario == "e01_manage_confirm": manager.get_node("InventoryManagementPanel").find_child("InventoryDiscardSubmit", true, false).pressed.emit()
+	return false
+
+func _check_inventory_management_scene(frame_name: String) -> void:
+	var prefix := frame_name + ": "
+	var button: Button = $UI._reference.find_child("InventoryManageButton", true, false)
+	review_checks[prefix + "production entry enabled"] = button != null and not button.disabled
+	if frame_name.ends_with("_e01_gear"): return
+	var manager: Control = $UI.get_node("InventoryManagement")
+	var panel: Control = manager.get_node("InventoryManagementPanel")
+	var scroll: ScrollContainer = panel.find_child("InventoryManagementScroll", true, false)
+	var submit: Button = panel.find_child("InventoryDiscardSubmit", true, false)
+	var expected_skin: StyleBoxTexture = ART.style("UI/CardCodex/card_codex_action_button_orange.png")
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		var skin: StyleBoxTexture = submit.get_theme_stylebox(state)
+		review_checks[prefix + "fixed discard art " + state] = skin.texture == expected_skin.texture
+	review_checks[prefix + "modal within canvas"] = manager.get_global_rect().grow(1).encloses(panel.get_global_rect())
+	review_checks[prefix + "list within modal"] = panel.get_global_rect().grow(1).encloses(scroll.get_global_rect())
+	review_checks[prefix + "all fifty bodies retained"] = manager.find_children("InventoryManageRow_*", "HBoxContainer", true, false).size() == 50
+	if frame_name.ends_with("_closed"):
+		review_checks[prefix + "closed source disables every discard"] = submit.disabled and manager.find_children("InventorySelect_*", "CheckBox", true, false).all(func(value): return value.disabled)
+	elif frame_name.ends_with("_selected") or frame_name.ends_with("_confirm"):
+		review_checks[prefix + "explicit two item selection"] = not submit.disabled and manager._selection.size() == 2
+	else:
+		review_checks[prefix + "no default destructive selection"] = submit.disabled and manager._selection.is_empty()
+	if frame_name.ends_with("_bottom"): review_checks[prefix + "last rows reachable"] = scroll.scroll_vertical > 0
+	if frame_name.ends_with("_confirm"):
+		var confirm := $UI.get_node_or_null("ConfirmationModal")
+		review_checks[prefix + "second confirmation shown"] = confirm != null and confirm.description_label.text == Palette.localized("inventory_manage_confirm") % 2

@@ -545,6 +545,19 @@ message UpdateLoadoutRequest {
   int64 expected_version = 2;
 }
 
+message DiscardEquipmentItemRequest {
+  string equipment_id = 1;
+  int64 expected_version = 2;
+}
+message DiscardEquipmentRequest {
+  repeated DiscardEquipmentItemRequest items = 1;
+  optional string season_id = 2;
+}
+message DiscardEquipmentResponse {
+  repeated EquipmentResponse items = 1;
+  optional string season_id = 2;
+}
+
 message EnhanceEquipmentRequest {
   int64 expected_version = 1;
   optional string material_equipment_id = 2;

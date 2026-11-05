@@ -981,13 +981,14 @@ func _gear() -> void:
 	save_loadout_button.name = "SaveLoadoutButton"
 	panel(Rect2(1190, 136, 688, 886))
 	text(P.localized("stored_equipment"), Rect2(1235, 184, 520, 60), 36, P.GOLD)
+	button(P.localized("inventory_manage"), Rect2(1245, 255, 565, 56), host._show_inventory_management, Game.busy).name = "InventoryManageButton"
 	var scroll := DragScroll.new()
 	scroll.name = "EquipmentInventoryScroll"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	add_child(scroll)
-	scroll.position = Vector2(1234, 255)
-	scroll.size = Vector2(600, 625)
+	scroll.position = Vector2(1234, 329)
+	scroll.size = Vector2(600, 551)
 	var list := VBoxContainer.new()
 	list.name = "EquipmentInventoryList"
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL

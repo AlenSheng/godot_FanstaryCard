@@ -428,6 +428,16 @@ Idempotency-Key: settlement-ack-018f90dc
 
 `summary.equipmentCount/freeSlots` 只按 50 格养成背包内 `Inventory` 装备计算；`equipments` 同时返回 `Inventory` 与 `Equipped`，使配装 ID 始终能解析到完整装备属性。市场上架、准备锁定、局内和已消耗装备由各自流程展示，不混入大厅可操作库存。
 
+### `POST /api/v1/inventory/discard`
+
+第一方Protobuf请求，必须带Bearer身份和`Idempotency-Key`。`DiscardEquipmentRequest.items`包含1至50个不同的`equipmentId`及各自`expectedVersion`；活动赛季必须明确提供当前库存的`seasonId`，旧规则域省略该字段。
+
+服务端先核对整批归属、原季/属性域、版本、位置及全部职业保存配装。仅本人`Inventory`可丢弃；穿戴、准备/市场/局内预留、借用/机器人投影、旧季和只读域均不可操作。任一项不满足时全批回滚。绑定装备可由本人明确丢弃。
+
+成功返回`DiscardEquipmentResponse { items, seasonId }`，每项保留完整原实物信息，位置变为`Recycled`且版本加一。没有任何资源退款。原记录、已学配方、逐物移动和永久批次回执均保留。客户端删除对应当前库存项并刷新权威库存，不修改钱包；提交前应提示未登记配方样本将丢失，并逐件选择、二次确认。
+
+同键同集合（忽略输入顺序）回放原成功响应，同键改内容返回409；业务拒绝返回400。跨季同键重放只确认旧结果，不重新写入旧物或新季。新请求始终按当前季与精确版本重新检查。
+
 ### `GET /api/v1/loadouts/{heroClass}`
 
 返回指定职业的五防具配装，`equipmentIds` 固定按 `Head, Chest, Hands, Legs, Feet` 排列，空槽为 `null`，专属武器不在数组内。未知职业返回 400，玩家或配装不存在返回 404。
