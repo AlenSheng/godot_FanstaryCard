@@ -1,0 +1,52 @@
+{
+  "failures": [
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.RecoveryQuarantinesOnlyTheCorruptedRoomWithoutRewritingItsEvidence(corruption: \"stats\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.RecoveryQuarantinesOnlyTheCorruptedRoomWithoutRewritingItsEvidence(corruption: \"ruleset\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.RecoveryQuarantinesOnlyTheCorruptedRoomWithoutRewritingItsEvidence(corruption: \"missing-season\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.RecoveryQuarantinesOnlyTheCorruptedRoomWithoutRewritingItsEvidence(corruption: \"room\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.RecoveryQuarantinesOnlyTheCorruptedRoomWithoutRewritingItsEvidence(corruption: \"config\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.PreparationToRoomAndRestartAfterNextSeasonRetainTheOriginalContextAndProjection [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.OwnedTerminalReadRequiresTheOriginalMatchContext [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.ChangedContextCannotOverwriteTheOriginalCheckpoint(dimension: \"season\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.ChangedContextCannotOverwriteTheOriginalCheckpoint(dimension: \"difficulty\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.ChangedContextCannotOverwriteTheOriginalCheckpoint(dimension: \"stats\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    },
+    {
+      "test": "FantasyCard.Server.Tests.Persistence.PostgresSeasonRoomTests.ChangedContextCannotOverwriteTheOriginalCheckpoint(dimension: \"config\") [FAIL]",
+      "error": "FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle."
+    }
+  ],
+  "finished_log_entries": 87,
+  "full114executed": false,
+  "resource_stop": true,
+  "missing_guard_terminal": true
+}

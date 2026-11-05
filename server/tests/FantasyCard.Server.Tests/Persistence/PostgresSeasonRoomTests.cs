@@ -31,7 +31,7 @@ public sealed partial class PostgresSeasonRoomTests
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.EndsAtUtc.AddSeconds(-5));
         var seasons = new SeasonRepository(db.DataSource, clock);
-        await seasons.PublishAsync(season, new string('a', 64), Ct);
+        await seasons.PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var player = await PlayerAsync(db, clock);
         await Sql(db, "WITH cards AS (UPDATE player_cards SET level=5 WHERE player_id=$1 AND unlocked RETURNING player_id) UPDATE class_weapons SET level=5 WHERE player_id=$1", player);
         var version = await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2", player);
@@ -59,7 +59,7 @@ public sealed partial class PostgresSeasonRoomTests
         }
         var next = new SeasonDefinition("next", "season-v1", season.ConfigVersion, "next-stats",
             season.EndsAtUtc, season.EndsAtUtc.AddDays(42), 5);
-        await seasons.PublishAsync(next, new string('b', 64), Ct);
+        await seasons.PublishAsync(next, GameConfigCatalog.Current.ContentHash, Ct);
         clock.Now = next.StartsAtUtc.AddSeconds(1);
         var recovery = new RoomRecoveryState();
         await using var restarted = new RoomRegistry(clock);
@@ -84,7 +84,7 @@ public sealed partial class PostgresSeasonRoomTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var fixture = await RoomAsync(db, clock, season.ContextFor(0));
         using var metrics = new ServerMetrics();
         var repository = new RoomSnapshotRepository(db.DataSource, clock, metrics);
@@ -131,7 +131,7 @@ public sealed partial class PostgresSeasonRoomTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var bad = await RoomAsync(db, clock, season.ContextFor(0));
         var good = await RoomAsync(db, clock, season.ContextFor(0));
         using var metrics = new ServerMetrics();
@@ -164,7 +164,7 @@ public sealed partial class PostgresSeasonRoomTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(migrate: true);
         var season = Define(); var clock = new Clock(season.StartsAtUtc);
-        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, new string('a', 64), Ct);
+        await new SeasonRepository(db.DataSource, clock).PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var fixture = await RoomAsync(db, clock, season.ContextFor(0));
         var snapshot = fixture.Room.Capture();
         snapshot = snapshot with { Players = snapshot.Players.Select(p => p with { Phase = RoomPlayerPhase.Extracted, Pve = null }).ToArray() };

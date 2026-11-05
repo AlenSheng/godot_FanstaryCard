@@ -37,8 +37,8 @@ public sealed class PostgresConfigVersionRoomTests
         var oldSeason = new SeasonDefinition("old-config-season","season-v1",old.Catalog.Version,"archive-control-stats",begins,begins.AddDays(42),5);
         var nextSeason = new SeasonDefinition("next-config-season","season-v1",next.Catalog.Version,"archive-control-stats",begins.AddDays(42),begins.AddDays(84),5);
         var seasons = new SeasonRepository(db.DataSource,clock);
-        await seasons.PublishAsync(oldSeason,new string('a',64),Ct);
-        await seasons.PublishAsync(nextSeason,new string('b',64),Ct);
+        await seasons.PublishAsync(oldSeason,old.Hash,Ct,old.Catalog);
+        await seasons.PublishAsync(nextSeason,next.Hash,Ct,next.Catalog);
         var first = await CreateRoomAsync(db,clock,old.Catalog,oldSeason.ContextFor(5));
         var second = await CreateRoomAsync(db,clock,next.Catalog,nextSeason.ContextFor(5));
         using var metrics = new ServerMetrics();
@@ -86,7 +86,7 @@ public sealed class PostgresConfigVersionRoomTests
         var begins = SeasonDefinition.FromCalendarDays("calendar-control",new DateOnly(2026,9,1),old.Catalog.Version,"archive-control-stats").StartsAtUtc;
         var clock = new Clock(begins.AddDays(43));
         var season = new SeasonDefinition("terminal-season","season-v1",old.Catalog.Version,"archive-control-stats",begins,begins.AddDays(42),5);
-        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,new string('c',64),Ct);
+        await new SeasonRepository(db.DataSource,clock).PublishAsync(season,old.Hash,Ct,old.Catalog);
         var fixture = await CreateRoomAsync(db,clock,old.Catalog,season.ContextFor(5));
         var snapshot = fixture.Room.Capture();
         snapshot = snapshot with { Players = snapshot.Players.Select(p => p with { Phase = RoomPlayerPhase.Extracted,Pve = null }).ToArray() };

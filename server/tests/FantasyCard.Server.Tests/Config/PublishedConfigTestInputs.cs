@@ -13,10 +13,11 @@ internal static class PublishedConfigTestInputs
 {
     public static (GameConfigCatalog Catalog, byte[] Bytes, string Hash) Create(string version, bool alternate = false, bool seasonalLootControl = false)
     {
-        // These explicit archive-number controls predate loot preferences.
+        // These explicit archive-number controls predate loot preferences and themes.
         // Current preference provenance is verified with the actual formal bundle.
         var tables = XlsxConfigReader.Read(Path.Combine(FindRoot(), "config/FantasyCard_Config.xlsx"))
-            .Where(table=>table.Name is not ("SeasonLootPreference" or "SeasonBotRewards")).ToArray();
+            .Where(table=>table.Name is not ("SeasonLootPreference" or "SeasonBotRewards" or
+                "SeasonThemeRules" or "SeasonThemes" or "SeasonThemeGroups")).ToArray();
         tables = Set(tables, "Cards", "C01", "elemental_damage", alternate ? 400L : 200L);
         tables = Set(tables, "CardLevels", "C01:1", "value_bonus", alternate ? 7L : 3L);
         tables = Set(tables, "EquipmentQuality", "White", "damage_percent", alternate ? .27 : .13);
