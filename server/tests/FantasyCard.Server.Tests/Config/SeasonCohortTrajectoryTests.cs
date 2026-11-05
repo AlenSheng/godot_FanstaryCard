@@ -9,13 +9,14 @@ public sealed class SeasonCohortTrajectoryTests
 {
     private static readonly string[] RebuildSlots=["Head","Chest","Hands","Legs","Feet"];
     public static bool Enabled=>Environment.GetEnvironmentVariable("FANTASYCARD_RUN_D03_TRAJECTORIES")=="1";
-    private sealed record Track(string Id,string Source,string Sha256,string SourceCase,int NextSeed,int Steps,string? Checkpoint);
+    private sealed record Track(string Id,string Source,string Sha256,string SourceCase,int NextSeed,int Steps,string? Checkpoint,string Loadout);
     private static Track[] Plan()
     {
         using var document=JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_TRAJECTORY_PLAN")??throw new InvalidOperationException("Frozen trajectory plan required.")));
-        var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("tracks").EnumerateArray().Select(x=>new Track(x.GetProperty("id").GetString()!,x.GetProperty("source").GetString()!,x.GetProperty("sha256").GetString()!,x.GetProperty("source_case").GetString()!,x.GetProperty("next_seed").GetInt32(),x.GetProperty("steps").GetInt32(),x.TryGetProperty("checkpoint",out var p)?p.GetString():null)).ToArray();
+        if(document.RootElement.TryGetProperty("config_version",out var version))Assert.Equal(version.GetString(),GameConfigCatalog.Current.Version);
+        var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("tracks").EnumerateArray().Select(x=>new Track(x.GetProperty("id").GetString()!,x.GetProperty("source").GetString()!,x.GetProperty("sha256").GetString()!,x.GetProperty("source_case").GetString()!,x.GetProperty("next_seed").GetInt32(),x.GetProperty("steps").GetInt32(),x.TryGetProperty("checkpoint",out var p)?p.GetString():null,x.TryGetProperty("loadout",out var l)?l.GetString()!:"current")).ToArray();
         Assert.InRange(prior,0,299);Assert.InRange(rows.Sum(x=>x.Steps),1,300-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
-        foreach(var row in rows){Assert.InRange(row.Steps,1,25);Assert.True(File.Exists(row.Source));Assert.Equal(row.Sha256,Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(row.Source))));}
+        foreach(var row in rows){Assert.True(row.Loadout is "current" or "support-guard");Assert.InRange(row.Steps,1,25);Assert.True(File.Exists(row.Source));Assert.Equal(row.Sha256,Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(row.Source))));}
         return rows;
     }
     private static SeasonCohortBank Load(Track row)
@@ -38,7 +39,7 @@ public sealed class SeasonCohortTrajectoryTests
             var bank=Load(row);var json=JsonSerializer.Serialize(bank);var decoded=JsonSerializer.Deserialize<SeasonCohortBank>(json)!;Assert.Equal(json,JsonSerializer.Serialize(decoded));decoded.Check();
             if(bank.Deaths==bank.Attempts)Assert.Empty(bank.Items);
             var difficulty=bank.Difficulty(GameConfigCatalog.Current);var gear=bank.Select(GameConfigCatalog.Current,difficulty);Assert.All(gear,x=>Assert.DoesNotContain(x.ItemId,bank.LostIds));
-            summary.Add(new {bank.Id,bank.Attempts,bank.Deaths,bank.Gold,bank.Fragments,owned=bank.Items.Count,difficulty,worn=gear.Length});
+            summary.Add(new {bank.Id,bank.Attempts,bank.Deaths,bank.Gold,bank.Fragments,owned=bank.Items.Count,difficulty,worn=gear.Length,row.Loadout});
         }
         VerifyBankRebuildControls();
         File.WriteAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_TRAJECTORY_PREFLIGHT_OUTPUT")??throw new InvalidOperationException("New proof path required."),JsonSerializer.Serialize(new {summary,new_matches=0,rebuild66_and_missingbody_controls=true}));
@@ -58,7 +59,7 @@ public sealed class SeasonCohortTrajectoryTests
                 if(bank.StopReason is not null){File.WriteAllText(Path.Combine(directory,$"censored-{number:D2}.original.json"),JsonSerializer.Serialize(bank));break;}
                 var difficulty=bank.Difficulty(config);var selected=bank.Select(config,difficulty);var deployed=bank.Deploy(selected);bank.Check();
                 File.WriteAllText(Path.Combine(directory,$"before-match-{number:D2}.original.json"),JsonSerializer.Serialize(new {bank,difficulty,deployed}));
-                var scenario=new SeasonCohortRouteTests.Scenario($"{bank.Id}-A{number:D2}",bank.Hero,bank.Cohort,row.NextSeed+step,difficulty,"natural-shortest",difficulty==0&&selected.Length<3,true);
+                var scenario=new SeasonCohortRouteTests.Scenario($"{bank.Id}-A{number:D2}",bank.Hero,bank.Cohort,row.NextSeed+step,difficulty,"natural-shortest",difficulty==0&&selected.Length<3,true,row.Loadout);
                 attempts.WriteLine(JsonSerializer.Serialize(new {track=row.Id,number,scenario,difficulty,owned_worn_ids=selected.Select(x=>x.ItemId)}));attempts.Flush();
                 var snapshot=SeasonCohortRouteTests.Run(scenario,trace,results,selected);bank.Settle(snapshot,deployed,config,trace);bank.Check();
                 trace.Flush();results.Flush();File.WriteAllText(Path.Combine(directory,$"checkpoint-{number:D2}.original.json"),JsonSerializer.Serialize(bank));
