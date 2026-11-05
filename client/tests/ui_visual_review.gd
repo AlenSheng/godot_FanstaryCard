@@ -11,6 +11,7 @@ const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming",
 const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
 const HISTORICAL_SCENARIOS := ["historical_gear_none","ready_removed_equipment","ready_removed_timeout"]
 const REFRESH_SCENARIOS := ["refresh_original","refresh_exhausted","refresh_unavailable"]
+const PREPARATION_SOURCE_SCENARIOS := ["prep_source_owned", "prep_source_borrowed", "prep_source_locked", "prep_source_unavailable", "prep_source_deck", "prep_source_deck_bottom", "prep_source_menu", "prep_current_d1"]
 const THEME_SCENARIOS := ["c16_fire_info","c16_wood_info","c16_earth_info","c16_metal_info","c16_water_info","c16_wood_regen","c16_map","c16_action","c16_pvp","c16_choice"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
@@ -83,7 +84,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -212,6 +213,7 @@ func _reset_fixture() -> void:
 	Game.gateway.recovering = false; Game.gateway.online = true
 	Game.lobby = _initial_lobby.duplicate(true); Game.hero_class = "Mage"; Game.busy = false
 	Game.configuration_error = ""; Game.connection = ""
+	Game.preparation_configuration_error = ""
 	$UI.screen = "hall"; $UI.screen_loading = false; $UI.mail_modal_lock = false
 	$UI.market_controller.reset()
 	$UI.activity_controller.reset()
@@ -241,6 +243,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in PREPARATION_SOURCE_SCENARIOS: return await _prepare_original_preparation_scene(scenario)
 	if scenario in REFRESH_SCENARIOS: return await _prepare_refresh_scene(scenario)
 	if scenario in HISTORICAL_SCENARIOS: return await _prepare_historical_equipment_scene(scenario,locale)
 	if scenario.begins_with("c16_"):return await _prepare_theme_scene(scenario,locale)
@@ -317,12 +320,12 @@ func _prepare_scene(scenario: String, locale: String) -> bool:
 	match scenario:
 		"prep_season", "prep_season_borrowed", "prep_season_locked":
 			$UI.screen = "prep"
-			Game.lobby["season"] = {"state":"Active","seasonId":"review-season","highestOpenDifficulty":5,"highestUnlockedDifficulty":5}
+			Game.lobby["season"] = {"state":"Active","seasonId":"review-season","configVersion":Game.CATALOG.data.version,"highestOpenDifficulty":5,"highestUnlockedDifficulty":5}
 			Game.preparation_difficulty = 5
 			Game.use_borrowed_deck = scenario != "prep_season"
 			if scenario == "prep_season_locked":
 				var borrowed_rows: Array = Game.CATALOG.data.tables.SeasonBorrowedDecks.filter(func(row): return str(row.hero_class) == "Mage")
-				Game.preparation = {"snapshot":{"heroClass":"Mage","maximumHp":70,"cardIds":borrowed_rows.map(func(row): return str(row.card_id)),"equipmentIds":[],"equipmentSnapshots":[],"classWeaponLevel":5,"backpackTier":"Free","backpackCapacity":20,"safeSlotIndexes":[],"potionCount":0,"borrowedTemplateId":"loan-mage"}}
+				Game.preparation = {"snapshot":{"heroClass":"Mage","maximumHp":70,"cardIds":borrowed_rows.map(func(row): return str(row.card_id)),"cardLevels":borrowed_rows.map(func(_row): return 5),"equipmentIds":[null,null,null,null,null],"equipmentSnapshots":[],"classWeaponLevel":5,"backpackTier":"Free","backpackCapacity":20,"safeSlotIndexes":[],"potionCount":0,"borrowedTemplateId":"loan-mage","configVersion":Game.CATALOG.data.version,"difficulty":"D5","season":{"seasonId":"review-season","difficultyId":"D5","rulesetId":"season-v1","configVersion":Game.CATALOG.data.version,"statsVersion":"season-equipment-v1"}}}
 		"login": Game.lobby = {}
 		"login_language":
 			Game.lobby = {}
@@ -878,6 +881,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
 	if frame_name.contains("_c16_"): _check_theme_scene(frame_name)
 	if "_refresh_" in frame_name: _check_refresh_scene(frame_name)
+	if "_prep_source_" in frame_name or frame_name.ends_with("_prep_current_d1"): _check_original_preparation_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)
@@ -944,7 +948,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 			var detail: Label = product.get_node("ShopDetail")
 			var purchase: Button = product.get_node("Purchase")
 			review_checks[frame_name + ": shop details clear purchase " + str(product.name)] = detail.get_rect().end.y + 4.0 <= purchase.position.y and detail.get_visible_line_count() == detail.get_line_count()
-	if frame_name.ends_with("_cards") or frame_name.ends_with("_deck"):
+	if (frame_name.ends_with("_cards") and $UI.screen == "cards") or (frame_name.ends_with("_deck") and $UI.screen == "deck"):
 		var grid_name := "CardGrid" if frame_name.ends_with("_cards") else "DeckOwnedGrid"
 		var grid: Control = $UI._reference.find_child(grid_name, true, false)
 		review_checks[frame_name + ": populated visible cards"] = grid != null and not grid.find_children("*", "Button", true, false).is_empty()
@@ -1050,6 +1054,115 @@ func _collect_text(root: Node, rows: Array) -> void:
 	for child in root.get_children():
 		_collect_text(child, rows)
 
+
+var _preparation_review_cases: Array = []
+var _preparation_review_index: Dictionary = {}
+
+func _preparation_fixture_value(name: String, path: String, method: int = HTTPClient.METHOD_GET) -> Dictionary:
+	var folder: String = OS.get_environment("FANTASYCARD_PREPARATION_REVIEW_INPUT")
+	assert(not folder.is_empty())
+	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(folder.path_join("input-manifest.json")))
+	assert(FileAccess.get_sha256(folder.path_join(name)) == manifest[name])
+	var http = preload("res://network/http_protocol.gd")
+	var response: Dictionary = http.decode_response(http.route(path, method), 200, PackedStringArray(["Content-Type: application/protobuf"]), FileAccess.get_file_as_bytes(folder.path_join(name)))
+	assert(response.ok)
+	return response.data
+
+func _prepare_original_preparation_scene(scenario: String) -> bool:
+	if scenario == "prep_current_d1":
+		Game.lobby["season"] = {"state": "Active", "seasonId": "formal-current", "configVersion": Game.CATALOG.data.version, "highestOpenDifficulty": 5, "highestUnlockedDifficulty": 5}
+		Game.preparation_difficulty = 1
+		Game.use_borrowed_deck = true
+		$UI.screen = "prep"
+		await _render_base()
+		return false
+	var folder: String = OS.get_environment("FANTASYCARD_PREPARATION_REVIEW_INPUT")
+	if _preparation_review_cases.is_empty():
+		var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(folder.path_join("input-manifest.json")))
+		assert(FileAccess.get_sha256(folder.path_join("cases.json")) == manifest["cases.json"])
+		_preparation_review_cases = JSON.parse_string(FileAccess.get_file_as_string(folder.path_join("cases.json")))
+	var borrowed: bool = scenario in ["prep_source_borrowed", "prep_source_deck", "prep_source_deck_bottom"]
+	var entry: Dictionary = _preparation_review_cases.filter(func(row): return row.borrowed == borrowed)[0]
+	if _preparation_review_index.is_empty():
+		var config: Dictionary = _preparation_fixture_value("original.configuration.envelope", "/api/v1/config/" + str(entry.sourceVersion))
+		var data: Dictionary = preload("res://data/config_bundle.gd").new().decode(config.bundle, str(entry.sourceVersion), str(entry.originalHash))
+		assert(not data.is_empty())
+		_preparation_review_index = preload("res://data/catalog_index.gd").from_data(data)
+	var index: Dictionary = _preparation_review_index.duplicate(true)
+	index["_origin"] = Game.gateway.base_url
+	Game._room_catalogs[index.version] = index
+	var locked: bool = scenario in ["prep_source_locked", "prep_source_unavailable"]
+	Game.lobby = _preparation_fixture_value(str(entry.name) + (".locked" if locked else ".draft") + ".bootstrap.envelope", "/api/v1/bootstrap").duplicate(true)
+	Game.preparation = Game.lobby.activePreparation if Game.lobby.get("activePreparation") is Dictionary else {}
+	Game.use_borrowed_deck = borrowed
+	Game.preparation_difficulty = 1
+	Game.hero_class = "Guardian" if locked else "Mage"
+	if scenario == "prep_source_unavailable":
+		Game._room_catalogs.erase(index.version)
+		Game.preparation_configuration_error = Palette.message("config_archive_unavailable", [])
+	$UI._sync_account_session()
+	$UI.screen = "prep"
+	$UI.bag_tier = "Free"
+	$UI._owned_index_ready = false
+	$UI._owned_by_id.clear()
+	$UI._card_pool.set_process(false)
+	await _render_base()
+	if scenario == "prep_source_menu":
+		$UI._reference.get_node("SeasonDifficultySelector").show_popup()
+		await get_tree().process_frame
+	if scenario in ["prep_source_deck", "prep_source_deck_bottom"]:
+		$UI._show_preparation_deck()
+		await get_tree().process_frame
+		await get_tree().process_frame
+		if scenario == "prep_source_deck_bottom":
+			for child in $UI.get_children():
+				if child is AcceptDialog and child.title == Palette.localized("preparation_deck_preview"):
+					child.get_node("PreparationDeckScroll").set_deferred("scroll_vertical", 100000)
+			await get_tree().process_frame
+			await get_tree().process_frame
+	return false
+
+func _check_original_preparation_scene(frame_name: String) -> void:
+	var model = preload("res://ui/preparation_model.gd")
+	var view: Control = $UI._reference
+	if frame_name.ends_with("_prep_current_d1"):
+		var selector: OptionButton = view.get_node("SeasonDifficultySelector")
+		review_checks[frame_name + ": formal D1 remains Purple"] = selector.get_item_text(1).contains(Palette.word("Purple"))
+		return
+	var unavailable: bool = frame_name.ends_with("_unavailable")
+	var locked: bool = frame_name.ends_with("_locked") or unavailable
+	review_checks[frame_name + ": original catalog readiness"] = Game.preparation_catalog_ready() != unavailable
+	if unavailable:
+		review_checks[frame_name + ": original missing is explicit"] = view.get_node("PreparationConfigurationUnavailable").is_visible_in_tree()
+		review_checks[frame_name + ": queue disabled and cancel available"] = view.get_node("PreparationStartMatch").disabled and not view.get_node("PreparationCancel").disabled
+		return
+	var source: Dictionary = Game.preparation_catalog_index()
+	review_checks[frame_name + ": original backpack exactly21"] = view.get_node("PreparationBackpackScroll/PreparationBackpackGrid").get_child_count() == 21
+	review_checks[frame_name + ": original Wood preference"] = view.get_node("LootPreferenceSelector").selected == 0
+	if locked:
+		review_checks[frame_name + ": locked original hero wins over profile selection"] = $UI.display_hero_class() == "Mage"
+		review_checks[frame_name + ": selectors remain immutable"] = view.get_node_or_null("SeasonDifficultySelector") == null and view.get_node_or_null("SeasonBorrowedDeckToggle") == null
+	else:
+		var selector: OptionButton = view.get_node("SeasonDifficultySelector")
+		review_checks[frame_name + ": original D1 control cap Green"] = selector.selected == 1 and selector.get_item_text(1).contains(Palette.word("Green"))
+		var loan: CheckButton = view.get_node("SeasonBorrowedDeckToggle")
+		review_checks[frame_name + ": original template identity"] = loan.get_meta("template_id") == "archive-loan-mage"
+		if frame_name.ends_with("_menu"):
+			var popup: PopupMenu = selector.get_popup()
+			review_checks[frame_name + ": original selector popup visible"] = popup.visible and popup.item_count == 6
+			review_checks[frame_name + ": popup style follows game palette"] = popup.theme.get_color("font_color", "PopupMenu") == Palette.PAPER and popup.theme.get_stylebox("panel", "PopupMenu") is StyleBoxFlat
+			for tier in 6: review_checks[frame_name + ": original menu cap " + str(tier)] = popup.get_item_text(tier).contains(Palette.word(model.difficulty(tier, source).entry_quality))
+	if frame_name.contains("_prep_source_deck"):
+		var found := false
+		for child in $UI.get_children():
+			if child is AcceptDialog and child.title == Palette.localized("preparation_deck_preview"):
+				found = true
+				var scroll: ScrollContainer = child.get_node("PreparationDeckScroll")
+				var label: Label = scroll.get_node("PreparationDeckText")
+				review_checks[frame_name + ": real original damage visible"] = label.text.contains(str(int(_preparation_review_cases[0].originalDamage)))
+				review_checks[frame_name + ": original loan has all20 slots"] = Game.preparation_deck_preview().card_ids.size() == 20 and Game.preparation_deck_preview().card_ids[12] == "C30"
+				if frame_name.ends_with("_bottom"): review_checks[frame_name + ": full deck end reachable"] = scroll.scroll_vertical > 0
+		review_checks[frame_name + ": deck preview dialog visible"] = found
 
 var _refresh_review_index: Dictionary = {}
 

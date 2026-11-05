@@ -25,7 +25,7 @@ func run_test() -> Dictionary:
 	store.hero_class = "Mage"
 	store.server_info = {"configVersion":str(Index.CATALOG.data.version)}
 	store._server_info_address = gateway.base_url
-	store.lobby = {"season":{"state":"Active","seasonId":"loans","highestOpenDifficulty":5,"highestUnlockedDifficulty":2}}
+	store.lobby = {"season":{"state":"Active","seasonId":"loans","configVersion":str(Index.CATALOG.data.version),"highestOpenDifficulty":5,"highestUnlockedDifficulty":2}}
 	store.use_borrowed_deck = true
 	store.preparation_difficulty = 5
 	await store.prepare("Free",0)

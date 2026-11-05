@@ -11,6 +11,7 @@ const EquipmentCompareModel = preload("res://ui/equipment_compare_model.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
 const SeasonCrafting = preload("res://ui/season_crafting_view.gd")
 const ShopModel=preload("res://ui/season_shop_model.gd")
+const PreparationModel = preload("res://ui/preparation_model.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -756,7 +757,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		for state in ["normal", "hover", "pressed", "disabled"]:
 			slot.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		add_child(slot)
-		slot.tooltip_text = host.EquipmentDetails.description(item, Game.room_catalog_index()) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
+		slot.tooltip_text = host.EquipmentDetails.description(item, host.display_catalog_index()) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
 		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
 		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
 		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
@@ -787,13 +788,22 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
 	var weapon_caption := text(P.localized("equipment_signature_level_locked") % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else P.localized("equipment_signature_locked"), Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
 	weapon_caption.name = "SignatureWeaponCaption"
+	if snapshot.get("actualClassWeaponLevel") != null and snapshot.has("classWeaponLevel"):
+		weapon_caption.tooltip_text = P.localized("season_preparation_level_projection") % [snapshot.actualClassWeaponLevel, snapshot.classWeaponLevel]
 
 func _preparation() -> void:
 	var locked: bool = not Game.preparation.is_empty()
-	var snap: Dictionary = Game.preparation.get("snapshot", {})
+	var consumables: Dictionary = host.inventory.get("consumables", {})
+	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
+	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
+		host.bag_tier = "Free"
+	var ready: bool = Game.preparation_catalog_ready()
+	var index: Dictionary = Game.preparation_catalog_index()
+	var snap: Dictionary = Game.preparation_preview_snapshot(host.bag_tier)
 	panel(Rect2(28, 122, 752, 900))
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
+	button(P.localized("preparation_deck_button"), Rect2(500, 170, 230, 52), host._show_preparation_deck, Game.busy or not ready or Game.preparation_deck_preview().is_empty()).name = "PreparationDeckPreview"
 	var equipped_items: Array = []
 	if snap.get("equipmentSnapshots") is Array:
 		equipped_items = snap.get("equipmentSnapshots", [])
@@ -807,13 +817,18 @@ func _preparation() -> void:
 		Game.preparation_difficulty = clampi(Game.preparation_difficulty, 0, Game.season_preparation_cap())
 		var difficulty := OptionButton.new()
 		difficulty.name = "SeasonDifficultySelector"
-		for tier_index in range(Game.season_preparation_cap() + 1): difficulty.add_item("D%d  (+%d)" % [tier_index, tier_index])
+		for tier_index in range(Game.season_preparation_cap() + 1):
+			var rule: Dictionary = PreparationModel.difficulty(tier_index, index)
+			difficulty.add_item("D%d (+%d) · %s" % [tier_index, tier_index, P.word(rule.entry_quality)] if not rule.is_empty() else "D%d" % tier_index)
 		difficulty.select(Game.preparation_difficulty)
+		difficulty.disabled = Game.busy or not ready
 		difficulty.position = Vector2(1090, 132)
 		difficulty.size = Vector2(250, 42)
 		difficulty.add_theme_font_size_override("font_size", 24)
 		_season_selector_style(difficulty)
-		difficulty.tooltip_text = P.localized("season_level_cap_hint")
+		var selected_rule: Dictionary = PreparationModel.difficulty(Game.preparation_difficulty, index)
+		difficulty.tooltip_text = P.localized("season_preparation_limits") % [Game.preparation_difficulty, Game.preparation_difficulty, P.word(selected_rule.entry_quality)] if not selected_rule.is_empty() else P.localized("config_archive_unavailable")
+		if not selected_rule.is_empty(): difficulty.tooltip_text = P.localized("season_level_cap_hint") + "\n" + difficulty.tooltip_text
 		difficulty.item_selected.connect(func(index): Game.preparation_difficulty = index; host._render())
 		add_child(difficulty)
 		var loan := CheckButton.new()
@@ -825,20 +840,20 @@ func _preparation() -> void:
 		loan.add_theme_font_size_override("font_size", 24)
 		_season_selector_style(loan)
 		loan.button_pressed = Game.use_borrowed_deck
-		loan.toggled.connect(func(enabled): Game.use_borrowed_deck = enabled)
+		var template: Dictionary = PreparationModel.borrowed_deck(Game.hero_class, index)
+		loan.disabled = Game.busy or not ready or (template.is_empty() and not Game.use_borrowed_deck)
+		loan.set_meta("template_id", template.get("template_id", ""))
+		loan.toggled.connect(func(enabled): Game.use_borrowed_deck = enabled; host._render())
 		add_child(loan)
 	if locked:
 		var summary := P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2]))]
-		if not str(snap.get("borrowedTemplateId", "")).is_empty(): summary += "  ·  " + P.localized("season_borrowed_deck")
+		if snap.get("borrowedTemplateId") is String and not snap.borrowedTemplateId.is_empty(): summary += "  ·  " + P.localized("season_borrowed_deck")
 		text(summary, Rect2(1090, 145, 740, 34), 23, P.GOLD).name = "PreparationDeckSummary"
-	var consumables: Dictionary = host.inventory.get("consumables", {})
-	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
-	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
-		host.bag_tier = "Free"
 	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1090, 182, 740, 36), 21, P.MUTED).name = "PreparationBagStockSummary"
 	var tier: String = snap.get("backpackTier", host.bag_tier)
-	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
-	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))
+	var bag: Dictionary = PreparationModel.backpack(tier, index)
+	var capacity: int = int(snap.get("backpackCapacity", bag.get("capacity", 0)))
+	var safe_slots: Array = snap.get("safeSlotIndexes", bag.get("safe_indexes", []))
 	var safe_slot_lookup: Dictionary = {}
 	var slot_order: Array = []
 	for value in safe_slots:
@@ -852,17 +867,20 @@ func _preparation() -> void:
 		var key: String = ["Free", "Advanced", "Top"][i]
 		var title_key: String = ["bag_option_free", "bag_option_advanced", "bag_option_top"][i]
 		var title: String = P.localized(title_key)
+		var definition: Dictionary = PreparationModel.backpack(key, index)
+		var detail: String = P.localized("preparation_backpack_details") % [definition.capacity, definition.safe_count] if not definition.is_empty() else ""
+		if locked and key == tier: detail = P.localized("preparation_backpack_details") % [capacity, safe_slots.size()]
 		# Free is the built-in tier and is not represented in consumables; only
 		# paid backpack tiers are gated by their inventory counts.
 		var available_count := 0 if i == 0 else int(stock.get(key, 0))
-		var unavailable: bool = locked or (i > 0 and available_count <= 0)
-		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
+		var unavailable: bool = locked or Game.busy or not ready or definition.is_empty() or (i > 0 and available_count <= 0)
+		var tab := button(title.split("\n")[0] + ("\n" + detail if not detail.is_empty() else "") if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
 		tab.set_meta("sound_cue", "ui_tab")
 		if i > 0:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
-			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
+			text(detail, Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
 		tab.tooltip_text = P.localized_text(P.localized("equipment_owned_count") % available_count)
 	var row_count := int(ceil(float(capacity) / 6.0))
 	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))
@@ -873,7 +891,9 @@ func _preparation() -> void:
 	bag_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bag_content.mouse_filter = Control.MOUSE_FILTER_PASS
 	bag_scroll.add_child(bag_content)
-	for display_index in range(capacity):
+	if not ready:
+		text(P.localized("config_archive_unavailable"), Rect2(865, 365, 945, 315), 30, P.GOLD).name = "PreparationConfigurationUnavailable"
+	for display_index in range(capacity if ready else 0):
 		var slot_index: int = int(slot_order[display_index])
 		var point := Vector2((display_index % 6) * 163, int(display_index / 6) * 104)
 		var slot := Control.new()
@@ -894,12 +914,12 @@ func _preparation() -> void:
 	var count := SpinBox.new()
 	count.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	count.value = snap.get("potionCount", host.potion_count)
-	count.editable = not locked
+	count.editable = not locked and not Game.busy
 	count.value_changed.connect(func(value): host.potion_count = int(value))
 	add_child(count)
 	count.position = Vector2(1560, 773)
 	count.size = Vector2(270, 66)
-	var preference: String=str(snap.get("lootPreferenceElement","")) if locked else Game.season_loot_preference()
+	var preference: String = (snap.lootPreferenceElement if snap.get("lootPreferenceElement") is String else "") if locked else Game.season_loot_preference()
 	if not preference.is_empty():
 		text(P.localized("season_loot_preference_locked" if locked else "season_loot_preference"),Rect2(850,844,490,66),24,P.GOLD,null,false)
 		var selector := OptionButton.new()
@@ -916,10 +936,10 @@ func _preparation() -> void:
 		add_child(selector)
 		button("?",Rect2(1750,850,90,52),host._show_loot_preference_info)
 	if locked:
-		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
-		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
+		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy).name = "PreparationCancel"
+		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not ready or Game.preparation_deck_preview().is_empty() or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE).name = "PreparationStartMatch"
 	else:
-		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
+		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy or not ready or Game.preparation_deck_preview().is_empty(), ORANGE).name = "PreparationConfirm"
 
 func _season_selector_style(control: Button) -> void:
 	for state in ["normal", "hover", "pressed", "disabled"]:
@@ -927,6 +947,21 @@ func _season_selector_style(control: Button) -> void:
 		box.set_content_margin(SIDE_TOP, 0)
 		box.set_content_margin(SIDE_BOTTOM, 0)
 		control.add_theme_stylebox_override(state, box)
+	if control is OptionButton:
+		var menu_theme: Theme = P.theme().duplicate()
+		var menu_panel: StyleBoxFlat = P.box(Color("10272e"), P.GOLD)
+		menu_panel.content_margin_left = 12
+		menu_panel.content_margin_right = 12
+		menu_panel.content_margin_top = 8
+		menu_panel.content_margin_bottom = 8
+		menu_theme.set_stylebox("panel", "PopupMenu", menu_panel)
+		menu_theme.set_stylebox("hover", "PopupMenu", P.box(Color("254249"), P.GOLD, 1))
+		menu_theme.set_color("font_color", "PopupMenu", P.PAPER)
+		menu_theme.set_color("font_hover_color", "PopupMenu", P.GOLD)
+		menu_theme.set_color("font_disabled_color", "PopupMenu", P.MUTED)
+		menu_theme.set_font("font", "PopupMenu", P.font("body"))
+		menu_theme.set_font_size("font_size", "PopupMenu", 24)
+		control.get_popup().theme = menu_theme
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)
@@ -978,7 +1013,7 @@ func _gear() -> void:
 			entry.custom_minimum_size.y = maxf(72,caption.get_line_count()*caption.get_theme_font("font").get_height(24)+16)
 		entry.resized.connect(fit_caption)
 		fit_caption.call_deferred()
-		entry.tooltip_text = host.EquipmentDetails.description(item, Game.room_catalog_index()) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
+		entry.tooltip_text = host.EquipmentDetails.description(item, host.display_catalog_index()) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
@@ -1035,9 +1070,9 @@ func _equipment_summary_scroll(scroll_name: String, label_name: String, value: S
 	return scroll
 
 func _equipment_attribute_lines(loadout: Array) -> Array[String]:
-	if not EquipmentCompareModel.can_inspect(loadout,Game.room_catalog_index()): return [P.localized("config_archive_unavailable")]
-	var totals := EquipmentCompareModel.aggregate_attributes(loadout, Game.room_catalog_index())
-	var numbers: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,Game.hero_class,Game.room_catalog_index())
+	if not EquipmentCompareModel.can_inspect(loadout,host.display_catalog_index()): return [P.localized("config_archive_unavailable")]
+	var totals := EquipmentCompareModel.aggregate_attributes(loadout, host.display_catalog_index())
+	var numbers: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,host.display_hero_class(),host.display_catalog_index())
 	var lines: Array[String] = []
 	for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
 		var damage := float(totals.get("damage_" + element, 0.0))
@@ -1060,7 +1095,7 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 
 func _equipment_set_lines(loadout: Array) -> Array[String]:
 	var lines: Array[String] = []
-	for state in EquipmentCompareModel.present_set_states(loadout, Game.room_catalog_index()):
+	for state in EquipmentCompareModel.present_set_states(loadout, host.display_catalog_index()):
 		var status := P.localized("battle_active") if state.active else P.localized("battle_inactive")
 		var line := P.localized("equipment_set_progress") % [P.word(state.kind), state.count, state.required, status]
 		if state.active:
@@ -1068,7 +1103,7 @@ func _equipment_set_lines(loadout: Array) -> Array[String]:
 				"Piercing":
 					line += "\n  " + P.localized("equipment_set_piercing") % _summary_percent(float(state.values.get("piercing_percent", 0.0)))
 				"Bulwark":
-					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)) if Game.hero_class=="Guardian" else 0.0)]
+					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)) if host.display_hero_class()=="Guardian" else 0.0)]
 				"Vitality":
 					line += "\n  " + P.localized("equipment_set_vitality") % [_summary_percent(float(state.values.get("vitality_heal_percent", 0.0))), _summary_percent(float(state.values.get("vitality_overcap_percent", 0.0)))]
 		else:
@@ -1113,7 +1148,7 @@ func _enhance() -> void:
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 315, 350, 350))
-	var benefit: String = host.EquipmentDetails.enhancement_text(selected, Game.room_catalog_index()) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
+	var benefit: String = host.EquipmentDetails.enhancement_text(selected, host.display_catalog_index()) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	_equipment_summary_scroll("EnhancementBenefitScroll", "EnhancementBenefit", benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 230), 24, P.TEAL)
 	if not selected.is_empty():
 		button(preload("res://ui/numerical_details.gd").text("title"), Rect2(730, 920, 350, 54), func(): preload("res://ui/numerical_details.gd").show_compare(host, host._equipped_items(), selected, true))

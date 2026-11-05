@@ -69,13 +69,13 @@ static func show_compare(host: Control, loadout: Array, selected: Dictionary, up
 	lines.append(text("draw_stage"))
 	lines.append(text("shield_stage"))
 	lines.append("")
-	var catalog_index: Dictionary = Game.room_catalog_index()
+	var catalog_index: Dictionary = host.display_catalog_index()
 	var unsupported := not Model.can_inspect(before+after,catalog_index)
 	if unsupported:
 		lines.append(P.localized("config_archive_unavailable"))
 	else:
-		var old: Dictionary = inspect(before, Game.hero_class,catalog_index)
-		var current: Dictionary = inspect(after, Game.hero_class,catalog_index)
+		var old: Dictionary = inspect(before, host.display_hero_class(),catalog_index)
+		var current: Dictionary = inspect(after, host.display_hero_class(),catalog_index)
 		var keys: Array = old.keys()
 		for key in current.keys():
 			if key not in keys: keys.append(key)
@@ -112,9 +112,9 @@ static func show_remainder(host: Control) -> void:
 		lines.append(labels.scope)
 	show_lines(host, lines)
 
-static func show_lines(host: Control, lines: PackedStringArray) -> void:
+static func show_lines(host: Control, lines: PackedStringArray, caption: String = "") -> void:
 	var dialog := AcceptDialog.new()
-	dialog.title = text("title")
+	dialog.title = text("title") if caption.is_empty() else caption
 	var dialog_theme := P.theme()
 	dialog_theme.default_font_size = 26
 	dialog_theme.set_stylebox("panel", "AcceptDialog", P.box(Color("10272e"), P.GOLD))
@@ -131,9 +131,11 @@ static func show_lines(host: Control, lines: PackedStringArray) -> void:
 	var popup_size := Vector2i(mini(1320, int(available.x) - 96), mini(860, int(available.y) - 96))
 	dialog.min_size = Vector2i(mini(1080, popup_size.x), mini(640, popup_size.y))
 	var scroll := ScrollContainer.new()
+	if not caption.is_empty(): scroll.name = "PreparationDeckScroll"
 	scroll.custom_minimum_size = Vector2(popup_size.x - 64, popup_size.y - 128)
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	var label := Label.new()
+	if not caption.is_empty(): label.name = "PreparationDeckText"
 	label.text = P.system_display_text("\n".join(lines))
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL

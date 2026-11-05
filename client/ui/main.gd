@@ -16,6 +16,7 @@ const SeasonMarketController=preload("res://ui/season_market_controller.gd")
 const SeasonShopModel=preload("res://ui/season_shop_model.gd")
 const SeasonActivityController=preload("res://ui/season_activity_controller.gd")
 const SeasonJourneyController=preload("res://ui/season_journey_controller.gd")
+const PreparationModel = preload("res://ui/preparation_model.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
 const CardDetails = preload("res://ui/card_details.gd")
@@ -579,7 +580,7 @@ func _render() -> void:
 		_left_pointer_down = false
 		_pointer_render_context.clear()
 	_render_pending = false
-	cards = CatalogIndex.cards(Game.room_catalog_index())
+	cards = CatalogIndex.cards(display_catalog_index())
 	_sync_combat_feedback_context()
 	tips_overlay.set_viewport_anchor(_notice_anchor(), _notice_width_ratio())
 	_sync_draw_charge_visual()
@@ -1058,7 +1059,7 @@ func _preparation() -> void:
 		if not Game.ticket.is_empty():
 			_label(panel, P.localized("ui_matchmaking_hint"), 30, P.TEAL)
 		else:
-			_button(panel, P.localized("start_match"), Game.enqueue, Game.busy or not Game.gateway.online)
+			_button(panel, P.localized("start_match"), Game.enqueue, Game.busy or not Game.preparation_catalog_ready() or not Game.gateway.online)
 		_button(panel, P.localized("cancel_match") if not Game.ticket.is_empty() else P.localized("cancel_prep"), Game.cancel_preparation, Game.busy)
 		return
 	var row := _row(content)
@@ -1071,8 +1072,9 @@ func _preparation() -> void:
 	var consumables: Dictionary = inventory.get("consumables", {})
 	for key in ["Free", "Advanced", "Top"]:
 		var text_key: String = {"Free": "bag_option_free", "Advanced": "bag_option_advanced", "Top": "bag_option_top"}[key]
-		var text: String = P.localized(text_key)
-		var button := _button(left, text, func(): bag_tier = key; _render())
+		var definition: Dictionary = PreparationModel.backpack(key, Game.preparation_catalog_index())
+		var text: String = P.localized(text_key).split("\n")[0] + ("\n" + P.localized("preparation_backpack_details") % [definition.capacity, definition.safe_count] if not definition.is_empty() else "")
+		var button := _button(left, text, func(): bag_tier = key; _render(), Game.busy or not Game.preparation_catalog_ready())
 		if bag_tier == key: button.add_theme_stylebox_override("normal", Art.style("UI/CardCodex/card_codex_action_button_orange.png"))
 	_label(left, P.localized("health_potion_summary") % consumables.get("healthPotionCount", 0), 22)
 	var potion := SpinBox.new()
@@ -1080,12 +1082,16 @@ func _preparation() -> void:
 	potion.value = potion_count
 	potion.value_changed.connect(func(value): potion_count = int(value))
 	left.add_child(potion)
-	_button(left, P.localized("confirm_prep"), func(): Game.prepare(bag_tier, potion_count), Game.busy)
+	_button(left, P.localized("confirm_prep"), func(): Game.prepare(bag_tier, potion_count), Game.busy or not Game.preparation_catalog_ready())
 	var right := _panel(row, 880)
 	_label(right, P.localized("temporary_bag"), 34)
 	_label(right, P.localized("ui_safe_slot_hint"), 22, P.MUTED)
-	var capacity: int = {"Free": 20, "Advanced": 28, "Top": 36}[bag_tier]
-	var safe: int = {"Free": 0, "Advanced": 1, "Top": 3}[bag_tier]
+	var bag: Dictionary = PreparationModel.backpack(bag_tier, Game.preparation_catalog_index())
+	if bag.is_empty():
+		_label(right, P.localized("config_archive_unavailable"), 26, P.GOLD)
+		return
+	var capacity: int = int(bag.capacity)
+	var safe: int = int(bag.safe_count)
 	var slot_order: Array = []
 	for safe_index in range(capacity - safe, capacity): slot_order.append(safe_index)
 	for slot_index in range(capacity):
@@ -1124,11 +1130,11 @@ func _ready_screen() -> void:
 
 func card_description(id: String, kind: String = "face", level: int = 0) -> String:
 	if kind == "face":
-		var summary := CardDetails.face_description(id, level, cards.get(id, {}), Game.room_catalog_index())
+		var summary := CardDetails.face_description(id, level, cards.get(id, {}), display_catalog_index())
 		if not summary.is_empty(): return summary
 	var locale := P.language()
 	if locale not in ["zh-CN", "en"]:
-		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level, Game.room_catalog_index()))
+		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level, display_catalog_index()))
 	var descriptions: Dictionary = P.language_pack_section("card_descriptions")
 	var description := str(descriptions.get("card.%s.desc.%s" % [kind, id], ""))
 	# Existing full descriptions use the legacy `card.desc.full.<id>` order.
@@ -1137,14 +1143,46 @@ func card_description(id: String, kind: String = "face", level: int = 0) -> Stri
 		description = str(descriptions.get("card.desc.full." + id, ""))
 	return description
 
+func display_catalog_index() -> Dictionary:
+	if not Game.room.is_empty() or not Game.settlement.is_empty(): return Game.room_catalog_index()
+	if screen == "prep": return Game.preparation_catalog_index()
+	return {}
+
+func display_hero_class() -> String:
+	if not Game.room.is_empty(): return str(Game.room.get("player", {}).get("hero_class", Game.hero_class))
+	if screen == "prep" and Game.preparation.get("snapshot") is Dictionary:
+		return str(Game.preparation.snapshot.get("heroClass", Game.hero_class))
+	return Game.hero_class
+
+func _show_preparation_deck() -> void:
+	var preview: Dictionary = Game.preparation_deck_preview()
+	if preview.is_empty():
+		_toast(P.localized("config_archive_unavailable"))
+		return
+	var snapshot: Dictionary = Game.preparation.get("snapshot", {})
+	var seasonal: bool = snapshot.get("season") is Dictionary if not snapshot.is_empty() else Game.season_preparation_active()
+	var hint: String = P.localized("season_borrowed_deck_hint") if preview.borrowed else P.localized("season_level_cap_hint") if seasonal else ""
+	var lines := PackedStringArray([P.localized("deck_count_summary") % preview.card_ids.size(), hint, ""])
+	var selected: int = int(str(snapshot.get("difficulty", "D0")).trim_prefix("D")) if snapshot.get("season") is Dictionary else Game.preparation_difficulty
+	var rule: Dictionary = PreparationModel.difficulty(selected, display_catalog_index())
+	if seasonal and not rule.is_empty(): lines.insert(1, P.localized("season_preparation_limits") % [selected, rule.level_cap, P.word(rule.entry_quality)])
+	for slot in preview.card_ids.size():
+		var id: String = str(preview.card_ids[slot])
+		var level: int = int(preview.levels[slot]) if slot < preview.levels.size() else 0
+		lines.append("%d. %s +%d" % [slot + 1, CardDetails.localized_name(id, cards.get(id, {})), level])
+		if slot < preview.actual_levels.size(): lines.append(P.localized("season_preparation_level_projection") % [preview.actual_levels[slot], level])
+		lines.append(CardDetails.face_description(id, level, cards.get(id, {}), display_catalog_index()))
+		lines.append("")
+	load("res://ui/numerical_details.gd").show_lines(self, lines, P.localized("preparation_deck_preview"))
+
 func _card_text(id: String, level: int = 0, element_override: String = "") -> String:
-	var cache_key := "%s|%s|%s|%s|%s" % [P.language(), Game.room_catalog_index().get("version", Game.CATALOG.data.version), id, level, element_override]
+	var cache_key := "%s|%s|%s|%s|%s" % [P.language(), display_catalog_index().get("version", Game.CATALOG.data.version), id, level, element_override]
 	if _card_text_cache.has(cache_key): return _card_text_cache[cache_key]
 	var info: Dictionary = CardDetails.with_element(cards.get(id, {}), element_override)
 	var source: String = info.get("source", "")
 	var badge := P.localized("monster") if not info.get("is_codex", true) else P.word(info.get("hero_class", ""))
 	var name := CardDetails.localized_name(id, info)
-	var description: String = CardDetails.face_description(id, level, info, Game.room_catalog_index())
+	var description: String = CardDetails.face_description(id, level, info, display_catalog_index())
 	if description.is_empty(): description = card_description(id, "face", level)
 	if description.is_empty():
 		# Cards without a configured face description use the structured fallback.
@@ -1159,7 +1197,7 @@ func _card_text(id: String, level: int = 0, element_override: String = "") -> St
 
 func _card_button(parent: Node, id: String, callback: Callable, selected: bool = false, disabled: bool = false, options: Dictionary = {}) -> Button:
 	options = options.duplicate()
-	options["configured_description"] = not Game.room_catalog_index().is_empty()
+	options["configured_description"] = not display_catalog_index().is_empty()
 	var element_override: String = options.get("element_override", "")
 	return _card_pool.acquire(parent, id, CardDetails.with_element(cards.get(id, {}), element_override), _card_text(id, int(options.get("level", 0)), element_override), selected, disabled, options, callback)
 
@@ -1419,7 +1457,7 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 		return
 	var dialog := EquipmentCompareDialog.new()
 	add_child(dialog)
-	dialog.open(item, current, worn, action, action_title, Game.busy, Game.room_catalog_index())
+	dialog.open(item, current, worn, action, action_title, Game.busy, display_catalog_index())
 
 func _show_battle_details(status: Dictionary) -> void:
 	var existing := get_node_or_null("BattleDetailsModal")

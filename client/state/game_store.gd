@@ -16,8 +16,11 @@ const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
+const PreparationModel = preload("res://ui/preparation_model.gd")
 const ConfigBundle = preload("res://data/config_bundle.gd")
 var _room_catalogs: Dictionary = {}
+var _catalog_request_epoch := 0
+var preparation_configuration_error := ""
 const ElementRules = preload("res://state/element_rules.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const CATALOG = preload("res://data/catalog.json")
@@ -255,6 +258,9 @@ func reconnect() -> void:
 
 func _clear_authenticated_state() -> void:
 	_room_catalogs.clear()
+	_catalog_request_epoch += 1
+	_lobby_request_epoch += 1
+	preparation_configuration_error = ""
 	_login_deadline = 0
 	_login_generation = -1
 	lobby = {}
@@ -435,20 +441,103 @@ func validate_config(version: String, source: String) -> bool:
 func room_catalog_index() -> Dictionary:
 	var version := str(room.get("config_version", ""))
 	if room.is_empty() and settlement.get("season") is Dictionary: version = str(settlement.season.get("configVersion", ""))
-	if version.is_empty() or version == str(CATALOG.data.version): return {}
+	return _catalog_index_for_version(version)
+
+func _catalog_index_for_version(version: String, required: bool = false) -> Dictionary:
+	if version == str(CATALOG.data.version) or (version.is_empty() and not required): return {}
 	var index: Dictionary = _room_catalogs.get(version, {})
 	if not index.is_empty() and index.get("_origin", "") == gateway.base_url: return index
 	# A missing archive is explicit; index readers must not silently select the built-in catalog.
 	return {"version": version, "cards": {}, "levels": {}, "qualities": {}, "tables": {}}
 
+func preparation_catalog_index() -> Dictionary:
+	if not preparation.is_empty():
+		var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+		return _catalog_index_for_version(str(snapshot.get("configVersion", "")), true)
+	if season_preparation_active():
+		return _catalog_index_for_version(str(lobby.season.get("configVersion", "")), true)
+	return {}
+
+func preparation_catalog_ready() -> bool:
+	var index := preparation_catalog_index()
+	if CatalogIndex.cards(index).is_empty() or PreparationModel.backpack("Free", index).is_empty(): return false
+	var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+	if snapshot.get("season") is Dictionary:
+		if snapshot.season.get("configVersion") != snapshot.get("configVersion") or snapshot.season.get("difficultyId") != snapshot.get("difficulty"): return false
+		return not PreparationModel.difficulty(int(str(snapshot.difficulty).trim_prefix("D")), index).is_empty()
+	if snapshot.is_empty() and season_preparation_active():
+		return not PreparationModel.difficulty(clampi(preparation_difficulty, 0, season_preparation_cap()), index).is_empty()
+	return true
+
+func preparation_deck_preview() -> Dictionary:
+	var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+	if not preparation_catalog_ready(): return {}
+	if not snapshot.is_empty():
+		if not snapshot.get("cardIds") is Array or snapshot.cardIds.size() != 20: return {}
+		if snapshot.get("season") is Dictionary and not snapshot.get("cardLevels") is Array: return {}
+		if snapshot.get("cardLevels") is Array and snapshot.cardLevels.size() != 20: return {}
+		for id in snapshot.cardIds:
+			if CatalogIndex.card(str(id), preparation_catalog_index()).is_empty(): return {}
+		var from_loan: bool = snapshot.get("borrowedTemplateId") is String and not snapshot.borrowedTemplateId.is_empty()
+		return {"card_ids": snapshot.get("cardIds", []), "levels": snapshot.cardLevels if snapshot.get("cardLevels") is Array else [], "actual_levels": snapshot.actualCardLevels if snapshot.get("actualCardLevels") is Array else [], "borrowed": from_loan}
+	if not preparation.is_empty(): return {}
+	var index := preparation_catalog_index()
+	var ids: Array = []
+	var levels: Array[int] = []
+	var actual: Array[int] = []
+	var cap: int = clampi(preparation_difficulty, 0, season_preparation_cap()) if season_preparation_active() else 5
+	var borrowed: bool = season_preparation_active() and use_borrowed_deck
+	if borrowed:
+		var loan := PreparationModel.borrowed_deck(hero_class, index)
+		if loan.is_empty(): return {}
+		ids = loan.card_ids
+		for id in ids: levels.append(cap)
+	else:
+		ids = deck().get("cardIds", [])
+		for id in ids:
+			var found := false
+			for owned in lobby.get("cards", []):
+				if owned.get("cardId") != id: continue
+				actual.append(int(owned.get("level", 0)))
+				levels.append(mini(actual[-1], cap))
+				found = true
+				break
+			if not found: return {}
+	if ids.size() != 20: return {}
+	for id in ids:
+		if CatalogIndex.card(str(id), index).is_empty(): return {}
+	return {"card_ids": ids.duplicate(), "levels": levels, "actual_levels": actual, "borrowed": borrowed}
+
+func preparation_preview_snapshot(tier: String) -> Dictionary:
+	if preparation.get("snapshot") is Dictionary: return preparation.snapshot.duplicate(true)
+	if not preparation.is_empty(): return {}
+	var result := {"heroClass": hero_class, "maximumHp": P.CLASSES[hero_class][2], "equipmentIds": loadout().get("equipmentIds", []).duplicate(), "equipmentSnapshots": []}
+	var items: Array = []
+	for item in lobby.get("inventory", {}).get("equipments", []):
+		if item.get("instanceId") in result.equipmentIds: items.append(item)
+	var cap: int = clampi(preparation_difficulty, 0, season_preparation_cap()) if season_preparation_active() else 5
+	result.equipmentSnapshots = items.duplicate(true)
+	for weapon in lobby.get("classWeapons", []):
+		if weapon.get("heroClass") == hero_class:
+			result["actualClassWeaponLevel"] = int(weapon.level)
+			result["classWeaponLevel"] = cap if season_preparation_active() and use_borrowed_deck else mini(int(weapon.level), cap)
+	if season_preparation_active() and use_borrowed_deck: result["classWeaponLevel"] = cap
+	var bag: Dictionary = PreparationModel.backpack(tier, preparation_catalog_index())
+	if not bag.is_empty():
+		result["backpackTier"] = tier
+		result["backpackCapacity"] = bag.capacity
+		result["safeSlotIndexes"] = bag.safe_indexes
+	return result
+
 func _ensure_room_catalog(version: String) -> bool:
 	if version == str(CATALOG.data.version): return true
 	if version.is_empty() or version.length() > 80: return false
 	var generation: int = gateway.session_generation
+	var catalog_epoch: int = _catalog_request_epoch
 	var address: String = gateway.base_url
 	if _room_catalogs.has(version) and _room_catalogs[version].get("_origin", "") == address: return true
 	var response: Dictionary = await gateway.request("/api/v1/config/" + version.uri_encode(), HTTPClient.METHOD_GET, null, [404])
-	if generation != gateway.session_generation or address != gateway.base_url: return false
+	if generation != gateway.session_generation or catalog_epoch != _catalog_request_epoch or address != gateway.base_url: return false
 	if not response.ok or not response.data is Dictionary: return false
 	var envelope: Dictionary = response.data
 	if str(envelope.get("configVersion", "")) != version or not envelope.get("bundle") is PackedByteArray: return false
@@ -457,6 +546,9 @@ func _ensure_room_catalog(version: String) -> bool:
 	if decoded.is_empty(): return false
 	var index: Dictionary = CatalogIndex.from_data(decoded)
 	if index.is_empty(): return false
+	var retained: Dictionary = _room_catalogs.get(version, {})
+	if not retained.is_empty() and retained.get("_origin", "") == address:
+		return str(retained.get("content_hash", "")) == str(index.get("content_hash", ""))
 	index["_origin"] = address
 	_room_catalogs[version] = index
 	return true
@@ -471,6 +563,18 @@ func _bootstrap_catalog_versions(snapshot: Dictionary) -> Array[String]:
 	if receipt is Dictionary and receipt.get("season") is Dictionary:
 		var version := str(receipt.season.get("configVersion", ""))
 		if not version.is_empty() and version not in versions: versions.append(version)
+	return versions
+
+func _preparation_catalog_versions(snapshot: Dictionary) -> Array[String]:
+	var versions: Array[String] = []
+	var active: Variant = snapshot.get("activePreparation")
+	if active is Dictionary:
+		var saved: Dictionary = active.snapshot if active.get("snapshot") is Dictionary else {}
+		versions.append(str(saved.get("configVersion", "")))
+	var season: Variant = snapshot.get("season")
+	if season is Dictionary and season.get("state") == "Active":
+		var version: String = str(season.get("configVersion", ""))
+		if version not in versions: versions.append(version)
 	return versions
 
 func refresh_lobby() -> void:
@@ -508,7 +612,7 @@ func refresh_lobby() -> void:
 		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
 		if not _lobby_request_current(generation, request_epoch, origin_scope): return
 		if active.ok:
-			if not _preparation_config_valid(active.data): return
+			if not active.data is Dictionary: return
 			next_lobby["activePreparation"] = active.data
 		elif active.status == 404: next_lobby["activePreparation"] = null
 	if not _lobby_request_current(generation, request_epoch, origin_scope): return
@@ -519,6 +623,12 @@ func refresh_lobby() -> void:
 			configuration_error = P.message("config_archive_unavailable", [])
 			gateway.end_session(configuration_error)
 			return
+	var preparation_ready := true
+	for version in _preparation_catalog_versions(next_lobby):
+		var loaded: bool = await _ensure_room_catalog(version)
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		preparation_ready = preparation_ready and loaded
+	preparation_configuration_error = "" if preparation_ready else P.message("config_archive_unavailable", [])
 	lobby = next_lobby
 	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
 	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
@@ -539,7 +649,7 @@ func refresh_lobby() -> void:
 	changed.emit()
 
 func _lobby_scope() -> String:
-	return JSON.stringify([room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
+	return JSON.stringify([gateway.base_url, room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
 		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id,
 		_room_context_epoch, _settlement_recovery_match_id, _cache_versions])
 
@@ -782,10 +892,12 @@ func season_preparation_cap() -> int:
 	return clampi(mini(int(lobby.season.get("highestOpenDifficulty", 0)), int(lobby.season.get("highestUnlockedDifficulty", 0))), 0, 5)
 
 func season_loot_preference() -> String:
+	if preparation.get("snapshot") is Dictionary and preparation.snapshot.get("lootPreferenceElement") is String:
+		return preparation.snapshot.lootPreferenceElement
 	if not season_preparation_active(): return ""
-	var rows: Array=CATALOG.data.tables.get("SeasonLootPreference",[])
+	var rows: Array=PreparationModel.tables(preparation_catalog_index()).get("SeasonLootPreference",[])
 	if rows.size()!=1: return ""
-	var scope: String=str(lobby.season.get("seasonId",""))+"|"+str(lobby.season.get("configVersion",CATALOG.data.version))
+	var scope: String=gateway.base_url+"|"+str(lobby.season.get("seasonId",""))+"|"+str(lobby.season.get("configVersion",""))
 	if scope!=_loot_preference_scope:
 		_loot_preference_scope=scope
 		preparation_loot_preference=str(rows[0].default_element)
@@ -808,9 +920,25 @@ func prepare(tier: String, potion_count: int) -> void:
 		busy = false
 		changed.emit()
 		return
-	var safe: Array = []
-	if tier == "Advanced": safe = [27]
-	if tier == "Top": safe = [33, 34, 35]
+	var source_key := _preparation_source_key()
+	var version: String = str(lobby.season.get("configVersion", "")) if season_preparation_active() else str(CATALOG.data.version)
+	var loaded: bool = await _ensure_room_catalog(version)
+	if generation != gateway.session_generation: return
+	if source_key != _preparation_source_key():
+		busy = false
+		notice.emit(P.localized("state_changed"))
+		changed.emit()
+		return
+	var bag: Dictionary = PreparationModel.backpack(tier, preparation_catalog_index())
+	var loan: Dictionary = PreparationModel.borrowed_deck(hero_class, preparation_catalog_index()) if borrowed else {}
+	if not loaded or bag.is_empty() or (borrowed and loan.is_empty()):
+		preparation_configuration_error = P.message("config_archive_unavailable", [])
+		busy = false
+		notice.emit(P.localized("config_archive_unavailable"))
+		changed.emit()
+		return
+	preparation_configuration_error = ""
+	var safe: Array = bag.safe_indexes
 	var payload := {"heroClass": hero_class, "deckVersion": 0 if borrowed else deck().version,
 		"equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
 		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"}
@@ -823,9 +951,10 @@ func prepare(tier: String, potion_count: int) -> void:
 		if not preference.is_empty(): payload["lootPreferenceElement"] = preference
 	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, payload)
 	if generation != gateway.session_generation: return
-	if result.ok and _preparation_config_valid(result.data):
+	if result.ok and result.data is Dictionary:
 		preparation = result.data
 		lobby["activePreparation"] = result.data
+		_preparation_config_valid(result.data)
 		refresh_cache("inventory")
 	busy = false
 	changed.emit()
@@ -834,10 +963,18 @@ func enqueue() -> void:
 	if busy or preparation.is_empty() or not gateway.online or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
+	var original_id: String = str(preparation.get("preparationId", ""))
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()):
 		if generation != gateway.session_generation: return
 		busy = false
+		changed.emit()
+		return
+	var loaded: bool = await _ensure_room_catalog(str(preparation.get("snapshot", {}).get("configVersion", "")))
+	if generation != gateway.session_generation: return
+	if original_id != str(preparation.get("preparationId", "")) or not loaded or not _preparation_config_valid(preparation):
+		busy = false
+		if not loaded: preparation_configuration_error = P.message("config_archive_unavailable", [])
 		changed.emit()
 		return
 	var result: Dictionary = await gateway.request("/api/v1/matches/enqueue", HTTPClient.METHOD_POST, {"preparationId": preparation.preparationId})
@@ -849,7 +986,15 @@ func enqueue() -> void:
 
 func _preparation_config_valid(value: Dictionary) -> bool:
 	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
-	return validate_config(str(snapshot.get("configVersion", "")), "preparation")
+	var version: String = str(snapshot.get("configVersion", ""))
+	var index: Dictionary = _catalog_index_for_version(version, true)
+	var valid: bool = not version.is_empty() and not CatalogIndex.cards(index).is_empty() and not PreparationModel.backpack(str(snapshot.get("backpackTier", "Free")), index).is_empty()
+	preparation_configuration_error = "" if valid else P.message("config_archive_unavailable", [])
+	return valid
+
+func _preparation_source_key() -> String:
+	var season: Dictionary = lobby.get("season", {}) if lobby.get("season") is Dictionary else {}
+	return JSON.stringify([gateway.base_url, season.get("state"), season.get("seasonId"), season.get("configVersion"), season.get("statsVersion"), hero_class, use_borrowed_deck, preparation_difficulty, deck().get("version"), loadout().get("equipmentIds")])
 
 func _verify_ready_ticket() -> void:
 	if not gateway is Gateway or not room.is_empty() or ticket.is_empty() or ready_prompt.is_empty(): return

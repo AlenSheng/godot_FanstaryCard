@@ -1,0 +1,9 @@
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+Traceback (most recent call last):
+  File "<string>", line 4, in <module>
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['docker', 'ps', '-a', '--filter', 'label=com.fantasycard.task=season-balance-20261102-a03-runtime-r104', '--format', '{{.ID}}']' returned non-zero exit status 1.
