@@ -449,8 +449,18 @@
     },
     {
       "id": "D02",
-      "status": "pending",
-      "requirement": "先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建"
+      "status": "in_progress",
+      "requirement": "先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建",
+      "note": "正式候选15 PVP断线恢复子范围联合72场景完成，实际73尝试：9职业有序组合×D0/D5×恢复/到期×断线先/后手；144施法、30正眩晕/7阻断/45即时抽牌。JSON恢复、原PVE、动作回放/序列、15秒死亡及原5件装备遗物身份独立核对。原先导004因到期同tick恢复后合法100ms续时的夹具预期失败，按GDD/Advance顺序改严格一tick对照；原213领域源不变。001复用、004仅复验1、未开始70通过，不称一次全绿；原失败/TRX/源码保留。累计73/300余227。合法自然路线/完整撤离、实际存储死亡重建及其余控制/返牌边界证据仍待，不计D02整体通过；整体仍27/35。本机2GiB+1GiB启动，旧矩阵与云端/生产不改。",
+      "evidence": [
+        "D02-DUEL-RECOVERY-PROGRESS.md",
+        "D02-BUDGET.json",
+        "evidence/D02-duels-r1/result.json",
+        "evidence/D02-duels-r1/manifest.json",
+        "evidence/D02-duels-r1/source-byte-manifest.json",
+        "evidence/D02-duels-r1/d02-duels-inspection-r2.derived.json",
+        "evidence/D02-duels-r1/d02-expiry-tick-contract.before-retest-r1.json"
+      ]
     },
     {
       "id": "D03",

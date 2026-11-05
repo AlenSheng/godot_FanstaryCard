@@ -1,0 +1,19 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery [STARTING]
+    FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery [FAIL]
+      Assert.Equal() Failure: Strings differ
+                                             ↓ (pos 2217)
+      Expected: ···"scard":[],"DrawCharge":0.48584229390681005},"Fenxi"···
+      Actual:   ···"scard":[],"DrawCharge":0.5256670649143768},"Fenxia"···
+                                             ↑ (pos 2217)
+      Stack Trace:
+        server\tests\FantasyCard.Server.Tests\Config\SeasonDuelRecoveryMatrixTests.cs(107,0): at FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.Run(Scenario scenario, StreamWriter trace, StreamWriter results)
+        server\tests\FantasyCard.Server.Tests\Config\SeasonDuelRecoveryMatrixTests.cs(50,0): at FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery [FINISHED] Time: 0.7240016s
+  Finished:    FantasyCard.Server.Tests (ID = '074e1b2982f01cdfb72d605c1c3f3648f647b9bab3e2178a3c8010def8ab0873')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.861s
