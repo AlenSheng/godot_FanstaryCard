@@ -1,0 +1,44 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\FantasyCard.ConfigExporter.csproj (in 79 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 79 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Contracts\FantasyCard.Contracts.csproj (in 1.36 sec).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\FantasyCard.Server.csproj (in 1.36 sec).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.csproj (in 1.44 sec).
+  FantasyCard.Contracts -> G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Contracts\debug\FantasyCard.Contracts.dll
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Server -> G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Server\debug\FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.ConfigExporter\debug\FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters [260 ms]
+  Error Message:
+   Assert.All() Failure: 5 out of 5 items in the collection did not pass.
+[0]: Item:  ExplorationItem { ItemId = 5060b365-8b1f-44f8-b6b8-3ac50e7e4def, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Head, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }
+     Error: Assert.True() Failure
+            Expected: True
+            Actual:   False
+[1]: Item:  ExplorationItem { ItemId = 93ec0bfc-4a90-4904-833d-2b24c312fe6d, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Hands, Quality = Blue, Element = Wood, EffectAffix = Piercing, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }
+     Error: Assert.True() Failure
+            Expected: True
+            Actual:   False
+[2]: Item:  ExplorationItem { ItemId = 32dec2b3-fc66-44f7-946b-167557ad447c, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Chest, Quality = Blue, Element = Wood, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }
+     Error: Assert.True() Failure
+            Expected: True
+            Actual:   False
+[3]: Item:  ExplorationItem { ItemId = 19c359f7-a439-4342-9ad4-e368f82d3af5, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Legs, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }
+     Error: Assert.True() Failure
+            Expected: True
+            Actual:   False
+[4]: Item:  ExplorationItem { ItemId = 44b3fc4d-6ab6-40a8-b5f1-f0ed679f3ba6, Kind = Equipment, Quantity = 1, IsSafe = False, Equipment = EquipmentRewardData { Slot = Feet, Quality = Blue, Element = Water, EffectAffix = Vitality, SecondaryTrait = DrawInterval, Level = 3, IsBound = False, SeasonOrigin = , UniqueAffix = , UniqueElement = , StatsVersion = season-equipment-v1 }, SlotIndex = -1, IsGenerated = False, IsCombatProjection = False }
+     Error: Assert.True() Failure
+            Expected: True
+            Actual:   False
+  Stack Trace:
+     at FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\SeasonThemeCalibrationTests.cs:line 40
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\c16-calibration-preflight-r1\results\preflight.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 279 ms - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:01.84]     FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.PreflightBuildsAreDistinctLegalAndRespectAllSixArmorEntryCapsWithoutRunningEncounters [FAIL]
