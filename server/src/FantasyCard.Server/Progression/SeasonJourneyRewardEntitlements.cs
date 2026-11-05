@@ -8,21 +8,23 @@ namespace FantasyCard.Server.Progression;
 
 internal sealed record HeldJourneyReward(Guid RewardId,Guid PlayerId,string SeasonId,string ConfigVersion,string ConfigHash,
     string RulesetId,string StatsVersion,int RequiredExperience,int ExperienceAtUnlock,long JourneyVersionAtUnlock,
-    SeasonJourneyRewardConfig Definition,IReadOnlyList<string> PackCardIds,string State,DateTimeOffset CreatedAt);
+    SeasonJourneyRewardConfig Definition,IReadOnlyList<string> PackCardIds,string State,DateTimeOffset CreatedAt,
+    DateTimeOffset? ClaimedAt,string? HeroClassChoice,string? GrantJson,string? ResponseJson);
 
 public sealed partial class SeasonJourneyRepository
 {
     private const string HeldRewardColumns="""
         reward_id,player_id,season_id,config_version,config_sha256,ruleset_id,stats_version,required_experience,
         experience_at_unlock,journey_version_at_unlock,reward_key,reward_level,reward_kind,reward_amount,
-        ownership,requires_class_choice,cosmetic_id,pack_card_ids::text,state,created_at
+        ownership,requires_class_choice,cosmetic_id,pack_card_ids::text,state,created_at,claimed_at,hero_class_choice,grant_json::text,response_json::text
         """;
 
     private static HeldJourneyReward ReadHeldReward(NpgsqlDataReader r)=>new(r.GetGuid(0),r.GetGuid(1),r.GetString(2),
         r.GetString(3),r.GetString(4),r.GetString(5),r.GetString(6),r.GetInt32(7),r.GetInt32(8),r.GetInt64(9),
         new(r.GetString(10),r.GetInt16(11),r.GetString(12),r.GetInt32(13),r.GetString(14),r.GetBoolean(15),r.IsDBNull(16)?null:r.GetString(16)),
         JsonSerializer.Deserialize<string[]>(r.GetString(17))??throw new InvalidDataException("The original journey pack result is invalid."),
-        r.GetString(18),r.GetFieldValue<DateTimeOffset>(19));
+        r.GetString(18),r.GetFieldValue<DateTimeOffset>(19),r.IsDBNull(20)?null:r.GetFieldValue<DateTimeOffset>(20),
+        r.IsDBNull(21)?null:r.GetString(21),r.IsDBNull(22)?null:r.GetString(22),r.IsDBNull(23)?null:r.GetString(23));
 
     /// <summary>The caller owns the player lock and the original experience/settlement transaction.</summary>
     internal static async Task EnsureRewardsWithinTransactionAsync(NpgsqlConnection c,NpgsqlTransaction t,Guid player,

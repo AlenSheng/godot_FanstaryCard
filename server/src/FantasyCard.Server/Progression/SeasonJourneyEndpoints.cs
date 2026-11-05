@@ -12,6 +12,7 @@ public static class SeasonJourneyEndpoints
     {
         endpoints.MapGroup("/api/v1/season-journey").AddEndpointFilter<ProtobufHttpFilter>().WithTags("SeasonJourney")
             .MapGet("",Get).RequireRateLimiting(RequestLimitOptions.ReadPolicy).Produces<SeasonJourneyResponse>().ProducesProblem(401).ProducesProblem(409);
+        endpoints.MapJourneyRewardEndpoints();
         return endpoints;
     }
     private static async Task<IResult> Get(HttpContext context,IdentityService identity,SeasonJourneyRepository repository,

@@ -581,6 +581,15 @@ message JourneySeasonResponse { string season_id = 1; string state = 2; string c
 message JourneyLevelResponse { int32 level = 1; int32 required_experience = 2; int32 cumulative_experience = 3; string stage = 4; bool reached = 5; }
 message WeeklyContractResponse { string contract_id = 1; int32 week = 2; string completion_kind = 3; int32 target = 4; int32 progress = 5; int32 experience_reward = 6; int32 experience_credited = 7; string opens_at = 8; optional string completed_at = 9; string state = 10; }
 message SeasonJourneyResponse { string state = 1; optional string season_id = 2; optional string config_version = 3; optional string starts_at = 4; optional string ends_at = 5; int32 duration_days = 6; int32 day = 7; int32 experience = 8; int32 level = 9; int32 experience_into_level = 10; int32 experience_to_next = 11; int32 maximum_experience = 12; int32 main_reward_levels = 13; int32 reference_experience = 14; int32 maximum_catch_up_multiplier = 15; bool catch_up_active = 16; int64 version = 17; repeated WeeklyContractResponse contracts = 18; repeated JourneyLevelResponse levels = 19; repeated JourneySeasonResponse seasons = 20; optional int32 next_offset = 21; }
+
+message JourneyRewardResponse { optional string reward_id = 1; string season_id = 2; string config_version = 3; int32 level = 4; int32 required_experience = 5; string kind = 6; int32 amount = 7; string ownership = 8; bool requires_class_choice = 9; optional string cosmetic_id = 10; string state = 11; bool can_claim = 12; optional string hero_class = 13; optional string earned_at = 14; optional string claimed_at = 15; }
+message JourneyRewardsResponse { string state = 1; optional string season_id = 2; optional string config_version = 3; repeated JourneyRewardResponse rewards = 4; }
+message JourneyClaimRequest { string season_id = 1; optional string hero_class = 2; }
+message JourneyClaimResponse { JourneyRewardResponse reward = 1; repeated ShopGrantResponse grants = 2; optional int64 balance_after = 3; bool cosmetic_newly_owned = 4; }
+message OwnedCosmeticResponse { string cosmetic_id = 1; string kind = 2; string name_key = 3; string description_key = 4; string source_season_id = 5; string config_version = 6; string acquired_at = 7; }
+message CosmeticSelectionResponse { optional string avatar_frame_id = 1; optional string card_back_id = 2; optional string title_id = 3; int64 version = 4; }
+message CosmeticsResponse { repeated OwnedCosmeticResponse owned = 1; CosmeticSelectionResponse selection = 2; }
+message CosmeticSelectionRequest { string slot = 1; optional string cosmetic_id = 2; int64 expected_version = 3; }
 message DeckListResponse { repeated DeckResponse items = 1; }
 message MarketListResponse { repeated MarketListingResponse items = 1; }
 message HttpError { string type = 1; string title = 2; int32 status = 3; string detail = 4; string trace_id = 5; string code = 6; optional int32 retry_after_seconds = 7; }

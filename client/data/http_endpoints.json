@@ -474,6 +474,38 @@
       "response": "SeasonJourneyResponse",
       "unwrap_items": false,
       "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-journey/rewards",
+      "request": "Empty",
+      "response": "JourneyRewardsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/season-journey/rewards/{rewardId:guid}/claim",
+      "request": "JourneyClaimRequest",
+      "response": "JourneyClaimResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/cosmetics",
+      "request": "Empty",
+      "response": "CosmeticsResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/cosmetics/selection",
+      "request": "CosmeticSelectionRequest",
+      "response": "CosmeticSelectionResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonJourneyRewardEndpoints.cs"
     }
   ]
 }

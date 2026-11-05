@@ -106,11 +106,11 @@ public sealed class PostgresJourneyRewardEntitlementTests
         Assert.True((await new EconomyReconciliationRepository(db.DataSource).InspectAsync(Ct)).IsHealthy);
     }
 
-    private static Task SeedExperience(PostgresTestSchema db,JourneyPlayer p,int experience)=>CraftingTestInputs.SqlAsync(db,"""
+    internal static Task SeedExperience(PostgresTestSchema db,JourneyPlayer p,int experience)=>CraftingTestInputs.SqlAsync(db,"""
         INSERT INTO player_season_journeys(player_id,season_id,config_version,experience,version) VALUES($1,$2,$3,$4,1)
         """,p.Player,p.Season.SeasonId,p.Config.Version,experience);
 
-    private static async Task Unlock(PostgresTestSchema db,JourneyPlayer p,Func<int,int> random,bool commit=true,GameConfigCatalog? config=null)
+    internal static async Task Unlock(PostgresTestSchema db,JourneyPlayer p,Func<int,int> random,bool commit=true,GameConfigCatalog? config=null)
     {
         await using var c=await db.DataSource.OpenConnectionAsync(Ct);await using var t=await c.BeginTransactionAsync(Ct);
         await using(var q=new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE",c,t))

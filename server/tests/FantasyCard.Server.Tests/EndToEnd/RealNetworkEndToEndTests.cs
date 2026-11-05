@@ -235,7 +235,8 @@ public sealed partial class RealNetworkEndToEndTests
         private NetworkServerProcess(Process process)
         {
             _process = process;
-            var directory = Path.GetFullPath(Path.Combine(FindServerProjectDirectory(), "..", "..", ".artifacts", "protocol-remediation", "process-logs"));
+            var directory = Path.GetFullPath(Environment.GetEnvironmentVariable("FANTASYCARD_E2E_PROCESS_LOG_DIR")
+                ?? Path.Combine(FindServerProjectDirectory(), "..", "..", ".artifacts", "protocol-remediation", "process-logs"));
             Directory.CreateDirectory(directory);
             _logPath = Path.Combine(directory, $"{DateTime.UtcNow:yyyyMMdd-HHmmss-fffffff}-{process.Id}-{Guid.NewGuid():N}.log");
             _process.OutputDataReceived += CaptureOutput;

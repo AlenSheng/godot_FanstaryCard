@@ -1,5 +1,5 @@
 {
-  "sha256": "b5d2a3012fbbc65748457c49242b9221c75cb56cf0f571298664469c13168e72",
+  "sha256": "8fb69eb92bdd407504d4e8d4fb725527ff2cf7cfdaa16157ed4e83f7fefd9442",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -3030,6 +3030,268 @@
         "type": "int32",
         "repeated": false,
         "optional": true
+      }
+    },
+    "JourneyRewardResponse": {
+      "1": {
+        "name": "reward_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "level",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "required_experience",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "amount",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      },
+      "8": {
+        "name": "ownership",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "9": {
+        "name": "requires_class_choice",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "cosmetic_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "11": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "can_claim",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "14": {
+        "name": "earned_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "15": {
+        "name": "claimed_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "JourneyRewardsResponse": {
+      "1": {
+        "name": "state",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "rewards",
+        "type": "JourneyRewardResponse",
+        "repeated": true,
+        "optional": false
+      }
+    },
+    "JourneyClaimRequest": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "hero_class",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "JourneyClaimResponse": {
+      "1": {
+        "name": "reward",
+        "type": "JourneyRewardResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "grants",
+        "type": "ShopGrantResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "3": {
+        "name": "balance_after",
+        "type": "int64",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "cosmetic_newly_owned",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "OwnedCosmeticResponse": {
+      "1": {
+        "name": "cosmetic_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "kind",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "name_key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "description_key",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "source_season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "6": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "7": {
+        "name": "acquired_at",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CosmeticSelectionResponse": {
+      "1": {
+        "name": "avatar_frame_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "2": {
+        "name": "card_back_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "title_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CosmeticsResponse": {
+      "1": {
+        "name": "owned",
+        "type": "OwnedCosmeticResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "selection",
+        "type": "CosmeticSelectionResponse",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "CosmeticSelectionRequest": {
+      "1": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "cosmetic_id",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "3": {
+        "name": "expected_version",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
       }
     },
     "DeckListResponse": {
