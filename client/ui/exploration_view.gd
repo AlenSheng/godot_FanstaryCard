@@ -14,6 +14,7 @@ const BattleTargets = preload("res://state/battle_targets.gd")
 const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
 const ThemeModel=preload("res://ui/season_theme_model.gd")
+const CatalogIndex = preload("res://data/catalog_index.gd")
 const MOVE_ACTION_ICON: Texture2D = preload("res://assets/generated/ui/exploration_move_compass.png")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
@@ -600,8 +601,13 @@ static func _actions(ui: Control, host: Control, state: Dictionary) -> void:
 	ui.button(P.localized("view_map"), Rect2(80, 985, 244, 56), func(): host.set_meta("exploration_map_open", true); host._schedule_render())
 
 static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
-	ui.panel(Rect2(218, 141, 1484, 818))
-	_title(ui, P.localized("loot_three_choices"))
+	ui.panel(Rect2(218, 176, 1484, 783))
+	var plate: TextureRect = ui.picture(Art.texture("UI/Encounter/encounter_title_plate_normal.png"), Rect2(50, 0, 640, 160))
+	plate.name = "RewardChoicePlate"
+	# The source plate is 384x96. Keep its carved ends outside the readable
+	# central region, using at most two lines instead of shrinking translations.
+	var heading: Label = _center(ui.text(P.localized("loot_three_choices"), Rect2(190, 22, 360, 112), 32, P.PAPER, null, false))
+	heading.name = "RewardChoiceTitle"
 	var options: Array = reward.get("options", [])
 	for index in range(3):
 		var rect := Rect2(285 + index * 458, 226, 424, 588)
@@ -633,7 +639,11 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(44, 499), Vector2(336, 49)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
 	var count: int = clampi(int(reward.get("refresh_count", 0)), 0, 3)
 	ui.text(P.localized("exploration_refresh_count") % count, Rect2(311, 840, 370, 66), 31, P.GOLD)
-	ui.button(P.localized("exploration_refresh_cost") % [60, 180, 450][mini(count, 2)] if count < 3 else P.localized("refresh_exhausted"), Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or not Game.allowed("reward.choice.refresh"))
+	var price: int = CatalogIndex.reward_refresh_gold(count + 1, Game.room_catalog_index())
+	var refresh_label: String = P.localized("refresh_exhausted") if count >= 3 else P.localized("exploration_refresh_cost") % price if price > 0 else P.localized("quote_unavailable_short")
+	var refresh_button: Button = ui.button(refresh_label, Rect2(746, 830, 425, 91), func(): Game.command("reward.choice.refresh"), count >= 3 or price <= 0 or not Game.allowed("reward.choice.refresh"))
+	refresh_button.name = "RewardRefresh"
+	if price <= 0 and count < 3: refresh_button.tooltip_text = P.localized("config_archive_unavailable")
 	ui.text(P.localized("exploration_current_layer") % [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
 
 static func build_recovery(ui: Control) -> void:

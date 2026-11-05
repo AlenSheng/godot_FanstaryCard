@@ -10,6 +10,7 @@ const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_co
 const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
 const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
 const HISTORICAL_SCENARIOS := ["historical_gear_none","ready_removed_equipment","ready_removed_timeout"]
+const REFRESH_SCENARIOS := ["refresh_original","refresh_exhausted","refresh_unavailable"]
 const THEME_SCENARIOS := ["c16_fire_info","c16_wood_info","c16_earth_info","c16_metal_info","c16_water_info","c16_wood_regen","c16_map","c16_action","c16_pvp","c16_choice"]
 const EQUIPMENT_SCENARIOS := ["c05_gear","c05_prep","c05_enhance","c05_compare","c05_numbers","c05_inventory","c05_inventory_details","c05_relic","c06_armor","c06_weapon","c06_material","c06_confirm","c06_error","c07_entry","c07_make","c07_orange","c07_locked","c07_confirm","c07_notjoined","c07_error","c08_list","c08_learn","c08_preview","c08_confirm","c08_blocked","c08_numbers","c08_market","c08_preview_bottom","c09_default","c09_preference","c09_locked","c09_info"]
 var review_frames: Array = []
@@ -82,7 +83,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -190,7 +191,9 @@ func _gear(id: String, slot: String = "Chest", quality: String = "Orange") -> Di
 	return {"instanceId": id, "slot": slot, "quality": quality, "element": "Earth", "effectAffix": "Bulwark", "secondaryTrait": "DrawInterval", "level": 3, "version": 7, "location": "Inventory", "isBound": false}
 
 func _owned(id: String) -> Dictionary:
-	var info: Dictionary = $UI.cards[id]
+	# Ownership fixtures describe the lobby, independently of the previous
+	# room's archived or deliberately unavailable display catalog.
+	var info: Dictionary = preload("res://data/catalog_index.gd").card(id)
 	return {"cardId": id, "heroClass": info.get("hero_class"), "unlocked": true, "copyCount": 3, "level": 3, "version": 7, "currencyKind": "WarriorSoul" if info.get("hero_class") == null else str(info.hero_class) + "Soul", "craftCost": 12, "dismantleRefund": 3, "canDismantle": true, "canUpgrade": true, "upgradeCost": 80, "upgradeCopyCost": 0}
 
 func _reset_fixture() -> void:
@@ -238,6 +241,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in REFRESH_SCENARIOS: return await _prepare_refresh_scene(scenario)
 	if scenario in HISTORICAL_SCENARIOS: return await _prepare_historical_equipment_scene(scenario,locale)
 	if scenario.begins_with("c16_"):return await _prepare_theme_scene(scenario,locale)
 	if scenario.begins_with("c15_"): return await _prepare_journey_scene(scenario)
@@ -873,6 +877,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
 	if frame_name.contains("_c16_"): _check_theme_scene(frame_name)
+	if "_refresh_" in frame_name: _check_refresh_scene(frame_name)
 	if frame_name.contains("_prep_season"): _check_season_preparation(frame_name)
 	var texts: Array = []
 	_collect_text($UI, texts)
@@ -1045,6 +1050,52 @@ func _collect_text(root: Node, rows: Array) -> void:
 	for child in root.get_children():
 		_collect_text(child, rows)
 
+
+var _refresh_review_index: Dictionary = {}
+
+func _prepare_refresh_scene(scenario: String) -> bool:
+	if _refresh_review_index.is_empty():
+		var folder: String = OS.get_environment("FANTASYCARD_REFRESH_REVIEW_INPUT")
+		assert(not folder.is_empty())
+		var cases: Array = JSON.parse_string(FileAccess.get_file_as_string(folder.path_join("cases.json")))
+		var entry: Dictionary = cases.filter(func(row): return row.name == "seven")[0]
+		var http = preload("res://network/http_protocol.gd")
+		var envelope: Dictionary = http.decode_response(http.route("/api/v1/config/" + str(entry.version), HTTPClient.METHOD_GET), 200, PackedStringArray(["Content-Type: application/protobuf"]), FileAccess.get_file_as_bytes(folder.path_join("seven.envelope")))
+		assert(envelope.ok)
+		var reader := preload("res://data/config_bundle.gd").new()
+		var data: Dictionary = reader.decode(envelope.data.bundle, str(entry.version), str(entry.hash))
+		assert(not data.is_empty())
+		_refresh_review_index = preload("res://data/catalog_index.gd").from_data(data)
+	Game.room = _room_fixture()
+	Game.room.config_version = _refresh_review_index.version
+	Game.room.player.phase = "Choice"
+	Game.room.allowed_actions = ["choice.pick", "choice.refresh"]
+	Game.room.reward_choice = {"refresh_count": 3 if scenario == "refresh_exhausted" else 0, "options": [{"option_id": "equipment", "kind": 1, "quantity": 1}, {"option_id": "fragments", "kind": 2, "quantity": 18}, {"option_id": "heal", "kind": 3, "quantity": 1, "heal_percent": 14}]}
+	var index: Dictionary = _refresh_review_index.duplicate(true)
+	index["_origin"] = "http://wrong-origin.example" if scenario == "refresh_unavailable" else Game.gateway.base_url
+	Game._room_catalogs[index.version] = index
+	await _render_base()
+	return false
+
+func _check_refresh_scene(frame_name: String) -> void:
+	if not "_refresh_" in frame_name: return
+	var button: Button = $UI.find_child("RewardRefresh", true, false)
+	var heading: Label = $UI.find_child("RewardChoiceTitle", true, false)
+	var plate: TextureRect = $UI.find_child("RewardChoicePlate", true, false)
+	var exhausted: bool = frame_name.ends_with("_refresh_exhausted")
+	var unavailable: bool = frame_name.ends_with("_refresh_unavailable")
+	var expected: String = Palette.localized("refresh_exhausted") if exhausted else Palette.localized("quote_unavailable_short") if unavailable else Palette.localized("exploration_refresh_cost") % 7
+	review_checks[frame_name + ": original exact localized price or state"] = button.text == expected
+	review_checks[frame_name + ": unavailable and exhausted disabled"] = button.disabled == (exhausted or unavailable)
+	review_checks[frame_name + ": visible price button"] = button.is_visible_in_tree()
+	review_checks[frame_name + ": heading clear of plate ornaments"] = Rect2(190, 22, 360, 112).grow(0.5).encloses(heading.get_rect())
+	var source_aspect: float = float(plate.texture.get_width()) / plate.texture.get_height()
+	review_checks[frame_name + ": title plate retains aspect and clears reward panel"] = is_equal_approx(plate.size.x / plate.size.y, source_aspect) and plate.get_rect().end.y <= 160
+	var breaks: int = TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE
+	var measured: Vector2 = heading.get_theme_font("font").get_multiline_string_size(heading.text, HORIZONTAL_ALIGNMENT_CENTER, heading.size.x, heading.get_theme_font_size("font_size"), -1, breaks)
+	review_checks[frame_name + ": complete localized heading"] = heading.text == Palette.localized("loot_three_choices") and heading.get_line_count() <= 2 and heading.get_visible_line_count() >= heading.get_line_count() and measured.x <= heading.size.x + 0.5 and measured.y <= heading.size.y + 0.5
+	review_checks[frame_name + ": readable heading"] = heading.get_theme_font_size("font_size") * float(get_window().size.y) / get_viewport().get_visible_rect().size.y >= 12.0
+	if unavailable: review_checks[frame_name + ": original config failure tooltip"] = button.tooltip_text == Palette.localized("config_archive_unavailable")
 
 func _prepare_historical_equipment_scene(scenario: String,locale: String) -> bool:
 	var key: String=locale+"_"+str(get_window().size.x)+"_"+scenario

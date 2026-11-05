@@ -141,7 +141,10 @@ func _table(bytes: PackedByteArray) -> Dictionary:
 		if not published: continue
 		var row := {}
 		for index in columns.size():
-			if columns[index].scope in [1, 3]: row[columns[index].name] = values[index]
+			# Older immutable bundles marked this visible gameplay price as Server.
+			# Read its exact verified value; all other Server fields keep their scope.
+			if columns[index].scope in [1, 3] or (name == "LootRules" and columns[index].name == "refresh_gold"):
+				row[columns[index].name] = values[index]
 		rows.append(row)
 	return {"name": name, "published": published, "rows": rows}
 

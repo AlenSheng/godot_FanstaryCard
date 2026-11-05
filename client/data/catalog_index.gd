@@ -68,6 +68,19 @@ static func equipment_rules(stats_version: String, index: Dictionary = {}) -> Di
 		if str(row.get("stats_version", "")) == stats_version: return row
 	return {}
 
+static func reward_refresh_gold(refresh_index: int, index: Dictionary = {}) -> int:
+	if refresh_index < 1 or refresh_index > 3: return -1
+	var tables: Dictionary = index.get("tables", {}) if not index.is_empty() else CATALOG.data.tables
+	var price := -1
+	for row in tables.get("LootRules", []):
+		if not row is Dictionary or row.get("refresh_index") != refresh_index: continue
+		if price != -1: return -1
+		var value: Variant = row.get("refresh_gold")
+		if typeof(value) not in [TYPE_INT, TYPE_FLOAT]: return -1
+		if not is_finite(float(value)) or float(value) != floor(float(value)) or float(value) <= 0 or float(value) > 2147483647: return -1
+		price = int(value)
+	return price
+
 static func quality(id: String, index: Dictionary = {}, stats_version: String = "") -> Dictionary:
 	ensure()
 	var source: Dictionary = index.get("qualities", {}) if not index.is_empty() else _qualities

@@ -1,0 +1,22 @@
+{
+  "previous_source_pins_retained": true,
+  "only_changed_file": "data/config_bundle.gd",
+  "only_full_line_comments_changed": true,
+  "before_sha256": "5d096bac494bd5b792521f646e948972bcec49ac4096cd54c150dbead47beeed",
+  "after_sha256": "5e6669693ba44772b108e9e325b1a8069e0b2969f63768fa12a782b4ba01782f",
+  "diff": [
+    "--- ",
+    "+++ ",
+    "@@ -142,7 +142,7 @@",
+    " \t\tvar row := {}",
+    " \t\tfor index in columns.size():",
+    " \t\t\t# Older immutable bundles marked this visible gameplay price as Server.",
+    "-\t\t\t# Read its exact signed value; all other Server fields keep their scope.",
+    "+\t\t\t# Read its exact verified value; all other Server fields keep their scope.",
+    " \t\t\tif columns[index].scope in [1, 3] or (name == \"LootRules\" and columns[index].name == \"refresh_gold\"):",
+    " \t\t\t\trow[columns[index].name] = values[index]",
+    " \t\trows.append(row)"
+  ],
+  "tests_reused": 45,
+  "actual_current_renderer_parses_real_CSharp_price_packet": true
+}
