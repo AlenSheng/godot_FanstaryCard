@@ -10,7 +10,7 @@ using FantasyCard.Domain.Seasons;
 
 namespace FantasyCard.Domain.Tests.Combat;
 
-public sealed class SeasonResourceLoopTests(ITestOutputHelper output)
+public sealed partial class SeasonResourceLoopTests(ITestOutputHelper output)
 {
     public static bool MatrixEnabled => Environment.GetEnvironmentVariable("FANTASYCARD_RUN_B05_MATRIX") == "1";
     private const int MaximumSeconds = 1200;
@@ -185,14 +185,16 @@ public sealed class SeasonResourceLoopTests(ITestOutputHelper output)
         Assert.Equal(original,Instances(player).Select(c=>c.InstanceId).Order().ToArray());
     }
 
-    private static CombatCardInstance[] Choose(RoomPlayerState player, MonsterCombatState target, string build, CardElement preferred)
+    private static CombatCardInstance[] Choose(RoomPlayerState player, MonsterCombatState target, string build, CardElement preferred,
+        CombatCardCatalog? publishedCatalog = null)
     {
+        var catalog = publishedCatalog ?? Catalog;
         var hand=player.Combat.Deck.Hand;
         CombatCardInstance[] best=[hand[0]]; var bestScore=double.NegativeInfinity;
         for(var mask=1;mask<(1<<hand.Count);mask++)
         {
-            var cards=hand.Where((_,i)=>(mask&(1<<i))!=0).OrderByDescending(c=>Catalog.Get(c.CardId,c.Level,c.ElementOverride).Effect.Element==preferred).ThenBy(c=>c.CardId,StringComparer.Ordinal).ToArray();
-            var definitions=cards.Select(c=>Catalog.Get(c.CardId,c.Level,c.ElementOverride)).ToArray();
+            var cards=hand.Where((_,i)=>(mask&(1<<i))!=0).OrderByDescending(c=>catalog.Get(c.CardId,c.Level,c.ElementOverride).Effect.Element==preferred).ThenBy(c=>c.CardId,StringComparer.Ordinal).ToArray();
+            var definitions=cards.Select(c=>catalog.Get(c.CardId,c.Level,c.ElementOverride)).ToArray();
             var result=CombatResolver.Resolve(definitions,player.Combat,target.ElementalResistance);
             var recovery=Math.Min(result.Heal,player.Combat.EffectiveMaximumHp-player.Combat.Hp);
             var shield=Math.Min(result.Shield,player.Combat.MaximumHp/2-player.Combat.Shield);

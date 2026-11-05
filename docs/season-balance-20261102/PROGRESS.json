@@ -167,13 +167,17 @@
     },
     {
       "id": "B05",
-      "status": "in_progress",
+      "status": "complete",
       "requirement": "合法完整卡组、水系调节、蓄能、满手轮空与真实击杀加入怪物卡，禁同时间循环",
       "evidence": [
         "evidence/B05/result.json",
-        "evidence/B05/test-budget.json"
+        "evidence/B05/test-budget.json",
+        "B05-RESOURCE-ACCEPTANCE.md",
+        "B05-BUDGET.json",
+        "evidence/B05-final-r1/result.json",
+        "evidence/B05-final-r1/b05-final-inspection.derived.json"
       ],
-      "note": "288真实计时路线：132撤离/114死亡/42观察窗未结束；资源/实例/怪物卡及500ms检查未报错，3边界夹具通过。额外1200秒全扫描终局门槛未通过，不报血量异常或同时间无限循环。累计291/300，余9，不重跑整组，正式难度/属性及D03仍待评估。"
+      "note": "288真实计时路线：132撤离/114死亡/42观察窗未结束；资源/实例/怪物卡及500ms检查未报错，3边界夹具通过。额外1200秒全扫描终局门槛未通过，不报血量异常或同时间无限循环。累计291/300，余9，不重跑整组，正式难度/属性及D03仍待评估。 当前资源契约收口：正式14条件R1新增9尝试，2214原施法独立核对零资源违例；旧3满手控制按已验旧Git原件和精确逻辑差异复用。旧42全图超时及新首批红裁决衔接失败不追认为通过；8实际终态3撤离/5死亡，1祭司draw-engine打完Boss后缺终态。只续跑未开始7组合通过，原骰8423按真实Hits=false处理领域Miss，不冒称PG配额。账本现300/300余0，权威B05-BUDGET.json，禁止追加或用D项换名重跑。职业效率/完整路线/群体平衡仍D02/D03及C16，整体24/35。"
     },
     {
       "id": "C01",
