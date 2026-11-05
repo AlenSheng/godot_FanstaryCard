@@ -175,6 +175,7 @@ public sealed class GameConfigCatalog
     public SeasonShopConfig? SeasonShop { get; private init; }
     public SeasonActivityConfig? SeasonActivity { get; private init; }
     public SeasonJourneyConfig? SeasonJourney { get; private init; }
+    public SeasonJourneyRewardsConfig? SeasonJourneyRewards { get; private init; }
     public SeasonThemeConfig? SeasonThemes { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
@@ -323,9 +324,11 @@ public sealed class GameConfigCatalog
         ValidateBackpacks(backpacks);
         ValidateEconomy(economy, shopCardPrices, cards);
         ValidateItems(items);
+        var journey=ReadSeasonJourney(bundle);
+        var shop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices),SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=ReadSeasonJourney(bundle),SeasonThemes=ReadSeasonThemes(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=shop,SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=journey,SeasonJourneyRewards=ReadSeasonJourneyRewards(bundle,journey,shop,cards),SeasonThemes=ReadSeasonThemes(bundle) };
     }
 
     private static SeasonThemeConfig? ReadSeasonThemes(ConfigBundle bundle)
@@ -343,6 +346,21 @@ public sealed class GameConfigCatalog
             groups.Rows.Select(r=>new SeasonThemeGroup(groups.Text(r,"group_id"),groups.Text(r,"tier"),groups.Text(r,"member_elements"),groups.Bool(r,"spawn_allowed"),groups.Int(r,"base_weight"))).ToArray());
         policy.Validate(ReadSeasonLootPreference(bundle)?.DefaultElement??throw new InvalidDataException("Theme needs the original loot preference policy."));
         return policy;
+    }
+
+    private static SeasonJourneyRewardsConfig? ReadSeasonJourneyRewards(ConfigBundle bundle,SeasonJourneyConfig? journey,
+        SeasonShopConfig? shop,IReadOnlyList<CardConfigDefinition> cards)
+    {
+        var rewards=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRewards");
+        var cosmetics=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonCosmetics");
+        if(rewards is null&&cosmetics is null)return null;
+        if(rewards is null||cosmetics is null)throw new InvalidDataException("Journey rewards and cosmetics must publish together.");
+        var policy=new SeasonJourneyRewardsConfig(rewards.Rows.Select(r=>new SeasonJourneyRewardConfig(rewards.Text(r,"reward_id"),
+            rewards.Int(r,"level"),rewards.Text(r,"kind"),rewards.Int(r,"amount"),rewards.Text(r,"ownership"),
+            rewards.Bool(r,"requires_class_choice"),rewards.OptionalText(r,"cosmetic_id"))).ToArray(),
+            cosmetics.Rows.Select(r=>new SeasonCosmeticConfig(cosmetics.Text(r,"cosmetic_id"),cosmetics.Text(r,"kind"),
+                cosmetics.Text(r,"name_key"),cosmetics.Text(r,"description_key"))).ToArray());
+        policy.Validate(journey,shop,cards);return policy;
     }
 
     private static SeasonJourneyConfig? ReadSeasonJourney(ConfigBundle bundle)

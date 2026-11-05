@@ -37,8 +37,8 @@ public static partial class SeasonConfigValidator
         var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
         if (present.Count == 0)
         {
-            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference" or "SeasonBotRewards"))
-                throw new InvalidDataException("Borrowed templates require the seasonal configuration group.");
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference" or "SeasonBotRewards" or "SeasonJourneyRewards" or "SeasonCosmetics"))
+                throw new InvalidDataException("Seasonal extensions require the complete seasonal configuration group.");
             return; // Archived pre-season workbooks remain valid.
         }
         foreach (var (name, schema) in Schemas)
@@ -64,6 +64,7 @@ public static partial class SeasonConfigValidator
         ValidateShop(tables);
         ValidateActivity(tables);
         ValidateJourney(tables);
+        ValidateJourneyRewards(tables);
         ValidateThemes(tables);
         ValidateProgression(present["SeasonProgression"]);
         ValidateRed(present["SeasonRedRules"]);

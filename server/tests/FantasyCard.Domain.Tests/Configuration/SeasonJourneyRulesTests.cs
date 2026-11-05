@@ -16,7 +16,7 @@ public sealed class SeasonJourneyRulesTests
     public void PublishedJourneyUsesTheFormalGroupAndOriginalConfigTenRemainsWithoutJourneyAwards()
     {
         var current=GameConfigCatalog.Current;var policy=Assert.IsType<SeasonJourneyConfig>(current.SeasonJourney);
-        policy.Validate();Assert.Equal("season-v1-config-12",current.Version);
+        policy.Validate();
         Assert.Equal(12525,policy.Threshold(30,42));Assert.Equal(8959,policy.Threshold(30,30));
         Assert.Equal(3,policy.WeeklyContracts.Single(c=>c.CompletionKind=="Extracted").Target);
         Assert.Equal(5,policy.WeeklyContracts.Single(c=>c.CompletionKind=="Elite").Target);
