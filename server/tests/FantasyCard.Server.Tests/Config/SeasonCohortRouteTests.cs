@@ -15,7 +15,7 @@ public sealed class SeasonCohortRouteTests
     private static readonly string[] Slots=["Head","Hands","Chest","Legs","Feet"];
     private static readonly TimeSpan Tick=TimeSpan.FromMilliseconds(100);
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
-    private sealed record Scenario(string Id,string Hero,string Cohort,int Seed);
+    internal sealed record Scenario(string Id,string Hero,string Cohort,int Seed,int Difficulty=2,string Route="R1",bool EarlyExtract=false,bool AdaptiveEquipment=false);
 
     private static Scenario[] Plan()
     {
@@ -50,19 +50,19 @@ public sealed class SeasonCohortRouteTests
         foreach(var row in rows){attempts.WriteLine(JsonSerializer.Serialize(row));attempts.Flush();Run(row,trace,results);trace.Flush();results.Flush();}
     }
 
-    private static void Run(Scenario scenario,StreamWriter trace,StreamWriter results)
+    internal static BattleRoomSnapshot Run(Scenario scenario,StreamWriter trace,StreamWriter results,IReadOnlyList<ExplorationItem>? ownedArmor=null)
     {
         var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(scenario.Hero);var id=Guid.NewGuid();
-        var context=new SeasonContext("d03-cohorts",2,"season-v1",config.Version,"season-equipment-v1");
+        var context=new SeasonContext("d03-cohorts",scenario.Difficulty,"season-v1",config.Version,"season-equipment-v1");
         var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,scenario.Seed,season:context);
-        var startingCards=Deck(hero,scenario.Cohort);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:2,WornArmor:Armor(),CardLevels:Enumerable.Repeat(2,20).ToArray()));
-        var choiceRandom=new Random(scenario.Seed^0x43484f49);var lastAction=TimeSpan.FromSeconds(-1);var reaction=TimeSpan.FromSeconds(scenario.Cohort=="novice"?1:scenario.Cohort=="returning"?.7:.5);
-        var map=ChaosMapGenerator.Generate(scenario.Seed,1,config.SeasonThemes);var mapOriginal=JsonSerializer.Serialize(map.Capture());var path=Path(map);room.InitializeMap(map);
+        var startingCards=Deck(hero,scenario.Cohort);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),WornArmor:ownedArmor??Armor(),CardLevels:Enumerable.Repeat(Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),20).ToArray()));
+        var originalArmor=player.WornArmor.ToArray();var choiceRandom=new Random(scenario.Seed^0x43484f49);var lastAction=TimeSpan.FromSeconds(-1);var reaction=TimeSpan.FromSeconds(scenario.Cohort=="novice"?1:scenario.Cohort=="returning"?.7:.5);
+        var map=ChaosMapGenerator.Generate(scenario.Seed,1,config.SeasonThemes);var mapOriginal=JsonSerializer.Serialize(map.Capture());var path=Path(map,scenario.Route);room.InitializeMap(map);
         var originalIds=Instances(player).Select(x=>x.InstanceId).ToHashSet();var pathIndex=0;var casts=0;var kills=0;var clears=0;var potions=0;var springs=0;var redRolls=0;
         var recoveredAction=false;var recoveredExtraction=false;var extracting=false;DateTimeOffset? expectedExtraction=null;
         var open=false;var monsters=Array.Empty<MonsterCombatState>();var previous=new Dictionary<string,(int Hp,int Shield)>(StringComparer.Ordinal);
         var initialHp=0;var initialShield=0;long hpAdded=0,shieldAdded=0,hpOtherLoss=0,shieldDiscarded=0,damage=0,totalDamage=0;
-        trace.WriteLine(JsonSerializer.Serialize(new {kind="start",scenario,config.Version,config.ContentHash,context,path,map=map.Capture(),player=room.CapturePlayer(id),permanent_card_weapon_assumption=scenario.Cohort=="novice"?2:5,actual_effective_level=2,quota_fixture="Only if a real red roll hits, assume that logical server's weekly quota was already spent; do not mint or claim PostgreSQL verification."}));trace.Flush();
+        trace.WriteLine(JsonSerializer.Serialize(new {kind="start",scenario,config.Version,config.ContentHash,context,path,map=map.Capture(),player=room.CapturePlayer(id),permanent_card_weapon_assumption=scenario.Cohort=="novice"?2:5,actual_effective_level=Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),quota_fixture="Only if a real red roll hits, assume that logical server's weekly quota was already spent; do not mint or claim PostgreSQL verification."}));trace.Flush();
         void Begin()
         {
             monsters=player.Pve!.Monsters.ToArray();previous=monsters.ToDictionary(x=>x.MonsterId,x=>(x.Hp,x.Shield),StringComparer.Ordinal);
@@ -105,12 +105,15 @@ public sealed class SeasonCohortRouteTests
                 if(open){Finish("Clear");clears++;}
                 if(player.PendingRedEvaluation is {} red)
                 {
-                    var hits=config.SeasonRed!.Hits(red.Source,2,red.Roll);var status=hits?"Exhausted":"Miss";room.ApplyRedDrop(id,new(red.AttemptId,status,null));redRolls++;
+                    var hits=config.SeasonRed!.Hits(red.Source,scenario.Difficulty,red.Roll);var status=hits?"Exhausted":"Miss";room.ApplyRedDrop(id,new(red.AttemptId,status,null));redRolls++;
                     trace.WriteLine(JsonSerializer.Serialize(new {kind="red-adjudication",scenario.Id,evaluation=red,hits,status,fixture_only_no_mint=true}));
                 }
                 var choices=room.GetRewardChoice(id);var equipment=choices.Options.Single(x=>x.Kind==RewardChoiceKind.Equipment);var offered=equipment.Item!.Equipment!;var wantGear=scenario.Cohort=="novice"||scenario.Cohort=="returning"&&choiceRandom.NextDouble()<.75||scenario.Cohort=="skilled"&&SeasonLootConfig.Rank(offered.Quality)>=3&&!player.Inventory.Items.Any(x=>x.Equipment is {} e&&e.Slot==offered.Slot&&SeasonLootConfig.Rank(e.Quality)>=SeasonLootConfig.Rank(offered.Quality));
+                var previousSlot=player.WornArmor.FirstOrDefault(x=>x.Equipment!.Slot==offered.Slot);var better=previousSlot is null||SeasonLootConfig.Rank(offered.Quality)>SeasonLootConfig.Rank(previousSlot.Equipment!.Quality)||offered.Quality==previousSlot.Equipment!.Quality&&offered.Level>previousSlot.Equipment.Level;
+                var salvageNeed=scenario.AdaptiveEquipment&&scenario.Difficulty<=1&&better&&!player.Inventory.Items.Any(x=>x.Equipment is {} e&&e.Slot==offered.Slot&&SeasonLootConfig.Rank(e.Quality)>=SeasonLootConfig.Rank(offered.Quality));wantGear|=salvageNeed;
                 var selected=player.Combat.Hp<=player.Combat.MaximumHp*.60?choices.Options.Single(x=>x.Kind==RewardChoiceKind.ImmediateHeal):wantGear?equipment:choices.Options.Single(x=>x.Kind==RewardChoiceKind.EquipmentFragments);
-                var hpBefore=player.Combat.Hp;var applied=room.ClaimReward(id,selected.OptionId);trace.WriteLine(JsonSerializer.Serialize(new {kind="reward",scenario.Id,pathIndex,seconds=room.Elapsed.TotalSeconds,choices,selected,applied,hpBefore,hpAfter=player.Combat.Hp,inventory=player.Inventory.Capture()}));continue;
+                var equip=scenario.AdaptiveEquipment&&better&&selected.Kind==RewardChoiceKind.Equipment&&(SeasonLootConfig.Rank(offered.Quality)<4||!player.WornArmor.Any(x=>x.Equipment!.Slot!=offered.Slot&&SeasonLootConfig.Rank(x.Equipment.Quality)>=4));
+                var hpBefore=player.Combat.Hp;var applied=room.ClaimReward(id,selected.OptionId,equip:equip);trace.WriteLine(JsonSerializer.Serialize(new {kind="reward",scenario.Id,pathIndex,seconds=room.Elapsed.TotalSeconds,choices,selected,applied,equipped=equip,salvageNeed,hpBefore,hpAfter=player.Combat.Hp,inventory=player.Inventory.Capture()}));continue;
             }
             if(player.Phase==RoomPlayerPhase.ActionBar&&!extracting)
             {
@@ -122,7 +125,7 @@ public sealed class SeasonCohortRouteTests
                 {
                     room.RequestSpring(id);while(room.CapturePlayer(id).SpringDrink is not null&&room.Elapsed.TotalSeconds<1200)Step();Assert.Null(room.CapturePlayer(id).SpringDrink);springs++;trace.WriteLine(JsonSerializer.Serialize(new {kind="spring",scenario.Id,pathIndex,player=room.CapturePlayer(id)}));
                 }
-                if(pathIndex+1<path.Length)
+                if(pathIndex+1<path.Length&&!(scenario.EarlyExtract&&map.GetCell(player.Position!.Value).HasEvacuation))
                 {
                     var from=player.Position!.Value;var to=path[++pathIndex];Assert.True(map.CanMove(from,to)&&from.ManhattanDistance(to)==1);
                     var moved=room.MovePlayerAndPair(id,to,room.Revision,Epoch+room.Elapsed);Assert.Null(moved.StartedDuel);Assert.Equal(to,player.Position);
@@ -147,15 +150,22 @@ public sealed class SeasonCohortRouteTests
         }
         var outcome=player.Phase==RoomPlayerPhase.Extracted?"Extracted":player.Phase==RoomPlayerPhase.Dead?"Dead":"Timeout";if(open)Finish(outcome);
         Assert.Equal(mapOriginal,JsonSerializer.Serialize(room.Map!.Capture()));
-        if(outcome=="Extracted"){Assert.Equal(path.Length,clears);Assert.True(recoveredAction&&recoveredExtraction);Assert.Equal(expectedExtraction,player.ExtractionCompletedAt);Assert.Equal(path[^1],player.Position);}
-        var playerSnapshot=room.CapturePlayer(id);var ownCleared=room.Map!.Cells.Where(x=>playerSnapshot.ClearedCells!.Contains(x.Position));var marks=outcome=="Extracted"?config.SeasonCrafting!.Pending(2,false,ownCleared):new PendingBlueprints();
-        var resultRow=new {scenario,outcome,seconds=room.Elapsed.TotalSeconds,casts,kills,clears,pathIndex,totalDamage,potions,springs,redRolls,recoveredAction,recoveredExtraction,expectedExtraction,original_map_unchanged=true,marks,realizedGold=outcome=="Extracted"?player.Inventory.Items.Where(x=>x.Kind==ExplorationItemKind.Gold).Sum(x=>x.Quantity):0,realizedFragments=outcome=="Extracted"?player.Inventory.Items.Where(x=>x.Kind==ExplorationItemKind.EquipmentFragments).Sum(x=>x.Quantity):0,lostBlueBodies=outcome=="Dead"?5:0,lostEnhancementInvestment=outcome=="Dead"?10:0,not_long_run_or_first_set_quantiles=true,snapshot=room.Capture()};trace.WriteLine(JsonSerializer.Serialize(new {kind="end",result=resultRow}));results.WriteLine(JsonSerializer.Serialize(resultRow));
+        if(outcome=="Extracted"){Assert.Equal(pathIndex+1,clears);Assert.True(recoveredAction&&recoveredExtraction);Assert.Equal(expectedExtraction,player.ExtractionCompletedAt);Assert.True(map.GetCell(player.Position!.Value).HasEvacuation||map.GetCell(player.Position.Value).IsBoss);if(!scenario.EarlyExtract)Assert.Equal(path[^1],player.Position);}
+        var playerSnapshot=room.CapturePlayer(id);var ownCleared=room.Map!.Cells.Where(x=>playerSnapshot.ClearedCells!.Contains(x.Position));var marks=outcome=="Extracted"?config.SeasonCrafting!.Pending(scenario.Difficulty,false,ownCleared):new PendingBlueprints();
+        var resultRow=new {scenario,outcome,seconds=room.Elapsed.TotalSeconds,casts,kills,clears,pathIndex,totalDamage,potions,springs,redRolls,recoveredAction,recoveredExtraction,expectedExtraction,original_map_unchanged=true,marks,realizedGold=outcome=="Extracted"?player.Inventory.Items.Where(x=>x.Kind==ExplorationItemKind.Gold).Sum(x=>x.Quantity):0,realizedFragments=outcome=="Extracted"?player.Inventory.Items.Where(x=>x.Kind==ExplorationItemKind.EquipmentFragments).Sum(x=>x.Quantity):0,lostBlueBodies=outcome=="Dead"?originalArmor.Count(x=>x.Equipment!.Quality=="Blue"):0,lostEnhancementInvestment=outcome=="Dead"?originalArmor.Sum(x=>Enumerable.Range(1,x.Equipment!.Level).Sum(level=>config.EquipmentQuality(x.Equipment.Quality,"season-equipment-v1").EnhancementCost(level))):0,not_long_run_or_first_set_quantiles=true,snapshot=room.Capture()};trace.WriteLine(JsonSerializer.Serialize(new {kind="end",result=resultRow}));results.WriteLine(JsonSerializer.Serialize(resultRow));return room.Capture();
     }
 
     private static readonly MapPosition[] R1=[new(0,0),new(0,1),new(0,2),new(0,3),new(0,4),new(1,4),new(2,4),new(2,3)];
-    private static MapPosition[] Path(ChaosMapState map)
+    private static MapPosition[] Path(ChaosMapState map,string route="R1")
     {
-        Assert.Equal(R1[0],map.SpawnPositions[0]);Assert.Equal(R1[^1],map.BossPosition);return R1;
+        if(route=="R1"){Assert.Equal(R1[0],map.SpawnPositions[0]);Assert.Equal(R1[^1],map.BossPosition);return R1;}
+        Assert.Equal("natural-shortest",route);var start=map.SpawnPositions[0];var queue=new Queue<MapPosition>();queue.Enqueue(start);var previous=new Dictionary<MapPosition,MapPosition?>{{start,null}};
+        while(queue.TryDequeue(out var current))
+        {
+            if(current==map.BossPosition){var path=new List<MapPosition>();for(MapPosition? p=current;p is {} pos;p=previous[pos])path.Add(pos);path.Reverse();return path.ToArray();}
+            foreach(var next in map.GetNeighbors(current).Where(next=>map.CanMove(current,next)))if(previous.TryAdd(next,current))queue.Enqueue(next);
+        }
+        throw new InvalidOperationException("Original generated map has no legal Boss path.");
     }
     private static CombatCardInstance[] Instances(RoomPlayerState player)=>player.Combat.Deck.Hand.Concat(player.Combat.Deck.Library).Concat(player.Combat.Deck.Discard).ToArray();
     private static string[] Deck(HeroClass hero,string cohort)=>cohort=="novice"?GameConfigCatalog.Current.BorrowedDeck(hero).CardIds.ToArray():SeasonClassEfficiencyPilotTests.Deck(hero,"counter-tempo");
