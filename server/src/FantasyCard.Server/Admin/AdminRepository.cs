@@ -278,8 +278,10 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         RunBulkOperationAsync(playerId, requestId, "grant_all_equipment", async (connection, transaction) =>
         {
             var granted = 0;
+            var now = timeProvider.GetUtcNow();
             foreach (var specification in AllEquipmentSpecifications)
             {
+                var instanceId = Guid.CreateVersion7();
                 await using var command = new NpgsqlCommand(
                     """
                     INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait)
@@ -288,13 +290,24 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                         SELECT 1 FROM equipments WHERE owner_id=$2 AND slot=$3 AND quality=$4 AND element=$6
                             AND location IN ('Inventory','Equipped'))
                     """, connection, transaction);
-                command.Parameters.AddWithValue(Guid.CreateVersion7());
+                command.Parameters.AddWithValue(instanceId);
                 command.Parameters.AddWithValue(playerId);
                 command.Parameters.AddWithValue(specification.Slot);
                 command.Parameters.AddWithValue(specification.Quality);
-                command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+                command.Parameters.AddWithValue(now);
                 command.Parameters.AddWithValue(specification.Element);
-                granted += await command.ExecuteNonQueryAsync(cancellationToken);
+                var inserted = await command.ExecuteNonQueryAsync(cancellationToken);
+                granted += inserted;
+                if (inserted != 0)
+                {
+                    await using var movement = new NpgsqlCommand("""
+                        INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,source_kind)
+                        VALUES($1,$2,$3,'Admin','Inventory','admin.grant_all_equipment',$4,$5,'AdminGrant')
+                        """, connection, transaction);
+                    movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
+                    movement.Parameters.AddWithValue(instanceId);movement.Parameters.AddWithValue(requestId);movement.Parameters.AddWithValue(now);
+                    await movement.ExecuteNonQueryAsync(cancellationToken);
+                }
             }
             return new AdminBulkOperationResult("grant_all_equipment", Equipment: granted);
         }, cancellationToken);
