@@ -83,7 +83,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         var resultRow=new {row,outcome=player.Phase==RoomPlayerPhase.Choice?"Win":player.Phase==RoomPlayerPhase.Dead?"Dead":"Timeout",seconds=room.Elapsed.TotalSeconds,casts,previews,damage,initialHp=initial.Hp,initialShield=initial.Shield,addedHp,addedShield,otherHpLoss,discardedShield,remainingHp=target.Hp,remainingShield=target.Shield,endingHp=player.Combat.Hp};trace.WriteLine(JsonSerializer.Serialize(new {kind="end",result=resultRow}));results.WriteLine(JsonSerializer.Serialize(resultRow));
     }
 
-    private static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount)
+    internal static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount)
     {
         var before=JsonSerializer.Serialize(room.Capture());var hand=player.Combat.Deck.Hand;
         var scratch=new PlayerCombatState(player.HeroClass,baseDeck,new Random(1),player.Combat.WeaponLevel,player.Combat.Equipment,Enumerable.Repeat(5,20).ToArray());
@@ -134,7 +134,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         }
         return total;
     }
-    private static string[] Deck(HeroClass hero,string variant)
+    internal static string[] Deck(HeroClass hero,string variant)
     {
         var classCards=new[]{hero==HeroClass.Mage?"MAG-09":hero==HeroClass.Priest?"PRI-09":"GUA-09",hero==HeroClass.Mage?"MAG-10":hero==HeroClass.Priest?"PRI-10":"GUA-10"};
         if(variant is "reference" or "tempo")return Core.Select(x=>x=="GO03"&&variant=="tempo"?"GO04":x).Concat(classCards).Concat(Tail).ToArray();
