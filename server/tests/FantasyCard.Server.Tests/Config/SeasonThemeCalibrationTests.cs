@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FantasyCard.ConfigExporter;
 using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Configuration;
@@ -11,6 +12,7 @@ namespace FantasyCard.Server.Tests.Config;
 public sealed class SeasonThemeCalibrationTests
 {
     public static bool Enabled=>Environment.GetEnvironmentVariable("FANTASYCARD_RUN_C16_CALIBRATION")=="1";
+    public static bool ReuseEnabled=>Environment.GetEnvironmentVariable("FANTASYCARD_C16_REUSE_PREFLIGHT")=="1";
     private static readonly string[] Themes=["Wood","Fire","Earth","Metal","Water"];
     private static readonly string[] Builds=["direct-engine","counter-combo","fortress-control"];
     private static readonly HeroClass[] Heroes=[HeroClass.Mage,HeroClass.Priest,HeroClass.Guardian];
@@ -23,6 +25,7 @@ public sealed class SeasonThemeCalibrationTests
     private static readonly bool[] EncounterKinds=[false,true];
     private static readonly string[] CounterProbeThemes=["Fire","Wood"];
     private static readonly string[] RemainingProbeThemes=["Earth","Metal","Water"];
+    private static readonly string[] ReuseEliteGroups=["E2","E5"];
     private static readonly TimeSpan Step=TimeSpan.FromMilliseconds(100);
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
 
@@ -162,6 +165,68 @@ public sealed class SeasonThemeCalibrationTests
         }
         Assert.Equal(18,number);
     }
+
+    [Fact(Skip="Requires explicit archived-workbook equivalence inspection; no timed encounters.",SkipUnless=nameof(ReuseEnabled))]
+    public void UnchangedObservationDependenciesMatchArchived14BeforeAnyTimingReuse()
+    {
+        var input=Environment.GetEnvironmentVariable("FANTASYCARD_C16_V14_WORKBOOK")??throw new InvalidOperationException("Frozen14 workbook required.");
+        var output=Environment.GetEnvironmentVariable("FANTASYCARD_C16_REUSE_OUTPUT")??throw new InvalidOperationException("New proof path required.");Assert.False(File.Exists(output));
+        var original=XlsxConfigReader.Read(input);var pairs=new List<object>();
+        foreach(var theme in Themes)
+        {
+            var tables=original.Select(t=>
+            {
+                var field=t.Name=="SeasonThemeRules"?"selected_theme":t.Name=="SeasonLootPreference"?"default_element":null;
+                if(field is null)return t;var column=t.Columns.Select((c,i)=>(c,i)).Single(p=>p.c.Name==field).i;
+                var rows=t.Rows.ToArray();var row=rows[0].ToArray();row[column]=new(ConfigValueType.Text,theme);rows[0]=row;return t with{Rows=rows};
+            }).ToArray();
+            var old=GameConfigCatalog.Load(ConfigCompiler.Compile(theme=="Fire"?"season-v1-config-14":"theme-control-"+theme.ToLowerInvariant(),tables,out _));
+            var current=Configuration(theme);Assert.Null(old.SeasonMonsterTuning);Assert.NotNull(current.SeasonMonsterTuning);
+            if(theme=="Fire")Assert.Equal("f015f18d13ddfa022cb50cc821574481a21976c0d0f21d3f4ae10dcbfaa28e62",old.ContentHash);
+            Assert.Equal(JsonSerializer.Serialize(old.Numerics),JsonSerializer.Serialize(current.Numerics));
+            Assert.Equal(JsonSerializer.Serialize(old.Cards),JsonSerializer.Serialize(current.Cards));Assert.Equal(JsonSerializer.Serialize(old.CardLevels),JsonSerializer.Serialize(current.CardLevels));
+            Assert.Equal(JsonSerializer.Serialize(old.SeasonDifficulties),JsonSerializer.Serialize(current.SeasonDifficulties));Assert.Equal(JsonSerializer.Serialize(old.SeasonEquipment),JsonSerializer.Serialize(current.SeasonEquipment));Assert.Equal(JsonSerializer.Serialize(old.SeasonThemes),JsonSerializer.Serialize(current.SeasonThemes));
+            foreach(var hero in Heroes)
+            {
+                Assert.Equal(Deck(old,hero,old.SeasonThemes!.Selected,"direct-engine"),Deck(current,hero,current.SeasonThemes!.Selected,"direct-engine"));
+                for(var d=0;d<6;d++)Assert.Equal(Armor(old.SeasonThemes.Selected,"direct-engine",d).Select(a=>a.Equipment),Armor(current.SeasonThemes.Selected,"direct-engine",d).Select(a=>a.Equipment));
+            }
+            for(var d=0;d<6;d++)
+            {
+                var cell=new ChaosMapCell(new(2,2),ChaosMapLayer.Core,true,false,false,"BOSS");
+                Assert.Equal(JsonSerializer.Serialize(PveBattleFactory.Create(cell,old.SeasonDifficulty(d),old.SeasonThemes!.Selected).Monsters.Select(m=>m.Capture())),JsonSerializer.Serialize(PveBattleFactory.Create(cell,current.SeasonDifficulty(d),current.SeasonThemes!.Selected,current.SeasonMonsterTuning).Monsters.Select(m=>m.Capture())));
+                foreach(var group in ReuseEliteGroups)
+                {
+                    cell=new(new(1,2),ChaosMapLayer.Middle,false,false,false,group);
+                    Assert.Equal(JsonSerializer.Serialize(PveBattleFactory.Create(cell,old.SeasonDifficulty(d)).Monsters.Select(m=>m.Capture())),JsonSerializer.Serialize(PveBattleFactory.Create(cell,current.SeasonDifficulty(d),tuning:current.SeasonMonsterTuning).Monsters.Select(m=>m.Capture())));
+                }
+            }
+            pairs.Add(new{theme,oldVersion=old.Version,oldHash=old.ContentHash,newVersion=current.Version,newHash=current.ContentHash,boss_all_six_difficulties_equal=true,unchanged_elite_groups=ReuseEliteGroups});
+        }
+        File.WriteAllText(output,JsonSerializer.Serialize(new{scope="Factory/card/gear/difficulty inputs only; no clock or resolver execution. Changed E1/E3/E4/E6 elites not eligible.",pairs}));
+    }
+
+    [Fact(Skip="Requires a frozen validated roster within the remaining C16 budget.",SkipUnless=nameof(Enabled))]
+    public void ValidatedCandidateRosterRecordsOnlyItsDeclaredEncounters()
+    {
+        var input=Environment.GetEnvironmentVariable("FANTASYCARD_C16_VALIDATION_PLAN")??throw new InvalidOperationException("Frozen roster required.");
+        using var plan=JsonDocument.Parse(File.ReadAllText(input));var prior=plan.RootElement.GetProperty("prior_used").GetInt32();
+        var cases=plan.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new ValidationCase(x.GetProperty("theme").GetString()!,x.GetProperty("difficulty").GetInt32(),x.GetProperty("hero").GetString()!,x.GetProperty("build").GetString()!,x.GetProperty("boss").GetBoolean(),x.GetProperty("seed").GetInt32())).ToArray();
+        Assert.InRange(prior,217,299);Assert.InRange(cases.Length,1,300-prior);Assert.Equal(cases.Length,cases.Distinct().Count());
+        foreach(var c in cases){Assert.Contains(c.Theme,Themes);Assert.InRange(c.Difficulty,0,5);Assert.Contains(c.Hero,Heroes.Select(h=>h.ToString()));Assert.Contains(c.Build,Builds);Assert.InRange(c.Seed,0,int.MaxValue);}
+        var directory=Environment.GetEnvironmentVariable("FANTASYCARD_C16_CALIBRATION_DIR")??throw new InvalidOperationException("Owned output required.");Assert.False(Directory.Exists(directory));Directory.CreateDirectory(directory);
+        using var attempts=new StreamWriter(Path.Combine(directory,"attempts.original.jsonl"));using var actions=new StreamWriter(Path.Combine(directory,"actions.original.jsonl"));using var resources=new StreamWriter(Path.Combine(directory,"monster-resources.original.jsonl"));using var results=new StreamWriter(Path.Combine(directory,"encounters.original.jsonl"));
+        var configs=new Dictionary<string,GameConfigCatalog>(StringComparer.Ordinal);var number=0;
+        foreach(var c in cases)
+        {
+            if(!configs.TryGetValue(c.Theme,out var config)){config=Configuration(c.Theme);configs.Add(c.Theme,config);}
+            number++;attempts.WriteLine(JsonSerializer.Serialize(new{number,theme=c.Theme,difficulty=c.Difficulty,hero=c.Hero,build=c.Build,boss=c.Boss,seed=c.Seed,config.Version,config.ContentHash,priorBudget=prior,maximumBudget=300}));attempts.Flush();
+            var row=Run(config,c.Difficulty,Enum.Parse<HeroClass>(c.Hero),c.Build,c.Seed,actions,resources,c.Boss);results.WriteLine(JsonSerializer.Serialize(row));results.Flush();actions.Flush();resources.Flush();
+        }
+        Assert.Equal(cases.Length,number);
+    }
+
+    private sealed record ValidationCase(string Theme,int Difficulty,string Hero,string Build,bool Boss,int Seed);
 
     private static CalibrationRow Run(GameConfigCatalog config,int difficulty,HeroClass hero,string build,int seed,StreamWriter actions,StreamWriter resources,bool isBoss=true)
     {
