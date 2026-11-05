@@ -1,6 +1,6 @@
 # C01 怪组版本化校准前置
 
-状态：待实现；没有改生产代码、正式数值或工作簿。此项为C16实际盾量/耗时差的校准前置，不撤销原14固定基准下的既有证据。原数据冻结在[evidence/C16-expansion-r1/monster-base-extractor-r1/legacy-base.original.json](evidence/C16-expansion-r1/monster-base-extractor-r1/legacy-base.original.json)，35成员/58初始意图及原工厂、程序集、输出SHA均可核验。
+状态：已按本计划落实本地候选15，源/发布契约通过；计时平衡仍待C16。当前状态见[C01实现与验证](C01-MONSTER-TUNING-IMPLEMENTED.md)。以下为原设计与草案记录。此项为C16实际盾量/耗时差的校准前置，不撤销原14固定基准下的既有证据。原数据冻结在[evidence/C16-expansion-r1/monster-base-extractor-r1/legacy-base.original.json](evidence/C16-expansion-r1/monster-base-extractor-r1/legacy-base.original.json)，35成员/58初始意图及原工厂、程序集、输出SHA均可核验。
 
 ## 最小实现边界
 

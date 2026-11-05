@@ -355,7 +355,7 @@ public sealed partial class BattleRoom
         foreach (var (player, index) in _players.Values.OrderBy(player => player.PlayerId).Select((player, index) => (player, index)))
         {
             player.Position = map.SpawnPositions[index];
-            player.Pve = PveBattleFactory.Create(map.GetCell(player.Position.Value), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty),Season is not null&&_catalog.UsesPublishedConfiguration?_catalog.Configuration.SeasonThemes?.Selected:null);
+            player.Pve = CreateOriginalPve(map.GetCell(player.Position.Value));
             player.Combat.BeginBattle(player.Pve.BattleId);
             player.Phase = RoomPlayerPhase.Pve;
             StartBotPveSimulation(player);
@@ -378,7 +378,7 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("A player cannot move while drinking from a spring.");
         if (player.Position is not { } current || !Map.CanMove(current, target))
             throw new DomainValidationException("The target cell is not a legal inward or same-layer move.");
-        var targetPve = player.ClearedCells.Contains(target) ? null : PveBattleFactory.Create(Map.GetCell(target), Season is null ? null : _catalog.Configuration.SeasonDifficulty(Season.Difficulty),Season is not null&&_catalog.UsesPublishedConfiguration?_catalog.Configuration.SeasonThemes?.Selected:null);
+        var targetPve = player.ClearedCells.Contains(target) ? null : CreateOriginalPve(Map.GetCell(target));
         if (player.Pve?.IsCleared == true) player.ClearedCells.Add(current);
         if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;

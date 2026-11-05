@@ -18,12 +18,13 @@ public sealed class RewardRefreshConfigurationTransportTests
         Directory.CreateDirectory(output);
         var archive=Path.Combine(root,"server/config/archive/season-v1-config-12/fantasycard.config.bytes");
         var oldBytes=File.ReadAllBytes(archive);var oldHash=SHA256.HashData(oldBytes);
+        var formal14=GameConfigCatalog.Load(File.ReadAllBytes(Path.Combine(root,"server/config/archive/season-v1-config-14/fantasycard.config.bytes")));
         var first=RewardRefreshOriginalConfigTests.CreateConfig("refresh-price-seven");
         var next=RewardRefreshOriginalConfigTests.CreateConfig("refresh-price-eleven",alternate:true);
         var fixtures=new[] {(Name:"archive12",Catalog:GameConfigCatalog.Load(oldBytes),LegacyScope:true),
-            (Name:"formal14",Catalog:GameConfigCatalog.Current,LegacyScope:false),
+            (Name:"formal14",Catalog:formal14,LegacyScope:false),(Name:"formal-current",Catalog:GameConfigCatalog.Current,LegacyScope:false),
             (Name:"seven",Catalog:first.Catalog,LegacyScope:false),(Name:"eleven",Catalog:next.Catalog,LegacyScope:false)};
-        Assert.Equal("season-v1-config-14",GameConfigCatalog.Current.Version);
+        Assert.Equal("season-v1-config-14",formal14.Version);Assert.NotEqual(formal14.Version,GameConfigCatalog.Current.Version);
         var cases=new List<object>();
         foreach(var f in fixtures)
         {

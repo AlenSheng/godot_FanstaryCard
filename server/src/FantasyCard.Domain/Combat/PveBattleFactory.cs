@@ -6,7 +6,8 @@ namespace FantasyCard.Domain.Combat;
 
 public static class PveBattleFactory
 {
-    public static PveBattleState Create(ChaosMapCell cell, SeasonDifficultyConfig? difficulty = null,SeasonThemeDefinition? theme=null)
+    public static PveBattleState Create(ChaosMapCell cell, SeasonDifficultyConfig? difficulty = null,SeasonThemeDefinition? theme=null,
+        SeasonMonsterTuningConfig? tuning=null)
     {
         ArgumentNullException.ThrowIfNull(cell);
         MonsterCombatState[] monsters = cell.MonsterGroupId switch
@@ -35,6 +36,11 @@ public static class PveBattleFactory
             "BOSS" => [Monster("annihilation-core", 280, 20, 4.4, [new(MonsterIntentKind.Attack, 4, CardElement.Fire), new(MonsterIntentKind.Attack, 4, CardElement.Wood), new(MonsterIntentKind.Shield, 10, CardElement.None), new(MonsterIntentKind.Attack, 5, CardElement.Fire), new(MonsterIntentKind.Charge, 0, CardElement.None), new(MonsterIntentKind.Direct, 6, CardElement.None)])],
             _ => throw new DomainValidationException($"Unknown monster group '{cell.MonsterGroupId}'.")
         };
+        if(tuning is not null)
+        {
+            if(difficulty is null)throw new InvalidDataException("Seasonal monster tuning requires an original difficulty profile.");
+            monsters=tuning.ApplyBase(cell.MonsterGroupId,monsters);
+        }
         if (difficulty is not null)
             monsters = monsters.Select(monster => new MonsterCombatState(monster.MonsterId,
                 Math.Max(1,SeasonDifficultyConfig.Scale(monster.MaximumHp,difficulty.HpBasisPoints)),

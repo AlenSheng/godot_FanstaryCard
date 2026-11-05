@@ -177,6 +177,7 @@ public sealed class GameConfigCatalog
     public SeasonJourneyConfig? SeasonJourney { get; private init; }
     public SeasonJourneyRewardsConfig? SeasonJourneyRewards { get; private init; }
     public SeasonThemeConfig? SeasonThemes { get; private init; }
+    public SeasonMonsterTuningConfig? SeasonMonsterTuning { get; private init; }
     public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
     {
         // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
@@ -328,7 +329,15 @@ public sealed class GameConfigCatalog
         var shop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices);
         return new GameConfigCatalog(
             bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=shop,SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=journey,SeasonJourneyRewards=ReadSeasonJourneyRewards(bundle,journey,shop,cards),SeasonThemes=ReadSeasonThemes(bundle) };
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=shop,SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=journey,SeasonJourneyRewards=ReadSeasonJourneyRewards(bundle,journey,shop,cards),SeasonThemes=ReadSeasonThemes(bundle),SeasonMonsterTuning=ReadSeasonMonsterTuning(bundle) };
+    }
+
+    private static SeasonMonsterTuningConfig? ReadSeasonMonsterTuning(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonMonsterTuning");if(table is null)return null;
+        if(bundle.Tables.All(t=>t.Name!="SeasonDifficulty"))throw new InvalidDataException("Monster tuning requires the original seasonal rule group.");
+        return new(table.Rows.Select(r=>new SeasonMonsterTuningRow(table.Text(r,"id"),table.Text(r,"rule_id"),table.Text(r,"baseline_id"),table.Text(r,"group_id"),
+            table.RequiredInt(r,"member_order"),table.Text(r,"monster_id"),table.RequiredInt(r,"base_hp"),table.RequiredInt(r,"base_shield"),table.RequiredInt(r,"shield_intent_value"))).ToArray());
     }
 
     private static SeasonThemeConfig? ReadSeasonThemes(ConfigBundle bundle)
@@ -733,6 +742,8 @@ internal sealed class ConfigTable(string name, IReadOnlyList<string> columns, IR
     public int OptionalInt(object?[] row, string name) => _indexes.TryGetValue(name, out var index)
         ? checked((int)(long)(row[index] ?? 0L)) : 0;
     public int Int(object?[] row, string name) => checked((int)(long)(row[_indexes[name]] ?? 0L));
+    public int RequiredInt(object?[] row,string name) => _indexes.TryGetValue(name,out var index)&&row[index] is long value&&value is >=int.MinValue and <=int.MaxValue
+        ?checked((int)value):throw new InvalidDataException($"{Name}.{name} requires an explicit integer, including zero.");
     public double Double(object?[] row, string name) => row[_indexes[name]] is double value ? value : 0;
     public bool OptionalBool(object?[] row,string name) => _indexes.TryGetValue(name,out var index) && row[index] is true;
     public bool Bool(object?[] row, string name) => row[_indexes[name]] is true;
