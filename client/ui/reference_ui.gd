@@ -12,6 +12,7 @@ const DragScroll = preload("res://ui/drag_scroll.gd")
 const SeasonCrafting = preload("res://ui/season_crafting_view.gd")
 const ShopModel=preload("res://ui/season_shop_model.gd")
 const PreparationModel = preload("res://ui/preparation_model.gd")
+const CosmeticArt = preload("res://ui/season_cosmetic_art.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -50,6 +51,8 @@ func build(source: Control) -> void:
 			"crafting": SeasonCrafting.build(self,host)
 			"activities": preload("res://ui/season_activity_view.gd").build(self,host)
 			"journey": preload("res://ui/season_journey_view.gd").build(self,host)
+			"journey_rewards": preload("res://ui/season_journey_reward_view.gd").build_rewards(self,host)
+			"cosmetics": preload("res://ui/season_journey_reward_view.gd").build_cosmetics(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -128,6 +131,8 @@ func _header() -> void:
 	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"),"crafting":P.localized("season_craft_title")}
 	names["activities"]=P.localized("activity_title")
 	names["journey"]=P.localized("journey_title")
+	names["journey_rewards"]=P.localized("journey_rewards_title")
+	names["cosmetics"]=P.localized("journey_cosmetics_title")
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
@@ -136,8 +141,13 @@ func _header() -> void:
 		return_button.set_meta("sound_cue", "")
 		text(names.get(host.screen, P.localized("nav_hall")), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
-	var identity := text(P.localized("account_uid_multiline") % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
+	var identity_text: String = P.localized("account_uid_multiline") % [player.get("displayName", ""), player.get("userId", "")]
+	var cosmetic_title := CosmeticArt.title()
+	if not cosmetic_title.is_empty(): identity_text += "\n" + cosmetic_title
+	var identity := text(identity_text, Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
 	identity.name = "AccountIdentity"
+	var equipped_frame := CosmeticArt.equipped("AvatarFrame")
+	if not equipped_frame.is_empty(): CosmeticArt.portrait(self, Rect2(1300, 22, 76, 76), Game.hero_class, equipped_frame, "Header")
 	var legacy_switch := button(P.localized("switch_account"), Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
 	legacy_switch.name = "SwitchAccountButton"
 	legacy_switch.visible = false

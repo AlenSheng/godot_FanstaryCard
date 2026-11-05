@@ -9,6 +9,7 @@ const MARKET_SCENARIOS := ["c12_gold","c12_diamond","c12_own","c12_sell","c12_re
 const SHOP_SCENARIOS := ["c13_shop","c13_tail","c13_shared","c13_closed","c13_copy","c13_copy_missing","c13_confirm","c13_copy_confirm","c13_upgrade_confirm"]
 const ACTIVITY_SCENARIOS := ["c14_hall","c14_active","c14_spent","c14_upcoming","c14_late","c14_unavailable","c14_empty","c14_exchange_confirm","c14_claim_confirm"]
 const JOURNEY_SCENARIOS := ["c15_entry","c15_active","c15_catchup","c15_complete","c15_upcoming","c15_archive","c15_disabled","c15_unavailable","c15_none","c15_error"]
+const JOURNEY_CLAIM_SCENARIOS := ["claim_rewards_pending", "claim_rewards_class_menu", "claim_rewards_claimed", "claim_rewards_unavailable", "claim_rewards_tail", "claim_cosmetics_empty", "claim_cosmetics_owned", "claim_cosmetics_tail", "claim_deck_equipped", "claim_hall_equipped"]
 const HISTORICAL_SCENARIOS := ["historical_gear_none","ready_removed_equipment","ready_removed_timeout"]
 const REFRESH_SCENARIOS := ["refresh_original","refresh_exhausted","refresh_unavailable"]
 const PREPARATION_SOURCE_SCENARIOS := ["prep_source_owned", "prep_source_borrowed", "prep_source_locked", "prep_source_unavailable", "prep_source_deck", "prep_source_deck_bottom", "prep_source_menu", "prep_current_d1"]
@@ -84,7 +85,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -218,6 +219,7 @@ func _reset_fixture() -> void:
 	$UI.market_controller.reset()
 	$UI.activity_controller.reset()
 	$UI.journey_controller.reset()
+	$UI.journey_reward_controller.reset()
 	$UI._quality = ""; $UI._search = ""; $UI._codex_card = ""; $UI._codex_ready = true
 	$UI._enhance_item = ""; $UI._enhancement_quote_key = ""; $UI._enhancement_quote = {}
 	$UI._owned_index_ready = false; $UI._owned_by_id.clear()
@@ -230,7 +232,7 @@ func _reset_fixture() -> void:
 	$UI._sync_account_session(); $UI.gear_draft = ["review-head", "review-chest", "review-hands", null, null]
 	var needs_card_grid := OS.get_environment("FANTASYCARD_REVIEW_SCREENS").is_empty()
 	for selected in OS.get_environment("FANTASYCARD_REVIEW_SCREENS").split(","):
-		if selected.begins_with("cards") or selected.begins_with("deck"): needs_card_grid = true
+		if selected.begins_with("cards") or selected.begins_with("deck") or selected.contains("claim_deck"): needs_card_grid = true
 	if not needs_card_grid: $UI._card_pool.set_process(false)
 	$UI._shop_inventory_ready = true; $UI.listings = []
 	$UI.tips_overlay.clear()
@@ -243,6 +245,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in JOURNEY_CLAIM_SCENARIOS: return await _prepare_claim_scene(scenario, locale)
 	if scenario in PREPARATION_SOURCE_SCENARIOS: return await _prepare_original_preparation_scene(scenario)
 	if scenario in REFRESH_SCENARIOS: return await _prepare_refresh_scene(scenario)
 	if scenario in HISTORICAL_SCENARIOS: return await _prepare_historical_equipment_scene(scenario,locale)
@@ -879,6 +882,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
+	if frame_name.contains("_claim_"): _check_claim_scene(frame_name)
 	if frame_name.contains("_c16_"): _check_theme_scene(frame_name)
 	if "_refresh_" in frame_name: _check_refresh_scene(frame_name)
 	if "_prep_source_" in frame_name or frame_name.ends_with("_prep_current_d1"): _check_original_preparation_scene(frame_name)
@@ -1237,3 +1241,95 @@ func _prepare_historical_equipment_scene(scenario: String,locale: String) -> boo
 	review_checks[key+": cancelled preparation state cleared"]=Game.ready_prompt.is_empty() and Game.ticket.is_empty() and Game.preparation.is_empty() and Game.lobby.activePreparation==null
 	$UI._toast(expected)
 	return false
+
+
+func _claim_review_http(name: String, path: String) -> Dictionary:
+	var directory := OS.get_environment("FANTASYCARD_JOURNEY_REWARD_REVIEW_INPUT")
+	assert(not directory.is_empty())
+	var raw := FileAccess.get_file_as_bytes(directory.path_join(name + ".bin"))
+	var http = preload("res://network/http_protocol.gd")
+	var result: Dictionary = http.decode_response(http.route(path, HTTPClient.METHOD_GET), 200, PackedStringArray(["Content-Type: application/protobuf"]), raw)
+	assert(result.ok)
+	return result.data
+
+func _prepare_claim_scene(scenario: String, locale: String) -> bool:
+	var before := _claim_review_http("before", "/api/v1/season-journey/rewards")
+	var after := _claim_review_http("after", "/api/v1/season-journey/rewards")
+	var inventory := _claim_review_http("final-inventory", "/api/v1/cosmetics")
+	# Additional owned rows are explicit visual fixtures from the formal
+	# cosmetic table. The backend verifies all ten independently in PG.
+	var known := {}
+	for row in inventory.owned: known[row.cosmeticId] = row
+	var complete: Array = []
+	for row in Game.CATALOG.data.tables.SeasonCosmetics:
+		complete.append(known.get(row.cosmetic_id, {"cosmeticId": row.cosmetic_id, "kind": row.kind, "nameKey": row.name_key, "descriptionKey": row.description_key,
+			"sourceSeasonId": before.seasonId, "configVersion": before.configVersion, "acquiredAt": "2026-11-05T00:00:00Z"}))
+	inventory.owned = complete
+	inventory.selection = {"avatarFrameId": "trail-seeker", "cardBackId": "waymark-seal", "titleId": "relic-seeker", "version": 30}
+	if scenario == "claim_cosmetics_tail":
+		inventory.selection = {"avatarFrameId": "veilbound-seal", "cardBackId": "convergent-sigil", "titleId": "veil-cartographer", "version": 31}
+	if scenario == "claim_hall_equipped":
+		inventory.selection.avatarFrameId = "relicbound-pathfinder"
+	if scenario == "claim_cosmetics_empty":
+		inventory = {"owned": [], "selection": {"avatarFrameId": null, "cardBackId": null, "titleId": null, "version": 0}}
+	Game.lobby.cosmetics = inventory
+	$UI.journey_controller.seasons = [{"seasonId": before.seasonId, "state": "Active", "configVersion": before.configVersion,
+		"startsAt": "2026-10-16T00:00:00+08:00", "endsAt": "2026-11-27T00:00:00+08:00"}]
+	var c = $UI.journey_reward_controller
+	c.attach($UI)
+	c.source = before.seasonId
+	c.rewards = after if scenario == "claim_rewards_claimed" else before
+	c.hero = "Mage" if scenario == "claim_rewards_class_menu" else ""
+	if scenario == "claim_rewards_unavailable":
+		c.rewards = before.duplicate(true)
+		c.rewards.state = "Unavailable"
+		for row in c.rewards.rewards: row.canClaim = false
+	$UI.screen = "journey_rewards" if scenario.begins_with("claim_rewards") else "cosmetics"
+	if scenario == "claim_deck_equipped":
+		await _prepare_scene("deck_full", locale)
+		return false
+	if scenario == "claim_hall_equipped": $UI.screen = "hall"
+	await _render_base()
+	if scenario == "claim_rewards_class_menu":
+		$UI._reference.get_node("JourneyRewardClass").show_popup()
+		await get_tree().process_frame
+	if scenario == "claim_rewards_tail":
+		c.reward_scroll = 100000
+		$UI._reference.get_node("JourneyRewardScroll").scroll_vertical = 100000
+		await get_tree().process_frame
+		await _render_base()
+	if scenario == "claim_cosmetics_tail":
+		c.cosmetic_scroll = 100000
+		$UI._reference.get_node("CosmeticOwnedScroll").scroll_vertical = 100000
+		await get_tree().process_frame
+		await _render_base()
+	return false
+
+func _check_claim_scene(frame_name: String) -> void:
+	var view: Control = $UI._reference
+	var c = $UI.journey_reward_controller
+	var model = preload("res://ui/season_journey_reward_model.gd")
+	var art = preload("res://ui/season_cosmetic_art.gd")
+	review_checks[frame_name + ": valid owned source and selected slots"] = model.valid_inventory(Game.lobby.cosmetics)
+	if "_claim_rewards_" in frame_name:
+		review_checks[frame_name + ": original30reward rows"] = c.rewards.rewards.size() == 30 and model.valid_rewards(c.rewards, c.source)
+		var class_claim: Button = view.find_child("ClaimJourneyLevel3", true, false)
+		review_checks[frame_name + ": class choice never defaults silently"] = class_claim.disabled == (c.hero.is_empty() or c.rewards.state == "Unavailable")
+		if frame_name.ends_with("_claim_rewards_claimed"):
+			review_checks[frame_name + ": actual committed pack cannot be reclaimed"] = view.find_child("ClaimJourneyLevel5", true, false).disabled
+		if frame_name.ends_with("_claim_rewards_unavailable"):
+			review_checks[frame_name + ": missing original disables all claims"] = view.find_children("ClaimJourneyLevel*", "Button", true, false).all(func(button): return button.disabled)
+	if "_claim_cosmetics_" in frame_name:
+		review_checks[frame_name + ": permanent profile is visible"] = view.get_node("CurrentCosmeticProfile").is_visible_in_tree()
+		if frame_name.ends_with("_claim_cosmetics_empty"):
+			review_checks[frame_name + ": empty inventory never invents ownership"] = Game.lobby.cosmetics.owned.is_empty() and art.equipped("AvatarFrame").is_empty()
+		else:
+			review_checks[frame_name + ": ten actual cosmetic definitions represented"] = Game.lobby.cosmetics.owned.size() == 10
+			review_checks[frame_name + ": chosen frame actually drawn"] = view.get_node("ProfileEquippedAvatarFrame").texture == art.texture(art.equipped("AvatarFrame"))
+			review_checks[frame_name + ": chosen card back actually drawn"] = view.get_node("EquippedProfileCardBack").texture == art.texture(art.equipped("CardBack"))
+			review_checks[frame_name + ": chosen title actually drawn"] = view.get_node("EquippedProfileTitle").text == art.title()
+	if frame_name.ends_with("_claim_deck_equipped"):
+		review_checks[frame_name + ": chosen back applied to current deck"] = view.get_node("EquippedDeckCardBack").texture == art.texture(art.equipped("CardBack"))
+	if frame_name.ends_with("_claim_hall_equipped"):
+		review_checks[frame_name + ": chosen frame applied to hall account"] = view.get_node("HeaderEquippedAvatarFrame").texture == art.texture(art.equipped("AvatarFrame"))
+		review_checks[frame_name + ": chosen title applied to hall account"] = view.get_node("AccountIdentity").text.contains(art.title())

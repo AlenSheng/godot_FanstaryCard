@@ -17,6 +17,7 @@ const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const PreparationModel = preload("res://ui/preparation_model.gd")
+const JourneyRewardModel = preload("res://ui/season_journey_reward_model.gd")
 const ConfigBundle = preload("res://data/config_bundle.gd")
 var _room_catalogs: Dictionary = {}
 var _catalog_request_epoch := 0
@@ -592,6 +593,11 @@ func refresh_lobby() -> void:
 			return
 	if generation != gateway.session_generation: return
 	var next_lobby: Dictionary = result.data.duplicate(true)
+	# Decorations are account data. An unavailable original response never
+	# supplies another account's cached ownership or a made-up selection.
+	var cosmetic_result: Dictionary = await gateway.request("/api/v1/cosmetics", HTTPClient.METHOD_GET, null, [404])
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	next_lobby["cosmetics"] = cosmetic_result.data if cosmetic_result.get("ok", false) and cosmetic_result.get("data") is Dictionary and JourneyRewardModel.valid_inventory(cosmetic_result.data) else {}
 	if _settlement_ack_pending_id != "":
 		next_lobby["unfinishedSettlement"] = null
 		next_lobby["unfinishedMatch"] = null
@@ -631,7 +637,7 @@ func refresh_lobby() -> void:
 	preparation_configuration_error = "" if preparation_ready else P.message("config_archive_unavailable", [])
 	lobby = next_lobby
 	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
-	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
+	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail", "cosmetics"]:
 		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedSettlement") != null:
@@ -689,18 +695,20 @@ func refresh_cache(module: String) -> void:
 	if _cache_syncing.has(module):
 		_cache_sync_again[module] = true
 		return
-	var paths := {"shop": "/api/v1/shop/", "market": "/api/v1/market/", "inventory": "/api/v1/inventory/", "cards": "/api/v1/cards/", "decks": "/api/v1/decks/", "mail": "/api/v1/mail/", "wallet": "/api/v1/economy/wallet"}
+	var paths := {"shop": "/api/v1/shop/", "market": "/api/v1/market/", "inventory": "/api/v1/inventory/", "cards": "/api/v1/cards/", "decks": "/api/v1/decks/", "mail": "/api/v1/mail/", "wallet": "/api/v1/economy/wallet", "cosmetics": "/api/v1/cosmetics"}
 	if not paths.has(module): return
 	var generation: int = gateway.session_generation
+	var origin: String = str(gateway.base_url)
+	var account: String = str(lobby.get("player", {}).get("userId", ""))
 	_cache_syncing[module] = generation
 	while generation == gateway.session_generation:
 		_cache_sync_again.erase(module)
 		var version: int = int(_cache_versions.get(module, 0))
 		var result: Dictionary = await gateway.request(paths[module], HTTPClient.METHOD_GET, null, [404])
-		if generation != gateway.session_generation: break
+		if generation != gateway.session_generation or origin != str(gateway.base_url) or account != str(lobby.get("player", {}).get("userId", "")): break
 		if int(_cache_versions.get(module, 0)) != version:
 			_cache_sync_again[module] = true
-		elif result.ok:
+		elif result.ok and (module != "cosmetics" or result.get("data") is Dictionary and JourneyRewardModel.valid_inventory(result.data)):
 			update_cache(module, result.data)
 		elif module == "mail" and int(result.get("status", 0)) == 404:
 			update_cache("mail", {"items": [], "unreadCount": 0})

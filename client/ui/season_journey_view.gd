@@ -8,9 +8,10 @@ const Controller=preload("res://ui/season_journey_controller.gd")
 static func build(ui: Control,host: Control) -> void:
 	var c: Controller=host.journey_controller
 	c.attach(host)
+	host.journey_reward_controller.attach(host)
 	ui.panel(Rect2(28,130,1862,892)).name="JourneyPanel"
 	ui.button(P.localized("sync"),Rect2(1240,154,272,64),c.reload.bind(false),Game.busy or c.loading).name="JourneyRefresh"
-	ui.button(P.localized("activity_title"),Rect2(1560,154,272,64),host._navigate.bind("activities"),Game.busy).name="JourneyEvents"
+	ui.button(P.localized("journey_rewards_title"),Rect2(1560,154,272,64),host.journey_reward_controller.open_rewards.bind(str(c.state.get("seasonId",""))),Game.busy or c.loading or str(c.state.get("seasonId","")).is_empty()).name="JourneyRewardEntry"
 	if not c.seasons.is_empty():
 		var picker := OptionButton.new();picker.name="JourneySeason"
 		picker.clip_text=true;picker.text_overrun_behavior=TextServer.OVERRUN_TRIM_ELLIPSIS
