@@ -19,7 +19,7 @@ def guarded_run(command, *, env, timeout=90, wait_seconds=0):
                    stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace")
     if os.name != "nt":
         return subprocess.run(command, timeout=timeout, **options)
-    reserve, startup = 6 * 1024 ** 3, 1024 ** 3
+    reserve, startup = 2 * 1024 ** 3, 1024 ** 3
     class MemoryStatus(ctypes.Structure):
         _fields_ = [("length", ctypes.c_ulong), ("load", ctypes.c_ulong)] + [
             (name, ctypes.c_ulonglong) for name in ("total", "available", "total_page", "available_page",
@@ -39,7 +39,7 @@ def guarded_run(command, *, env, timeout=90, wait_seconds=0):
         if min(samples) >= reserve + startup:
             break
         if time.monotonic() - admission_start >= wait_seconds:
-            raise FixtureResourceGuard("Resource admission unavailable; no Godot child started")
+            raise FixtureResourceGuard("Resource admission unavailable; no validation child started")
         time.sleep(min(10, max(0, wait_seconds - (time.monotonic() - admission_start))))
     child = subprocess.Popen(command, creationflags=subprocess.CREATE_NO_WINDOW | subprocess.BELOW_NORMAL_PRIORITY_CLASS, **options)
     started = time.monotonic()
@@ -52,7 +52,7 @@ def guarded_run(command, *, env, timeout=90, wait_seconds=0):
                 if available() < reserve:
                     child.kill()
                     stdout, stderr = child.communicate(timeout=10)
-                    raise FixtureResourceGuard("Owned Godot fixture reached memory guard", stdout + stderr)
+                    raise FixtureResourceGuard("Owned validation process reached memory guard", stdout + stderr)
                 if time.monotonic() - started >= timeout:
                     child.kill()
                     stdout, stderr = child.communicate(timeout=10)

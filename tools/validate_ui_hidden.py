@@ -18,7 +18,7 @@ import time
 import uuid
 
 GIB = 1024 ** 3
-RESERVE = 6 * GIB
+RESERVE = 2 * GIB
 START_BUDGET = GIB
 
 

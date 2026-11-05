@@ -58,7 +58,7 @@ public sealed class PostgresMailPermanentCopyTests
     public async Task LegacyMailKeepsActivationSemanticsWithoutInventingPermanentCopyAdoption()
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db, false);
-        var id = await Send(db, f, new("Card", 3, "C01"));
+        var id = await Send(db, f, new MailAttachmentResponse("Card", 3, "C01"));
         Assert.NotNull(await f.Mail.ClaimAsync(f.Player, id, "legacy", Ct));
         Assert.Equal(1, await Copies(db, f.Player, "C01"));
         Assert.Equal(0, await db.ScalarAsync<long>("SELECT count(*) FROM player_card_copy_modes WHERE player_id=$1", f.Player));
@@ -72,7 +72,7 @@ public sealed class PostgresMailPermanentCopyTests
         var locked = GameConfigCatalog.Current.Cards.First(card => card.Enabled && card.IsCodex && !card.InitiallyUnlocked).CardId;
         await Sql(db, "UPDATE player_cards SET level=3 WHERE player_id=$1 AND card_id='C01'", f.Player);
         var before = await Copies(db, f.Player, "C01");
-        var id = await Send(db, f, new("Card", 2, "C01"), new("Card", 3, "C01"), new("Card", 2, locked));
+        var id = await Send(db, f, new MailAttachmentResponse("Card", 2, "C01"), new MailAttachmentResponse("Card", 3, "C01"), new MailAttachmentResponse("Card", 2, locked));
         var result = (await f.Mail.ClaimAsync(f.Player, id, "exact", Ct))!;
         Assert.False(result.AlreadyClaimed);Assert.Equal(3, result.Granted.Count);
         Assert.Equal(before + 5, await Copies(db, f.Player, "C01"));Assert.Equal(2, await Copies(db, f.Player, locked));
@@ -87,7 +87,7 @@ public sealed class PostgresMailPermanentCopyTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
         var before = await Copies(db, f.Player, "C01");
-        var first = await Send(db, f, new("Card", 2, "C01"));var second = await Send(db, f, new("Card", 3, "C01"));
+        var first = await Send(db, f, new MailAttachmentResponse("Card", 2, "C01"));var second = await Send(db, f, new MailAttachmentResponse("Card", 3, "C01"));
         using var deadline = CancellationTokenSource.CreateLinkedTokenSource(Ct);deadline.CancelAfter(TimeSpan.FromSeconds(20));
         await Task.WhenAll(f.Mail.ClaimAsync(f.Player, first, "single", deadline.Token), f.Mail.ClaimAllAsync(f.Player, "batch", deadline.Token));
         Assert.Equal(before + 5, await Copies(db, f.Player, "C01"));
@@ -100,7 +100,7 @@ public sealed class PostgresMailPermanentCopyTests
     public async Task DurableReplayAndFreshKeysDoNotRepeatGrantsAndLedgerRetainsMailIdentityAfterDeletion()
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
-        var before = await Copies(db, f.Player, "C01");var id = await Send(db, f, new("Card", 4, "C01"));
+        var before = await Copies(db, f.Player, "C01");var id = await Send(db, f, new MailAttachmentResponse("Card", 4, "C01"));
         var claimed = await f.Mail.ClaimAsync(f.Player, id, "replay", Ct);
         var replay = await new MailRepository(db.DataSource, f.Clock).ClaimAsync(f.Player, id, "replay", Ct);
         Assert.Equal(JsonSerializer.Serialize(claimed), JsonSerializer.Serialize(replay));
@@ -114,7 +114,7 @@ public sealed class PostgresMailPermanentCopyTests
     public async Task FailureAfterCardGrantRollsBackCopiesPolicyLedgerAndClaimThenRetriesExactlyOnce()
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
-        var before = await Copies(db, f.Player, "C01");var id = await Send(db, f, new("Card", 2, "C01"), new("UnsupportedFixture", 1));
+        var before = await Copies(db, f.Player, "C01");var id = await Send(db, f, new MailAttachmentResponse("Card", 2, "C01"), new MailAttachmentResponse("UnsupportedFixture", 1));
         await Assert.ThrowsAsync<InvalidOperationException>(() => f.Mail.ClaimAsync(f.Player, id, "rollback", Ct));
         Assert.Equal(before, await Copies(db, f.Player, "C01"));
         Assert.Equal(0, await db.ScalarAsync<long>("SELECT count(*) FROM player_card_copy_modes WHERE player_id=$1", f.Player));
@@ -130,9 +130,9 @@ public sealed class PostgresMailPermanentCopyTests
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
         var before = await Copies(db, f.Player, "C01");
-        var invalid = await Send(db, f, new("Card", 2, "not-an-existing-player-card"));
+        var invalid = await Send(db, f, new MailAttachmentResponse("Card", 2, "not-an-existing-player-card"));
         await Assert.ThrowsAsync<DomainValidationException>(() => f.Mail.ClaimAsync(f.Player, invalid, "identity", Ct));
-        var overflow = await Send(db, f, new("Card", (long)int.MaxValue + 1, "C01"));
+        var overflow = await Send(db, f, new MailAttachmentResponse("Card", (long)int.MaxValue + 1, "C01"));
         await Assert.ThrowsAsync<OverflowException>(() => f.Mail.ClaimAsync(f.Player, overflow, "overflow", Ct));
         Assert.Equal(before, await Copies(db, f.Player, "C01"));
         Assert.Equal(0, await db.ScalarAsync<long>("SELECT count(*) FROM card_copy_ledger WHERE player_id=$1", f.Player));
@@ -143,10 +143,10 @@ public sealed class PostgresMailPermanentCopyTests
     public async Task PermanentCopiesSurviveSeasonClosureWithoutReclassifyingUnversionedMailAsNewSeasonLoot()
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
-        var first = await Send(db, f, new("Card", 2, "C01"));await f.Mail.ClaimAsync(f.Player, first, "before-end", Ct);
+        var first = await Send(db, f, new MailAttachmentResponse("Card", 2, "C01"));await f.Mail.ClaimAsync(f.Player, first, "before-end", Ct);
         var before = await Copies(db, f.Player, "C01");
         f.Clock.Now = f.Season!.EndsAtUtc.AddDays(1);
-        var id = await Send(db, f, new("Card", 3, "C01"));await f.Mail.ClaimAsync(f.Player, id, "after-end", Ct);
+        var id = await Send(db, f, new MailAttachmentResponse("Card", 3, "C01"));await f.Mail.ClaimAsync(f.Player, id, "after-end", Ct);
         Assert.Equal(before + 3, await Copies(db, f.Player, "C01"));
         Assert.Equal(1, await db.ScalarAsync<long>("SELECT count(*) FROM player_card_copy_modes WHERE player_id=$1", f.Player));
         Assert.Equal(0, await db.ScalarAsync<long>("SELECT count(*) FROM season_journey_grant_ledger WHERE player_id=$1", f.Player));
@@ -157,8 +157,8 @@ public sealed class PostgresMailPermanentCopyTests
     public async Task AnotherAccountCannotClaimTheMailAndAnIdempotencyKeyCannotBeReusedForDifferentMail()
     {
         await using var db = await PostgresTestSchema.CreateAsync(true);var f = await Create(db);
-        var other = await CraftingTestInputs.PlayerAsync(db, f.Clock);var first = await Send(db, f, new("Card", 2, "C01"));
-        var second = await Send(db, f, new("Card", 3, "C01"));var before = await Copies(db, f.Player, "C01");
+        var other = await CraftingTestInputs.PlayerAsync(db, f.Clock);var first = await Send(db, f, new MailAttachmentResponse("Card", 2, "C01"));
+        var second = await Send(db, f, new MailAttachmentResponse("Card", 3, "C01"));var before = await Copies(db, f.Player, "C01");
         Assert.Null(await f.Mail.ClaimAsync(other, first, "wrong-owner", Ct));
         await f.Mail.ClaimAsync(f.Player, first, "same-key", Ct);
         await Assert.ThrowsAsync<IdempotencyConflictException>(() => f.Mail.ClaimAsync(f.Player, second, "same-key", Ct));
