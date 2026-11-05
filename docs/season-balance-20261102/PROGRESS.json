@@ -449,9 +449,9 @@
     },
     {
       "id": "D02",
-      "status": "in_progress",
+      "status": "complete",
       "requirement": "先后手PVP、控制/返牌、断线恢复、合法路线、完整撤离与死亡重建",
-      "note": "正式候选15 PVP断线恢复子范围联合72场景完成，实际73尝试：9职业有序组合×D0/D5×恢复/到期×断线先/后手；144施法、30正眩晕/7阻断/45即时抽牌。JSON恢复、原PVE、动作回放/序列、15秒死亡及原5件装备遗物身份独立核对。原先导004因到期同tick恢复后合法100ms续时的夹具预期失败，按GDD/Advance顺序改严格一tick对照；原213领域源不变。001复用、004仅复验1、未开始70通过，不称一次全绿；原失败/TRX/源码保留。累计73/300余227。合法自然路线/完整撤离、实际存储死亡重建及其余控制/返牌边界证据仍待，不计D02整体通过；整体仍27/35。本机2GiB+1GiB启动，旧矩阵与云端/生产不改。",
+      "note": "正式候选15 PVP断线恢复子范围联合72场景完成，实际73尝试：9职业有序组合×D0/D5×恢复/到期×断线先/后手；144施法、30正眩晕/7阻断/45即时抽牌。JSON恢复、原PVE、动作回放/序列、15秒死亡及原5件装备遗物身份独立核对。原先导004因到期同tick恢复后合法100ms续时的夹具预期失败，按GDD/Advance顺序改严格一tick对照；原213领域源不变。001复用、004仅复验1、未开始70通过，不称一次全绿；原失败/TRX/源码保留。累计73/300余227。合法自然路线/完整撤离、实际存储死亡重建及其余控制/返牌边界证据仍待，不计D02整体通过；整体仍27/35。本机2GiB+1GiB启动，旧矩阵与云端/生产不改。 自然路线子项另新增18/18真实撤离：三职业六难度、原图原出生原Boss、4/5格短合法路径共81格108杀3649施法，36JSON恢复及3秒撤离截止、126资源变化独立核对。不是R1或人群均值。另以源文件/方法和Cards/CardLevels原始Protobuf消息等价复用旧21控制/返牌合同，非重跑。该路线阶段累计91/300；当前死亡重建后续计账以D02-BUDGET为准，整项仍待最终审计。 最终逐六要求验收通过，整体28/35：当前72PVP场景/18真实自然路线撤离/3职业实际PG死亡重建6匹配/3精确门禁，100/300余200。700/800后手与400/500连放边界通过；三职业5旧装保持掉落、5真实备用本体重铸+3实扣66、再次准备匹配出牌，派生属性前后相同。旧21合同不重跑。原PG600秒批次中断仍失败且整批TRX/XML缺失，祭司FINISHED/原件/清理证据复用；仅未完成法师、盾按预登记各900秒单例通过各TRX1/1，未放宽功能或效率。原自有遗留schema严格核对后清理，所有schema/句柄终态；云端只临时自有PG写入，不改生产/全局配置。D03/D04/E/F七项继续，未整体验收或发布。",
       "evidence": [
         "D02-DUEL-RECOVERY-PROGRESS.md",
         "D02-BUDGET.json",
@@ -459,7 +459,20 @@
         "evidence/D02-duels-r1/manifest.json",
         "evidence/D02-duels-r1/source-byte-manifest.json",
         "evidence/D02-duels-r1/d02-duels-inspection-r2.derived.json",
-        "evidence/D02-duels-r1/d02-expiry-tick-contract.before-retest-r1.json"
+        "evidence/D02-duels-r1/d02-expiry-tick-contract.before-retest-r1.json",
+        "D02-ROUTE-RECOVERY-PROGRESS.md",
+        "evidence/D02-routes-r1/result.json",
+        "evidence/D02-routes-r1/manifest.json",
+        "evidence/D02-routes-r1/d02-routes-inspection-r1.derived.json",
+        "evidence/D02-routes-r1/d02-control-reuse-r1/result.derived.json",
+        "D02-FINAL-ACCEPTANCE.md",
+        "evidence/D02-final-r1/result.json",
+        "evidence/D02-final-r1/manifest.json",
+        "evidence/D02-final-r1/source-byte-manifest.json",
+        "evidence/D02-final-r1/missing-batch-evidence.derived.json",
+        "evidence/D02-final-r1/d02-final-requirement-audit-r1.derived.json",
+        "evidence/D02-final-r1/d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json",
+        "evidence/D02-final-r1/d02-gate-inspection-r1.derived.json"
       ]
     },
     {
