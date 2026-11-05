@@ -1,0 +1,79 @@
+{
+  "status": "D03_development24_observed_original_efficiency_targets_not_passed",
+  "new_encounters": 24,
+  "outcomes": {
+    "Win": 24
+  },
+  "independently_checked_casts": 3313,
+  "resource_events": 111,
+  "readonly_forecast_and_preview_assertions_passed": true,
+  "all_legal_health": true,
+  "no_red_and_armor3": true,
+  "comparisons": [
+    {
+      "deck": "reference",
+      "armor": "balanced",
+      "median_seconds": {
+        "Mage": 148.45,
+        "Priest": 185.65,
+        "Guardian": 223.0
+      },
+      "class_ratio": 1.5021892893230044,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "reference",
+      "armor": "offense",
+      "median_seconds": {
+        "Mage": 138.05,
+        "Priest": 170.10000000000002,
+        "Guardian": 194.05
+      },
+      "class_ratio": 1.4056501267656645,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "tempo",
+      "armor": "balanced",
+      "median_seconds": {
+        "Mage": 125.05,
+        "Priest": 166.45,
+        "Guardian": 194.25
+      },
+      "class_ratio": 1.5533786485405838,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "tempo",
+      "armor": "offense",
+      "median_seconds": {
+        "Mage": 111.9,
+        "Priest": 149.39999999999998,
+        "Guardian": 168.95
+      },
+      "class_ratio": 1.5098302055406612,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    }
+  ],
+  "development_seeds_only": true,
+  "not_final_holdout": true,
+  "selection_improved_some_times_but_did_not_close_class_gap": true,
+  "D03_complete": false,
+  "D03_used": 24,
+  "D03_remaining": 276,
+  "targets_relaxed": false,
+  "population_P50_P90_complete": false,
+  "sustainable_three_ledgers_complete": false,
+  "production_or_cloud_modified": false,
+  "next_action": "Test appropriate counter-element/mature-class loadouts rather than same Fire armor for all; then independent holdout/route/cohort economy. Do not slow Mage on purpose or call allWins efficiency pass.",
+  "source_sha256": {
+    "d03-efficiency-pilot-r1/result.json": "03da1382a18751e25cbd656398946917296277b5387c4a8424d83c904dd8809a",
+    "d03-efficiency-pilot-r1/observations/attempts.original.jsonl": "924c37ddb3cd31c1a00ac8e6f56d0bdee39db042fd00abd9e37a6052da39f3c0",
+    "d03-efficiency-pilot-r1/observations/encounters.original.jsonl": "8a88991e36bc4395986ad0aea1b66f60a7348866134fa800ca739ee8ad9b61a9",
+    "d03-efficiency-pilot-r1/observations/events.original.jsonl": "f3040237478ff006b2611a2e72f19c680e398539d6e9e98866d8b042ec2d12ab"
+  }
+}
