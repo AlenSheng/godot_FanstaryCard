@@ -1,0 +1,147 @@
+<TestRun id="5bcab229-c217-47ea-a3cb-fc950e68a390" name="unknown@803968e39001 2026-11-05T00:15:19.2311148+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-05T00:15:19.2311148+00:00" queuing="2026-11-05T00:15:19.2311148+00:00" start="2026-11-05T00:15:19.2311148+00:00" finish="2026-11-05T00:16:07.4717009+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1005727c-c0fe-41fa-93bc-b182372c4a1c" executionId="1005727c-c0fe-41fa-93bc-b182372c4a1c" computerName="803968e39001" duration="00:00:02.4483653" startTime="2026-11-05T00:15:19.3218031+00:00" endTime="2026-11-05T00:15:21.7972052+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>System.InvalidOperationException : Saved loot preference differs from the original preparation.</Message>
+          <StackTrace>   at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs:line 165
+   at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs:line 174
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="152585bb-40e6-4401-be94-80371928f89a" executionId="152585bb-40e6-4401-be94-80371928f89a" computerName="803968e39001" duration="00:00:01.8933261" startTime="2026-11-05T00:15:21.8111595+00:00" endTime="2026-11-05T00:15:23.7058020+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="bcc7f16f-6640-4e62-a8f7-2338a3259794" executionId="bcc7f16f-6640-4e62-a8f7-2338a3259794" computerName="803968e39001" duration="00:00:01.8492290" startTime="2026-11-05T00:15:23.7070502+00:00" endTime="2026-11-05T00:15:25.5563612+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="f617aae4-0c7c-4401-a4d8-982ffcfcc222" executionId="f617aae4-0c7c-4401-a4d8-982ffcfcc222" computerName="803968e39001" duration="00:00:01.8339928" startTime="2026-11-05T00:15:25.5581460+00:00" endTime="2026-11-05T00:15:27.3922945+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="7677e951-b71f-4d22-8d01-fc3b94c59bfd" executionId="7677e951-b71f-4d22-8d01-fc3b94c59bfd" computerName="803968e39001" duration="00:00:01.9007988" startTime="2026-11-05T00:15:27.3942081+00:00" endTime="2026-11-05T00:15:29.2952350+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="ab06a16a-867e-4f03-a862-e123cf24903f" executionId="ab06a16a-867e-4f03-a862-e123cf24903f" computerName="803968e39001" duration="00:00:02.1585402" startTime="2026-11-05T00:15:29.2969929+00:00" endTime="2026-11-05T00:15:31.4568780+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: \"Applied\"
+Actual:   \"Reserved\"
+           ↑ (pos 0)</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs:line 45
+   at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs:line 53
+   at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs:line 53
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;room\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="27ce01a5-9af8-44b4-a742-bcebd81d8871" executionId="27ce01a5-9af8-44b4-a742-bcebd81d8871" computerName="803968e39001" duration="00:00:01.9380223" startTime="2026-11-05T00:15:31.4691740+00:00" endTime="2026-11-05T00:15:33.4073004+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;owner\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" executionId="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" computerName="803968e39001" duration="00:00:02.1693224" startTime="2026-11-05T00:15:33.4073655+00:00" endTime="2026-11-05T00:15:35.5768049+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;bot\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="06da009c-2c93-40da-8743-e02af3f9c8a6" executionId="06da009c-2c93-40da-8743-e02af3f9c8a6" computerName="803968e39001" duration="00:00:02.0350267" startTime="2026-11-05T00:15:35.5769027+00:00" endTime="2026-11-05T00:15:37.6120451+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;settled\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="454f8a92-d9e7-469e-9214-d596e8b88480" executionId="454f8a92-d9e7-469e-9214-d596e8b88480" computerName="803968e39001" duration="00:00:02.1742748" startTime="2026-11-05T00:15:37.6121713+00:00" endTime="2026-11-05T00:15:39.7865934+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;not-running\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e5552dc4-ab74-4f83-b474-3004edde0418" executionId="e5552dc4-ab74-4f83-b474-3004edde0418" computerName="803968e39001" duration="00:00:02.2787707" startTime="2026-11-05T00:15:39.7867021+00:00" endTime="2026-11-05T00:15:42.0656041+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: False)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="0385f479-286c-4601-8955-7e645243ed40" executionId="0385f479-286c-4601-8955-7e645243ed40" computerName="803968e39001" duration="00:00:01.9093764" startTime="2026-11-05T00:15:42.0694384+00:00" endTime="2026-11-05T00:15:43.9789314+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: True)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="cb66f894-a88d-4bcb-aa22-86f307634f29" executionId="cb66f894-a88d-4bcb-aa22-86f307634f29" computerName="803968e39001" duration="00:00:02.1074030" startTime="2026-11-05T00:15:43.9790389+00:00" endTime="2026-11-05T00:15:46.0865536+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: False)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" executionId="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" computerName="803968e39001" duration="00:00:02.0026510" startTime="2026-11-05T00:15:46.0923452+00:00" endTime="2026-11-05T00:15:48.0954150+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: True)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="0496ac8c-68f8-468a-9aff-f6a1b278defb" executionId="0496ac8c-68f8-468a-9aff-f6a1b278defb" computerName="803968e39001" duration="00:00:01.8938040" startTime="2026-11-05T00:15:48.0955009+00:00" endTime="2026-11-05T00:15:49.9894254+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="117cc48e-3bcb-4328-a77f-2ffd20428fb9" executionId="117cc48e-3bcb-4328-a77f-2ffd20428fb9" computerName="803968e39001" duration="00:00:01.8139621" startTime="2026-11-05T00:15:49.9923217+00:00" endTime="2026-11-05T00:15:51.8064854+00:00" />
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="786ab9a0-6bff-4c29-a1b6-9c149a862952" executionId="786ab9a0-6bff-4c29-a1b6-9c149a862952" computerName="803968e39001" duration="00:00:15.6479052" startTime="2026-11-05T00:15:51.8188468+00:00" endTime="2026-11-05T00:16:07.4669090+00:00" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer" id="1005727c-c0fe-41fa-93bc-b182372c4a1c" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="1005727c-c0fe-41fa-93bc-b182372c4a1c" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend" id="152585bb-40e6-4401-be94-80371928f89a" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="152585bb-40e6-4401-be94-80371928f89a" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet" id="bcc7f16f-6640-4e62-a8f7-2338a3259794" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="bcc7f16f-6640-4e62-a8f7-2338a3259794" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry" id="f617aae4-0c7c-4401-a4d8-982ffcfcc222" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="f617aae4-0c7c-4401-a4d8-982ffcfcc222" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries" id="7677e951-b71f-4d22-8d01-fc3b94c59bfd" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="7677e951-b71f-4d22-8d01-fc3b94c59bfd" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment" id="ab06a16a-867e-4f03-a862-e123cf24903f" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="ab06a16a-867e-4f03-a862-e123cf24903f" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;room\&quot;)" id="27ce01a5-9af8-44b4-a742-bcebd81d8871" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="27ce01a5-9af8-44b4-a742-bcebd81d8871" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="MissingAdmissionCannotChargeEitherWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;owner\&quot;)" id="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="MissingAdmissionCannotChargeEitherWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;bot\&quot;)" id="06da009c-2c93-40da-8743-e02af3f9c8a6" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="06da009c-2c93-40da-8743-e02af3f9c8a6" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="MissingAdmissionCannotChargeEitherWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;settled\&quot;)" id="454f8a92-d9e7-469e-9214-d596e8b88480" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="454f8a92-d9e7-469e-9214-d596e8b88480" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="MissingAdmissionCannotChargeEitherWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \&quot;not-running\&quot;)" id="e5552dc4-ab74-4f83-b474-3004edde0418" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="e5552dc4-ab74-4f83-b474-3004edde0418" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="MissingAdmissionCannotChargeEitherWallet" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: False)" id="0385f479-286c-4601-8955-7e645243ed40" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="0385f479-286c-4601-8955-7e645243ed40" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: True)" id="cb66f894-a88d-4bcb-aa22-86f307634f29" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="cb66f894-a88d-4bcb-aa22-86f307634f29" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: False)" id="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: True)" id="0496ac8c-68f8-468a-9aff-f6a1b278defb" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="0496ac8c-68f8-468a-9aff-f6a1b278defb" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof" id="117cc48e-3bcb-4328-a77f-2ffd20428fb9" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="117cc48e-3bcb-4328-a77f-2ffd20428fb9" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests" name="GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection" id="786ab9a0-6bff-4c29-a1b6-9c149a862952" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="786ab9a0-6bff-4c29-a1b6-9c149a862952" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresMigrationTests" name="Concurrent_migration_restart_and_checksum_rejection" adapterTypeName="executor://5bcab229-c217-47ea-a3cb-fc950e68a390/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="1005727c-c0fe-41fa-93bc-b182372c4a1c" executionId="1005727c-c0fe-41fa-93bc-b182372c4a1c" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="152585bb-40e6-4401-be94-80371928f89a" executionId="152585bb-40e6-4401-be94-80371928f89a" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="bcc7f16f-6640-4e62-a8f7-2338a3259794" executionId="bcc7f16f-6640-4e62-a8f7-2338a3259794" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="f617aae4-0c7c-4401-a4d8-982ffcfcc222" executionId="f617aae4-0c7c-4401-a4d8-982ffcfcc222" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="7677e951-b71f-4d22-8d01-fc3b94c59bfd" executionId="7677e951-b71f-4d22-8d01-fc3b94c59bfd" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="ab06a16a-867e-4f03-a862-e123cf24903f" executionId="ab06a16a-867e-4f03-a862-e123cf24903f" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="27ce01a5-9af8-44b4-a742-bcebd81d8871" executionId="27ce01a5-9af8-44b4-a742-bcebd81d8871" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" executionId="5b6e88bb-1c0d-4f96-8cb1-4885dee90ae2" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="06da009c-2c93-40da-8743-e02af3f9c8a6" executionId="06da009c-2c93-40da-8743-e02af3f9c8a6" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="454f8a92-d9e7-469e-9214-d596e8b88480" executionId="454f8a92-d9e7-469e-9214-d596e8b88480" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="e5552dc4-ab74-4f83-b474-3004edde0418" executionId="e5552dc4-ab74-4f83-b474-3004edde0418" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="0385f479-286c-4601-8955-7e645243ed40" executionId="0385f479-286c-4601-8955-7e645243ed40" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="cb66f894-a88d-4bcb-aa22-86f307634f29" executionId="cb66f894-a88d-4bcb-aa22-86f307634f29" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" executionId="a36a4fb5-4a9a-4aed-b037-1af99e1674e3" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="0496ac8c-68f8-468a-9aff-f6a1b278defb" executionId="0496ac8c-68f8-468a-9aff-f6a1b278defb" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="117cc48e-3bcb-4328-a77f-2ffd20428fb9" executionId="117cc48e-3bcb-4328-a77f-2ffd20428fb9" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="786ab9a0-6bff-4c29-a1b6-9c149a862952" executionId="786ab9a0-6bff-4c29-a1b6-9c149a862952" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="17" executed="17" passed="15" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

@@ -500,6 +500,15 @@ public sealed partial class BattleRoom
         GetPlayer(playerId).RewardChoice?.Capture()
         ?? throw new DomainValidationException("The player has no pending reward choice.");
 
+    public RewardRefreshFundingQuote GetRewardRefreshFundingQuote(Guid playerId)
+    {
+        var player=GetPlayer(playerId);RequireRedChoiceResolved(player);
+        if(player.Phase!=RoomPlayerPhase.Choice || player.RewardChoice is not {} choice)
+            throw new DomainValidationException("Rewards can only be refreshed during the choice phase.");
+        var cost=_catalog.Configuration.RewardRefreshGold(choice.RefreshCount+1);
+        return new(cost,Math.Max(0,cost-player.Inventory.GoldQuantity));
+    }
+
     public RewardRefreshReceiptSnapshot RefreshRewardChoice(
         Guid playerId,
         long expectedRevision,

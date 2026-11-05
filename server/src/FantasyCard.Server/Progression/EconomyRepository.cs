@@ -6,6 +6,9 @@ using System.Globalization;
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Domain.Players;
+using FantasyCard.Server.Seasons;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Realtime;
 using FantasyCard.Contracts.Realtime;
@@ -180,10 +183,26 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             }
         }
 
-        var balanceAfter = await SpendGoldAsync(connection, transaction, playerId, accountGold, cancellationToken);
         var now = timeProvider.GetUtcNow();
+        var funding = await ReadRefreshFundingAsync(connection,transaction,playerId,matchId,roomId,cancellationToken);
+        if(funding.Season is {} source)
+        {
+            await SeasonRepository.ApplyWithinTransactionAsync(connection,transaction,playerId,source,-accountGold,0,0,
+                "reward.choice.refresh.reserve",requestId,SeasonWalletPurpose.RoomRefreshReserve,now,
+                PersistentIdempotency.Hash(new {matchId,roomId,expectedRevision,accountGold}),cancellationToken,admittedMatchId:matchId);
+        }
+        else
+        {
+            var balanceAfter = await SpendGoldAsync(connection, transaction, playerId, accountGold, cancellationToken);
+            await WriteLegacyRefreshLedgerAsync(connection,transaction,playerId,requestId,-accountGold,balanceAfter,
+                "reward.choice.refresh.reserve",funding.ConfigVersion,now,cancellationToken);
+        }
         await using (var insert = new NpgsqlCommand(
-            "INSERT INTO reward_refresh_operations(player_id,request_id,match_id,room_id,expected_revision,account_gold,state,recover_after,created_at,updated_at) VALUES($1,$2,$3,$4,$5,$6,'Reserved',$7,$8,$8)",
+            """
+            INSERT INTO reward_refresh_operations(player_id,request_id,match_id,room_id,expected_revision,account_gold,state,recover_after,
+                created_at,updated_at,funding_scope,season_id,difficulty_id,ruleset_id,config_version,stats_version)
+            VALUES($1,$2,$3,$4,$5,$6,'Reserved',$7,$8,$8,$9,$10,$11,$12,$13,$14)
+            """,
             connection, transaction))
         {
             insert.Parameters.AddWithValue(playerId);
@@ -194,10 +213,14 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             insert.Parameters.AddWithValue(accountGold);
             insert.Parameters.AddWithValue(now.AddSeconds(30));
             insert.Parameters.AddWithValue(now);
+            insert.Parameters.AddWithValue(funding.Season is null?"LegacyWallet":"SeasonWallet");
+            insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)funding.Season?.SeasonId??DBNull.Value);
+            insert.Parameters.AddWithValue(funding.Season?.DifficultyId??"Standard");
+            insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)funding.Season?.RulesetId??DBNull.Value);
+            insert.Parameters.AddWithValue(funding.ConfigVersion);
+            insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)funding.Season?.StatsVersion??DBNull.Value);
             await insert.ExecuteNonQueryAsync(cancellationToken);
         }
-        await WriteLedgerAsync(connection, transaction, playerId, -accountGold, balanceAfter,
-            "Gold", "reward.choice.refresh.reserve", cancellationToken, requestId);
         await transaction.CommitAsync(cancellationToken);
         return new("Reserved", null);
     }
@@ -233,8 +256,10 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
         long amount;
         string state;
+        SeasonContext? source=null;
+        string? sourceConfig=null;
         await using (var query = new NpgsqlCommand(
-            "SELECT account_gold,state FROM reward_refresh_operations WHERE player_id=$1 AND request_id=$2 FOR UPDATE",
+            "SELECT account_gold,state,funding_scope,season_id,difficulty_id,ruleset_id,config_version,stats_version FROM reward_refresh_operations WHERE player_id=$1 AND request_id=$2 FOR UPDATE",
             connection, transaction))
         {
             query.Parameters.AddWithValue(playerId);
@@ -248,21 +273,32 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
             }
             amount = reader.GetInt64(0);
             state = reader.GetString(1);
+            sourceConfig=reader.IsDBNull(6)?null:reader.GetString(6);
+            if(reader.GetString(2)=="SeasonWallet")
+                source=new(reader.GetString(3),reader.GetString(4)[1]-'0',reader.GetString(5),reader.GetString(6),reader.GetString(7));
         }
         if (state != "Reserved")
         {
             await transaction.CommitAsync(cancellationToken);
             return false;
         }
-        await using var wallet = new NpgsqlCommand(
-            "UPDATE player_wallets SET gold=gold+$1,version=version+1 WHERE player_id=$2 RETURNING gold",
-            connection, transaction);
-        wallet.Parameters.AddWithValue(amount);
-        wallet.Parameters.AddWithValue(playerId);
-        var balance = (long)(await wallet.ExecuteScalarAsync(cancellationToken)
-            ?? throw new InvalidOperationException("Player wallet was not found."));
-        await WriteLedgerAsync(connection, transaction, playerId, amount, balance,
-            "Gold", "reward.choice.refresh.refund", cancellationToken, requestId);
+        var now=timeProvider.GetUtcNow();
+        if(source is not null)
+        {
+            await SeasonRepository.ApplyWithinTransactionAsync(connection,transaction,playerId,source,amount,0,0,
+                "reward.choice.refresh.refund",requestId,SeasonWalletPurpose.LateSettlement,now,
+                PersistentIdempotency.Hash(new {playerId,requestId,amount,source}),cancellationToken);
+        }
+        else
+        {
+            await using var wallet = new NpgsqlCommand(
+                "UPDATE player_wallets SET gold=gold+$1,version=version+1 WHERE player_id=$2 RETURNING gold",connection, transaction);
+            wallet.Parameters.AddWithValue(amount);wallet.Parameters.AddWithValue(playerId);
+            var balance = (long)(await wallet.ExecuteScalarAsync(cancellationToken)
+                ?? throw new InvalidOperationException("Player wallet was not found."));
+            await WriteLegacyRefreshLedgerAsync(connection,transaction,playerId,requestId,amount,balance,
+                "reward.choice.refresh.refund",sourceConfig,now,cancellationToken);
+        }
         await using var update = new NpgsqlCommand(
             "UPDATE reward_refresh_operations SET state='Refunded',updated_at=$1 WHERE player_id=$2 AND request_id=$3",
             connection, transaction);
@@ -272,6 +308,37 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
         await update.ExecuteNonQueryAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);
         return true;
+    }
+
+    private sealed record RefreshFunding(SeasonContext? Season,string ConfigVersion);
+    private static async Task<RefreshFunding> ReadRefreshFundingAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
+        Guid playerId,Guid matchId,Guid roomId,CancellationToken ct)
+    {
+        await using var query=new NpgsqlCommand("""
+            SELECT m.room_id,m.status,m.season_id,m.difficulty,m.ruleset_id,m.config_version,m.stats_version
+            FROM matches m JOIN match_players p USING(match_id)
+            WHERE m.match_id=$1 AND p.player_id=$2 AND NOT p.is_bot AND p.state='Active'
+            FOR SHARE OF m,p
+            """,connection,transaction);
+        query.Parameters.AddWithValue(matchId);query.Parameters.AddWithValue(playerId);await using var reader=await query.ExecuteReaderAsync(ct);
+        if(!await reader.ReadAsync(ct)||reader.GetGuid(0)!=roomId||reader.GetString(1)!="Running")
+            throw new DomainValidationException("Reward refresh requires the player's original admitted running room.");
+        var version=reader.GetString(5);var season=reader.IsDBNull(2)?null:
+            new SeasonContext(reader.GetString(2),reader.GetString(3)[1]-'0',reader.GetString(4),version,reader.GetString(6));
+        return new(season,version);
+    }
+
+    private static async Task WriteLegacyRefreshLedgerAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,Guid player,
+        string requestId,long delta,long balance,string reason,string? configVersion,DateTimeOffset now,CancellationToken ct)
+    {
+        await using var ledger=new NpgsqlCommand("""
+            INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,
+                source_kind,difficulty_id,config_version)
+            VALUES($1,$2,$3,'Gold',$4,$5,$6,$7,'RoomRewardRefresh',CASE WHEN $8::varchar IS NULL THEN NULL ELSE 'Standard' END,$8)
+            """,connection,transaction);
+        ledger.Parameters.AddWithValue(Guid.CreateVersion7());ledger.Parameters.AddWithValue(player);ledger.Parameters.AddWithValue(requestId);
+        ledger.Parameters.AddWithValue(delta);ledger.Parameters.AddWithValue(balance);ledger.Parameters.AddWithValue(reason);ledger.Parameters.AddWithValue(now);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)configVersion??DBNull.Value);await ledger.ExecuteNonQueryAsync(ct);
     }
 
     public async Task<IReadOnlyList<PendingRewardRefresh>> GetRecoverableRewardRefreshesAsync(

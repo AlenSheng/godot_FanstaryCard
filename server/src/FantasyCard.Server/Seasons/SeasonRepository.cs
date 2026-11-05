@@ -9,7 +9,7 @@ using Npgsql;
 
 namespace FantasyCard.Server.Seasons;
 
-public enum SeasonWalletPurpose { General = 1, PermanentWeaponEnhancement = 2, LateSettlement = 3 }
+public enum SeasonWalletPurpose { General = 1, PermanentWeaponEnhancement = 2, LateSettlement = 3, RoomRefreshReserve = 4 }
 public sealed record SeasonWalletSnapshot(
     Guid PlayerId, string SeasonId, long Gold, long EquipmentFragments,
     long ChallengeMarks, long Version, DateTimeOffset? ArchivedAt,
@@ -218,10 +218,13 @@ public sealed partial class SeasonRepository(NpgsqlDataSource dataSource, TimePr
         NpgsqlConnection connection, NpgsqlTransaction transaction, Guid playerId, SeasonContext context,
         long goldDelta, long fragmentDelta, long markDelta, string reason, string requestId,
         SeasonWalletPurpose purpose, DateTimeOffset now, string businessRequestHash, CancellationToken cancellationToken,
-        long blueprintDelta = 0, long orangeBlueprintDelta = 0)
+        long blueprintDelta = 0, long orangeBlueprintDelta = 0, Guid? admittedMatchId = null)
     {
         if (!Enum.IsDefined(purpose) || (goldDelta == 0 && fragmentDelta == 0 && markDelta == 0 && blueprintDelta == 0 && orangeBlueprintDelta == 0))
             throw new DomainValidationException("The season wallet operation is invalid.");
+        if(purpose==SeasonWalletPurpose.RoomRefreshReserve &&
+            (admittedMatchId is null || admittedMatchId==Guid.Empty || goldDelta>=0 || fragmentDelta!=0 || markDelta!=0 || blueprintDelta!=0 || orangeBlueprintDelta!=0))
+            throw new DomainValidationException("A room refresh may reserve only gold from its admitted match's season.");
         if (string.IsNullOrWhiteSpace(reason) || reason.Length > 80 ||
             reason.Any(character => !char.IsAsciiLetterOrDigit(character) && character is not '.' and not '_' and not '-') ||
             string.IsNullOrWhiteSpace(requestId) || requestId.Length > 80 || requestId.Any(char.IsControl))
@@ -231,6 +234,8 @@ public sealed partial class SeasonRepository(NpgsqlDataSource dataSource, TimePr
         await LockPlayerAsync(connection, transaction, playerId, cancellationToken);
         var definition = await ValidateContextAsync(connection, transaction, context, cancellationToken);
         var hash = WalletRequestHash(context, goldDelta, fragmentDelta, markDelta, reason, purpose, businessRequestHash,blueprintDelta,orangeBlueprintDelta);
+        if(purpose==SeasonWalletPurpose.RoomRefreshReserve)
+            hash=Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(hash+":"+admittedMatchId!.Value.ToString("D"))));
         await using (var replay = new NpgsqlCommand("""
             SELECT request_hash,gold_after,fragments_after,marks_after,wallet_version,archived_at,blueprints_after,orange_blueprints_after
             FROM season_wallet_operations WHERE player_id=$1 AND season_id=$2 AND reason=$3 AND request_id=$4
@@ -251,6 +256,19 @@ public sealed partial class SeasonRepository(NpgsqlDataSource dataSource, TimePr
             ?? throw new DomainValidationException("The player has not joined the selected season.");
         if (now < definition.StartsAtUtc)
             throw new DomainValidationException("The selected season has not started.");
+        if(purpose==SeasonWalletPurpose.RoomRefreshReserve)
+        {
+            await using var proof=new NpgsqlCommand("""
+                SELECT EXISTS(SELECT 1 FROM matches m JOIN match_players p USING(match_id)
+                    WHERE m.match_id=$1 AND p.player_id=$2 AND NOT p.is_bot AND p.state='Active' AND m.status='Running'
+                      AND m.season_id=$3 AND m.difficulty=$4 AND m.ruleset_id=$5 AND m.config_version=$6 AND m.stats_version=$7)
+                """,connection,transaction);
+            proof.Parameters.AddWithValue(admittedMatchId!.Value);proof.Parameters.AddWithValue(playerId);
+            proof.Parameters.AddWithValue(context.SeasonId);proof.Parameters.AddWithValue(context.DifficultyId);proof.Parameters.AddWithValue(context.RulesetId);
+            proof.Parameters.AddWithValue(context.ConfigVersion);proof.Parameters.AddWithValue(context.StatsVersion);
+            if(await proof.ExecuteScalarAsync(cancellationToken) is not true)
+                throw new DomainValidationException("Only the original admitted running match may reserve its seasonal refresh gold.");
+        }
         switch (purpose)
         {
             case SeasonWalletPurpose.General when wallet.ArchivedAt is not null || !definition.Contains(now):

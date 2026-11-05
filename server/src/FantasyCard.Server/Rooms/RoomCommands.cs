@@ -232,6 +232,12 @@ public sealed record RefreshRewardChoiceCommand(Guid PlayerId, long ExpectedRevi
     public RewardRefreshReceiptSnapshot Execute(BattleRoom room) => room.RefreshRewardChoice(PlayerId, ExpectedRevision, AccountGoldAvailable, RequestId);
 }
 
+public sealed record GetRewardRefreshFundingQuoteCommand(Guid PlayerId) : IRoomCommand<RewardRefreshFundingQuote>
+{
+    public bool NotifyObservers => false;
+    public RewardRefreshFundingQuote Execute(BattleRoom room)=>room.GetRewardRefreshFundingQuote(PlayerId);
+}
+
 public sealed record ClaimRewardCommand(Guid PlayerId, string OptionId, string? ReplaceItemId, bool Equip = false) : IRoomCommand<int>
 {
     public int Execute(BattleRoom room) => room.ClaimReward(PlayerId, OptionId, ReplaceItemId, Equip);

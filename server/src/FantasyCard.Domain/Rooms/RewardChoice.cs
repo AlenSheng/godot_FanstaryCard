@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 namespace FantasyCard.Domain.Rooms;
 
 public enum RewardChoiceKind : short { Equipment = 1, EquipmentFragments = 2, ImmediateHeal = 3 }
+public sealed record RewardRefreshFundingQuote(int Cost,long AccountGoldRequired);
 
 public sealed record EquipmentRewardData(
     string Slot,

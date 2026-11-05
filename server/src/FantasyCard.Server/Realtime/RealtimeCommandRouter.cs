@@ -395,11 +395,8 @@ public sealed partial class RealtimeCommandRouter
                 }
                 else if (receipt is null)
                 {
-                    var choice = playerSnapshot.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
-                    var cost = GameConfigCatalog.Current.RewardRefreshGold(choice.RefreshCount + 1);
-                    var temporaryGold = playerSnapshot.Inventory?.Items
-                        .Where(item => item.Kind == ExplorationItemKind.Gold).Sum(item => item.Quantity) ?? 0;
-                    accountRequired = Math.Max(0, cost - temporaryGold);
+                    var funding = await actor.ExecuteAsync(new GetRewardRefreshFundingQuoteCommand(player.UserId), cancellationToken);
+                    accountRequired = funding.AccountGoldRequired;
                     if (accountRequired > 0)
                     {
                         if (_economyRepository is null)
