@@ -5,14 +5,17 @@ const Model = preload("res://ui/season_journey_reward_model.gd")
 const StoreDependency = preload("res://state/game_store.gd")
 const Http = preload("res://network/http_protocol.gd")
 const Index = preload("res://data/catalog_index.gd")
+const P = preload("res://ui/palette.gd")
 
 class Host extends Control:
 	var screen := "journey_rewards"
 	var renders := 0
 	var confirmation: Callable
+	var confirmation_message := ""
 	func _schedule_render() -> void:
 		renders += 1
-	func _confirm(_message: String, action: Callable) -> void:
+	func _confirm(message: String, action: Callable) -> void:
+		confirmation_message = message
 		confirmation = action
 	func _navigate(value: String) -> void:
 		screen = value
@@ -95,6 +98,7 @@ func run_test() -> Dictionary:
 	c.hero = "Mage"
 	c.confirm_claim(soul)
 	checks["chosen class requires explicit confirmation"] = host.confirmation.is_valid()
+	checks["class confirmation uses full localized class name"] = host.confirmation_message.contains(P.localized("class_mage"))
 	c.leave()
 	host.confirmation.call()
 	await _frames()

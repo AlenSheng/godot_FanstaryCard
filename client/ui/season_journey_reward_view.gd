@@ -25,6 +25,13 @@ static func _origin_label(host: Control, season_id: String) -> String:
 			break
 	return Journey.display_text(P.localized("journey_origin_season") % label)
 
+static func _collected_label(timestamp: String) -> String:
+	var date := Dates.date_label(timestamp)
+	if str(P.languages()[P.language()].get("direction", "ltr")) == "rtl":
+		# Keep the complete ISO date and time together in an RTL sentence.
+		date = String.chr(0x2066) + date + String.chr(0x2069)
+	return P.localized("journey_collected") + " · " + date
+
 static func _list(ui: Control, rect: Rect2, name: String) -> Dictionary:
 	var scroll: ScrollContainer = ui._scroll(rect)
 	scroll.name = name
@@ -80,7 +87,7 @@ static func build_rewards(ui: Control, host: Control) -> void:
 	picker.name = "JourneyRewardClass"
 	picker.add_item(P.localized("journey_choose_class"))
 	for hero in Model.HEROES:
-		picker.add_item(P.word(hero))
+		picker.add_item(P.localized("class_" + str(hero).to_lower()))
 	picker.select(0 if c.hero.is_empty() else Model.HEROES.find(c.hero) + 1)
 	picker.disabled = Game.busy or c.loading or c.writing
 	picker.item_selected.connect(c.choose_hero)
@@ -130,8 +137,12 @@ static func build_cosmetics(ui: Control, host: Control) -> void:
 	ui.panel(Rect2(76, 290, 550, 704)).name = "CurrentCosmeticProfile"
 	ui.text(P.localized("journey_current_style"), Rect2(106, 310, 490, 54), 28, P.GOLD).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	CosmeticArt.portrait(ui, Rect2(231, 380, 240, 240), Game.hero_class, CosmeticArt.equipped("AvatarFrame"), "Profile")
-	ui.text(str(Game.lobby.get("player", {}).get("displayName", "")), Rect2(106, 634, 490, 54), 28, P.PAPER, null, true, false).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	ui.text(CosmeticArt.title(), Rect2(106, 695, 490, 80), 27, P.TEAL, null, true, false).name = "EquippedProfileTitle"
+	var player_name: Label = ui.text(str(Game.lobby.get("player", {}).get("displayName", "")), Rect2(106, 634, 490, 54), 28, P.PAPER, null, true, false)
+	player_name.name = "CosmeticPlayerName"
+	player_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var equipped_title: Label = ui.text(CosmeticArt.title(), Rect2(106, 695, 490, 80), 27, P.TEAL, null, true, false)
+	equipped_title.name = "EquippedProfileTitle"
+	equipped_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var back := CosmeticArt.texture(CosmeticArt.equipped("CardBack"))
 	if back != null:
 		ui.picture(back, Rect2(291, 788, 120, 180)).name = "EquippedProfileCardBack"
@@ -155,7 +166,7 @@ static func build_cosmetics(ui: Control, host: Control) -> void:
 		host._label(lines, P.localized(str(row.nameKey)), 28, P.GOLD)
 		host._label(lines, P.localized(str(row.descriptionKey)), 24, P.PAPER)
 		if row.kind == "Collection":
-			host._label(lines, P.localized("journey_collected") + " · " + Dates.date_label(str(row.acquiredAt)), 23, P.TEAL)
+			host._label(lines, _collected_label(str(row.acquiredAt)), 23, P.TEAL)
 		else:
 			var equipped: bool = CosmeticArt.equipped(str(row.kind)) == row.cosmeticId
 			var select: Button = host._button(line, P.localized("journey_unequip" if equipped else "journey_equip"), c.select_cosmetic.bind(str(row.kind), null if equipped else row.cosmeticId), Game.busy or c.loading or c.writing or c.failed)

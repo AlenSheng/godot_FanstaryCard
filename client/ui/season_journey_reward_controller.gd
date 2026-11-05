@@ -121,7 +121,7 @@ func confirm_claim(reward: Dictionary) -> void:
 		return
 	var captured := reward.duplicate(true)
 	var chosen := hero
-	var caption: String = P.localized("journey_confirm_class_claim") % [reward.level, P.word(chosen)] if reward.get("requiresClassChoice", false) else P.localized("journey_confirm_claim") % reward.level
+	var caption: String = P.localized("journey_confirm_class_claim") % [reward.level, P.localized("class_" + chosen.to_lower())] if reward.get("requiresClassChoice", false) else P.localized("journey_confirm_claim") % reward.level
 	host._confirm(caption, _claim.bind(captured, body, chosen, _account_scope(), _epoch))
 
 func _claim(captured: Dictionary, body: Dictionary, chosen: String, scope: String, epoch: int) -> void:

@@ -141,9 +141,10 @@ func _header() -> void:
 		return_button.set_meta("sound_cue", "")
 		text(names.get(host.screen, P.localized("nav_hall")), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
-	var identity_text: String = P.localized("account_uid_multiline") % [player.get("displayName", ""), player.get("userId", "")]
+	var display_name := str(player.get("displayName", ""))
 	var cosmetic_title := CosmeticArt.title()
-	if not cosmetic_title.is_empty(): identity_text += "\n" + cosmetic_title
+	if not cosmetic_title.is_empty(): display_name += " · " + cosmetic_title
+	var identity_text: String = P.localized("account_uid_multiline") % [display_name, player.get("userId", "")]
 	var identity := text(identity_text, Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
 	identity.name = "AccountIdentity"
 	var equipped_frame := CosmeticArt.equipped("AvatarFrame")

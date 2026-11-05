@@ -3,6 +3,7 @@ using FantasyCard.Server.ProtobufHttp;
 using System.Text.Json;
 using FantasyCard.Contracts.Mail;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Progression;
 using Npgsql;
 
 namespace FantasyCard.Server.Mail;
@@ -77,6 +78,9 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        // Match claim-all and other account-asset writes: player before mail.
+        // Reversing these locks deadlocks a single claim against a batch claim.
+        if (!await LockPlayerAsync(connection, transaction, playerId, cancellationToken)) return null;
         var requestHash = PersistentIdempotency.Hash(new { mailId });
         var now = timeProvider.GetUtcNow();
         await using var query = new NpgsqlCommand(
@@ -109,8 +113,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         var attachments = ReadAttachments(payload);
         var response = new MailClaimResponse(mailId, false, attachments);
         GameResponseBudget.EnsureFits("MailClaimResponse", response);
-        foreach (var attachment in attachments)
-            await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
+        await GrantAttachmentsAsync(connection, transaction, playerId, mailId, attachments, now, cancellationToken);
 
         await using var update = new NpgsqlCommand(
             "UPDATE mail_messages SET claimed_at=$1,read_at=COALESCE(read_at,$1),version=version+1 WHERE mail_id=$2 AND player_id=$3",
@@ -130,12 +133,8 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var now = timeProvider.GetUtcNow();
-        await using (var playerLock = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction))
-        {
-            playerLock.Parameters.AddWithValue(playerId);
-            if (await playerLock.ExecuteScalarAsync(cancellationToken) is null)
-                throw new InvalidOperationException("Player is missing.");
-        }
+        if (!await LockPlayerAsync(connection, transaction, playerId, cancellationToken))
+            throw new InvalidOperationException("Player is missing.");
 
         var requestHash = PersistentIdempotency.Hash(new { operation = "claim-all" });
         var replay = await PersistentIdempotency.ReadAsync<MailClaimAllResponse>(
@@ -167,8 +166,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         GameResponseBudget.EnsureFits("MailClaimAllResponse", response);
         foreach (var claim in claims)
         {
-            foreach (var attachment in claim.Granted)
-                await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
+            await GrantAttachmentsAsync(connection, transaction, playerId, claim.MailId, claim.Granted, now, cancellationToken);
             await using var update = new NpgsqlCommand(
                 "UPDATE mail_messages SET claimed_at=$1,read_at=COALESCE(read_at,$1),version=version+1 WHERE mail_id=$2 AND player_id=$3",
                 connection, transaction);
@@ -236,12 +234,50 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         return result;
     }
 
+    private static async Task<bool> LockPlayerAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, CancellationToken cancellationToken)
+    {
+        await using var command = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction);
+        command.Parameters.AddWithValue(playerId);
+        return await command.ExecuteScalarAsync(cancellationToken) is not null;
+    }
+
+    private static async Task GrantAttachmentsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, Guid mailId, IReadOnlyList<MailAttachmentResponse> attachments, DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var cards = attachments.Where(attachment => attachment.Kind.Trim() == "Card").ToArray();
+        var permanentCopies = false;
+        if (cards.Length != 0)
+        {
+            await PermanentCardCopies.EnsurePublishedPolicyAsync(connection, transaction, playerId, now, cancellationToken);
+            permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection, transaction, playerId, cancellationToken);
+        }
+        if (permanentCopies)
+        {
+            // The ledger has one entry per original mail and card identity.
+            // Aggregate duplicate attachment rows without changing the receipt.
+            foreach (var group in cards.GroupBy(attachment => attachment.ItemId, StringComparer.Ordinal))
+            {
+                var cardId = group.Key;
+                if (string.IsNullOrWhiteSpace(cardId)) throw new InvalidOperationException("Card attachment itemId is required.");
+                var quantity = checked((int)group.Sum(attachment => attachment.Amount));
+                await PermanentCardCopies.GrantStoredWithinTransactionAsync(connection, transaction, playerId,
+                    cardId, quantity, "mail.claim", mailId.ToString("D"), now, cancellationToken);
+            }
+        }
+        foreach (var attachment in attachments)
+        {
+            if (permanentCopies && attachment.Kind.Trim() == "Card") continue;
+            await GrantAsync(connection, transaction, playerId, attachment, cancellationToken);
+        }
+    }
+
     private static async Task GrantAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid playerId,
         MailAttachmentResponse attachment,
-        string requestId,
         CancellationToken cancellationToken)
     {
         var kind = attachment.Kind.Trim();

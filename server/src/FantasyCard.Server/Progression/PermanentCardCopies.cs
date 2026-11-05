@@ -86,6 +86,20 @@ internal static class PermanentCardCopies
     {
         if(quantity<1 || !definition.Enabled || !definition.IsCodex)
             throw new DomainValidationException("The permanent card grant is invalid.");
+        return await GrantStoredWithinTransactionAsync(connection,transaction,playerId,definition.CardId,
+            quantity,reason,requestId,now,ct);
+    }
+
+    /// <summary>
+    /// Credit an existing player-card identity from a durable legacy grant.
+    /// Unversioned mail must not be reinterpreted against a current season's catalog.
+    /// The caller owns the player lock and the original mail's one-time receipt.
+    /// </summary>
+    internal static async Task<PermanentCardGrant> GrantStoredWithinTransactionAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
+        Guid playerId,string cardId,int quantity,string reason,string requestId,DateTimeOffset now,CancellationToken ct)
+    {
+        if(quantity<1 || string.IsNullOrWhiteSpace(cardId))
+            throw new DomainValidationException("The permanent card grant is invalid.");
         if(!await IsEnabledAsync(connection,transaction,playerId,ct))
             throw new DomainValidationException("Permanent card copies have not been enabled for this account.");
         int before;long version;
@@ -95,7 +109,7 @@ internal static class PermanentCardCopies
             WHERE c.player_id=$1 AND c.card_id=$2 FOR UPDATE OF c
             """,connection,transaction))
         {
-            query.Parameters.AddWithValue(playerId);query.Parameters.AddWithValue(definition.CardId);
+            query.Parameters.AddWithValue(playerId);query.Parameters.AddWithValue(cardId);
             await using var reader=await query.ExecuteReaderAsync(ct);
             if(!await reader.ReadAsync(ct))throw new DomainValidationException("The player card aggregate is missing the granted card.");
             before=reader.GetInt32(0);version=reader.GetInt64(1);
@@ -106,10 +120,10 @@ internal static class PermanentCardCopies
             WHERE player_id=$1 AND card_id=$2
             """,connection,transaction))
         {
-            command.Parameters.AddWithValue(playerId);command.Parameters.AddWithValue(definition.CardId);await command.ExecuteNonQueryAsync(ct);
+            command.Parameters.AddWithValue(playerId);command.Parameters.AddWithValue(cardId);await command.ExecuteNonQueryAsync(ct);
         }
-        await SaveReserveAsync(connection,transaction,playerId,definition.CardId,after,ct);
-        await WriteLedgerAsync(connection,transaction,playerId,definition.CardId,quantity,after,reason,requestId,now,ct);
-        return new(definition.CardId,quantity,before==0,after,version+1);
+        await SaveReserveAsync(connection,transaction,playerId,cardId,after,ct);
+        await WriteLedgerAsync(connection,transaction,playerId,cardId,quantity,after,reason,requestId,now,ct);
+        return new(cardId,quantity,before==0,after,version+1);
     }
 }
