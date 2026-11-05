@@ -177,12 +177,12 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             if (remaining is not null && balance.Table != "player_consumables")
             {
                 await using var ledger = new NpgsqlCommand(
-                    "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at) VALUES($1,$2,$3,$4,$5,$6,'admin_revoke',$7)",
+                    "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,source_kind) VALUES($1,$2,$3,$4,$5,$6,'admin_revoke',$7,'AdminRevoke')",
                     connection, transaction);
                 ledger.Parameters.AddWithValue(Guid.CreateVersion7());
                 ledger.Parameters.AddWithValue(request.PlayerId);
                 ledger.Parameters.AddWithValue(requestId);
-                ledger.Parameters.AddWithValue(request.Kind is "PriestSoul" or "MageSoul" or "GuardianSoul" ? "ClassSoul" : request.Kind);
+                ledger.Parameters.AddWithValue(request.Kind);
                 ledger.Parameters.AddWithValue(-request.Amount);
                 ledger.Parameters.AddWithValue((long)remaining);
                 ledger.Parameters.AddWithValue(timeProvider.GetUtcNow());
@@ -199,7 +199,14 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             if (changed == 1)
             {
                 await using var movement = new NpgsqlCommand(
-                    "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,'Inventory','EnhanceMaterialConsumed','admin_revoke',$4,$5)",
+                    """
+                    INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
+                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version)
+                    SELECT $1,$2,$3,'Inventory','EnhanceMaterialConsumed','admin_revoke',$4,$5,e.season_id,'AdminRevoke',
+                        CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version
+                    FROM equipments e LEFT JOIN season_definitions d ON d.season_id=e.season_id
+                    WHERE e.instance_id=$3 AND e.owner_id=$2
+                    """,
                     connection, transaction);
                 movement.Parameters.AddWithValue(Guid.CreateVersion7());
                 movement.Parameters.AddWithValue(request.PlayerId);
