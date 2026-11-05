@@ -13,7 +13,7 @@ public sealed class SeasonThemeRulesTests
     [Fact]
     public void ActualPublishedThemeGroupIsCompleteAndOriginalConfigElevenStillUsesLegacyEncounters()
     {
-        var current=GameConfigCatalog.Current;Assert.Equal("season-v1-config-12",current.Version);
+        var current=GameConfigCatalog.Current;
         var rules=Assert.IsType<SeasonThemeConfig>(current.SeasonThemes);rules.Validate(current.SeasonLootPreference!.DefaultElement);
         Assert.Equal("Fire",rules.SelectedThemeId);Assert.Equal(19,rules.Groups.Count);Assert.Equal(5,rules.Themes.Count);
         var folder=new DirectoryInfo(AppContext.BaseDirectory);string? path=null;

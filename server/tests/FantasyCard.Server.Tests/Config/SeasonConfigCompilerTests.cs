@@ -9,7 +9,7 @@ public sealed class SeasonConfigCompilerTests
     public void FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables()
     {
         var tables = Read();
-        Assert.Equal(35, tables.Count); // _README stays private; theme policy, strategies and group references publish together.
+        Assert.Equal(37, tables.Count); // _README stays private; journey rewards and cosmetics publish together.
         Assert.Equal(2,tables.Single(table=>table.Name=="SeasonCrafting").Rows.Count);
         Assert.Equal(6,tables.Single(table=>table.Name=="SeasonMarkRules").Rows.Count);
         Assert.Equal(6, tables.Single(t => t.Name == "SeasonDifficulty").Rows.Count);

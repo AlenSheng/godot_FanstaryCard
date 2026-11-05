@@ -21,9 +21,9 @@ public sealed class RewardRefreshConfigurationTransportTests
         var first=RewardRefreshOriginalConfigTests.CreateConfig("refresh-price-seven");
         var next=RewardRefreshOriginalConfigTests.CreateConfig("refresh-price-eleven",alternate:true);
         var fixtures=new[] {(Name:"archive12",Catalog:GameConfigCatalog.Load(oldBytes),LegacyScope:true),
-            (Name:"formal13",Catalog:GameConfigCatalog.Current,LegacyScope:false),
+            (Name:"formal14",Catalog:GameConfigCatalog.Current,LegacyScope:false),
             (Name:"seven",Catalog:first.Catalog,LegacyScope:false),(Name:"eleven",Catalog:next.Catalog,LegacyScope:false)};
-        Assert.Equal("season-v1-config-13",GameConfigCatalog.Current.Version);
+        Assert.Equal("season-v1-config-14",GameConfigCatalog.Current.Version);
         var cases=new List<object>();
         foreach(var f in fixtures)
         {
