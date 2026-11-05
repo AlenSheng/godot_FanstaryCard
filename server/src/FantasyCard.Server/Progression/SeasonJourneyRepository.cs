@@ -71,6 +71,7 @@ public sealed partial class SeasonJourneyRepository(NpgsqlDataSource dataSource,
             await using var update=new NpgsqlCommand("UPDATE player_season_journeys SET experience=$1,version=version+1 WHERE player_id=$2 AND season_id=$3",c,t);
             update.Parameters.AddWithValue(experience);update.Parameters.AddWithValue(player);update.Parameters.AddWithValue(season.SeasonId);await update.ExecuteNonQueryAsync(ct);
         }
+        await EnsureRewardsWithinTransactionAsync(c,t,player,season,config,recordedAt,System.Security.Cryptography.RandomNumberGenerator.GetInt32,ct);
     }
 
     private static async Task Ledger(NpgsqlConnection c,NpgsqlTransaction t,Guid player,string season,int amount,int balance,

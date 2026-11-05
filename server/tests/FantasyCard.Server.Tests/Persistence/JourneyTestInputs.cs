@@ -15,34 +15,35 @@ using FantasyCard.Server.Settlement;
 namespace FantasyCard.Server.Tests.Persistence;
 
 internal sealed record JourneyPlayer(Guid Player,SeasonDefinition Season,CraftingClock Clock,GameConfigCatalog Config,
-    SeasonRepository Seasons,SeasonJourneyRepository Journey);
+    SeasonRepository Seasons,SeasonJourneyRepository Journey,PublishedConfigCatalogs Configurations);
 
 internal static class JourneyTestInputs
 {
     internal static CancellationToken Ct=>TestContext.Current.CancellationToken;
-    internal static async Task<JourneyPlayer> Create(PostgresTestSchema db,int duration=42,GameConfigCatalog? config=null)
+    internal static async Task<JourneyPlayer> Create(PostgresTestSchema db,int duration=42,GameConfigCatalog? config=null,PublishedConfigCatalogs? configurations=null)
     {
         config??=GameConfigCatalog.Current;
         var season=SeasonDefinition.FromCalendarDays("journey-season",new(2026,11,1),config.Version,"season-equipment-v1",duration);
         var clock=new CraftingClock(season.StartsAtUtc.AddDays(20).AddHours(1));var player=await CraftingTestInputs.PlayerAsync(db,clock);
-        return await Existing(db,player,season,clock,config);
+        return await Existing(db,player,season,clock,config,configurations);
     }
-    internal static async Task<JourneyPlayer> Existing(PostgresTestSchema db,Guid player,SeasonDefinition season,CraftingClock clock,GameConfigCatalog? config=null)
+    internal static async Task<JourneyPlayer> Existing(PostgresTestSchema db,Guid player,SeasonDefinition season,CraftingClock clock,GameConfigCatalog? config=null,PublishedConfigCatalogs? configurations=null)
     {
         config??=GameConfigCatalog.Current;var seasons=new SeasonRepository(db.DataSource,clock);
         await seasons.PublishAsync(season,config.ContentHash,Ct);await seasons.EnsurePlayerAsync(player,season.ContextFor(0),Ct);
-        return new(player,season,clock,config,seasons,new(db.DataSource,clock,new PublishedConfigCatalogs(GameConfigCatalog.Current)));
+        var catalogs=configurations??new PublishedConfigCatalogs(GameConfigCatalog.Current);
+        return new(player,season,clock,config,seasons,new(db.DataSource,clock,catalogs),catalogs);
     }
 
     internal static async Task<ActivityCompletion> Extract(PostgresTestSchema db,JourneyPlayer p)
     {
         Assert.Equal(GameConfigCatalog.Current.Version,p.Config.Version);
         return await ActivityTestInputs.Extract(db,new(p.Player,p.Season,p.Clock,p.Seasons,
-            new(db.DataSource,p.Clock,new PublishedConfigCatalogs(GameConfigCatalog.Current))));
+            new(db.DataSource,p.Clock,p.Configurations)));
     }
     internal static async Task Observe(PostgresTestSchema db,JourneyPlayer p,ActivityCompletion completed)
     {
-        using var metrics=new ServerMetrics();var repository=new SettlementRepository(db.DataSource,p.Clock,metrics);
+        using var metrics=new ServerMetrics();var repository=new SettlementRepository(db.DataSource,p.Clock,metrics,p.Configurations);
         await new SettlementCoordinator(repository,p.Clock).ObserveAsync(completed.Match,completed.Snapshot);
         var settlement=await db.ScalarAsync<Guid>("SELECT settlement_id FROM match_players WHERE match_id=$1 AND player_id=$2",completed.Match,p.Player);
         await repository.CommitHoldsAsync(settlement,Ct);
@@ -55,7 +56,7 @@ internal static class JourneyTestInputs
     {
         var admitted=p.Clock.Now;var config=p.Config;
         var deck=(await new ProgressionRepository(db.DataSource,p.Clock).GetDecksAsync(p.Player,Ct)).Single(d=>d.HeroClass==HeroClassDto.Mage);
-        var prepared=await new PreparationRepository(db.DataSource,p.Clock).CreateAsync(p.Player,Guid.NewGuid().ToString("N"),
+        var prepared=await new PreparationRepository(db.DataSource,p.Clock,configurations:p.Configurations).CreateAsync(p.Player,Guid.NewGuid().ToString("N"),
             new(HeroClassDto.Mage,deck.Version,[null,null,null,null,null],BackpackTierDto.Free,[],0,"D0",p.Season.SeasonId),Ct);
         Assert.Equal(CreatePreparationStatus.Created,prepared.Status);var preparation=prepared.Preparation!;
         var catalog=CombatCardCatalog.Create(config);var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,73,season:p.Season.ContextFor(0));
