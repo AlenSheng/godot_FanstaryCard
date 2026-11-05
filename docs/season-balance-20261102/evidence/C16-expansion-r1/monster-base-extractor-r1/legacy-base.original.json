@@ -1,0 +1,777 @@
+{
+  "scope": "Exact legacy factory base definitions. No players, room actor, combat resolver or time advancement.",
+  "factory_calls": 26,
+  "profiles": 35,
+  "intent_rows": 58,
+  "new_combat_encounters": 0,
+  "rows": [
+    {
+      "profile_id": "O1:1",
+      "group_id": "O1",
+      "member_order": 1,
+      "monster_id": "fire-bat",
+      "hp": 78,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "O2:1",
+      "group_id": "O2",
+      "member_order": 1,
+      "monster_id": "thorn-mite",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Wood"
+        }
+      ]
+    },
+    {
+      "profile_id": "O3:1",
+      "group_id": "O3",
+      "member_order": 1,
+      "monster_id": "murk-snail",
+      "hp": 86,
+      "shield": 0,
+      "interval_ms": 4200,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "O4:1",
+      "group_id": "O4",
+      "member_order": 1,
+      "monster_id": "sand-lizard",
+      "hp": 92,
+      "shield": 8,
+      "interval_ms": 4600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Earth"
+        }
+      ]
+    },
+    {
+      "profile_id": "O5:1",
+      "group_id": "O5",
+      "member_order": 1,
+      "monster_id": "rust-rat",
+      "hp": 80,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "O6:1",
+      "group_id": "O6",
+      "member_order": 1,
+      "monster_id": "fire-bat-a",
+      "hp": 42,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "O6:2",
+      "group_id": "O6",
+      "member_order": 2,
+      "monster_id": "fire-bat-b",
+      "hp": 42,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "O7:1",
+      "group_id": "O7",
+      "member_order": 1,
+      "monster_id": "rust-rat",
+      "hp": 44,
+      "shield": 0,
+      "interval_ms": 3800,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "O7:2",
+      "group_id": "O7",
+      "member_order": 2,
+      "monster_id": "thorn-mite",
+      "hp": 46,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Wood"
+        }
+      ]
+    },
+    {
+      "profile_id": "O8:1",
+      "group_id": "O8",
+      "member_order": 1,
+      "monster_id": "murk-snail",
+      "hp": 46,
+      "shield": 0,
+      "interval_ms": 4200,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "O8:2",
+      "group_id": "O8",
+      "member_order": 2,
+      "monster_id": "sand-lizard",
+      "hp": 50,
+      "shield": 6,
+      "interval_ms": 4600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Earth"
+        }
+      ]
+    },
+    {
+      "profile_id": "M1:1",
+      "group_id": "M1",
+      "member_order": 1,
+      "monster_id": "fire-bat-a",
+      "hp": 56,
+      "shield": 0,
+      "interval_ms": 3800,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "M1:2",
+      "group_id": "M1",
+      "member_order": 2,
+      "monster_id": "fire-bat-b",
+      "hp": 56,
+      "shield": 0,
+      "interval_ms": 3800,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "M2:1",
+      "group_id": "M2",
+      "member_order": 1,
+      "monster_id": "murk-snail",
+      "hp": 60,
+      "shield": 0,
+      "interval_ms": 4200,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "M2:2",
+      "group_id": "M2",
+      "member_order": 2,
+      "monster_id": "sand-lizard",
+      "hp": 66,
+      "shield": 8,
+      "interval_ms": 4600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Earth"
+        }
+      ]
+    },
+    {
+      "profile_id": "M3:1",
+      "group_id": "M3",
+      "member_order": 1,
+      "monster_id": "rust-rat",
+      "hp": 58,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "M3:2",
+      "group_id": "M3",
+      "member_order": 2,
+      "monster_id": "thorn-mite",
+      "hp": 62,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Wood"
+        }
+      ]
+    },
+    {
+      "profile_id": "M4:1",
+      "group_id": "M4",
+      "member_order": 1,
+      "monster_id": "murk-snail-a",
+      "hp": 64,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "M4:2",
+      "group_id": "M4",
+      "member_order": 2,
+      "monster_id": "murk-snail-b",
+      "hp": 64,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "M5:1",
+      "group_id": "M5",
+      "member_order": 1,
+      "monster_id": "fire-bat",
+      "hp": 54,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "M5:2",
+      "group_id": "M5",
+      "member_order": 2,
+      "monster_id": "sand-lizard",
+      "hp": 64,
+      "shield": 8,
+      "interval_ms": 4600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Earth"
+        }
+      ]
+    },
+    {
+      "profile_id": "E1:1",
+      "group_id": "E1",
+      "member_order": 1,
+      "monster_id": "metal-guard",
+      "hp": 200,
+      "shield": 12,
+      "interval_ms": 4400,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Metal"
+        },
+        {
+          "order": 2,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Metal"
+        },
+        {
+          "order": 3,
+          "kind": "Shield",
+          "Value": 12,
+          "element": "None"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 6,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "E2:1",
+      "group_id": "E2",
+      "member_order": 1,
+      "monster_id": "fire-herald",
+      "hp": 188,
+      "shield": 0,
+      "interval_ms": 4200,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Fire"
+        },
+        {
+          "order": 2,
+          "kind": "Charge",
+          "Value": 0,
+          "element": "None"
+        },
+        {
+          "order": 3,
+          "kind": "Attack",
+          "Value": 6,
+          "element": "Fire"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "E3:1",
+      "group_id": "E3",
+      "member_order": 1,
+      "monster_id": "marsh-mother",
+      "hp": 210,
+      "shield": 8,
+      "interval_ms": 4600,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Water"
+        },
+        {
+          "order": 2,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Water"
+        },
+        {
+          "order": 3,
+          "kind": "Shield",
+          "Value": 10,
+          "element": "None"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 6,
+          "element": "Water"
+        }
+      ]
+    },
+    {
+      "profile_id": "E4:1",
+      "group_id": "E4",
+      "member_order": 1,
+      "monster_id": "stone-guard",
+      "hp": 184,
+      "shield": 24,
+      "interval_ms": 4800,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Earth"
+        },
+        {
+          "order": 2,
+          "kind": "Shield",
+          "Value": 14,
+          "element": "None"
+        },
+        {
+          "order": 3,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Earth"
+        },
+        {
+          "order": 4,
+          "kind": "Direct",
+          "Value": 7,
+          "element": "None"
+        }
+      ]
+    },
+    {
+      "profile_id": "E5:1",
+      "group_id": "E5",
+      "member_order": 1,
+      "monster_id": "thorn-guard",
+      "hp": 196,
+      "shield": 0,
+      "interval_ms": 4200,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Wood"
+        },
+        {
+          "order": 2,
+          "kind": "Empower",
+          "Value": 2,
+          "element": "None"
+        },
+        {
+          "order": 3,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Wood"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 5,
+          "element": "Wood"
+        }
+      ]
+    },
+    {
+      "profile_id": "E6:1",
+      "group_id": "E6",
+      "member_order": 1,
+      "monster_id": "metal-guard",
+      "hp": 160,
+      "shield": 10,
+      "interval_ms": 4400,
+      "amplification_bp": 1500,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Metal"
+        },
+        {
+          "order": 2,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Metal"
+        },
+        {
+          "order": 3,
+          "kind": "Shield",
+          "Value": 12,
+          "element": "None"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 6,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "E6:2",
+      "group_id": "E6",
+      "member_order": 2,
+      "monster_id": "fire-bat",
+      "hp": 40,
+      "shield": 0,
+      "interval_ms": 3600,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 2,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOSS:1",
+      "group_id": "BOSS",
+      "member_order": 1,
+      "monster_id": "annihilation-core",
+      "hp": 280,
+      "shield": 20,
+      "interval_ms": 4400,
+      "amplification_bp": 2000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Fire"
+        },
+        {
+          "order": 2,
+          "kind": "Attack",
+          "Value": 4,
+          "element": "Wood"
+        },
+        {
+          "order": 3,
+          "kind": "Shield",
+          "Value": 10,
+          "element": "None"
+        },
+        {
+          "order": 4,
+          "kind": "Attack",
+          "Value": 5,
+          "element": "Fire"
+        },
+        {
+          "order": 5,
+          "kind": "Charge",
+          "Value": 0,
+          "element": "None"
+        },
+        {
+          "order": 6,
+          "kind": "Direct",
+          "Value": 6,
+          "element": "None"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-None:1",
+      "group_id": "BOX-None",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 0,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Direct",
+          "Value": 3,
+          "element": "None"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-Fire:1",
+      "group_id": "BOX-Fire",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Fire"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-Wood:1",
+      "group_id": "BOX-Wood",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Wood"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-Earth:1",
+      "group_id": "BOX-Earth",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Earth"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-Metal:1",
+      "group_id": "BOX-Metal",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Metal"
+        }
+      ]
+    },
+    {
+      "profile_id": "BOX-Water:1",
+      "group_id": "BOX-Water",
+      "member_order": 1,
+      "monster_id": "box-spirit",
+      "hp": 84,
+      "shield": 0,
+      "interval_ms": 4000,
+      "amplification_bp": 1000,
+      "intents": [
+        {
+          "order": 1,
+          "kind": "Attack",
+          "Value": 3,
+          "element": "Water"
+        }
+      ]
+    }
+  ]
+}
