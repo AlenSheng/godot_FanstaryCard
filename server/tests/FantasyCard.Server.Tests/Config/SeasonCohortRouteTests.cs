@@ -15,7 +15,7 @@ public sealed class SeasonCohortRouteTests
     private static readonly string[] Slots=["Head","Hands","Chest","Legs","Feet"];
     private static readonly TimeSpan Tick=TimeSpan.FromMilliseconds(100);
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
-    internal sealed record Scenario(string Id,string Hero,string Cohort,int Seed,int Difficulty=2,string Route="R1",bool EarlyExtract=false,bool AdaptiveEquipment=false);
+    internal sealed record Scenario(string Id,string Hero,string Cohort,int Seed,int Difficulty=2,string Route="R1",bool EarlyExtract=false,bool AdaptiveEquipment=false,string Loadout="current");
 
     private static Scenario[] Plan()
     {
@@ -50,12 +50,12 @@ public sealed class SeasonCohortRouteTests
         foreach(var row in rows){attempts.WriteLine(JsonSerializer.Serialize(row));attempts.Flush();Run(row,trace,results);trace.Flush();results.Flush();}
     }
 
-    internal static BattleRoomSnapshot Run(Scenario scenario,StreamWriter trace,StreamWriter results,IReadOnlyList<ExplorationItem>? ownedArmor=null)
+    internal static BattleRoomSnapshot Run(Scenario scenario,StreamWriter trace,StreamWriter results,IReadOnlyList<ExplorationItem>? ownedArmor=null,GameConfigCatalog? configuration=null)
     {
-        var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(scenario.Hero);var id=Guid.NewGuid();
+        var config=configuration??GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(scenario.Hero);var id=Guid.NewGuid();
         var context=new SeasonContext("d03-cohorts",scenario.Difficulty,"season-v1",config.Version,"season-equipment-v1");
         var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,scenario.Seed,season:context);
-        var startingCards=Deck(hero,scenario.Cohort);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),WornArmor:ownedArmor??Armor(),CardLevels:Enumerable.Repeat(Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),20).ToArray()));
+        var startingCards=scenario.Loadout=="current"?Deck(hero,scenario.Cohort):SeasonStarterSupportTests.Deck(scenario.Loadout);var player=room.AddPlayer(new(id,hero,startingCards,null,WeaponLevel:Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),WornArmor:ownedArmor??Armor(),CardLevels:Enumerable.Repeat(Math.Min(scenario.Cohort=="novice"?2:5,scenario.Difficulty),20).ToArray()));
         var originalArmor=player.WornArmor.ToArray();var choiceRandom=new Random(scenario.Seed^0x43484f49);var lastAction=TimeSpan.FromSeconds(-1);var reaction=TimeSpan.FromSeconds(scenario.Cohort=="novice"?1:scenario.Cohort=="returning"?.7:.5);
         var map=ChaosMapGenerator.Generate(scenario.Seed,1,config.SeasonThemes);var mapOriginal=JsonSerializer.Serialize(map.Capture());var path=Path(map,scenario.Route);room.InitializeMap(map);
         var originalIds=Instances(player).Select(x=>x.InstanceId).ToHashSet();var pathIndex=0;var casts=0;var kills=0;var clears=0;var potions=0;var springs=0;var redRolls=0;

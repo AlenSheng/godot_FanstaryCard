@@ -14,7 +14,7 @@ public sealed class SeasonDifficultyTests
     private static readonly int[] NakedIntentDamage = [3,3,4,5,6,7];
 
     [Theory]
-    [InlineData(0,78,200,280,2,3)]
+    [InlineData(0,39,100,140,2,3)]
     [InlineData(1,124,320,448,2,3)]
     [InlineData(2,202,520,728,3,4)]
     [InlineData(3,312,800,1120,3,5)]

@@ -1,0 +1,20 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 113 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 317 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\d03-formal16-domain-r1\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\d03-formal16-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\d03-formal16-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [4 ms]
+  Error Message:
+   System.IO.DirectoryNotFoundException : Could not locate the published server config version file.
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.FindPublishedConfigRoots() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 101
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.AssertPublishedConfigMatchesCatalog(String embeddedVersion) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 65
+   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 60
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\d03-formal16-domain-r1\results\contracts.trx
+
+Failed!  - Failed:     1, Passed:    23, Skipped:     0, Total:    24, Duration: 655 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:01.57]     FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage [FAIL]

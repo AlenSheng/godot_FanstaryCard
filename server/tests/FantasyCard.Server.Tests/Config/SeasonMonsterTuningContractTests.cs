@@ -74,7 +74,7 @@ public sealed class SeasonMonsterTuningContractTests
             if(change is null)Assert.Equal(JsonSerializer.Serialize(old.Capture(),Json),JsonSerializer.Serialize(next.Capture(),Json));
             else
             {
-                Assert.Equal(change.BaseHp,next.MaximumHp);Assert.Equal(change.BaseShield,next.Shield);Assert.Equal(old.AttackInterval,next.AttackInterval);Assert.Equal(old.ElementalAmplification,next.ElementalAmplification);
+                Assert.Equal(SeasonDifficultyConfig.Scale(change.BaseHp,config.SeasonDifficulty(0).HpBasisPoints),next.MaximumHp);Assert.Equal(SeasonDifficultyConfig.Scale(change.BaseShield,config.SeasonDifficulty(0).ShieldBasisPoints),next.Shield);Assert.Equal(old.AttackInterval,next.AttackInterval);Assert.Equal(old.ElementalAmplification,next.ElementalAmplification);
                 Assert.Equal(old.Intents.Count,next.Intents.Count);
                 for(var i=0;i<old.Intents.Count;i++)Assert.Equal(old.Intents[i].Kind==MonsterIntentKind.Shield?old.Intents[i] with{Value=change.ShieldIntentValue}:old.Intents[i],next.Intents[i]);
             }
