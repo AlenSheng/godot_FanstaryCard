@@ -1,0 +1,1031 @@
+{
+  "ok": true,
+  "scope": "Private production backup restored into an owned PostgreSQL clone; migration only, no server host, gameplay or external network.",
+  "beforeMigrations": {
+    "Count": 27,
+    "Maximum": 30,
+    "Hash": "d39c6b2c68ad152d0565fc4036a6215d"
+  },
+  "firstMigrations": {
+    "Count": 52,
+    "Maximum": 55,
+    "Hash": "692c5ad0380f9ef6bf0f44c0f60341b6"
+  },
+  "replayMigrations": {
+    "Count": 52,
+    "Maximum": 55,
+    "Hash": "692c5ad0380f9ef6bf0f44c0f60341b6"
+  },
+  "legacy_tables": {
+    "admin_audit": {
+      "Columns": [
+        "audit_id",
+        "actor",
+        "action",
+        "player_id",
+        "details_json",
+        "request_id",
+        "created_at"
+      ],
+      "Rows": 20,
+      "Hash": "076737918f61a17750b31332bde9f36c"
+    },
+    "class_weapons": {
+      "Columns": [
+        "player_id",
+        "hero_class",
+        "level",
+        "version"
+      ],
+      "Rows": 4482,
+      "Hash": "e27c02b84c03c9490c3e9e41d2a9c9c9"
+    },
+    "client_settings": {
+      "Columns": [
+        "id",
+        "local_login_enabled",
+        "announcement_title",
+        "announcement_body",
+        "version",
+        "updated_at",
+        "announcement_title_en",
+        "announcement_body_en"
+      ],
+      "Rows": 1,
+      "Hash": "efb24e3dc1e71208d1e8b57cb61170b4"
+    },
+    "economy_ledger": {
+      "Columns": [
+        "ledger_id",
+        "player_id",
+        "request_id",
+        "currency",
+        "delta",
+        "balance_after",
+        "reason",
+        "created_at"
+      ],
+      "Rows": 294,
+      "Hash": "141cdc218bc2e06bb74785d4f110d1ef"
+    },
+    "equipments": {
+      "Columns": [
+        "instance_id",
+        "owner_id",
+        "slot",
+        "quality",
+        "level",
+        "is_bound",
+        "location",
+        "version",
+        "created_at",
+        "element",
+        "effect_affix",
+        "secondary_trait"
+      ],
+      "Rows": 693,
+      "Hash": "77d92e35c72b91672dc656344e17e38f"
+    },
+    "external_identities": {
+      "Columns": [
+        "provider",
+        "external_subject",
+        "player_id",
+        "created_at"
+      ],
+      "Rows": 1494,
+      "Hash": "acec6fff55fe124772c35c92d70e5c8b"
+    },
+    "idempotency_records": {
+      "Columns": [
+        "player_id",
+        "scope",
+        "request_id",
+        "request_hash",
+        "response_json",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "inventory_movements": {
+      "Columns": [
+        "movement_id",
+        "player_id",
+        "item_id",
+        "from_location",
+        "to_location",
+        "reason",
+        "request_id",
+        "created_at"
+      ],
+      "Rows": 367,
+      "Hash": "e99fcaf1c6ce9cc03a66f4dcec2cf99b"
+    },
+    "mail_messages": {
+      "Columns": [
+        "mail_id",
+        "player_id",
+        "title",
+        "body",
+        "sender",
+        "attachments_json",
+        "sent_at",
+        "expires_at",
+        "read_at",
+        "claimed_at",
+        "version",
+        "title_en",
+        "body_en",
+        "template_id",
+        "template_args",
+        "sender_role"
+      ],
+      "Rows": 85,
+      "Hash": "4f67252727a8546065e216c2a1bc0ac6"
+    },
+    "market_listings": {
+      "Columns": [
+        "listing_id",
+        "seller_id",
+        "equipment_id",
+        "price_gold",
+        "status",
+        "version",
+        "request_id",
+        "request_hash",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 8,
+      "Hash": "ef4a32c42106f05055a9ecd1c0589fa7"
+    },
+    "market_transactions": {
+      "Columns": [
+        "transaction_id",
+        "listing_id",
+        "buyer_id",
+        "seller_id",
+        "price_gold",
+        "fee_gold",
+        "seller_net_gold",
+        "request_id",
+        "request_hash",
+        "completed_at"
+      ],
+      "Rows": 1,
+      "Hash": "e031fbe1ab5ba2449e26b861183f7508"
+    },
+    "match_players": {
+      "Columns": [
+        "match_id",
+        "player_id",
+        "preparation_id",
+        "is_bot",
+        "state",
+        "settled_at",
+        "settlement_id"
+      ],
+      "Rows": 2365,
+      "Hash": "7c7bc708a36e3087f5fd2611d4b74c4b"
+    },
+    "match_settlements": {
+      "Columns": [
+        "settlement_id",
+        "match_id",
+        "player_id",
+        "result",
+        "details_json",
+        "created_at",
+        "acknowledged_at"
+      ],
+      "Rows": 1827,
+      "Hash": "25489ee8504ca710cc837fd723916df9"
+    },
+    "match_tickets": {
+      "Columns": [
+        "ticket_id",
+        "player_id",
+        "preparation_id",
+        "request_id",
+        "status",
+        "queued_at",
+        "matched_at"
+      ],
+      "Rows": 1912,
+      "Hash": "24e1dc5eab5ed41032901b8f50a11478"
+    },
+    "matches": {
+      "Columns": [
+        "match_id",
+        "room_id",
+        "mode",
+        "difficulty",
+        "seed",
+        "config_version",
+        "status",
+        "created_at",
+        "ready_deadline"
+      ],
+      "Rows": 577,
+      "Hash": "6a28b88f5d0fefbe99d4c41f6dbac4e3"
+    },
+    "player_bans": {
+      "Columns": [
+        "player_id",
+        "reason",
+        "banned_at",
+        "banned_by"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "player_cards": {
+      "Columns": [
+        "player_id",
+        "card_id",
+        "hero_class",
+        "rarity",
+        "is_monster",
+        "unlocked",
+        "copy_count",
+        "level",
+        "version"
+      ],
+      "Rows": 328680,
+      "Hash": "37f54cb4e0b287711cb18651b7d18bcf"
+    },
+    "player_consumables": {
+      "Columns": [
+        "player_id",
+        "health_potion_count",
+        "advanced_bag_count",
+        "top_bag_count",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "57148c61abb40ab8c796483f985e68f2"
+    },
+    "player_deck_cards": {
+      "Columns": [
+        "deck_id",
+        "slot_index",
+        "card_id"
+      ],
+      "Rows": 89640,
+      "Hash": "c43f69bac80b78adf72c211e9f5a397a"
+    },
+    "player_decks": {
+      "Columns": [
+        "deck_id",
+        "player_id",
+        "hero_class",
+        "version",
+        "updated_at"
+      ],
+      "Rows": 4482,
+      "Hash": "f9b26b1535ab21085ead849b47fc6358"
+    },
+    "player_loadouts": {
+      "Columns": [
+        "player_id",
+        "hero_class",
+        "head_id",
+        "chest_id",
+        "hands_id",
+        "legs_id",
+        "feet_id",
+        "version"
+      ],
+      "Rows": 4482,
+      "Hash": "d76a9ae66ec6d53131de8e41e1c822ba"
+    },
+    "player_materials": {
+      "Columns": [
+        "player_id",
+        "warrior_soul",
+        "priest_soul",
+        "mage_soul",
+        "guardian_soul",
+        "equipment_fragments",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "77a42fb17eee2a93067d6199cba32802"
+    },
+    "player_sessions": {
+      "Columns": [
+        "session_id",
+        "player_id",
+        "token_hash",
+        "expires_at",
+        "created_at"
+      ],
+      "Rows": 60,
+      "Hash": "f3b284ae8a4a3dc6d59a2baf1fd0fba8"
+    },
+    "player_wallets": {
+      "Columns": [
+        "player_id",
+        "gold",
+        "diamond",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "ab03bca9a7f29f9be1e8a6c5c77249a7"
+    },
+    "players": {
+      "Columns": [
+        "user_id",
+        "display_name",
+        "selected_class",
+        "version",
+        "created_at",
+        "updated_at",
+        "display_name_key"
+      ],
+      "Rows": 1494,
+      "Hash": "7e02654bb3f336a27edd5720265bece9"
+    },
+    "preparation_assets": {
+      "Columns": [
+        "preparation_id",
+        "asset_type",
+        "asset_id",
+        "quantity"
+      ],
+      "Rows": 61,
+      "Hash": "ca28af5506eb283370b93bd09c0d0198"
+    },
+    "preparations": {
+      "Columns": [
+        "preparation_id",
+        "player_id",
+        "request_id",
+        "request_hash",
+        "snapshot_json",
+        "status",
+        "config_version",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 1930,
+      "Hash": "1ead87e0a3f528d856999c07961ff268"
+    },
+    "red_equipment_weekly_quotas": {
+      "Columns": [
+        "week_key",
+        "red_dropped_this_week",
+        "source",
+        "player_id",
+        "match_id",
+        "equipment_id",
+        "claimed_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "relic_items": {
+      "Columns": [
+        "item_id",
+        "pile_id",
+        "asset_kind",
+        "asset_ref",
+        "asset_snapshot",
+        "quantity",
+        "created_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "relic_piles": {
+      "Columns": [
+        "pile_id",
+        "room_id",
+        "grid_row",
+        "grid_column",
+        "dead_player_id",
+        "version",
+        "status",
+        "created_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "reward_refresh_operations": {
+      "Columns": [
+        "player_id",
+        "request_id",
+        "match_id",
+        "room_id",
+        "expected_revision",
+        "account_gold",
+        "state",
+        "response_json",
+        "room_revision",
+        "recover_after",
+        "created_at",
+        "updated_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "room_event_buffers": {
+      "Columns": [
+        "room_id",
+        "sequence",
+        "event_json",
+        "expires_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "room_snapshots": {
+      "Columns": [
+        "room_id",
+        "revision",
+        "snapshot_json",
+        "rng_state_json",
+        "updated_at"
+      ],
+      "Rows": 577,
+      "Hash": "fb2c7db882ba6b79f6ba98d6695d47e7"
+    },
+    "settlement_asset_holds": {
+      "Columns": [
+        "hold_id",
+        "settlement_id",
+        "player_id",
+        "asset_kind",
+        "asset_ref",
+        "asset_snapshot",
+        "state",
+        "created_at"
+      ],
+      "Rows": 478,
+      "Hash": "bc0930e77d86ab457cb68076c72cb991"
+    },
+    "settlement_notification_outbox": {
+      "Columns": [
+        "settlement_id",
+        "player_id",
+        "match_id",
+        "result",
+        "created_at",
+        "published_at"
+      ],
+      "Rows": 1827,
+      "Hash": "285e72ec7a47f2d2ba2831c63818ea1a"
+    },
+    "shop_purchases": {
+      "Columns": [
+        "purchase_id",
+        "player_id",
+        "reset_key",
+        "product_id",
+        "request_id",
+        "request_hash",
+        "quantity",
+        "price_gold",
+        "granted_json",
+        "created_at"
+      ],
+      "Rows": 22,
+      "Hash": "3d4ad19fc79f4b1c10b12dd0effebd3c"
+    },
+    "shop_refresh_states": {
+      "Columns": [
+        "reset_key",
+        "shop_reset_key",
+        "rotation_key",
+        "used_count",
+        "updated_at"
+      ],
+      "Rows": 13,
+      "Hash": "a9183428f5dee73c41f7cef23f298c80"
+    },
+    "shop_rotations": {
+      "Columns": [
+        "reset_key",
+        "product_id",
+        "kind",
+        "payload_json",
+        "price_gold",
+        "limit_count"
+      ],
+      "Rows": 192,
+      "Hash": "9d391dc00c83be356d1706169cfac337"
+    }
+  },
+  "legacy_projection_after": {
+    "admin_audit": {
+      "Columns": [
+        "audit_id",
+        "actor",
+        "action",
+        "player_id",
+        "details_json",
+        "request_id",
+        "created_at"
+      ],
+      "Rows": 20,
+      "Hash": "076737918f61a17750b31332bde9f36c"
+    },
+    "class_weapons": {
+      "Columns": [
+        "player_id",
+        "hero_class",
+        "level",
+        "version"
+      ],
+      "Rows": 4482,
+      "Hash": "e27c02b84c03c9490c3e9e41d2a9c9c9"
+    },
+    "client_settings": {
+      "Columns": [
+        "id",
+        "local_login_enabled",
+        "announcement_title",
+        "announcement_body",
+        "version",
+        "updated_at",
+        "announcement_title_en",
+        "announcement_body_en"
+      ],
+      "Rows": 1,
+      "Hash": "efb24e3dc1e71208d1e8b57cb61170b4"
+    },
+    "economy_ledger": {
+      "Columns": [
+        "ledger_id",
+        "player_id",
+        "request_id",
+        "currency",
+        "delta",
+        "balance_after",
+        "reason",
+        "created_at"
+      ],
+      "Rows": 294,
+      "Hash": "141cdc218bc2e06bb74785d4f110d1ef"
+    },
+    "equipments": {
+      "Columns": [
+        "instance_id",
+        "owner_id",
+        "slot",
+        "quality",
+        "level",
+        "is_bound",
+        "location",
+        "version",
+        "created_at",
+        "element",
+        "effect_affix",
+        "secondary_trait"
+      ],
+      "Rows": 693,
+      "Hash": "77d92e35c72b91672dc656344e17e38f"
+    },
+    "external_identities": {
+      "Columns": [
+        "provider",
+        "external_subject",
+        "player_id",
+        "created_at"
+      ],
+      "Rows": 1494,
+      "Hash": "acec6fff55fe124772c35c92d70e5c8b"
+    },
+    "idempotency_records": {
+      "Columns": [
+        "player_id",
+        "scope",
+        "request_id",
+        "request_hash",
+        "response_json",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "inventory_movements": {
+      "Columns": [
+        "movement_id",
+        "player_id",
+        "item_id",
+        "from_location",
+        "to_location",
+        "reason",
+        "request_id",
+        "created_at"
+      ],
+      "Rows": 367,
+      "Hash": "e99fcaf1c6ce9cc03a66f4dcec2cf99b"
+    },
+    "mail_messages": {
+      "Columns": [
+        "mail_id",
+        "player_id",
+        "title",
+        "body",
+        "sender",
+        "attachments_json",
+        "sent_at",
+        "expires_at",
+        "read_at",
+        "claimed_at",
+        "version",
+        "title_en",
+        "body_en",
+        "template_id",
+        "template_args",
+        "sender_role"
+      ],
+      "Rows": 85,
+      "Hash": "4f67252727a8546065e216c2a1bc0ac6"
+    },
+    "market_listings": {
+      "Columns": [
+        "listing_id",
+        "seller_id",
+        "equipment_id",
+        "price_gold",
+        "status",
+        "version",
+        "request_id",
+        "request_hash",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 8,
+      "Hash": "ef4a32c42106f05055a9ecd1c0589fa7"
+    },
+    "market_transactions": {
+      "Columns": [
+        "transaction_id",
+        "listing_id",
+        "buyer_id",
+        "seller_id",
+        "price_gold",
+        "fee_gold",
+        "seller_net_gold",
+        "request_id",
+        "request_hash",
+        "completed_at"
+      ],
+      "Rows": 1,
+      "Hash": "e031fbe1ab5ba2449e26b861183f7508"
+    },
+    "match_players": {
+      "Columns": [
+        "match_id",
+        "player_id",
+        "preparation_id",
+        "is_bot",
+        "state",
+        "settled_at",
+        "settlement_id"
+      ],
+      "Rows": 2365,
+      "Hash": "7c7bc708a36e3087f5fd2611d4b74c4b"
+    },
+    "match_settlements": {
+      "Columns": [
+        "settlement_id",
+        "match_id",
+        "player_id",
+        "result",
+        "details_json",
+        "created_at",
+        "acknowledged_at"
+      ],
+      "Rows": 1827,
+      "Hash": "25489ee8504ca710cc837fd723916df9"
+    },
+    "match_tickets": {
+      "Columns": [
+        "ticket_id",
+        "player_id",
+        "preparation_id",
+        "request_id",
+        "status",
+        "queued_at",
+        "matched_at"
+      ],
+      "Rows": 1912,
+      "Hash": "24e1dc5eab5ed41032901b8f50a11478"
+    },
+    "matches": {
+      "Columns": [
+        "match_id",
+        "room_id",
+        "mode",
+        "difficulty",
+        "seed",
+        "config_version",
+        "status",
+        "created_at",
+        "ready_deadline"
+      ],
+      "Rows": 577,
+      "Hash": "6a28b88f5d0fefbe99d4c41f6dbac4e3"
+    },
+    "player_bans": {
+      "Columns": [
+        "player_id",
+        "reason",
+        "banned_at",
+        "banned_by"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "player_cards": {
+      "Columns": [
+        "player_id",
+        "card_id",
+        "hero_class",
+        "rarity",
+        "is_monster",
+        "unlocked",
+        "copy_count",
+        "level",
+        "version"
+      ],
+      "Rows": 328680,
+      "Hash": "37f54cb4e0b287711cb18651b7d18bcf"
+    },
+    "player_consumables": {
+      "Columns": [
+        "player_id",
+        "health_potion_count",
+        "advanced_bag_count",
+        "top_bag_count",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "57148c61abb40ab8c796483f985e68f2"
+    },
+    "player_deck_cards": {
+      "Columns": [
+        "deck_id",
+        "slot_index",
+        "card_id"
+      ],
+      "Rows": 89640,
+      "Hash": "c43f69bac80b78adf72c211e9f5a397a"
+    },
+    "player_decks": {
+      "Columns": [
+        "deck_id",
+        "player_id",
+        "hero_class",
+        "version",
+        "updated_at"
+      ],
+      "Rows": 4482,
+      "Hash": "f9b26b1535ab21085ead849b47fc6358"
+    },
+    "player_loadouts": {
+      "Columns": [
+        "player_id",
+        "hero_class",
+        "head_id",
+        "chest_id",
+        "hands_id",
+        "legs_id",
+        "feet_id",
+        "version"
+      ],
+      "Rows": 4482,
+      "Hash": "d76a9ae66ec6d53131de8e41e1c822ba"
+    },
+    "player_materials": {
+      "Columns": [
+        "player_id",
+        "warrior_soul",
+        "priest_soul",
+        "mage_soul",
+        "guardian_soul",
+        "equipment_fragments",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "77a42fb17eee2a93067d6199cba32802"
+    },
+    "player_sessions": {
+      "Columns": [
+        "session_id",
+        "player_id",
+        "token_hash",
+        "expires_at",
+        "created_at"
+      ],
+      "Rows": 60,
+      "Hash": "f3b284ae8a4a3dc6d59a2baf1fd0fba8"
+    },
+    "player_wallets": {
+      "Columns": [
+        "player_id",
+        "gold",
+        "diamond",
+        "version"
+      ],
+      "Rows": 1494,
+      "Hash": "ab03bca9a7f29f9be1e8a6c5c77249a7"
+    },
+    "players": {
+      "Columns": [
+        "user_id",
+        "display_name",
+        "selected_class",
+        "version",
+        "created_at",
+        "updated_at",
+        "display_name_key"
+      ],
+      "Rows": 1494,
+      "Hash": "7e02654bb3f336a27edd5720265bece9"
+    },
+    "preparation_assets": {
+      "Columns": [
+        "preparation_id",
+        "asset_type",
+        "asset_id",
+        "quantity"
+      ],
+      "Rows": 61,
+      "Hash": "ca28af5506eb283370b93bd09c0d0198"
+    },
+    "preparations": {
+      "Columns": [
+        "preparation_id",
+        "player_id",
+        "request_id",
+        "request_hash",
+        "snapshot_json",
+        "status",
+        "config_version",
+        "created_at",
+        "expires_at"
+      ],
+      "Rows": 1930,
+      "Hash": "1ead87e0a3f528d856999c07961ff268"
+    },
+    "red_equipment_weekly_quotas": {
+      "Columns": [
+        "week_key",
+        "red_dropped_this_week",
+        "source",
+        "player_id",
+        "match_id",
+        "equipment_id",
+        "claimed_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "relic_items": {
+      "Columns": [
+        "item_id",
+        "pile_id",
+        "asset_kind",
+        "asset_ref",
+        "asset_snapshot",
+        "quantity",
+        "created_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "relic_piles": {
+      "Columns": [
+        "pile_id",
+        "room_id",
+        "grid_row",
+        "grid_column",
+        "dead_player_id",
+        "version",
+        "status",
+        "created_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "reward_refresh_operations": {
+      "Columns": [
+        "player_id",
+        "request_id",
+        "match_id",
+        "room_id",
+        "expected_revision",
+        "account_gold",
+        "state",
+        "response_json",
+        "room_revision",
+        "recover_after",
+        "created_at",
+        "updated_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "room_event_buffers": {
+      "Columns": [
+        "room_id",
+        "sequence",
+        "event_json",
+        "expires_at"
+      ],
+      "Rows": 0,
+      "Hash": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "room_snapshots": {
+      "Columns": [
+        "room_id",
+        "revision",
+        "snapshot_json",
+        "rng_state_json",
+        "updated_at"
+      ],
+      "Rows": 577,
+      "Hash": "fb2c7db882ba6b79f6ba98d6695d47e7"
+    },
+    "settlement_asset_holds": {
+      "Columns": [
+        "hold_id",
+        "settlement_id",
+        "player_id",
+        "asset_kind",
+        "asset_ref",
+        "asset_snapshot",
+        "state",
+        "created_at"
+      ],
+      "Rows": 478,
+      "Hash": "bc0930e77d86ab457cb68076c72cb991"
+    },
+    "settlement_notification_outbox": {
+      "Columns": [
+        "settlement_id",
+        "player_id",
+        "match_id",
+        "result",
+        "created_at",
+        "published_at"
+      ],
+      "Rows": 1827,
+      "Hash": "285e72ec7a47f2d2ba2831c63818ea1a"
+    },
+    "shop_purchases": {
+      "Columns": [
+        "purchase_id",
+        "player_id",
+        "reset_key",
+        "product_id",
+        "request_id",
+        "request_hash",
+        "quantity",
+        "price_gold",
+        "granted_json",
+        "created_at"
+      ],
+      "Rows": 22,
+      "Hash": "3d4ad19fc79f4b1c10b12dd0effebd3c"
+    },
+    "shop_refresh_states": {
+      "Columns": [
+        "reset_key",
+        "shop_reset_key",
+        "rotation_key",
+        "used_count",
+        "updated_at"
+      ],
+      "Rows": 13,
+      "Hash": "a9183428f5dee73c41f7cef23f298c80"
+    },
+    "shop_rotations": {
+      "Columns": [
+        "reset_key",
+        "product_id",
+        "kind",
+        "payload_json",
+        "price_gold",
+        "limit_count"
+      ],
+      "Rows": 192,
+      "Hash": "9d391dc00c83be356d1706169cfac337"
+    }
+  },
+  "differences": [],
+  "current_table_count": 75,
+  "replayStable": true,
+  "backup_contains_private_data": true,
+  "public_report_contains_hashes_counts_and_schema_only": true,
+  "production_migration_performed": false,
+  "new_gameplay_cases": 0,
+  "final_protected_release_artifact_validated": false
+}
