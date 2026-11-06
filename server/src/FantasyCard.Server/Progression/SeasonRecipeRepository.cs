@@ -1,6 +1,7 @@
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Domain.Players;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Telemetry;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -81,7 +82,8 @@ public sealed partial class ProgressionRepository
             after=item with {RecipeExtracted=true,Version=item.Version+1};
         }
         var response=new LearnSeasonRecipeResponse(recipe,after,known is not null);
-        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"recipe.learn",requestId,hash,item,after,response,now,ct);
+        var observation=CraftingEventObservations.Create(realm.Context,realm.MaximumDifficulty,item.InstanceId,item.Quality,"recipe.learn",alreadyLearned:known is not null);
+        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"recipe.learn",requestId,hash,item,after,response,now,observation,ct);
         await transaction.CommitAsync(ct);return response;
     }
 
@@ -148,7 +150,9 @@ public sealed partial class ProgressionRepository
         {loadouts.Parameters.AddWithValue(playerId);loadouts.Parameters.AddWithValue(body.InstanceId);await loadouts.ExecuteNonQueryAsync(ct);}
         await WriteInventoryMovementAsync(connection,transaction,playerId,body.InstanceId,body.Location,"Inventory","equipment.reforge",ct,requestId,realm.Season.SeasonId);
         var response=new ReforgeEquipmentResponse(after,BlueprintWalletResponse(paid));
-        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"equipment.reforge",requestId,hash,body,after,response,now,ct);
+        var observation=CraftingEventObservations.Create(realm.Context,realm.MaximumDifficulty,body.InstanceId,body.Quality,"equipment.reforge",
+            fragments:realm.Policy.Offer(recipe.Quality).ReforgeFragmentCost);
+        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"equipment.reforge",requestId,hash,body,after,response,now,observation,ct);
         await transaction.CommitAsync(ct);return response;
     }
 }

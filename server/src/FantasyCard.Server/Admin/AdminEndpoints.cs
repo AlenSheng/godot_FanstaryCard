@@ -14,6 +14,7 @@ public static partial class AdminEndpoints
         services.AddSingleton<ClientSettingsHub>();
         services.AddSingleton<EconomyTelemetryRepository>();
         services.AddSingleton<PlaytimeTelemetryRepository>();
+        services.AddSingleton<CraftingEventTelemetryRepository>();
         services.AddSingleton<EconomyTelemetryMetrics>();
         return services;
     }
@@ -40,6 +41,7 @@ public static partial class AdminEndpoints
         admin.MapPut("/client-settings", UpdateClientSettingsAsync);
         admin.MapGet("/telemetry/economy", ReadEconomyTelemetryAsync);
         admin.MapGet("/telemetry/playtime", ReadPlaytimeTelemetryAsync);
+        admin.MapGet("/telemetry/crafting-events", ReadCraftingEventsAsync);
         return endpoints;
     }
 

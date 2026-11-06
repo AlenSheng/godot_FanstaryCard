@@ -6,6 +6,7 @@ using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Seasons;
+using FantasyCard.Server.Telemetry;
 using Npgsql;
 using NpgsqlTypes;
 
@@ -81,17 +82,18 @@ public sealed partial class ProgressionRepository
     }
 
     private static async Task WriteSeasonEquipmentActionAsync<T>(NpgsqlConnection connection,NpgsqlTransaction transaction,
-        Guid playerId,string seasonId,string kind,string requestId,string hash,EquipmentResponse? before,EquipmentResponse? after,T response,DateTimeOffset now,CancellationToken ct)
+        Guid playerId,string seasonId,string kind,string requestId,string hash,EquipmentResponse? before,EquipmentResponse? after,T response,DateTimeOffset now,CraftingEventObservation observation,CancellationToken ct)
     {
         await using var command=new NpgsqlCommand("""
-            INSERT INTO season_equipment_actions(action_id,player_id,season_id,action_kind,request_id,request_hash,before_item,after_item,response_json,created_at)
-            VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+            INSERT INTO season_equipment_actions(action_id,player_id,season_id,action_kind,request_id,request_hash,before_item,after_item,response_json,created_at,telemetry_json)
+            VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
             """,connection,transaction);
         command.Parameters.AddWithValue(Guid.NewGuid());command.Parameters.AddWithValue(playerId);command.Parameters.AddWithValue(seasonId);
         command.Parameters.AddWithValue(kind);command.Parameters.AddWithValue(requestId);command.Parameters.AddWithValue(hash);
         command.Parameters.AddWithValue(NpgsqlDbType.Jsonb,before is null?DBNull.Value:JsonSerializer.Serialize(before));
         command.Parameters.AddWithValue(NpgsqlDbType.Jsonb,after is null?DBNull.Value:JsonSerializer.Serialize(after));
         command.Parameters.AddWithValue(NpgsqlDbType.Jsonb,JsonSerializer.Serialize(response));command.Parameters.AddWithValue(now);
+        command.Parameters.AddWithValue(NpgsqlDbType.Jsonb,JsonSerializer.Serialize(observation));
         await command.ExecuteNonQueryAsync(ct);
     }
 
@@ -172,7 +174,9 @@ public sealed partial class ProgressionRepository
         }
         await WriteInventoryMovementAsync(connection,transaction,playerId,item.InstanceId,"NotMinted","Inventory","equipment.craft",ct,requestId,realm.Season.SeasonId);
         var response=new CraftEquipmentResponse(item,BlueprintWalletResponse(paid),new(request.Quality,request.Slot,request.Element,request.WishedEffect,roll.FailuresAfter,offer.WishAttempts-roll.FailuresAfter),payment.Blueprints,payment.OrangeBlueprints);
-        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"equipment.craft",requestId,hash,null,item,response,now,ct);
+        var observation=CraftingEventObservations.Create(realm.Context,realm.MaximumDifficulty,item.InstanceId,item.Quality,"equipment.craft",
+            failures,roll.FailuresAfter,roll.Guaranteed,blueprints:payment.Blueprints,orangeBlueprints:payment.OrangeBlueprints);
+        await WriteSeasonEquipmentActionAsync(connection,transaction,playerId,realm.Season.SeasonId,"equipment.craft",requestId,hash,null,item,response,now,observation,ct);
         await transaction.CommitAsync(ct);return response;
     }
 }
