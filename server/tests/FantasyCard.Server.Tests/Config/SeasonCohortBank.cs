@@ -37,6 +37,8 @@ internal sealed class SeasonCohortBank
     public string? StopReason{get;set;}
     public List<Owned> Items{get;set;}=[];
     public List<Owned> Overflow{get;set;}=[];
+    public List<Owned> Recycled{get;set;}=[];
+    public string SelectionPolicy{get;set;}="legacy";
     public List<Recipe> Recipes{get;set;}=[];
     public List<Wish> Wishes{get;set;}=[];
     public HashSet<string> SeenIds{get;set;}=new(StringComparer.Ordinal);
@@ -145,6 +147,7 @@ internal sealed class SeasonCohortBank
 
     public ExplorationItem[] Select(GameConfigCatalog config,int difficulty)
     {
+        if(SelectionPolicy==SeasonCohortMaintenance.Policy)return SeasonCohortMaintenance.Select(this,config,difficulty);
         var cap=config.SeasonDifficulty(difficulty).EntryQualityCap;var chosen=new List<ExplorationItem>();var usedHigh=false;
         foreach(var slot in Slots)
         {
@@ -205,6 +208,9 @@ internal sealed class SeasonCohortBank
         Assert.True(Gold>=0&&Fragments>=0&&Blueprints>=0&&OrangeBlueprints>=0);Assert.Equal(GoldEarned,Gold);Assert.Equal(FragmentsEarned-FragmentsSpent,Fragments);
         Assert.Equal(Items.Count,Items.Select(x=>x.Item.ItemId).Distinct(StringComparer.Ordinal).Count());Assert.DoesNotContain(Items,x=>LostIds.Contains(x.Item.ItemId));
         Assert.All(Items,x=>Assert.True(EquipmentRewardRules.IsValid(x.Item.Equipment!)));Assert.All(Items,x=>Assert.Contains(x.Item.ItemId,SeenIds));
+        var activeIds=Items.Concat(Overflow).Select(x=>x.Item.ItemId).ToHashSet(StringComparer.Ordinal);
+        Assert.Equal(Recycled.Count,Recycled.Select(x=>x.Item.ItemId).Distinct(StringComparer.Ordinal).Count());
+        Assert.All(Recycled,x=>{Assert.Contains(x.Item.ItemId,SeenIds);Assert.DoesNotContain(x.Item.ItemId,activeIds);Assert.DoesNotContain(x.Item.ItemId,LostIds);});
     }
     private void Emit<T>(StreamWriter trace,string action,T payload)=>trace.WriteLine(JsonSerializer.Serialize(new {kind="bank",Id,action,Attempts,payload}));
 }
