@@ -1,0 +1,11 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://main.tscn" id="1"]
+[ext_resource type="Script" path="res://tests/ui_steam_entry_review.gd" id="2"]
+[ext_resource type="Script" path="res://tests/steam_ui_main_fixture.gd" id="3"]
+
+[node name="SteamEntryReview" type="Node"]
+script = ExtResource("2")
+
+[node name="UI" parent="." instance=ExtResource("1")]
+script = ExtResource("3")

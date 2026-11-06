@@ -123,8 +123,8 @@ public static class IdentityEndpoints
                 metrics.IdentitySignInFailed("steam", "invalid_ticket");
                 return context.UnauthorizedProblem();
             }
-            var result = await identityService.SignInExternalAsync(
-                "steam", steamId, request.Value.DisplayName, cancellationToken);
+            var result = await identityService.SignInSteamAsync(
+                steamId, request.Value.DisplayName, cancellationToken);
             return Results.Ok(new LocalSignInResponse(
                 result.AccessToken, result.ExpiresAt, result.Player.ToResponse()));
         }

@@ -41,23 +41,30 @@ public sealed class IdentityService(
         }
     }
 
-    public async Task<SignInResult> SignInExternalAsync(
+    public Task<SignInResult> SignInExternalAsync(
         string provider,
         string externalSubject,
         string? displayName,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken) =>
+        SignInExternalCoreAsync(provider, externalSubject, displayName, false, cancellationToken);
+
+    public Task<SignInResult> SignInSteamAsync(string verifiedSteamId, string? personaName, CancellationToken cancellationToken) =>
+        SignInExternalCoreAsync("steam", verifiedSteamId, personaName, true, cancellationToken);
+
+    private async Task<SignInResult> SignInExternalCoreAsync(
+        string provider, string externalSubject, string? displayName, bool allocateSteamName, CancellationToken cancellationToken)
     {
         try
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(provider);
             ArgumentException.ThrowIfNullOrWhiteSpace(externalSubject);
-            var normalizedDisplayName = PlayerProfile.NormalizeDisplayName(displayName);
+            var normalizedDisplayName = allocateSteamName ? displayName ?? string.Empty : PlayerProfile.NormalizeDisplayName(displayName);
             var token = SessionToken.Create();
             var now = timeProvider.GetUtcNow();
             var expiresAt = now.AddDays(options.Value.SessionLifetimeDays);
-            var player = await repository.SignInExternalAsync(
-                provider, externalSubject, normalizedDisplayName, SessionToken.Hash(token),
-                now, expiresAt, cancellationToken);
+            var player = allocateSteamName
+                ? await repository.SignInSteamAsync(externalSubject, normalizedDisplayName, SessionToken.Hash(token), now, expiresAt, cancellationToken)
+                : await repository.SignInExternalAsync(provider, externalSubject, normalizedDisplayName, SessionToken.Hash(token), now, expiresAt, cancellationToken);
             metrics.IdentitySignInSucceeded(provider);
             return new SignInResult(token, expiresAt, player);
         }

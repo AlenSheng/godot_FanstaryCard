@@ -60,6 +60,14 @@ def typed_value(encoded, value_type):
     raise ValueError(f"Unknown column type {value_type}")
 
 
+def copy_branch_documents():
+    """Retain branch-owned localization and future-season static documents."""
+    for name in ("ui_text.json", "season_templates.json", "season_transition_rules.json"):
+        source = ROOT / "config" / name
+        if source.exists():
+            (ROOT / "client/data" / name).write_bytes(source.read_bytes())
+
+
 def main():
     bundle = fields((ROOT / "server/config/generated/fantasycard.config.bytes").read_bytes())
     output = {"version": bundle[1][0].decode(), "tables": {}}
@@ -88,6 +96,7 @@ def main():
         pack = json.loads((locale_root / (code + ".json")).read_text(encoding="utf-8"))
         descriptions["zh" if code == "zh-CN" else code] = pack.get("card_descriptions", {})
     (ROOT / "client/data/card_descriptions.json").write_text(json.dumps(descriptions, ensure_ascii=False), encoding="utf-8")
+    copy_branch_documents()
     print({name: len(rows) for name, rows in output["tables"].items()})
 
 

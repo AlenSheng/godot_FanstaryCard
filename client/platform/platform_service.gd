@@ -8,6 +8,9 @@ var _ticket_handle: int = 0
 var _ticket_pending := false
 var _ticket_result: Dictionary = {}
 
+func _steam_api() -> Object:
+	return Engine.get_singleton("Steam") if Engine.has_singleton("Steam") else null
+
 func local_login_enabled() -> bool:
 	return OS.is_debug_build() and bool(ProjectSettings.get_setting("platform/development/local_auth", true))
 
@@ -16,10 +19,10 @@ func login_unavailable_reason() -> String:
 		return P.localized("steam_app_id_missing")
 	if str(ProjectSettings.get_setting("platform/steam/web_api_identity", "")).strip_edges().is_empty():
 		return P.localized("steam_identity_missing")
-	if not Engine.has_singleton("Steam"):
+	var steam := _steam_api()
+	if steam == null:
 		return P.localized("steam_component_missing")
-	var steam := Engine.get_singleton("Steam")
-	for method in ["steamInitEx", "getAuthTicketForWebApi", "cancelAuthTicket", "run_callbacks", "getAppID", "loggedOn"]:
+	for method in ["steamInitEx", "getAuthTicketForWebApi", "cancelAuthTicket", "run_callbacks", "getAppID", "loggedOn", "getPersonaName"]:
 		if not steam.has_method(method): return P.localized("steam_component_unsupported")
 	if not steam.has_signal("get_ticket_for_web_api"):
 		return P.localized("steam_browser_callback_unsupported")
@@ -29,7 +32,7 @@ func request_login_ticket() -> Dictionary:
 	var unavailable := login_unavailable_reason()
 	if not unavailable.is_empty(): return {"ok": false, "error": unavailable}
 	if _ticket_pending: return {"ok": false, "error": P.localized("steam_login_processing")}
-	_steam = Engine.get_singleton("Steam")
+	_steam = _steam_api()
 	if not _initialized:
 		var init: Variant = _steam.call("steamInitEx", int(ProjectSettings.get_setting("platform/steam/app_id", 0)), false)
 		if not init is Dictionary or int(init.get("status", -1)) != 0:
@@ -40,6 +43,9 @@ func request_login_ticket() -> Dictionary:
 		return {"ok": false, "error": P.localized("steam_config_mismatch")}
 	if not bool(_steam.call("loggedOn")):
 		return {"ok": false, "error": P.localized("steam_login_required")}
+	var persona_name := str(_steam.call("getPersonaName")).strip_edges()
+	if persona_name.is_empty():
+		return {"ok": false, "error": I18n.t("暂时无法读取 Steam 昵称，请稍后重试。")}
 	release_ticket()
 	_ticket_pending = true
 	_ticket_result = {}
@@ -54,7 +60,10 @@ func request_login_ticket() -> Dictionary:
 	if _ticket_result.is_empty():
 		release_ticket()
 		return {"ok": false, "error": P.localized("steam_ticket_timeout")}
-	return _ticket_result.duplicate()
+	var result := _ticket_result.duplicate()
+	if bool(result.get("ok", false)): result["display_name"] = persona_name
+	else: release_ticket()
+	return result
 
 func _process(_delta: float) -> void:
 	if _initialized and is_instance_valid(_steam): _steam.call("run_callbacks")

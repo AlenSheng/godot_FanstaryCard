@@ -295,7 +295,7 @@ if __name__ == "__main__":
     parser.add_argument("--all-widths", action="store_true", help="Review all three supported widths in one owned renderer")
     parser.add_argument("--all-locales", action="store_true", help="Review every registered locale in one owned renderer")
     parser.add_argument("--screens", default="", help="Comma-separated screen families; empty means all")
-    parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe"], default="ui_visual_review")
+    parser.add_argument("--scene", choices=["ui_visual_review", "codex_preview", "deck_builder_preview", "equipment_compare_preview", "ui_typography_probe", "ui_branch_sync_preview", "ui_steam_entry_review"], default="ui_visual_review")
     parser.add_argument("--wait-seconds", type=int, default=0, help="Admission wait; does not reduce the fixed memory reserve")
     parser.add_argument("--render-timeout-seconds", type=int, default=180,
                         help="Owned renderer observation window, 30 to 600 seconds; memory protection is unchanged")

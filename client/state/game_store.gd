@@ -349,7 +349,7 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 	if not (address.begins_with("http://") or address.begins_with("https://")):
 		_reject_login(P.localized("invalid_server_url"))
 		return
-	if not OS.is_debug_build() and not address.begins_with("https://"):
+	if (steam_login or not OS.is_debug_build()) and not address.begins_with("https://"):
 		_reject_login(P.localized("https_required"))
 		return
 	if not steam_login and not platform.local_login_enabled():
@@ -385,8 +385,10 @@ func _login(address: String, display_name: String, steam_login: bool) -> void:
 			var ticket_result: Dictionary = {"ok": true}
 			if steam_login:
 				ticket_result = await platform.request_login_ticket()
-				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": display_name}
-			if generation != gateway.session_generation: return
+				if ticket_result.ok: sign_in = {"ticket": ticket_result.ticket, "displayName": ticket_result.display_name}
+			if generation != gateway.session_generation:
+				if steam_login: platform.release_ticket()
+				return
 			if ticket_result.ok:
 				var result: Dictionary = await gateway.request("/api/v1/auth/steam" if steam_login else "/api/v1/auth/local", HTTPClient.METHOD_POST, sign_in)
 				if generation != gateway.session_generation: return

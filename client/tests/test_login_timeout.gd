@@ -4,6 +4,11 @@ const Gateway = preload("res://network/gateway.gd")
 const Platform = preload("res://platform/platform_service.gd")
 const P = preload("res://ui/palette.gd")
 
+class LoginPlatform extends "res://platform/platform_service.gd":
+	# The wire fixture exercises local loopback auth independently of the
+	# release build's disabled local-account entry and real Steam SDK.
+	func local_login_enabled() -> bool: return true
+
 class LoginStore extends "res://state/game_store.gd":
 	func _ready() -> void: pass
 	func _process_client_info() -> void: pass
@@ -35,7 +40,7 @@ func _store(gateway: Node) -> Node:
 	gateway.persist_session = false
 	store.gateway = gateway
 	store.add_child(gateway)
-	store.platform = Platform.new()
+	store.platform = LoginPlatform.new()
 	store.add_child(store.platform)
 	gateway.connection_changed.connect(store._on_connection_changed)
 	gateway.authentication_required.connect(store._on_authentication_required)
@@ -51,6 +56,8 @@ func _run() -> void:
 	root.get_node("Game").gateway.end_session("", false)
 	root.get_node("Sound").persist_settings = false
 	var host: Control = load("res://main.tscn").instantiate()
+	host.set_script(load("res://tests/steam_ui_main_fixture.gd"))
+	host.fixture_ready = true
 	root.add_child(host)
 	var live_game := root.get_node("Game")
 	var original_gateway: Node = live_game.gateway
@@ -136,6 +143,8 @@ func _run() -> void:
 	quit(0 if report.ok else 1)
 
 func _login_buttons_disabled(host: Node, disabled: bool) -> bool:
+	var entry: Button = host.find_child("EnterGameButton", true, false)
+	if entry != null: return entry.disabled == disabled
 	var count := 0
 	for button in host.find_children("*", "Button", true, false):
 		if button.text in [P.localized("local_dev_login"), P.localized("cloud_login"), P.localized("random_name")]:

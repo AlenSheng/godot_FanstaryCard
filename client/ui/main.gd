@@ -30,7 +30,6 @@ const LayeredBackdrop = preload("res://ui/layered_backdrop.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
 const CellIndex = preload("res://ui/cell_index.gd")
 const UI_CONFIG = preload("res://data/ui_config.json")
-const RANDOM_NAMES_PATH := "res://data/random_names.json"
 const CLOUD_SERVER_URL := "https://www.relicbound.cn"
 const LOCAL_SERVER_URL := "http://127.0.0.1:5080"
 const LOGIN_VIDEO_PATH := "res://assets/backgrounds/relicbound_login_ambient.ogv"
@@ -73,7 +72,6 @@ var _pointer_render_context: Array = []
 var _combat_feedback_context: Array = []
 var mail_modal_lock := false
 var _midlayer_seen: Dictionary = {}
-var _login_name := ""
 var _session_generation: int = -1
 var _search := ""
 var _combat_panels: Dictionary = {}
@@ -129,8 +127,6 @@ var _draw_charge_initialized := false
 func _ready() -> void:
 	theme = P.theme()
 	cards = CatalogIndex.cards()
-	if not Game.gateway.local_account_name.is_empty(): _login_name = Game.gateway.local_account_name
-	if _login_name.is_empty(): _login_name = _random_login_name()
 	_session_generation = Game.gateway.session_generation
 	_card_pool = CardPool.new()
 	_card_pool.name = "CardPool"
@@ -485,8 +481,6 @@ func _sync_account_session() -> void:
 		_shop_inventory_ready = not inventory.is_empty()
 	if Game.lobby.get("shop") is Dictionary: shop = Game.lobby.shop
 	if Game.lobby.get("market") is Array: listings = Game.lobby.market
-	if not Game.lobby.is_empty() and not Game.gateway.token.is_empty() and not Game.gateway.local_account_name.is_empty():
-		_login_name = Game.gateway.local_account_name
 	if not _card_prewarm_started and not Game.lobby.is_empty() and lobby_cards is Array:
 		_card_prewarm_started = true
 		_card_pool.begin_prewarm(cards, owned, func(id): return _card_text(id))
@@ -768,27 +762,18 @@ func _login() -> void:
 	panel_frame.name = "LoginPanel"
 	panel_frame.size_flags_stretch_ratio = 0.32
 	panel_frame.custom_minimum_size.x = 340
-	_label(panel, P.localized("start"), 40)
-	_label(panel, P.localized("nickname"), 22, P.MUTED)
-	var name_input := LineEdit.new()
-	name_input.text = _login_name
-	name_input.placeholder_text = P.localized_text(P.localized("account_placeholder"))
-	name_input.max_length = 20
-	name_input.text_changed.connect(func(value): _login_name = value)
-	panel.add_child(name_input)
-	var randomize_button := _button(panel, P.localized("random_name"), func():
-		_login_name = _random_login_name(_login_name)
-		name_input.text = _login_name
-	, Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
-	randomize_button.tooltip_text = P.localized("random_name_hint")
-	if OS.is_debug_build():
-		var local_button := _button(panel, P.localized("local_dev_login"), func(): Game.login(LOCAL_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png")
-		local_button.tooltip_text = P.localized_text(P.localized("ui_local_server_hint"))
-	_label(panel, P.localized("nickname_hint"), 20, P.MUTED)
-	_button(panel, P.localized("cloud_login"), func(): Game.login(CLOUD_SERVER_URL, _login_name), Game.busy, "UI/CardCodex/card_codex_action_button_orange.png")
-	var steam_reason: String = Game.platform.login_unavailable_reason()
-	_button(panel, P.localized("steam_login"), func(): Game.login_steam(CLOUD_SERVER_URL, _login_name), Game.busy or not steam_reason.is_empty())
-	if not steam_reason.is_empty(): _label(panel, steam_reason, 20, P.MUTED)
+	var top_space := Control.new()
+	top_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(top_space)
+	var steam_reason := _steam_unavailable_reason()
+	var enter := _button(panel, I18n.t("进入"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
+	enter.name = "EnterGameButton"
+	enter.custom_minimum_size.y = 100
+	if not steam_reason.is_empty():
+		_label(panel, I18n.t("Steam 登录暂未就绪，请稍后重试。"), 20, P.MUTED)
+	var bottom_space := Control.new()
+	bottom_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	panel.add_child(bottom_space)
 	if not Game.authentication_reason.is_empty(): _label(panel, Game.authentication_reason, 22, P.GOLD)
 	if not Game.configuration_error.is_empty(): _label(panel, Game.configuration_error, 22, P.GOLD)
 	var center_space := Control.new()
@@ -818,6 +803,14 @@ func _login() -> void:
 	_about_scroll_content(announcement_scroll, body)
 	about.add_child(announcement_scroll)
 
+func _steam_unavailable_reason() -> String:
+	return Game.platform.login_unavailable_reason()
+
+func _enter_steam() -> void:
+	if Game.busy: return
+	var address := str(ProjectSettings.get_setting("platform/server_url", CLOUD_SERVER_URL)).strip_edges().trim_suffix("/")
+	await Game.login_steam(address)
+
 func _can_show_login_language() -> bool:
 	return Game.lobby.is_empty() and Game.room.is_empty() and Game.settlement.is_empty() and Game.ready_prompt.is_empty() and Game.gateway.token.is_empty() and not Game.room_authority_recovering() and Game._settlement_recovery_match_id.is_empty()
 
@@ -838,21 +831,6 @@ func _select_login_language(code: String) -> void:
 	if audio != null: audio._refresh()
 	Game.changed.emit()
 
-func _random_login_name(previous: String = "") -> String:
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(RANDOM_NAMES_PATH))
-	var language_key := "zh-CN" if P.language() == "zh-CN" else "en"
-	var names: Array = []
-	if parsed is Dictionary:
-		var available: Variant = parsed.get("languages", {}).get(language_key, [])
-		if available is Array: names = available
-	if names.is_empty(): names = [P.localized("traveler_default_name")]
-	var random := RandomNumberGenerator.new()
-	random.randomize()
-	var candidate := previous
-	for _attempt in 4:
-		candidate = "%s#%04d" % [str(names[random.randi_range(0, names.size() - 1)]), random.randi_range(0, 9999)]
-		if candidate != previous: return candidate
-	return candidate
 
 func _about_scroll_content(scroll: ScrollContainer, body: String) -> void:
 	var text := Label.new()

@@ -1,0 +1,99 @@
+{
+  "counters": {
+    "total": "19",
+    "executed": "19",
+    "passed": "19",
+    "failed": "0",
+    "error": "0",
+    "timeout": "0",
+    "aborted": "0",
+    "inconclusive": "0",
+    "passedButRunAborted": "0",
+    "notRunnable": "0",
+    "notExecuted": "0",
+    "disconnected": "0",
+    "warning": "0",
+    "completed": "0",
+    "inProgress": "0",
+    "pending": "0"
+  },
+  "tests": [
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Returning_login_repairs_missing_cards_and_preserves_complete_account",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSteamPersonaHttpTests.Binary_steam_login_assigns_a_server_suffix_and_preserves_it_on_relogin",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Disabled_verifier_never_calls_external_service",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Valid_ticket_uses_official_parameters_and_returns_verified_steam_id",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamDisplayNameGeneratorTests.Name_normalization_and_unicode_truncation_preserve_the_complete_suffix",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ZZ\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Names_owned_by_platform_accounts_cannot_be_claimed_by_local_login_or_another_platform_identity",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Random_collision_is_checked_across_normalized_names_and_relogin_keeps_the_profile",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Concurrent_same_persona_accounts_receive_unique_names_and_one_identity_stays_one_account",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamDisplayNameGeneratorTests.Timestamp_fallback_uses_current_unix_milliseconds_and_distinguishes_same_tick",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Same_device_different_names_create_separate_accounts_and_returning_names_restore_assets",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: null)",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSteamDisplayNameTests.Ten_random_collisions_use_timestamp_and_a_timestamp_collision_is_retried",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamDisplayNameGeneratorTests.Timestamp_fallback_truncates_only_the_persona_prefix",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Invalid_ticket_is_rejected_without_calling_steam(ticket: \"ABC\")",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamDisplayNameGeneratorTests.Steam_persona_prefix_and_four_digit_suffix_are_preserved",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresNameIdentityTests.Unique_index_rejects_duplicate_names_and_local_profile_updates_cannot_change_account_identity",
+      "outcome": "Passed"
+    },
+    {
+      "name": "FantasyCard.Server.Tests.Identity.SteamTicketVerifierTests.Steam_error_payload_is_not_accepted",
+      "outcome": "Passed"
+    }
+  ],
+  "scope": "Owned PostgreSQL, real loopback binary HTTP, controlled Steam provider responses; no real Steam service"
+}

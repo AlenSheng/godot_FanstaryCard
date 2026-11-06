@@ -189,3 +189,6 @@ RoomActor 每 tick 调 `BotDirector.Decide`，只执行返回的意图：
 - [ ] 机器人 PVE 只模拟计时扣血；对真人走中等 1v1；无真人对局结束。
 - [ ] 断线 15 秒重连成功；超时走死亡且结算幂等。
 - [ ] 进格豁免时序与 GDD 5.5 表一致（不改行为）。
+### 邮件接口
+
+`mail_messages` 保存邮件、附件、双语文案和已读／领取时间。`GET /api/v1/mail` 返回 Protobuf 邮件列表及未读数；领取沿当前 Mail 模块的事务、Idempotency-Key 和持久回执处理。旧 `player_mail` 实现由此能力替代，不重复注册 `/api/v1/mail` 路由。测试账号邮件继续由 IdentityRepository 的现行幂等入口生成。

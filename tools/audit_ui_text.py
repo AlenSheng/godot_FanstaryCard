@@ -54,6 +54,11 @@ def scan():
     exceptions = json.loads(exceptions_path.read_text(encoding="utf-8"))["exceptions"] if exceptions_path.exists() else []
     allowed = {(entry["path"], entry["text"]): entry["reason"] for entry in exceptions}
     classified = []
+    # Retained platform adapters resolve legacy source aliases through external
+    # bilingual data, then fall back to English for newer locales.
+    legacy_path = ROOT / "client/data/ui_text.json"
+    legacy = json.loads(legacy_path.read_text(encoding="utf-8")).get("locales", {}) if legacy_path.exists() else {}
+    legacy_keys = set(legacy.get("zh", {})) & set(legacy.get("en", {}))
     for path in sorted((ROOT / "client").rglob("*.gd")):
         if "tests" in path.parts or ".godot" in path.parts:
             continue
@@ -66,6 +71,9 @@ def scan():
                 if re.search(r"\bP\.localized\(\s*$", prefix) and suffix.startswith(")") and value not in known_keys:
                     missing_keys.append({"path": relative, "line": token.start[0], "key": value})
                 if human_literal(value, prefix):
+                    if re.search(r"\bI18n\.t\(\s*$", prefix) and value in legacy_keys:
+                        classified.append({"path": relative, "line": token.start[0], "reason": "Validated platform alias with English fallback"})
+                        continue
                     if UI_CALL.search(prefix) and value in known_keys:
                         continue  # These helpers resolve stable catalog keys.
                     if path.name in ["numerical_details.gd", "monster_pool_view.gd"] and UI_CALL.search(prefix) and value in nested_keys:
