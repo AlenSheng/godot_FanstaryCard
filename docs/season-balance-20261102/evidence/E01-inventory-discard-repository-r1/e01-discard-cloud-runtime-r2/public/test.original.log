@@ -1,0 +1,57 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries [FINISHED] Time: 2.3563486s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain [FINISHED] Time: 1.8822339s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances [FINISHED] Time: 1.9859636s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired [FINISHED] Time: 1.9028874s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Equipped") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Equipped") [FINISHED] Time: 1.8882072s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "PreparationLocked") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "PreparationLocked") [FINISHED] Time: 1.9618014s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "MarketListed") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "MarketListed") [FINISHED] Time: 1.9279081s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "InMatchBackpack") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "InMatchBackpack") [FINISHED] Time: 2.0839037s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Recycled") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Recycled") [FINISHED] Time: 2.0012437s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd [FINISHED] Time: 2.0124589s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "stale") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "stale") [FINISHED] Time: 2.0735559s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "owner") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "owner") [FINISHED] Time: 2.1990661s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [FAIL]
+      Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_season_domain"
+      
+      DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+      Stack Trace:
+           at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+           at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(90,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(94,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [FINISHED] Time: 2.8300843s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "Borrowed") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "Borrowed") [FINISHED] Time: 1.9725217s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "BotReward") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "BotReward") [FINISHED] Time: 2.0177543s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 15, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 31.261s
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

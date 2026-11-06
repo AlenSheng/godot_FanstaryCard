@@ -1,0 +1,29 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund [FAIL]
+      Npgsql.PostgresException : 23505: duplicate key value violates unique constraint "equipments_pkey"
+      
+      DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+      Stack Trace:
+           at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+           at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+           at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresCohortMaintenanceTests.cs(56,0): at FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresCohortMaintenanceTests.cs(102,0): at FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund [FINISHED] Time: 9.0862251s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 9.237s
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

@@ -1,0 +1,23 @@
+{
+  "failures": [
+    {
+      "name": "FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Priest, hp: 80, intentValue: 2)",
+      "message": "Assert.Equal() Failure: Values differ\nExpected: 80\nActual:   79"
+    },
+    {
+      "name": "FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Guardian, hp: 100, intentValue: 3)",
+      "message": "Assert.Equal() Failure: Values differ\nExpected: 100\nActual:   99"
+    },
+    {
+      "name": "FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.CancelledWindupAndStunnedMonsterDoNotReceiveTheFloor",
+      "message": "Assert.Equal() Failure: Values differ\nExpected: 100\nActual:   99"
+    },
+    {
+      "name": "FantasyCard.Domain.Tests.Combat.SeasonPveMinimumTests.ActualIntentClockFloorsAfterResistanceAndGuardianReduction(hero: Mage, hp: 70, intentValue: 2)",
+      "message": "Assert.Equal() Failure: Values differ\nExpected: 70\nActual:   69"
+    }
+  ],
+  "classification": "Old minimum-damage test observations still added windup after the interval",
+  "runtime_changes_in_r37": false,
+  "health_assertions_retained": "70/80/100 before hit; exactly one minimum damage after a successful hit; cancelled windup still zero"
+}

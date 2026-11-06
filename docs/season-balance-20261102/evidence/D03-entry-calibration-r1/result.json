@@ -1,0 +1,135 @@
+{
+  "status": "D03_entry_calibration_verified_not_accepted",
+  "completed_items": 28,
+  "total_items": 35,
+  "new_matches": 42,
+  "D03_used": 114,
+  "D03_remaining": 186,
+  "D03_complete": false,
+  "inspection": [
+    {
+      "stage": "d03-support-r1",
+      "cases": 12,
+      "outcomes": {
+        "Dead": 12
+      },
+      "versions": {
+        "season-v1-config-15": {
+          "Dead": 12
+        }
+      },
+      "casts": 1717,
+      "resource_changes": 100
+    },
+    {
+      "stage": "d03-d0-candidates-r1",
+      "cases": 12,
+      "outcomes": {
+        "Dead": 3,
+        "Extracted": 9
+      },
+      "versions": {
+        "d03-d0-hp-shield-7000-dev-v1": {
+          "Dead": 3,
+          "Extracted": 3
+        },
+        "d03-d0-hp-shield-5000-dev-v1": {
+          "Extracted": 6
+        }
+      },
+      "casts": 1534,
+      "resource_changes": 106
+    },
+    {
+      "stage": "d03-d0-holdout-r1",
+      "cases": 6,
+      "outcomes": {
+        "Extracted": 6
+      },
+      "versions": {
+        "d03-d0-hp-shield-5000-dev-v1": {
+          "Extracted": 6
+        }
+      },
+      "casts": 592,
+      "resource_changes": 66
+    },
+    {
+      "stage": "d03-d0-holdout-control-r1",
+      "cases": 6,
+      "outcomes": {
+        "Dead": 3,
+        "Extracted": 3
+      },
+      "versions": {
+        "season-v1-config-15": {
+          "Dead": 3,
+          "Extracted": 3
+        }
+      },
+      "casts": 887,
+      "resource_changes": 93
+    },
+    {
+      "stage": "d03-formal16-routes-r1",
+      "cases": 6,
+      "outcomes": {
+        "Extracted": 6
+      },
+      "versions": {
+        "season-v1-config-16": {
+          "Extracted": 6
+        }
+      },
+      "casts": 440,
+      "resource_changes": 45
+    }
+  ],
+  "server_contracts": {
+    "unique_passed": 23,
+    "prior_failure_retained": [
+      {
+        "stage": "d03-formal16-server-r1",
+        "test": "FantasyCard.Server.Tests.Config.SeasonMonsterTuningContractTests.AllUnlistedMembersAndIntentFieldsRemainUnchangedWithTuningEnabled",
+        "outcome": "Failed"
+      }
+    ],
+    "single_all_green_batch": false
+  },
+  "domain_contracts": {
+    "unique_passed": 24,
+    "prior_failure_retained": [
+      {
+        "stage": "d03-formal16-domain-r1",
+        "test": "FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage",
+        "outcome": "Failed"
+      }
+    ],
+    "single_all_green_batch": false
+  },
+  "native_transport_checks": 17,
+  "config_version": "season-v1-config-16",
+  "content_hash": "48e25ff33fed65928f059a6907dfacaa5b88f7c7e91d5fb558c3a1dbac0e0e8b",
+  "only_D0_hp_shield_basis": 5000,
+  "old15_full_archive_retained": true,
+  "public_cards_initial51_no_grant": true,
+  "published_loan_template_changed": false,
+  "counterfactual_income_merged_into_observed_banks": false,
+  "ordinary_time_targets_all_passed": false,
+  "class15_and_population_P50_P90_not_passed": true,
+  "local_reserve_GiB": 2,
+  "startup_GiB": 1,
+  "read_only_before_preview_guard_exception_retained": true,
+  "cloud_modified": false,
+  "production_activated": false,
+  "whole_goal_complete": false,
+  "full_binary_originals": [
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-support-preflight-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-d0-preflight-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal16-server-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal16-server-r2\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal16-domain-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-formal16-domain-r2\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-entry-wire-r1\\build"
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "status": "D02_accepted",
+  "requirements": [
+    {
+      "requirement": "先后手PVP",
+      "status": "achieved",
+      "evidence": [
+        "d02-duels-inspection-r2.derived.json",
+        "d02-gate-inspection-r1.derived.json"
+      ],
+      "scope": "72published ordered class/difficulty/reconnect-role cases and3exact lastblocked/firstallowed tick probes"
+    },
+    {
+      "requirement": "控制/返牌",
+      "status": "achieved",
+      "evidence": [
+        "d02-duels-inspection-r2.derived.json",
+        "d02-control-reuse-r1/result.derived.json"
+      ],
+      "scope": "current30positive stun/7drawblock/45immediatedraw casts;21exact input/source-equivalent old passed mechanic contracts, no new execution claim"
+    },
+    {
+      "requirement": "断线恢复",
+      "status": "achieved",
+      "evidence": [
+        "d02-duels-inspection-r2.derived.json"
+      ],
+      "scope": "36reconnect mutualleave exactoriginal;36expiry exactone100ms resumedPVE, JSON/replay/gearIDs"
+    },
+    {
+      "requirement": "合法路线",
+      "status": "achieved",
+      "evidence": [
+        "d02-routes-inspection-r1.derived.json"
+      ],
+      "scope": "18original generated maps/spawns/Boss, actual4/5cell inward adjacent paths, all6difficulties/all3classes;notR1orpopulationmean"
+    },
+    {
+      "requirement": "完整撤离",
+      "status": "achieved",
+      "evidence": [
+        "d02-routes-inspection-r1.derived.json"
+      ],
+      "scope": "18actual3second readings,36JSONrecoveries, realcompletiontimestamps;redrolls truthfully adjudicated fixture notrealquota claim"
+    },
+    {
+      "requirement": "死亡重建",
+      "status": "achieved",
+      "evidence": [
+        "d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json"
+      ],
+      "scope": "3realPGclasscases/6realmatchedrooms;authoritative abandon/death/actualsettlement;5dropped items preserved,5recipes retained,5preowned bodyIDs reforge+3/66fragments;secondprep/ready/play;notOSrestart"
+    }
+  ],
+  "D02_complete": true,
+  "D02_used": 100,
+  "D02_remaining": 200,
+  "accounting": {
+    "PVP_attempts": 73,
+    "natural_routes": 18,
+    "storage_matched_room_attempts": 6,
+    "exact_gate_rooms": 3
+  },
+  "functional_limits_relaxed": false,
+  "PG_original600s_batch_failure_retained": true,
+  "PG_followups_split_to900s_each_before_run": true,
+  "original_Priest_finished_receipt_and_missing_batch_TRX_disclosed": true,
+  "not_all_one_green_run": true,
+  "old_B05_failed_terminal_not_reconstructed": true,
+  "old_completed_matrices_not_replayed": true,
+  "cloud_only_own_temporary_schemas_created_and_cleaned": true,
+  "cloud_SDK_used": false,
+  "local_reserve_GiB": 2,
+  "startup_GiB": 1,
+  "production_modified": false,
+  "whole_goal_complete": false,
+  "next": [
+    "D03",
+    "D04",
+    "E01",
+    "E02",
+    "F01",
+    "F02",
+    "F03"
+  ],
+  "completed_items": 28,
+  "total_items": 35,
+  "old_control_contracts_reused": 21,
+  "new_PVP_complete_scenarios": 72,
+  "new_natural_routes_extracted": 18,
+  "actual_storage_rebuild_hero_cases": 3,
+  "actual_storage_matched_rooms": 6,
+  "new_gate_boundary_rooms": 3,
+  "independent_rebuild_fragment_cost_each": 66,
+  "immutable_prior_evidence": [
+    "../D02-duels-r1",
+    "../D02-routes-r1"
+  ],
+  "full_binary_originals": [
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d02-rebuild-build-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d02-rebuild-build-r2\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d02-gate-build-r1\\build"
+  ],
+  "local_admission_GiB": 3,
+  "all_own_handles_terminal": true,
+  "all_owned_schemas_absent": true,
+  "only_temporary_isolated_PG_schema_mutations": true,
+  "cloud_global_configuration_changed": false
+}

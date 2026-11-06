@@ -1,0 +1,15 @@
+{
+  "container_id": "2d0e254ebf0c282d1384d91933ed30a0c67a2ec0402b5909e06d194a5e76b0e2",
+  "name": "fc-season-a03-storage-20261102-r2",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "62de5d0b6dd54441112acb519eac9d39fc754a88",
+  "archive_sha256": "72f945b47aeb8fd16c17f0dacccde35a6d1e3ef7d112d246a98a5ab5bebf6260",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter FullyQualifiedName~PostgresSeasonAssetDomainTests --logger \"trx;LogFileName=storage.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter FullyQualifiedName~FantasyCard.Domain.Tests.Seasons --logger \"trx;LogFileName=domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "production_database_used": false,
+  "available_ram_before": 2578087936,
+  "free_disk_before": 4304158720
+}

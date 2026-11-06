@@ -1,0 +1,43 @@
+{
+  "container_id": "d604ab9f7e167e93c3355a6dc4815f9a2bb59e5b37c74c6a545662d25e300758",
+  "name": "fc-season-archive-runtime-r107",
+  "label": "season-balance-20261102-a03-runtime-r107",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "image_id": "sha256:b34b01ff381aa920264e3920d7a7a49e6c1056091999dfc6268107d07029b9f4",
+  "payload_sha256": "642de3cc175200bc098ae46f6e77ab840f26bbc868f7a45f09a059fac7865694",
+  "precompiled_on_local": true,
+  "cloud_SDK_started": false,
+  "production_database_used": false,
+  "new_game_matches": 0,
+  "memory_mib": 1200,
+  "cpus": 1,
+  "command": [
+    "/workspace/bin/FantasyCard.Server.Tests.dll",
+    "-noLogo",
+    "-noColor",
+    "-noAutoReporters",
+    "-failSkips",
+    "-parallel",
+    "none",
+    "-reporter",
+    "verbose",
+    "-trx",
+    "/results/season-archive-runtime.trx",
+    "-xml",
+    "/results/xunit.original.xml",
+    "-class",
+    "FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests",
+    "-class",
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests",
+    "-class",
+    "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests",
+    "-class",
+    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests"
+  ],
+  "admission_after_staging": {
+    "available_ram": 2536247296,
+    "free_disk": 3295195136,
+    "disk_fraction": 0.052064993889332854
+  },
+  "started_at": 1793861381.684887
+}

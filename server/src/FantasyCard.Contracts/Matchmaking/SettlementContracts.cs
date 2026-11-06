@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using FantasyCard.Contracts.Seasons;
 
 namespace FantasyCard.Contracts.Matchmaking;
 
@@ -8,7 +10,8 @@ public sealed record SettlementResponse(
     Guid PlayerId,
     string Result,
     JsonElement Details,
-    DateTimeOffset CreatedAt);
+    DateTimeOffset CreatedAt,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SeasonContextResponse? Season = null);
 
 public sealed record SettlementAcknowledgementResponse(
     Guid SettlementId,

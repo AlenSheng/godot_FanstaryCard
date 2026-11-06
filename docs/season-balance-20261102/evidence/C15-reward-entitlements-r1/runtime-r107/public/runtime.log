@@ -1,0 +1,50 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 30, maximum: 8959) [STARTING]
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 30, maximum: 8959) [FINISHED] Time: 2.3567918s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 42, maximum: 12525) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 42, maximum: 12525) [FINISHED] Time: 1.8930975s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 60, maximum: 12525) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.FullTrackFreezesTwelveActualDrawsOnceAndReloadNeverUsesAnotherRandomResult(days: 60, maximum: 12525) [FINISHED] Time: 2.0590758s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ActualCheckpointCreditCreatesOriginalPendingRewardsOnceAcrossConcurrentSettlementRecovery [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ActualCheckpointCreditCreatesOriginalPendingRewardsOnceAcrossConcurrentSettlementRecovery [FINISHED] Time: 2.6284917s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ChangedOriginalThresholdOrNonpackCardCannotBeSilentlyRepairedOrRedrawn(corruption: "threshold") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ChangedOriginalThresholdOrNonpackCardCannotBeSilentlyRepairedOrRedrawn(corruption: "threshold") [FINISHED] Time: 1.7853609s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ChangedOriginalThresholdOrNonpackCardCannotBeSilentlyRepairedOrRedrawn(corruption: "pack") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.ChangedOriginalThresholdOrNonpackCardCannotBeSilentlyRepairedOrRedrawn(corruption: "pack") [FINISHED] Time: 1.8925664s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards [FINISHED] Time: 1.915988s
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.UnlockRollbackLeavesNoPartialEntitlementAndCommittedRetryIsStable [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.UnlockRollbackLeavesNoPartialEntitlementAndCommittedRetryIsStable [FINISHED] Time: 1.967879s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.LateOriginalClearsRemainInTheirOldJourneyWithoutFundingTheNextSeason [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.LateOriginalClearsRemainInTheirOldJourneyWithoutFundingTheNextSeason [FINISHED] Time: 1.9794986s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ThirtyDayJourneyReadsPerLevelCeilingFromTheOriginalSeasonAndStillAuditsItsActualCredit [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ThirtyDayJourneyReadsPerLevelCeilingFromTheOriginalSeasonAndStillAuditsItsActualCredit [FINISHED] Time: 2.2263883s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ThreeExtractionsGrantSeventyEachAndOneContractAcrossRealClassUpdates [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ThreeExtractionsGrantSeventyEachAndOneContractAcrossRealClassUpdates [FINISHED] Time: 2.7026529s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.LedgerCommitFailureLeavesNoSourceOrPartialExperienceAndRetryCreditsOnce [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.LedgerCommitFailureLeavesNoSourceOrPartialExperienceAndRetryCreditsOnce [FINISHED] Time: 1.9064191s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.JourneyHistoryPagesDoNotRepeatAndExplicitOldSourceDoesNotSwitchToCurrent [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.JourneyHistoryPagesDoNotRepeatAndExplicitOldSourceDoesNotSwitchToCurrent [FINISHED] Time: 1.9715147s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.DeathWithoutAnActualClearGivesNoExperienceOrWeeklyProgress [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.DeathWithoutAnActualClearGivesNoExperienceOrWeeklyProgress [FINISHED] Time: 1.811925s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ForgedCompletionTimeRollsBackAndTheOriginalCheckpointStillRecovers [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.ForgedCompletionTimeRollsBackAndTheOriginalCheckpointStillRecovers [FINISHED] Time: 2.1127029s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.FourActualOuterClearsGiveBaseTwentyFourOnceEvenWhenDeathAndConcurrentRecoveryFollow [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.FourActualOuterClearsGiveBaseTwentyFourOnceEvenWhenDeathAndConcurrentRecoveryFollow [FINISHED] Time: 2.0735901s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.OneBossAdvancesOnlyTheOldestOpenWeekAndItsThreeHundredExperienceNeverDoubles [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.OneBossAdvancesOnlyTheOldestOpenWeekAndItsThreeHundredExperienceNeverDoubles [FINISHED] Time: 2.2095984s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.AuditDetectsAnExperienceAggregateThatNoLongerMatchesItsSources [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonJourneyTests.AuditDetectsAnExperienceAggregateThatNoLongerMatchesItsSources [FINISHED] Time: 1.9184717s
+    FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories [STARTING]
+    FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories [FINISHED] Time: 0.0014462s
+    FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy [STARTING]
+    FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy [FINISHED] Time: 0.0003719s
+    FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [FINISHED] Time: 15.5895167s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 21, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 53.173s

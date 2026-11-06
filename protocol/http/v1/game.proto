@@ -12,6 +12,12 @@ option csharp_namespace = "FantasyCard.Contracts.Http.V1";
 
 message Empty {}
 
+message PublishedConfigurationResponse {
+  string config_version = 1;
+  string content_hash = 2;
+  bytes bundle = 3;
+}
+
 message UnfinishedMatchResponse {
   string match_id = 1;
   string room_id = 2;
@@ -38,6 +44,47 @@ message BootstrapResponse {
   repeated MarketListingResponse market = 15;
   MailListResponse mail = 16;
   PreparationResponse active_preparation = 17;
+  SeasonSummaryResponse season = 18;
+}
+
+message SeasonWalletResponse {
+  string season_id = 1;
+  int64 gold = 2;
+  int64 equipment_fragments = 3;
+  int64 challenge_marks = 4;
+  int64 version = 5;
+  optional string archived_at = 6;
+  bool can_fund_weapon = 7;
+  int64 blueprint_marks = 8;
+  int64 orange_blueprint_marks = 9;
+}
+
+message SeasonContextResponse {
+  string season_id = 1;
+  string difficulty_id = 2;
+  string ruleset_id = 3;
+  string config_version = 4;
+  string stats_version = 5;
+}
+
+message SeasonSummaryResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string ruleset_id = 3;
+  optional string config_version = 4;
+  optional string stats_version = 5;
+  optional string starts_at = 6;
+  optional string ends_at = 7;
+  int32 highest_open_difficulty = 8;
+  int32 highest_unlocked_difficulty = 9;
+  int32 effective_level_cap = 10;
+  int64 historical_equipment_fragments = 11;
+  optional string next_season_id = 12;
+  optional string next_starts_at = 13;
+  SeasonWalletResponse wallet = 14;
+  repeated SeasonWalletResponse fragment_wallets = 15;
+  bool has_joined = 16;
+  string difficulty_id = 17;
 }
 
 message LocalSignInRequest {
@@ -126,6 +173,9 @@ message CreatePreparationRequest {
   repeated int32 safe_slot_indexes = 5;
   int32 potion_count = 6;
   optional string difficulty = 7;
+  optional string season_id = 8;
+  bool use_borrowed_deck = 9;
+  optional string loot_preference_element = 10;
 }
 
 message PreparationSnapshotResponse {
@@ -142,6 +192,11 @@ message PreparationSnapshotResponse {
   string config_version = 11;
   repeated PreparationEquipmentSnapshotResponse equipment_snapshots = 12;
   repeated int32 card_levels = 13;
+  SeasonContextResponse season = 14;
+  repeated int32 actual_card_levels = 15;
+  optional int32 actual_class_weapon_level = 16;
+  optional string borrowed_template_id = 17;
+  optional string loot_preference_element = 18;
 }
 
 message PreparationEquipmentSnapshotResponse {
@@ -152,6 +207,9 @@ message PreparationEquipmentSnapshotResponse {
   string element = 5;
   optional string effect_affix = 6;
   optional string secondary_trait = 7;
+  optional string unique_affix = 8;
+  optional string unique_element = 9;
+  optional string stats_version = 10;
 }
 
 message PreparationResponse {
@@ -169,6 +227,7 @@ message SettlementResponse {
   string result = 4;
   SettlementDetails details = 5;
   string created_at = 6;
+  SeasonContextResponse season = 7;
 }
 
 message SettlementAcknowledgementResponse {
@@ -206,16 +265,54 @@ message ShopResponse {
   repeated ShopProductResponse products = 2;
   int32 refreshes_used = 3;
   int32 refresh_limit = 4;
+  ShopPolicyResponse policy = 5;
+  optional string rotation_key = 6;
 }
+
+message ShopPolicyResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string config_version = 3;
+  optional string catalog_version = 4;
+  optional string season_ends_at = 5;
+  string resets_at = 6;
+  bool can_purchase = 7;
+  WalletResponse wallet = 8;
+  bool grants_permanent_copies = 9;
+}
+message ShopGrantResponse { string kind = 1; int64 amount = 2; optional string card_id = 3; bool newly_unlocked = 4; int32 copies_after = 5; int64 version = 6; }
 
 message ShopInventoryContextResponse {
   ShopResponse shop = 1;
   InventoryResponse inventory = 2;
 }
 
+message ActivityExchangeRequest { string season_id = 1; string rule_id = 2; int64 expected_account_version = 3; optional int32 quantity = 4; optional string hero_class = 5; }
+message ActivityExchangeOptionResponse { string rule_id = 1; int32 cost_tokens = 2; string reward_kind = 3; int32 reward_count = 4; int32 event_limit = 5; int32 used = 6; }
+message ActivityRewardResponse {
+  string reward_id = 1; string season_id = 2; string event_id = 3; string rule_id = 4;
+  string reward_kind = 5; int32 reward_amount = 6; optional string hero_class = 7;
+  int32 token_cost = 8; int32 quantity = 9; string state = 10; string created_at = 11;
+  optional string claimed_at = 12; bool can_claim = 13; string config_version = 14;
+}
+message ActivityEventResponse {
+  string season_id = 1; string event_id = 2; string state = 3; string starts_at = 4; string ends_at = 5;
+  int32 earned = 6; int32 spent = 7; int32 available = 8; int32 token_cap = 9;
+  int64 account_version = 10; bool can_exchange = 11; string config_version = 12;
+  repeated ActivityExchangeOptionResponse options = 13; repeated ActivityRewardResponse rewards = 14;
+}
+message SeasonActivitiesResponse { repeated ActivityEventResponse events = 1; optional int32 next_offset = 2; }
+message ActivityExchangeResponse { ActivityRewardResponse reward = 1; int32 tokens_remaining = 2; int64 account_version = 3; }
+message ActivityClaimResponse { ActivityRewardResponse reward = 1; int64 balance_after = 2; }
+
 message PurchaseShopRequest {
   string product_id = 1;
   optional int32 quantity = 2;
+  optional string season_id = 3;
+  optional string reset_key = 4;
+  optional string rotation_key = 5;
+  optional int64 expected_price_gold = 6;
+  optional string catalog_version = 7;
 }
 
 message ShopPurchaseResponse {
@@ -223,12 +320,25 @@ message ShopPurchaseResponse {
   int32 quantity = 2;
   int64 gold_after = 3;
   string granted = 4;
+  repeated ShopGrantResponse grants = 5;
+  WalletResponse wallet = 6;
+  optional string season_id = 7;
+  optional string config_version = 8;
+  optional string catalog_version = 9;
+  optional string reset_key = 10;
 }
 
 message CreateMarketListingRequest {
   string equipment_id = 1;
   int64 price_gold = 2;
+  optional string currency = 3;
+  optional int64 price = 4;
+  optional string season_id = 5;
+  optional int64 expected_equipment_version = 6;
 }
+
+message RelistMarketListingRequest { string currency = 1; int64 price = 2; int64 expected_version = 3; optional string season_id = 4; }
+message ClaimMarketReturnRequest { int64 expected_equipment_version = 1; optional string season_id = 2; }
 
 message MarketListingResponse {
   string listing_id = 1;
@@ -240,11 +350,39 @@ message MarketListingResponse {
   string created_at = 7;
   string expires_at = 8;
   EquipmentResponse equipment = 9;
+  optional string currency = 10;
+  optional int64 price = 11;
+  optional string season_id = 12;
+  optional string config_version = 13;
+  optional string season_ends_at = 14;
+  optional int64 fee = 15;
+  optional int64 seller_net = 16;
 }
+
+message MarketCurrencyResponse { string currency = 1; int64 orange_price_cap = 2; int64 red_price_cap = 3; }
+message MarketPolicyResponse {
+  string state = 1;
+  optional string season_id = 2;
+  optional string config_version = 3;
+  optional string season_ends_at = 4;
+  int32 shared_slots = 5;
+  int32 listing_hours = 6;
+  int32 tax_basis_points = 7;
+  int64 minimum_fee = 8;
+  bool can_trade = 9;
+  WalletResponse wallet = 10;
+  repeated MarketCurrencyResponse currencies = 11;
+}
+message MarketReturnResponse { string return_id = 1; string listing_id = 2; EquipmentResponse equipment = 3; string held_at = 4; bool can_claim = 5; }
+message MarketReturnsResponse { repeated MarketReturnResponse items = 1; optional int32 next_offset = 2; }
 
 message MarketInventoryContextResponse {
   repeated MarketListingResponse listings = 1;
   InventoryResponse inventory = 2;
+  MarketPolicyResponse policy = 3;
+  repeated MarketListingResponse own_listings = 4;
+  repeated MarketReturnResponse returns = 5;
+  optional int32 returns_next_offset = 6;
 }
 
 message EconomyContextResponse {
@@ -256,6 +394,8 @@ message EconomyContextResponse {
 message MarketPurchaseResponse {
   MarketListingResponse listing = 1;
   int64 buyer_gold_after = 2;
+  WalletResponse wallet = 3;
+  optional string season_id = 4;
 }
 
 message WalletResponse {
@@ -291,6 +431,7 @@ message CardResponse {
   optional string upgrade_blocked_reason = 17;
   CardEffectResponse current_effect = 18;
   CardEffectResponse next_effect = 19;
+  bool permanent_copies = 20;
 }
 
 message CardEffectResponse {
@@ -357,12 +498,21 @@ message EquipmentResponse {
   optional string element = 8;
   optional string effect_affix = 9;
   optional string secondary_trait = 10;
+  optional string origin_season_id = 11;
+  optional string season_id = 12;
+  optional string asset_scope = 13;
+  optional string stats_version = 14;
+  optional string source_kind = 15;
+  optional bool recipe_extracted = 16;
+  optional string unique_affix = 17;
+  optional string unique_element = 18;
 }
 
 message LoadoutResponse {
   string hero_class = 1;
   repeated string equipment_ids = 2;
   int64 version = 3;
+  optional string season_id = 4;
 }
 
 message InventorySummaryResponse {
@@ -381,6 +531,13 @@ message InventoryResponse {
   InventorySummaryResponse summary = 1;
   repeated EquipmentResponse equipments = 2;
   InventoryConsumablesResponse consumables = 3;
+  InventoryScopeResponse scope = 4;
+}
+
+message InventoryScopeResponse {
+  string state = 1;
+  optional string season_id = 2;
+  bool read_only = 3;
 }
 
 message UpdateLoadoutRequest {
@@ -388,9 +545,64 @@ message UpdateLoadoutRequest {
   int64 expected_version = 2;
 }
 
+message DiscardEquipmentItemRequest {
+  string equipment_id = 1;
+  int64 expected_version = 2;
+}
+message DiscardEquipmentRequest {
+  repeated DiscardEquipmentItemRequest items = 1;
+  optional string season_id = 2;
+}
+message DiscardEquipmentResponse {
+  repeated EquipmentResponse items = 1;
+  optional string season_id = 2;
+}
+
+message SeasonArchiveSummaryResponse {
+  string season_id = 1;
+  string ruleset_id = 2;
+  optional string config_version = 3;
+  optional string config_sha256 = 4;
+  optional string stats_version = 5;
+  optional string starts_at = 6;
+  optional string ends_at = 7;
+  optional string archived_at = 8;
+  string status = 9;
+  optional string phase = 10;
+  SeasonWalletResponse wallet = 11;
+  int64 equipment_count = 12;
+  int64 recipe_count = 13;
+  int64 wish_count = 14;
+  int64 loadout_count = 15;
+}
+message SeasonArchivesResponse {
+  repeated SeasonArchiveSummaryResponse items = 1;
+  optional int32 next_offset = 2;
+}
+message ArchivedCraftingWishResponse {
+  string quality = 1;
+  string slot = 2;
+  string element = 3;
+  string wished_effect = 4;
+  int32 failures = 5;
+}
+message SeasonArchiveSectionResponse {
+  SeasonArchiveSummaryResponse season = 1;
+  string section = 2;
+  bool read_only = 3;
+  repeated EquipmentResponse equipments = 4;
+  repeated SeasonRecipeResponse recipes = 5;
+  repeated ArchivedCraftingWishResponse wishes = 6;
+  repeated LoadoutResponse loadouts = 7;
+  optional int32 next_offset = 8;
+  repeated EquipmentResponse referenced_equipments = 9;
+}
+
 message EnhanceEquipmentRequest {
   int64 expected_version = 1;
   optional string material_equipment_id = 2;
+  optional string fragment_source_season_id = 3;
+  optional int64 material_expected_version = 4;
 }
 
 message EnhancementQuoteResponse {
@@ -405,15 +617,32 @@ message EnhancementQuoteResponse {
   int32 available_material_count = 9;
   bool can_enhance = 10;
   optional string blocked_reason = 11;
+  optional string fragment_source_season_id = 12;
+  optional int64 fragment_wallet_version = 13;
 }
 
 message EnhanceResult {
   EquipmentResponse equipment = 1;
   int64 equipment_fragments = 2;
   optional string consumed_material_equipment_id = 3;
+  optional string fragment_source_season_id = 4;
+  optional int64 fragment_wallet_version = 5;
 }
 
 message CardListResponse { repeated CardResponse items = 1; }
+message JourneySeasonResponse { string season_id = 1; string state = 2; string config_version = 3; string starts_at = 4; string ends_at = 5; }
+message JourneyLevelResponse { int32 level = 1; int32 required_experience = 2; int32 cumulative_experience = 3; string stage = 4; bool reached = 5; }
+message WeeklyContractResponse { string contract_id = 1; int32 week = 2; string completion_kind = 3; int32 target = 4; int32 progress = 5; int32 experience_reward = 6; int32 experience_credited = 7; string opens_at = 8; optional string completed_at = 9; string state = 10; }
+message SeasonJourneyResponse { string state = 1; optional string season_id = 2; optional string config_version = 3; optional string starts_at = 4; optional string ends_at = 5; int32 duration_days = 6; int32 day = 7; int32 experience = 8; int32 level = 9; int32 experience_into_level = 10; int32 experience_to_next = 11; int32 maximum_experience = 12; int32 main_reward_levels = 13; int32 reference_experience = 14; int32 maximum_catch_up_multiplier = 15; bool catch_up_active = 16; int64 version = 17; repeated WeeklyContractResponse contracts = 18; repeated JourneyLevelResponse levels = 19; repeated JourneySeasonResponse seasons = 20; optional int32 next_offset = 21; }
+
+message JourneyRewardResponse { optional string reward_id = 1; string season_id = 2; string config_version = 3; int32 level = 4; int32 required_experience = 5; string kind = 6; int32 amount = 7; string ownership = 8; bool requires_class_choice = 9; optional string cosmetic_id = 10; string state = 11; bool can_claim = 12; optional string hero_class = 13; optional string earned_at = 14; optional string claimed_at = 15; }
+message JourneyRewardsResponse { string state = 1; optional string season_id = 2; optional string config_version = 3; repeated JourneyRewardResponse rewards = 4; }
+message JourneyClaimRequest { string season_id = 1; optional string hero_class = 2; }
+message JourneyClaimResponse { JourneyRewardResponse reward = 1; repeated ShopGrantResponse grants = 2; optional int64 balance_after = 3; bool cosmetic_newly_owned = 4; }
+message OwnedCosmeticResponse { string cosmetic_id = 1; string kind = 2; string name_key = 3; string description_key = 4; string source_season_id = 5; string config_version = 6; string acquired_at = 7; }
+message CosmeticSelectionResponse { optional string avatar_frame_id = 1; optional string card_back_id = 2; optional string title_id = 3; int64 version = 4; }
+message CosmeticsResponse { repeated OwnedCosmeticResponse owned = 1; CosmeticSelectionResponse selection = 2; }
+message CosmeticSelectionRequest { string slot = 1; optional string cosmetic_id = 2; int64 expected_version = 3; }
 message DeckListResponse { repeated DeckResponse items = 1; }
 message MarketListResponse { repeated MarketListingResponse items = 1; }
 message HttpError { string type = 1; string title = 2; int32 status = 3; string detail = 4; string trace_id = 5; string code = 6; optional int32 retry_after_seconds = 7; }
@@ -428,7 +657,19 @@ message SettlementEquipment { int32 slot = 1; int32 quality = 2; int32 element =
 
 message ShopProductPayload { optional string card_id = 1; optional string quality = 2; optional string rarity = 3; optional int32 count = 4; optional int64 amount = 5; optional string hero_class = 6; }
 
-// Branch-specific identity APIs retain the common binary HTTP boundary.
+message CraftingOfferResponse { string quality = 1; int32 minimum_difficulty = 2; string mark_kind = 3; int32 mark_cost = 4; int32 reforge_fragment_cost = 5; int32 wish_attempts = 6; }
+message CraftingWishResponse { string quality = 1; string slot = 2; string element = 3; string wished_effect = 4; int32 failures = 5; int32 attempts_until_guaranteed = 6; }
+message SeasonRecipeResponse { string recipe_id = 1; string season_id = 2; string quality = 3; string slot = 4; string element = 5; optional string effect_affix = 6; string secondary_trait = 7; string stats_version = 8; string source_item_id = 9; }
+message SeasonCraftingResponse { SeasonContextResponse season = 1; optional SeasonWalletResponse wallet = 2; int32 maximum_difficulty = 3; repeated CraftingOfferResponse offers = 4; repeated CraftingWishResponse wishes = 5; repeated SeasonRecipeResponse recipes = 6; }
+message CraftEquipmentRequest { string season_id = 1; string quality = 2; string slot = 3; string element = 4; string wished_effect = 5; int64 expected_wallet_version = 6; }
+message CraftEquipmentResponse { EquipmentResponse equipment = 1; SeasonWalletResponse wallet = 2; CraftingWishResponse wish = 3; int64 blueprints_spent = 4; int64 orange_blueprints_spent = 5; }
+message LearnSeasonRecipeRequest { string season_id = 1; string equipment_id = 2; int64 expected_version = 3; }
+message LearnSeasonRecipeResponse { SeasonRecipeResponse recipe = 1; EquipmentResponse equipment = 2; bool already_learned = 3; }
+message ReforgeEquipmentRequest { string season_id = 1; string recipe_id = 2; string body_equipment_id = 3; int64 expected_body_version = 4; int64 expected_wallet_version = 5; }
+message ReforgeQuoteResponse { SeasonRecipeResponse recipe = 1; EquipmentResponse before = 2; EquipmentResponse after = 3; int64 fragment_cost = 4; int64 available_fragments = 5; int64 expected_wallet_version = 6; bool can_reforge = 7; optional string blocked_reason = 8; }
+message ReforgeEquipmentResponse { EquipmentResponse equipment = 1; SeasonWalletResponse wallet = 2; }
+
+// Retained release_google identity contracts.
 message GoogleSignInRequest {
   string id_token = 1;
   string display_name = 2;

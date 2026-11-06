@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4593570e-b73b-4652-91ba-287f64406fc0" name="shengjiahao@YK-SHENGJIAHAO 2026-11-05 08:12:07" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-05T08:12:07.9040403+08:00" queuing="2026-11-05T08:12:07.9040406+08:00" start="2026-11-05T08:12:04.8447850+08:00" finish="2026-11-05T08:12:07.9113869+08:00" />
+  <TestSettings name="default" id="6a68dd89-f481-46ed-83c2-2a186d62d2a0">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-05_08_12_07" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="2af2b9ae-6a50-435e-9328-03f11b75f332" testId="aa79ea2d-71a5-766a-cf33-58c07dfdeb5d" testName="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything" computerName="YK-SHENGJIAHAO" duration="00:00:00.1047424" startTime="2026-11-05T08:12:07.5713069+08:00" endTime="2026-11-05T08:12:07.6765343+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2af2b9ae-6a50-435e-9328-03f11b75f332">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.</Message>
+          <StackTrace>   at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 405&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs:line 31&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 67&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 60&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 20&#xD;
+   at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs:line 44&#xD;
+   at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs:line 32&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5bfc1b54-bcdd-426e-be60-33ba7ad88c60" testId="69ce3e2e-9e94-c745-04ac-25d8576c964e" testName="FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RewardRefreshReceiptPreventsDuplicateSpendAfterRouterRestart" computerName="YK-SHENGJIAHAO" duration="00:00:00.1228176" startTime="2026-11-05T08:12:07.6791157+08:00" endTime="2026-11-05T08:12:07.8037505+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5bfc1b54-bcdd-426e-be60-33ba7ad88c60" />
+    <UnitTestResult executionId="81130c8c-57b8-48de-bcb9-663e0857df92" testId="f2dfc8f4-8e87-e0db-f49e-409052e5b3e8" testName="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 7, accountGold: 0)" computerName="YK-SHENGJIAHAO" duration="00:00:00.1059895" startTime="2026-11-05T08:12:07.3543753+08:00" endTime="2026-11-05T08:12:07.4607153+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="81130c8c-57b8-48de-bcb9-663e0857df92">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.</Message>
+          <StackTrace>   at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 405&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs:line 31&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 67&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 60&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 20&#xD;
+   at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs:line 44&#xD;
+   at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs:line 15&#xD;
+   at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="46e01783-09f8-414b-a16f-ade613773fdf" testId="5358b2c2-745d-796f-6206-25e97345a989" testName="FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity" computerName="YK-SHENGJIAHAO" duration="00:00:00.2352705" startTime="2026-11-05T08:12:06.7787458+08:00" endTime="2026-11-05T08:12:07.0258561+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46e01783-09f8-414b-a16f-ade613773fdf" />
+    <UnitTestResult executionId="210f1ee0-c269-49cc-b2da-3261a181f1a1" testId="c33939e4-c692-2061-e5bf-505e4dd22279" testName="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 10, accountGold: 0)" computerName="YK-SHENGJIAHAO" duration="00:00:00.1806323" startTime="2026-11-05T08:12:07.0418378+08:00" endTime="2026-11-05T08:12:07.2428450+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="210f1ee0-c269-49cc-b2da-3261a181f1a1">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.</Message>
+          <StackTrace>   at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 405&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs:line 31&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 67&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 60&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 20&#xD;
+   at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs:line 44&#xD;
+   at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs:line 15&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="48edec6e-3033-4ea0-9c40-3d2ba70b23e2" testId="046ecb7a-f4cd-d9b5-f14c-586968754a83" testName="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 0, accountGold: 7)" computerName="YK-SHENGJIAHAO" duration="00:00:00.1074695" startTime="2026-11-05T08:12:07.4622463+08:00" endTime="2026-11-05T08:12:07.5703510+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="48edec6e-3033-4ea0-9c40-3d2ba70b23e2">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.</Message>
+          <StackTrace>   at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 405&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs:line 31&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 67&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 60&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 20&#xD;
+   at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs:line 44&#xD;
+   at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs:line 15&#xD;
+   at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1c6d6529-d638-4689-9925-886d781e44bf" testId="d7b45314-fc8f-a972-71f8-3fe5ddb1402d" testName="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 3, accountGold: 4)" computerName="YK-SHENGJIAHAO" duration="00:00:00.1078275" startTime="2026-11-05T08:12:07.2453346+08:00" endTime="2026-11-05T08:12:07.3536556+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1c6d6529-d638-4689-9925-886d781e44bf">
+      <Output>
+        <ErrorInfo>
+          <Message>System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.</Message>
+          <StackTrace>   at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 405&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs:line 31&#xD;
+   at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs:line 67&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 60&#xD;
+   at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs:line 20&#xD;
+   at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs:line 44&#xD;
+   at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs:line 15&#xD;
+   at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 3, accountGold: 4)" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="d7b45314-fc8f-a972-71f8-3fe5ddb1402d">
+      <Execution id="1c6d6529-d638-4689-9925-886d781e44bf" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests" name="QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="aa79ea2d-71a5-766a-cf33-58c07dfdeb5d">
+      <Execution id="2af2b9ae-6a50-435e-9328-03f11b75f332" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests" name="QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests.RouteAsync_RewardRefreshReceiptPreventsDuplicateSpendAfterRouterRestart" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="69ce3e2e-9e94-c745-04ac-25d8576c964e">
+      <Execution id="5bfc1b54-bcdd-426e-be60-33ba7ad88c60" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Realtime.RealtimeCommandRouterTests" name="RouteAsync_RewardRefreshReceiptPreventsDuplicateSpendAfterRouterRestart" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 10, accountGold: 0)" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="c33939e4-c692-2061-e5bf-505e4dd22279">
+      <Execution id="210f1ee0-c269-49cc-b2da-3261a181f1a1" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests" name="QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 0, accountGold: 7)" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="046ecb7a-f4cd-d9b5-f14c-586968754a83">
+      <Execution id="48edec6e-3033-4ea0-9c40-3d2ba70b23e2" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests" name="QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 7, accountGold: 0)" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="f2dfc8f4-8e87-e0db-f49e-409052e5b3e8">
+      <Execution id="81130c8c-57b8-48de-bcb9-663e0857df92" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests" name="QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests.FindReceipt_UsesPlayerAndRequestIdentity" storage="g:\pr13evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\fantasycard.server.tests\debug\fantasycard.server.tests.dll" id="5358b2c2-745d-796f-6206-25e97345a989">
+      <Execution id="46e01783-09f8-414b-a16f-ade613773fdf" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\local-archive-pg-r2\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Progression.RewardRefreshRecoveryWorkerTests" name="FindReceipt_UsesPlayerAndRequestIdentity" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="aa79ea2d-71a5-766a-cf33-58c07dfdeb5d" executionId="2af2b9ae-6a50-435e-9328-03f11b75f332" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="69ce3e2e-9e94-c745-04ac-25d8576c964e" executionId="5bfc1b54-bcdd-426e-be60-33ba7ad88c60" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f2dfc8f4-8e87-e0db-f49e-409052e5b3e8" executionId="81130c8c-57b8-48de-bcb9-663e0857df92" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5358b2c2-745d-796f-6206-25e97345a989" executionId="46e01783-09f8-414b-a16f-ade613773fdf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c33939e4-c692-2061-e5bf-505e4dd22279" executionId="210f1ee0-c269-49cc-b2da-3261a181f1a1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="046ecb7a-f4cd-d9b5-f14c-586968754a83" executionId="48edec6e-3033-4ea0-9c40-3d2ba70b23e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d7b45314-fc8f-a972-71f8-3fe5ddb1402d" executionId="1c6d6529-d638-4689-9925-886d781e44bf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="7" executed="7" passed="2" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.36]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.02]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.42]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.87]       System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.&#xD;
+[xUnit.net 00:00:01.87]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(405,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs(31,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(67,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(60,0): at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(20,0): at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs(44,0): at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl)&#xD;
+[xUnit.net 00:00:01.87]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs(15,0): at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold)&#xD;
+[xUnit.net 00:00:01.87]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:01.87]            at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:01.97]       System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.&#xD;
+[xUnit.net 00:00:01.97]       Stack Trace:&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(405,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs(31,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(67,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(60,0): at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(20,0): at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs(44,0): at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl)&#xD;
+[xUnit.net 00:00:01.97]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs(15,0): at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold)&#xD;
+[xUnit.net 00:00:01.97]            at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+[xUnit.net 00:00:01.97]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.08]       System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.&#xD;
+[xUnit.net 00:00:02.08]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(405,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs(31,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(67,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(60,0): at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(20,0): at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs(44,0): at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl)&#xD;
+[xUnit.net 00:00:02.08]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs(15,0): at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold)&#xD;
+[xUnit.net 00:00:02.08]            at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+[xUnit.net 00:00:02.08]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.19]       System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.&#xD;
+[xUnit.net 00:00:02.19]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(405,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs(31,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(67,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(60,0): at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(20,0): at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs(44,0): at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl)&#xD;
+[xUnit.net 00:00:02.19]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs(15,0): at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Int32 temporaryGold, Int64 accountGold)&#xD;
+[xUnit.net 00:00:02.19]            at InvokeStub_RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(Object, Span`1)&#xD;
+[xUnit.net 00:00:02.19]            at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.30]       System.IO.InvalidDataException : SeasonThemeRules: theme must match the same original loot preference default.&#xD;
+[xUnit.net 00:00:02.30]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(405,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Check(Boolean condition, ConfigTable table, String message)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonThemeValidator.cs(31,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.ValidateThemes(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\SeasonConfigValidator.cs(67,0): at FantasyCard.ConfigExporter.SeasonConfigValidator.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(60,0): at FantasyCard.ConfigExporter.ConfigCompiler.Validate(IReadOnlyList`1 tables)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\Program.cs(20,0): at FantasyCard.ConfigExporter.ConfigCompiler.Compile(String version, IReadOnlyList`1 tables, String&amp; sha256)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\PublishedConfigTestInputs.cs(44,0): at FantasyCard.Server.Tests.Config.PublishedConfigTestInputs.Create(String version, Boolean alternate, Boolean seasonalLootControl)&#xD;
+[xUnit.net 00:00:02.30]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Config\RewardRefreshOriginalConfigTests.cs(32,0): at FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything()&#xD;
+[xUnit.net 00:00:02.30]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:02.30]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.44]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T08:12:07.2474245+08:00">
+        <Text>[xUnit.net 00:00:01.86]     FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 10, accountGold: 0) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T08:12:07.3544055+08:00">
+        <Text>[xUnit.net 00:00:01.97]     FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 3, accountGold: 4) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T08:12:07.4614500+08:00">
+        <Text>[xUnit.net 00:00:02.08]     FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 7, accountGold: 0) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T08:12:07.5742465+08:00">
+        <Text>[xUnit.net 00:00:02.19]     FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteAndRefreshUseTheSameOriginalCatalogAfterRestore(temporaryGold: 0, accountGold: 7) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-05T08:12:07.6781483+08:00">
+        <Text>[xUnit.net 00:00:02.30]     FantasyCard.Server.Tests.Config.RewardRefreshOriginalConfigTests.QuoteRejectsTheFourthRefreshAndNonChoiceWithoutChangingAnything [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

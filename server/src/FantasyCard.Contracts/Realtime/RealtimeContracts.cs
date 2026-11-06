@@ -39,7 +39,8 @@ public sealed record RoomSetPayload(string Kind, int Count, int Required, bool A
 public sealed record RoomBattleStatusPayload(string PassiveKind, int Combo, string? CoreElement,
     IReadOnlyList<RoomStatPayload> Bonuses, IReadOnlyList<RoomSetPayload> Sets, string DrawIntervalSeconds,
     int ChargeLevel = 0);
-public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false);
+public sealed record RoomEquipmentPayload(string Slot, string Quality, string Element, string? EffectAffix, string? SecondaryTrait, int Level = 0, bool IsBound = false,
+    string? UniqueAffix = null,string? UniqueElement = null,string? StatsVersion = null);
 public sealed record RoomInventoryItemPayload(string ItemId, string Kind, int Quantity, bool IsSafe, RoomEquipmentPayload? Equipment = null, int SlotIndex = -1);
 public sealed record RoomRelicPilePayload(Guid PileId, string OwnerName, long Version, IReadOnlyList<RoomInventoryItemPayload> Items,
     bool OwnerNameIsFallback = false);
@@ -101,7 +102,11 @@ public sealed record RoomPlayerPayload(
     long DrawBlockSpeedRemainingMs = 0,
     string? BaseDrawIntervalSeconds = null,
     RoomMonsterPoolPayload? MonsterPool = null,
-    RoomNumericalStatePayload? NumericalState = null);
+    RoomNumericalStatePayload? NumericalState = null,
+    RoomCombatActionStatePayload? CombatAction = null,
+    string? BorrowedTemplateId = null,
+    bool RedEvaluationPending=false,RoomInventoryItemPayload? PendingRedItem=null);
+public sealed record RoomCombatActionStatePayload(long NextSequence, long RemainingMs);
 public sealed record RoomSnapshotEventPayload(
     Guid RoomId,
     Guid? MatchId,
@@ -118,17 +123,21 @@ public sealed record RoomSnapshotEventPayload(
     long? ExtractionRemainingMs,
     long? SpringRemainingMs,
     IReadOnlyList<string> AllowedActions,
-    int MapPlayerCount = 0);
+    int MapPlayerCount = 0,
+    RoomSeasonContextPayload? Season = null);
+public sealed record RoomSeasonContextPayload(string SeasonId, string DifficultyId, string RulesetId, string ConfigVersion, string StatsVersion);
 public sealed record CommandRejectedEventPayload(string Code, string Detail);
 public sealed record BattlePlayCardsCommandPayload(
     Guid BattleId,
     string TargetId,
-    IReadOnlyList<Guid> CardInstanceIds);
+    IReadOnlyList<Guid> CardInstanceIds,
+    string? CombatActionId = null);
 public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string TargetId);
 public sealed record BattleAbandonCommandPayload;
 public sealed record MonsterCardChooseCommandPayload(Guid CandidateId, bool Accept, Guid? ReplaceInstanceId = null);
 public sealed record RoomMonsterPoolPayload(int Capacity, IReadOnlyList<RoomCardPayload> Pending, IReadOnlyList<RoomCardPayload> Active);
-public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths);
+public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths,
+    string? FenxianReturnCredit = null, int? FenxianReturnRateBasisPoints = null);
 public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
 public sealed record BattleComboResolvedEventPayload(
     Guid BattleId,
@@ -156,7 +165,9 @@ public sealed record BattleComboResolvedEventPayload(
     string? DrawBlockSpeedSeconds = null,
     string? ResonanceMultiplier = null,
     int ConflictPairCount = 0,
-    string? ConflictCancellation = null);
+    string? ConflictCancellation = null,
+    string? CombatActionId = null,
+    bool ActionReplayed = false);
 public sealed record CombatDamageSegmentPayload(string Kind, int Amount);
 public sealed record RoomMoveCommandPayload(int Row, int Column);
 public sealed record RoomMovedEventPayload(Guid PlayerId, int Row, int Column);
@@ -186,7 +197,7 @@ public sealed record InventoryChangedEventPayload(
     string Action,
     string ItemId,
     FantasyCard.Contracts.Progression.MarketListingResponse? Listing = null,
-    long? SellerGoldAfter = null);
+    long? SellerGoldAfter = null,bool SellerWalletChanged=false);
 public sealed record RewardChoiceRefreshCommandPayload;
 public sealed record RewardChoiceClaimCommandPayload(string OptionId, string? ReplaceItemId = null, bool Equip = false);
 public sealed record RewardChoiceClaimedEventPayload(string OptionId, int Applied);

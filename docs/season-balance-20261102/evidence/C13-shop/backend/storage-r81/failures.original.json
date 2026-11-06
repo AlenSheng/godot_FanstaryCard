@@ -1,0 +1,350 @@
+[
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(cardId: \"PRI-10\", firstCost: 80, lastCost: 1000)",
+    "duration": "00:00:00.0004281",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(String cardId, Int32 firstCost, Int32 lastCost) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 18\n   at InvokeStub_CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(level: 5, seconds: 8.4000000000000004)",
+    "duration": "00:00:00.0000637",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Int32 level, Double seconds) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 52\n   at InvokeStub_CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(level: 3, requiresCopy: True)",
+    "duration": "00:00:00.0004954",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Int32 level, Boolean requiresCopy) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 29\n   at InvokeStub_PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.One_trained_copy_keeps_its_level_through_shuffle_duel_and_room_restart",
+    "duration": "00:00:00.0652014",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.One_trained_copy_keeps_its_level_through_shuffle_duel_and_room_restart() in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 75\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsEquipmentAndLootRules",
+    "duration": "00:00:00.0013144",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsEquipmentAndLootRules() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 107\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(level: 0, requiresCopy: False)",
+    "duration": "00:00:00.0001387",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Int32 level, Boolean requiresCopy) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 29\n   at InvokeStub_PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrades_strengthen_existing_components_without_adding_damage_or_changing_card_structure",
+    "duration": "00:00:00.0006028",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrades_strengthen_existing_components_without_adding_damage_or_changing_card_structure() in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 28\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.CurrentPolicyKeepsOriginalPricesAndOneSharedClassQuotaWhileBagPurchasesHaveNoDailyLimit",
+    "duration": "00:00:00.0010560",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.CurrentPolicyKeepsOriginalPricesAndOneSharedClassQuotaWhileBagPurchasesHaveNoDailyLimit() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/SeasonShopRulesTests.cs:line 11\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(level: 1, seconds: 8)",
+    "duration": "00:00:00.0010884",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Int32 level, Double seconds) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 52\n   at InvokeStub_CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage",
+    "duration": "00:00:00.0004573",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogVersionMatchesPublishedClientPackage() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 60\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_requires_only_an_activated_card_below_maximum_level",
+    "duration": "00:00:00.0009012",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30\n   at FantasyCard.Domain.Cards.CardEconomyRules.UpgradeBlockedReason(String cardId, Boolean unlocked, Int32 copies, Int32 level, Int32 requiredCopies, Boolean permanentCopies) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 39\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_requires_only_an_activated_card_below_maximum_level() in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 62\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.SeasonMarketRulesTests.PublishedCandidateEnablesBothCurrenciesAndTheActualVersionSevenArchiveKeepsThemDisabled",
+    "duration": "00:00:00.3151552",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.SeasonMarketRulesTests.PublishedCandidateEnablesBothCurrenciesAndTheActualVersionSevenArchiveKeepsThemDisabled() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/SeasonMarketRulesTests.cs:line 13\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(id: \"PRI-10\")",
+    "duration": "00:00:00.0000841",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.GetCard(String cardId) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 10\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(String id) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 15\n   at InvokeStub_PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet",
+    "duration": "00:00:00.0076977",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 15\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsBackpackAndEconomyRules",
+    "duration": "00:00:00.0018622",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsBackpackAndEconomyRules() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/GameConfigCatalogTests.cs:line 137\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.WeightedPackDrawsAllowDuplicatesAndNeverReplaceAnEmptyQualityPoolWithADifferentQuality",
+    "duration": "00:00:00.0013056",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.WeightedPackDrawsAllowDuplicatesAndNeverReplaceAnEmptyQualityPoolWithADifferentQuality() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/SeasonShopRulesTests.cs:line 23\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(id: \"GUA-09\")",
+    "duration": "00:00:00.0008944",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.GetCard(String cardId) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 10\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(String id) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 15\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(level: 4, seconds: 8.4000000000000004)",
+    "duration": "00:00:00.0008550",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Int32 level, Double seconds) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 52\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.DailyOffersFreezeThreeDistinctEligibleCardsAndRejectAChangedPriceOrQuotaGroup",
+    "duration": "00:00:00.0011478",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Configuration.SeasonShopRulesTests.DailyOffersFreezeThreeDistinctEligibleCardsAndRejectAChangedPriceOrQuotaGroup() in /workspace/server/tests/FantasyCard.Domain.Tests/Configuration/SeasonShopRulesTests.cs:line 37\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Copy_materials_never_raise_the_permanent_level_cap_or_unlock_an_unowned_card",
+    "duration": "00:00:00.0004957",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30\n   at FantasyCard.Domain.Cards.CardEconomyRules.UpgradeBlockedReason(String cardId, Boolean unlocked, Int32 copies, Int32 level, Int32 requiredCopies, Boolean permanentCopies) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 39\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Copy_materials_never_raise_the_permanent_level_cap_or_unlock_an_unowned_card() in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 43\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(level: 1, requiresCopy: False)",
+    "duration": "00:00:00.0007646",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Int32 level, Boolean requiresCopy) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 29\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(level: 4, requiresCopy: True)",
+    "duration": "00:00:00.0000792",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Int32 level, Boolean requiresCopy) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 29\n   at InvokeStub_PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(level: 2, requiresCopy: False)",
+    "duration": "00:00:00.0000676",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Int32 level, Boolean requiresCopy) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 29\n   at InvokeStub_PermanentCardCopyRulesTests.One_extra_copy_is_required_only_for_the_last_two_levels(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(id: \"C01\")",
+    "duration": "00:00:00.0004443",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.GetCard(String cardId) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 10\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(String id) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 15\n   at InvokeStub_PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(level: 3, seconds: 8.1999999999999993)",
+    "duration": "00:00:00.0004827",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Int32 level, Double seconds) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 52\n   at InvokeStub_CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(id: \"MAG-01\")",
+    "duration": "00:00:00.0001149",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.GetCard(String cardId) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 10\n   at FantasyCard.Domain.Tests.Cards.PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(String id) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/PermanentCardCopyRulesTests.cs:line 15\n   at InvokeStub_PermanentCardCopyRulesTests.Published_copy_costs_apply_to_owned_cards_only_in_the_new_policy(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(cardId: \"C01\", firstCost: 5, lastCost: 80)",
+    "duration": "00:00:00.0000869",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(String cardId, Int32 firstCost, Int32 lastCost) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 18\n   at InvokeStub_CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(cardId: \"MAG-01\", firstCost: 8, lastCost: 120)",
+    "duration": "00:00:00.0031775",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Upgrade_quotes_use_corresponding_config_and_require_copies_only_at_four_and_five(String cardId, Int32 firstCost, Int32 lastCost) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 18\n   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)"
+      }
+    ]
+  },
+  {
+    "test": "FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(level: 2, seconds: 8.1999999999999993)",
+    "duration": "00:00:00.0000872",
+    "errors": [
+      {
+        "Message": "System.IO.InvalidDataException : Season shop prices, limits, copies or reset terms differ from the authorized baseline."
+      },
+      {
+        "StackTrace": "   at FantasyCard.Domain.Configuration.SeasonShopConfig.Validate(IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/SeasonShopConfig.cs:line 36\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.ReadSeasonShop(ConfigBundle bundle, IReadOnlyList`1 cards, IReadOnlyList`1 levels, EconomyConfig economy, IReadOnlyList`1 bags, IReadOnlyList`1 prices) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 340\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.Load(ReadOnlySpan`1 bytes) in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 322\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.LoadEmbedded() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 228\n   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)\n--- End of stack trace from previous location ---\n   at System.Lazy`1.CreateValue()\n   at FantasyCard.Domain.Configuration.GameConfigCatalog.get_Current() in /workspace/server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs:line 151\n   at FantasyCard.Domain.Combat.CombatCardCatalog.CreatePrototype() in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 49\n   at FantasyCard.Domain.Tests.Cards.CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Int32 level, Double seconds) in /workspace/server/tests/FantasyCard.Domain.Tests/Cards/CardUpgradeTests.cs:line 52\n   at InvokeStub_CardUpgradeTests.Support_duration_grows_every_two_levels_without_changing_rate(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)"
+      }
+    ]
+  }
+]

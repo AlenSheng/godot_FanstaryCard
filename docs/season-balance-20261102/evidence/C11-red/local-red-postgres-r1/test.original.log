@@ -1,0 +1,26 @@
+Test run for G:\PR13Evidence\season-balance-20261102-r1\local-red-server-r1\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek [3 m 39 s]
+  Error Message:
+   Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "equipments_location_check"
+
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.
+  Stack Trace:
+     at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 51
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 55
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\local-red-postgres-r1\results\bot-real-custody.trx
+
+Failed!  - Failed:     1, Passed:     7, Skipped:     0, Total:     8, Duration: 20 m 32 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:07:07.62]     FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek [FAIL]

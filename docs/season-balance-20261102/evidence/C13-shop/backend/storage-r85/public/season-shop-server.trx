@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4d5a6139-013b-47e7-bdcd-672513a2ada1" name="@803968e39001 2026-11-04 16:22:21" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-04T16:22:21.1490038+00:00" queuing="2026-11-04T16:22:21.1490038+00:00" start="2026-11-04T16:22:15.7026388+00:00" finish="2026-11-04T16:22:30.7207357+00:00" />
+  <TestSettings name="default" id="ab996c99-4f56-4f09-86bc-211a50bc4897">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-04_16_22_21" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c0313a82-6912-4b03-89d5-9e39214d7140" testId="1152b749-9b94-9f28-309a-2c137f0afc34" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.FirstSeasonShopAdoptionKeepsLegacySingleCardsRefreshesAndUsedAccountQuotas" computerName="803968e39001" duration="00:00:01.9927830" startTime="2026-11-04T16:22:19.0972259+00:00" endTime="2026-11-04T16:22:21.1038005+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c0313a82-6912-4b03-89d5-9e39214d7140" />
+    <UnitTestResult executionId="4fbe60a8-b8a3-4fba-955a-ecb01a724620" testId="3eb97f68-5e6c-aec5-2e79-3c42f8b4ea67" testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms" computerName="803968e39001" duration="00:00:09.4691037" startTime="2026-11-04T16:22:21.1229890+00:00" endTime="2026-11-04T16:22:30.6094748+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4fbe60a8-b8a3-4fba-955a-ecb01a724620">
+      <Output>
+        <ErrorInfo>
+          <Message>System.Threading.Tasks.TaskCanceledException : A task was canceled.</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 134
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 134
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 141
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 141
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 141
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.FirstSeasonShopAdoptionKeepsLegacySingleCardsRefreshesAndUsedAccountQuotas" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="1152b749-9b94-9f28-309a-2c137f0afc34">
+      <Execution id="c0313a82-6912-4b03-89d5-9e39214d7140" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="FirstSeasonShopAdoptionKeepsLegacySingleCardsRefreshesAndUsedAccountQuotas" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="3eb97f68-5e6c-aec5-2e79-3c42f8b4ea67">
+      <Execution id="4fbe60a8-b8a3-4fba-955a-ecb01a724620" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests" name="RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="1152b749-9b94-9f28-309a-2c137f0afc34" executionId="c0313a82-6912-4b03-89d5-9e39214d7140" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3eb97f68-5e6c-aec5-2e79-3c42f8b4ea67" executionId="4fbe60a8-b8a3-4fba-955a-ecb01a724620" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="1" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.77]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.50]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.76]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:14.39]       System.Threading.Tasks.TaskCanceledException : A task was canceled.
+[xUnit.net 00:00:14.39]       Stack Trace:
+[xUnit.net 00:00:14.39]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs(134,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms()
+[xUnit.net 00:00:14.40]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs(134,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms()
+[xUnit.net 00:00:14.40]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs(141,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms()
+[xUnit.net 00:00:14.40]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs(141,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms()
+[xUnit.net 00:00:14.40]         /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs(141,0): at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms()
+[xUnit.net 00:00:14.40]         --- End of stack trace from previous location ---
+[xUnit.net 00:00:14.41]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-04T16:22:30.6226753+00:00">
+        <Text>[xUnit.net 00:00:14.39]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -1,0 +1,17 @@
+{
+  "container_id": "a01d22a39440c9b835a9e3a103b44465db0371467a4b288d99e24aee9dfbca65",
+  "name": "fc-season-a03-storage-20261102-r39",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "2fdfea85c29a563afae92dd0955f7e79252524d0",
+  "archive_sha256": "824f6b6bce872241a646825d4eed1c228893e02e3ba8234e7a65a94ff7abb727",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresDifficultyUnlockTests|FullyQualifiedName~PostgresSeason|FullyQualifiedName~FantasyCard.Server.Tests.Config|FullyQualifiedName~SeasonRoomProtocolTests|FullyQualifiedName~PostgresConfigVersionRoomTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~PostgresCombatActionTests|FullyQualifiedName~TerminalCommandContextTests\" --logger \"trx;LogFileName=season-difficulty-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName!~SeasonResourceLoopTests\" --logger \"trx;LogFileName=season-difficulty-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2561011712,
+  "free_disk_before": 3507589120
+}

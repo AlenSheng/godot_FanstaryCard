@@ -34,6 +34,7 @@ public static class RealtimeProtobufCodec
                 {
                     w.String(3, cardInstanceId.ToString("D"));
                 }
+                w.String(4, payload.CombatActionId);
             }),
             "battle.select_target" when command.Payload is BattleSelectTargetCommandPayload payload => Message(w =>
             {
@@ -203,6 +204,7 @@ public static class RealtimeProtobufCodec
             w.String(20, value.SourceId);
             w.String(21, value.DrawSpeedSeconds); w.String(22, value.DrawSpeedModifier); w.String(23, value.DrawBlockSpeedSeconds);
             w.String(24, value.ResonanceMultiplier); w.Int64(25, value.ConflictPairCount); w.String(26, value.ConflictCancellation);
+            w.String(27, value.CombatActionId); if (value.ActionReplayed) w.Bool(28, true);
         }),
         "battle.target_selected" when message.Payload is BattleTargetSelectedEventPayload value => Message(w =>
         {
@@ -228,6 +230,7 @@ public static class RealtimeProtobufCodec
             w.String(2, value.ItemId);
             if (value.Listing is { } listing) w.Bytes(3, EncodeMarketListing(listing));
             w.OptionalInt64(4, value.SellerGoldAfter);
+            w.Bool(5,value.SellerWalletChanged);
         }),
         "duel.started" when message.Payload is DuelStartedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.FirstPlayerId.ToString("D")); w.String(3, value.LatePlayerId.ToString("D")); w.Int64(4, value.LatePlayerUnlockAtUnixMs); w.Int64(5, value.LeaveWindowEndsAtUnixMs); }),
         "duel.ended" when message.Payload is DuelEndedEventPayload value => Message(w => { w.String(1, value.DuelId.ToString("D")); w.String(2, value.Reason); w.String(3, value.WinnerId?.ToString("D")); w.Bool(4, value.SnapshotRequired); }),
@@ -275,7 +278,8 @@ public static class RealtimeProtobufCodec
                 NullIfEmpty(payload.String(17)), checked((int)payload.Int64(18)),
                 NullIfEmpty(payload.RepeatedStrings(19).Select(id => ParseGuid(id, type)).ToArray()), NullIfEmpty(payload.String(20)),
                 NullIfEmpty(payload.String(21)), NullIfEmpty(payload.String(22)), NullIfEmpty(payload.String(23)),
-                NullIfEmpty(payload.String(24)), checked((int)payload.Int64(25)), NullIfEmpty(payload.String(26))),
+                NullIfEmpty(payload.String(24)), checked((int)payload.Int64(25)), NullIfEmpty(payload.String(26)),
+                NullIfEmpty(payload.String(27)), payload.Bool(28)),
             "battle.target_selected" => new BattleTargetSelectedEventPayload(
                 ParseGuid(payload.String(1), type), payload.String(2)),
             "reward.choice" => DecodeRewardChoice(payload),
@@ -292,7 +296,7 @@ public static class RealtimeProtobufCodec
             "inventory.changed" => new InventoryChangedEventPayload(
                 payload.String(1), payload.String(2),
                 payload.Bytes(3).Length == 0 ? null : DecodeMarketListing(Fields.Read(payload.Bytes(3))),
-                payload.OptionalInt64(4)),
+                payload.OptionalInt64(4),payload.Bool(5)),
             "duel.started" => new DuelStartedEventPayload(ParseGuid(payload.String(1), type), ParseGuid(payload.String(2), type), ParseGuid(payload.String(3), type), payload.Int64(4), payload.Int64(5)),
             "duel.ended" => new DuelEndedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), payload.Bool(4)),
             "player.died" => new PlayerDiedEventPayload(ParseGuid(payload.String(1), type), payload.String(2), ParseOptionalGuid(payload.String(3), type), ParseOptionalGuid(payload.String(4), type), ParseOptionalGuid(payload.String(5), type)),
@@ -322,7 +326,7 @@ public static class RealtimeProtobufCodec
         return new BattlePlayCardsCommandPayload(
             ParseGuid(payload.String(1), "battle.play_cards"),
             payload.String(2),
-            ids);
+            ids, NullIfEmpty(payload.String(4)));
     }
 
     private static BattleSelectTargetCommandPayload DecodeBattleSelectTarget(ReadOnlySpan<byte> bytes)
@@ -414,7 +418,12 @@ public static class RealtimeProtobufCodec
                 e.String(8, equipment.Element);
                 e.String(9, equipment.EffectAffix);
                 e.String(10, equipment.SecondaryTrait);
+                e.String(11,equipment.UniqueAffix);e.String(12,equipment.UniqueElement);e.String(13,equipment.StatsVersion);
+                e.String(14,equipment.OriginSeasonId);e.String(15,equipment.SeasonId);e.String(16,equipment.AssetScope);e.String(17,equipment.SourceKind);
+                e.OptionalInt64(18,equipment.RecipeExtracted is { } extracted?extracted?1:0:null);
             }));
+        w.String(10,value.Currency);w.OptionalInt64(11,value.Price);w.String(12,value.SeasonId);w.String(13,value.ConfigVersion);
+        w.OptionalInt64(14,value.SeasonEndsAt?.ToUnixTimeMilliseconds());w.OptionalInt64(15,value.Fee);w.OptionalInt64(16,value.SellerNet);
     });
 
     private static MarketListingResponse DecodeMarketListing(Fields value)
@@ -427,7 +436,9 @@ public static class RealtimeProtobufCodec
             equipment = new EquipmentResponse(
                 ParseGuid(item.String(1), "market.listing"), item.String(2), item.String(3),
                 checked((int)item.Int64(4)), item.Bool(5), item.String(6), item.Int64(7),
-                NullIfEmpty(item.String(8)), NullIfEmpty(item.String(9)), NullIfEmpty(item.String(10)));
+                NullIfEmpty(item.String(8)), NullIfEmpty(item.String(9)), NullIfEmpty(item.String(10)),
+                NullIfEmpty(item.String(14)),NullIfEmpty(item.String(15)),NullIfEmpty(item.String(16)),NullIfEmpty(item.String(13)),NullIfEmpty(item.String(17)),
+                item.OptionalInt64(18) is { } extracted?extracted!=0:null,NullIfEmpty(item.String(11)),NullIfEmpty(item.String(12)));
         }
         return new MarketListingResponse(
             ParseGuid(value.String(1), "market.listing"),
@@ -435,7 +446,9 @@ public static class RealtimeProtobufCodec
             ParseGuid(value.String(3), "market.listing"),
             value.Int64(4), value.String(5), value.Int64(6),
             DateTimeOffset.FromUnixTimeMilliseconds(value.Int64(7)),
-            DateTimeOffset.FromUnixTimeMilliseconds(value.Int64(8)), equipment);
+            DateTimeOffset.FromUnixTimeMilliseconds(value.Int64(8)), equipment,NullIfEmpty(value.String(10)),value.OptionalInt64(11),
+            NullIfEmpty(value.String(12)),NullIfEmpty(value.String(13)),value.OptionalInt64(14) is { } ends?DateTimeOffset.FromUnixTimeMilliseconds(ends):null,
+            value.OptionalInt64(15),value.OptionalInt64(16));
     }
 
     private static byte[] EncodeRewardChoice(RewardChoiceEventPayload value) => Message(w =>
@@ -482,6 +495,11 @@ public static class RealtimeProtobufCodec
         w.OptionalInt64(14, value.SpringRemainingMs);
         foreach (var action in value.AllowedActions) w.String(15, action);
         w.Int64(16, value.MapPlayerCount);
+        if (value.Season is { } season) w.Bytes(17, Message(s =>
+        {
+            s.String(1, season.SeasonId); s.String(2, season.DifficultyId); s.String(3, season.RulesetId);
+            s.String(4, season.ConfigVersion); s.String(5, season.StatsVersion);
+        }));
     });
 
     private static byte[] EncodePosition(RoomPositionPayload value) =>
@@ -515,6 +533,10 @@ public static class RealtimeProtobufCodec
         w.Int64(17, value.DrawSpeedRemainingMs);
         w.Int64(18, value.DrawBlockSpeedRemainingMs);
         w.String(19, value.BaseDrawIntervalSeconds);
+        if (value.CombatAction is { } action) w.Bytes(22, Message(a => { a.Int64(1, action.NextSequence); a.Int64(2, action.RemainingMs); }));
+        w.String(23,value.BorrowedTemplateId);
+        w.Bool(24,value.RedEvaluationPending);
+        if(value.PendingRedItem is { } red)w.Bytes(25,EncodeInventoryItem(red));
         if (value.MonsterPool is { } pool) w.Bytes(20, Message(m =>
         {
             m.Int64(1, pool.Capacity);
@@ -522,7 +544,10 @@ public static class RealtimeProtobufCodec
             foreach (var card in pool.Active) m.Bytes(3, EncodePoolCard(card));
         }));
         if (value.NumericalState is { } numerics) w.Bytes(21, Message(n =>
-        { n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths); }));
+        {
+            n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths);
+            n.String(4, numerics.FenxianReturnCredit); n.OptionalInt64(5, numerics.FenxianReturnRateBasisPoints);
+        }));
     });
 
     private static byte[] EncodePoolCard(RoomCardPayload card) => Message(c =>
@@ -545,7 +570,8 @@ public static class RealtimeProtobufCodec
     {
         if (bytes.Length == 0) return null;
         var n = Fields.Read(bytes);
-        return new(n.String(1), n.String(2), checked((int)n.Int64(3)));
+        return new(n.String(1), n.String(2), checked((int)n.Int64(3)), NullIfEmpty(n.String(4)),
+            n.OptionalInt64(5) is { } rate ? checked((int)rate) : null);
     }
 
     private static byte[] EncodeBattleStatus(RoomBattleStatusPayload value) => Message(w =>
@@ -570,6 +596,7 @@ public static class RealtimeProtobufCodec
         w.String(1, value.Slot); w.String(2, value.Quality); w.String(3, value.Element);
         w.String(4, value.EffectAffix); w.String(5, value.SecondaryTrait);
         w.Int64(6, value.Level); w.Bool(7, value.IsBound);
+        w.String(8,value.UniqueAffix);w.String(9,value.UniqueElement);w.String(10,value.StatsVersion);
     });
 
     private static byte[] EncodeInventoryItem(RoomInventoryItemPayload value) => Message(w =>
@@ -594,7 +621,8 @@ public static class RealtimeProtobufCodec
     {
         if (bytes.Length == 0) return null;
         var e = Fields.Read(bytes);
-        return new(e.String(1), e.String(2), e.String(3), NullIfEmpty(e.String(4)), NullIfEmpty(e.String(5)), checked((int)e.Int64(6)), e.Bool(7));
+        return new(e.String(1), e.String(2), e.String(3), NullIfEmpty(e.String(4)), NullIfEmpty(e.String(5)), checked((int)e.Int64(6)), e.Bool(7),
+            NullIfEmpty(e.String(8)),NullIfEmpty(e.String(9)),NullIfEmpty(e.String(10)));
     }
 
     private static RoomInventoryItemPayload DecodeInventoryItem(byte[] bytes)
@@ -638,6 +666,8 @@ public static class RealtimeProtobufCodec
         var pveBytes = payload.Bytes(10);
         var duelBytes = payload.Bytes(11);
         var rewardBytes = payload.Bytes(12);
+        var seasonBytes = payload.Bytes(17);
+        var season = seasonBytes.Length == 0 ? null : Fields.Read(seasonBytes);
         return new RoomSnapshotEventPayload(
             ParseGuid(payload.String(1), "room.snapshot"),
             Guid.TryParse(payload.String(2), out var matchId) ? matchId : null,
@@ -665,7 +695,8 @@ public static class RealtimeProtobufCodec
             payload.OptionalInt64(13),
             payload.OptionalInt64(14),
             payload.RepeatedStrings(15),
-            checked((int)payload.Int64(16)));
+            checked((int)payload.Int64(16)),
+            season is null ? null : new RoomSeasonContextPayload(season.String(1), season.String(2), season.String(3), season.String(4), season.String(5)));
     }
 
     private static RoomPositionPayload DecodePosition(byte[] bytes)
@@ -700,7 +731,15 @@ public static class RealtimeProtobufCodec
         checked((int)value.Int64(13)),
         value.Bytes(14).Length > 0 ? DecodeBattleStatus(value.Bytes(14)) : null,
         value.Int64(15), value.Int64(16), value.Int64(17), value.Int64(18), NullIfEmpty(value.String(19)),
-        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)));
+        DecodeMonsterPool(value.Bytes(20)), DecodeNumericalState(value.Bytes(21)), DecodeCombatAction(value.Bytes(22)), NullIfEmpty(value.String(23)),value.Bool(24),
+        value.Bytes(25).Length==0?null:DecodeInventoryItem(value.Bytes(25)));
+
+    private static RoomCombatActionStatePayload? DecodeCombatAction(byte[] bytes)
+    {
+        if (bytes.Length == 0) return null;
+        var value = Fields.Read(bytes);
+        return new(value.Int64(1), value.Int64(2));
+    }
 
     private static RoomPvePayload DecodePve(Fields value) => new(
         ParseGuid(value.String(1), "room.snapshot"),

@@ -1,0 +1,69 @@
+from pathlib import Path
+import gzip,hashlib,json
+
+repo=Path.cwd();base=Path(__file__).parent;docs=repo/'docs/season-balance-20261102';out=docs/'evidence/D02-final-r1';assert not out.exists()
+audit=json.loads((base/'d02-final-requirement-audit-r1.derived.json').read_bytes());assert audit['D02_complete'] and all(x['status']=='achieved' for x in audit['requirements'])
+budget=json.loads((docs/'D02-BUDGET.json').read_bytes());assert budget['used']==100 and budget['remaining']==200 and budget['current_handle'] is None
+pin=json.loads((base/'d02-gate-build-r1/source-pin.json').read_bytes());assert all(hashlib.sha256((repo/n).read_bytes()).hexdigest()==h for n,h in pin.items())
+files=[];builds=['d02-rebuild-build-r1','d02-rebuild-build-r2','d02-gate-build-r1']
+for stage in builds:
+    root=base/stage;files.extend(p for p in root.iterdir() if p.is_file());files.extend(root/n for n in ['results/contracts.trx','config/FantasyCard_Config.xlsx'])
+for stage in ['d02-rebuild-pg-r1','d02-rebuild-pg-mage-r1','d02-rebuild-pg-guardian-r1','d02-rebuild-owned-cleanup-r1','d02-pvp-gates-r1']:
+    files.extend(p for p in (base/stage).rglob('*') if p.is_file())
+names=['run-d02-rebuild-build-r1.py','run-d02-rebuild-build-r2.py','run-d02-gate-build-r1.py','run-d02-rebuild-pg-r1.py','run-d02-rebuild-pg-per-case-r1.py','cleanup-d02-owned-schema-r1.py','inspect-d02-rebuild-r1.py','run-d02-gates-r1.py','verify-d02-final-r1.py','record-d02-final-r1.py','d02-rebuild-policy.before-run-r1.json','d02-rebuild-per-case-observation.before-run-r1.json','d02-gate-policy.before-run-r1.json','d02-rebuild-inspection-Priest-r1.derived.json','d02-rebuild-inspection-Mage-r1.derived.json','d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json','d02-gate-inspection-r1.derived.json','d02-final-requirement-audit-r1.derived.json','d02-pg-activity-readonly-r1.json']
+files.extend(base/name for name in names);assert len(files)==len(set(files));out.mkdir(parents=True);source={}
+for path in files:
+    relative=path.relative_to(base).as_posix();data=path.read_bytes();compressed=path.suffix=='.jsonl' or path.suffix=='.json' and len(data)>200000
+    archived=relative+('.gz' if compressed else '');target=out/archived;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(gzip.compress(data,mtime=0) if compressed else data)
+    assert (gzip.decompress(target.read_bytes()) if compressed else target.read_bytes())==data;source[relative]={'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data),'archive':archived,'gzip':compressed}
+(out/'source-byte-manifest.json').write_text(json.dumps(source,indent=2)+'\n')
+(out/'missing-batch-evidence.derived.json').write_text(json.dumps(dict(stage='d02-rebuild-pg-r1',not_present=['cases.trx','cases.xml'],reason='600s guard stopped originalbatch duringMageinitialization afterPriestFINISHED. No completebatchTRX/XML was produced, neither reconstructed nor markedallgreen.',Priest_completion_evidence=['originaltestlog FINISHED481.5040788s','Priest/result.original.json and alltypedquote/ready/death records','Priestschema absent in originalcleanupquery']),indent=2)+'\n')
+result=dict(audit,completed_items=28,total_items=35,old_control_contracts_reused=21,new_PVP_complete_scenarios=72,new_natural_routes_extracted=18,actual_storage_rebuild_hero_cases=3,actual_storage_matched_rooms=6,new_gate_boundary_rooms=3,independent_rebuild_fragment_cost_each=66,
+    immutable_prior_evidence=['../D02-duels-r1','../D02-routes-r1'],full_binary_originals=[str(base/x/'build') for x in builds],local_admission_GiB=3,all_own_handles_terminal=True,all_owned_schemas_absent=True,only_temporary_isolated_PG_schema_mutations=True,cloud_global_configuration_changed=False)
+(out/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+(out/'manifest.json').write_text(json.dumps({'files':{p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in out.rglob('*') if p.is_file()}},indent=2)+'\n')
+report='''# D02 最终验收：PVP、恢复、合法路线与死亡重建
+
+状态：本项按原功能门槛验收，整体28/35。D02实际100/300场次、余200；没有放宽0.8秒后手、500ms连放、15秒断线、3秒撤离或66片重建等功能条件。原先导失败、600秒批次中断及缺失整批TRX继续保留，**不是一次全绿运行**。完整目标仍待D03/D04、E01/E02、F01至F03，生产未部署或重启。
+
+逐要求证据见[最终核查](evidence/D02-final-r1/d02-final-requirement-audit-r1.derived.json)和[最终结果](evidence/D02-final-r1/result.json)。当前正式候选仍15，工作簿、规则、协议和生产源没有因本项修改；新增为测试与证据。各批已列入的冻结源/程序集SHA前后一致；后加门禁测试另行构建，不用旧DLL冒充新方法。
+
+## 六项要求的完成依据
+
+- 先后手PVP：当前正式目录72个有序职业/难度/断线角色场景全部有完整终态；另补三职业精确边界，后手700ms拒绝、800ms真实放行，成功出牌后400ms拒绝且余100ms、500ms真实放行，拒绝前后完整快照不变，互退恢复原Combat。
+- 控制/返牌：新PVP144施法含30正眩晕、7正抽牌阻断、45即时抽牌；复用旧r22原TRX中21个控制/消耗/时钟合同，以5整个源文件、6相关方法及Cards/CardLevels原始Protobuf消息相同证明适用。PlayerCombatState整个文件并非未改，Advance两处新增路径在所选无红/无连抽/空上下限夹具下不改变原语义。旧21项不算新执行或新场次。
+- 断线恢复：36恢复互退、36到期死亡，JSON重建保留工作副本、原PVE与动作序列/回放；14.9秒仍暂停、15秒只死亡断线者，原五件装备身份进入原遗物堆。到期后当前tick合法推进100ms，严格对比原快照推进恰好一tick；互退则比较原快照完全相同。
+- 合法路线：三职业×六难度18次原生成地图、原出生与原Boss，四邻且不向外，实际4/5格路径共81格108杀3649施法，126资源变化独立守恒。它们是完整出生到Boss的合法短路线，不是条件八格R1、全图扫描或人群平均；不替代D03的收益/效率目标。
+- 完整撤离：18次全部完成真实3秒读条，在首次施法后与读条中各JSON恢复，共36次；回放不重复损害，恢复时仍剩2.9秒，完成时间等于请求时间加3秒。12次独立红装Roll照实处理；命中时只使用事先声明的“本逻辑服周配额已用”Exhausted领域夹具，不铸红、不伪造Miss，也不称它是本批真实PG配额核验。
+- 死亡重建：三职业分别通过实际隔离PG的准备→排队→Ready→Running，主动放弃战斗按权威死亡处理，经真实SettlementCoordinator、托管提交及重复观察/提交，原五件留RelicPile、五模板保留。5个独立备用本体在死亡前已真实入库，缺本体及已掉落原件重铸都被拒；重铸复用备用GUID输出+0，再实际强化+3，逐报价/版本/余额独立核算为6片重铸+60片强化，5000到4934。再次保存配装、准备、匹配并真实出牌，前后派生装备属性完全相同，旧掉落GUID未归还。共6个真实匹配启动，匹配器按配置补3个领域机器人，不构成容量测试。
+
+详细前半证据为[PVP阶段](D02-DUEL-RECOVERY-PROGRESS.md)、[自然路线与21合同复用](D02-ROUTE-RECOVERY-PROGRESS.md)。实际数据库三职业账本/物品/Ready/首个出牌核查见[重建联合审计](evidence/D02-final-r1/d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json)，精确门禁见[门禁审计](evidence/D02-final-r1/d02-gate-inspection-r1.derived.json)。
+
+## 历史失败与观察口径调整
+
+原PVP先导实际2例后停止：001完成，004的到期幸存者蓄能比原冻结值多100ms。查GDD2.2“接着打”与Advance顺序后，只修正夹具为严格单tick对照；原213领域源不变。004针对复验1次，再执行未启动70例，联合72完成场景，计73次尝试。原失败/TRX和未执行草稿均保留。
+
+数据库首批采用600秒观察窗，祭司真实完成用时481.504秒；随后在法师初始化时触发本任务观察保护，原批退出1、**未生成完整TRX/XML**。祭司以原FINISHED日志、完整断言后原件、物品/报价/Ready记录和schema已不存在核对，不补造整批TRX，也不重跑已完成祭司。中断遗留的唯一自有法师schema经原创建记录及PG标签确认后删除，前后保护满足，其他schema不动。
+
+剩余法师和盾职业在运行前登记改为各自900秒观察窗，源码/二进制与所有业务断言不变。两例各自TRX1/1通过，分别约405.982和317.685秒；每次均2真实匹配启动，schema核查全不存在。这是跨机数据库整批观察窗的调整，**不是游戏功能门槛、虚拟战斗时长或职业效率放宽**。原600秒中断和缺失文件在证据里重点单列。
+
+另有最早PVP夹具CS8602编译失败（0场）和ISO小数解析派生脚本失败（0新执行），原件保留。原B05 Boss交接缺终态、旧全扫描失败及容量100测试机限制不被本项覆盖、改名、重置或补造通过。
+
+## 场次、范围与收尾
+
+累计73次PVP尝试+18自然路线+6重建匹配+3精确门禁＝100，余200不为凑数追加。各阶段完整JSONL、TRX/日志、源和二进制清单及缺件说明均保持；无损gzip解压字节逐SHA核对，完整二进制仍在G:/PR13Evidence/season-balance-20261102-r1。
+
+本机持续2GiB保留，原1GiB启动预算、三点3GiB准入、单重进程无窗口/BelowNormal。云端保留500MiB RAM、3GiB且5%磁盘，未调用云端SDK或改全局配置；仅自有隔离PG临时schema写入并全部清理，所有本任务SSH和测试句柄终态。未停止其他项目、补100人、重跑已验收UI或原正常结算。主动放弃的死亡/存储重建和JSON/Repository重建不冒称F02的完整OS进程故障矩阵；D03职业效率/P50/P90与全局可持续经济仍未验收，F03之前不发布/激活生产。
+'''
+(docs/'D02-FINAL-ACCEPTANCE.md').write_text(report,encoding='utf-8')
+progress=json.loads((docs/'PROGRESS.json').read_bytes());assert sum(x['status']=='complete' for x in progress['items'])==27
+item=next(x for x in progress['items'] if x['id']=='D02');assert item['status']=='in_progress';item['status']='complete'
+item['note']+=' 最终逐六要求验收通过，整体28/35：当前72PVP场景/18真实自然路线撤离/3职业实际PG死亡重建6匹配/3精确门禁，100/300余200。700/800后手与400/500连放边界通过；三职业5旧装保持掉落、5真实备用本体重铸+3实扣66、再次准备匹配出牌，派生属性前后相同。旧21合同不重跑。原PG600秒批次中断仍失败且整批TRX/XML缺失，祭司FINISHED/原件/清理证据复用；仅未完成法师、盾按预登记各900秒单例通过各TRX1/1，未放宽功能或效率。原自有遗留schema严格核对后清理，所有schema/句柄终态；云端只临时自有PG写入，不改生产/全局配置。D03/D04/E/F七项继续，未整体验收或发布。'
+item['evidence']+=['D02-FINAL-ACCEPTANCE.md','evidence/D02-final-r1/result.json','evidence/D02-final-r1/manifest.json','evidence/D02-final-r1/source-byte-manifest.json','evidence/D02-final-r1/missing-batch-evidence.derived.json','evidence/D02-final-r1/d02-final-requirement-audit-r1.derived.json','evidence/D02-final-r1/d02-rebuild-inspection-Priest-Mage-Guardian-r1.derived.json','evidence/D02-final-r1/d02-gate-inspection-r1.derived.json']
+(docs/'PROGRESS.json').write_text(json.dumps(progress,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+readme=docs/'README.md';text=readme.read_text('utf-8').replace('当前完成A01至A05、B01至B05、C01至C16及D01，共27/35项','当前完成A01至A05、B01至B05、C01至C16及D01/D02，共28/35项',1).replace('接续D02至D04、E01/E02及F01至F03，共8项。','接续D03/D04、E01/E02及F01至F03，共7项。',1)
+text+='\n\n## 最新接续：D02完整验收，28/35\n\nPVP72场景、18真实自然路线撤离、3职业实际PG死亡/66片真实本体重建并再次进入6匹配、3精确时钟门禁已完成逐要求核查；D02累计100/300余200。原PVP单tick夹具失败、PG600秒中断/整批TRX缺失全部保留，未重跑祭司，仅另两职业按事先登记900秒单例通过；功能/资产/效率门槛不放宽。详见[D02最终验收](D02-FINAL-ACCEPTANCE.md)。\n\n全部自有schema清理、SSH/测试句柄终态；本机2GiB保留加1GiB启动、云端原保护不变。B05/C16/D01、100人、已验收UI/原正常结算不重跑。其余D03/D04/E01/E02/F01/F02/F03继续，生产未部署或重启。\n'
+readme.write_text(text,encoding='utf-8')
+for name in ['D02-DUEL-RECOVERY-PROGRESS.md','D02-ROUTE-RECOVERY-PROGRESS.md']:
+    with (docs/name).open('a',encoding='utf-8') as f:f.write('\n\n## 后续最终状态\n\n本文件为阶段历史；后续已补齐实际PG三职业死亡重建及精确门禁，D02整体已验收，累计100/300余200，整体28/35。原失败、缺件和观察口径调整保持不变，见[D02最终验收](D02-FINAL-ACCEPTANCE.md)。\n')
+print(json.dumps(dict(evidence_files=len(source)+2,raw_source_files=len(source),progress='28/35',D02_used=100,D02_remaining=200,whole_goal_complete=False)))

@@ -1,0 +1,16 @@
+{
+  "container_id": "fc1183c0f3aa410982f768b015d8ebe41aa02b445a7deb1e64998071a88d9a21",
+  "name": "fc-season-a03-storage-20261102-r15",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "2bbd77d86a4f62f35a94cfaffd92ec176b24343d",
+  "archive_sha256": "af35a4f51dc6632d57ed7de7b1519ec03711b3c15945d177abc249fed8f8cdb2",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"FullyQualifiedName~PostgresSeason|FullyQualifiedName~SeasonWallet|FullyQualifiedName~BootstrapProjectionEncodingTests|FullyQualifiedName~ReadyLobbyRulesTests|FullyQualifiedName~PostgresLifecycleRecoveryTests|FullyQualifiedName~Four_humans_enqueue_ready_and_launch_one_persisted_room|FullyQualifiedName~PostgresTerminalContextTests|FullyQualifiedName~PostgresCombatPreviewTests|FullyQualifiedName~SeasonRoomProtocolTests|FullyQualifiedName~GameplayProtocolTests|FullyQualifiedName~RoomCheckpointPolicyTests\" --logger \"trx;LogFileName=rooms.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName~FantasyCard.Domain.Tests.Seasons|FullyQualifiedName~BattleRoomSnapshotTests|FullyQualifiedName~BattleRoomSeasonContextTests|FullyQualifiedName~RoomRandomStreamTests\" --logger \"trx;LogFileName=domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2558078976,
+  "free_disk_before": 3587526656
+}

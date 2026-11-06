@@ -1,0 +1,63 @@
+{
+  "status": "D03_counter_development12_observed_not_final_acceptance",
+  "new_encounters": 12,
+  "outcomes": {
+    "Win": 11,
+    "Dead": 1
+  },
+  "independently_checked_casts": 1088,
+  "resource_events": 42,
+  "readonly_forecast_and_preview_assertions_passed": true,
+  "all_legal_health": true,
+  "no_red_and_armor3": true,
+  "comparisons": [
+    {
+      "deck": "counter-tempo",
+      "armor": "counter-offense",
+      "conditional_win_median_seconds": {
+        "Mage": 76.1,
+        "Priest": 97.65,
+        "Guardian": 117.6
+      },
+      "conditional_class_ratio": 1.5453350854139292,
+      "all_matched_cases_win": true,
+      "censored_failed_cases": [],
+      "original_class15_passed": false,
+      "boss75_120_all_passed": true
+    },
+    {
+      "deck": "universal-tempo",
+      "armor": "counter-offense",
+      "conditional_win_median_seconds": {
+        "Mage": 99.2,
+        "Priest": 128.9,
+        "Guardian": 135.55
+      },
+      "conditional_class_ratio": 1.3664314516129032,
+      "all_matched_cases_win": false,
+      "censored_failed_cases": [
+        "D03-DEV-031"
+      ],
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    }
+  ],
+  "development_seeds_only": true,
+  "not_final_holdout": true,
+  "original_class_targets_passed": false,
+  "D03_complete": false,
+  "D03_used": 36,
+  "D03_remaining": 264,
+  "targets_relaxed": false,
+  "population_P50_P90_complete": false,
+  "sustainable_three_ledgers_complete": false,
+  "production_or_cloud_modified": false,
+  "next_action": "Counterclass tempo reaches D5Boss median75-120, but class ratio1.545 still fails15. Need independent holdout/normal-elite/route/cohort economy and class balance solution; never count death time as clear time or slow Mage deliberately.",
+  "prior_derived_r1_scope_error": "Conditional clear medians initially included failed130.5s forPriestuniversal; originals unchanged. r2 excludesfailurefromclear-time medians and requires allmatchedcasesWin for any efficiency/range pass.",
+  "source_sha256": {
+    "d03-counter-pilot-r1/result.json": "d2467691819a9c13bb34d6f5b85f3217576916aa469a21e1141f0cf5e4609ff4",
+    "d03-counter-pilot-r1/observations/attempts.original.jsonl": "7ba4c72d08c3cf227b042e05d370dd296b53bc6132279aa3a7bd5f359575a21c",
+    "d03-counter-pilot-r1/observations/encounters.original.jsonl": "54ca6071cffd93095406af91b51e5ee3ad1310a7cf3c6e1e045630f0796aca98",
+    "d03-counter-pilot-r1/observations/events.original.jsonl": "ea5e56b27dad387f59b1d7dadd4e22382af9b9465d89db27568448e7e87f57e5"
+  }
+}

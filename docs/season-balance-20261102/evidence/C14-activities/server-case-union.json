@@ -1,0 +1,576 @@
+{
+  "count": 114,
+  "union_not_one_physical_run": true,
+  "cases": {
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"legacy\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "802ed234-4850-61af-f472-761718755d6f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"weekly_quota\", value: 2)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "b0c92526-6193-5bc4-900d-3242834f24bc"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"CardLevels\", key: \"C01:4\", field: \"requires_copy\", value: False)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2d56d6b9-eed7-6458-9cd8-022caf96aa20"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"rule\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "d08e365a-01b7-2c75-57fa-47af79db8b18"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.UnknownRedAndCurrencyChoicesAndForeignClaimsNeverConsumeTokensOrMintAnything": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "ea839e0b-180e-bf73-15b7-1281ca401f2a"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"mark_kind\", value: \"opaque-marks\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4bd382f1-a1b7-d3c0-6bef-2d6e758fa98f"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.ADelayedSameSeasonCommitCannotReplaceAnAlreadyPreparedNewLoadout": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "33a003e5-165d-6196-002a-54ce95addf9e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"hp_scale\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "12562121-3bad-df56-7b9c-1d89e54b472c"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Empty_report_is_healthy": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2df2df10-8eea-e8dd-d946-a759cafd1df3"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"promotion_cap\", value: 3)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "7bcb4551-82d6-2c1b-c872-c7cf5ca1d7cd"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"paid_bag_cap\", value: 4)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "c003e5e0-1042-b89e-8150-fc3adc9c2b94"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"elite_marks\", value: 2)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4c59a681-7a38-7077-4b26-4e00423477b2"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ServerOnlyQuotaMetadataCannotBeChangedToClientOrOptional": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2f25b5c4-ff1e-5c48-0b0a-c85571039671"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.MixedAssetsCommitToTheirOriginalDomainsOnceAndExposeTheReceiptContext": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3ced200e-cef4-a0db-3938-dc587a6308e7"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "e7ded093-0e08-122a-d7d3-cee29c7a47db"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.FormalWorkbookCompilesDeterministicallyWithoutChangingLegacyTables": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "6887c764-3ede-e03c-ff49-0cafee23138b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"preferred_weight\", value: 3999)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "16f4ae8d-d314-4a99-9b7d-fcfb2198ce21"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"orange_price_cap\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "a8e1280d-0dd4-6d39-92e9-a09de24c543f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"class_soul_daily_limit\", value: 3)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "fc6da886-fd0e-9d6d-dd47-68290fcec59c"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.RedeemAndClaimReplayAreDurableAcrossRestartAndDifferentClaimKeysCannotDuplicate": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3aed00f9-2491-0818-3dab-5736bac55e52"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: -Infinity)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3986e002-8618-23d8-05f6-d51b7cf91933"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"entry_quality_cap\", value: 6)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "1e99e139-5632-a0ae-6320-1ed8f0c140ef"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"missing\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "d1c1af05-3833-1374-d907-fba97ed52c38"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 3)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "df981825-84a9-6fb3-303d-1ec931a943c9"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonDifficulty\", field: \"purple_affix_chance\", value: -0.10000000000000001)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "83eb1cbe-6245-3430-efb9-088909175a4c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"price_gold\", value: 249)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "a9edca8d-e709-19f4-6e4d-8c13b61d373c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"mark_cost\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "eb01872a-32a3-c18a-946c-c696a9448f32"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 2)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "9a9e78ae-9ee6-134e-0312-3992b66c5b45"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.LateCommitCreditsArchivedWalletAndCannotOverwriteTheNextSeasonLoadout": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3d84a782-3698-610b-70d7-120972835e27"
+    },
+    "FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonActivity_ActualBinaryHttpReservesSharedTokensAndClaimsTheSameEntitlementOnce": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "9c1087a3-8deb-a72e-3c74-e4d7bbbecfc8"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.RecoveryAfterTheWindowUsesTheOriginalCompletionInstantRatherThanTheRecoveryClock": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4ee4d163-a1f9-fe38-c51f-763fbf9edb70"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.AScopedHoldCannotLoseItsContextAndFallBackToLegacyMoney": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "a379db04-311a-64fe-f297-17353afd3574"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"slot_index\", value: -1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4e4466d9-ca16-474c-406a-c790d45d9547"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"week_start_hour\", value: 24)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "ca67886a-0f93-66cc-84e3-0cd6b00449da"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"M-FIREBAT\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "79ab432c-095b-08b0-1389-7cbecf60ddb0"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityRules\", field: \"direct_red_materials\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "48b79dae-9c27-a6ad-5c0b-29de527ffa30"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.SeasonTablesMustBePublishedAsOneValidatedGroup": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "fb4e7033-d348-aa69-3f41-d54e51c0f344"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonActivityEncodingTests.HeldClaimCarriesOriginalEventAndSeasonAndPreservesExactIntegerBalance": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "e7e96b6b-3a56-6e61-81f9-04a94346069e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_level\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "d6001714-661b-5840-f595-fbf7dbc24ee8"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarkRules\", field: \"match_cap\", value: 5)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "8cb15bf4-57a6-3a21-766f-e16a582e7400"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"fire\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "bfa1e146-c8e1-8c09-53f5-e62d669b4dd8"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"archived\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "33687fd5-d2f4-b1eb-acd3-7f2f83542e8e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"tax_rate\", value: -0.01)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "aceea50c-adfa-6724-097e-e22d70dc4063"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.FourChoicesCompeteForOneBudgetAndPotionRemainsOnePerEvent": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "817d18db-c8fe-97f7-c520-417d9f4b7c21"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"room\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2a7f20d0-9b48-807e-ae44-837bc25cd79b"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"difficulty\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "747d1dfc-eecb-ee31-7d6e-31de053f42ba"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"fragments\", value: 2)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "78517df4-2951-652f-dfbc-5854b9da8ac6"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarkRules\", field: \"mark_kind\", value: \"opaque-marks\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "afa3ce9c-cc02-ff39-872c-a3b1405b5dcc"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonMarketRules\", field: \"currency\", value: \"fragments\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "557b5a1f-90aa-0532-df64-1e4004464461"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityRules\", field: \"token_cap\", value: 24)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "d4a1d92b-37eb-c462-a9ae-ba357e483f1c"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"layer_id\", value: \"unknown\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4004d8d9-46a0-b45a-9528-923584c560ad"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonEquipment\", field: \"quality_id\", value: \"red\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "acfdb1c2-70da-64a9-0723-55200b3be5da"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonCrafting\", field: \"quality_id\", value: \"Red\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "444c50ce-2c65-14cf-ab61-b358a41e70f5"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.OldSeasonPendingClaimsCreditOnlyOldFragmentsAndPermanentSoulsWithOriginalSource": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "74903366-2c99-98aa-bd03-e4551168707b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"unknown\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "34482f67-945a-c4b9-6d99-4aee0eff30cb"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"config\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "60f7636f-8b9c-fdc2-a731-d33bff68d95b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"quality_cap\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "0fed116d-0cdc-d0b6-d6f9-6bd367307fb4"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.ConcurrentAndRecreatedRepositoryCommitsCreditExactlyOnce": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "93ac76fe-8dbe-df2a-8738-3c3a8382bbf4"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.ClaimCommitFailurePreservesTheSamePendingEntitlementWithoutPartialCurrencyCredit": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "9fb8702f-f51c-b808-edf3-135cbdfdd804"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.TwoEventsNeverCombineTheirBoundBalances": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "222b9721-5f20-2e1c-d150-2faa37024420"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"layer\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "6ccdcadc-8997-e0bc-1a41-b628c506df32"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonMarketRules\", field: \"shared_slots\", value: 9)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "618dde31-312b-d6a6-9602-38dc28c5bf6a"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"stats\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "5c07541e-f8d9-366c-614e-99477a2893a4"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.AlteredCompletionTimeCannotAwardAndTheOriginalCheckpointStillRecovers": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "73894d7f-9a67-161b-0677-670f84cfc14f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"daily_limit\", value: 6)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "02916e33-efc2-bb39-3a04-7ce91a5c0dda"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"Economy\", key: \"daily-shop-refresh-limit\", field: \"int_value\", value: 5)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "94fcc4a5-9b76-d4ba-67a3-25e78d5aabfd"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLoot\", field: \"white_weight\", value: 0.70999999999999996)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "ca1d4b21-ff61-d91a-4fa9-601693e86c52"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"hero_class\", value: \"Mage\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "9adc44be-60f3-85f3-b48f-fdb8afb18129"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.TerminalRoomObservationPassesItsPinnedContextIntoSettlement": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "0301890c-8048-9e3d-6807-73dda22d2b56"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"gold\", value: 6)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "63f1b0bc-f36e-dbb2-8267-851a54a7a772"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonProgression\", field: \"xp_to_next_42\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "afb777e9-6028-09d7-5649-7ca32550ec3b"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"equipment_chance_bp\", value: 1001)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "0cc6c881-408c-968e-03eb-1ab1a1d78318"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"reforge_fragment_cost\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "b5b7712b-1ce4-ecb8-3896-6b492abb934c"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"missing\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "6cd03680-e246-c72b-45d3-d7450cbeee70"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"white_weight\", value: 51)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "686f7815-df79-9a8a-eb34-96b92b1e983f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonCrafting\", field: \"wish_attempts\", value: 4)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "7e2537b3-7b1d-14f2-b43e-ec74bce8ae35"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "320b9af1-b2f9-1ef1-fb43-e7129956a543"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.DuplicateDifficultyLayerPairsCannotHideAMissingPair": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "a6a187c1-a5ac-7fee-2134-83ac51db6462"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityExchange\", field: \"cost_tokens\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "5b5417b0-96a2-2c70-417d-dda77067ce8e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonLootPreference\", field: \"other_weight\", value: 1501)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2cd22f21-6a94-9584-1ea3-19e966eddbe1"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 5)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "b85579b0-459e-1048-6a29-adb832e054d4"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"card_id\", value: \"MAG-01\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "f92dbe72-dccb-0d6d-00ff-d9149ec6fd1f"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: NaN)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2a89186d-7970-719b-f717-1ea091b1350d"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopProducts\", field: \"amount\", value: 4)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "52d5740b-1405-bc11-d6e5-13948ab23ef4"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonBotRewards\", field: \"maximum_per_human\", value: 2)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "782ea762-6694-cc5c-a94c-f088cba4c9c9"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"cost_1\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "7bfc7b4f-64d6-6881-d94b-64cc233d4bb0"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonDifficulty\", field: \"difficulty_id\", value: \"D9\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "27b0ae6a-a88c-8da0-ca7d-0b60fbc3f9b9"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"quality\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "b38fac58-ee93-42cc-174e-fc5752eb960e"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"stats\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "241b6edf-b4f0-bc50-be14-9e21a9c12372"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "5759f320-bdbc-2d05-47e2-7e26c44810a5"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityCalendar\", field: \"days\", value: 4)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3eebcbc5-e34c-6b88-7db0-056fc440bdce"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.NonfiniteValuesCannotEnterEitherBundle(value: Infinity)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "8cf2c844-a4d6-0a84-8448-4373080a7fe7"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonRedRules\", field: \"timezone\", value: \"UTC\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "dda2dde0-92a3-c732-9639-6293c19c03ba"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"boss_chance\", value: 1.01)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "bf403533-5594-4d2d-5c4d-9b1c61f82922"
+    },
+    "FantasyCard.Server.Tests.ProtobufHttp.SeasonActivityEncodingTests.ExchangeKeepsOriginalScopeAndAccountVersionAndCannotAcceptAnAmountFromTheClient": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "92740273-0e9a-a793-a142-e09d13398fec"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonRedRules\", field: \"min_difficulty\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "cbd80bab-9f73-9351-aabc-8d67b06b8ebe"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.ActualSuccessfulExtractionCheckpointAwardsFourOnceAndStopsAtTwelve": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "508eac12-0d84-874d-7cb6-5d066d52ea63"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"ShopCardPrices\", key: \"White\", field: \"price_gold\", value: 79)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "abf5f995-4165-18a9-b60a-0686ce706d17"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidLootPreferenceDefaultsAreRejected(element: \"None\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "2b116d31-39ed-0d2f-f49a-b8be16de35a7"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityRules\", field: \"direct_gold\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "efa5314a-3740-c363-7689-9ad642bcc0aa"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonActivityExchange\", field: \"reward_kind\", value: \"red-equipment\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "c69f5959-af64-2912-b43d-3199b36de715"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonActivityRules\", field: \"tokens_per_completion\", value: 12)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "eab6c24f-ed3c-531e-b065-dff401c79726"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonEquipment\", field: \"speed_base\", value: 1)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "3fb433ec-6afb-a948-a870-2c1ace9eea09"
+    },
+    "FantasyCard.Server.Tests.Progression.EconomyReconciliationReportTests.Report_aggregates_all_violation_categories": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "4a5b9c7f-28cd-6053-5d3c-561bcb40505d"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.BorrowedTemplatesCannotPublishMissingSlotsWrongClassesOrNoncollectibleCards(field: \"template_id\", value: \"other\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "e7de64f9-d433-6a66-f47a-cb0b569ee4dc"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.APreSeasonLegacyMatchFinishesInLegacyAccountsWithoutReplacingSeasonLoadouts": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "1a69b878-484c-158a-6a65-ab7e2d71ca77"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 4)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "0737f6a2-13d3-65ea-226d-26b1e45f9995"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.OriginalCellAndPromotionProofPersistOnceWithTheFrozenSeason": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "af370f12-d812-6845-71c1-01e65169b3e8"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.ShopDependenciesMustRetainOriginalPricesLimitsAndCopyRequirements(name: \"Backpacks\", key: \"Advanced\", field: \"price_gold\", value: 799)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "43fadd5a-da47-8946-d127-8be84cca6572"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"season\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "6de58d70-3e12-3043-7940-7139d01510b1"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.UnknownSeasonReferencesAreRejected(table: \"SeasonLoot\", field: \"difficulty_id\", value: \"D9\")": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "f7de2c06-23ad-0cae-e5fa-05bea535509d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.WalletOperationProtectsReplayAndRejectsChangedHoldBusinessData": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "a10baf16-9601-b16e-7be6-5d0d8dce957e"
+    },
+    "FantasyCard.Server.Tests.Config.SeasonConfigCompilerTests.InvalidSeasonNumbersAreRejectedBeforePublishing(table: \"SeasonShopRules\", field: \"reset_hour\", value: 0)": {
+      "outcome": "Passed",
+      "source": "storage-r86",
+      "test_id": "5265407a-d3df-7957-f3dd-64665bd0e69d"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonActivityTests.OriginalEventPaginationHasNoGapsAndRejectsInvalidBounds": {
+      "outcome": "Passed",
+      "source": "storage-r87",
+      "test_id": "cbfa91c3-65d4-ef1a-d20c-3923bf53a95c"
+    }
+  }
+}

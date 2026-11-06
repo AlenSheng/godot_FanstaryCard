@@ -2,6 +2,8 @@ using System.Text.Json;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Rooms;
 using Npgsql;
@@ -93,7 +95,9 @@ public sealed record SettlementRecord(
     string Result,
     string DetailsJson,
     DateTimeOffset CreatedAt,
-    bool Created);
+    bool Created,
+    SeasonContext? Season = null,
+    string? ConfigVersion = null);
 
 public sealed record SettlementHoldRecord(
     Guid HoldId,
@@ -102,7 +106,9 @@ public sealed record SettlementHoldRecord(
     string AssetKind,
     string AssetId,
     string State,
-    string AssetSnapshot);
+    string AssetSnapshot,
+    SeasonContext? Season = null,
+    string? ConfigVersion = null);
 
 public sealed record SettlementNotification(
     Guid SettlementId,
@@ -114,8 +120,9 @@ public sealed class SettlementNotFoundException : InvalidOperationException;
 
 public sealed class SettlementNotReadyException : InvalidOperationException;
 
-public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics)
+public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider, ServerMetrics metrics, PublishedConfigCatalogs? configurations = null)
 {
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
     public async Task<IReadOnlyList<Guid>> GetTerminalRoomIdsAsync(
         IReadOnlyCollection<Guid> roomIds,
         CancellationToken cancellationToken)
@@ -162,11 +169,11 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
     public async Task<IReadOnlyList<SettlementHoldRecord>> GetPendingHoldsAsync(CancellationToken cancellationToken)
     {
         await using var command = dataSource.CreateCommand(
-            "SELECT hold_id,settlement_id,player_id,asset_kind,asset_ref,state,asset_snapshot::text FROM settlement_asset_holds WHERE state='Pending' ORDER BY created_at,hold_id");
+            "SELECT hold_id,settlement_id,player_id,asset_kind,asset_ref,state,asset_snapshot::text,config_version,season_id,difficulty_id,ruleset_id,stats_version FROM settlement_asset_holds WHERE state='Pending' ORDER BY created_at,hold_id");
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         var result = new List<SettlementHoldRecord>();
         while (await reader.ReadAsync(cancellationToken))
-            result.Add(new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6)));
+            result.Add(ReadHold(reader));
         return result;
     }
 
@@ -216,7 +223,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
     public async Task<SettlementResponse> GetAsync(Guid playerId, Guid settlementId, CancellationToken cancellationToken)
     {
         await using var command = dataSource.CreateCommand(
-            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at FROM match_settlements WHERE settlement_id=$1 AND player_id=$2");
+            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at,config_version,season_id,difficulty_id,ruleset_id,stats_version FROM match_settlements WHERE settlement_id=$1 AND player_id=$2");
         command.Parameters.AddWithValue(settlementId);
         command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
@@ -227,7 +234,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
     public async Task<SettlementResponse> GetForMatchAsync(Guid playerId, Guid matchId, CancellationToken cancellationToken)
     {
         await using var command = dataSource.CreateCommand(
-            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at FROM match_settlements WHERE match_id=$1 AND player_id=$2");
+            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at,config_version,season_id,difficulty_id,ruleset_id,stats_version FROM match_settlements WHERE match_id=$1 AND player_id=$2");
         command.Parameters.AddWithValue(matchId);
         command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
@@ -301,7 +308,9 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         string result,
         JsonElement details,
         IReadOnlyList<SettlementAsset> assets,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        SeasonContext? season = null,
+        string? configVersion = null)
     {
         if (matchId == Guid.Empty || playerId == Guid.Empty) throw new ArgumentException("Match and player are required.");
         if (result is not ("Extracted" or "Dead" or "Aborted")) throw new ArgumentException("Unknown settlement result.", nameof(result));
@@ -309,6 +318,17 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
 
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        var context = await ReadMatchContextAsync(connection, transaction, matchId, cancellationToken);
+        RequireStoredContext(season, configVersion, context);
+        // Activity awards and claims use the same account-first lock order.
+        await using(var account=new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE",connection,transaction))
+        {account.Parameters.AddWithValue(playerId);if(await account.ExecuteScalarAsync(cancellationToken) is null)throw new InvalidOperationException("The settlement account is missing.");}
+        await ValidateBlueprintAssetsAsync(connection, transaction, context, playerId, result, assets, cancellationToken);
+        if (context.Season is not null && context.Status is not ("Running" or "Completed"))
+            throw new InvalidOperationException("Only an admitted running match can settle seasonal assets.");
+        if (details.ValueKind == JsonValueKind.Object && details.TryGetProperty("roomId", out var sourceRoom) &&
+            (!sourceRoom.TryGetGuid(out var roomId) || roomId != context.RoomId))
+            throw new InvalidOperationException("The settlement source room differs from its match.");
         Guid? existingId;
         await using (var lockPlayer = new NpgsqlCommand(
             "SELECT settlement_id FROM match_players WHERE match_id=$1 AND player_id=$2 FOR UPDATE", connection, transaction))
@@ -322,6 +342,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         if (existingId is { } id)
         {
             var replay = await ReadAsync(connection, transaction, id, cancellationToken);
+            RequireStoredContext(replay.Season, replay.ConfigVersion, context);
             await transaction.CommitAsync(cancellationToken);
             metrics.SettlementIdempotencyHit();
             return replay;
@@ -331,7 +352,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         var createdAt = timeProvider.GetUtcNow();
         var detailsJson = details.GetRawText();
         await using (var insert = new NpgsqlCommand(
-            "INSERT INTO match_settlements(settlement_id,match_id,player_id,result,details_json,created_at) VALUES($1,$2,$3,$4,$5,$6)", connection, transaction))
+            "INSERT INTO match_settlements(settlement_id,match_id,player_id,result,details_json,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)", connection, transaction))
         {
             insert.Parameters.AddWithValue(settlementId);
             insert.Parameters.AddWithValue(matchId);
@@ -339,12 +360,16 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             insert.Parameters.AddWithValue(result);
             insert.Parameters.Add(new NpgsqlParameter { NpgsqlDbType = NpgsqlDbType.Jsonb, Value = detailsJson });
             insert.Parameters.AddWithValue(createdAt);
+            AddContextParameters(insert, context);
             await insert.ExecuteNonQueryAsync(cancellationToken);
         }
+        await CreditDifficultyProgressAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
+        await CreditActivityCompletionAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
+        await CreditJourneyAsync(connection,transaction,context,playerId,settlementId,result,details,createdAt,cancellationToken);
         foreach (var asset in assets)
         {
             await using var hold = new NpgsqlCommand(
-                "INSERT INTO settlement_asset_holds(hold_id,settlement_id,player_id,asset_kind,asset_ref,asset_snapshot,state,created_at) VALUES($1,$2,$3,$4,$5,$6,'Pending',$7)", connection, transaction);
+                "INSERT INTO settlement_asset_holds(hold_id,settlement_id,player_id,asset_kind,asset_ref,asset_snapshot,state,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version) VALUES($1,$2,$3,$4,$5,$6,'Pending',$7,$8,$9,$10,$11,$12)", connection, transaction);
             hold.Parameters.AddWithValue(Guid.CreateVersion7());
             hold.Parameters.AddWithValue(settlementId);
             hold.Parameters.AddWithValue(playerId);
@@ -352,6 +377,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             hold.Parameters.AddWithValue(asset.AssetId);
             hold.Parameters.Add(new NpgsqlParameter { NpgsqlDbType = NpgsqlDbType.Jsonb, Value = JsonSerializer.Serialize(asset) });
             hold.Parameters.AddWithValue(createdAt);
+            AddContextParameters(hold, context);
             await hold.ExecuteNonQueryAsync(cancellationToken);
         }
         await using (var outbox = new NpgsqlCommand(
@@ -390,22 +416,26 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         }
         await transaction.CommitAsync(cancellationToken);
         metrics.SettlementCreated();
-        return new SettlementRecord(settlementId, matchId, playerId, result, detailsJson, createdAt, true);
+        return new SettlementRecord(settlementId, matchId, playerId, result, detailsJson, createdAt, true, context.Season, context.ConfigVersion);
     }
 
     private static async Task<SettlementRecord> ReadAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, Guid settlementId, CancellationToken cancellationToken)
     {
         await using var command = new NpgsqlCommand(
-            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at FROM match_settlements WHERE settlement_id=$1", connection, transaction);
+            "SELECT settlement_id,match_id,player_id,result,details_json::text,created_at,config_version,season_id,difficulty_id,ruleset_id,stats_version FROM match_settlements WHERE settlement_id=$1", connection, transaction);
         command.Parameters.AddWithValue(settlementId);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         if (!await reader.ReadAsync(cancellationToken)) throw new InvalidOperationException("The settlement record is missing.");
-        return new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3), reader.GetString(4), reader.GetFieldValue<DateTimeOffset>(5), false);
+        return new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3), reader.GetString(4), reader.GetFieldValue<DateTimeOffset>(5), false, ReadSeason(reader, 6), reader.IsDBNull(6) ? null : reader.GetString(6));
     }
 
-    private static SettlementResponse ReadResponse(NpgsqlDataReader reader) =>
+    internal static SettlementResponse ReadResponse(NpgsqlDataReader reader) =>
         new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3),
-            JsonDocument.Parse(reader.GetString(4)).RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5));
+            JsonDocument.Parse(reader.GetString(4)).RootElement.Clone(), reader.GetFieldValue<DateTimeOffset>(5), ToResponse(ReadSeason(reader, 6)));
+
+    private static SettlementHoldRecord ReadHold(NpgsqlDataReader reader) =>
+        new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3), reader.GetString(4), reader.GetString(5),
+            reader.GetString(6), ReadSeason(reader, 7), reader.IsDBNull(7) ? null : reader.GetString(7));
 
     private async Task<int> TransitionHoldsAsync(Guid settlementId, string state, CancellationToken cancellationToken)
     {
@@ -414,12 +444,12 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var holds = new List<SettlementHoldRecord>();
         await using (var select = new NpgsqlCommand(
-            "SELECT hold_id,settlement_id,player_id,asset_kind,asset_ref,state,asset_snapshot::text FROM settlement_asset_holds WHERE settlement_id=$1 AND state='Pending' FOR UPDATE", connection, transaction))
+            "SELECT hold_id,settlement_id,player_id,asset_kind,asset_ref,state,asset_snapshot::text,config_version,season_id,difficulty_id,ruleset_id,stats_version FROM settlement_asset_holds WHERE settlement_id=$1 AND state='Pending' ORDER BY hold_id FOR UPDATE", connection, transaction))
         {
             select.Parameters.AddWithValue(settlementId);
             await using var reader = await select.ExecuteReaderAsync(cancellationToken);
             while (await reader.ReadAsync(cancellationToken))
-                holds.Add(new(reader.GetGuid(0), reader.GetGuid(1), reader.GetGuid(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetString(6)));
+                holds.Add(ReadHold(reader));
         }
         if (state == "Committed")
         {
@@ -431,10 +461,17 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                 if (await playerLock.ExecuteScalarAsync(cancellationToken) is null)
                     throw new InvalidOperationException("The settlement player is missing.");
             }
-            foreach (var hold in holds)
-                await ApplyCommittedAssetAsync(connection, transaction, hold, cancellationToken);
             if (holds.Count > 0)
-                await RestoreExtractionLoadoutAsync(connection, transaction, settlementId, holds, cancellationToken);
+            {
+                var realm = await ReadCommitRealmAsync(connection, transaction, settlementId, cancellationToken);
+                foreach (var hold in holds)
+                {
+                    if (hold.PlayerId != realm.PlayerId) throw new InvalidOperationException("The hold belongs to another settlement player.");
+                    RequireStoredContext(hold.Season, hold.ConfigVersion, realm.Context);
+                    await ApplyCommittedAssetAsync(connection, transaction, hold, realm, cancellationToken);
+                }
+                if (realm.RestoreLoadout) await RestoreExtractionLoadoutAsync(connection, transaction, settlementId, holds, cancellationToken);
+            }
         }
         var count = 0;
         foreach (var hold in holds)
@@ -449,17 +486,25 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         return count;
     }
 
-    private static async Task ApplyCommittedAssetAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, SettlementHoldRecord hold, CancellationToken cancellationToken)
+    private async Task ApplyCommittedAssetAsync(NpgsqlConnection connection, NpgsqlTransaction transaction, SettlementHoldRecord hold, CommitRealm realm, CancellationToken cancellationToken)
     {
         var asset = JsonSerializer.Deserialize<SettlementAsset>(hold.AssetSnapshot)
             ?? throw new InvalidOperationException("Settlement asset snapshot is invalid.");
         if (asset.Quantity <= 0) throw new InvalidOperationException("Settlement asset quantity is invalid.");
+        if (asset.AssetKind != hold.AssetKind || asset.AssetId != hold.AssetId)
+            throw new InvalidOperationException("Settlement hold and asset snapshot identities differ.");
+        if (IsBlueprintAsset(asset))
+        {
+            await CreditBlueprintAssetAsync(connection, transaction, hold, realm, asset, cancellationToken);
+            return;
+        }
         if (asset.AssetKind == "Equipment")
         {
             if (!Guid.TryParse(asset.AssetId, out var equipmentId)) throw new InvalidOperationException("Equipment asset id is invalid.");
             var destination = asset.Destination ?? "Inventory";
             if (destination is not ("Inventory" or "Equipped" or "RelicPile" or "Recycled"))
                 throw new InvalidOperationException("Equipment settlement destination is invalid.");
+            if (!realm.RestoreLoadout && destination == "Equipped") destination = "Inventory";
             // A looter may finish before the victim's worker; commit the earlier custody transfer first.
             await using (var predecessor = new NpgsqlCommand(
                 """
@@ -478,14 +523,20 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             }
             if (asset.Equipment is { } generated)
             {
+                if(generated.Quality=="Red")throw new InvalidOperationException("Red equipment must already be minted by the dedicated weekly quota transaction.");
                 if (!EquipmentRewardRules.IsValid(generated))
                     throw new InvalidOperationException("Generated equipment attributes are invalid.");
+                if(realm.Context.Season is { } originalSeason)
+                    SeasonLootRules.RequireOrigin(generated,originalSeason,_configurations.Resolve(realm.Context.ConfigVersion));
+                if(generated.SeasonOrigin?.Source=="BotVictory")
+                    await RequireBotVictoryProofAsync(connection,transaction,realm,asset.AssetId,generated,cancellationToken);
                 await using var create = new NpgsqlCommand(
                     """
                     INSERT INTO equipments(
                         instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,
-                        element,effect_affix,secondary_trait)
-                    VALUES($1,$2,$3,$4,$9,$10,$5,1,CURRENT_TIMESTAMP,$6,$7,$8)
+                        element,effect_affix,secondary_trait,origin_season_id,season_id,asset_scope,source_match_id,
+                        generated_difficulty,stats_version,source_kind,loot_rule_id,source_loot_json,unique_affix,unique_element)
+                    VALUES($1,$2,$3,$4,$9,$10,$5,1,CURRENT_TIMESTAMP,$6,$7,$8,$11,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20)
                     ON CONFLICT (instance_id) DO NOTHING
                     """, connection, transaction);
                 create.Parameters.AddWithValue(equipmentId);
@@ -495,20 +546,32 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                 create.Parameters.AddWithValue(destination);
                 create.Parameters.AddWithValue(generated.Element);
                 create.Parameters.AddWithValue(generated.EffectAffix ?? (object)DBNull.Value);
-                create.Parameters.AddWithValue(generated.SecondaryTrait);
+                create.Parameters.AddWithValue(generated.SecondaryTrait
+                    ?? throw new DomainValidationException("Generated equipment requires an explicit secondary trait."));
                 create.Parameters.AddWithValue(generated.Level);
                 create.Parameters.AddWithValue(generated.IsBound);
+                var season = realm.Context.Season;
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.SeasonId ?? DBNull.Value);
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, season is null ? DBNull.Value : realm.Active ? "ActiveSeason" : "ArchivedSeason");
+                create.Parameters.AddWithValue(NpgsqlDbType.Uuid, season is null ? DBNull.Value : realm.Context.MatchId);
+                create.Parameters.AddWithValue(NpgsqlDbType.Smallint, season is null ? DBNull.Value : (short)season.Difficulty);
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)season?.StatsVersion ?? DBNull.Value);
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar, season is null ? DBNull.Value : generated.SeasonOrigin?.Source is "BotBudget" or "BotVictory" ? "BotReward" : "NaturalDrop");
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.SeasonOrigin?.LootRuleId??DBNull.Value);
+                create.Parameters.AddWithValue(NpgsqlDbType.Jsonb,generated.SeasonOrigin is null?DBNull.Value:JsonSerializer.Serialize(generated.SeasonOrigin));
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.UniqueAffix??DBNull.Value);
+                create.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)generated.UniqueElement??DBNull.Value);
                 if (await create.ExecuteNonQueryAsync(cancellationToken) == 1)
                 {
                     await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
-                        "MatchReward", destination, EquipmentSettlementReason(destination), cancellationToken);
+                        "MatchReward", destination, EquipmentSettlementReason(destination), realm, hold.HoldId, cancellationToken);
                     return;
                 }
             }
             Guid previousOwner;
             string source;
             await using (var select = new NpgsqlCommand(
-                "SELECT owner_id,location,slot,quality,level,is_bound,element,effect_affix,secondary_trait FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
+                "SELECT owner_id,location,slot,quality,level,is_bound,element,effect_affix,secondary_trait,season_id,stats_version,asset_scope,source_loot_json::text,unique_affix,unique_element FROM equipments WHERE instance_id=$1 FOR UPDATE", connection, transaction))
             {
                 select.Parameters.AddWithValue(equipmentId);
                 await using var reader = await select.ExecuteReaderAsync(cancellationToken);
@@ -516,12 +579,20 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
                     throw new InvalidOperationException("The settlement equipment is missing.");
                 previousOwner = reader.GetGuid(0);
                 source = reader.GetString(1);
+                var sameRealm = realm.Context.Season is { } itemSeason
+                    ? !reader.IsDBNull(9) && reader.GetString(9) == itemSeason.SeasonId &&
+                      !reader.IsDBNull(10) && reader.GetString(10) == itemSeason.StatsVersion &&
+                      !reader.IsDBNull(11) && (reader.GetString(11) == "ActiveSeason" || !realm.Active && reader.GetString(11) == "ArchivedSeason")
+                    : reader.IsDBNull(9) && reader.IsDBNull(11);
+                if (!sameRealm) throw new InvalidOperationException("The settlement equipment belongs to another asset domain or stats version.");
                 if (asset.Equipment is { } expected &&
                     (reader.GetString(2) != expected.Slot || reader.GetString(3) != expected.Quality ||
                      reader.GetInt32(4) != expected.Level || reader.GetBoolean(5) != expected.IsBound ||
                      reader.GetString(6) != expected.Element ||
                      (reader.IsDBNull(7) ? null : reader.GetString(7)) != expected.EffectAffix ||
-                     (reader.IsDBNull(8) ? null : reader.GetString(8)) != expected.SecondaryTrait))
+                     (reader.IsDBNull(8) ? null : reader.GetString(8)) != expected.SecondaryTrait ||
+                     (reader.IsDBNull(12) ? null : JsonSerializer.Deserialize<SeasonEquipmentOrigin>(reader.GetString(12))) != expected.SeasonOrigin ||
+                     (reader.IsDBNull(13)?null:reader.GetString(13))!=expected.UniqueAffix || (reader.IsDBNull(14)?null:reader.GetString(14))!=expected.UniqueElement))
                     throw new InvalidOperationException("The existing equipment does not match its reward snapshot.");
             }
             if (source is not ("InMatchBackpack" or "InMatchEquipped" or "RelicPile"))
@@ -538,21 +609,27 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
             if (source != "RelicPile" && previousOwner != hold.PlayerId)
                 throw new InvalidOperationException("The settlement equipment belongs to another player.");
             await using (var equipment = new NpgsqlCommand(
-                "UPDATE equipments SET owner_id=$1,location=$2,version=version+1 WHERE instance_id=$3", connection, transaction))
+                "UPDATE equipments SET owner_id=$1,location=$2,version=version+1,asset_scope=CASE WHEN season_id IS NULL THEN asset_scope ELSE $4 END WHERE instance_id=$3", connection, transaction))
             {
                 equipment.Parameters.AddWithValue(hold.PlayerId);
                 equipment.Parameters.AddWithValue(destination);
                 equipment.Parameters.AddWithValue(equipmentId);
+                equipment.Parameters.AddWithValue(realm.Active ? "ActiveSeason" : "ArchivedSeason");
                 await equipment.ExecuteNonQueryAsync(cancellationToken);
             }
             if (destination != "Equipped" || previousOwner != hold.PlayerId)
                 await RemoveEquipmentFromLoadoutsAsync(connection, transaction, previousOwner, equipmentId, cancellationToken);
             await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
-                source, destination, EquipmentSettlementReason(destination), cancellationToken);
+                source, destination, EquipmentSettlementReason(destination), realm, hold.HoldId, cancellationToken,previousOwner);
             return;
         }
         if (asset.AssetKind == "Gold")
         {
+            if (realm.Context.Season is not null)
+            {
+                await CreditSeasonWalletAsync(connection, transaction, hold, realm, asset.Quantity, 0, cancellationToken);
+                return;
+            }
             await using var wallet = new NpgsqlCommand("UPDATE player_wallets SET gold=gold+$1,version=version+1 WHERE player_id=$2 RETURNING gold", connection, transaction);
             wallet.Parameters.AddWithValue(asset.Quantity);
             wallet.Parameters.AddWithValue(hold.PlayerId);
@@ -565,6 +642,11 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         var materialColumn = SettlementMaterialMapping.GetColumn(asset);
         if (materialColumn is not null)
         {
+            if (materialColumn == "equipment_fragments" && realm.Context.Season is not null)
+            {
+                await CreditSeasonWalletAsync(connection, transaction, hold, realm, 0, asset.Quantity, cancellationToken);
+                return;
+            }
             await using var materials = new NpgsqlCommand($"UPDATE player_materials SET {materialColumn}={materialColumn}+$1,version=version+1 WHERE player_id=$2 RETURNING {materialColumn}", connection, transaction);
             materials.Parameters.AddWithValue(asset.Quantity);
             materials.Parameters.AddWithValue(hold.PlayerId);
@@ -702,10 +784,16 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         string fromLocation,
         string toLocation,
         string reason,
-        CancellationToken cancellationToken)
+        CommitRealm realm,
+        Guid holdId,
+        CancellationToken cancellationToken,Guid? fromOwner=null)
     {
         await using var movement = new NpgsqlCommand(
-            "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,created_at) VALUES($1,$2,$3,$4,$5,$6,CURRENT_TIMESTAMP)",
+            """
+            INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,created_at,
+                season_id,difficulty_id,ruleset_id,config_version,stats_version,request_id,from_owner_id,to_owner_id)
+            SELECT $1,$2,$3,$4,$5,$6,CURRENT_TIMESTAMP,$7,$8,$9,$10,$11,$12,$13,$2 FROM equipments WHERE instance_id=$3 AND owner_id=$2
+            """,
             connection,
             transaction);
         movement.Parameters.AddWithValue(Guid.CreateVersion7());
@@ -714,6 +802,9 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         movement.Parameters.AddWithValue(fromLocation);
         movement.Parameters.AddWithValue(toLocation);
         movement.Parameters.AddWithValue(reason);
+        AddContextParameters(movement, realm.Context);
+        movement.Parameters.AddWithValue(holdId.ToString("D"));
+        movement.Parameters.AddWithValue(NpgsqlDbType.Uuid,(object?)fromOwner??DBNull.Value);
         await movement.ExecuteNonQueryAsync(cancellationToken);
     }
 
@@ -727,7 +818,7 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         CancellationToken cancellationToken)
     {
         await using var ledger = new NpgsqlCommand(
-            "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at) VALUES($1,$2,$3,$4,$5,$6,'settlement.commit',CURRENT_TIMESTAMP)",
+            "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version) VALUES($1,$2,$3,$4,$5,$6,'settlement.commit',CURRENT_TIMESTAMP,$7,'MatchSettlement',$8,$9,$10,$11)",
             connection,
             transaction);
         ledger.Parameters.AddWithValue(Guid.CreateVersion7());
@@ -736,6 +827,11 @@ public sealed class SettlementRepository(NpgsqlDataSource dataSource, TimeProvid
         ledger.Parameters.AddWithValue(currency);
         ledger.Parameters.AddWithValue(delta);
         ledger.Parameters.AddWithValue(balanceAfter);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)hold.Season?.SeasonId ?? DBNull.Value);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)hold.Season?.DifficultyId ?? DBNull.Value);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)hold.Season?.RulesetId ?? DBNull.Value);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)hold.ConfigVersion ?? DBNull.Value);
+        ledger.Parameters.AddWithValue(NpgsqlDbType.Varchar, (object?)hold.Season?.StatsVersion ?? DBNull.Value);
         await ledger.ExecuteNonQueryAsync(cancellationToken);
     }
 }

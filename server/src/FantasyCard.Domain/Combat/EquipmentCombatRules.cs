@@ -1,5 +1,6 @@
 using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
+using System.Text.Json.Serialization;
 
 namespace FantasyCard.Domain.Combat;
 
@@ -56,7 +57,14 @@ public sealed record CombatEquipmentProfile(
     double VitalityOvercapBonus = 0,
     double DrawIntervalModifier = 0,
     double ForcedEscapeBonus = 0,
-    bool HasRapidDraw = false)
+    bool HasRapidDraw = false,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? StatsVersion = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] double? MinimumDrawInterval = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] double? MaximumDrawInterval = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int ChainDrawBasisPoints = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int OpeningDrawCount = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] double GoldenCicadaBonus = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] ElementalEquipmentModifiers? RawElements = null)
 {
     public static CombatEquipmentProfile Empty { get; } = new(new ElementalEquipmentModifiers());
 
@@ -68,11 +76,14 @@ public static class EquipmentCombatRules
 {
     private static readonly string[] Slots = ["Head", "Chest", "Hands", "Legs", "Feet"];
 
-    public static CombatEquipmentProfile Calculate(IReadOnlyList<CombatEquipmentItem>? items)
+    public static CombatEquipmentProfile Calculate(IReadOnlyList<CombatEquipmentItem>? items, GameConfigCatalog? configuration = null,string? statsVersion = null)
     {
+        var catalog = configuration ?? GameConfigCatalog.Current;
+        var policy=statsVersion is null ? null : catalog.ResolveSeasonEquipment(statsVersion);
         if (items is null || items.Count == 0)
         {
-            return CombatEquipmentProfile.Empty;
+            return policy is null?CombatEquipmentProfile.Empty:CombatEquipmentProfile.Empty with
+                {StatsVersion=policy.StatsVersion,MinimumDrawInterval=policy.DrawFloorSeconds,MaximumDrawInterval=policy.DrawCeilingSeconds,RawElements=new()};
         }
         if (items.Count > 5 || items.Select(item => item.ItemId).Distinct().Count() != items.Count ||
             items.Select(item => item.Slot).Distinct(StringComparer.Ordinal).Count() != items.Count ||
@@ -86,13 +97,19 @@ public static class EquipmentCombatRules
         var drawModifier = 0d;
         var forcedEscape = 0d;
         var hasRapidDraw = false;
+        var chainDraw=0;var openingDraw=0;var goldenCicada=0d;
         foreach (var item in items)
         {
-            Validate(item);
-            var quality = Quality(item.Quality);
+            Validate(item, catalog);
+            if(policy is not null && item.UniqueAffix is not null && (item.Quality!="Red" ||
+                item.UniqueAffix is not ("Inferno" or "RapidDraw" or "ChainDraw" or "Scavenge" or "GoldenCicada") ||
+                item.UniqueAffix=="GoldenCicada" && item.Slot!="Feet" ||
+                item.UniqueAffix=="Inferno" && item.UniqueElement is { } unique && unique!=item.Element))
+                throw new DomainValidationException("The seasonal unique affix is not valid for its item or main element.");
+            var quality = catalog.EquipmentQuality(item.Quality,statsVersion);
             Add(damage, item.Element, quality.Damage + item.Level * quality.DamagePerLevel);
             Add(resistance, item.Element, quality.Resistance + item.Level * quality.ResistancePerLevel);
-            if (string.Equals(item.SecondaryTrait, "DrawInterval", StringComparison.Ordinal) || item.Quality == "Red")
+            if (string.Equals(item.SecondaryTrait, "DrawInterval", StringComparison.Ordinal) || policy is null && item.Quality == "Red")
             {
                 drawModifier += quality.DrawInterval + item.Level * quality.DrawIntervalPerLevel;
             }
@@ -102,27 +119,33 @@ public static class EquipmentCombatRules
             }
             if (string.Equals(item.UniqueAffix, "RapidDraw", StringComparison.Ordinal))
             {
-                drawModifier -= 0.25;
+                drawModifier -= policy?.RapidDrawReduction ?? 0.25;
                 hasRapidDraw = true;
             }
             if (string.Equals(item.UniqueAffix, "Inferno", StringComparison.Ordinal))
             {
-                Add(damage, item.UniqueElement ?? item.Element, 0.35);
+                Add(damage, policy is null?item.UniqueElement??item.Element:item.Element, policy?.InfernoBonus??0.35);
             }
+            if(policy is not null && item.UniqueAffix=="ChainDraw")chainDraw=policy.ChainDrawBasisPoints;
+            if(policy is not null && item.UniqueAffix=="Scavenge")openingDraw=policy.OpeningDrawCount;
+            if(policy is not null && item.UniqueAffix=="GoldenCicada")goldenCicada=policy.GoldenCicadaBonus;
         }
 
-        var piercing = Affix(items, "Piercing", value => value.Piercing, value => value.PiercingCap);
-        var bulwarkReduction = Affix(items, "Bulwark", value => value.BulwarkReduction, value => value.BulwarkReductionCap);
-        var bulwarkShield = Affix(items, "Bulwark", value => value.BulwarkShield, value => value.BulwarkShieldCap);
-        var vitalityHeal = Affix(items, "Vitality", value => value.VitalityHeal, _ => 0.50);
-        var vitalityOvercap = Affix(items, "Vitality", value => value.VitalityOvercap, _ => 0.40);
+        var piercing = Affix(items, "Piercing", value => value.Piercing, value => value.PiercingCap, catalog,statsVersion);
+        var bulwarkReduction = Affix(items, "Bulwark", value => value.BulwarkReduction, value => value.BulwarkReductionCap, catalog,statsVersion);
+        var bulwarkShield = Affix(items, "Bulwark", value => value.BulwarkShield, value => value.BulwarkShieldCap, catalog,statsVersion);
+        var vitalityHeal = Affix(items, "Vitality", value => value.VitalityHeal, _ => 0.50, catalog,statsVersion);
+        var vitalityOvercap = Affix(items, "Vitality", value => value.VitalityOvercap, _ => 0.40, catalog,statsVersion);
+        var cap=policy?.ResistanceCap??.6;
+        var raw=new ElementalEquipmentModifiers(Get(damage,CardElement.Fire),Get(damage,CardElement.Wood),Get(damage,CardElement.Earth),Get(damage,CardElement.Metal),Get(damage,CardElement.Water),
+            Get(resistance,CardElement.Fire),Get(resistance,CardElement.Wood),Get(resistance,CardElement.Earth),Get(resistance,CardElement.Metal),Get(resistance,CardElement.Water));
         return new CombatEquipmentProfile(
             new ElementalEquipmentModifiers(
                 Get(damage, CardElement.Fire), Get(damage, CardElement.Wood), Get(damage, CardElement.Earth),
                 Get(damage, CardElement.Metal), Get(damage, CardElement.Water),
-                Math.Min(0.60, Get(resistance, CardElement.Fire)), Math.Min(0.60, Get(resistance, CardElement.Wood)),
-                Math.Min(0.60, Get(resistance, CardElement.Earth)), Math.Min(0.60, Get(resistance, CardElement.Metal)),
-                Math.Min(0.60, Get(resistance, CardElement.Water))),
+                Math.Min(cap, Get(resistance, CardElement.Fire)), Math.Min(cap, Get(resistance, CardElement.Wood)),
+                Math.Min(cap, Get(resistance, CardElement.Earth)), Math.Min(cap, Get(resistance, CardElement.Metal)),
+                Math.Min(cap, Get(resistance, CardElement.Water))),
             piercing,
             bulwarkReduction,
             bulwarkShield,
@@ -130,14 +153,16 @@ public static class EquipmentCombatRules
             vitalityOvercap,
             drawModifier,
             forcedEscape,
-            hasRapidDraw);
+            hasRapidDraw,policy?.StatsVersion,policy is null?null:hasRapidDraw?policy.RapidDrawFloorSeconds:policy.DrawFloorSeconds,
+            policy?.DrawCeilingSeconds,chainDraw,openingDraw,goldenCicada,policy is null?null:raw);
     }
 
     private static double Affix(
         IReadOnlyList<CombatEquipmentItem> items,
         string affix,
         Func<EquipmentQualityConfig, double> contribution,
-        Func<EquipmentQualityConfig, double> cap)
+        Func<EquipmentQualityConfig, double> cap,
+        GameConfigCatalog catalog,string? statsVersion)
     {
         var matching = items.Where(item => string.Equals(item.EffectAffix, affix, StringComparison.Ordinal)).ToArray();
         var hasOrangeOrRed = matching.Any(item => item.Quality is "Orange" or "Red");
@@ -148,21 +173,21 @@ public static class EquipmentCombatRules
         var multiplier = matching.Length switch { 2 or 3 => 1.35, 4 => 1.55, _ => 1.80 };
         var sum = matching.Sum(item =>
         {
-            var values = Quality(item.Quality);
+            var values = catalog.EquipmentQuality(item.Quality,statsVersion);
             return contribution(values) + item.Level * values.AffixPerLevel;
         });
-        var strongest = matching.Select(item => Quality(item.Quality)).OrderByDescending(value => value.Rank).First();
+        var strongest = matching.Select(item => catalog.EquipmentQuality(item.Quality,statsVersion)).OrderByDescending(value => value.Rank).First();
         return Math.Min(cap(strongest), Math.Floor(sum * 100 * multiplier) / 100);
     }
 
-    private static void Validate(CombatEquipmentItem item)
+    private static void Validate(CombatEquipmentItem item, GameConfigCatalog catalog)
     {
         if (item.ItemId == Guid.Empty || !Slots.Contains(item.Slot, StringComparer.Ordinal) || item.Level is < 0 or > 5 ||
             item.Element == CardElement.None || !Enum.IsDefined(item.Element))
         {
             throw new DomainValidationException("Equipment combat attributes are invalid.");
         }
-        _ = Quality(item.Quality);
+        _ = catalog.EquipmentQuality(item.Quality);
         if (item.EffectAffix is not (null or "Piercing" or "Bulwark" or "Vitality") ||
             item.SecondaryTrait is not (null or "DrawInterval" or "ForcedEscape") ||
             item.SecondaryTrait == "ForcedEscape" && item.Slot != "Feet" ||
@@ -171,9 +196,6 @@ public static class EquipmentCombatRules
             throw new DomainValidationException("Equipment affixes are invalid for its slot or quality.");
         }
     }
-
-    private static EquipmentQualityConfig Quality(string quality) =>
-        GameConfigCatalog.Current.EquipmentQuality(quality);
 
     private static void Add(Dictionary<CardElement, double> values, CardElement element, double value) =>
         values[element] = Get(values, element) + value;

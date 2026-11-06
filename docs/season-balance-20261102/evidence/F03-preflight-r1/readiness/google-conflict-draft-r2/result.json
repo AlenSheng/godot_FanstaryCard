@@ -1,0 +1,219 @@
+{
+  "at_utc": "2026-11-06T17:49:43.198340+00:00",
+  "goal_sha": "fe8ec4261dc98800675b00227297e551b978a140",
+  "google_sha": "fdd47a1f2de6348bd55525d06b9aaebdfd07bb25",
+  "merge_base": "15198cb510ba114b8cd7acfe7d056f998728da8e",
+  "auto_merge_tree": "d829823f724fe8860f2aa0157a24244114f849d9",
+  "resolved_conflict_files": {
+    "client/data/http_endpoints.json": {
+      "sha256": "9f1e578d50201e3485a5d672beb0cd40a0c3868d928d9e3e166acb7484deed1a",
+      "size": 19613
+    },
+    "client/data/http_schema.json": {
+      "sha256": "0a0b96c53cbbdf6bd5ea9d488c409d443d0f2cf9ec9d358166999d307707bb51",
+      "size": 97603
+    },
+    "client/data/locales/ar.json": {
+      "sha256": "d6b4fbf83dc3570b5e8bac717027144d5dea3e0bd648be4eca1b2fa9d157ca6b",
+      "size": 98789
+    },
+    "client/data/locales/en.json": {
+      "sha256": "3d529da37352bfbd1ccf9539b91f01b01afde3e279ecef4c2ba0a95078e9a7fc",
+      "size": 108162
+    },
+    "client/data/locales/es.json": {
+      "sha256": "27d7e4f49dfbb0e80d128cc9784816c29d7e17a02f374bca6e803c3ce96498a7",
+      "size": 81808
+    },
+    "client/data/locales/fr.json": {
+      "sha256": "578c081f0c1489e096749d66705d2371793918bc65210afa86741aef31cfc6b5",
+      "size": 86318
+    },
+    "client/data/locales/hi.json": {
+      "sha256": "13b57be62f6c1873b089e3224f561fc4f61efe0c1741f71d39ea1a243c2bbcf8",
+      "size": 130765
+    },
+    "client/data/locales/id.json": {
+      "sha256": "18037a5a7220e16738eaf182f36d04e1e0869b5a998e32dcadb617e0edc24a98",
+      "size": 80393
+    },
+    "client/data/locales/ja.json": {
+      "sha256": "e76ce95f409e94e935d9fef111fdfbab26019543baaab9e93e120e6df32a42d0",
+      "size": 82399
+    },
+    "client/data/locales/ko.json": {
+      "sha256": "3425e14c2763ac7b4a04f094d8e7bdc5889a90856607d55d0ff23ee7a29aff54",
+      "size": 84528
+    },
+    "client/data/locales/pt.json": {
+      "sha256": "f3e149b18bac8ce07ccc5bc60f501f8d359dcc375cb5707930d6e808c311eb12",
+      "size": 84535
+    },
+    "client/data/locales/ru.json": {
+      "sha256": "d6febfc373c39f4c784f6a2be92b9b94bfcbb027eaa437d917a171fd5519eea8",
+      "size": 113292
+    },
+    "client/data/locales/zh-CN.json": {
+      "sha256": "370f2f5a11ae401d20c614176c9d1ac58a2e8a83800664202d6b75ccc4fcf0e9",
+      "size": 99051
+    },
+    "protocol/http/v1/endpoints.json": {
+      "sha256": "367c42f529b84347c9cfe911a32589a2d20f2e2be770112f1e44602e74811b1f",
+      "size": 19038
+    },
+    "protocol/http/v1/game.proto": {
+      "sha256": "3ded58800705fa2c70ba23891f350023159b4c9ba173f41ecb7b491aa0c4a4aa",
+      "size": 24379
+    },
+    "tools/validate_ui_hidden.py": {
+      "sha256": "d0e9fdda8fe27563d7eaa8801e0562571bb9cdd60b4da2eb8221b3eb5fdfe173",
+      "size": 17671
+    }
+  },
+  "unresolved_scalar_JSON_conflicts": [],
+  "parent_contract_preservation": {
+    "goal": {
+      "messages_preserved": 112,
+      "exact_fields_preserved": 660
+    },
+    "google": {
+      "messages_preserved": 64,
+      "exact_fields_preserved": 305
+    }
+  },
+  "added_google_routes": [
+    [
+      "POST",
+      "/api/v1/auth/google"
+    ],
+    [
+      "POST",
+      "/api/v1/auth/ws-ticket"
+    ],
+    [
+      "POST",
+      "/api/v1/account-deletion"
+    ],
+    [
+      "GET",
+      "/api/v1/account-deletion"
+    ],
+    [
+      "DELETE",
+      "/api/v1/account-deletion"
+    ]
+  ],
+  "source_proto_messages_appended": 2,
+  "canonical_generator_check_passed": true,
+  "locale_changed_or_new_values_both_parents_preserved": true,
+  "locale_preservation": [
+    {
+      "path": "client/data/locales/ar.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/en.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/es.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/fr.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/hi.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/id.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/ja.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/ko.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/pt.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/ru.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    },
+    {
+      "path": "client/data/locales/zh-CN.json",
+      "google_changed_or_new_values_preserved": 14,
+      "goal_changed_or_new_values_preserved": 295,
+      "inherited_target_values_replaced_by_goal_updates": [
+        "nav_market",
+        "hall_entry_market"
+      ]
+    }
+  ],
+  "UI_validation_flags_both_parents_preserved": true,
+  "memory_reserve_GiB": 2,
+  "startup_budget_GiB": 1,
+  "draft_only": true,
+  "actual_branch_or_index_changes": false,
+  "runtime_or_UI_validation": false,
+  "production_modified": false,
+  "F03_complete": false,
+  "warning": "A conflict-free generated draft is not a compiled, runtime-tested platform integration. Revalidate exact parent heads and migrate/backup/package gates after D03/F01."
+}

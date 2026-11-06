@@ -1,0 +1,13 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 101 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 521 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 6 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 1 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+/workspace/server/tests/FantasyCard.Server.Tests/Config/SeasonConfigCompilerTests.cs(105,75): error CA1305: The behavior of 'Convert.ToInt64(object)' could vary based on the current user's locale settings. Replace this call in 'SeasonConfigCompilerTests.Change(IReadOnlyList<ConfigTable>, string, string, object)' with a call to 'Convert.ToInt64(object, IFormatProvider)'. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1305) [/workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj]
+/workspace/server/tests/FantasyCard.Server.Tests/Config/SeasonConfigCompilerTests.cs(99,47): error CA1859: Change return type of method 'Change' from 'System.Collections.Generic.IReadOnlyList<FantasyCard.ConfigExporter.ConfigTable>' to 'FantasyCard.ConfigExporter.ConfigTable[]' for improved performance (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1859) [/workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj]

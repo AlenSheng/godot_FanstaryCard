@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/ubuntu/season-balance-20261102-a03-runtime-r113/resource-guard.py", line 14, in <module>
+    (root/'guard-terminal.original.json').write_text(json.dumps(dict(state=reason,owned_runtime_only=True,**row))+'\n');break
+                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: dict() got multiple values for keyword argument 'state'

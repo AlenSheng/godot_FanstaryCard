@@ -6,7 +6,8 @@ namespace FantasyCard.Server.Progression;
 public enum RedEquipmentDropSource
 {
     ChaosBoss,
-    ShopChest
+    ShopChest,
+    Activity
 }
 
 public sealed record RedEquipmentQuotaSnapshot(
@@ -31,14 +32,16 @@ public static class RedEquipmentQuotaSchedule
     }
 }
 
-public sealed class RedEquipmentQuotaRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider)
+public sealed class RedEquipmentQuotaRepository(NpgsqlDataSource dataSource, TimeProvider timeProvider,IConfiguration? configuration = null)
 {
+    private readonly string _scope=configuration?["Economy:QuotaScopeId"]??"primary";
     public async Task<RedEquipmentQuotaSnapshot> GetCurrentAsync(CancellationToken cancellationToken)
     {
         var weekKey = RedEquipmentQuotaSchedule.GetWeekKey(timeProvider.GetUtcNow());
         await using var command = dataSource.CreateCommand(
-            "SELECT red_dropped_this_week,source,player_id,match_id,equipment_id,claimed_at FROM red_equipment_weekly_quotas WHERE week_key=$1");
+            "SELECT red_dropped_this_week,source,player_id,match_id,equipment_id,claimed_at FROM red_equipment_weekly_quotas WHERE week_key=$1 AND quota_scope=$2");
         command.Parameters.AddWithValue(DateOnly.ParseExact(weekKey, "yyyy-MM-dd", CultureInfo.InvariantCulture));
+        command.Parameters.AddWithValue(_scope);
         await using var reader = await command.ExecuteReaderAsync(cancellationToken);
         if (!await reader.ReadAsync(cancellationToken))
             return new(weekKey, false, null, null, null, null, null);
@@ -60,16 +63,17 @@ public sealed class RedEquipmentQuotaRepository(NpgsqlDataSource dataSource, Tim
         Guid playerId,
         Guid? matchId,
         Guid equipmentId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,string quotaScope="primary")
     {
+        if(string.IsNullOrWhiteSpace(quotaScope) || quotaScope.Length>80)throw new ArgumentException("Invalid logical economy quota scope.",nameof(quotaScope));
         var weekKey = DateOnly.ParseExact(
             RedEquipmentQuotaSchedule.GetWeekKey(now), "yyyy-MM-dd", CultureInfo.InvariantCulture);
         await using var command = new NpgsqlCommand(
             """
             INSERT INTO red_equipment_weekly_quotas(
-                week_key,red_dropped_this_week,source,player_id,match_id,equipment_id,claimed_at)
-            VALUES($1,1,$2,$3,$4,$5,$6)
-            ON CONFLICT (week_key) DO UPDATE SET
+                week_key,red_dropped_this_week,source,player_id,match_id,equipment_id,claimed_at,quota_scope)
+            VALUES($1,1,$2,$3,$4,$5,$6,$7)
+            ON CONFLICT (quota_scope,week_key) DO UPDATE SET
                 red_dropped_this_week=1,source=EXCLUDED.source,player_id=EXCLUDED.player_id,
                 match_id=EXCLUDED.match_id,equipment_id=EXCLUDED.equipment_id,claimed_at=EXCLUDED.claimed_at
             WHERE red_equipment_weekly_quotas.red_dropped_this_week=0
@@ -83,6 +87,7 @@ public sealed class RedEquipmentQuotaRepository(NpgsqlDataSource dataSource, Tim
         command.Parameters.AddWithValue((object?)matchId ?? DBNull.Value);
         command.Parameters.AddWithValue(equipmentId);
         command.Parameters.AddWithValue(now);
+        command.Parameters.AddWithValue(quotaScope);
         return await command.ExecuteScalarAsync(cancellationToken) is not null;
     }
 }

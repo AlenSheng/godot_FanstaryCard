@@ -1,0 +1,42 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "hold-before-commit") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "hold-before-commit") [FAIL]
+      System.Threading.Tasks.TaskCanceledException : A task was canceled.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleRecoveryTests.cs(533,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.WaitAsync(Func`1 predicate, CancellationToken ct)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(108,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        --- End of stack trace from previous location ---
+      Output:
+        {"caseId":"SEASON-ASSET-schema","recordedAt":"2026-11-06T07:38:26.1566459+00:00","evidence":{"schema":"fc_runtime_test_1fbeb740a2f74fec842894178c7d17bf","mode":"hold-before-commit"}}
+        {"caseId":"process-start","recordedAt":"2026-11-06T07:38:28.0139115+00:00","evidence":{"label":"season-asset-hold-before-commit-first","Id":20,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":34239,"SearchPath":"fc_runtime_test_1fbeb740a2f74fec842894178c7d17bf","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+        {"caseId":"SEASON-ASSET-uncommitted-gate","recordedAt":"2026-11-06T07:38:29.7261808+00:00","evidence":{"mode":"hold-before-commit","ProcessId":20,"gate":97486748,"SettlementId":"01a1afcb-70e4-71d4-bb70-9b683246a566","pending":5,"visibleWalletsUnchanged":true,"earlyAckStatus":409}}
+        {"caseId":"process-stop","recordedAt":"2026-11-06T07:40:07.1139852+00:00","evidence":{"label":"season-asset-hold-before-commit-first","ProcessId":20,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/season-asset-hold-before-commit-first-20.log"}}
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "hold-before-commit") [FINISHED] Time: 101.8322606s
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "notification-before-mark") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "notification-before-mark") [FAIL]
+      System.Threading.Tasks.TaskCanceledException : A task was canceled.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleRecoveryTests.cs(533,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.WaitAsync(Func`1 predicate, CancellationToken ct)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(108,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleSeasonAssetFaultTests.cs(167,0): at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(String mode)
+        --- End of stack trace from previous location ---
+      Output:
+        {"caseId":"SEASON-ASSET-schema","recordedAt":"2026-11-06T07:40:07.8380018+00:00","evidence":{"schema":"fc_runtime_test_7a6631c90ee54faaa4ed38747de7148e","mode":"notification-before-mark"}}
+        {"caseId":"process-start","recordedAt":"2026-11-06T07:40:09.0186913+00:00","evidence":{"label":"season-asset-notification-before-mark-first","Id":42,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":41607,"SearchPath":"fc_runtime_test_7a6631c90ee54faaa4ed38747de7148e","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+        {"caseId":"SEASON-ASSET-notification-before-mark","recordedAt":"2026-11-06T07:40:11.3182951+00:00","evidence":{"mode":"notification-before-mark","ProcessId":42,"gate":163333072,"ready":{"SettlementId":"01a1afcc-fbaa-7d1f-bdfa-ec270ac3223f","MatchId":"49aa39ca-b069-4e16-9e56-626ff504a113","Result":"Extracted"},"published":false}}
+        {"caseId":"process-stop","recordedAt":"2026-11-06T07:41:48.7828871+00:00","evidence":{"label":"season-asset-notification-before-mark-first","ProcessId":42,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/season-asset-notification-before-mark-first-42.log"}}
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "notification-before-mark") [FINISHED] Time: 101.5902367s
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "ack-committed-response-lost") [STARTING]
+    FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: "ack-committed-response-lost") [FINISHED] Time: 7.2603207s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 3, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 210.856s
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

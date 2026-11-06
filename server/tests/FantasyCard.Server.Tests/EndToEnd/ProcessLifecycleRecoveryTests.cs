@@ -590,7 +590,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
             _stderr = CaptureAsync(process.StandardError);
         }
 
-        public static FullHost Start(string connectionString, int port, string label, string? serverDll = null)
+        public static FullHost Start(string connectionString, int port, string label, string? serverDll = null, string? configArchiveDirectory = null, string? adminApiKey = null)
         {
             var settings = new NpgsqlConnectionStringBuilder(connectionString);
             Assert.True(IsLocalDatabase(settings.Host) && settings.SearchPath?.StartsWith("fc_runtime_test_", StringComparison.Ordinal) == true,
@@ -613,6 +613,8 @@ public sealed partial class ProcessLifecycleRecoveryTests
             start.Environment["ProtobufHttp__AllowLegacyJson"] = "false";
             start.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "false";
             start.Environment["Matchmaking__BotFillDelaySeconds"] = "30";
+            if (configArchiveDirectory is not null) start.Environment["GameConfig__ArchiveDirectory"] = Path.GetFullPath(configArchiveDirectory);
+            if (adminApiKey is not null) start.Environment["Admin__ApiKey"] = adminApiKey;
             var process = Process.Start(start) ?? throw new InvalidOperationException("Host process did not start.");
             Record("process-start", new { label, process.Id, executable, dll, port, settings.SearchPath,
                 environment = "explicit local fixture only; PB default; ticket WS; bot fill 30s" });

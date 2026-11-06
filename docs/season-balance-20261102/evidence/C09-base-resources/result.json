@@ -1,0 +1,75 @@
+{
+  "status": "base_resource_path_verified_C09_in_progress",
+  "C09_complete": false,
+  "whole_goal_complete": false,
+  "config_version": "season-v1-config-4",
+  "workbook_changed": false,
+  "configuration_bytes_changed": false,
+  "domain_targeted_union_passed": 569,
+  "domain_union_not_one_full_run": true,
+  "new_domain_cases": 8,
+  "controlled_room_victories": 49,
+  "complete_gameplay_routes_added": 0,
+  "local_server_tests_build": {
+    "warnings": 0,
+    "errors": 0,
+    "SDK": "10.0.400"
+  },
+  "real_postgres_new_cases_passed": 1,
+  "real_postgres_skips": 0,
+  "real_postgres_seconds": 171,
+  "postgreSQL_location": "Owned cloud isolation container803968e3 through127.0.0.1:55639 SSH forward to isolated127.0.0.1:55631; production DB not used",
+  "cloud_SDK_started": false,
+  "tunnel_exit": 0,
+  "runtime_modified": [
+    "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs"
+  ],
+  "runtime_sha256": "9cb8ffd7b99ecdba03812be92e515d2f8d3c4fe7b73b8fba46f31dc5fe7a51d7",
+  "source_contract": "Original base integer roll, frozen difficulty gold/soul/fragment factors, floor once, no choice bias on base resource drops, no added RNG draws; non-season path unchanged",
+  "retained_failure": {
+    "run": "local-domain-r1",
+    "passed": 568,
+    "failed": 1,
+    "reason": "External artifacts directory was outside repository; unchanged existing config-root test could not locate published originals",
+    "correction": "Copied exact server/client config triples and catalog into fresh r2 evidence root; only failing test retried and passed; test discovery not relaxed"
+  },
+  "retained_infrastructure_attempts": [
+    {
+      "run": "local-postgres-r1",
+      "test_started": false,
+      "reason": "Second SSH credential read failed; resource preflight only succeeded"
+    },
+    {
+      "run": "local-postgres-r2",
+      "test_started": false,
+      "reason": "SSH connection timed out; no tunnel or SDK created"
+    },
+    {
+      "run": "local-postgres-r3",
+      "test_started": false,
+      "reason": "Separate tunnel not ready within10-second admission; owned PID terminated and terminal retained"
+    },
+    {
+      "run": "local-postgres-r4",
+      "test_started": true,
+      "reason": "Single SSH session performs private preflight and forwarding; test passed, own stdin closed and SSH exited0; no credentials persisted"
+    }
+  ],
+  "cloud_storage_r69": {
+    "started": false,
+    "local_prepared_archive_retained": true,
+    "note": "No transfer or SDK launch; archive predates extra PG case and must not be reused as current input"
+  },
+  "still_required": [
+    "Formal configuration for loot preference/default season theme",
+    "Preparation UI, request and frozen snapshot propagation, queue/room/recovery ownership checks",
+    "Natural equipment40%/15% and preserved independent RNG replay",
+    "C10-C16 and remaining A/D/E/F gates"
+  ],
+  "B05_routes_used": 291,
+  "B05_routes_remaining": 9,
+  "capacity_retested": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "new_UI_surfaces": 0
+}

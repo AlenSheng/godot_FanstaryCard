@@ -12,6 +12,7 @@ signal canceled
 var _action: Callable
 var _completed := false
 var _wired := false
+var _description_scroll: ScrollContainer
 
 @onready var dialog_panel: Panel = $DialogPanel
 @onready var title_label: Label = $DialogPanel/Title
@@ -104,6 +105,21 @@ func configure(message: String, action: Callable, options: Dictionary = {}) -> v
 		confirm_button.position.y = 326.0
 		confirm_button.size.y = 74.0
 		description_label.max_lines_visible = 4
+	if bool(options.get("scroll_description", false)) and _description_scroll == null:
+		_description_scroll = ScrollContainer.new()
+		_description_scroll.name = "DescriptionScroll"
+		_description_scroll.position = description_label.position
+		_description_scroll.size = description_label.size
+		_description_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		dialog_panel.add_child(_description_scroll)
+		description_label.reparent(_description_scroll)
+		description_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		description_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		description_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		description_label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+		description_label.clip_text = false
+		description_label.max_lines_visible = -1
+		description_label.add_theme_font_size_override("font_size", 32)
 	P.fit_control_font(title_label, P.font("title"), 32, 36.0)
 	for button in [cancel_button, confirm_button]:
 		var typeface := P.font_for_text(button.text, 26)
@@ -126,6 +142,10 @@ func _close_immediately() -> void:
 
 func _fit_description() -> void:
 	if not is_instance_valid(description_label): return
+	if _description_scroll != null:
+		description_label.add_theme_font_override("font", P.font_for_text(description_label.text, 32))
+		description_label.add_theme_font_size_override("font_size", 32)
+		return
 	var typeface := P.font_for_text(description_label.text, 28)
 	var fitted := 28
 	var available := Vector2(maxf(1.0, description_label.size.x - 24.0), maxf(1.0, description_label.size.y - 12.0))

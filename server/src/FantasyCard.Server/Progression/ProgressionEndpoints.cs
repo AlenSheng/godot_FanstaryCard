@@ -2,8 +2,10 @@ using FantasyCard.Server.ProtobufHttp;
 using FantasyCard.Contracts.Players;
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Domain.Players;
+using FantasyCard.Domain.Seasons;
 using FantasyCard.Server.Common;
 using FantasyCard.Server.Identity;
+using FantasyCard.Server.Seasons;
 
 namespace FantasyCard.Server.Progression;
 
@@ -12,11 +14,15 @@ public static class ProgressionEndpoints
     public static IServiceCollection AddProgressionModule(this IServiceCollection services)
     {
         services.AddSingleton<ProgressionRepository>();
+        services.AddSingleton<SeasonRepository>();
+        services.AddHostedService<SeasonArchiveWorker>();
         return services;
     }
 
     public static IEndpointRouteBuilder MapProgressionEndpoints(this IEndpointRouteBuilder endpoints)
     {
+        endpoints.MapSeasonCraftingEndpoints();
+        endpoints.MapSeasonArchiveReadEndpoints();
         var cards = endpoints.MapGroup("/api/v1/cards").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         cards.MapGet("/", GetCardsAsync).Produces<IReadOnlyList<CardResponse>>().ProducesProblem(401);
         cards.MapPost("/{cardId}/craft", CraftCardAsync)
@@ -41,6 +47,8 @@ public static class ProgressionEndpoints
 
         var inventory = endpoints.MapGroup("/api/v1/inventory").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         inventory.MapGet("/", GetInventoryAsync).Produces<InventoryResponse>().ProducesProblem(401);
+        inventory.MapPost("/discard", DiscardEquipmentAsync).RequireRateLimiting(RequestLimitOptions.WritePolicy)
+            .Produces<DiscardEquipmentResponse>().ProducesProblem(400).ProducesProblem(401).ProducesProblem(409);
 
         var loadouts = endpoints.MapGroup("/api/v1/loadouts").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         loadouts.MapGet("/{heroClass}", GetLoadoutAsync)
@@ -121,6 +129,21 @@ public static class ProgressionEndpoints
         }
     }
 
+    private static async Task<IResult> DiscardEquipmentAsync(
+        GameBody<DiscardEquipmentRequest> request, HttpContext context, IdentityService identityService,
+        ProgressionRepository repository, CancellationToken cancellationToken)
+    {
+        var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
+        if (player is null) return context.UnauthorizedProblem();
+        var requestId = IdempotencyKeys.Read(context);
+        if (requestId is null) return IdempotencyKeys.InvalidProblem(context);
+        try { return Results.Ok(await repository.DiscardEquipmentAsync(player.UserId, requestId, request, cancellationToken)); }
+        catch (IdempotencyConflictException)
+        { return Problem(context, 409, "Idempotency conflict", "The Idempotency-Key was already used with a different request."); }
+        catch (DomainValidationException exception)
+        { return Problem(context, 400, "Cannot discard equipment", exception.Message); }
+    }
+
     private static async Task<IResult> GetInventoryAsync(
         HttpContext context,
         IdentityService identityService,
@@ -195,20 +218,37 @@ public static class ProgressionEndpoints
     {
         var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
         if (player is null) return context.UnauthorizedProblem();
-        var quote = await repository.GetEquipmentEnhancementQuoteAsync(player.UserId, equipmentId, cancellationToken);
-        return quote is null ? Problem(context, 404, "Equipment not found", "Equipment was not found.") : Results.Ok(quote);
+        try
+        {
+            var quote = await repository.GetEquipmentEnhancementQuoteAsync(player.UserId, equipmentId, cancellationToken);
+            return quote is null ? Problem(context, 404, "Equipment not found", "Equipment was not found.") : Results.Ok(quote);
+        }
+        catch (DomainValidationException exception)
+        {
+            return Problem(context, 400, "Cannot quote equipment", exception.Message);
+        }
     }
 
     private static async Task<IResult> WeaponEnhancementQuoteAsync(
         string heroClass, HttpContext context, IdentityService identityService,
-        ProgressionRepository repository, CancellationToken cancellationToken)
+        ProgressionRepository repository, SeasonRepository seasons, string? fragmentSourceSeasonId,
+        CancellationToken cancellationToken)
     {
         var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
         if (player is null) return context.UnauthorizedProblem();
         if (!Enum.TryParse<HeroClassDto>(heroClass, true, out var dto) || !Enum.IsDefined(dto))
             return Problem(context, 400, "Unknown hero class", "Use Priest, Mage, or Guardian.");
-        var quote = await repository.GetWeaponEnhancementQuoteAsync(player.UserId, (HeroClass)(int)dto, cancellationToken);
-        return quote is null ? Problem(context, 404, "Class weapon not found", "Class weapon was not found.") : Results.Ok(quote);
+        try
+        {
+            SeasonContext? source = fragmentSourceSeasonId is null ? null
+                : await seasons.GetWeaponFragmentSourceAsync(player.UserId, fragmentSourceSeasonId, cancellationToken);
+            var quote = await repository.GetWeaponEnhancementQuoteAsync(player.UserId, (HeroClass)(int)dto, source, cancellationToken);
+            return quote is null ? Problem(context, 404, "Class weapon not found", "Class weapon was not found.") : Results.Ok(quote);
+        }
+        catch (DomainValidationException exception)
+        {
+            return Problem(context, 400, "Cannot quote weapon", exception.Message);
+        }
     }
 
     private static async Task<IResult> EnhanceEquipmentAsync(
@@ -244,6 +284,7 @@ public static class ProgressionEndpoints
         HttpContext context,
         IdentityService identityService,
         ProgressionRepository repository,
+        SeasonRepository seasons,
         CancellationToken cancellationToken)
     {
         var player = await context.AuthenticatePlayerAsync(identityService, cancellationToken);
@@ -254,8 +295,12 @@ public static class ProgressionEndpoints
             return Problem(context, 400, "Unknown hero class", "Use Priest, Mage, or Guardian.");
         try
         {
+            if (request.Value.MaterialEquipmentId is not null || request.Value.MaterialExpectedVersion is not null)
+                throw new DomainValidationException("Permanent weapon enhancement does not consume armor.");
+            SeasonContext? source = request.Value.FragmentSourceSeasonId is null ? null
+                : await seasons.GetWeaponFragmentSourceAsync(player.UserId, request.Value.FragmentSourceSeasonId, cancellationToken);
             return Results.Ok(await repository.EnhanceWeaponAsync(
-                player.UserId, (HeroClass)(int)dto, requestId, request.Value.ExpectedVersion, cancellationToken));
+                player.UserId, (HeroClass)(int)dto, requestId, request.Value.ExpectedVersion, source, cancellationToken));
         }
         catch (IdempotencyConflictException)
         {

@@ -1,0 +1,290 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 539 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/season-shop-domain.trx
+
+Passed!  - Failed:     0, Passed:    49, Skipped:     0, Total:    49, Duration: 1 s - FantasyCard.Domain.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 99 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 292 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 8 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  1 of 5 projects are up-to-date for restore.
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:39.93]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 95
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 102
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:41.41]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 109
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 114
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:44.91]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 84
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 89
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:46.32]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 136
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 151
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:47.89]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 209
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 213
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:49.38]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 57
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 63
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:50.89]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 69
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 76
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:52.31]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 169
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 175
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:53.73]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 181
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 190
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:55.29]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 157
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 163
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:56.82]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 121
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 129
+--- End of stack trace from previous location ---
+[xUnit.net 00:00:58.32]     FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent [1 s]
+  Error Message:
+   System.ArgumentException : Cannot write DateTimeOffset with Offset=08:00:00 to PostgreSQL type 'timestamp with time zone', only offset 0 (UTC) is supported.  (Parameter 'value')
+  Stack Trace:
+     at Npgsql.Internal.Converters.DateTimeOffsetConverter.WriteCore(PgWriter writer, DateTimeOffset value)
+   at Npgsql.Internal.PgBufferedConverter`1.WriteAsObject(Boolean async, PgWriter writer, Object value, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlParameter.Write(Boolean async, PgWriter writer, CancellationToken cancellationToken)
+   at Npgsql.Internal.NpgsqlConnector.WriteBind(List`1 parameters, String portal, Byte[] asciiName, Boolean allResultTypesAreUnknown, Boolean[] unknownResultTypeList, Boolean async, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.<Write>g__WriteExecute|103_0(NpgsqlConnector connector, Boolean async, Boolean flush, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.ShopDayAsync(NpgsqlConnection c, NpgsqlTransaction t, ShopRealm realm, DateTimeOffset now, CancellationToken ct, Boolean refreshing) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 96
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 58
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Progression.EconomyRepository.GetShopForScheduleAsync(Guid playerId, SeasonScheduleSnapshot snapshot, CancellationToken ct) in /workspace/server/src/FantasyCard.Server/Progression/SeasonShopRepository.cs:line 61
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 40
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonShopTests.cs:line 51
+--- End of stack trace from previous location ---
+[xUnit.net 00:01:06.94]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts [FAIL]
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts [2 s]
+  Error Message:
+   /api/v1/shop: expected OK, got InternalServerError
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.<>c__DisplayClass29_0.<<SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts>g__Call|0>d.MoveNext() in /workspace/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonShopApiTests.cs:line 31
+--- End of stack trace from previous location ---
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts() in /workspace/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonShopApiTests.cs:line 42
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts() in /workspace/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonShopApiTests.cs:line 58
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts() in /workspace/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonShopApiTests.cs:line 58
+--- End of stack trace from previous location ---
+Results File: /workspace/results/season-shop-server.trx
+
+Failed!  - Failed:    13, Passed:   184, Skipped:     0, Total:   197, Duration: 1 m 11 s - FantasyCard.Server.Tests.dll (net10.0)

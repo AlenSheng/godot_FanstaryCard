@@ -1,0 +1,79 @@
+{
+  "status": "successful_combat_cadence_and_snapshot_idempotency_verified",
+  "domain_tests": 194,
+  "domain_evidence": "r22/domain.trx; exact Domain input hashes unchanged in r23",
+  "server_tests": 145,
+  "native_boolean_checks": 114,
+  "native_suites": 5,
+  "new_native_action_checks": 14,
+  "failed": 0,
+  "skipped": 0,
+  "scope": [
+    "At least 500ms of server room time between new successful seasonal plays; wall-clock arguments cannot bypass it",
+    "Rejected or preview requests consume neither action sequence nor cooldown; preview remains pure while waiting",
+    "Per-room/player ID format sequence:32-lowercase-hex; matching old payload replays original outcome",
+    "Only 64 results retained; monotonic sequence rejects evicted old IDs indefinitely within the room",
+    "Player action watermark and elapsed success time persist with room snapshots and do not reset on duel survival",
+    "Critical checkpoint includes every successful sequence and new-season router persists it before ACK",
+    "Real PostgreSQL room/router recreation and owned-terminal fallback cannot repeat damage or register a new room",
+    "Replay flags suppress repeated client presentation even in a fresh network envelope",
+    "Client retains ID across retries, adopts server remainder and refreshes action UI when local deadline expires",
+    "Append-only request tag4, outcome tags27/28 and player tag22; legacy commands keep their original semantics"
+  ],
+  "history": [
+    {
+      "run": "r21",
+      "classification": "CA1870_compile_analyzer",
+      "tests_executed": 0
+    },
+    {
+      "run": "r22",
+      "domain_passed": 194,
+      "server_tests_executed": 0,
+      "classification": "CA1826_test_compile_analyzer"
+    },
+    {
+      "run": "r23",
+      "server_passed": 145,
+      "domain_194_reused_by_hash": true
+    },
+    {
+      "run": "godot-r1",
+      "classification": "fixture_type_inference_parse_error",
+      "own_child_timeout_seconds": 90
+    },
+    {
+      "run": "godot-r2",
+      "suites_passed": 5,
+      "reported_top_level_count": 22,
+      "count_is_not_boolean_assertion_count": true
+    },
+    {
+      "run": "godot-r3",
+      "boolean_checks": 113,
+      "failed": 0
+    },
+    {
+      "run": "godot-r4",
+      "boolean_checks": 114,
+      "failed": 0
+    }
+  ],
+  "public_archive_sha256": {
+    "r21": "bd50cc05f18b8911064d6bfb4e7789ddad13647621bb9afb6515a6d1b4eeda5d",
+    "r22": "b36e2d090ffe5e6075c3503537339e8e6d5be6dddd852a314c384021ce3a7dd7",
+    "r23": "15b69919a00a55b685ad1e409d31beb7e7fff8a1e88e22477d192b2cb10b0af0"
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "resource_notes": [
+    "r21 cache preflight used the wrong historical archive filename; no SDK was started until the actual archive was checked",
+    "r22 initial disk admission refused startup; reserve/startup budgets were not lowered",
+    "Retired r14 build archive copied to local cloud-build-archives/storage-r14.tar.gz and SHA-verified before cloud copy removal; original source/TRX/logs retained"
+  ],
+  "remaining": [
+    "B05 timed legal-deck resource loops and real monster-card accumulation",
+    "C-F configuration, economy, archive, balance, multilingual/resolution UI and final deployment"
+  ]
+}

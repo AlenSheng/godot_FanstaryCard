@@ -19,8 +19,8 @@ public sealed partial class BattleRoom
         var item = player.Inventory.Items.SingleOrDefault(value => value.ItemId == itemId)
             ?? throw new DomainValidationException("The equipment is not in the backpack.");
         var (armor, previous, profile) = PrepareEquipmentChange(player, item);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
-        if (!staged.TryRemove(itemId, out _) || previous is not null &&
+        var staged = player.Inventory.Clone();
+        if (!staged.TryRemove(itemId, out _) || previous is not null && !previous.IsCombatProjection &&
             !staged.TryAdd(previous with { SlotIndex = item.SlotIndex, IsSafe = item.IsSafe }))
             throw new DomainValidationException("The previous equipment cannot be returned to the backpack.");
         player.Inventory.Apply(staged);
@@ -36,8 +36,8 @@ public sealed partial class BattleRoom
             ?? throw new DomainValidationException("There is no armor in that slot.");
         var armor = player.WornArmor.Where(item => item.ItemId != previous.ItemId).ToArray();
         var profile = CalculateArmor(armor);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
-        if (!staged.TryAdd(previous with { SlotIndex = -1, IsSafe = false }))
+        var staged = player.Inventory.Clone();
+        if (!previous.IsCombatProjection && !staged.TryAdd(previous with { SlotIndex = -1, IsSafe = false }))
             throw new DomainValidationException("The backpack is full.");
         player.Inventory.Apply(staged);
         player.WornArmor = armor;
@@ -62,7 +62,7 @@ public sealed partial class BattleRoom
         return player;
     }
 
-    private static (ExplorationItem[] Armor, ExplorationItem? Previous, CombatEquipmentProfile Profile)
+    private (ExplorationItem[] Armor, ExplorationItem? Previous, CombatEquipmentProfile Profile)
         PrepareEquipmentChange(RoomPlayerState player, ExplorationItem item)
     {
         var incoming = ToCombatEquipment(item);
@@ -75,22 +75,26 @@ public sealed partial class BattleRoom
         return (armor, previous, CalculateArmor(armor));
     }
 
-    private static CombatEquipmentProfile CalculateArmor(IReadOnlyList<ExplorationItem> armor) =>
-        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray());
+    private CombatEquipmentProfile CalculateArmor(IReadOnlyList<ExplorationItem> armor) =>
+        EquipmentCombatRules.Calculate(armor.Select(ToCombatEquipment).ToArray(), _catalog.Configuration,
+            _catalog.UsesPublishedConfiguration?Season?.StatsVersion:null);
 
-    private static CombatEquipmentItem ToCombatEquipment(ExplorationItem item)
+    private CombatEquipmentItem ToCombatEquipment(ExplorationItem item)
     {
         if (item.Kind != ExplorationItemKind.Equipment || item.Quantity != 1 ||
             item.Equipment is not { } data || !Guid.TryParse(item.ItemId, out var id) ||
             !Enum.TryParse<CardElement>(data.Element, out var element))
             throw new DomainValidationException("The armor has no valid combat attributes.");
-        return new(id, data.Slot, data.Quality, data.Level, element, data.EffectAffix, data.SecondaryTrait);
+        if (Season is not null && data.StatsVersion is not null && data.StatsVersion != Season.StatsVersion)
+            throw new DomainValidationException("The armor stats version differs from its frozen room context.");
+        return new(id, data.Slot, data.Quality, data.Level, element, data.EffectAffix, data.SecondaryTrait,data.UniqueAffix,
+            data.UniqueElement is null?null:Enum.Parse<CardElement>(data.UniqueElement,true));
     }
 
-    private static int EquipReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)
+    private int EquipReward(RoomPlayerState player, ExplorationItem item, string? replaceItemId)
     {
         var (armor, previous, profile) = PrepareEquipmentChange(player, item);
-        var staged = ExplorationInventory.Restore(player.Inventory.Capture());
+        var staged = player.Inventory.Clone();
         ExplorationItem? recycled = null;
         if (replaceItemId is not null)
         {
@@ -99,7 +103,7 @@ public sealed partial class BattleRoom
             else if (!staged.TryRemove(replaceItemId, out recycled))
                 throw new DomainValidationException("The reward replacement item is not available.");
         }
-        if (previous is not null && previous != recycled &&
+        if (previous is not null && !previous.IsCombatProjection && previous != recycled &&
             !staged.TryAdd(previous with { SlotIndex = recycled?.SlotIndex ?? -1, IsSafe = false }))
             throw new DomainValidationException("The backpack is full; select the removed armor or a backpack item to recycle.");
         if (previous is null && staged.FreeSlots == 0 && replaceItemId is null)
@@ -113,7 +117,7 @@ public sealed partial class BattleRoom
 
     private static void TrackRecycled(RoomPlayerState player, ExplorationItem item)
     {
-        if (item.Kind == ExplorationItemKind.Equipment)
+        if (item.Kind == ExplorationItemKind.Equipment && !item.IsCombatProjection)
             player.RecycledEquipment.Add(item with { SlotIndex = -1, IsSafe = false });
     }
 }

@@ -1,0 +1,17 @@
+{
+  "container_id": "095d57eb7cc9d604af0a8508c129b53c356b3c9b794f43459ec103c119a1038c",
+  "name": "fc-season-a03-storage-20261102-r81",
+  "database_container": "803968e390014540be88f60b9ac43203946d0145bf886fc61d9d9d4d04bc3b1a",
+  "source_base": "1e0429a84d30795c27d0297771bb18adb78c7ce4",
+  "archive_sha256": "63db11c1ce30088e8ce45fb247329317b88eb8b11fe82a2bc1dcbc6f14e78bbc",
+  "image_id": "sha256:4beef5b8919dcaa2dc924233bd069257e883cc7a061e09088a97d152d6a48510",
+  "cpu": 1,
+  "memory_mib": 1200,
+  "server_command": "dotnet test tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj --filter \"((FullyQualifiedName~FantasyCard.Server.Tests.ProtobufHttp|FullyQualifiedName~FantasyCard.Server.Tests.Progression|FullyQualifiedName~FantasyCard.Server.Tests.Config)&Category!=PostgresIntegration)|FullyQualifiedName~PostgresSeasonShopTests|FullyQualifiedName~PostgresPermanentCardCopyTests|FullyQualifiedName~PostgresCardEconomyTests|FullyQualifiedName~PostgresCardUpgradeTests|FullyQualifiedName~Shop_failures_and_replays_do_not_partially_debit_or_grant_assets|FullyQualifiedName~Shop_daily_cards_are_deterministic_and_purchase_grants_exact_card_once|FullyQualifiedName~SeasonShop_RealBinaryHttpKeepsScopedPricesCopiesAndFrozenReplayReceipts\" --logger \"trx;LogFileName=season-shop-server.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "server_evidence_source": null,
+  "domain_command": "dotnet test tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj --filter \"FullyQualifiedName~FantasyCard.Domain.Tests.Configuration|FullyQualifiedName~PermanentCardCopyRulesTests|FullyQualifiedName~CardUpgradeTests|FullyQualifiedName~DeckRulesTests\" --logger \"trx;LogFileName=season-shop-domain.trx\" --results-directory /workspace/results --verbosity minimal -m:1 -p:UseSharedCompilation=false",
+  "domain_evidence_source": null,
+  "production_database_used": false,
+  "available_ram_before": 2547384320,
+  "free_disk_before": 3560488960
+}

@@ -1,0 +1,148 @@
+<TestRun id="9f368d52-8565-434d-ae02-97848ad59d40" name="unknown@803968e39001 2026-11-06T16:03:25.7790701+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T16:03:25.7790701+00:00" queuing="2026-11-06T16:03:25.7790701+00:00" start="2026-11-06T16:03:25.7790701+00:00" finish="2026-11-06T16:03:38.6670772+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" executionId="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" computerName="803968e39001" duration="00:00:03.2356910" startTime="2026-11-06T16:03:25.8640006+00:00" endTime="2026-11-06T16:03:29.1289738+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: syntax error at or near \"day\"
+
+POSITION: 102</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 26
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 27
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 65
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 78
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonRedMintTests.cs:line 78
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ExactCommittedHoldCountsFirstExtractionAndDeathRecoveryOnceWithoutBorrowingOtherItemReceipt" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" executionId="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" computerName="803968e39001" duration="00:00:01.9288119" startTime="2026-11-06T16:03:29.1518618+00:00" endTime="2026-11-06T16:03:31.0836922+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: syntax error at or near \"day\"
+
+POSITION: 102</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 26
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 27
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ExactCommittedHoldCountsFirstExtractionAndDeathRecoveryOnceWithoutBorrowingOtherItemReceipt() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 84
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ExactCommittedHoldCountsFirstExtractionAndDeathRecoveryOnceWithoutBorrowingOtherItemReceipt() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 86
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.MarketMaturitySeparatesYoungAndSeasonShortenedListingsAndKeepsOriginalTradeTemplates" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="24fb7219-8ffc-4aae-9415-bc4eb61b8751" executionId="24fb7219-8ffc-4aae-9415-bc4eb61b8751" computerName="803968e39001" duration="00:00:02.1894001" startTime="2026-11-06T16:03:31.0840855+00:00" endTime="2026-11-06T16:03:33.2764608+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: syntax error at or near \"day\"
+
+POSITION: 102</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 26
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 27
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.MarketMaturitySeparatesYoungAndSeasonShortenedListingsAndKeepsOriginalTradeTemplates() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 40
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.MarketMaturitySeparatesYoungAndSeasonShortenedListingsAndKeepsOriginalTradeTemplates() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 46
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ActualActivityClaimsAndShopReceiptsKeepSharedBudgetTotalSpendAndFrozenRunCohorts" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="fa86bfd2-a2d8-4934-bded-b7a99be26384" executionId="fa86bfd2-a2d8-4934-bded-b7a99be26384" computerName="803968e39001" duration="00:00:02.0871708" startTime="2026-11-06T16:03:33.2773679+00:00" endTime="2026-11-06T16:03:35.3669138+00:00">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 42601: syntax error at or near \"day\"
+
+POSITION: 102</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 26
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 27
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository.ReadAsync(DateTimeOffset from, DateTimeOffset to, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Telemetry\SeasonTelemetryDiagnosticsRepository.cs:line 34
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ActualActivityClaimsAndShopReceiptsKeepSharedBudgetTotalSpendAndFrozenRunCohorts() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 58
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ActualActivityClaimsAndShopReceiptsKeepSharedBudgetTotalSpendAndFrozenRunCohorts() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonDiagnosticTests.cs:line 65
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" outcome="Failed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="419793f8-a41e-40ec-ab3a-7e015fd07a30" executionId="419793f8-a41e-40ec-ab3a-7e015fd07a30" computerName="803968e39001" duration="00:00:03.2902164" startTime="2026-11-06T16:03:35.3690122+00:00" endTime="2026-11-06T16:03:38.6635596+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"process-start","recordedAt":"2026-11-06T16:03:36.3096157+00:00","evidence":{"label":"d04-admin-report","Id":22,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":35153,"SearchPath":"fc_runtime_test_8142f8f29c61457f9a83e5c600e6823d","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"process-stop","recordedAt":"2026-11-06T16:03:38.0029448+00:00","evidence":{"label":"d04-admin-report","ProcessId":22,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/d04-admin-report-22.log"}}</Message>
+        </TextMessages>
+        <ErrorInfo>
+          <Message>Assert.Equal() Failure: Values differ
+Expected: OK
+Actual:   InternalServerError</Message>
+          <StackTrace>   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleEconomyTelemetryTests.cs:line 89
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleEconomyTelemetryTests.cs:line 94
+   at FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\EndToEnd\ProcessLifecycleEconomyTelemetryTests.cs:line 94
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests.ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" id="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonRedMintTests" name="ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek" adapterTypeName="executor://9f368d52-8565-434d-ae02-97848ad59d40/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ExactCommittedHoldCountsFirstExtractionAndDeathRecoveryOnceWithoutBorrowingOtherItemReceipt" id="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests" name="ExactCommittedHoldCountsFirstExtractionAndDeathRecoveryOnceWithoutBorrowingOtherItemReceipt" adapterTypeName="executor://9f368d52-8565-434d-ae02-97848ad59d40/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.MarketMaturitySeparatesYoungAndSeasonShortenedListingsAndKeepsOriginalTradeTemplates" id="24fb7219-8ffc-4aae-9415-bc4eb61b8751" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="24fb7219-8ffc-4aae-9415-bc4eb61b8751" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests" name="MarketMaturitySeparatesYoungAndSeasonShortenedListingsAndKeepsOriginalTradeTemplates" adapterTypeName="executor://9f368d52-8565-434d-ae02-97848ad59d40/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests.ActualActivityClaimsAndShopReceiptsKeepSharedBudgetTotalSpendAndFrozenRunCohorts" id="fa86bfd2-a2d8-4934-bded-b7a99be26384" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="fa86bfd2-a2d8-4934-bded-b7a99be26384" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.Persistence.PostgresSeasonDiagnosticTests" name="ActualActivityClaimsAndShopReceiptsKeepSharedBudgetTotalSpendAndFrozenRunCohorts" adapterTypeName="executor://9f368d52-8565-434d-ae02-97848ad59d40/3.1.0" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" id="419793f8-a41e-40ec-ab3a-7e015fd07a30" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="419793f8-a41e-40ec-ab3a-7e015fd07a30" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary" adapterTypeName="executor://9f368d52-8565-434d-ae02-97848ad59d40/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" executionId="637f0b86-ca48-48bf-b3dc-38ed6adfdb8c" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" executionId="27ab32c6-056d-4098-8ba7-90b1cfd00b8a" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="24fb7219-8ffc-4aae-9415-bc4eb61b8751" executionId="24fb7219-8ffc-4aae-9415-bc4eb61b8751" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="fa86bfd2-a2d8-4934-bded-b7a99be26384" executionId="fa86bfd2-a2d8-4934-bded-b7a99be26384" />
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="419793f8-a41e-40ec-ab3a-7e015fd07a30" executionId="419793f8-a41e-40ec-ab3a-7e015fd07a30" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="0" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

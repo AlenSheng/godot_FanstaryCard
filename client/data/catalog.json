@@ -1,5 +1,5 @@
 {
-  "version": "gdd-0.70-numerical-1",
+  "version": "season-v1-config-17",
   "tables": {
     "Cards": [
       {
@@ -1437,7 +1437,7 @@
         "heal": 0,
         "shield": 0,
         "draw_charge": 0.0,
-        "immediate_draw": 1,
+        "immediate_draw": 0,
         "draw_speed_modifier": 0.0,
         "draw_speed_seconds": 0.0,
         "stun_seconds": 1.0,
@@ -16173,43 +16173,50 @@
         "id": "heal-outer",
         "layer": "Outer",
         "heal_percent": 0.14,
-        "refresh_index": null
+        "refresh_index": null,
+        "refresh_gold": null
       },
       {
         "id": "heal-middle",
         "layer": "Middle",
         "heal_percent": 0.2,
-        "refresh_index": null
+        "refresh_index": null,
+        "refresh_gold": null
       },
       {
         "id": "heal-core",
         "layer": "Core",
         "heal_percent": 0.28,
-        "refresh_index": null
+        "refresh_index": null,
+        "refresh_gold": null
       },
       {
         "id": "heal-boss",
         "layer": "Boss",
         "heal_percent": 0.32,
-        "refresh_index": null
+        "refresh_index": null,
+        "refresh_gold": null
       },
       {
         "id": "refresh-1",
         "layer": null,
         "heal_percent": null,
-        "refresh_index": 1
+        "refresh_index": 1,
+        "refresh_gold": 60
       },
       {
         "id": "refresh-2",
         "layer": null,
         "heal_percent": null,
-        "refresh_index": 2
+        "refresh_index": 2,
+        "refresh_gold": 180
       },
       {
         "id": "refresh-3",
         "layer": null,
         "heal_percent": null,
-        "refresh_index": 3
+        "refresh_index": 3,
+        "refresh_gold": 450
       }
     ],
     "Economy": [
@@ -16346,6 +16353,1868 @@
         "budgeted_bot_loot": false,
         "bot_loot_count": 2,
         "mortal_bot_pve": false
+      }
+    ],
+    "SeasonDifficulty": [
+      {
+        "difficulty_id": "D0",
+        "name_key": "difficulty_D0",
+        "hp_scale": 0.5,
+        "shield_scale": 0.5,
+        "damage_scale": 1.0,
+        "interval_scale": 1.0,
+        "gold_scale": 1.0,
+        "soul_scale": 1.0,
+        "fragment_scale": 1.0,
+        "quality_cap": 2,
+        "purple_affix_chance": 0.0,
+        "entry_quality_cap": 2,
+        "red_boss_enabled": false,
+        "mage_return_rate_bp": 500
+      },
+      {
+        "difficulty_id": "D1",
+        "name_key": "difficulty_D1",
+        "hp_scale": 1.6,
+        "shield_scale": 1.6,
+        "damage_scale": 1.25,
+        "interval_scale": 1.0,
+        "gold_scale": 1.2,
+        "soul_scale": 1.15,
+        "fragment_scale": 1.4,
+        "quality_cap": 3,
+        "purple_affix_chance": 0.5,
+        "entry_quality_cap": 3,
+        "red_boss_enabled": false,
+        "mage_return_rate_bp": 500
+      },
+      {
+        "difficulty_id": "D2",
+        "name_key": "difficulty_D2",
+        "hp_scale": 2.6,
+        "shield_scale": 2.6,
+        "damage_scale": 1.5,
+        "interval_scale": 0.98,
+        "gold_scale": 1.4,
+        "soul_scale": 1.3,
+        "fragment_scale": 1.9,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.6,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true,
+        "mage_return_rate_bp": 500
+      },
+      {
+        "difficulty_id": "D3",
+        "name_key": "difficulty_D3",
+        "hp_scale": 4.0,
+        "shield_scale": 4.0,
+        "damage_scale": 1.85,
+        "interval_scale": 0.96,
+        "gold_scale": 1.65,
+        "soul_scale": 1.45,
+        "fragment_scale": 2.5,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.7,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true,
+        "mage_return_rate_bp": 500
+      },
+      {
+        "difficulty_id": "D4",
+        "name_key": "difficulty_D4",
+        "hp_scale": 5.8,
+        "shield_scale": 5.8,
+        "damage_scale": 2.2,
+        "interval_scale": 0.94,
+        "gold_scale": 1.9,
+        "soul_scale": 1.6,
+        "fragment_scale": 3.2,
+        "quality_cap": 4,
+        "purple_affix_chance": 0.8,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true,
+        "mage_return_rate_bp": 500
+      },
+      {
+        "difficulty_id": "D5",
+        "name_key": "difficulty_D5",
+        "hp_scale": 8.0,
+        "shield_scale": 8.0,
+        "damage_scale": 2.6,
+        "interval_scale": 0.92,
+        "gold_scale": 2.2,
+        "soul_scale": 1.75,
+        "fragment_scale": 4.0,
+        "quality_cap": 4,
+        "purple_affix_chance": 1.0,
+        "entry_quality_cap": 5,
+        "red_boss_enabled": true,
+        "mage_return_rate_bp": 500
+      }
+    ],
+    "SeasonEquipment": [
+      {
+        "quality_id": "white",
+        "damage_base": 0.04,
+        "resist_base": 0.02,
+        "damage_per_level": 0.01,
+        "resist_per_level": 0.0025,
+        "speed_base": 0.0,
+        "speed_per_level": 0.0025,
+        "cost_1": 1,
+        "cost_2": 1,
+        "cost_3": 2,
+        "cost_4": 8,
+        "cost_5": 16,
+        "stats_version": "season-equipment-v1"
+      },
+      {
+        "quality_id": "green",
+        "damage_base": 0.07,
+        "resist_base": 0.04,
+        "damage_per_level": 0.015,
+        "resist_per_level": 0.004,
+        "speed_base": 0.03,
+        "speed_per_level": 0.003,
+        "cost_1": 1,
+        "cost_2": 2,
+        "cost_3": 3,
+        "cost_4": 12,
+        "cost_5": 24,
+        "stats_version": "season-equipment-v1"
+      },
+      {
+        "quality_id": "blue",
+        "damage_base": 0.11,
+        "resist_base": 0.06,
+        "damage_per_level": 0.02,
+        "resist_per_level": 0.005,
+        "speed_base": 0.05,
+        "speed_per_level": 0.0035,
+        "cost_1": 2,
+        "cost_2": 3,
+        "cost_3": 3,
+        "cost_4": 20,
+        "cost_5": 40,
+        "stats_version": "season-equipment-v1"
+      },
+      {
+        "quality_id": "purple",
+        "damage_base": 0.15,
+        "resist_base": 0.09,
+        "damage_per_level": 0.025,
+        "resist_per_level": 0.006,
+        "speed_base": 0.07,
+        "speed_per_level": 0.004,
+        "cost_1": 2,
+        "cost_2": 3,
+        "cost_3": 5,
+        "cost_4": 40,
+        "cost_5": 80,
+        "stats_version": "season-equipment-v1"
+      },
+      {
+        "quality_id": "orange",
+        "damage_base": 0.22,
+        "resist_base": 0.13,
+        "damage_per_level": 0.03,
+        "resist_per_level": 0.008,
+        "speed_base": 0.1,
+        "speed_per_level": 0.005,
+        "cost_1": 4,
+        "cost_2": 6,
+        "cost_3": 10,
+        "cost_4": 80,
+        "cost_5": 160,
+        "stats_version": "season-equipment-v1"
+      },
+      {
+        "quality_id": "red",
+        "damage_base": 0.32,
+        "resist_base": 0.18,
+        "damage_per_level": 0.04,
+        "resist_per_level": 0.01,
+        "speed_base": 0.12,
+        "speed_per_level": 0.006,
+        "cost_1": 6,
+        "cost_2": 9,
+        "cost_3": 15,
+        "cost_4": 120,
+        "cost_5": 240,
+        "stats_version": "season-equipment-v1"
+      }
+    ],
+    "SeasonLoot": [
+      {
+        "loot_rule_id": "0_0",
+        "difficulty_id": "D0",
+        "layer_id": "outer",
+        "white_weight": 0.7,
+        "green_weight": 0.3,
+        "blue_weight": 0.0,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_1",
+        "difficulty_id": "D0",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.6,
+        "blue_weight": 0.4,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_2",
+        "difficulty_id": "D0",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.2,
+        "blue_weight": 0.8,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "0_3",
+        "difficulty_id": "D0",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 1.0,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 2,
+        "promotion_cap": 2
+      },
+      {
+        "loot_rule_id": "1_0",
+        "difficulty_id": "D1",
+        "layer_id": "outer",
+        "white_weight": 0.2,
+        "green_weight": 0.6,
+        "blue_weight": 0.2,
+        "purple_weight": 0.0,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_1",
+        "difficulty_id": "D1",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.25,
+        "blue_weight": 0.65,
+        "purple_weight": 0.1,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_2",
+        "difficulty_id": "D1",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.65,
+        "purple_weight": 0.35,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "1_3",
+        "difficulty_id": "D1",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.2,
+        "purple_weight": 0.8,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_0",
+        "difficulty_id": "D2",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.3,
+        "blue_weight": 0.65,
+        "purple_weight": 0.05,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_1",
+        "difficulty_id": "D2",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.55,
+        "purple_weight": 0.43,
+        "orange_weight": 0.02,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_2",
+        "difficulty_id": "D2",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.25,
+        "purple_weight": 0.65,
+        "orange_weight": 0.1,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "2_3",
+        "difficulty_id": "D2",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.7,
+        "orange_weight": 0.3,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_0",
+        "difficulty_id": "D3",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.1,
+        "blue_weight": 0.6,
+        "purple_weight": 0.3,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_1",
+        "difficulty_id": "D3",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.3,
+        "purple_weight": 0.65,
+        "orange_weight": 0.05,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_2",
+        "difficulty_id": "D3",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.1,
+        "purple_weight": 0.7,
+        "orange_weight": 0.2,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "3_3",
+        "difficulty_id": "D3",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.5,
+        "orange_weight": 0.5,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_0",
+        "difficulty_id": "D4",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.45,
+        "purple_weight": 0.55,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_1",
+        "difficulty_id": "D4",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.15,
+        "purple_weight": 0.75,
+        "orange_weight": 0.1,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_2",
+        "difficulty_id": "D4",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.65,
+        "orange_weight": 0.35,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "4_3",
+        "difficulty_id": "D4",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.35,
+        "orange_weight": 0.65,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_0",
+        "difficulty_id": "D5",
+        "layer_id": "outer",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.25,
+        "purple_weight": 0.75,
+        "orange_weight": 0.0,
+        "quality_cap": 3,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_1",
+        "difficulty_id": "D5",
+        "layer_id": "middle",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.05,
+        "purple_weight": 0.8,
+        "orange_weight": 0.15,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_2",
+        "difficulty_id": "D5",
+        "layer_id": "elite",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.5,
+        "orange_weight": 0.5,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      },
+      {
+        "loot_rule_id": "5_3",
+        "difficulty_id": "D5",
+        "layer_id": "boss",
+        "white_weight": 0.0,
+        "green_weight": 0.0,
+        "blue_weight": 0.0,
+        "purple_weight": 0.2,
+        "orange_weight": 0.8,
+        "quality_cap": 4,
+        "promotion_cap": 3
+      }
+    ],
+    "SeasonProgression": [
+      {
+        "level_id": "SL0",
+        "level": 0,
+        "xp_to_next_42": 200
+      },
+      {
+        "level_id": "SL1",
+        "level": 1,
+        "xp_to_next_42": 215
+      },
+      {
+        "level_id": "SL2",
+        "level": 2,
+        "xp_to_next_42": 230
+      },
+      {
+        "level_id": "SL3",
+        "level": 3,
+        "xp_to_next_42": 245
+      },
+      {
+        "level_id": "SL4",
+        "level": 4,
+        "xp_to_next_42": 260
+      },
+      {
+        "level_id": "SL5",
+        "level": 5,
+        "xp_to_next_42": 275
+      },
+      {
+        "level_id": "SL6",
+        "level": 6,
+        "xp_to_next_42": 290
+      },
+      {
+        "level_id": "SL7",
+        "level": 7,
+        "xp_to_next_42": 305
+      },
+      {
+        "level_id": "SL8",
+        "level": 8,
+        "xp_to_next_42": 320
+      },
+      {
+        "level_id": "SL9",
+        "level": 9,
+        "xp_to_next_42": 335
+      },
+      {
+        "level_id": "SL10",
+        "level": 10,
+        "xp_to_next_42": 350
+      },
+      {
+        "level_id": "SL11",
+        "level": 11,
+        "xp_to_next_42": 365
+      },
+      {
+        "level_id": "SL12",
+        "level": 12,
+        "xp_to_next_42": 380
+      },
+      {
+        "level_id": "SL13",
+        "level": 13,
+        "xp_to_next_42": 395
+      },
+      {
+        "level_id": "SL14",
+        "level": 14,
+        "xp_to_next_42": 410
+      },
+      {
+        "level_id": "SL15",
+        "level": 15,
+        "xp_to_next_42": 425
+      },
+      {
+        "level_id": "SL16",
+        "level": 16,
+        "xp_to_next_42": 440
+      },
+      {
+        "level_id": "SL17",
+        "level": 17,
+        "xp_to_next_42": 455
+      },
+      {
+        "level_id": "SL18",
+        "level": 18,
+        "xp_to_next_42": 470
+      },
+      {
+        "level_id": "SL19",
+        "level": 19,
+        "xp_to_next_42": 485
+      },
+      {
+        "level_id": "SL20",
+        "level": 20,
+        "xp_to_next_42": 500
+      },
+      {
+        "level_id": "SL21",
+        "level": 21,
+        "xp_to_next_42": 515
+      },
+      {
+        "level_id": "SL22",
+        "level": 22,
+        "xp_to_next_42": 530
+      },
+      {
+        "level_id": "SL23",
+        "level": 23,
+        "xp_to_next_42": 545
+      },
+      {
+        "level_id": "SL24",
+        "level": 24,
+        "xp_to_next_42": 560
+      },
+      {
+        "level_id": "SL25",
+        "level": 25,
+        "xp_to_next_42": 575
+      },
+      {
+        "level_id": "SL26",
+        "level": 26,
+        "xp_to_next_42": 590
+      },
+      {
+        "level_id": "SL27",
+        "level": 27,
+        "xp_to_next_42": 605
+      },
+      {
+        "level_id": "SL28",
+        "level": 28,
+        "xp_to_next_42": 620
+      },
+      {
+        "level_id": "SL29",
+        "level": 29,
+        "xp_to_next_42": 635
+      }
+    ],
+    "SeasonBorrowedDecks": [
+      {
+        "id": "loan-priest:0",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 0,
+        "card_id": "C01"
+      },
+      {
+        "id": "loan-priest:1",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 1,
+        "card_id": "C02"
+      },
+      {
+        "id": "loan-priest:2",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 2,
+        "card_id": "C03"
+      },
+      {
+        "id": "loan-priest:3",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 3,
+        "card_id": "C04"
+      },
+      {
+        "id": "loan-priest:4",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 4,
+        "card_id": "C05"
+      },
+      {
+        "id": "loan-priest:5",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 5,
+        "card_id": "C06"
+      },
+      {
+        "id": "loan-priest:6",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 6,
+        "card_id": "C07"
+      },
+      {
+        "id": "loan-priest:7",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 7,
+        "card_id": "C08"
+      },
+      {
+        "id": "loan-priest:8",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 8,
+        "card_id": "C09"
+      },
+      {
+        "id": "loan-priest:9",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 9,
+        "card_id": "C10"
+      },
+      {
+        "id": "loan-priest:10",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 10,
+        "card_id": "C11"
+      },
+      {
+        "id": "loan-priest:11",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 11,
+        "card_id": "C12"
+      },
+      {
+        "id": "loan-priest:12",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 12,
+        "card_id": "C13"
+      },
+      {
+        "id": "loan-priest:13",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 13,
+        "card_id": "PRI-01"
+      },
+      {
+        "id": "loan-priest:14",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 14,
+        "card_id": "PRI-02"
+      },
+      {
+        "id": "loan-priest:15",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 15,
+        "card_id": "PRI-03"
+      },
+      {
+        "id": "loan-priest:16",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 16,
+        "card_id": "PRI-04"
+      },
+      {
+        "id": "loan-priest:17",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 17,
+        "card_id": "PRI-05"
+      },
+      {
+        "id": "loan-priest:18",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 18,
+        "card_id": "PRI-06"
+      },
+      {
+        "id": "loan-priest:19",
+        "template_id": "loan-priest",
+        "hero_class": "Priest",
+        "slot_index": 19,
+        "card_id": "PRI-07"
+      },
+      {
+        "id": "loan-mage:0",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 0,
+        "card_id": "C01"
+      },
+      {
+        "id": "loan-mage:1",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 1,
+        "card_id": "C02"
+      },
+      {
+        "id": "loan-mage:2",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 2,
+        "card_id": "C03"
+      },
+      {
+        "id": "loan-mage:3",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 3,
+        "card_id": "C04"
+      },
+      {
+        "id": "loan-mage:4",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 4,
+        "card_id": "C05"
+      },
+      {
+        "id": "loan-mage:5",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 5,
+        "card_id": "C06"
+      },
+      {
+        "id": "loan-mage:6",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 6,
+        "card_id": "C07"
+      },
+      {
+        "id": "loan-mage:7",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 7,
+        "card_id": "C08"
+      },
+      {
+        "id": "loan-mage:8",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 8,
+        "card_id": "C09"
+      },
+      {
+        "id": "loan-mage:9",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 9,
+        "card_id": "C10"
+      },
+      {
+        "id": "loan-mage:10",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 10,
+        "card_id": "C11"
+      },
+      {
+        "id": "loan-mage:11",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 11,
+        "card_id": "C12"
+      },
+      {
+        "id": "loan-mage:12",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 12,
+        "card_id": "C13"
+      },
+      {
+        "id": "loan-mage:13",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 13,
+        "card_id": "MAG-01"
+      },
+      {
+        "id": "loan-mage:14",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 14,
+        "card_id": "MAG-02"
+      },
+      {
+        "id": "loan-mage:15",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 15,
+        "card_id": "MAG-03"
+      },
+      {
+        "id": "loan-mage:16",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 16,
+        "card_id": "MAG-04"
+      },
+      {
+        "id": "loan-mage:17",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 17,
+        "card_id": "MAG-05"
+      },
+      {
+        "id": "loan-mage:18",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 18,
+        "card_id": "MAG-06"
+      },
+      {
+        "id": "loan-mage:19",
+        "template_id": "loan-mage",
+        "hero_class": "Mage",
+        "slot_index": 19,
+        "card_id": "MAG-07"
+      },
+      {
+        "id": "loan-guardian:0",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 0,
+        "card_id": "C01"
+      },
+      {
+        "id": "loan-guardian:1",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 1,
+        "card_id": "C02"
+      },
+      {
+        "id": "loan-guardian:2",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 2,
+        "card_id": "C03"
+      },
+      {
+        "id": "loan-guardian:3",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 3,
+        "card_id": "C04"
+      },
+      {
+        "id": "loan-guardian:4",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 4,
+        "card_id": "C05"
+      },
+      {
+        "id": "loan-guardian:5",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 5,
+        "card_id": "C06"
+      },
+      {
+        "id": "loan-guardian:6",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 6,
+        "card_id": "C07"
+      },
+      {
+        "id": "loan-guardian:7",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 7,
+        "card_id": "C08"
+      },
+      {
+        "id": "loan-guardian:8",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 8,
+        "card_id": "C09"
+      },
+      {
+        "id": "loan-guardian:9",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 9,
+        "card_id": "C10"
+      },
+      {
+        "id": "loan-guardian:10",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 10,
+        "card_id": "C11"
+      },
+      {
+        "id": "loan-guardian:11",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 11,
+        "card_id": "C12"
+      },
+      {
+        "id": "loan-guardian:12",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 12,
+        "card_id": "C13"
+      },
+      {
+        "id": "loan-guardian:13",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 13,
+        "card_id": "GUA-01"
+      },
+      {
+        "id": "loan-guardian:14",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 14,
+        "card_id": "GUA-02"
+      },
+      {
+        "id": "loan-guardian:15",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 15,
+        "card_id": "GUA-03"
+      },
+      {
+        "id": "loan-guardian:16",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 16,
+        "card_id": "GUA-04"
+      },
+      {
+        "id": "loan-guardian:17",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 17,
+        "card_id": "GUA-05"
+      },
+      {
+        "id": "loan-guardian:18",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 18,
+        "card_id": "GUA-06"
+      },
+      {
+        "id": "loan-guardian:19",
+        "template_id": "loan-guardian",
+        "hero_class": "Guardian",
+        "slot_index": 19,
+        "card_id": "GUA-07"
+      }
+    ],
+    "SeasonEquipmentRules": [
+      {
+        "stats_version": "season-equipment-v1",
+        "resistance_cap": 0.6,
+        "draw_floor_seconds": 1.8,
+        "draw_ceiling_seconds": 6.0,
+        "inferno_bonus": 0.15,
+        "rapid_draw_reduction": 0.04,
+        "rapid_draw_floor_seconds": 1.8,
+        "chain_draw_chance": 0.1,
+        "opening_draw_count": 1,
+        "golden_cicada_bonus": 0.15
+      }
+    ],
+    "SeasonCrafting": [
+      {
+        "quality_id": "Purple",
+        "minimum_difficulty": 1,
+        "mark_kind": "Blueprint",
+        "mark_cost": 4,
+        "reforge_fragment_cost": 1,
+        "wish_attempts": 3
+      },
+      {
+        "quality_id": "Orange",
+        "minimum_difficulty": 2,
+        "mark_kind": "OrangeBlueprint",
+        "mark_cost": 14,
+        "reforge_fragment_cost": 2,
+        "wish_attempts": 3
+      }
+    ],
+    "SeasonMarkRules": [
+      {
+        "difficulty_id": "D0",
+        "mark_kind": "None",
+        "elite_marks": 0,
+        "boss_marks": 0,
+        "match_cap": 0
+      },
+      {
+        "difficulty_id": "D1",
+        "mark_kind": "Blueprint",
+        "elite_marks": 1,
+        "boss_marks": 2,
+        "match_cap": 4
+      },
+      {
+        "difficulty_id": "D2",
+        "mark_kind": "OrangeBlueprint",
+        "elite_marks": 1,
+        "boss_marks": 2,
+        "match_cap": 4
+      },
+      {
+        "difficulty_id": "D3",
+        "mark_kind": "OrangeBlueprint",
+        "elite_marks": 1,
+        "boss_marks": 2,
+        "match_cap": 4
+      },
+      {
+        "difficulty_id": "D4",
+        "mark_kind": "OrangeBlueprint",
+        "elite_marks": 1,
+        "boss_marks": 2,
+        "match_cap": 4
+      },
+      {
+        "difficulty_id": "D5",
+        "mark_kind": "OrangeBlueprint",
+        "elite_marks": 1,
+        "boss_marks": 2,
+        "match_cap": 4
+      }
+    ],
+    "SeasonLootPreference": [
+      {
+        "rule_id": "season-v1",
+        "default_element": "Fire",
+        "preferred_weight": 4000,
+        "other_weight": 1500
+      }
+    ],
+    "SeasonBotRewards": [
+      {
+        "rule_id": "season-bot-reward-v1",
+        "gold": 5,
+        "fragments": 1,
+        "equipment_chance_bp": 1000,
+        "equipment_quality": "Blue",
+        "equipment_level": 0,
+        "maximum_per_human": 1,
+        "mortal_pve": true
+      }
+    ],
+    "SeasonShopRules": [
+      {
+        "rule_id": "season-gold-shop-v1",
+        "enabled": true,
+        "time_zone": "Asia/Shanghai",
+        "reset_hour": 4,
+        "pack_cards": 3,
+        "white_weight": 50,
+        "green_weight": 30,
+        "blue_weight": 15,
+        "purple_weight": 5,
+        "class_soul_daily_limit": 1,
+        "paid_bag_cap": 3
+      }
+    ],
+    "SeasonShopProducts": [
+      {
+        "product_id": "card_pack",
+        "kind": "Cards",
+        "amount": 3,
+        "price_gold": 250,
+        "daily_limit": 5,
+        "quota_group": "card_pack",
+        "hero_class": null
+      },
+      {
+        "product_id": "warrior_soul",
+        "kind": "WarriorSoul",
+        "amount": 20,
+        "price_gold": 180,
+        "daily_limit": 3,
+        "quota_group": "warrior_soul",
+        "hero_class": null
+      },
+      {
+        "product_id": "equipment_fragments",
+        "kind": "EquipmentFragments",
+        "amount": 20,
+        "price_gold": 120,
+        "daily_limit": 3,
+        "quota_group": "equipment_fragments",
+        "hero_class": null
+      },
+      {
+        "product_id": "priest_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Priest"
+      },
+      {
+        "product_id": "mage_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Mage"
+      },
+      {
+        "product_id": "guardian_soul",
+        "kind": "ClassSoul",
+        "amount": 12,
+        "price_gold": 400,
+        "daily_limit": 1,
+        "quota_group": "class_soul",
+        "hero_class": "Guardian"
+      },
+      {
+        "product_id": "health_potion",
+        "kind": "HealthPotion",
+        "amount": 1,
+        "price_gold": 100,
+        "daily_limit": 4,
+        "quota_group": "health_potion",
+        "hero_class": null
+      },
+      {
+        "product_id": "advanced_bag",
+        "kind": "AdvancedBag",
+        "amount": 1,
+        "price_gold": 800,
+        "daily_limit": 0,
+        "quota_group": "advanced_bag",
+        "hero_class": null
+      },
+      {
+        "product_id": "top_bag",
+        "kind": "TopBag",
+        "amount": 1,
+        "price_gold": 2200,
+        "daily_limit": 0,
+        "quota_group": "top_bag",
+        "hero_class": null
+      }
+    ],
+    "SeasonActivityCalendar": [
+      {
+        "event_id": "activity-one",
+        "first_day_42": 12,
+        "days": 3
+      },
+      {
+        "event_id": "activity-two",
+        "first_day_42": 33,
+        "days": 3
+      }
+    ],
+    "SeasonJourneyRules": [
+      {
+        "rule_id": "season-journey-v1",
+        "enabled": true,
+        "outer_xp": 6,
+        "middle_xp": 10,
+        "elite_xp": 25,
+        "boss_xp": 80,
+        "extraction_xp": 70,
+        "catch_up_multiplier": 2,
+        "reference_days": 21,
+        "reference_xp_42": 6850,
+        "main_reward_levels": 20,
+        "contract_assignment": "oldest-open-incomplete",
+        "catch_up_sources": "cleared_cells",
+        "time_zone": "Asia/Shanghai"
+      }
+    ],
+    "SeasonWeeklyContracts": [
+      {
+        "contract_id": "weekly-extraction",
+        "completion_kind": "Extracted",
+        "target": 3,
+        "xp_reward": 300
+      },
+      {
+        "contract_id": "weekly-elite",
+        "completion_kind": "Elite",
+        "target": 5,
+        "xp_reward": 300
+      },
+      {
+        "contract_id": "weekly-boss",
+        "completion_kind": "Boss",
+        "target": 1,
+        "xp_reward": 300
+      }
+    ],
+    "SeasonThemeRules": [
+      {
+        "rule_id": "season-theme-v1",
+        "enabled": true,
+        "selected_theme": "Fire",
+        "preferred_weight": 4000,
+        "other_weight": 1500,
+        "group_weight_mode": "member-mean-normalized",
+        "global_damage_bp": 10000,
+        "layout": "chaos-6x6",
+        "spawn_singles": true
+      }
+    ],
+    "SeasonThemes": [
+      {
+        "theme_id": "Fire",
+        "element": "Fire",
+        "name_key": "season_theme_fire",
+        "strategy_id": "ember-windows",
+        "phase1_primary": "Fire",
+        "phase1_secondary": "Wood",
+        "phase2_primary": "Metal",
+        "phase2_secondary": "Earth",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Wood",
+        "element": "Wood",
+        "name_key": "season_theme_wood",
+        "strategy_id": "thorn-regrowth",
+        "phase1_primary": "Wood",
+        "phase1_secondary": "Water",
+        "phase2_primary": "Water",
+        "phase2_secondary": "Wood",
+        "regeneration_budget_bp": 500,
+        "regeneration_step_bp": 200,
+        "phase1_shield": 0,
+        "phase2_shield": 0,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Earth",
+        "element": "Earth",
+        "name_key": "season_theme_earth",
+        "strategy_id": "stone-cycle",
+        "phase1_primary": "Earth",
+        "phase1_secondary": "Metal",
+        "phase2_primary": "Metal",
+        "phase2_secondary": "Earth",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 12,
+        "phase2_shield": 10,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      },
+      {
+        "theme_id": "Metal",
+        "element": "Metal",
+        "name_key": "season_theme_metal",
+        "strategy_id": "metal-telegraph",
+        "phase1_primary": "Metal",
+        "phase1_secondary": "Fire",
+        "phase2_primary": "Fire",
+        "phase2_secondary": "Metal",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Empower",
+        "setup_value": 2
+      },
+      {
+        "theme_id": "Water",
+        "element": "Water",
+        "name_key": "season_theme_water",
+        "strategy_id": "tide-shift",
+        "phase1_primary": "Water",
+        "phase1_secondary": "Metal",
+        "phase2_primary": "Wood",
+        "phase2_secondary": "Water",
+        "regeneration_budget_bp": 0,
+        "regeneration_step_bp": 0,
+        "phase1_shield": 10,
+        "phase2_shield": 8,
+        "setup_kind": "Charge",
+        "setup_value": 0
+      }
+    ],
+    "SeasonThemeGroups": [
+      {
+        "group_id": "O1",
+        "tier": "outer",
+        "member_elements": "Fire",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O2",
+        "tier": "outer",
+        "member_elements": "Wood",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O3",
+        "tier": "outer",
+        "member_elements": "Water",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O4",
+        "tier": "outer",
+        "member_elements": "Earth",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O5",
+        "tier": "outer",
+        "member_elements": "Metal",
+        "spawn_allowed": true,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O6",
+        "tier": "outer",
+        "member_elements": "Fire|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O7",
+        "tier": "outer",
+        "member_elements": "Metal|Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "O8",
+        "tier": "outer",
+        "member_elements": "Water|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M1",
+        "tier": "middle",
+        "member_elements": "Fire|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M2",
+        "tier": "middle",
+        "member_elements": "Water|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M3",
+        "tier": "middle",
+        "member_elements": "Metal|Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M4",
+        "tier": "middle",
+        "member_elements": "Water|Water",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "M5",
+        "tier": "middle",
+        "member_elements": "Fire|Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E1",
+        "tier": "elite",
+        "member_elements": "Metal",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E2",
+        "tier": "elite",
+        "member_elements": "Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E3",
+        "tier": "elite",
+        "member_elements": "Water",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E4",
+        "tier": "elite",
+        "member_elements": "Earth",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E5",
+        "tier": "elite",
+        "member_elements": "Wood",
+        "spawn_allowed": false,
+        "base_weight": 100
+      },
+      {
+        "group_id": "E6",
+        "tier": "elite",
+        "member_elements": "Metal|Fire",
+        "spawn_allowed": false,
+        "base_weight": 100
+      }
+    ],
+    "SeasonJourneyRewards": [
+      {
+        "reward_id": "journey-level-01",
+        "level": 1,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-02",
+        "level": 2,
+        "kind": "WarriorSoul",
+        "amount": 6,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-03",
+        "level": 3,
+        "kind": "ClassSoul",
+        "amount": 2,
+        "ownership": "PermanentBound",
+        "requires_class_choice": true,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-04",
+        "level": 4,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-05",
+        "level": 5,
+        "kind": "CardPack",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-06",
+        "level": 6,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-07",
+        "level": 7,
+        "kind": "WarriorSoul",
+        "amount": 6,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-08",
+        "level": 8,
+        "kind": "ClassSoul",
+        "amount": 2,
+        "ownership": "PermanentBound",
+        "requires_class_choice": true,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-09",
+        "level": 9,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-10",
+        "level": 10,
+        "kind": "CardPack",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-11",
+        "level": 11,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-12",
+        "level": 12,
+        "kind": "WarriorSoul",
+        "amount": 6,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-13",
+        "level": 13,
+        "kind": "ClassSoul",
+        "amount": 2,
+        "ownership": "PermanentBound",
+        "requires_class_choice": true,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-14",
+        "level": 14,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-15",
+        "level": 15,
+        "kind": "CardPack",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-16",
+        "level": 16,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-17",
+        "level": 17,
+        "kind": "WarriorSoul",
+        "amount": 6,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-18",
+        "level": 18,
+        "kind": "ClassSoul",
+        "amount": 2,
+        "ownership": "PermanentBound",
+        "requires_class_choice": true,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-19",
+        "level": 19,
+        "kind": "EquipmentFragments",
+        "amount": 10,
+        "ownership": "SeasonalBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-20",
+        "level": 20,
+        "kind": "CardPack",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": null
+      },
+      {
+        "reward_id": "journey-level-21",
+        "level": 21,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "trail-seeker"
+      },
+      {
+        "reward_id": "journey-level-22",
+        "level": 22,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "relic-seeker"
+      },
+      {
+        "reward_id": "journey-level-23",
+        "level": 23,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "first-threshold"
+      },
+      {
+        "reward_id": "journey-level-24",
+        "level": 24,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "waymark-seal"
+      },
+      {
+        "reward_id": "journey-level-25",
+        "level": 25,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "veil-warden"
+      },
+      {
+        "reward_id": "journey-level-26",
+        "level": 26,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "veilbound-seal"
+      },
+      {
+        "reward_id": "journey-level-27",
+        "level": 27,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "fivefold-chronicle"
+      },
+      {
+        "reward_id": "journey-level-28",
+        "level": 28,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "convergent-sigil"
+      },
+      {
+        "reward_id": "journey-level-29",
+        "level": 29,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "veil-cartographer"
+      },
+      {
+        "reward_id": "journey-level-30",
+        "level": 30,
+        "kind": "Cosmetic",
+        "amount": 1,
+        "ownership": "PermanentBound",
+        "requires_class_choice": false,
+        "cosmetic_id": "relicbound-pathfinder"
+      }
+    ],
+    "SeasonCosmetics": [
+      {
+        "cosmetic_id": "trail-seeker",
+        "kind": "AvatarFrame",
+        "name_key": "journey_cosmetic_trail_seeker_name",
+        "description_key": "journey_cosmetic_trail_seeker_description"
+      },
+      {
+        "cosmetic_id": "relic-seeker",
+        "kind": "Title",
+        "name_key": "journey_cosmetic_relic_seeker_name",
+        "description_key": "journey_cosmetic_relic_seeker_description"
+      },
+      {
+        "cosmetic_id": "first-threshold",
+        "kind": "Collection",
+        "name_key": "journey_cosmetic_first_threshold_name",
+        "description_key": "journey_cosmetic_first_threshold_description"
+      },
+      {
+        "cosmetic_id": "waymark-seal",
+        "kind": "CardBack",
+        "name_key": "journey_cosmetic_waymark_seal_name",
+        "description_key": "journey_cosmetic_waymark_seal_description"
+      },
+      {
+        "cosmetic_id": "veil-warden",
+        "kind": "Title",
+        "name_key": "journey_cosmetic_veil_warden_name",
+        "description_key": "journey_cosmetic_veil_warden_description"
+      },
+      {
+        "cosmetic_id": "veilbound-seal",
+        "kind": "AvatarFrame",
+        "name_key": "journey_cosmetic_veilbound_seal_name",
+        "description_key": "journey_cosmetic_veilbound_seal_description"
+      },
+      {
+        "cosmetic_id": "fivefold-chronicle",
+        "kind": "Collection",
+        "name_key": "journey_cosmetic_fivefold_chronicle_name",
+        "description_key": "journey_cosmetic_fivefold_chronicle_description"
+      },
+      {
+        "cosmetic_id": "convergent-sigil",
+        "kind": "CardBack",
+        "name_key": "journey_cosmetic_convergent_sigil_name",
+        "description_key": "journey_cosmetic_convergent_sigil_description"
+      },
+      {
+        "cosmetic_id": "veil-cartographer",
+        "kind": "Title",
+        "name_key": "journey_cosmetic_veil_cartographer_name",
+        "description_key": "journey_cosmetic_veil_cartographer_description"
+      },
+      {
+        "cosmetic_id": "relicbound-pathfinder",
+        "kind": "AvatarFrame",
+        "name_key": "journey_cosmetic_relicbound_pathfinder_name",
+        "description_key": "journey_cosmetic_relicbound_pathfinder_description"
       }
     ]
   }

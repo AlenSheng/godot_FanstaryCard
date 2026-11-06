@@ -1,0 +1,52 @@
+{
+  "status": "season_settlement_wallet_and_context_verified_economy_loot_archive_pending",
+  "server_tests": 135,
+  "failed": 0,
+  "skipped": 0,
+  "godot_codec_checks": 19,
+  "reused_domain_tests": 74,
+  "domain_evidence": "../A04-rooms/r16/domain.trx; Domain and Domain.Tests input hashes unchanged",
+  "new_postgres_settlement_cases": 16,
+  "scope": [
+    "Published match context pinned into settlement headers and asset holds with composite FKs",
+    "Caller season/difficulty/config/stats/room mismatch rejects before receipt creation",
+    "Gold and equipment fragments credit the original season wallet; souls retain permanent accounts",
+    "Wallet operation hashes prevent duplicate credit and reject changed hold business data",
+    "Holds, wallet/ledger operations, equipment custody and loadout updates share the existing transaction",
+    "Late settlements credit archived original wallets and archive equipment without changing next-season loadouts",
+    "A delayed same-season receipt cannot replace an already active preparation loadout",
+    "Existing equipment retains origin/source-match fields; generated equipment records settlement mint location as MatchReward",
+    "Invalid equipment realm/stats/archive and missing hold context roll back all assets and withhold notification",
+    "Preparation/loadout/start/settlement movements and economic rows carry full available context; historical unknown fields stay NULL",
+    "Receipt and both Bootstrap readers carry original-season response tag 7",
+    "Legacy matches finish in legacy accounts after season start with no inferred current season",
+    "Existing real extraction/death, failure rollback, pending-hold recovery and protocol regressions"
+  ],
+  "history": [
+    {
+      "run": "r17",
+      "passed": 134,
+      "failed": 0
+    },
+    {
+      "run": "r18",
+      "passed": 135,
+      "failed": 0,
+      "change": "Added same-season delayed-loadout guard and full economic/movement context columns and writers."
+    }
+  ],
+  "public_archive_sha256": {
+    "r17": "82a7c33f812e9acee782f5d2f93cace53a0c3f79d6521b5ff61617e72481d342",
+    "r18": "342bf87ecef85f1efc72d74069af62311fb0e1d6f18ec5510f03bc95c9c30086"
+  },
+  "production_database_used": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "remaining": [
+    "Detailed loot-rule/source provenance and mint quotas; MatchReward is not a natural-drop or red-mint eligibility claim",
+    "Season crafting, shop, market, events and archive worker",
+    "Archived configuration loading and cross-config client/server recovery",
+    "New-season combat/difficulty/balance and all affected languages/resolutions UI",
+    "Final release integration, deployment and restart"
+  ]
+}

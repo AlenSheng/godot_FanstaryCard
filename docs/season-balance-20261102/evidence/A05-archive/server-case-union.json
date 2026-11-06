@@ -1,0 +1,678 @@
+{
+  "count": 106,
+  "union_not_one_physical_run": true,
+  "runs": [
+    {
+      "passed": 73,
+      "failed": 32,
+      "skipped": 0
+    },
+    {
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "cases": {
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AnUnavailableOrAlteredFrozenCatalogDoesNotFallBackToCurrentPrices": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "ed01a865-268c-82fa-2074-46578bdecb13",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.DurablePurchaseReplayIsFrozenAcrossConcurrentCallsRestartAndFinalSeasonClosure": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "3b88193c-084d-7ad1-b83e-a1c36d9eb8b4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "f6614d49-e9a2-b1cd-2377-dbb697ef37d8",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.SaveRejectsLegacyArchivedAndFutureItemsWithoutChangingVersionOrLocations": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "72f55c73-9355-e5e2-b924-857daeac1737",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ConcurrentGlobalRefreshesKeepThreeReceiptsAndDoNotResetAtUtcMidnight": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "2793f58e-5879-382a-c142-642adc272f30",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"archived\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "33687fd5-d2f4-b1eb-acd3-7f2f83542e8e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 2)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "9a9e78ae-9ee6-134e-0312-3992b66c5b45",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.EquipmentDomainConstraintsRejectCrossSeasonOrPrematureHistoricalReuse": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "9792afe4-0aab-b788-5978-3d2b8cb4e304",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CallerRollbackAlsoRollsBackBalancesOperationsAndLedger": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "e205839e-3fb0-0008-0c65-8bf2d35f614b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.ActualSameCurrencyTransferBurnsOnlySellerTaxAndKeepsOriginalItemAndReplay(currency: \"Gold\", quality: \"Orange\", price: 99999, fee: 9999)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "29125682-4f4a-5832-c16c-c91323eb84c9",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"rule\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "d08e365a-01b7-2c75-57fa-47af79db8b18",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.APreSeasonLegacyMatchFinishesInLegacyAccountsWithoutReplacingSeasonLoadouts": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "1a69b878-484c-158a-6a65-ab7e2d71ca77",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 3)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "df981825-84a9-6fb3-303d-1ec931a943c9",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.CompletedRequestReplaysAfterPeriodEndButCannotChangeContextOrCreditAgain": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "11aebfcf-b4d5-5743-846f-88f2592e7de7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.MixedAssetsCommitToTheirOriginalDomainsOnceAndExposeTheReceiptContext": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "3ced200e-cef4-a0db-3938-dc587a6308e7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.LoadoutReadKeepsCurrentPreparationLocksButHidesForeignReferences": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "8573e3ed-ef52-1c1f-be36-86e98bf3c05c",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WalletReplayStillRejectsDifferentWeaponAfterOuterIdempotencyRecordExpires": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "7587bed9-503b-5cfe-48d0-09131fda9cec",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.ConcurrentAndRecreatedRepositoryCommitsCreditExactlyOnce": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "93ac76fe-8dbe-df2a-8738-3c3a8382bbf4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 0)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "5759f320-bdbc-2d05-47e2-7e26c44810a5",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 1)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "320b9af1-b2f9-1ef1-fb43-e7129956a543",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingPublishedConfigKeepsTheFrozenDailyCatalogAndItsAlreadyUsedQuota": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "80b22dd9-5822-7c49-a8d2-8c63eec6f825",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"season\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "6de58d70-3e12-3043-7940-7139d01510b1",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.LateCommitCreditsArchivedWalletAndCannotOverwriteTheNextSeasonLoadout": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "3d84a782-3698-610b-70d7-120972835e27",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.AnnouncedSeasonRetainsLegacyHashAndCannotMoveFutureEquipmentEarly": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "63d674c0-b16d-13e4-7006-c526b8642f21",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 4)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "0737f6a2-13d3-65ea-226d-26b1e45f9995",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ParallelSpendsCannotOverdrawAndRejectedAmountsLeaveNoJournal": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "5a1a2f3f-b2e5-d7de-95df-0eded60af573",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"difficulty\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "747d1dfc-eecb-ee31-7d6e-31de053f42ba",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.GoldAndFragmentsStayInTheOriginalSeasonWhileSoulsAndConsumablesStayPermanent": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "4c972502-f862-02b0-220c-fd396020efef",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.ADelayedSameSeasonCommitCannotReplaceAnAlreadyPreparedNewLoadout": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "33a003e5-165d-6196-002a-54ce95addf9e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.ActualSameCurrencyTransferBurnsOnlySellerTaxAndKeepsOriginalItemAndReplay(currency: \"Diamond\", quality: \"Orange\", price: 2000, fee: 200)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "e6afe9f1-1ebd-df5f-0de4-fefb1b77526c",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"config\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "60f7636f-8b9c-fdc2-a731-d33bff68d95b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ACommitFaultRollsBackGoldFragmentsReceiptsAndReplayTogether": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "d76b8928-d5b5-a9a0-4552-7767fb173125",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.MissingOrChangedTermsAndAnEmptySeasonWalletNeverSpendThePermanentGoldBalance": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "d9570152-e42f-2519-c431-88e0076032d6",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.WrongDiamondConfirmationAndPostPaymentFaultCannotSpendOrTransferAnything": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "2cb91988-7ff1-e9e3-6cfd-236e2efc9af9",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PublicationIsImmutableAndConcurrentRetriesKeepOneSnapshot": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "79130232-c69a-2ec3-e125-323798a88315",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.FullInventoryReturnStaysDurableAcrossSeasonClosureAndNeverEntersTheNewSeason": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "75f18ffb-1eeb-64e0-81a5-f2541d05035d",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.WalletOperationProtectsReplayAndRejectsChangedHoldBusinessData": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "a10baf16-9601-b16e-7be6-5d0d8dce957e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.OriginalCellAndPromotionProofPersistOnceWithTheFrozenSeason": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "af370f12-d812-6845-71c1-01e65169b3e8",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.BothCurrenciesShareEightSlotsAndAtomicRelistNeedsNoSpareInventorySlot": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "1b442732-8f6d-193f-9092-6f5eb994b933",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.AScopedHoldCannotLoseItsContextAndFallBackToLegacyMoney": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "a379db04-311a-64fe-f297-17353afd3574",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"legacy\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "802ed234-4850-61af-f472-761718755d6f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"missing\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "d1c1af05-3833-1374-d907-fba97ed52c38",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.DatabaseMintCapCoversEverySourceWithoutRestrictingLaterInventoryOwnership(difficulty: 5)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "b85579b0-459e-1048-6a29-adb832e054d4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"quality\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "b38fac58-ee93-42cc-174e-fc5752eb960e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.PurchaseAndCancellationRaceHaveOneCustodianAndAtMostOneCurrencyTransfer": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "6e4d9e5d-2a71-038b-2c01-0722160516d7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidEquipmentDomainRollsBackEveryAssetAndKeepsHoldsPending(invalid: \"stats\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "5c07541e-f8d9-366c-614e-99477a2893a4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ArchivedWalletAllowsOnlyExplicitPermanentWeaponSpendAndOldSeasonCredits": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "e4441dc5-4f9a-ce04-3d3e-10107bec4213",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ShanghaiFourOClockCreatesExactlyOneNewQuotaWindow": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "ad2f73af-3668-8bb4-e8cb-e0dfc4ac482b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.PermanentWeaponUpgradeUsesChosenSeasonWalletInTheSameTransaction": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "407024ca-ba6c-d30a-8c89-d4a3b636ef6f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.UpgradeFromLegacyPreservesPermanentAssetsAndMarksOnlyUnknownHistoricalMetadata": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "a799ab51-e3a5-e93b-cfac-cbcaf2474ee9",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"room\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "2a7f20d0-9b48-807e-ae44-837bc25cd79b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PaidBagsUseOneThreeItemStorageCapButNoInventedDailyPurchaseLimit": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "f8a0ac8f-f396-4584-faf0-0b6afd46054e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.ClosedPeriodRejectsNewWritesWhileCompletedReplayHasNoNewEffects": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "b5d13051-5acd-9d5e-5f58-43c2cd2a3b24",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.ConcurrentWalletReplayWritesOneOperationAndOneEntryPerResource": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "f8941da7-e9bf-e277-3d9a-76b7f8d8e2d2",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.CurrentSaveDoesNotUnequipAnItemFromAnotherDomain": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "86b7d9d1-e425-768e-c2b8-f27ffe09cb6a",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.WeaponWriteFailureRollsBackItsSeasonDebitAndCanRetryOnce": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "7389252f-0490-b84b-ba1d-169cde6e6dad",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.ActualSameCurrencyTransferBurnsOnlySellerTaxAndKeepsOriginalItemAndReplay(currency: \"Diamond\", quality: \"Red\", price: 8000, fee: 800)": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "df3dabe0-9b23-a4b1-2fea-df03c569d7b4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.HeldReturnPaginationIsCompleteAndNeverIncludesAnotherPlayersItems": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "c885660c-ad32-976e-0d08-4cbd53e4f29b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.ThreeClassChoicesShareOneAtomicDailyQuota": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "a14d6b14-9a84-3451-4f71-884255aa4f36",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.PermanentCopyAdoptionSurvivesClosureAndCannotBeBypassedByOpeningCardsBeforeTheShop": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "867da9af-4a6d-7ec2-a490-70703e67e144",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.AdjacentPeriodsAreHalfOpenAndWalletsRemainIndependent": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "526eec41-b876-5ecf-63fe-1c85807f008b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"missing\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "6cd03680-e246-c72b-45d3-d7450cbeee70",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.TerminalRoomObservationPassesItsPinnedContextIntoSettlement": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "0301890c-8048-9e3d-6807-73dda22d2b56",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMarketTests.CurrentFiltersMaterialOrderAndPaginationKeepCurrenciesAndSourceRestrictionsSeparate": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "de41aa52-1da4-eca5-87d4-f90401cefce4",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.CallerContextMismatchCannotCreateAReceipt(invalid: \"stats\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "241b6edf-b4f0-bc50-be14-9e21a9c12372",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "95d75d3e-3706-465e-a1fe-3d14938b6ce6",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonSettlementTests.InvalidMintQualityOrOriginLeavesEveryHoldAndWalletUncommitted(mutation: \"layer\")": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "6ccdcadc-8997-e0bc-1a41-b628c506df32",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.FirstSeasonShopAdoptionKeepsLegacySingleCardsRefreshesAndUsedAccountQuotas": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "1152b749-9b94-9f28-309a-2c137f0afc34",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonAssetDomainTests.InsufficientSelectedWalletCannotSpendHistoricalFragmentsOrUpgradeWeapon": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "3fdd0d1c-d7bb-4de9-9348-97ca70d25216",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.AFullCodexCanBuyAPackWithThreeRepeatedCopiesAndAnAlreadyOwnedDailyCard": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "1f18efe4-c828-5f7b-fdb1-06d98d1c5930",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.RequestsQueuedBeforeFourOClockCannotSpendTheNewWindowWithOldTerms": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "3eb97f68-5e6c-aec5-2e79-3c42f8b4ea67",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonLoadoutTests.WaitingForPlayerLockCannotUseAnExpiredAdmissionTimestamp": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "1561d008-0805-0e55-03d6-0ca46f77238f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonShopTests.SwitchingSeasonsInsideOneBusinessDayDoesNotRefillAccountQuotaOrUseTheOldWallet": {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "test_id": "09f99091-fe3d-c7e3-290c-410cff0f1f10",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "d62a19df-4f88-47e2-b0ae-8e857f1f7b12",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "bf4e99c8-e6b2-45a9-a7e7-bf4f2ee38735",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "52293722-2671-4aac-99b7-e4db0edc38a3",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "dfc54321-2510-44c4-9b00-8d1c44424e1b",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.HostedWorkerRunsTheDurableArchiveWithoutAnyGameActorOrOnlineClient": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "f447a837-b312-4cbd-bf72-96eef3d717be",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "ac6b0076-56c3-4086-854a-6221ca420daa",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "37e48c36-1c3a-476b-b1a3-3fce076a602f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "aa74b5e0-9d9e-4959-a88f-1b4010a5c5e6",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "f64e4dcb-84c6-4dfd-95f5-0fb08f9be1f7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "d5727a65-6c5a-4cf5-8a85-cc2569b50ce7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "37170d72-511a-4589-a7a8-7b6f63ea47a1",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "a28b29b2-e702-4196-9992-eaed8f2583e0",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "e0a02167-32cf-4e71-b487-09f7ba4ef9e1",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "d28673e5-78ae-4d82-b35b-8e8e3c306edb",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "11c7b529-873d-4919-8abf-257c7c1499cf",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \\\"None\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "e73516ae-1c14-4b86-80a8-ba6f23661e68",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \\\"fire\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "eb7b8743-6c51-4d0c-9981-69365261fead",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \\\"\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "4fe72f75-55db-4193-aea9-a687bc2cb4aa",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: \\\"Purple\\\", accepted: False)": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "22c7cb5a-2309-4bc1-ae17-ba1a44a5d6bf",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: \\\"Orange\\\", accepted: False)": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "41a3bc57-00e7-4c4f-a4ac-d996913ace2f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: \\\"Orange\\\", accepted: True)": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "662445c7-19b2-4df4-a70e-b1b88a9f21e0",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null)": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "d1212ce9-5651-478d-bce4-62827972715a",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: \\\"current\\\", stats: \\\"wrong-stats\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "dbbbf1f4-ac6a-4757-afb9-cd53f10aaff1",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "e8103c20-5b44-44ac-83a8-515a30c21d5c",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "30a2d12c-6c75-45b5-a965-741d9e6596a7",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "f1171bcb-951b-4c32-bffa-4daa12b8346d",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "0d685101-61e9-406e-a4a6-5d55c25a564d",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "5837430e-3b7f-4b1a-9ce5-65bb0ac52a0f",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "39b2bceb-0ff1-45a7-988d-5fd8fdef32c8",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \\\"context\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "4a833ec2-f9c9-4dcd-8e85-3dd5a006e72e",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \\\"projection\\\")": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "9a3b9caa-43bd-4cc0-a752-7c997e3bd342",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "e425a19e-3ab6-4470-9396-523b088dc36a",
+      "outcome": "Passed"
+    },
+    "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext": {
+      "source": "runtime-r92\\public\\results\\season-archive-runtime.trx",
+      "test_id": "e795fe87-f7e5-4f63-9c4f-ed62367c2e1d",
+      "outcome": "Passed"
+    }
+  },
+  "original_failed_cases_preserved": [
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \"context\")"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: \"Purple\", accepted: False)"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \"fire\")"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null)"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \"\")"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: \"Orange\", accepted: True)"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: \"Orange\", accepted: False)"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: \"current\", stats: \"wrong-stats\")"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: \"None\")"
+    },
+    {
+      "source": "storage-r91\\public\\season-archive-server.trx",
+      "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \"projection\")"
+    }
+  ]
+}

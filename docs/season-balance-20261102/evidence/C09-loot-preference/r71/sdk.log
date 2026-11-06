@@ -1,0 +1,87 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 561 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 2 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/loot-preference-domain.trx
+
+Passed!  - Failed:     0, Passed:   581, Skipped:     0, Total:   581, Duration: 5 s - FantasyCard.Domain.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 111 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 323 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 6 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 14 ms).
+  1 of 5 projects are up-to-date for restore.
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:03:17.16]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: "committed-response-loss") [SKIP]
+[xUnit.net 00:03:17.16]     FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: "precommit") [SKIP]
+[xUnit.net 00:03:18.46]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [FAIL]
+  Skipped FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: "committed-response-loss") [1 ms]
+  Skipped FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: "precommit") [1 ms]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom [1 s]
+  Error Message:
+   System.InvalidOperationException : Saved loot preference differs from the original preparation.
+  Stack Trace:
+     at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 762
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteContextualCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 19
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RealtimeRequestStore.ExecuteAsync(Guid playerId, String requestId, String fingerprint, Func`1 execute) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 1021
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 75
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 79
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 88
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:19.58]     FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [FAIL]
+  Failed FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown [1 s]
+  Error Message:
+   System.InvalidOperationException : Saved loot preference differs from the original preparation.
+  Stack Trace:
+     at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Rooms/RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 762
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteContextualCoreAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.TerminalContext.cs:line 19
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RealtimeRequestStore.ExecuteAsync(Guid playerId, String requestId, String fingerprint, Func`1 execute) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 1021
+   at FantasyCard.Server.Realtime.RealtimeCommandRouter.RouteAsync(PlayerProfile player, ClientCommand command, String traceId, CancellationToken cancellationToken) in /workspace/server/src/FantasyCard.Server/Realtime/RealtimeCommandRouter.cs:line 85
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 38
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 49
+   at FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown() in /workspace/server/tests/FantasyCard.Server.Tests/Persistence/PostgresCombatActionTests.cs:line 60
+--- End of stack trace from previous location ---
+[xUnit.net 00:03:57.57]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11) [FAIL]
+[xUnit.net 00:03:57.65]     FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9) [FAIL]
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11) [48 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 91
+Actual:   200
+  Stack Trace:
+     at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(Boolean alternate, Int32 gold, Int32 fragments) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 119
+   at System.RuntimeMethodHandle.InvokeMethod(ObjectHandleOnStack target, Void** arguments, ObjectHandleOnStack sig, BOOL isConstructor, ObjectHandleOnStack result)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9) [78 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 71
+Actual:   156
+  Stack Trace:
+     at FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(Boolean alternate, Int32 gold, Int32 fragments) in /workspace/server/tests/FantasyCard.Server.Tests/Config/ConfigRoomVersionTests.cs:line 119
+   at InvokeStub_ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(Object, Span`1)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+Results File: /workspace/results/loot-preference-server.trx
+
+Failed!  - Failed:     4, Passed:   294, Skipped:     2, Total:   300, Duration: 4 m - FantasyCard.Server.Tests.dll (net10.0)

@@ -3,6 +3,7 @@ using FantasyCard.Domain.Configuration;
 using Npgsql;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Server.Realtime;
+using FantasyCard.Server.Progression;
 
 namespace FantasyCard.Server.Admin;
 
@@ -176,12 +177,12 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             if (remaining is not null && balance.Table != "player_consumables")
             {
                 await using var ledger = new NpgsqlCommand(
-                    "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at) VALUES($1,$2,$3,$4,$5,$6,'admin_revoke',$7)",
+                    "INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,source_kind) VALUES($1,$2,$3,$4,$5,$6,'admin_revoke',$7,'AdminRevoke')",
                     connection, transaction);
                 ledger.Parameters.AddWithValue(Guid.CreateVersion7());
                 ledger.Parameters.AddWithValue(request.PlayerId);
                 ledger.Parameters.AddWithValue(requestId);
-                ledger.Parameters.AddWithValue(request.Kind is "PriestSoul" or "MageSoul" or "GuardianSoul" ? "ClassSoul" : request.Kind);
+                ledger.Parameters.AddWithValue(request.Kind);
                 ledger.Parameters.AddWithValue(-request.Amount);
                 ledger.Parameters.AddWithValue((long)remaining);
                 ledger.Parameters.AddWithValue(timeProvider.GetUtcNow());
@@ -198,7 +199,14 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
             if (changed == 1)
             {
                 await using var movement = new NpgsqlCommand(
-                    "INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at) VALUES($1,$2,$3,'Inventory','EnhanceMaterialConsumed','admin_revoke',$4,$5)",
+                    """
+                    INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
+                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
+                    SELECT $1,$2,$3,'Inventory','EnhanceMaterialConsumed','admin_revoke',$4,$5,e.season_id,'AdminRevoke',
+                        CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version,$2,$2
+                    FROM equipments e LEFT JOIN season_definitions d ON d.season_id=e.season_id
+                    WHERE e.instance_id=$3 AND e.owner_id=$2
+                    """,
                     connection, transaction);
                 movement.Parameters.AddWithValue(Guid.CreateVersion7());
                 movement.Parameters.AddWithValue(request.PlayerId);
@@ -230,6 +238,7 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         RunBulkOperationAsync(playerId, requestId, "unlock_all_cards", async (connection, transaction) =>
         {
             var changed = 0;
+            var permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection, transaction, playerId, cancellationToken);
             foreach (var card in GameConfigCatalog.Current.Cards.Where(card => card.IsCodex))
             {
                 await using var command = new NpgsqlCommand(
@@ -244,7 +253,11 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                 command.Parameters.AddWithValue(card.CardId);
                 command.Parameters.AddWithValue(card.HeroClass is { } heroClass ? (object)(short)heroClass : DBNull.Value);
                 command.Parameters.AddWithValue(card.Rarity);
-                changed += await command.ExecuteNonQueryAsync(cancellationToken);
+                var unlocked = await command.ExecuteNonQueryAsync(cancellationToken);
+                changed += unlocked;
+                if (permanentCopies && unlocked != 0)
+                    await PermanentCardCopies.WriteLedgerAsync(connection, transaction, playerId, card.CardId,
+                        1, 1, "admin.unlock_all_cards", requestId, timeProvider.GetUtcNow(), cancellationToken);
             }
             return new AdminBulkOperationResult("unlock_all_cards", Cards: changed);
         }, cancellationToken);
@@ -265,8 +278,10 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
         RunBulkOperationAsync(playerId, requestId, "grant_all_equipment", async (connection, transaction) =>
         {
             var granted = 0;
+            var now = timeProvider.GetUtcNow();
             foreach (var specification in AllEquipmentSpecifications)
             {
+                var instanceId = Guid.CreateVersion7();
                 await using var command = new NpgsqlCommand(
                     """
                     INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait)
@@ -275,13 +290,24 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                         SELECT 1 FROM equipments WHERE owner_id=$2 AND slot=$3 AND quality=$4 AND element=$6
                             AND location IN ('Inventory','Equipped'))
                     """, connection, transaction);
-                command.Parameters.AddWithValue(Guid.CreateVersion7());
+                command.Parameters.AddWithValue(instanceId);
                 command.Parameters.AddWithValue(playerId);
                 command.Parameters.AddWithValue(specification.Slot);
                 command.Parameters.AddWithValue(specification.Quality);
-                command.Parameters.AddWithValue(timeProvider.GetUtcNow());
+                command.Parameters.AddWithValue(now);
                 command.Parameters.AddWithValue(specification.Element);
-                granted += await command.ExecuteNonQueryAsync(cancellationToken);
+                var inserted = await command.ExecuteNonQueryAsync(cancellationToken);
+                granted += inserted;
+                if (inserted != 0)
+                {
+                    await using var movement = new NpgsqlCommand("""
+                        INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,source_kind,from_owner_id,to_owner_id)
+                        VALUES($1,$2,$3,'Admin','Inventory','admin.grant_all_equipment',$4,$5,'AdminGrant',NULL,$2)
+                        """, connection, transaction);
+                    movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
+                    movement.Parameters.AddWithValue(instanceId);movement.Parameters.AddWithValue(requestId);movement.Parameters.AddWithValue(now);
+                    await movement.ExecuteNonQueryAsync(cancellationToken);
+                }
             }
             return new AdminBulkOperationResult("grant_all_equipment", Equipment: granted);
         }, cancellationToken);

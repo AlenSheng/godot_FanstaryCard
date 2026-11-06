@@ -1,0 +1,22 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 101 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 316 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\local-red-domain-r3\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\local-red-domain-r3\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\local-red-domain-r3\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet [51 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+                            ↓ (pos 17)
+Expected: "season-v1-config-6"
+Actual:   "season-v1-config-7"
+                            ↑ (pos 17)
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Configuration\GameConfigCatalogTests.cs:line 17
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\local-red-domain-r3\results\bot-domain.trx
+
+Failed!  - Failed:     1, Passed:   610, Skipped:     0, Total:   611, Duration: 2 s - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:01.94]     FantasyCard.Domain.Tests.Configuration.GameConfigCatalogTests.EmbeddedCatalogContainsCompleteGdd068CardSet [FAIL]

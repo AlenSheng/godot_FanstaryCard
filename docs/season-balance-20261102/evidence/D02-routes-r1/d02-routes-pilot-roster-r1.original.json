@@ -1,0 +1,44 @@
+{
+  "prior_used": 73,
+  "policy": {
+    "scope": "Current15 natural original map/spawn/monsters, shortest legal inward path to original Boss, full real3s extraction; not old B05 R1/allscan/normal-settlement replay or population mean.",
+    "assumptions": "Owned permanent P5 cards/weapon, actual effective=D; legal armor+3 with D0Blue/D1Purple/D2+oneOrange4Purple;2preowned potions. Real choices/heals only, no midcombat potion/hp/deck resets.",
+    "recovery": [
+      "first actual accepted action JSONrestore and replay idempotence",
+      "extraction100ms into real reading JSONrestore then actual completion timestamp"
+    ],
+    "red_policy": "Truthful actual roll: Miss only if real SeasonRed.Hits is false; if hit explicit pre-used logical weekly quota fixture => Exhausted, no mint. Not a database quota claim.",
+    "maximum_virtual_seconds": 1200,
+    "terminal_outcomes": [
+      "Extracted",
+      "Dead",
+      "Timeout"
+    ],
+    "failed_or_missing_terminal_must_be_retained": true,
+    "planned_new_routes": 18,
+    "total_D02_after_full_roster": 91,
+    "original_B05_C16_D01_not_repeated": true,
+    "local_reserve_GiB": 2,
+    "startup_GiB": 1
+  },
+  "cases": [
+    {
+      "id": "D02-ROUTE-007",
+      "hero": "Mage",
+      "difficulty": 2,
+      "seed": 970003
+    },
+    {
+      "id": "D02-ROUTE-008",
+      "hero": "Priest",
+      "difficulty": 2,
+      "seed": 970003
+    },
+    {
+      "id": "D02-ROUTE-009",
+      "hero": "Guardian",
+      "difficulty": 2,
+      "seed": 970003
+    }
+  ]
+}

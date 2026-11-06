@@ -1,0 +1,27 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 559 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 4 ms).
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:43.74]     FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill [FAIL]
+  Failed FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill [40 s]
+  Error Message:
+   Assert.DoesNotContain() Failure: Filter matched in collection
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ↓ (pos 2)
+Collection: [RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 577.6, Actions = 146, Kills = 10, ActualDamage = 733, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 146, CardsSpent = 148, FinalHand = 1, RequestedCastCharge = 0, EmptyHandSeconds = 576.4000000000625, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73102, Outcome = Dead, Seconds = 539.9, Actions = 138, Kills = 11, ActualDamage = 670, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 136, CardsSpent = 139, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 539.4000000000541, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73101, Outcome = Timeout, Seconds = 1200, Actions = 663, Kills = 48, ActualDamage = 3988, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1196.4000000000074, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 80 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73102, Outcome = Timeout, Seconds = 1200, Actions = 664, Kills = 49, ActualDamage = 4285, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1195.9000000000078, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 78 }, RunRow { Hero = Priest, Build = starter, Level = 1, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 695.6, Actions = 176, Kills = 14, ActualDamage = 955, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 175, CardsSpent = 178, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 694.4000000000893, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, ···]
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill() in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonResourceLoopTests.cs:line 58
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Standard Output Messages:
+ {"hero":"Priest","matches":96,"dead":43,"extracted":43,"timeout":10,"maxKills":54,"maxActions":842,"maxActionsPerSecond":0.8583810988396477,"maxDps":8.778891388832072}
+ {"hero":"Mage","matches":96,"dead":43,"extracted":48,"timeout":5,"maxKills":54,"maxActions":683,"maxActionsPerSecond":1.153111063920153,"maxDps":10.645586297760211}
+ {"hero":"Guardian","matches":96,"dead":28,"extracted":41,"timeout":27,"maxKills":54,"maxActions":912,"maxActionsPerSecond":0.8771168041684758,"maxDps":7.790507364975451}
+
+
+Results File: /workspace/results/resource-loops.trx
+
+Failed!  - Failed:     1, Passed:     3, Skipped:     0, Total:     4, Duration: 40 s - FantasyCard.Domain.Tests.dll (net10.0)

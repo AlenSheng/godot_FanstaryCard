@@ -46,11 +46,11 @@ static func localized_name(id: String, card: Dictionary = {}) -> String:
 static func localized_face_name(id: String, card: Dictionary = {}) -> String:
 	return str(P.language_pack_section("card_face_names").get(id, localized_name(id, card)))
 
-static func at_level(card: Dictionary, level: int) -> Dictionary:
+static func at_level(card: Dictionary, level: int, index: Dictionary = {}) -> Dictionary:
 	# Catalog rows are flat scalars, so a shallow copy keeps the source row intact.
 	var effect := card.duplicate()
 	effect["is_element_tuning"] = str(card.get("category", "")) == "ElementTune"
-	var growth := CatalogIndex.card_level(str(card.get("id", "")), level)
+	var growth := CatalogIndex.card_level(str(card.get("id", "")), level, index)
 	if growth.is_empty(): return effect
 	for key in ["elemental_damage", "secondary_elemental_damage", "direct_damage", "heal", "shield"]:
 		if int(effect.get(key, 0)) > 0: effect[key] += int(growth.value_bonus)
@@ -67,12 +67,12 @@ static func with_element(card: Dictionary, element_override: String) -> Dictiona
 	result.direct_damage = damage if element_override == "None" else 0
 	return result
 
-static func face_description(id: String, level: int = 0, overrides: Dictionary = {}) -> String:
-	var card := CatalogIndex.card(id).duplicate()
+static func face_description(id: String, level: int = 0, overrides: Dictionary = {}, index: Dictionary = {}) -> String:
+	var card := CatalogIndex.card(id, index).duplicate()
 	card.merge(overrides, true)
 	card["id"] = id
 	if id == "M-BOXSPIRIT" and str(card.get("element", "None")) == "None": card = with_element(card, "None")
-	return _translated_face_description(at_level(card, level))
+	return _translated_face_description(at_level(card, level, index))
 
 static func _number(value: float) -> String:
 	return str(int(value)) if is_equal_approx(value, round(value)) else ("%.2f" % value).trim_suffix("0").trim_suffix(".")

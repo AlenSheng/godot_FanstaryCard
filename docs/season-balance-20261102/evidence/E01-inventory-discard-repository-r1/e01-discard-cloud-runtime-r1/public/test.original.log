@@ -1,0 +1,264 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(113,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SecondMovementFailureRollsBackEveryItemAndReceiptThenSameRequestRetries [FINISHED] Time: 0.2612512s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(132,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ConcurrentSameRequestReplaysAndCompetingRequestCannotDestroyTheBodyAgain [FINISHED] Time: 0.0291939s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(146,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.LegacyInventoryCanDiscardWithoutInventingSeasonOrChangingPermanentBalances [FINISHED] Time: 0.0267088s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(100,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.SavedLoadoutInAnotherClassIsProtectedAndExplicitSeasonIdentityIsRequired [FINISHED] Time: 0.0427023s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Equipped") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Equipped") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(68,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(String location)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Equipped") [FINISHED] Time: 0.029179s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "PreparationLocked") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "PreparationLocked") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(68,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(String location)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "PreparationLocked") [FINISHED] Time: 0.0472991s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "MarketListed") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "MarketListed") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(68,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(String location)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "MarketListed") [FINISHED] Time: 0.0242437s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "InMatchBackpack") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "InMatchBackpack") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(68,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(String location)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "InMatchBackpack") [FINISHED] Time: 0.0236305s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Recycled") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Recycled") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(68,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(String location)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OneUnavailableItemRejectsTheEntireBatch(location: "Recycled") [FINISHED] Time: 0.0631183s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(39,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd()
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.BatchRetainsPhysicalHistoryAndRecipesWithoutAnyResourceRefundAndReplaysAfterSeasonEnd [FINISHED] Time: 0.0301112s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "stale") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "stale") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(82,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "stale") [FINISHED] Time: 0.0541632s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "owner") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "owner") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(82,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "owner") [FINISHED] Time: 0.0246084s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(82,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "legacy") [FINISHED] Time: 0.0245549s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "Borrowed") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "Borrowed") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(82,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "Borrowed") [FINISHED] Time: 0.0614319s
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "BotReward") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "BotReward") [FAIL]
+      System.UnauthorizedAccessException : Access to the path '/results/owned-schemas.original.jsonl' is denied.
+      ---- System.IO.IOException : Permission denied
+      Stack Trace:
+           at Interop.ThrowExceptionForIoErrno(ErrorInfo errorInfo, String path, Boolean isDirError)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String path, OpenFlags flags, Int32 mode, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, UnixFileMode openPermissions, Int64& fileLength, UnixFileMode& filePermissions, Boolean failForSymlink, Boolean& wasSymlink, Func`4 createOpenException)
+           at System.IO.File.OpenHandle(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize)
+           at System.IO.File.WriteToFile(String path, FileMode mode, ReadOnlySpan`1 contents, Encoding encoding)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(25,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(33,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.OpenAsync()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresInventoryDiscardTests.cs(82,0): at FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(String change)
+        --- End of stack trace from previous location ---
+        ----- Inner Stack Trace -----
+        
+    FantasyCard.Server.Tests.Persistence.PostgresInventoryDiscardTests.ChangedVersionForeignOwnerOrDifferentAssetDomainNeverDiscardsOtherItems(change: "BotReward") [FINISHED] Time: 0.0252337s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 15, Errors: 0, Failed: 15, Skipped: 0, Not Run: 0, Time: 0.943s
+error: Access to the path '/results/cases.trx' is denied.
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory

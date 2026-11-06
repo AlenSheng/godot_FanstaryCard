@@ -1,0 +1,76 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy [STARTING]
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.BootstrapSeparatesSeasonBalancesWithoutResettingPermanentDataOrReopeningClosedEconomy [FINISHED] Time: 2.5490907s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.CurrentInventoryExcludesLegacyArchivedAndFutureEquipment [FINISHED] Time: 1.7609775s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonReadModelTests.AnnouncedFirstSeasonRetainsLegacyUntilItsExactStart [FINISHED] Time: 1.9987575s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ConcurrentWorkersCommitEachOriginalItemExactlyOnce [FINISHED] Time: 2.3128197s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.HostedWorkerRunsTheDurableArchiveWithoutAnyGameActorOrOnlineClient [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.HostedWorkerRunsTheDurableArchiveWithoutAnyGameActorOrOnlineClient [FINISHED] Time: 1.7842081s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.BoundedPagesResumeWithOriginalLoadoutAndNeverMoveNewSeasonOrPermanentAssets [FINISHED] Time: 1.9073707s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ArchivedWalletStillAcceptsOnlyOriginalLateCreditAndNeverFundsTheNextSeason [FINISHED] Time: 1.8021036s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.ActiveAndUnknownSeasonsCannotCreateArchiveJobsAndScanBoundsRemainExplicit [FINISHED] Time: 1.7777555s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.MidPageDatabaseFaultRollsBackItemsAndCursorThenRecreatedWorkerContinuesTheSameJob [FINISHED] Time: 2.0267576s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.UnsettledOldMatchRemainsWaitingAndItsOriginalEquipmentIsNotTakenFromTheRoom [FINISHED] Time: 2.1093341s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonArchiveTests.FullWarehouseExpiryRetainsTheOriginalHeldItemAndArchiveNeedsNoFreeActiveSlot [FINISHED] Time: 2.0866126s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LockedDifficultyAndWrongConfigurationCannotCreateMembershipOrPreparation [FINISHED] Time: 1.8793316s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.SnapshotPinsContextAndProjectsLevelsWithoutChangingPermanentProgression [FINISHED] Time: 1.7902448s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreferenceParticipatesInDurableReplayIdentityAndCannotChangeUnderTheSameKey [FINISHED] Time: 1.9835642s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.UnloadedSeasonConfigurationCannotCreateAFalseCurrentSnapshot [FINISHED] Time: 1.9332607s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.PreparationExpiresAtSeasonEndAndDoesNotFallBackToLegacyAfterClosure [FINISHED] Time: 1.8013121s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "None") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "None") [FINISHED] Time: 1.7921504s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "fire") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "fire") [FINISHED] Time: 1.8742846s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.InvalidLootPreferencesRollbackAllPreparationState(preference: "") [FINISHED] Time: 1.7272882s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: "Purple", accepted: False) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 0, quality: "Purple", accepted: False) [FINISHED] Time: 1.7036135s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: "Orange", accepted: False) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 1, quality: "Orange", accepted: False) [FINISHED] Time: 1.8600084s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: "Orange", accepted: True) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.EntryCapsAndSeasonStatsAreCheckedBeforeLockingAssets(difficulty: 2, quality: "Orange", accepted: True) [FINISHED] Time: 1.8114956s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: null, stats: null) [FINISHED] Time: 1.7755234s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: "current", stats: "wrong-stats") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonPreparationTests.LegacyOrMismatchedStatsEquipmentCannotEnterSeasonPreparation(season: "current", stats: "wrong-stats") [FINISHED] Time: 1.7384882s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend [FINISHED] Time: 1.8688124s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions [FINISHED] Time: 1.9285791s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation [FINISHED] Time: 2.6866563s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties [FINISHED] Time: 3.0162603s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets [FINISHED] Time: 1.9710737s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd [FINISHED] Time: 2.016313s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "context") [FINISHED] Time: 1.8124808s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: "projection") [FINISHED] Time: 1.8032874s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup [FINISHED] Time: 2.5644514s
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext [FINISHED] Time: 2.299954s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 34, Errors: 0, Failed: 0, Skipped: 0, Not Run: 0, Time: 67.951s

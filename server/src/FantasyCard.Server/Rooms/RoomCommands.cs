@@ -13,10 +13,16 @@ public interface IRoomCommand<out TResult>
     bool NotifyObservers => true;
 }
 
-public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>
+public interface IRoomCommandStateRefresh<TResult>
+{
+    TResult RefreshAfterMutation(BattleRoom room,TResult previous);
+}
+
+public sealed record GetRoomSnapshotCommand : IRoomCommand<BattleRoomSnapshot>,IRoomCommandStateRefresh<BattleRoomSnapshot>
 {
     public bool NotifyObservers => false;
     public BattleRoomSnapshot Execute(BattleRoom room) => room.Capture();
+    public BattleRoomSnapshot RefreshAfterMutation(BattleRoom room,BattleRoomSnapshot previous) => room.Capture();
 }
 
 public sealed record RoomClientState(BattleRoomSnapshot Snapshot, ChaosMapProjection Map, RoomCombatInfo? CombatInfo = null);
@@ -35,13 +41,16 @@ public sealed record RoomCommandWithClientState<TResult>(
 
 public sealed record ExecuteWithClientStateCommand<TResult>(
     IRoomCommand<TResult> Mutation,
-    Guid PlayerId) : IRoomCommand<RoomCommandWithClientState<TResult>>
+    Guid PlayerId) : IRoomCommand<RoomCommandWithClientState<TResult>>,IRoomCommandStateRefresh<RoomCommandWithClientState<TResult>>
 {
     public bool NotifyObservers => Mutation.NotifyObservers;
+    public RoomCommandWithClientState<TResult> RefreshAfterMutation(BattleRoom room,RoomCommandWithClientState<TResult> previous) =>
+        previous with {ClientState=new GetRoomClientStateCommand(PlayerId).Execute(room)};
 
     public RoomCommandWithClientState<TResult> Execute(BattleRoom room)
     {
-		if (room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)
+        if ((room.GetPlayer(PlayerId).Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted) &&
+            (Mutation is not PlayRoomCardsCommand play || !room.IsHistoricalCombatAction(PlayerId, play.CombatActionId)))
             throw new RoomAlreadyEndedException(new GetRoomClientStateCommand(PlayerId).Execute(room));
         var result = Mutation.Execute(room);
         RoomClientState? clientState = null;
@@ -65,15 +74,17 @@ public sealed class RoomAlreadyEndedException(RoomClientState state) : Exception
     public RoomClientState State { get; } = state;
 }
 
-public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>
+public sealed record GetRoomClientStateCommand(Guid PlayerId) : IRoomCommand<RoomClientState>,IRoomCommandStateRefresh<RoomClientState>
 {
     public bool NotifyObservers => false;
+    public RoomClientState RefreshAfterMutation(BattleRoom room,RoomClientState previous) => Execute(room);
     public RoomClientState Execute(BattleRoom room) =>
         new(room.Capture(), room.GetMapProjection(PlayerId), room.GetCombatInfo(PlayerId));
 }
 
-public sealed record AdvanceRoomTimeCommand(TimeSpan Delta, DateTimeOffset? Now = null) : IRoomCommand<BattleRoomSnapshot>
+public sealed record AdvanceRoomTimeCommand(TimeSpan Delta, DateTimeOffset? Now = null) : IRoomCommand<BattleRoomSnapshot>,IRoomCommandStateRefresh<BattleRoomSnapshot>
 {
+    public BattleRoomSnapshot RefreshAfterMutation(BattleRoom room,BattleRoomSnapshot previous) => room.Capture();
     public BattleRoomSnapshot Execute(BattleRoom room)
     {
         room.Advance(Delta, Now);
@@ -81,8 +92,9 @@ public sealed record AdvanceRoomTimeCommand(TimeSpan Delta, DateTimeOffset? Now 
     }
 }
 
-public sealed record RecoverRoomDowntimeCommand(TimeSpan Downtime, DateTimeOffset RecoveredAt) : IRoomCommand<BattleRoomSnapshot>
+public sealed record RecoverRoomDowntimeCommand(TimeSpan Downtime, DateTimeOffset RecoveredAt) : IRoomCommand<BattleRoomSnapshot>,IRoomCommandStateRefresh<BattleRoomSnapshot>
 {
+    public BattleRoomSnapshot RefreshAfterMutation(BattleRoom room,BattleRoomSnapshot previous) => room.Capture();
     public BattleRoomSnapshot Execute(BattleRoom room)
     {
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(Downtime, TimeSpan.Zero);
@@ -220,6 +232,12 @@ public sealed record RefreshRewardChoiceCommand(Guid PlayerId, long ExpectedRevi
     public RewardRefreshReceiptSnapshot Execute(BattleRoom room) => room.RefreshRewardChoice(PlayerId, ExpectedRevision, AccountGoldAvailable, RequestId);
 }
 
+public sealed record GetRewardRefreshFundingQuoteCommand(Guid PlayerId) : IRoomCommand<RewardRefreshFundingQuote>
+{
+    public bool NotifyObservers => false;
+    public RewardRefreshFundingQuote Execute(BattleRoom room)=>room.GetRewardRefreshFundingQuote(PlayerId);
+}
+
 public sealed record ClaimRewardCommand(Guid PlayerId, string OptionId, string? ReplaceItemId, bool Equip = false) : IRoomCommand<int>
 {
     public int Execute(BattleRoom room) => room.ClaimReward(PlayerId, OptionId, ReplaceItemId, Equip);
@@ -252,10 +270,11 @@ public sealed record PlayRoomCardsCommand(
     string TargetId,
     IReadOnlyList<Guid> CardInstanceIds,
     long ExpectedRevision,
-    DateTimeOffset Now) : IRoomCommand<CombatResolution>
+    DateTimeOffset Now,
+    string? CombatActionId = null) : IRoomCommand<CombatResolution>
 {
     public CombatResolution Execute(BattleRoom room) =>
-        room.PlayCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now);
+        room.PlayCards(PlayerId, BattleId, TargetId, CardInstanceIds, ExpectedRevision, Now, CombatActionId);
 }
 
 public sealed record PreviewRoomCardsCommand(

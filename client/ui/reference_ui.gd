@@ -9,6 +9,10 @@ const Codex = preload("res://ui/codex_view.gd")
 const DeckBuilder = preload("res://ui/deck_builder_view.gd")
 const EquipmentCompareModel = preload("res://ui/equipment_compare_model.gd")
 const DragScroll = preload("res://ui/drag_scroll.gd")
+const SeasonCrafting = preload("res://ui/season_crafting_view.gd")
+const ShopModel=preload("res://ui/season_shop_model.gd")
+const PreparationModel = preload("res://ui/preparation_model.gd")
+const CosmeticArt = preload("res://ui/season_cosmetic_art.gd")
 const BLUE := "UI/CardCodex/card_codex_action_button_blue.png"
 const ORANGE := "UI/CardCodex/card_codex_action_button_orange.png"
 var host: Control
@@ -44,6 +48,12 @@ func build(source: Control) -> void:
 			"enhance": _enhance()
 			"shop": _shop()
 			"market": _market()
+			"crafting": SeasonCrafting.build(self,host)
+			"activities": preload("res://ui/season_activity_view.gd").build(self,host)
+			"journey": preload("res://ui/season_journey_view.gd").build(self,host)
+			"journey_rewards": preload("res://ui/season_journey_reward_view.gd").build_rewards(self,host)
+			"cosmetics": preload("res://ui/season_journey_reward_view.gd").build_cosmetics(self,host)
+			"archive": preload("res://ui/season_archive_view.gd").build(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -119,7 +129,12 @@ func _header() -> void:
 		Codex.header(self, host, P.localized("cards_title") if host.screen == "cards" else P.localized("deck_builder_title"))
 		return
 	panel(Rect2(24, 18, 1872, 82))
-	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market")}
+	var names := {"hall": P.localized("camp_title"), "cards": P.localized("cards_title"), "prep": P.localized("nav_prep"), "gear": P.localized("gear_title"), "enhance": P.localized("enhance_title"), "shop": P.localized("nav_shop"), "market": P.localized("nav_market"),"crafting":P.localized("season_craft_title")}
+	names["activities"]=P.localized("activity_title")
+	names["journey"]=P.localized("journey_title")
+	names["journey_rewards"]=P.localized("journey_rewards_title")
+	names["cosmetics"]=P.localized("journey_cosmetics_title")
+	names["archive"]=P.localized("archive_title")
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:
@@ -128,8 +143,14 @@ func _header() -> void:
 		return_button.set_meta("sound_cue", "")
 		text(names.get(host.screen, P.localized("nav_hall")), Rect2(240, 30, 500, 60), 38, P.GOLD)
 	var player: Dictionary = Game.lobby.get("player", {})
-	var identity := text(P.localized("account_uid_multiline") % [player.get("displayName", ""), player.get("userId", "")], Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
+	var display_name := str(player.get("displayName", ""))
+	var cosmetic_title := CosmeticArt.title()
+	if not cosmetic_title.is_empty(): display_name += " · " + cosmetic_title
+	var identity_text: String = P.localized("account_uid_multiline") % [display_name, player.get("userId", "")]
+	var identity := text(identity_text, Rect2(745, 25, 530, 70), 20, P.MUTED, null, true, false)
 	identity.name = "AccountIdentity"
+	var equipped_frame := CosmeticArt.equipped("AvatarFrame")
+	if not equipped_frame.is_empty(): CosmeticArt.portrait(self, Rect2(1300, 22, 76, 76), Game.hero_class, equipped_frame, "Header")
 	var legacy_switch := button(P.localized("switch_account"), Rect2(1285, 32, 180, 52), Game.logout, Game.busy)
 	legacy_switch.name = "SwitchAccountButton"
 	legacy_switch.visible = false
@@ -216,6 +237,7 @@ func _hall() -> void:
 	# portrait layer over the generated layered backdrop; no GLB is instantiated.
 	picture(Art.portrait(Game.hero_class), Rect2(310, 255, 570, 550)).name = "HeroPortrait"
 	picture(Art.passive(Game.hero_class), Rect2(858, 275, 84, 84)).name = "HeroPassive"
+	button(P.localized("activity_title"),Rect2(56,714,430,66),host._navigate.bind("activities"),Game.busy or not Game.ticket.is_empty(),BLUE).name="ActivityEntry"
 	var portal_rect := Rect2(990, 153, 835, 550)
 	picture(Art.texture("UI/Hall/portal_background_clean.png"), portal_rect)
 	var portal_frame := Panel.new()
@@ -748,7 +770,7 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 		for state in ["normal", "hover", "pressed", "disabled"]:
 			slot.add_theme_stylebox_override(state, StyleBoxEmpty.new())
 		add_child(slot)
-		slot.tooltip_text = host.EquipmentDetails.description(item) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
+		slot.tooltip_text = host.EquipmentDetails.description(item, host.display_catalog_index()) if not item.is_empty() else P.word(slots[i]) + P.localized("equipment_unequipped_suffix")
 		var equipment_image := Art.equipment_texture(item) if not item.is_empty() else _item(slots[i])
 		var equipment_icon := picture(equipment_image, Rect2(point + Vector2(18, 12), Vector2(84, 84)))
 		equipment_icon.name = ("EquippedItem_" if id != null else "UnequippedItem_") + slots[i]
@@ -779,13 +801,22 @@ func _loadout(rect: Rect2, editable: bool, snapshot: Dictionary = {}) -> void:
 	var weapon_caption_offset := Vector2(27, 127) if editable else Vector2(-8, 127)
 	var weapon_caption := text(P.localized("equipment_signature_level_locked") % snapshot.classWeaponLevel if snapshot.has("classWeaponLevel") else P.localized("equipment_signature_locked"), Rect2(weapon_pos + weapon_caption_offset, Vector2(180, 40)), 21, P.GOLD)
 	weapon_caption.name = "SignatureWeaponCaption"
+	if snapshot.get("actualClassWeaponLevel") != null and snapshot.has("classWeaponLevel"):
+		weapon_caption.tooltip_text = P.localized("season_preparation_level_projection") % [snapshot.actualClassWeaponLevel, snapshot.classWeaponLevel]
 
 func _preparation() -> void:
 	var locked: bool = not Game.preparation.is_empty()
-	var snap: Dictionary = Game.preparation.get("snapshot", {})
+	var consumables: Dictionary = host.inventory.get("consumables", {})
+	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
+	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
+		host.bag_tier = "Free"
+	var ready: bool = Game.preparation_catalog_ready()
+	var index: Dictionary = Game.preparation_catalog_index()
+	var snap: Dictionary = Game.preparation_preview_snapshot(host.bag_tier)
 	panel(Rect2(28, 122, 752, 900))
 	panel(Rect2(798, 122, 1094, 900))
 	_loadout(Rect2(45, 140, 715, 720), false, snap)
+	button(P.localized("preparation_deck_button"), Rect2(500, 170, 230, 52), host._show_preparation_deck, Game.busy or not ready or Game.preparation_deck_preview().is_empty()).name = "PreparationDeckPreview"
 	var equipped_items: Array = []
 	if snap.get("equipmentSnapshots") is Array:
 		equipped_items = snap.get("equipmentSnapshots", [])
@@ -795,17 +826,47 @@ func _preparation() -> void:
 			if item.get("instanceId", "") in equipped_ids: equipped_items.append(item)
 	_equipment_summary(equipped_items, Rect2(72, 804, 664, 178), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2])))
 	text(P.localized("bag"), Rect2(845, 170, 240, 48), 38, P.GOLD).name = "PreparationBagTitle"
+	if Game.season_preparation_active() and not locked:
+		Game.preparation_difficulty = clampi(Game.preparation_difficulty, 0, Game.season_preparation_cap())
+		var difficulty := OptionButton.new()
+		difficulty.name = "SeasonDifficultySelector"
+		for tier_index in range(Game.season_preparation_cap() + 1):
+			var rule: Dictionary = PreparationModel.difficulty(tier_index, index)
+			difficulty.add_item("D%d (+%d) · %s" % [tier_index, tier_index, P.word(rule.entry_quality)] if not rule.is_empty() else "D%d" % tier_index)
+		difficulty.select(Game.preparation_difficulty)
+		difficulty.disabled = Game.busy or not ready
+		difficulty.position = Vector2(1090, 132)
+		difficulty.size = Vector2(250, 42)
+		difficulty.add_theme_font_size_override("font_size", 24)
+		_season_selector_style(difficulty)
+		var selected_rule: Dictionary = PreparationModel.difficulty(Game.preparation_difficulty, index)
+		difficulty.tooltip_text = P.localized("season_preparation_limits") % [Game.preparation_difficulty, Game.preparation_difficulty, P.word(selected_rule.entry_quality)] if not selected_rule.is_empty() else P.localized("config_archive_unavailable")
+		if not selected_rule.is_empty(): difficulty.tooltip_text = P.localized("season_level_cap_hint") + "\n" + difficulty.tooltip_text
+		difficulty.item_selected.connect(func(index): Game.preparation_difficulty = index; host._render())
+		add_child(difficulty)
+		var loan := CheckButton.new()
+		loan.name = "SeasonBorrowedDeckToggle"
+		loan.text = P.localized("season_borrowed_deck")
+		loan.tooltip_text = P.localized("season_borrowed_deck_hint")
+		loan.position = Vector2(1350, 132)
+		loan.size = Vector2(485, 42)
+		loan.add_theme_font_size_override("font_size", 24)
+		_season_selector_style(loan)
+		loan.button_pressed = Game.use_borrowed_deck
+		var template: Dictionary = PreparationModel.borrowed_deck(Game.hero_class, index)
+		loan.disabled = Game.busy or not ready or (template.is_empty() and not Game.use_borrowed_deck)
+		loan.set_meta("template_id", template.get("template_id", ""))
+		loan.toggled.connect(func(enabled): Game.use_borrowed_deck = enabled; host._render())
+		add_child(loan)
 	if locked:
 		var summary := P.localized("locked_deck_summary") % [snap.get("cardIds", []).size(), int(snap.get("maximumHp", P.CLASSES[Game.hero_class][2]))]
+		if snap.get("borrowedTemplateId") is String and not snap.borrowedTemplateId.is_empty(): summary += "  ·  " + P.localized("season_borrowed_deck")
 		text(summary, Rect2(1090, 145, 740, 34), 23, P.GOLD).name = "PreparationDeckSummary"
-	var consumables: Dictionary = host.inventory.get("consumables", {})
-	var stock := {"Advanced": int(consumables.get("advancedBagCount", 0)), "Top": int(consumables.get("topBagCount", 0))}
-	if not locked and host.bag_tier != "Free" and stock.get(host.bag_tier, 0) <= 0:
-		host.bag_tier = "Free"
 	text(P.localized("bag_stock_summary") % [stock.Advanced, stock.Top], Rect2(1090, 182, 740, 36), 21, P.MUTED).name = "PreparationBagStockSummary"
 	var tier: String = snap.get("backpackTier", host.bag_tier)
-	var capacity: int = int(snap.get("backpackCapacity", {"Free": 20, "Advanced": 28, "Top": 36}.get(tier, 20)))
-	var safe_slots: Array = snap.get("safeSlotIndexes", [] if tier == "Free" else ([27] if tier == "Advanced" else [33, 34, 35]))
+	var bag: Dictionary = PreparationModel.backpack(tier, index)
+	var capacity: int = int(snap.get("backpackCapacity", bag.get("capacity", 0)))
+	var safe_slots: Array = snap.get("safeSlotIndexes", bag.get("safe_indexes", []))
 	var safe_slot_lookup: Dictionary = {}
 	var slot_order: Array = []
 	for value in safe_slots:
@@ -819,17 +880,20 @@ func _preparation() -> void:
 		var key: String = ["Free", "Advanced", "Top"][i]
 		var title_key: String = ["bag_option_free", "bag_option_advanced", "bag_option_top"][i]
 		var title: String = P.localized(title_key)
+		var definition: Dictionary = PreparationModel.backpack(key, index)
+		var detail: String = P.localized("preparation_backpack_details") % [definition.capacity, definition.safe_count] if not definition.is_empty() else ""
+		if locked and key == tier: detail = P.localized("preparation_backpack_details") % [capacity, safe_slots.size()]
 		# Free is the built-in tier and is not represented in consumables; only
 		# paid backpack tiers are gated by their inventory counts.
 		var available_count := 0 if i == 0 else int(stock.get(key, 0))
-		var unavailable: bool = locked or (i > 0 and available_count <= 0)
-		var tab := button(title if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
+		var unavailable: bool = locked or Game.busy or not ready or definition.is_empty() or (i > 0 and available_count <= 0)
+		var tab := button(title.split("\n")[0] + ("\n" + detail if not detail.is_empty() else "") if i == 0 else "", Rect2(845 + i * 328, 219, 307, 93), func(): host.bag_tier = key; host._render(), unavailable, ORANGE if tier == key else BLUE)
 		tab.name = "Backpack_" + key
 		tab.set_meta("sound_cue", "ui_tab")
 		if i > 0:
 			picture(Art.product(key + "Bag"), Rect2(860 + i * 328, 226, 68, 78)).name = "BackpackIcon_" + key
 			text(title.split("\n")[0], Rect2(937 + i * 328, 228, 202, 37), 25, P.MUTED if unavailable else P.PAPER)
-			text(title.split("\n")[1], Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
+			text(detail, Rect2(937 + i * 328, 267, 202, 32), 20, P.GOLD if tier == key else P.MUTED)
 		tab.tooltip_text = P.localized_text(P.localized("equipment_owned_count") % available_count)
 	var row_count := int(ceil(float(capacity) / 6.0))
 	var bag_scroll := _scroll(Rect2(845, 342, 1000, 408))
@@ -840,7 +904,9 @@ func _preparation() -> void:
 	bag_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bag_content.mouse_filter = Control.MOUSE_FILTER_PASS
 	bag_scroll.add_child(bag_content)
-	for display_index in range(capacity):
+	if not ready:
+		text(P.localized("config_archive_unavailable"), Rect2(865, 365, 945, 315), 30, P.GOLD).name = "PreparationConfigurationUnavailable"
+	for display_index in range(capacity if ready else 0):
 		var slot_index: int = int(slot_order[display_index])
 		var point := Vector2((display_index % 6) * 163, int(display_index / 6) * 104)
 		var slot := Control.new()
@@ -861,16 +927,54 @@ func _preparation() -> void:
 	var count := SpinBox.new()
 	count.max_value = mini(2, int(consumables.get("healthPotionCount", 0)))
 	count.value = snap.get("potionCount", host.potion_count)
-	count.editable = not locked
+	count.editable = not locked and not Game.busy
 	count.value_changed.connect(func(value): host.potion_count = int(value))
 	add_child(count)
 	count.position = Vector2(1560, 773)
 	count.size = Vector2(270, 66)
+	var preference: String = (snap.lootPreferenceElement if snap.get("lootPreferenceElement") is String else "") if locked else Game.season_loot_preference()
+	if not preference.is_empty():
+		text(P.localized("season_loot_preference_locked" if locked else "season_loot_preference"),Rect2(850,844,490,66),24,P.GOLD,null,false)
+		var selector := OptionButton.new()
+		selector.name="LootPreferenceSelector"
+		var elements := ["Wood","Fire","Earth","Metal","Water"]
+		for element in elements: selector.add_item(P.word(element))
+		selector.select(elements.find(preference))
+		selector.disabled=locked or Game.busy
+		selector.position=Vector2(1350,850);selector.size=Vector2(390,52)
+		selector.tooltip_text=P.localized("season_loot_preference_hint")
+		selector.add_theme_font_size_override("font_size",24)
+		_season_selector_style(selector);P.apply_text_direction(selector)
+		selector.item_selected.connect(func(index):Game.select_loot_preference(str(elements[index])))
+		add_child(selector)
+		button("?",Rect2(1750,850,90,52),host._show_loot_preference_info)
 	if locked:
-		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy)
-		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE)
+		button(P.localized("cancel_match"), Rect2(850, 915, 410, 61), Game.cancel_preparation, Game.busy).name = "PreparationCancel"
+		button(P.localized("matching") if not Game.ticket.is_empty() else P.localized("start_match"), Rect2(1310, 915, 520, 61), Game.enqueue, Game.busy or not ready or Game.preparation_deck_preview().is_empty() or not Game.gateway.online or not Game.ticket.is_empty(), ORANGE).name = "PreparationStartMatch"
 	else:
-		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy, ORANGE)
+		button(P.localized("confirm_prep"), Rect2(1100, 915, 730, 61), func(): Game.prepare(host.bag_tier, host.potion_count), Game.busy or not ready or Game.preparation_deck_preview().is_empty(), ORANGE).name = "PreparationConfirm"
+
+func _season_selector_style(control: Button) -> void:
+	for state in ["normal", "hover", "pressed", "disabled"]:
+		var box := Art.style(ORANGE if state == "pressed" else BLUE)
+		box.set_content_margin(SIDE_TOP, 0)
+		box.set_content_margin(SIDE_BOTTOM, 0)
+		control.add_theme_stylebox_override(state, box)
+	if control is OptionButton:
+		var menu_theme: Theme = P.theme().duplicate()
+		var menu_panel: StyleBoxFlat = P.box(Color("10272e"), P.GOLD)
+		menu_panel.content_margin_left = 12
+		menu_panel.content_margin_right = 12
+		menu_panel.content_margin_top = 8
+		menu_panel.content_margin_bottom = 8
+		menu_theme.set_stylebox("panel", "PopupMenu", menu_panel)
+		menu_theme.set_stylebox("hover", "PopupMenu", P.box(Color("254249"), P.GOLD, 1))
+		menu_theme.set_color("font_color", "PopupMenu", P.PAPER)
+		menu_theme.set_color("font_hover_color", "PopupMenu", P.GOLD)
+		menu_theme.set_color("font_disabled_color", "PopupMenu", P.MUTED)
+		menu_theme.set_font("font", "PopupMenu", P.font("body"))
+		menu_theme.set_font_size("font_size", "PopupMenu", 24)
+		control.get_popup().theme = menu_theme
 
 func _gear() -> void:
 	_loadout(Rect2(90, 135, 1030, 750), true)
@@ -879,13 +983,14 @@ func _gear() -> void:
 	save_loadout_button.name = "SaveLoadoutButton"
 	panel(Rect2(1190, 136, 688, 886))
 	text(P.localized("stored_equipment"), Rect2(1235, 184, 520, 60), 36, P.GOLD)
+	button(P.localized("inventory_manage"), Rect2(1245, 255, 565, 56), host._show_inventory_management, Game.busy).name = "InventoryManageButton"
 	var scroll := DragScroll.new()
 	scroll.name = "EquipmentInventoryScroll"
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	add_child(scroll)
-	scroll.position = Vector2(1234, 255)
-	scroll.size = Vector2(600, 625)
+	scroll.position = Vector2(1234, 329)
+	scroll.size = Vector2(600, 551)
 	var list := VBoxContainer.new()
 	list.name = "EquipmentInventoryList"
 	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -903,13 +1008,33 @@ func _gear() -> void:
 				else: host._show_equipment_details(item, func(): host._equip(item)),
 			Game.busy or item.get("location") not in ["Inventory", "Equipped"], BLUE if selected else ORANGE)
 		entry.name = "EquipmentEntry_" + str(item.get("instanceId", ""))
-		entry.tooltip_text = host.EquipmentDetails.description(item) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
+		entry.text = ""
+		var caption := Label.new()
+		caption.name = "EquipmentEntryCaption"
+		caption.text = entry_text
+		caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		caption.add_theme_font_override("font",P.font("title"))
+		caption.add_theme_font_size_override("font_size",24)
+		caption.add_theme_color_override("font_color",P.MUTED if entry.disabled else P.PAPER)
+		entry.add_child(caption)
+		P.apply_text_direction(caption)
+		var fit_caption := func():
+			caption.position = Vector2(24,8)
+			caption.size = Vector2(maxf(1,entry.size.x-48),maxf(1,entry.size.y-16))
+			entry.custom_minimum_size.y = maxf(72,caption.get_line_count()*caption.get_theme_font("font").get_height(24)+16)
+		entry.resized.connect(fit_caption)
+		fit_caption.call_deferred()
+		entry.tooltip_text = host.EquipmentDetails.description(item, host.display_catalog_index()) + P.localized("equipment_draft_worn_tip" if selected else "equipment_draft_equip_tip")
 		entry.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.set_deferred("scroll_vertical", host._equipment_scroll)
 	scroll.get_v_scroll_bar().value_changed.connect(func(value): host._equipment_scroll = int(value))
 	if list.get_child_count() == 0: text(P.localized("ui_stored_empty_multiline"), Rect2(1255, 362, 530, 160), 28, P.MUTED)
-	var enhance_button := button(P.localized("enhance_title"), Rect2(1260, 930, 530, 64), host._navigate.bind("enhance"))
+	var enhance_button := button(P.localized("enhance_title"), Rect2(1245, 910, 565, 46), host._navigate.bind("enhance"))
 	enhance_button.set_meta("sound_cue", "")
+	button(P.localized("season_craft_title"),Rect2(1245,964,565,46),host._navigate.bind("crafting"),Game.busy)
 
 func _equipment_summary(loadout: Array, rect: Rect2 = Rect2(225, 760, 755, 165), maximum_hp: int = -1) -> void:
 	var compact := rect.size.x < 720.0
@@ -959,7 +1084,9 @@ func _equipment_summary_scroll(scroll_name: String, label_name: String, value: S
 	return scroll
 
 func _equipment_attribute_lines(loadout: Array) -> Array[String]:
-	var totals := EquipmentCompareModel.aggregate_attributes(loadout)
+	if not EquipmentCompareModel.can_inspect(loadout,host.display_catalog_index()): return [P.localized("config_archive_unavailable")]
+	var totals := EquipmentCompareModel.aggregate_attributes(loadout, host.display_catalog_index())
+	var numbers: Dictionary = preload("res://ui/numerical_details.gd").inspect(loadout,host.display_hero_class(),host.display_catalog_index())
 	var lines: Array[String] = []
 	for element in ["Fire", "Wood", "Water", "Metal", "Earth"]:
 		var damage := float(totals.get("damage_" + element, 0.0))
@@ -967,7 +1094,9 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 		if is_zero_approx(damage) and is_zero_approx(resistance): continue
 		var values: Array[String] = []
 		if not is_zero_approx(damage): values.append("%s %s" % [P.localized("battle_attack_bonus"), _summary_percent(damage)])
-		if not is_zero_approx(resistance): values.append("%s %s" % [P.localized("resistance"), _summary_percent(resistance)])
+		if not is_zero_approx(resistance):
+			var state: Dictionary = numbers["resistance_"+element]
+			values.append(P.localized("equipment_resistance_values") % [_summary_percent(float(state.effective)),_summary_percent(float(state.raw)),_summary_percent(float(state.excess))])
 		lines.append("%s · %s" % [P.word(element), " · ".join(values)])
 	var secondary: Array[String] = []
 	var draw_interval := float(totals.get("draw_interval", 0.0))
@@ -975,11 +1104,12 @@ func _equipment_attribute_lines(loadout: Array) -> Array[String]:
 	if not is_zero_approx(draw_interval): secondary.append("%s %s" % [P.localized("battle_draw_interval_seconds"), _summary_percent(draw_interval)])
 	if not is_zero_approx(forced_escape): secondary.append("%s %s" % [P.localized("force_escape"), _summary_percent(forced_escape)])
 	if not secondary.is_empty(): lines.append(" · ".join(secondary))
+	if not is_zero_approx(draw_interval): lines.append(P.localized("battle_draw_interval_summary") % float(numbers.interval_seconds.effective))
 	return lines
 
 func _equipment_set_lines(loadout: Array) -> Array[String]:
 	var lines: Array[String] = []
-	for state in EquipmentCompareModel.present_set_states(loadout):
+	for state in EquipmentCompareModel.present_set_states(loadout, host.display_catalog_index()):
 		var status := P.localized("battle_active") if state.active else P.localized("battle_inactive")
 		var line := P.localized("equipment_set_progress") % [P.word(state.kind), state.count, state.required, status]
 		if state.active:
@@ -987,7 +1117,7 @@ func _equipment_set_lines(loadout: Array) -> Array[String]:
 				"Piercing":
 					line += "\n  " + P.localized("equipment_set_piercing") % _summary_percent(float(state.values.get("piercing_percent", 0.0)))
 				"Bulwark":
-					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)))]
+					line += "\n  " + P.localized("equipment_set_bulwark") % [_summary_percent(float(state.values.get("bulwark_shield_percent", 0.0))), _summary_percent(float(state.values.get("bulwark_reduction_percent", 0.0)) if host.display_hero_class()=="Guardian" else 0.0)]
 				"Vitality":
 					line += "\n  " + P.localized("equipment_set_vitality") % [_summary_percent(float(state.values.get("vitality_heal_percent", 0.0))), _summary_percent(float(state.values.get("vitality_overcap_percent", 0.0)))]
 		else:
@@ -1032,14 +1162,16 @@ func _enhance() -> void:
 	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var image: Texture2D = Art.equipment_texture(selected) if not selected.is_empty() else Art.texture("UI/Item/exploration_prep_item_icon_weapon_%s.png" % Game.hero_class.to_lower())
 	picture(image, Rect2(720, 315, 350, 350))
-	var benefit: String = host.EquipmentDetails.enhancement_text(selected) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
+	var benefit: String = host.EquipmentDetails.enhancement_text(selected, host.display_catalog_index()) if not selected.is_empty() else P.localized("enhance_current_next") % [host._weapon_benefit(level), host._weapon_benefit(mini(5, level + 1))]
 	_equipment_summary_scroll("EnhancementBenefitScroll", "EnhancementBenefit", benefit if level < 5 else P.localized("enhance_max_level"), Rect2(591, 690, 642, 230), 24, P.TEAL)
 	if not selected.is_empty():
 		button(preload("res://ui/numerical_details.gd").text("title"), Rect2(730, 920, 350, 54), func(): preload("res://ui/numerical_details.gd").show_compare(host, host._equipped_items(), selected, true))
 	text(P.localized("enhance_progress"), Rect2(1375, 175, 450, 70), 38, P.GOLD)
 	_enhance_progress(level)
 	picture(_item("EquipmentFragments"), Rect2(1430, 439, 90, 108))
-	text(P.localized("enhance_fragments_summary") % Game.lobby.get("materials", {}).get("equipmentFragments", 0), Rect2(1535, 445, 300, 115), 30)
+	text(P.localized("enhance_fragments_summary") % quote.get("availableFragments","—"), Rect2(1535, 445, 300, 100), 30)
+	var source := text(host.EnhancementWallets.source_text(quote) if not quote.is_empty() else P.localized("enhance_loading_cost"), Rect2(1370, 550, 470, 48), 20, P.TEAL, null, false)
+	source.name = "EnhancementFragmentSource"
 	var cost: String = P.localized("enhance_loading_cost") if quote.is_empty() else P.localized("enhance_cost") % [quote.get("fragmentCost", 0), quote.get("availableMaterialCount", 0), quote.get("materialCount", 0)]
 	if quote.get("error", false): cost = P.localized("enhance_quote_error")
 	elif not quote.is_empty() and not quote.get("canEnhance", false) and level < 5: cost += "\n" + P.localized("enhance_requirement_error")
@@ -1101,6 +1233,10 @@ func _enhance_progress(level: int) -> void:
 
 func _shop() -> void:
 	panel(Rect2(28, 138, 1864, 864))
+	if not ShopModel.policy(host.shop).is_empty():
+		var rules := text(P.localized("season_shop_rules"),Rect2(76,154,1740,50),22,P.GOLD)
+		rules.name="ShopRules"
+		rules.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
 	var scroll := DragScroll.new()
@@ -1146,9 +1282,7 @@ func _shop() -> void:
 			image.size = Vector2(180, 230)
 		var detail := Label.new()
 		detail.name = "ShopDetail"
-		var amount: int = int(payload.get("amount", payload.get("count", 0)))
-		var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
-		detail.text = quantity_line + (P.localized("shop_purchase_count") % [item.purchased, item.limit]) + "\n" + (P.localized("shop_price") % item.priceGold)
+		detail.text=_shop_detail(item,payload)
 		detail.position = Vector2(44, 432) if is_guaranteed_card else Vector2(44, 371)
 		detail.size = Vector2(206, 94) if is_guaranteed_card else Vector2(206, 155)
 		detail.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -1157,17 +1291,16 @@ func _shop() -> void:
 		detail.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		item_panel.add_child(detail)
 		P.fit_control_font(detail, P.font("body"), 18 if is_guaranteed_card else 22, 8.0)
-		var is_bag: bool = kind in ["AdvancedBag", "TopBag"]
-		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
-		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
-		var already_owned: bool = is_guaranteed_card and bool(item.get("alreadyOwned", false))
-		var buy_text := P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
-		var buy: Button = host._button(item_panel, buy_text, func(): host._purchase_shop_item(item, product_title), Game.busy or stock_unknown or stock_full or already_owned or int(item.purchased) >= int(item.limit) or int(item.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
+		var blocked := ShopModel.reason(item,host.shop,consumables,host._shop_inventory_ready,Game.lobby.get("wallet",{}))
+		var copy_label := "season_shop_buy_copy" if is_guaranteed_card and item.get("alreadyOwned",false) and ShopModel.copies_enabled(host.shop) else "buy"
+		var buy_text := P.localized(copy_label) if blocked.is_empty() else P.localized(blocked)
+		var buy: Button = host._button(item_panel,buy_text,func(): host._purchase_shop_item(item,product_title),Game.busy or not blocked.is_empty())
 		buy.name = "Purchase"
 		Art.button(buy, ORANGE)
-		buy.position = Vector2(44, 534)
-		buy.size = Vector2(206, 66)
-	if row.get_child_count() == 0: text(P.localized("no_products"), Rect2(640, 440, 790, 95), 34, P.MUTED)
+		buy.position = Vector2(28,534)
+		buy.size = Vector2(238,66)
+		_fit_shop_button(buy)
+	if row.get_child_count() == 0: text(P.localized("season_shop_closed") if not ShopModel.policy(host.shop).is_empty() else P.localized("no_products"),Rect2(470,440,980,95),34,P.MUTED)
 	var stock_key := "shop_stock_summary" if host._shop_inventory_ready else "shop_stock_refresh"
 	var stock_text := P.localized(stock_key) % paid_bags if host._shop_inventory_ready else P.localized(stock_key)
 	text(stock_text, Rect2(85, 884, 950, 34), 20, P.MUTED).name = "ShopStockSummary"
@@ -1175,9 +1308,25 @@ func _shop() -> void:
 	var refresh_limit := int(host.shop.get("refreshLimit", 0))
 	var refresh_remaining := maxi(0, refresh_limit - refresh_used)
 	text(P.localized("equipment_daily_refresh") % [refresh_remaining, refresh_limit], Rect2(85, 920, 950, 42), 24, P.GOLD)
-	var refresh_button := button(P.localized("refresh"), Rect2(1630, 908, 190, 54), host._refresh_shop, Game.busy or refresh_remaining <= 0, ORANGE)
+	var refresh_button := button(P.localized("refresh"),Rect2(1630,908,190,54),host._refresh_shop,Game.busy or refresh_remaining<=0 or not ShopModel.open(host.shop),ORANGE)
 	refresh_button.name = "RefreshShopButton"
 	host._restore_shop_scroll(scroll)
+	var wallet := get_node_or_null("WalletGold") as Label
+	if wallet!=null: wallet.text="%s %s" % [P.localized("word_gold"),ShopModel.gold(host.shop,Game.lobby.get("wallet",{}))]
+
+func _shop_detail(item: Dictionary,payload: Dictionary) -> String:
+	var amount := int(payload.get("amount",payload.get("count",0)))
+	var key := "season_shop_copies_qty" if item.get("kind")=="Cards" and ShopModel.copies_enabled(host.shop) else "shop_quantity_line"
+	var lines: Array[String]=[]
+	if amount>0: lines.append(P.localized(key)%amount)
+	lines.append(P.localized("shop_purchase_count")%[item.get("purchased",0),item.get("limit",0)] if int(item.get("limit",0))>0 else P.localized("season_shop_unlimited"))
+	lines.append(P.localized("shop_price")%item.get("priceGold",0))
+	return "\n".join(lines)
+
+func _fit_shop_button(control: Button) -> void:
+	var style: StyleBox=control.get_theme_stylebox("normal")
+	var padding: float=style.get_content_margin(SIDE_LEFT)+style.get_content_margin(SIDE_RIGHT)+8.0
+	P.fit_control_font(control,control.get_theme_font("font"),22,padding)
 
 func sync_shop_state(changed_product_id: String = "") -> bool:
 	var row := get_node_or_null("ShopScroll/ShopProductRow") as HBoxContainer
@@ -1191,7 +1340,7 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		if panel_node.get_meta("kind", "") != product.get("kind", "") or panel_node.get_meta("payload", "") != str(product.get("payload", "")): return false
 	var consumables: Dictionary = host.inventory.get("consumables", {})
 	var paid_bags: int = int(consumables.get("advancedBagCount", 0)) + int(consumables.get("topBagCount", 0))
-	var gold: int = int(Game.lobby.get("wallet", {}).get("gold", 0))
+	var gold: int=ShopModel.gold(host.shop,Game.lobby.get("wallet",{}))
 	for index in products.size():
 		var product: Dictionary = products[index]
 		var panel_node := row.get_child(index) as Panel
@@ -1200,16 +1349,13 @@ func sync_shop_state(changed_product_id: String = "") -> bool:
 		if detail == null or buy == null: return false
 		var parsed: Variant = product.get("payload", {})
 		var payload: Dictionary = parsed if parsed is Dictionary else {}
-		var amount: int = int(payload.get("amount", payload.get("count", 0)))
 		if changed_product_id.is_empty() or str(product.get("productId", "")) == changed_product_id:
-			var quantity_line := (P.localized("shop_quantity_line") % amount) + "\n" if amount > 0 else ""
-			detail.text = quantity_line + (P.localized("shop_purchase_count") % [product.get("purchased", 0), product.get("limit", 0)]) + "\n" + (P.localized("shop_price") % product.get("priceGold", 0))
-		var is_bag: bool = product.get("kind", "") in ["AdvancedBag", "TopBag"]
-		var stock_full: bool = is_bag and paid_bags + maxi(1, amount) > 3
-		var stock_unknown: bool = is_bag and not host._shop_inventory_ready
-		var already_owned: bool = product.get("kind", "") == "Cards" and payload.has("cardId") and bool(product.get("alreadyOwned", false))
-		buy.text = P.localized("refresh_inventory") if stock_unknown else (P.localized("inventory_full") if stock_full else (P.localized("activated") if already_owned else P.localized("buy")))
-		buy.disabled = Game.busy or stock_unknown or stock_full or already_owned or int(product.get("purchased", 0)) >= int(product.get("limit", 0)) or int(product.get("priceGold", 0)) > gold
+			detail.text=_shop_detail(product,payload)
+		var blocked := ShopModel.reason(product,host.shop,consumables,host._shop_inventory_ready,Game.lobby.get("wallet",{}))
+		var copy_label := "season_shop_buy_copy" if product.get("kind")=="Cards" and payload.has("cardId") and product.get("alreadyOwned",false) and ShopModel.copies_enabled(host.shop) else "buy"
+		buy.text=P.localized(copy_label) if blocked.is_empty() else P.localized(blocked)
+		buy.disabled=Game.busy or not blocked.is_empty()
+		_fit_shop_button(buy)
 	var wallet_label := get_node_or_null("WalletGold") as Label
 	if wallet_label != null: wallet_label.text = "%s %s" % [P.localized_text(P.localized("word_gold")), gold]
 	var stock_label := get_node_or_null("ShopStockSummary") as Label
@@ -1291,55 +1437,7 @@ func _product_art(kind: String, payload: Dictionary) -> Texture2D:
 	return _item(kind)
 
 func _market() -> void:
-	panel(Rect2(28, 135, 1300, 884))
-	panel(Rect2(1344, 135, 546, 884))
-	text(P.localized("buy_or_listings"), Rect2(76, 183, 770, 57), 34, P.GOLD)
-	text(P.localized("ui_market_header"), Rect2(76, 238, 1140, 50), 24, P.MUTED)
-	var scroll := _scroll(Rect2(72, 316, 1210, 635))
-	var list := VBoxContainer.new()
-	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(list)
-	for listing in host.listings:
-		var row := HBoxContainer.new()
-		list.add_child(row)
-		var gear: Dictionary = listing.get("equipment", {}) if listing.get("equipment") is Dictionary else {}
-		var name: Button = host._button(row, host._equipment_name(gear) if not gear.is_empty() else P.localized("equipment_unavailable"), func(): host._show_equipment_details(gear), gear.is_empty())
-		name.tooltip_text = host.EquipmentDetails.description(gear) if not gear.is_empty() else ""
-		name.custom_minimum_size.x = 660
-		host._label(row, "%s" % listing.priceGold, 30, P.GOLD).custom_minimum_size.x = 240
-		if listing.sellerId == Game.lobby.get("player", {}).get("userId", ""):
-			host._button(row, P.localized("remove_listing"), func(): host._mutate("/market/listings/" + listing.listingId, HTTPClient.METHOD_DELETE), Game.busy)
-		else:
-			host._button(row, P.localized("buy"), func(): host._confirm(P.localized("equipment_buy_confirm") % [listing.priceGold, host._equipment_name(gear)], func(): host._mutate("/market/" + listing.listingId + "/purchase?expectedVersion=" + str(int(listing.version)), HTTPClient.METHOD_POST)), Game.busy or gear.is_empty() or int(listing.priceGold) > int(Game.lobby.get("wallet", {}).get("gold", 0)))
-	if list.get_child_count() == 0: text(P.localized("no_listings"), Rect2(356, 453, 730, 100), 32, P.MUTED)
-	text(P.localized("current_listing"), Rect2(1390, 183, 440, 67), 34, P.GOLD)
-	var choices := OptionButton.new()
-	choices.add_item(P.localized("select_stored_equipment"))
-	var items: Array = []
-	for item in host.inventory.get("equipments", []):
-		if item.get("isBound", false) or item.get("location") != "Inventory": continue
-		items.append(item)
-		choices.add_item(host._equipment_name(item))
-		if item.instanceId == host._market_item: choices.selected = items.size()
-	if not items.any(func(item): return item.instanceId == host._market_item): host._market_item = ""
-	choices.item_selected.connect(func(index): host._market_item = items[index - 1].instanceId if index > 0 else ""; host._render())
-	add_child(choices)
-	choices.position = Vector2(1385, 320)
-	choices.size = Vector2(460, 66)
-	text(P.localized("listing_price"), Rect2(1390, 449, 440, 50), 27)
-	var price := SpinBox.new()
-	price.min_value = 1
-	price.max_value = 100000000
-	price.value = host._market_price
-	price.value_changed.connect(func(value): host._market_price = int(value))
-	add_child(price)
-	price.position = Vector2(1385, 515)
-	price.size = Vector2(460, 72)
-	text(P.localized("listing_terms"), Rect2(1390, 643, 455, 121), 25, P.MUTED)
-	button(P.localized("list_item"), Rect2(1400, 868, 435, 88), func():
-		var selected_id: String = host._market_item
-		var price_gold: int = host._market_price
-		host._confirm(P.localized("confirm_listing_price") % price_gold, func(): host._mutate("/market/listings", HTTPClient.METHOD_POST, {"equipmentId": selected_id, "priceGold": price_gold})), Game.busy or host._market_item.is_empty(), ORANGE)
+	preload("res://ui/season_market_view.gd").build(self,host)
 
 func _ready_prompt() -> void:
 	panel(Rect2(520, 245, 880, 600))

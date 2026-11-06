@@ -1,0 +1,50 @@
+from pathlib import Path
+import json,hashlib,subprocess
+repo=Path.cwd();base=Path(__file__).parent;ev=repo/'docs/season-balance-20261102/evidence'
+def read(name):return json.loads((ev/name).read_bytes())
+fault=json.loads((base/'f02-season-asset-fault-final-independent-r3.derived.json').read_bytes());assert fault['fault_scenarios_union_passed']==4
+credit=read('F02-season-credit-r2/result.json');assert credit['passed']==4 and credit['unique_actual_server_processes']==8 and credit['source_unchanged']
+identity=read('F02-loot-id-r1/result.json');assert identity['PG_new_facts_passed']==2 and identity['same_schema_two_accounts_concurrent_commit'] and identity['old_duplicate_atomic_rejection']
+inventory=read('E01-inventory-discard-repository-r1/result.json');assert inventory['PG_unique_passed']==15 and inventory['no_refund'] and inventory['durable_original_season_replay']
+http=read('E01-inventory-discard-http-r1/result.json');assert http['passed_tests']==1 and http['actual_loopback_Protobuf_HTTP']
+archive=read('E01-season-archive-r1/result.json');assert archive['PG_corrected_batch_passed']==4 and archive['PG_targeted_loadout_reference_passed']==1 and archive['real_precompiled_server_HTTP_passed']==1
+config=read('C01-config17-r1/result.json');assert config['native_unique_passed']==10 and config['godot_named_checks_passed']==68
+assert hashlib.sha256((repo/'server/config/generated/fantasycard.config.bytes').read_bytes()).hexdigest()==config['binary_sha256']
+assert (repo/'server/config/generated/fantasycard.config.bytes').read_bytes()==(repo/'client/data/generated/fantasycard.config.bytes').read_bytes()
+assert hashlib.sha256((repo/'config/FantasyCard_Config.xlsx').read_bytes()).hexdigest()==config['workbook_sha256']
+assert hashlib.sha256((repo/'server/config/archive/season-v1-config-16/fantasycard.config.bytes').read_bytes()).hexdigest()=='7011c5bc52edc1eeb2860ab736a9cb8ac74d82dd9b206e4dfc32974794fa3356'
+dep=json.loads((base/'f02-composite-dependency-audit-r2/result.derived.json').read_bytes());assert len(dep['unchanged_sources'])==20 and len(dep['changed_sources'])==2
+old='c8fc409a8d2dc365b94274a5a6f17356586cf121';current=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()
+changed=subprocess.check_output(['git','diff','--name-only',old,'HEAD','--','server/src','server/config/generated','client/data/generated','protocol']).decode().splitlines()
+map_rows=[]
+inventory_names={'ProgressionContracts.cs','ArmorEnhancementRepository.cs','InventoryDiscardRepository.cs','ProgressionEndpoints.cs','ProgressionRepository.cs','V052__inventory_discard_batches.sql'}
+archive_names={'SeasonArchiveContracts.cs','SeasonArchiveReadEndpoints.cs','SeasonArchiveReadRepository.cs'}
+realtime_names={'realtime.proto','RealtimeContracts.cs','RealtimeProtobufCodec.cs','RoomSnapshotProjection.cs'}
+for name in changed:
+ leaf=Path(name).name
+ if leaf in inventory_names:group='E01-discard-migration-and-read-equipment';proofs=['E01-inventory-discard-repository-r1/result.json','E01-inventory-discard-http-r1/result.json']
+ elif leaf in archive_names:group='E01-original-archive-readonly';proofs=['E01-season-archive-r1/result.json']
+ elif leaf in ['game.proto','endpoints.json']:group='HTTP-new-discard-and-readonly-archive';proofs=['E01-inventory-discard-http-r1/result.json','E01-season-archive-r1/result.json','F02-season-credit-r2/result.json']
+ elif leaf in realtime_names:group='optional-return-credit-wire';proofs=['C01-config17-r1/result.json','F02-season-credit-r2/result.json']
+ elif leaf in ['CombatTypes.cs','PlayerCombatState.cs']:group='saved-return-credit-and-policy';proofs=['B05-approved-supplement-r1/result.json','D02-card-candidate-r1/result.json','F02-season-credit-r2/result.json']
+ elif leaf=='RewardChoice.cs':group='room-bound-loot-identity';proofs=['F02-loot-id-r1/result.json']
+ elif leaf in ['BattleRoom.cs','RoomReadyCoordinator.cs']:group='freeze-version-policy-and-room-identity';proofs=['C01-config17-r1/result.json','F02-loot-id-r1/result.json','F02-season-credit-r2/result.json']
+ elif leaf in ['PveBattleFactory.cs','BattleRoomMonsterTuning.cs','SeasonMonsterTuningConfig.cs']:group='versioned-monster-profile-restore-only';proofs=['D03-entry-calibration-r1/result.json','F02-season-credit-r2/result.json']
+ elif leaf in ['GameConfigCatalog.cs','NumericalRules.cs','SeasonDifficultyConfig.cs'] or '/generated/' in name:group='versioned-config-16-17-boundary';proofs=['C01-config17-r1/result.json','F02-season-credit-r2/result.json']
+ else:raise AssertionError('Unmapped production delta: '+name)
+ for p in proofs:assert (ev/p).is_file(),p
+ map_rows.append(dict(path=name,current_sha256=hashlib.sha256((repo/name).read_bytes()).hexdigest(),scope=group,evidence=proofs))
+assert len(map_rows)==len(changed)==32
+requirements=[
+ dict(id='F02-R1',requirement='Actual PostgreSQL transactional and concurrency/replay verification across original asset families',evidence=['A03-A04-final-r1/result.json','F02-loot-id-r1/result.json','E01-inventory-discard-repository-r1/result.json'],verification='Original121unique cases rederived from r115/r116TRX;268manifest files verified;20of22direct original sources byte-identical,2mapped later changes. New identity2 and inventory15 retain their scope.',verified=True),
+ dict(id='F02-R2',requirement='Abrupt process failure inside asset application leaves no partial permanent or seasonal credit',evidence=['F02-season-asset-fault-final-independent-r3.derived.json'],verification='Explicit mixed5asset transaction blocked inside first ledger insert,earlyACK409,actualappkill,gate release and actualPGrollback;newhost grants original16lateclaim once;newseasonwallet unchanged.',verified=fault['explicit_mixed_asset_transaction_rolled_back']),
+ dict(id='F02-R3',requirement='Notification commit/rollback and ACK response-loss recovery do not duplicate assets or lose durable receipts',evidence=['F02-season-asset-fault-final-independent-r3.derived.json'],verification='Both actual outbox marker outcomes observed;unique-owned DBconnection interruption afterappkill forcesrollback and real same-receipt redelivery. CommittedACK response dropped,restartedPID,same idempotencykey returnssamebytes.',verified=fault['autocommit_notification_both_outcomes_actually_observed'] and fault['same_receipt_actual_redelivery_after_marker_rollback'] and fault['committed_ACK_response_loss_then_restart_replay_same_bytes']),
+ dict(id='F02-R4',requirement='Season boundary, permanent souls and old/current/legacy balance domains remain distinct',evidence=['A03-A04-final-r1/result.json','E01-season-archive-r1/result.json','F02-season-asset-fault-final-independent-r3.derived.json'],verification='Original9family archive/latesettlement context cases scope-reused;new lateoriginal16processcase credits23gold7fragments tooriginalseason,3warrior4Mage soul permanent,neitherlegacy norcurrent wallet credited.',verified=True),
+ dict(id='F02-R5',requirement='Exact old/new bundles, saved policy and actual preparation/client routes survive restart; bad original affects only its room',evidence=['C01-config17-r1/result.json','F02-season-credit-r2/result.json'],verification='Native10/Godot68 plus4actualprocess cases: original16 and17idlecredit;missing/corrupt old archive;fouractualPBpreparedREADYhuman-controlled account routes and activecredit acrossappkill. Not native capacity or balance proof.',verified=True),
+ dict(id='F02-R6',requirement='Current schema/version, evidence integrity and owned test resource cleanup verified',evidence=['E01-inventory-discard-repository-r1/result.json','F02-season-credit-r2/result.json','F02-season-asset-fault-final-independent-r3.derived.json'],verification='V052 migrations accepted by inventory15andfreshrealProgramstarts;all declared schemas/container/env/tmpfs cleaned;rawfailures preserved;RAM500MiB/disk3GiB+5% maintained. Production pendingF03.',verified=fault['schemas_removed']==6 and fault['containers_env_tmpfs_cleaned']==3 and credit['container_env_tmpfs_cleaned'])]
+assert all(r['verified'] for r in requirements)
+for row in requirements:
+ row['evidence']=['F02-final-r1/asset-fault/f02-season-asset-fault-final-independent-r3.derived.json' if name=='F02-season-asset-fault-final-independent-r3.derived.json' else name for name in row['evidence']]
+
+proof=dict(at=__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),F02_complete=True,scope='Current repository season17 implementation self-check; not production deployment or D03/D04/E02/F01/F03 completion',original_asset_acceptance_commit=old,current_production_tree_commit=current,original_asset_families=9,original_unique_direct_sources=22,identical_direct_sources=20,subsequent_changed_direct_sources=dep['changed_sources'],all_subsequent_production_changed_paths_mapped=map_rows,requirements=requirements,original_PG_unique_passed_rederived=121,new_process_case_union=8,successful_server_process_identities=20,raw_server_process_identities_including_asset_gate_failures=22,fresh_one_all_green_process_batch=False,history='121PG is r115/r116 union with5retainedfailures. Credit4onecurrentbatch. Asset4is1r1+2r2+1r3retryunion with2retainedgatedeadlocks. No historical status overwritten.',unverified_other_goal_items=['D03','D04','E02','F01','F03'],future_source_or_configuration_changes_require_affected_scope_revalidation=True,no_new_B05_D03_D02_battles=True,capacity100_retested=False,production_deployed=False,production_restarted=False,whole_goal_complete=False)
+p=base/'f02-requirement-final-audit-r2.derived.json';assert not p.exists();p.write_text(json.dumps(proof,indent=2)+'\n');print(json.dumps(dict(F02_complete=True,requirements=len(requirements),mapped_production_paths=len(map_rows),process_case_union=8,next_progress='30/35',whole_goal_complete=False)))

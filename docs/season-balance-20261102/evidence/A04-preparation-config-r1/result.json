@@ -1,0 +1,67 @@
+{
+  "status": "original_preparation_matching_subchain_verified_A03_A04_open",
+  "A03_complete": false,
+  "A04_complete": false,
+  "whole_goal_complete": false,
+  "completed_items": 20,
+  "unique_PG_cases_passed": 34,
+  "union_not_one_physical_run": true,
+  "final_r98_passed": 11,
+  "final_r98_skipped": 0,
+  "current_source_unchanged": true,
+  "control_configuration_only": "active-preparation-archive",
+  "formal_configuration": "season-v1-config-12",
+  "formal_workbook_or_rules_changed": false,
+  "control_values": {
+    "backpack_capacity": 21,
+    "theme_and_loot_default": "Wood",
+    "borrowed_mage_template": "archive-loan-mage",
+    "borrowed_slot12": "C30",
+    "stats_version": "preparation-archive-stats",
+    "D1_entry_cap": "Green; deliberately distinct archive control, not formal D1"
+  },
+  "formal_caps": {
+    "D0": "Blue",
+    "D1": "Purple"
+  },
+  "positive_scope": [
+    "Actual own and borrowed preparation to four non-bot fixture accounts through repository/actor queue/match/room (no native clients or human experience) with a non-lobby configuration",
+    "Original template, projected levels, inventory size, loot preference, equipment stats version and generated map retained",
+    "Already admitted original-config match drains after season end without spending player assets twice",
+    "Bot-filled inventory uses the same original free-backpack definition",
+    "Missing/corrupt/hash-mismatched original bundle rejects before membership creation or equipment lock",
+    "Typed context mutation rejected by existing FK; forged JSON snapshot rejected before asset reservation"
+  ],
+  "retained_failures": [
+    "r1 fixture missing closing brace: compiler zero tests",
+    "r2 CA1859 fixture helper return type: compiler zero tests",
+    "r95 19passed15failed: numeric preparation difficulty compared with D0 text and FK-blocked fixture mutation",
+    "r96 12passed3failed: incomplete new-item secondary trait caused profile mismatch at room creation",
+    "r97 8passed1failed: bot inventory still used the default20 rather than original21"
+  ],
+  "remaining_gaps": [
+    "Historical/null-secondary-trait source handling is not accepted; it must not receive an invented speed trait or get charged before a failed room creation.",
+    "Comprehensive A03 asset-provenance and A04 remaining-write audit still open.",
+    "Client original-preparation catalog preview and full locale/resolution acceptance remain E01/E02.",
+    "Full process crash/restart matrix remains F02."
+  ],
+  "cloud_min_ram": 2456461312,
+  "cloud_min_disk": 3262574592,
+  "cloud_min_disk_fraction": 0.05154958027832335,
+  "owned_containers_removed": [
+    95,
+    96,
+    97,
+    98
+  ],
+  "private_environments_removed": true,
+  "production_deployed": false,
+  "production_restarted": false,
+  "new_full_routes": 0,
+  "B05_budget": "291/300",
+  "C16_encounter_budget": "121/300",
+  "capacity100_retest": false,
+  "cloud_SDK_started": false,
+  "external_original_evidence_root": "G:\\PR13Evidence\\season-balance-20261102-r1",
+  "scope_note": "Raw runtime helper new_game_matches=0 means no complete gameplay route or capacity queue; these tests do create declared fixture match rows and actor rooms."
+}

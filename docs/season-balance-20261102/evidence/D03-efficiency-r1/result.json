@@ -1,0 +1,119 @@
+{
+  "status": "D03_development_progress_original_class_efficiency_not_accepted",
+  "completed_items": 28,
+  "total_items": 35,
+  "new_encounters": 36,
+  "outcomes": {
+    "Win": 35,
+    "Dead": 1
+  },
+  "casts": 4401,
+  "resource_events": 153,
+  "D03_used": 36,
+  "D03_remaining": 264,
+  "D03_complete": false,
+  "targets_relaxed": false,
+  "initial4comparisons": [
+    {
+      "deck": "reference",
+      "armor": "balanced",
+      "median_seconds": {
+        "Mage": 148.45,
+        "Priest": 185.65,
+        "Guardian": 223.0
+      },
+      "class_ratio": 1.5021892893230044,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "reference",
+      "armor": "offense",
+      "median_seconds": {
+        "Mage": 138.05,
+        "Priest": 170.10000000000002,
+        "Guardian": 194.05
+      },
+      "class_ratio": 1.4056501267656645,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "tempo",
+      "armor": "balanced",
+      "median_seconds": {
+        "Mage": 125.05,
+        "Priest": 166.45,
+        "Guardian": 194.25
+      },
+      "class_ratio": 1.5533786485405838,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    },
+    {
+      "deck": "tempo",
+      "armor": "offense",
+      "median_seconds": {
+        "Mage": 111.9,
+        "Priest": 149.39999999999998,
+        "Guardian": 168.95
+      },
+      "class_ratio": 1.5098302055406612,
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    }
+  ],
+  "counter2comparisons": [
+    {
+      "deck": "counter-tempo",
+      "armor": "counter-offense",
+      "conditional_win_median_seconds": {
+        "Mage": 76.1,
+        "Priest": 97.65,
+        "Guardian": 117.6
+      },
+      "conditional_class_ratio": 1.5453350854139292,
+      "all_matched_cases_win": true,
+      "censored_failed_cases": [],
+      "original_class15_passed": false,
+      "boss75_120_all_passed": true
+    },
+    {
+      "deck": "universal-tempo",
+      "armor": "counter-offense",
+      "conditional_win_median_seconds": {
+        "Mage": 99.2,
+        "Priest": 128.9,
+        "Guardian": 135.55
+      },
+      "conditional_class_ratio": 1.3664314516129032,
+      "all_matched_cases_win": false,
+      "censored_failed_cases": [
+        "D03-DEV-031"
+      ],
+      "original_class15_passed": false,
+      "boss75_120_all_passed": false
+    }
+  ],
+  "all_legal_health": true,
+  "actual_readonly_forecast_and_preview_invariants": true,
+  "not_final_holdouts": true,
+  "population_P50_P90_not_measured": true,
+  "long_run_three_ledger_sustainability_not_proven": true,
+  "original_D02_mature_noRed_D5_evidence_retained": true,
+  "production_or_workbook_modified": false,
+  "cloud_modified": false,
+  "B05_C16_D01_D02_new_attempts": 0,
+  "local_reserve_GiB": 2,
+  "startup_GiB": 1,
+  "original_failure": "D03-DEV-031Priest universal-tempo/counter-offense seed73 died130.5s, boss51HPleft, notclear; kept in outcomes and censoring.",
+  "derived_audit_history": "Firstcounterderivedscript included failure elapsed in conditional median. Correctedr2excludesdeathfromcleartimes and requires allmatchedWin before efficiency/rangepass; rawlogs untouched.",
+  "full_binaries_preserved": [
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-efficiency-preflight-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-efficiency-preflight-r2\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-efficiency-preflight-r3\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-counter-preflight-r1\\build",
+    "G:\\PR13Evidence\\season-balance-20261102-r1\\d03-counter-preflight-r2\\build"
+  ],
+  "whole_goal_complete": false
+}

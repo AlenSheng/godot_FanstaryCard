@@ -1,0 +1,69 @@
+{
+  "status": "complete_for_C02_scope_balance_metrics_and_other_gates_remain_pending",
+  "domain_tests_passed": 497,
+  "server_tests_passed": 153,
+  "native_client_checks_passed": 209,
+  "tests_skipped": 0,
+  "public_archive_sha256": {
+    "r33": "199501377e0eac31dad0af10a664588857307837d3763ffc1de9dc9a72261d68",
+    "r34": "054c0d9576fc3089bd57a17499130944f0b822d0659a6e9cceeeacfd1a383dfe",
+    "r35": "a92a8daf98996c7cc2d1da9183dd8505ea8d3c6561c5d1167e140fa7bd652537",
+    "r36": "59b0df1c4842786533219bfcf0ee729f10a018510eb6ee95a8ffd1556abbdf9a",
+    "r37": "7ac649deaa08460792254752d1297dd55558616694a359fb7879dbe148c2bcb6"
+  },
+  "configuration_version": "season-v1-config-1",
+  "content_hash": "59e38f4525d696a92a2a98befb4ddfbe290d2d218735414fad1174bedc2677ba",
+  "legacy_version_archived": "gdd-0.70-numerical-1",
+  "legacy_13_table_bodies_byte_identical": true,
+  "verified": [
+    "Exact six-difficulty HP/shield/damage/interval basis-point floors and all 126 factory/snapshot controls",
+    "Charge/empower before difficulty damage; independent recurring shield scaling and half-HP cap",
+    "GDD windup inside the interval, 100ms remainder carry, fixed 600/800/1200ms policy and D5 guard cycle near 16.2 seconds",
+    "Relative half-HP Boss transition after current step, same HP pool and scaled phase-two interval/15-element/20-direct vectors",
+    "Three legal class base-health values preserved; actual intent damage clock at all six tiers",
+    "Frozen scaling in JSON snapshots, no repeated health scaling and rejection of missing published profile",
+    "Complete unlock chain, death and replay exclusion, same-match elite/Boss requirements",
+    "PostgreSQL concurrent and late original-season once-only progress, next-season isolation and malformed-proof transaction rollback",
+    "New local dual package identity and old package preservation; client index/transport regressions"
+  ],
+  "history": [
+    {
+      "run": "r33",
+      "scope": "export only; 20 tables/1671 rows; zero gameplay"
+    },
+    {
+      "run": "r34",
+      "classification": "missing test namespace",
+      "executed_tests": 0
+    },
+    {
+      "run": "r35",
+      "classification": "CA1861 test constant-array analyzer",
+      "executed_tests": 0
+    },
+    {
+      "run": "r36",
+      "domain_passed": 493,
+      "domain_failed": 4,
+      "classification": "Old test observation time assumed additive windup; GDD requires contained windup"
+    },
+    {
+      "run": "r37",
+      "domain_passed": 497,
+      "server_passed": 153,
+      "failed": 0,
+      "runtime_changed_since_r36": false
+    }
+  ],
+  "scope_limits": [
+    "Factory/intent/terminal-checkpoint controls are not full gameplay-route success-rate or resource-balance evidence",
+    "C03/C04/C05/C09 and D03 remain pending; reading reward scale fields does not apply the later reward economy",
+    "No human experience, capacity rerun or rendered UI-resolution acceptance"
+  ],
+  "production_deployed": false,
+  "local_integration_runtime_bundle_replaced": true,
+  "live_season_activated": false,
+  "capacity_retest_performed": false,
+  "B05_matches_consumed": 0,
+  "B05_remaining": 9
+}

@@ -1,0 +1,81 @@
+{
+  "distinct_PG_passed": 17,
+  "not_one_17_pass_batch": true,
+  "batches": {
+    "runtime-r102": {
+      "passed": 15,
+      "failed": 2
+    },
+    "runtime-r103": {
+      "passed": 16,
+      "failed": 0
+    }
+  },
+  "cases": {
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \\\"room\\\")": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \\\"owner\\\")": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \\\"bot\\\")": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \\\"settled\\\")": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: \\\"not-running\\\")": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: False)": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: True)": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: False)": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: True)": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof": [
+      "runtime-r102",
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection": [
+      "runtime-r102"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer": [
+      "runtime-r103"
+    ],
+    "FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment": [
+      "runtime-r103"
+    ]
+  }
+}

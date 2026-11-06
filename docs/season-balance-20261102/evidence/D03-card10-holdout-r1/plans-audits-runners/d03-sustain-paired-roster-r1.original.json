@@ -1,0 +1,72 @@
+{
+  "prior_used": 260,
+  "config_version": "season-v1-config-16",
+  "policy": {
+    "maximum_new": 6,
+    "scope": "Development after failed independent holdout, not a new holdout. Fix test-deck generator starvation: interleave both public counter elements before20card truncation, all3heroes equally; no weakerMage/no formalrulechange.",
+    "original_class_ratio_limit": 1.15,
+    "boss_seconds": [
+      75,
+      120
+    ],
+    "passive_credit_per_natural_interval": 0.05,
+    "credit_cap": 2,
+    "published_defaults_unchanged": true,
+    "card_written_draw_unchanged": true,
+    "B05_supplement_used": 0,
+    "no_income_merge": true,
+    "local_reserve_GiB": 2,
+    "startup_GiB": 1,
+    "prior_holdout_failed": true
+  },
+  "cases": [
+    {
+      "id": "D03-PAIRED-001",
+      "hero": "Mage",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 211,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-PAIRED-002",
+      "hero": "Mage",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 307,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-PAIRED-003",
+      "hero": "Priest",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 211,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-PAIRED-004",
+      "hero": "Priest",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 307,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-PAIRED-005",
+      "hero": "Guardian",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 211,
+      "policy": "rate-budget-half-v1"
+    },
+    {
+      "id": "D03-PAIRED-006",
+      "hero": "Guardian",
+      "deck": "flow-paired",
+      "armor": "counter-offense",
+      "seed": 307,
+      "policy": "rate-budget-half-v1"
+    }
+  ]
+}

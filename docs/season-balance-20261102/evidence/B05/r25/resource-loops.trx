@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="02ad2027-7a4a-4508-bad7-d6d968d1c1a8" name="@803968e39001 2026-11-02 16:14:52" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-02T16:14:52.5455346+00:00" queuing="2026-11-02T16:14:52.5455347+00:00" start="2026-11-02T16:14:48.4215092+00:00" finish="2026-11-02T16:15:32.8541440+00:00" />
+  <TestSettings name="default" id="21b0d29a-47da-4b83-9955-1edd5f3d7827">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-02_16_14_52" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="9cdda0c6-3bac-42e1-bc03-b70ae251c850" testId="053c0276-cfdc-2b2e-fc91-cc6cdcec38ed" testName="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Mage)" computerName="803968e39001" duration="00:00:00.3234573" startTime="2026-11-02T16:14:51.8341799+00:00" endTime="2026-11-02T16:14:52.2228652+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9cdda0c6-3bac-42e1-bc03-b70ae251c850" />
+    <UnitTestResult executionId="4ecf4c6f-bb46-4482-9701-7b0df247f42c" testId="848aff48-5697-5c4a-4972-8ea174d8c81a" testName="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Guardian)" computerName="803968e39001" duration="00:00:00.0026235" startTime="2026-11-02T16:14:52.2353578+00:00" endTime="2026-11-02T16:14:52.2381092+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4ecf4c6f-bb46-4482-9701-7b0df247f42c" />
+    <UnitTestResult executionId="63339efc-341d-4d7e-8896-ea10514218a5" testId="75a3498e-b436-731a-3dcc-35f62ec11b41" testName="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Priest)" computerName="803968e39001" duration="00:00:00.0017174" startTime="2026-11-02T16:14:52.2389950+00:00" endTime="2026-11-02T16:14:52.2408705+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="63339efc-341d-4d7e-8896-ea10514218a5" />
+    <UnitTestResult executionId="cc97cec8-0f3b-401b-a9ae-2fa23b2668e5" testId="98fc642c-110d-66ca-0c19-a37a005c09a7" testName="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill" computerName="803968e39001" duration="00:00:40.4494904" startTime="2026-11-02T16:14:52.2450506+00:00" endTime="2026-11-02T16:15:32.7143669+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cc97cec8-0f3b-401b-a9ae-2fa23b2668e5">
+      <Output>
+        <StdOut>{"hero":"Priest","matches":96,"dead":43,"extracted":43,"timeout":10,"maxKills":54,"maxActions":842,"maxActionsPerSecond":0.8583810988396477,"maxDps":8.778891388832072}
+{"hero":"Mage","matches":96,"dead":43,"extracted":48,"timeout":5,"maxKills":54,"maxActions":683,"maxActionsPerSecond":1.153111063920153,"maxDps":10.645586297760211}
+{"hero":"Guardian","matches":96,"dead":28,"extracted":41,"timeout":27,"maxKills":54,"maxActions":912,"maxActionsPerSecond":0.8771168041684758,"maxDps":7.790507364975451}</StdOut>
+        <ErrorInfo>
+          <Message>Assert.DoesNotContain() Failure: Filter matched in collection
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         ↓ (pos 2)
+Collection: [RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 577.6, Actions = 146, Kills = 10, ActualDamage = 733, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 146, CardsSpent = 148, FinalHand = 1, RequestedCastCharge = 0, EmptyHandSeconds = 576.4000000000625, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73102, Outcome = Dead, Seconds = 539.9, Actions = 138, Kills = 11, ActualDamage = 670, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 136, CardsSpent = 139, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 539.4000000000541, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73101, Outcome = Timeout, Seconds = 1200, Actions = 663, Kills = 48, ActualDamage = 3988, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1196.4000000000074, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 80 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73102, Outcome = Timeout, Seconds = 1200, Actions = 664, Kills = 49, ActualDamage = 4285, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1195.9000000000078, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 78 }, RunRow { Hero = Priest, Build = starter, Level = 1, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 695.6, Actions = 176, Kills = 14, ActualDamage = 955, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 175, CardsSpent = 178, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 694.4000000000893, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, ···]</Message>
+          <StackTrace>   at FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill() in /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonResourceLoopTests.cs:line 58
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Guardian)" storage="/workspace/server/tests/fantasycard.domain.tests/bin/debug/net10.0/fantasycard.domain.tests.dll" id="848aff48-5697-5c4a-4972-8ea174d8c81a">
+      <Execution id="4ecf4c6f-bb46-4482-9701-7b0df247f42c" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests" name="LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Mage)" storage="/workspace/server/tests/fantasycard.domain.tests/bin/debug/net10.0/fantasycard.domain.tests.dll" id="053c0276-cfdc-2b2e-fc91-cc6cdcec38ed">
+      <Execution id="9cdda0c6-3bac-42e1-bc03-b70ae251c850" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests" name="LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill" storage="/workspace/server/tests/fantasycard.domain.tests/bin/debug/net10.0/fantasycard.domain.tests.dll" id="98fc642c-110d-66ca-0c19-a37a005c09a7">
+      <Execution id="cc97cec8-0f3b-401b-a9ae-2fa23b2668e5" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests" name="LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects(hero: Priest)" storage="/workspace/server/tests/fantasycard.domain.tests/bin/debug/net10.0/fantasycard.domain.tests.dll" id="75a3498e-b436-731a-3dcc-35f62ec11b41">
+      <Execution id="63339efc-341d-4d7e-8896-ea10514218a5" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests" name="LegalFullHandAndPrintedDrawChargeDoNotBankOverflowOrRewritePrintedEffects" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="053c0276-cfdc-2b2e-fc91-cc6cdcec38ed" executionId="9cdda0c6-3bac-42e1-bc03-b70ae251c850" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="848aff48-5697-5c4a-4972-8ea174d8c81a" executionId="4ecf4c6f-bb46-4482-9701-7b0df247f42c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="75a3498e-b436-731a-3dcc-35f62ec11b41" executionId="63339efc-341d-4d7e-8896-ea10514218a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="98fc642c-110d-66ca-0c19-a37a005c09a7" executionId="cc97cec8-0f3b-401b-a9ae-2fa23b2668e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="4" executed="4" passed="3" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.19]   Discovering: FantasyCard.Domain.Tests
+[xUnit.net 00:00:02.05]   Discovered:  FantasyCard.Domain.Tests
+[xUnit.net 00:00:03.13]   Starting:    FantasyCard.Domain.Tests
+[xUnit.net 00:00:43.74]       Assert.DoesNotContain() Failure: Filter matched in collection
+[xUnit.net 00:00:43.74]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ↓ (pos 2)
+[xUnit.net 00:00:43.75]       Collection: [RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 577.6, Actions = 146, Kills = 10, ActualDamage = 733, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 146, CardsSpent = 148, FinalHand = 1, RequestedCastCharge = 0, EmptyHandSeconds = 576.4000000000625, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = False, Seed = 73102, Outcome = Dead, Seconds = 539.9, Actions = 138, Kills = 11, ActualDamage = 670, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 136, CardsSpent = 139, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 539.4000000000541, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73101, Outcome = Timeout, Seconds = 1200, Actions = 663, Kills = 48, ActualDamage = 3988, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1196.4000000000074, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 80 }, RunRow { Hero = Priest, Build = starter, Level = 0, Fast = True, Seed = 73102, Outcome = Timeout, Seconds = 1200, Actions = 664, Kills = 49, ActualDamage = 4285, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 662, CardsSpent = 665, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 1195.9000000000078, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 78 }, RunRow { Hero = Priest, Build = starter, Level = 1, Fast = False, Seed = 73101, Outcome = Dead, Seconds = 695.6, Actions = 176, Kills = 14, ActualDamage = 955, RequestedImmediateDraw = 0, ActualEffectDraw = 0, ActualNaturalDraw = 175, CardsSpent = 178, FinalHand = 0, RequestedCastCharge = 0, EmptyHandSeconds = 694.4000000000893, FullHandSeconds = 0, MonsterThresholds = System.Int32[], Hp = 0 }, ···]
+[xUnit.net 00:00:43.75]       Stack Trace:
+[xUnit.net 00:00:43.75]         /workspace/server/tests/FantasyCard.Domain.Tests/Combat/SeasonResourceLoopTests.cs(58,0): at FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill()
+[xUnit.net 00:00:43.75]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+[xUnit.net 00:00:43.75]            at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+[xUnit.net 00:00:43.75]       Output:
+[xUnit.net 00:00:43.75]         {"hero":"Priest","matches":96,"dead":43,"extracted":43,"timeout":10,"maxKills":54,"maxActions":842,"maxActionsPerSecond":0.8583810988396477,"maxDps":8.778891388832072}
+[xUnit.net 00:00:43.75]         {"hero":"Mage","matches":96,"dead":43,"extracted":48,"timeout":5,"maxKills":54,"maxActions":683,"maxActionsPerSecond":1.153111063920153,"maxDps":10.645586297760211}
+[xUnit.net 00:00:43.75]         {"hero":"Guardian","matches":96,"dead":28,"extracted":41,"timeout":27,"maxKills":54,"maxActions":912,"maxActionsPerSecond":0.8771168041684758,"maxDps":7.790507364975451}
+[xUnit.net 00:00:43.76]   Finished:    FantasyCard.Domain.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="803968e39001" outcome="Error" timestamp="2026-11-02T16:15:32.7279923+00:00">
+        <Text>[xUnit.net 00:00:43.74]     FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

@@ -3,6 +3,7 @@ using FantasyCard.Server.ProtobufHttp;
 using System.Text.Json;
 using FantasyCard.Contracts.Mail;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Progression;
 using Npgsql;
 
 namespace FantasyCard.Server.Mail;
@@ -77,6 +78,9 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
     {
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
+        // Match claim-all and other account-asset writes: player before mail.
+        // Reversing these locks deadlocks a single claim against a batch claim.
+        if (!await LockPlayerAsync(connection, transaction, playerId, cancellationToken)) return null;
         var requestHash = PersistentIdempotency.Hash(new { mailId });
         var now = timeProvider.GetUtcNow();
         await using var query = new NpgsqlCommand(
@@ -109,8 +113,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         var attachments = ReadAttachments(payload);
         var response = new MailClaimResponse(mailId, false, attachments);
         GameResponseBudget.EnsureFits("MailClaimResponse", response);
-        foreach (var attachment in attachments)
-            await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
+        await GrantAttachmentsAsync(connection, transaction, playerId, mailId, attachments, now, cancellationToken);
 
         await using var update = new NpgsqlCommand(
             "UPDATE mail_messages SET claimed_at=$1,read_at=COALESCE(read_at,$1),version=version+1 WHERE mail_id=$2 AND player_id=$3",
@@ -130,12 +133,8 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         await using var connection = await dataSource.OpenConnectionAsync(cancellationToken);
         await using var transaction = await connection.BeginTransactionAsync(cancellationToken);
         var now = timeProvider.GetUtcNow();
-        await using (var playerLock = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction))
-        {
-            playerLock.Parameters.AddWithValue(playerId);
-            if (await playerLock.ExecuteScalarAsync(cancellationToken) is null)
-                throw new InvalidOperationException("Player is missing.");
-        }
+        if (!await LockPlayerAsync(connection, transaction, playerId, cancellationToken))
+            throw new InvalidOperationException("Player is missing.");
 
         var requestHash = PersistentIdempotency.Hash(new { operation = "claim-all" });
         var replay = await PersistentIdempotency.ReadAsync<MailClaimAllResponse>(
@@ -167,8 +166,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         GameResponseBudget.EnsureFits("MailClaimAllResponse", response);
         foreach (var claim in claims)
         {
-            foreach (var attachment in claim.Granted)
-                await GrantAsync(connection, transaction, playerId, attachment, requestId, cancellationToken);
+            await GrantAttachmentsAsync(connection, transaction, playerId, claim.MailId, claim.Granted, now, cancellationToken);
             await using var update = new NpgsqlCommand(
                 "UPDATE mail_messages SET claimed_at=$1,read_at=COALESCE(read_at,$1),version=version+1 WHERE mail_id=$2 AND player_id=$3",
                 connection, transaction);
@@ -236,22 +234,63 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         return result;
     }
 
+    private static async Task<bool> LockPlayerAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, CancellationToken cancellationToken)
+    {
+        await using var command = new NpgsqlCommand("SELECT user_id FROM players WHERE user_id=$1 FOR UPDATE", connection, transaction);
+        command.Parameters.AddWithValue(playerId);
+        return await command.ExecuteScalarAsync(cancellationToken) is not null;
+    }
+
+    private static async Task GrantAttachmentsAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, Guid mailId, IReadOnlyList<MailAttachmentResponse> attachments, DateTimeOffset now,
+        CancellationToken cancellationToken)
+    {
+        var cards = attachments.Where(attachment => attachment.Kind.Trim() == "Card").ToArray();
+        var permanentCopies = false;
+        if (cards.Length != 0)
+        {
+            await PermanentCardCopies.EnsurePublishedPolicyAsync(connection, transaction, playerId, now, cancellationToken);
+            permanentCopies = await PermanentCardCopies.IsEnabledAsync(connection, transaction, playerId, cancellationToken);
+        }
+        if (permanentCopies)
+        {
+            // The ledger has one entry per original mail and card identity.
+            // Aggregate duplicate attachment rows without changing the receipt.
+            foreach (var group in cards.GroupBy(attachment => attachment.ItemId, StringComparer.Ordinal))
+            {
+                var cardId = group.Key;
+                if (string.IsNullOrWhiteSpace(cardId)) throw new InvalidOperationException("Card attachment itemId is required.");
+                var quantity = checked((int)group.Sum(attachment => attachment.Amount));
+                await PermanentCardCopies.GrantStoredWithinTransactionAsync(connection, transaction, playerId,
+                    cardId, quantity, "mail.claim", mailId.ToString("D"), now, cancellationToken);
+            }
+        }
+        foreach (var attachment in attachments)
+        {
+            if (permanentCopies && attachment.Kind.Trim() == "Card") continue;
+            await GrantAsync(connection, transaction, playerId, mailId, attachment, now, cancellationToken);
+        }
+    }
+
     private static async Task GrantAsync(
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid playerId,
+        Guid mailId,
         MailAttachmentResponse attachment,
-        string requestId,
+        DateTimeOffset now,
         CancellationToken cancellationToken)
     {
         var kind = attachment.Kind.Trim();
         if (kind is "Gold" or "Diamond")
         {
             var column = kind == "Gold" ? "gold" : "diamond";
-            await using var wallet = new NpgsqlCommand($"UPDATE player_wallets SET {column}={column}+$1,version=version+1 WHERE player_id=$2", connection, transaction);
+            await using var wallet = new NpgsqlCommand($"UPDATE player_wallets SET {column}={column}+$1,version=version+1 WHERE player_id=$2 RETURNING {column}", connection, transaction);
             wallet.Parameters.AddWithValue(attachment.Amount);
             wallet.Parameters.AddWithValue(playerId);
-            if (await wallet.ExecuteNonQueryAsync(cancellationToken) != 1) throw new InvalidOperationException("Player wallet is missing.");
+            if (await wallet.ExecuteScalarAsync(cancellationToken) is not long balance) throw new InvalidOperationException("Player wallet is missing.");
+            await WriteLegacyCurrencyLedgerAsync(connection, transaction, playerId, mailId, kind, attachment.Amount, balance, now, cancellationToken);
             return;
         }
 
@@ -266,10 +305,11 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
         };
         if (materialColumn is not null)
         {
-            await using var materials = new NpgsqlCommand($"UPDATE player_materials SET {materialColumn}={materialColumn}+$1,version=version+1 WHERE player_id=$2", connection, transaction);
+            await using var materials = new NpgsqlCommand($"UPDATE player_materials SET {materialColumn}={materialColumn}+$1,version=version+1 WHERE player_id=$2 RETURNING {materialColumn}", connection, transaction);
             materials.Parameters.AddWithValue(attachment.Amount);
             materials.Parameters.AddWithValue(playerId);
-            if (await materials.ExecuteNonQueryAsync(cancellationToken) != 1) throw new InvalidOperationException("Player materials are missing.");
+            if (await materials.ExecuteScalarAsync(cancellationToken) is not long balance) throw new InvalidOperationException("Player materials are missing.");
+            await WriteLegacyCurrencyLedgerAsync(connection, transaction, playerId, mailId, kind, attachment.Amount, balance, now, cancellationToken);
             return;
         }
 
@@ -314,7 +354,7 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
                 throw new InvalidOperationException("Low-quality equipment cannot have an effectAffix.");
             var equipmentId = Guid.CreateVersion7();
             await using var equipment = new NpgsqlCommand(
-                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,now(),$5,$6,$7)",
+                "INSERT INTO equipments(instance_id,owner_id,slot,quality,level,is_bound,location,version,created_at,element,effect_affix,secondary_trait) VALUES($1,$2,$3,$4,0,false,'Inventory',1,$8,$5,$6,$7)",
                 connection, transaction);
             equipment.Parameters.AddWithValue(equipmentId);
             equipment.Parameters.AddWithValue(playerId);
@@ -323,10 +363,33 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             equipment.Parameters.AddWithValue(parts[1]);
             equipment.Parameters.AddWithValue((object?)attachment.EffectAffix ?? DBNull.Value);
             equipment.Parameters.AddWithValue((object?)attachment.SecondaryTrait ?? DBNull.Value);
+            equipment.Parameters.AddWithValue(now);
             await equipment.ExecuteNonQueryAsync(cancellationToken);
+            await using var movement = new NpgsqlCommand("""
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,from_owner_id,to_owner_id)
+                VALUES($1,$2,$3,'Mail','Inventory','mail.claim',$4,$5,NULL,$2)
+                """, connection, transaction);
+            movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
+            movement.Parameters.AddWithValue(equipmentId);movement.Parameters.AddWithValue(mailId.ToString("D"));
+            movement.Parameters.AddWithValue(now);await movement.ExecuteNonQueryAsync(cancellationToken);
             return;
         }
 
         throw new InvalidOperationException($"Unsupported mail attachment kind '{kind}'.");
+    }
+
+    private static async Task WriteLegacyCurrencyLedgerAsync(NpgsqlConnection connection, NpgsqlTransaction transaction,
+        Guid playerId, Guid mailId, string currency, long amount, long balance, DateTimeOffset now, CancellationToken cancellationToken)
+    {
+        // The original mail has no season/configuration declaration. Its legacy
+        // Gold/fragments and permanent souls must not acquire today's season.
+        await using var command = new NpgsqlCommand("""
+            INSERT INTO economy_ledger(ledger_id,player_id,request_id,currency,delta,balance_after,reason,created_at,source_kind)
+            VALUES($1,$2,$3,$4,$5,$6,'mail.claim',$7,'LegacyMail')
+            """, connection, transaction);
+        command.Parameters.AddWithValue(Guid.CreateVersion7());command.Parameters.AddWithValue(playerId);
+        command.Parameters.AddWithValue(mailId.ToString("D"));command.Parameters.AddWithValue(currency);
+        command.Parameters.AddWithValue(amount);command.Parameters.AddWithValue(balance);command.Parameters.AddWithValue(now);
+        await command.ExecuteNonQueryAsync(cancellationToken);
     }
 }

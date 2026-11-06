@@ -21,12 +21,24 @@ const FIELD_CAPS := {
 static func gear(item: Dictionary) -> Dictionary:
 	return EquipmentDetails.equipment(item)
 
-static func quality_row(item: Dictionary) -> Dictionary:
-	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize())
+static func quality_row(item: Dictionary, index: Dictionary = {}) -> Dictionary:
+	return CatalogIndex.quality(str(gear(item).get("quality", "")).capitalize(), index, stats_version(item))
 
-static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
+static func stats_version(item: Dictionary) -> String:
+	var value: Dictionary = gear(item)
+	return str(value.get("stats_version", value.get("statsVersion", ""))) if value.get("stats_version", value.get("statsVersion")) != null else ""
+
+static func rules(item: Dictionary, index: Dictionary = {}) -> Dictionary:
+	return CatalogIndex.equipment_rules(stats_version(item), index)
+
+static func can_inspect(loadout: Array, index: Dictionary = {}) -> bool:
+	for item in loadout:
+		if not gear(item).is_empty() and quality_row(item, index).is_empty(): return false
+	return true
+
+static func attribute_rows(item: Dictionary, index: Dictionary = {}) -> Array[Dictionary]:
 	var equipment := gear(item)
-	var quality := quality_row(item)
+	var quality := quality_row(item, index)
 	if equipment.is_empty() or quality.is_empty(): return []
 	var level := int(equipment.get("level", 0))
 	var element := str(equipment.get("element", "None"))
@@ -36,33 +48,43 @@ static func attribute_rows(item: Dictionary) -> Array[Dictionary]:
 	if not is_zero_approx(damage): rows.append({"key": "damage_" + element, "kind": "damage", "element": element, "value": damage})
 	if not is_zero_approx(resistance): rows.append({"key": "resistance_" + element, "kind": "resistance", "element": element, "value": resistance})
 	var secondary := str(equipment.get("secondary_trait", equipment.get("secondaryTrait", "")))
-	if secondary == "DrawInterval":
+	var policy := rules(item, index)
+	if secondary == "DrawInterval" or policy.is_empty() and str(equipment.get("quality", "")) == "Red":
 		var interval: float = float(quality.draw_interval_percent) + level * float(quality.draw_interval_per_level)
 		if not is_zero_approx(interval): rows.append({"key": "draw_interval", "kind": "draw_interval", "element": "None", "value": interval})
-	elif secondary == "ForcedEscape":
+	if secondary == "ForcedEscape":
 		var escape: float = float(quality.forced_escape_percent)
 		if not is_zero_approx(escape): rows.append({"key": "forced_escape", "kind": "forced_escape", "element": "None", "value": escape})
+	var unique := str(equipment.get("unique_affix", equipment.get("uniqueAffix", "")))
+	if unique == "Inferno":
+		var chosen: Variant = equipment.get("unique_element", equipment.get("uniqueElement", element))
+		var unique_element: String = element if not policy.is_empty() or chosen == null else str(chosen)
+		rows.append({"key":"damage_"+unique_element,"kind":"damage","element":unique_element,"value":float(policy.get("inferno_bonus",.35))})
+	elif unique == "RapidDraw":
+		rows.append({"key":"draw_interval","kind":"draw_interval","element":"None","value":-float(policy.get("rapid_draw_reduction",.25))})
+	elif unique == "GoldenCicada":
+		rows.append({"key":"forced_escape","kind":"forced_escape","element":"None","value":float(policy.get("golden_cicada_bonus",.15))})
 	return rows
 
-static func aggregate_attributes(loadout: Array) -> Dictionary:
+static func aggregate_attributes(loadout: Array, index: Dictionary = {}) -> Dictionary:
 	var totals := {}
 	for item in loadout:
-		for row in attribute_rows(item):
+		for row in attribute_rows(item, index):
 			var key := str(row.get("key", ""))
 			if key.is_empty(): continue
 			totals[key] = float(totals.get(key, 0.0)) + float(row.get("value", 0.0))
 	return totals
 
-static func present_set_states(loadout: Array) -> Array[Dictionary]:
+static func present_set_states(loadout: Array, index: Dictionary = {}) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for kind in AFFIXES:
-		var state := set_state(loadout, kind)
+		var state := set_state(loadout, kind, index)
 		if int(state.count) > 0: result.append(state)
 	return result
 
-static func affix_contributions(item: Dictionary) -> Dictionary:
+static func affix_contributions(item: Dictionary, index: Dictionary = {}) -> Dictionary:
 	var equipment := gear(item)
-	var quality := quality_row(item)
+	var quality := quality_row(item, index)
 	var kind := str(equipment.get("effect_affix", equipment.get("effectAffix", "")))
 	if kind not in AFFIXES or quality.is_empty(): return {"kind": "", "values": {}}
 	var level := int(equipment.get("level", 0))
@@ -79,15 +101,19 @@ static func replace_slot(loadout: Array, selected: Dictionary) -> Array:
 	result.append(selected)
 	return result
 
-static func set_state(loadout: Array, kind: String) -> Dictionary:
+static func set_state(loadout: Array, kind: String, index: Dictionary = {}) -> Dictionary:
 	var matching: Array = []
 	var highest_rank := 0
+	var strongest: Dictionary = {}
 	for item in loadout:
-		var contribution := affix_contributions(item)
+		var contribution := affix_contributions(item, index)
 		if contribution.kind != kind: continue
 		matching.append(item)
 		var quality := str(gear(item).get("quality", "")).capitalize()
-		highest_rank = maxi(highest_rank, ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(quality))
+		var rank := ["", "White", "Green", "Blue", "Purple", "Orange", "Red"].find(quality)
+		if rank > highest_rank:
+			highest_rank = rank
+			strongest = quality_row(item, index)
 	var count := matching.size()
 	var has_high_quality := highest_rank >= 5
 	var required := 2 if has_high_quality else 3
@@ -98,17 +124,18 @@ static func set_state(loadout: Array, kind: String) -> Dictionary:
 		var multiplier := float(MULTIPLIERS.get(clampi(count, 2, 5), 1.0))
 		var cap_index := 2 if highest_rank >= 6 else (1 if highest_rank >= 5 else 0)
 		for item in matching:
-			var contribution := affix_contributions(item)
+			var contribution := affix_contributions(item, index)
 			for field in AFFIX_FIELDS[kind]: values[field] += float(contribution.values.get(field, 0.0))
 		for field in AFFIX_FIELDS[kind]:
-			values[field] = minf(floorf(float(values[field]) * multiplier * 100.0) / 100.0, float(FIELD_CAPS[field][cap_index]))
+			var cap := float(strongest.get(str(field).replace("_percent", "_cap_percent"), FIELD_CAPS[field][cap_index]))
+			values[field] = minf(floorf(float(values[field]) * multiplier * 100.0) / 100.0, cap)
 	return {"kind": kind, "count": count, "required": required, "active": active, "values": values, "has_high_quality": has_high_quality}
 
-static func changed_sets(before: Array, after: Array) -> Array[Dictionary]:
+static func changed_sets(before: Array, after: Array, index: Dictionary = {}) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	for kind in AFFIXES:
-		var old_state := set_state(before, kind)
-		var new_state := set_state(after, kind)
+		var old_state := set_state(before, kind, index)
+		var new_state := set_state(after, kind, index)
 		if old_state.count != new_state.count or old_state.required != new_state.required or old_state.values != new_state.values:
 			result.append({"kind": kind, "before": old_state, "after": new_state})
 	return result

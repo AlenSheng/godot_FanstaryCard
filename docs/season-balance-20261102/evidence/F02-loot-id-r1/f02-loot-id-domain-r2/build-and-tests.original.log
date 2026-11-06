@@ -1,0 +1,30 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 110 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 316 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: True) [620 ms]
+  Error Message:
+   Assert.NotEqual() Failure: Strings are equal
+Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"
+Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs:line 35
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: False) [3 ms]
+  Error Message:
+   Assert.NotEqual() Failure: Strings are equal
+Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"
+Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs:line 35
+   at InvokeStub_CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\results\contracts.trx
+
+Failed!  - Failed:     2, Passed:     0, Skipped:     0, Total:     2, Duration: 663 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:02.36]     FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: True) [FAIL]
+[xUnit.net 00:00:02.37]     FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: False) [FAIL]

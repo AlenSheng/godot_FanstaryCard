@@ -1,0 +1,18 @@
+from pathlib import Path
+import json
+keys=['reward_value_carry','reward_value_immediate','reward_value_heal','reward_value_bag_full','reward_value_empty_slot','reward_value_replaces','reward_value_set','reward_value_high_quality']
+rows={
+'zh-CN':['需成功带出后入库。','立即回复，不生成带出物品。','实际回复 +%d HP · 溢出 %d','背包已满，入包需先选择替换。','此部位当前未穿防具。','直接穿戴将替换：%s','%s 件数：%d/%d → %d/%d','直接穿戴会超过橙红合计一件上限。'],
+'en':['Banked only after extraction.','Immediate healing; no carry-out item.','Actual heal +%d HP · Overflow %d','Bag full: select an item to replace.','This armor slot is empty.','Direct equip replaces: %s','%s pieces: %d/%d → %d/%d','Direct equip would exceed the one Orange/Red limit.'],
+'ja':['撤離成功後に倉庫へ入ります。','即時回復です。持ち出す品は生成されません。','実回復 +%d HP · 超過 %d','バッグが満杯です。入れるには交換する品を選択。','この防具枠は空いています。','直接装備で交換：%s','%s の部位数：%d/%d → %d/%d','直接装備すると橙・赤合計1個の上限を超えます。'],
+'ko':['탈출 성공 후에만 보관됩니다.','즉시 회복합니다. 반출 아이템은 생성되지 않습니다.','실제 회복 +%d HP · 초과 %d','가방이 가득 찼습니다. 교체할 아이템을 선택하세요.','이 방어구 슬롯은 비어 있습니다.','바로 착용 시 교체: %s','%s 부위 수: %d/%d → %d/%d','바로 착용하면 주황·빨강 합계 1개 제한을 초과합니다.'],
+'fr':['Conservé seulement après extraction.','Soin immédiat, sans objet à extraire.','Soin réel +%d PV · Excédent %d','Sac plein : choisissez un objet à remplacer.','Cet emplacement d’armure est vide.','Équiper remplace : %s','Pièces %s : %d/%d → %d/%d','Équiper dépasserait la limite commune d’une pièce orange/rouge.'],
+'es':['Se guarda solo tras la extracción.','Curación inmediata; no genera un objeto para extraer.','Curación real +%d PV · Exceso %d','Mochila llena: selecciona un objeto para reemplazar.','Esta ranura de armadura está vacía.','Equipar directamente reemplaza: %s','Piezas de %s: %d/%d → %d/%d','Equipar superaría el límite conjunto de una pieza naranja/roja.'],
+'pt':['Guardado somente após a extração.','Cura imediata; não gera item para extrair.','Cura real +%d PV · Excesso %d','Mochila cheia: selecione um item para substituir.','Este espaço de armadura está vazio.','Equipar diretamente substitui: %s','Peças de %s: %d/%d → %d/%d','Equipar excederia o limite conjunto de uma peça laranja/vermelha.'],
+'ru':['В склад попадает только после эвакуации.','Лечение сразу, без предмета для выноса.','Реальное лечение +%d ОЗ · Избыток %d','Рюкзак полон: выберите предмет для замены.','Этот слот брони пуст.','Надевание заменит: %s','Частей %s: %d/%d → %d/%d','Надевание превысит общий лимит в одну оранжевую/красную вещь.'],
+'id':['Disimpan hanya setelah ekstraksi.','Penyembuhan langsung; tanpa item untuk dibawa keluar.','Pemulihan nyata +%d HP · Kelebihan %d','Tas penuh: pilih item yang akan diganti.','Slot zirah ini kosong.','Pakai langsung mengganti: %s','Bagian %s: %d/%d → %d/%d','Memakai akan melampaui batas satu perlengkapan Oranye/Merah.'],
+'hi':['निकासी सफल होने पर ही भंडार में जाता है।','तुरंत उपचार; बाहर ले जाने की वस्तु नहीं बनती।','वास्तविक उपचार +%d HP · अतिरिक्त %d','बैग भरा है: बदलने के लिए एक वस्तु चुनें।','यह कवच स्लॉट खाली है।','सीधे पहनने पर बदलेगा: %s','%s हिस्से: %d/%d → %d/%d','सीधे पहनने से नारंगी/लाल की संयुक्त एक वस्तु सीमा पार होगी।'],
+'ar':['يُحفظ فقط بعد الاستخراج بنجاح.','شفاء فوري دون عنصر لإخراجه.','الشفاء الفعلي +%d صحة · فائض %d','الحقيبة ممتلئة: اختر عنصرًا لاستبداله.','خانة الدرع هذه فارغة.','التجهيز المباشر يستبدل: %s','قطع %s: %d/%d → %d/%d','التجهيز سيتجاوز الحد المشترك لقطعة برتقالية/حمراء واحدة.']}
+assert all(len(x)==len(keys) for x in rows.values())
+out=Path(__file__).parent/'e01-reward-value-locale-candidates-r1.original.json';assert not out.exists();out.write_text(json.dumps({k:dict(zip(keys,v,strict=True)) for k,v in rows.items()},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+print('Prepared8keys in11languages')

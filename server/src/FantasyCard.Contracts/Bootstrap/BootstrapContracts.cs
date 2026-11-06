@@ -2,6 +2,7 @@ using FantasyCard.Contracts.Players;
 using FantasyCard.Contracts.Progression;
 using FantasyCard.Contracts.Matchmaking;
 using FantasyCard.Contracts.Mail;
+using FantasyCard.Contracts.Seasons;
 
 namespace FantasyCard.Contracts.Bootstrap;
 
@@ -33,6 +34,7 @@ public sealed record BootstrapResponse(
     public IReadOnlyList<MarketListingResponse>? Market { get; init; }
     public MailListResponse? Mail { get; init; }
     public PreparationResponse? ActivePreparation { get; init; }
+    public SeasonSummaryResponse? Season { get; init; }
 }
 
 // Opt-in recovery projection of the existing BootstrapResponse wire contract.

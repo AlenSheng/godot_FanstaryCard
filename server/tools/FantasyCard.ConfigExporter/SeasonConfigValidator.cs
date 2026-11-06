@@ -1,0 +1,416 @@
+using System.Globalization;
+
+namespace FantasyCard.ConfigExporter;
+
+/// <summary>Validates the seasonal configuration group before either bundle is published.</summary>
+public static partial class SeasonConfigValidator
+{
+    private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
+    private static readonly string[] JourneyContractKinds=["Extracted","Elite","Boss"];
+    private static readonly Dictionary<string, string> Schemas = new(StringComparer.Ordinal)
+    {
+        ["SeasonDifficulty"] = "difficulty_id:s,name_key:s,hp_scale:d,shield_scale:d,damage_scale:d,interval_scale:d,gold_scale:d,soul_scale:d,fragment_scale:d,quality_cap:i,purple_affix_chance:d,entry_quality_cap:i,red_boss_enabled:b",
+        ["SeasonLoot"] = "loot_rule_id:s,difficulty_id:s,layer_id:s,white_weight:d,green_weight:d,blue_weight:d,purple_weight:d,orange_weight:d,quality_cap:i,promotion_cap:i",
+        ["SeasonEquipment"] = "quality_id:s,damage_base:d,resist_base:d,damage_per_level:d,resist_per_level:d,speed_base:d,speed_per_level:d,cost_1:i,cost_2:i,cost_3:i,cost_4:i,cost_5:i",
+        ["SeasonProgression"] = "level_id:s,level:i,xp_to_next_42:i",
+        ["SeasonRedRules"] = "rule_id:s,weekly_quota:i,min_difficulty:i,boss_chance:d,chest_enabled:b,chest_chance:d,timezone:s,week_start_hour:i",
+        ["SeasonMarketRules"] = "rule_id:s,currency:s,tax_rate:d,min_fee:i,listing_hours:i,shared_slots:i,orange_price_cap:i,red_price_cap:i",
+        ["SeasonActivityExchange"] = "rule_id:s,cost_tokens:i,reward_kind:s,reward_count:i,per_event_limit:i"
+    };
+    private static readonly string[] DifficultyIds = ["D0", "D1", "D2", "D3", "D4", "D5"];
+    private static readonly string[] Layers = ["outer", "middle", "elite", "boss"];
+    private static readonly string[] Qualities = ["white", "green", "blue", "purple", "orange"];
+    private static readonly string[] Weights = ["white_weight", "green_weight", "blue_weight", "purple_weight", "orange_weight"];
+    private static readonly string[] DifficultyScales = ["hp_scale", "shield_scale", "damage_scale", "interval_scale", "gold_scale", "soul_scale", "fragment_scale"];
+    private static readonly string[] EquipmentStats = ["damage_base", "resist_base", "damage_per_level", "resist_per_level", "speed_base", "speed_per_level"];
+    private static readonly string[] Currencies = ["gold", "diamond"];
+    private static readonly string[] CraftedQualities = ["Orange","Purple"];
+    private static readonly Dictionary<string,string> CraftingSchemas = new(StringComparer.Ordinal)
+    {
+        ["SeasonCrafting"]="quality_id:s,minimum_difficulty:i,mark_kind:s,mark_cost:i,reforge_fragment_cost:i,wish_attempts:i",
+        ["SeasonMarkRules"]="difficulty_id:s,mark_kind:s,elite_marks:i,boss_marks:i,match_cap:i"
+    };
+    private static readonly string[] EquipmentRuleFields=["stats_version","resistance_cap","draw_floor_seconds","draw_ceiling_seconds","inferno_bonus","rapid_draw_reduction","rapid_draw_floor_seconds","chain_draw_chance","opening_draw_count","golden_cicada_bonus"];
+
+    public static void Validate(IReadOnlyList<ConfigTable> tables)
+    {
+        var present = tables.Where(t => Schemas.ContainsKey(t.Name)).ToDictionary(t => t.Name, StringComparer.Ordinal);
+        if (present.Count == 0)
+        {
+            if (tables.Any(table => table.Name is "SeasonBorrowedDecks" or "SeasonEquipmentRules" or "SeasonCrafting" or "SeasonMarkRules" or "SeasonLootPreference" or "SeasonBotRewards" or "SeasonJourneyRewards" or "SeasonCosmetics" or "SeasonMonsterTuning"))
+                throw new InvalidDataException("Seasonal extensions require the complete seasonal configuration group.");
+            return; // Archived pre-season workbooks remain valid.
+        }
+        foreach (var (name, schema) in Schemas)
+        {
+            if (!present.TryGetValue(name, out var table)) throw new InvalidDataException($"Season configuration is missing table '{name}'.");
+            var scope = name is "SeasonRedRules" or "SeasonMarketRules" or "SeasonActivityExchange" ? PublishScope.Server : PublishScope.Both;
+            foreach (var entry in schema.Split(','))
+            {
+                var parts = entry.Split(':');
+                var column = table.Columns.SingleOrDefault(c => c.Name == parts[0]);
+                var type = parts[1] switch { "s" => ConfigValueType.Text, "d" => ConfigValueType.FloatingPoint, "i" => ConfigValueType.WholeNumber, "b" => ConfigValueType.Logical, _ => throw new InvalidOperationException() };
+                if (column is null || column.Type != type || !column.Required || column.Scope != scope)
+                    throw new InvalidDataException($"{name}.{parts[0]}: required seasonal column has an invalid type, required flag or publish scope.");
+            }
+        }
+        ValidateDifficulties(present["SeasonDifficulty"]);
+        ValidateLoot(present["SeasonLoot"], present["SeasonDifficulty"]);
+        ValidateEquipment(present["SeasonEquipment"]);
+        ValidateEquipmentRules(tables,present["SeasonEquipment"]);
+        ValidateCrafting(tables);
+        ValidateLootPreference(tables);
+        ValidateBotRewards(tables);
+        ValidateShop(tables);
+        ValidateActivity(tables);
+        ValidateJourney(tables);
+        ValidateJourneyRewards(tables);
+        ValidateThemes(tables);
+        ValidateMonsterTuning(tables);
+        ValidateProgression(present["SeasonProgression"]);
+        ValidateRed(present["SeasonRedRules"]);
+        ValidateMarket(present["SeasonMarketRules"]);
+        ValidateBorrowedDecks(tables);
+        foreach (var row in present["SeasonActivityExchange"].Rows)
+        {
+            var table = present["SeasonActivityExchange"];
+            Check(N(table,row,"cost_tokens") > 0 && N(table,row,"reward_count") > 0 && N(table,row,"per_event_limit") > 0, table, "exchange cost, quantity and limit must be positive");
+            Check(S(table,row,"reward_kind") is "bound_fragments" or "bound_warrior_soul" or "bound_class_soul" or "potion", table, "unsupported activity reward kind");
+        }
+    }
+
+    private static void ValidateBorrowedDecks(IReadOnlyList<ConfigTable> tables)
+    {
+        var table = tables.SingleOrDefault(value => value.Name == "SeasonBorrowedDecks");
+        if (table is null) return;
+        foreach (var field in new[] {"id","template_id","hero_class","slot_index","card_id"})
+        {
+            var column = table.Columns.SingleOrDefault(value => value.Name == field);
+            Check(column is not null && column.Required && column.Scope == PublishScope.Both &&
+                column.Type == (field == "slot_index" ? ConfigValueType.WholeNumber : ConfigValueType.Text),table,"invalid borrowed-template metadata");
+        }
+        var cards = tables.Single(value => value.Name == "Cards");
+        var cardIds = cards.Rows.Where(row => B(cards,row,"enabled") && B(cards,row,"is_codex"))
+            .ToDictionary(row => S(cards,row,"id"),StringComparer.Ordinal);
+        var classes = new HashSet<string>(StringComparer.Ordinal);
+        Check(table.Rows.Count == 60,table,"borrowed templates require sixty card rows");
+        foreach (var group in table.Rows.GroupBy(row => S(table,row,"template_id"),StringComparer.Ordinal))
+        {
+            var rows = group.OrderBy(row => N(table,row,"slot_index")).ToArray();
+            Check(rows.Length == 20 && rows.Select(row => N(table,row,"slot_index")).SequenceEqual(Enumerable.Range(0,20).Select(value => (double)value)),table,"borrowed slots must be zero through nineteen");
+            var hero = S(table,rows[0],"hero_class");
+            Check(hero is "Mage" or "Priest" or "Guardian" && classes.Add(hero) && rows.All(row => S(table,row,"hero_class") == hero),table,"requires one template per class");
+            Check(rows.Select(row => S(table,row,"card_id")).Distinct(StringComparer.Ordinal).Count()==20,table,"borrowed cards must use unique legal slots");
+            foreach (var row in rows)
+            {
+                Check(cardIds.TryGetValue(S(table,row,"card_id"),out var card),table,"borrowed card is not a published collectible");
+                var ownerIndex = cards.Columns.Select((column,index) => (column,index)).Single(value => value.column.Name == "hero_class").index;
+                Check(card![ownerIndex].Value is null || (string)card[ownerIndex].Value! == hero,table,"borrowed card belongs to another class");
+            }
+        }
+        Check(classes.Count == 3,table,"requires all three class templates");
+    }
+
+    private static void ValidateDifficulties(ConfigTable table)
+    {
+        var returnRate=table.Columns.Select((column,index)=>(column,index)).SingleOrDefault(x=>x.column.Name=="mage_return_rate_bp");
+        if(returnRate.column is not null)
+        {
+            Check(returnRate.column.Type==ConfigValueType.WholeNumber&&returnRate.column.Scope==PublishScope.Both,table,"Mage return rate must be an integer published to both consumers");
+            foreach(var row in table.Rows)
+                Check(row[returnRate.index].Value is long rate&&rate is >=1 and <=1000,table,"Mage return rate must be explicitly one through one thousand basis points");
+        }
+        Check(table.Rows.Count == DifficultyIds.Length && table.Rows.Select(r => S(table,r,"difficulty_id")).ToHashSet(StringComparer.Ordinal).SetEquals(DifficultyIds), table, "must contain exactly D0 through D5");
+        foreach (var row in table.Rows)
+        {
+            Check(DifficultyScales.All(f => N(table,row,f) > 0), table, "scales must be positive");
+            Check(DifficultyScales.All(f => N(table,row,f) <= int.MaxValue / 10000d &&
+                (decimal)N(table,row,f) * 10000 >= 1 &&
+                (decimal)N(table,row,f) * 10000 == decimal.Truncate((decimal)N(table,row,f) * 10000)), table,
+                "scales must fit positive basis points with at most four decimal places");
+            Check(N(table,row,"quality_cap") is >= 0 and <= 4 && N(table,row,"entry_quality_cap") is >= 0 and <= 5, table, "quality caps are outside ordinary/entry ranks");
+            Probability(table,row,"purple_affix_chance");
+            Check(!B(table,row,"red_boss_enabled") || S(table,row,"difficulty_id") is not ("D0" or "D1"), table, "red Boss rewards require at least D2");
+        }
+    }
+
+    private static void ValidateLoot(ConfigTable table, ConfigTable difficulty)
+    {
+        Check(table.Rows.Count == DifficultyIds.Length * Layers.Length, table, "must contain all six difficulties and four cell types");
+        var pairs = new HashSet<(string Difficulty, string Layer)>();
+        foreach (var row in table.Rows)
+        {
+            var id = S(table,row,"difficulty_id"); var layer = S(table,row,"layer_id");
+            Check(DifficultyIds.Contains(id,StringComparer.Ordinal) && Layers.Contains(layer,StringComparer.Ordinal) && pairs.Add((id,layer)), table, "unknown or duplicate difficulty/cell reference");
+            foreach (var field in Weights)
+            {
+                Probability(table,row,field);
+                var fixedPoint=(decimal)N(table,row,field)*10000;
+                Check(fixedPoint==decimal.Truncate(fixedPoint),table,"loot probabilities support at most four decimal places");
+            }
+            Check(Math.Abs(Weights.Sum(f => N(table,row,f)) - 1) < 1e-9, table, "quality weights must sum to one");
+            var cap = N(table,row,"quality_cap");
+            var parent = difficulty.Rows.Single(r => S(difficulty,r,"difficulty_id") == id);
+            Check(cap is >= 0 and <= 4 && cap <= N(difficulty,parent,"quality_cap") && N(table,row,"promotion_cap") >= 0 && N(table,row,"promotion_cap") <= cap, table, "loot/promotion cap exceeds its allowed rank");
+            Check(N(table,row,"promotion_cap")<=3 && (layer!="outer" || cap<=3),table,"promotion and outer-layer caps cannot exceed purple");
+            Check(Weights.Select((field,rank)=>(field,rank)).All(value=>value.rank<=cap || N(table,row,value.field)==0),table,"base weights cannot exceed the final cap");
+            Check(Weights.Select((field,rank) => rank <= cap || N(table,row,field) == 0).All(x => x), table, "probability exists above the final quality cap");
+        }
+    }
+
+    private static void ValidateEquipment(ConfigTable table)
+    {
+        var versioned=table.Columns.Any(column=>column.Name=="stats_version");
+        var expected=versioned?Qualities.Append("red").ToArray():Qualities;
+        Check(table.Rows.Count == expected.Length && table.Rows.Select(r => S(table,r,"quality_id")).ToHashSet(StringComparer.Ordinal).SetEquals(expected), table, "must contain every ordinary quality and the versioned red row when enabled");
+        foreach (var row in table.Rows)
+        {
+            foreach (var field in EquipmentStats)
+                Check(N(table,row,field) >= 0, table, $"{field} must be nonnegative");
+            for (var level = 1; level <= 5; level++) Check(N(table,row,$"cost_{level}") > 0, table, "enhancement costs must be positive");
+            Check(N(table,row,"resist_base") <= 1 && N(table,row,"speed_base") < 1, table, "base resistance or interval reduction is outside bounds");
+        }
+    }
+
+    private static void ValidateEquipmentRules(IReadOnlyList<ConfigTable> tables,ConfigTable equipment)
+    {
+        var rules=tables.SingleOrDefault(table=>table.Name=="SeasonEquipmentRules");
+        var version=equipment.Columns.SingleOrDefault(column=>column.Name=="stats_version");
+        if(rules is null && version is null)return; // Original pre-C05 source workbooks remain reproducible.
+        Check(rules is not null && version is {Required:true,Scope:PublishScope.Both,Type:ConfigValueType.Text},equipment,"versioned equipment requires a matching public rules sheet");
+        var table=rules!;Check(table.Rows.Count==1,table,"requires one published equipment stats version");
+        Check(table.Columns.Count==EquipmentRuleFields.Length,table,"equipment rules require the complete published schema");
+        foreach(var field in EquipmentRuleFields)
+        {
+            var column=table.Columns.SingleOrDefault(value=>value.Name==field);
+            Check(column is {Required:true,Scope:PublishScope.Both} && column.Type==(field=="stats_version"?ConfigValueType.Text:field=="opening_draw_count"?ConfigValueType.WholeNumber:ConfigValueType.FloatingPoint),table,"invalid seasonal equipment rule metadata");
+        }
+        var row=table.Rows[0];var stats=S(table,row,"stats_version");
+        Check(!string.IsNullOrWhiteSpace(stats) && equipment.Rows.All(value=>S(equipment,value,"stats_version")==stats),table,"equipment and rule versions differ");
+        Check(N(table,row,"resistance_cap") is >0 and <=.6 && N(table,row,"draw_floor_seconds")>=1.8 &&
+            N(table,row,"draw_ceiling_seconds")<=6 && N(table,row,"draw_ceiling_seconds")>=N(table,row,"draw_floor_seconds") &&
+            N(table,row,"rapid_draw_floor_seconds")>=N(table,row,"draw_floor_seconds") && N(table,row,"rapid_draw_floor_seconds")<=N(table,row,"draw_ceiling_seconds"),table,"invalid resistance or draw interval bounds");
+        Probability(table,row,"inferno_bonus");Probability(table,row,"rapid_draw_reduction");Probability(table,row,"chain_draw_chance");Probability(table,row,"golden_cicada_bonus");
+        Check(N(table,row,"opening_draw_count") is >=0 and <=1,table,"opening draw count exceeds hand-opening policy");
+    }
+
+    private static void ValidateBotRewards(IReadOnlyList<ConfigTable> tables)
+    {
+        var table=tables.SingleOrDefault(value=>value.Name=="SeasonBotRewards");
+        if(table is null)return;
+        foreach(var field in "rule_id:s,gold:i,fragments:i,equipment_chance_bp:i,equipment_quality:s,equipment_level:i,maximum_per_human:i,mortal_pve:b".Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            var type=parts[1] switch {"s"=>ConfigValueType.Text,"b"=>ConfigValueType.Logical,_=>ConfigValueType.WholeNumber};
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both && column.Type==type,table,"invalid bot reward metadata");
+        }
+        Check(table.Rows.Count==1,table,"requires one bot victory budget");var row=table.Rows[0];
+        Check(S(table,row,"rule_id")=="season-bot-reward-v1" && N(table,row,"gold") is >=0 and <=5 &&
+            N(table,row,"fragments") is >=0 and <=1 && N(table,row,"equipment_chance_bp") is >=0 and <=1000 &&
+            S(table,row,"equipment_quality") is "White" or "Green" or "Blue" && N(table,row,"equipment_level")==0 &&
+            N(table,row,"maximum_per_human")==1 && B(table,row,"mortal_pve"),table,"bot victory must be once per human, low-value, at most blue+0, and mortal");
+    }
+
+    private static void ValidateLootPreference(IReadOnlyList<ConfigTable> tables)
+    {
+        var table=tables.SingleOrDefault(value=>value.Name=="SeasonLootPreference");
+        if(table is null)return;
+        foreach(var field in "rule_id:s,default_element:s,preferred_weight:i,other_weight:i".Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both &&
+                column.Type==(parts[1]=="s"?ConfigValueType.Text:ConfigValueType.WholeNumber),table,"invalid loot preference metadata");
+        }
+        Check(table.Rows.Count==1,table,"requires one frozen loot preference policy");
+        var row=table.Rows[0];
+        Check(S(table,row,"rule_id")=="season-v1" && S(table,row,"default_element") is "Wood" or "Fire" or "Earth" or "Metal" or "Water" &&
+            N(table,row,"preferred_weight")==4000 && N(table,row,"other_weight")==1500,table,"requires theme default and40/15/15/15/15");
+    }
+
+    private static void ValidateCrafting(IReadOnlyList<ConfigTable> tables)
+    {
+        var crafting=tables.SingleOrDefault(table=>table.Name=="SeasonCrafting");
+        var marks=tables.SingleOrDefault(table=>table.Name=="SeasonMarkRules");
+        if(crafting is null && marks is null)return;
+        if(crafting is null || marks is null)throw new InvalidDataException("Crafting offers and blueprint sources must be published together.");
+        foreach(var table in new[]{crafting,marks})
+        foreach(var field in CraftingSchemas[table.Name].Split(','))
+        {
+            var parts=field.Split(':');var column=table.Columns.SingleOrDefault(value=>value.Name==parts[0]);
+            Check(column is not null && column.Required && column.Scope==PublishScope.Both &&
+                column.Type==(parts[1]=="s"?ConfigValueType.Text:ConfigValueType.WholeNumber),table,"invalid crafting metadata");
+        }
+        Check(crafting.Rows.Count==2 && crafting.Rows.Select(row=>S(crafting,row,"quality_id")).Order(StringComparer.Ordinal).SequenceEqual(CraftedQualities),crafting,"only Purple and Orange can be crafted");
+        foreach(var row in crafting.Rows)
+        {
+            var purple=S(crafting,row,"quality_id")=="Purple";
+            Check(N(crafting,row,"minimum_difficulty")>=(purple?1:2) && N(crafting,row,"minimum_difficulty")<=5 &&
+                S(crafting,row,"mark_kind")== (purple?"Blueprint":"OrangeBlueprint") && N(crafting,row,"mark_cost")>0 &&
+                N(crafting,row,"reforge_fragment_cost")>0 && N(crafting,row,"wish_attempts") is >=1 and <=3,crafting,"invalid offer or wish bound");
+        }
+        Check(marks.Rows.Count==6 && marks.Rows.Select(row=>S(marks,row,"difficulty_id")).ToHashSet(StringComparer.Ordinal).SetEquals(DifficultyIds),marks,"requires D0 through D5");
+        foreach(var row in marks.Rows)
+        {
+            var difficulty=S(marks,row,"difficulty_id");var kind=difficulty=="D0"?"None":difficulty=="D1"?"Blueprint":"OrangeBlueprint";
+            Check(S(marks,row,"mark_kind")==kind && N(marks,row,"elite_marks") is >=0 and <=1 &&
+                N(marks,row,"boss_marks") is >=0 and <=2 && N(marks,row,"match_cap") is >=0 and <=4 &&
+                (difficulty!="D0" || N(marks,row,"elite_marks")+N(marks,row,"boss_marks")+N(marks,row,"match_cap")==0),marks,"invalid source kind or per-match cap");
+        }
+    }
+
+    private static void ValidateProgression(ConfigTable table)
+    {
+        Check(table.Rows.Count == 30, table, "requires thirty progression levels");
+        Check(table.Rows.Select(r => N(table,r,"level")).ToHashSet().SetEquals(Enumerable.Range(0,30).Select(x => (double)x)), table, "requires unique levels zero through twenty-nine");
+        Check(table.Rows.All(r => N(table,r,"xp_to_next_42") > 0), table, "progression XP must be positive");
+    }
+
+    private static void ValidateRed(ConfigTable table)
+    {
+        if(table.Columns.SingleOrDefault(column=>column.Name=="enabled") is { } enabled)
+            Check(enabled.Type==ConfigValueType.Logical && enabled.Required && enabled.Scope==PublishScope.Server,table,"invalid red enabled metadata");
+        Check(table.Rows.Count == 1, table, "requires one shared red quota policy");
+        foreach (var row in table.Rows)
+        {
+            Check(N(table,row,"weekly_quota") == 1 && N(table,row,"min_difficulty") is >= 2 and <= 5, table, "red quota must be one per logical server/week and Boss access at least D2");
+            Probability(table,row,"boss_chance"); Probability(table,row,"chest_chance");
+            Check(S(table,row,"timezone") == "Asia/Shanghai" && N(table,row,"week_start_hour") is >= 0 and <= 23, table, "invalid weekly quota timezone/hour");
+        }
+    }
+
+    private static void ValidateMarket(ConfigTable table)
+    {
+        if(table.Columns.SingleOrDefault(column=>column.Name=="enabled") is { } enabled)
+        {
+            Check(enabled.Type==ConfigValueType.Logical && enabled.Required && enabled.Scope==PublishScope.Server,table,"invalid market enabled metadata");
+            Check(table.Rows.Select(row=>B(table,row,"enabled")).Distinct().Count()==1,table,"both currencies must be enabled together");
+        }
+        Check(table.Rows.Count == 2 && table.Rows.Select(r => S(table,r,"currency")).ToHashSet(StringComparer.Ordinal).SetEquals(Currencies), table, "requires separate gold and diamond policies");
+        double? slots = null;
+        foreach (var row in table.Rows)
+        {
+            Probability(table,row,"tax_rate");
+            Check(N(table,row,"min_fee") >= 1 && N(table,row,"listing_hours") > 0 && N(table,row,"shared_slots") > 0 && N(table,row,"orange_price_cap") > 0 && N(table,row,"red_price_cap") > 0, table, "market limits, fees and price caps must be positive");
+            slots ??= N(table,row,"shared_slots");
+            Check(slots == N(table,row,"shared_slots"), table, "currencies must share the same total listing slots");
+        }
+    }
+
+    private static void ValidateShop(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonShopRules");var products=tables.SingleOrDefault(t=>t.Name=="SeasonShopProducts");
+        if(rules is null&&products is null)return;
+        if(rules is null||products is null)throw new InvalidDataException("Both season shop tables must be published together.");
+        foreach(var pair in new[]{(Table:rules,Schema:"rule_id:s,enabled:b,time_zone:s,reset_hour:i,pack_cards:i,white_weight:i,green_weight:i,blue_weight:i,purple_weight:i,class_soul_daily_limit:i,paid_bag_cap:i"),
+                     (Table:products,Schema:"product_id:s,kind:s,amount:i,price_gold:i,daily_limit:i,quota_group:s,hero_class:s")})
+            foreach(var item in pair.Schema.Split(','))
+            {
+                var parts=item.Split(':');var col=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(col is not null&&col.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text)&&
+                    col.Required==(parts[0]!="hero_class")&&col.Scope==PublishScope.Both,pair.Table,"invalid shop column metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-gold-shop-v1"&&S(rules,row,"time_zone")=="Asia/Shanghai"&&
+            N(rules,row,"reset_hour")==4&&N(rules,row,"pack_cards")==3&&N(rules,row,"white_weight")==50&&
+            N(rules,row,"green_weight")==30&&N(rules,row,"blue_weight")==15&&N(rules,row,"purple_weight")==5&&
+            N(rules,row,"class_soul_daily_limit")==1&&N(rules,row,"paid_bag_cap")==3,rules,"shop terms differ from the authorized baseline");
+        (string Id,string Kind,int Amount,int Price,int Limit,string Group,string? Hero)[] expected=[
+            ("card_pack","Cards",3,250,5,"card_pack",null),("warrior_soul","WarriorSoul",20,180,3,"warrior_soul",null),
+            ("equipment_fragments","EquipmentFragments",20,120,3,"equipment_fragments",null),
+            ("priest_soul","ClassSoul",12,400,1,"class_soul","Priest"),("mage_soul","ClassSoul",12,400,1,"class_soul","Mage"),
+            ("guardian_soul","ClassSoul",12,400,1,"class_soul","Guardian"),("health_potion","HealthPotion",1,100,4,"health_potion",null),
+            ("advanced_bag","AdvancedBag",1,800,0,"advanced_bag",null),("top_bag","TopBag",1,2200,0,"top_bag",null)];
+        Check(products.Rows.Count==expected.Length,products,"requires nine fixed products");
+        foreach(var e in expected)
+        {
+            var p=products.Rows.SingleOrDefault(p=>S(products,p,"product_id")==e.Id);Check(p is not null,products,"missing fixed product");
+            var heroIndex=products.Columns.Select((c,i)=>(c,i)).Single(v=>v.c.Name=="hero_class").i;
+            Check(S(products,p!,"kind")==e.Kind&&N(products,p!,"amount")==e.Amount&&N(products,p!,"price_gold")==e.Price&&
+                N(products,p!,"daily_limit")==e.Limit&&S(products,p!,"quota_group")==e.Group&&(string?)p![heroIndex].Value==e.Hero,
+                products,"fixed product differs from the authorized baseline");
+        }
+        var economy=tables.Single(t=>t.Name=="Economy");
+        foreach(var entry in new[]{(Id:"health-potion-price",Value:100),(Id:"daily-card-slots",Value:3),(Id:"daily-shop-refresh-limit",Value:3)})
+            Check(N(economy,economy.Rows.Single(r=>S(economy,r,"id")==entry.Id),"int_value")==entry.Value,economy,"existing shop terms must retain their original values");
+        var bags=tables.Single(t=>t.Name=="Backpacks");
+        foreach(var entry in new[]{(Id:"Advanced",Price:800),(Id:"Top",Price:2200)})
+            Check(N(bags,bags.Rows.Single(r=>S(bags,r,"id")==entry.Id),"price_gold")==entry.Price,bags,"paid bag prices differ from the baseline");
+        var prices=tables.Single(t=>t.Name=="ShopCardPrices");Check(prices.Rows.Count==4,prices,"requires four single-card prices");
+        foreach(var entry in new[]{(Id:"White",Price:80),(Id:"Green",Price:150),(Id:"Blue",Price:280),(Id:"Purple",Price:500)})
+        {
+            var p=prices.Rows.Single(r=>S(prices,r,"id")==entry.Id);
+            Check(N(prices,p,"price_gold")==entry.Price&&N(prices,p,"daily_limit")==1,prices,"single-card price or limit differs from the baseline");
+        }
+        var levels=tables.Single(t=>t.Name=="CardLevels");
+        Check(levels.Rows.All(r=>B(levels,r,"requires_copy")== (N(levels,r,"level")>=4)),levels,"extra copies are required only at +4 and +5");
+    }
+
+    private static void ValidateJourney(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRules");var contracts=tables.SingleOrDefault(t=>t.Name=="SeasonWeeklyContracts");
+        if(rules is null&&contracts is null)return;
+        if(rules is null||contracts is null)throw new InvalidDataException("Journey policy and weekly contracts must publish together.");
+        foreach(var pair in new[]{(Table:rules,Schema:"rule_id:s,enabled:b,outer_xp:i,middle_xp:i,elite_xp:i,boss_xp:i,extraction_xp:i,catch_up_multiplier:i,reference_days:i,reference_xp_42:i,main_reward_levels:i,contract_assignment:s,catch_up_sources:s,time_zone:s"),
+                    (Table:contracts,Schema:"contract_id:s,completion_kind:s,target:i,xp_reward:i")})
+            foreach(var field in pair.Schema.Split(','))
+            {
+                var parts=field.Split(':');var column=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(column is not null&&column.Required&&column.Scope==PublishScope.Both&&column.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text),pair.Table,"invalid journey publication metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one journey policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-journey-v1"&&N(rules,row,"outer_xp")==6&&N(rules,row,"middle_xp")==10&&N(rules,row,"elite_xp")==25&&
+            N(rules,row,"boss_xp")==80&&N(rules,row,"extraction_xp")==70&&N(rules,row,"catch_up_multiplier")==2&&N(rules,row,"reference_days")==21&&
+            N(rules,row,"reference_xp_42")==6850&&N(rules,row,"main_reward_levels")==20&&S(rules,row,"contract_assignment")=="oldest-open-incomplete"&&
+            S(rules,row,"catch_up_sources")=="cleared_cells"&&S(rules,row,"time_zone")=="Asia/Shanghai",rules,"journey source, catch-up or assignment terms differ");
+        Check(contracts.Rows.Count==3,contracts,"requires exactly three weekly contracts");
+        Check(contracts.Rows.Select(r=>S(contracts,r,"completion_kind")).Order(StringComparer.Ordinal).SequenceEqual(JourneyContractKinds.Order(StringComparer.Ordinal)),contracts,"weekly event kinds differ");
+        Check(contracts.Rows.All(r=>N(contracts,r,"target") is >=1 and <=100&&N(contracts,r,"target")==Math.Truncate(N(contracts,r,"target"))&&N(contracts,r,"xp_reward")==300),contracts,"weekly contract target or experience is invalid");
+    }
+
+    private static void ValidateActivity(IReadOnlyList<ConfigTable> tables)
+    {
+        var rules=tables.SingleOrDefault(t=>t.Name=="SeasonActivityRules");var calendar=tables.SingleOrDefault(t=>t.Name=="SeasonActivityCalendar");
+        if(rules is null&&calendar is null)return;
+        if(rules is null||calendar is null)throw new InvalidDataException("Activity calendar and policy must publish together.");
+        foreach(var pair in new[]{(Table:rules,Scope:PublishScope.Server,Schema:"rule_id:s,enabled:b,completion_kind:s,tokens_per_completion:i,token_cap:i,time_zone:s,start_hour:i,late_exchange:b,direct_gold:i,direct_diamonds:i,direct_equipment:i,direct_red_materials:i"),
+                     (Table:calendar,Scope:PublishScope.Both,Schema:"event_id:s,first_day_42:i,days:i")})
+            foreach(var field in pair.Schema.Split(','))
+            {
+                var parts=field.Split(':');var col=pair.Table.Columns.SingleOrDefault(c=>c.Name==parts[0]);
+                Check(col is not null&&col.Required&&col.Scope==pair.Scope&&col.Type==(parts[1]=="i"?ConfigValueType.WholeNumber:parts[1]=="b"?ConfigValueType.Logical:ConfigValueType.Text),pair.Table,"invalid limited-activity metadata");
+            }
+        Check(rules.Rows.Count==1,rules,"requires one policy");var row=rules.Rows[0];
+        Check(S(rules,row,"rule_id")=="season-limited-activity-v1"&&S(rules,row,"completion_kind")=="Extracted"&&N(rules,row,"tokens_per_completion")==4&&
+            N(rules,row,"token_cap")==12&&S(rules,row,"time_zone")=="Asia/Shanghai"&&N(rules,row,"start_hour")==0&&B(rules,row,"late_exchange"),rules,"limited activity budget or completion terms differ");
+        Check(ActivityDirectFields.All(f=>N(rules,row,f)==0),rules,"direct activity injections are disabled");
+        Check(calendar.Rows.Count==2,calendar,"requires two events");
+        Check(calendar.Rows.All(r=>N(calendar,r,"first_day_42") is >=1 and <=40&&N(calendar,r,"days")==3),calendar,"requires three-day windows inside the season");
+        foreach(var duration in new[]{30,42,60})
+        {
+            var starts=calendar.Rows.Select(r=>(int)(N(calendar,r,"first_day_42")-1)*duration/42).Order().ToArray();
+            Check(starts[0]+3<=starts[1]&&starts[1]+3<=duration,calendar,"scaled event windows overlap or exceed the season");
+        }
+        var exchanges=tables.Single(t=>t.Name=="SeasonActivityExchange");
+        (string Id,int Cost,string Kind,int Count,int Limit)[] expected=[("event-fragments",3,"bound_fragments",10,4),
+            ("event-warrior",3,"bound_warrior_soul",6,4),("event-class",3,"bound_class_soul",2,4),("event-potion",6,"potion",1,1)];
+        Check(exchanges.Rows.Count==4,exchanges,"requires exactly the four bound-resource choices");
+        foreach(var e in expected)
+        {
+            var r=exchanges.Rows.SingleOrDefault(r=>S(exchanges,r,"rule_id")==e.Id);
+            Check(r is not null,exchanges,"missing resource choice");
+            Check(N(exchanges,r!,"cost_tokens")==e.Cost&&S(exchanges,r!,"reward_kind")==e.Kind&&N(exchanges,r!,"reward_count")==e.Count&&N(exchanges,r!,"per_event_limit")==e.Limit,exchanges,"activity exchange differs from the shared-budget contract");
+        }
+    }
+
+    private static object Value(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) =>
+        row[table.Columns.Select((column,index) => (column,index)).Single(x => x.column.Name == field).index].Value
+        ?? throw new InvalidDataException($"{table.Name}.{field}: null seasonal value.");
+    private static string S(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) => (string)Value(table,row,field);
+    private static double N(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) => Convert.ToDouble(Value(table,row,field),CultureInfo.InvariantCulture);
+    private static bool B(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) => (bool)Value(table,row,field);
+    private static void Probability(ConfigTable table, IReadOnlyList<ConfigValue> row, string field) => Check(N(table,row,field) is >= 0 and <= 1, table, $"{field} must be a probability");
+    private static void Check(bool condition, ConfigTable table, string message)
+    {
+        if (!condition) throw new InvalidDataException($"{table.Name}: {message}.");
+    }
+}

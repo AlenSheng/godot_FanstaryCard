@@ -1,4 +1,5 @@
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 
 namespace FantasyCard.Server.Rooms;
@@ -8,8 +9,10 @@ public sealed partial class RoomRecoveryWorker(
     RoomRegistry registry,
     RoomRecoveryState recoveryState,
     TimeProvider timeProvider,
-    ILogger<RoomRecoveryWorker> logger) : IHostedService
+    ILogger<RoomRecoveryWorker> logger,
+    PublishedConfigCatalogs? configurations = null) : IHostedService
 {
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
     public async Task StartAsync(CancellationToken cancellationToken)
     {
         IReadOnlyList<PersistedRoomSnapshot> persisted;
@@ -30,20 +33,22 @@ public sealed partial class RoomRecoveryWorker(
             var registered = false;
             try
             {
-                if (registry.ContainsRoom(room.Snapshot.RoomId)) continue;
+                if (registry.ContainsRoom(room.RoomId)) continue;
+                var snapshot = room.Snapshot ?? throw new InvalidOperationException(room.ReadError ?? "The room checkpoint is invalid.");
+                RoomSnapshotRepository.RequireMatchContext(snapshot, room.RoomId, room.MatchConfigVersion!, room.MatchSeason);
                 // A stale checkpoint cannot resurrect a player whose durable
                 // settlement released their assets and next-match permission.
                 // Quarantine this room rather than reconstructing lost combat
                 // or relic state from an incomplete settlement receipt.
                 foreach (var (playerId, result) in room.SettledPlayers)
                 {
-                    var player = room.Snapshot.Players.SingleOrDefault(value => value.PlayerId == playerId);
+                    var player = snapshot.Players.SingleOrDefault(value => value.PlayerId == playerId);
                     if (player is null || player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted) ||
                         ((result is "Dead" or "Extracted") && result != player.Phase.ToString()))
-                        throw new InvalidOperationException($"Room '{room.Snapshot.RoomId}' checkpoint disagrees with durable settlement for player '{playerId}'.");
+                        throw new InvalidOperationException($"Room '{room.RoomId}' checkpoint disagrees with durable settlement for player '{playerId}'.");
                 }
                 var actor = registry.Register(
-                    BattleRoom.Restore(room.Snapshot, CombatCardCatalog.CreatePrototype(), room.Seed),
+                    BattleRoom.Restore(snapshot, CombatCardCatalog.Create(_configurations.Resolve(snapshot.ConfigVersion)), room.Seed),
                     room.MatchId);
                 registered = true;
                 var now = timeProvider.GetUtcNow();
@@ -54,9 +59,9 @@ public sealed partial class RoomRecoveryWorker(
             catch (Exception exception) when (!cancellationToken.IsCancellationRequested)
             {
                 if (registered)
-                    await registry.RemoveAsync(room.Snapshot.RoomId);
-                failedRoomIds.Add(room.Snapshot.RoomId);
-                RoomRecoveryFailed(logger, room.Snapshot.RoomId, exception);
+                    await registry.RemoveAsync(room.RoomId);
+                failedRoomIds.Add(room.RoomId);
+                RoomRecoveryFailed(logger, room.RoomId, exception);
             }
         }
         recoveryState.Complete(failedRoomIds);

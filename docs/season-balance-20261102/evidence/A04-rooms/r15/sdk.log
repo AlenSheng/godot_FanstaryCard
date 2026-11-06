@@ -1,0 +1,87 @@
+An issue was encountered verifying workloads. For more information, run "dotnet workload update".
+  Determining projects to restore...
+  Restored /workspace/server/tools/FantasyCard.ConfigExporter/FantasyCard.ConfigExporter.csproj (in 99 ms).
+  Restored /workspace/server/tests/FantasyCard.Server.Tests/FantasyCard.Server.Tests.csproj (in 521 ms).
+  Restored /workspace/server/src/FantasyCard.Server/FantasyCard.Server.csproj (in 21 ms).
+  Restored /workspace/server/src/FantasyCard.Domain/FantasyCard.Domain.csproj (in 1 ms).
+  Restored /workspace/server/src/FantasyCard.Contracts/FantasyCard.Contracts.csproj (in 4 ms).
+  FantasyCard.Contracts -> /workspace/server/src/FantasyCard.Contracts/bin/Debug/net10.0/FantasyCard.Contracts.dll
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Server -> /workspace/server/src/FantasyCard.Server/bin/Debug/net10.0/FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> /workspace/server/tools/FantasyCard.ConfigExporter/bin/Debug/net10.0/FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/results/rooms.trx
+
+Passed!  - Failed:     0, Passed:    96, Skipped:     0, Total:    96, Duration: 1 m 30 s - FantasyCard.Server.Tests.dll (net10.0)
+  Determining projects to restore...
+  Restored /workspace/server/tests/FantasyCard.Domain.Tests/FantasyCard.Domain.Tests.csproj (in 375 ms).
+  1 of 2 projects are up-to-date for restore.
+  FantasyCard.Domain -> /workspace/server/src/FantasyCard.Domain/bin/Debug/net10.0/FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll
+Test run for /workspace/server/tests/FantasyCard.Domain.Tests/bin/Debug/net10.0/FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:03.21]     FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 4) [FAIL]
+[xUnit.net 00:00:03.22]     FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 1) [FAIL]
+  Failed FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 4) [6 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 45
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 36
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 393
+   at FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Int32 difficulty) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSeasonContextTests.cs:line 31
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 1) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 45
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 36
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 393
+   at FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Int32 difficulty) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSeasonContextTests.cs:line 31
+   at InvokeStub_BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+[xUnit.net 00:00:03.38]     FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 3) [FAIL]
+[xUnit.net 00:00:03.38]     FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 2) [FAIL]
+[xUnit.net 00:00:03.38]     FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 5) [FAIL]
+  Failed FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 3) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 45
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 36
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 393
+   at FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Int32 difficulty) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSeasonContextTests.cs:line 31
+   at InvokeStub_BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 2) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 45
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 36
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 393
+   at FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Int32 difficulty) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSeasonContextTests.cs:line 31
+   at InvokeStub_BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(difficulty: 5) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level) in /workspace/server/src/FantasyCard.Domain/Cards/CardEconomyRules.cs:line 45
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in /workspace/server/src/FantasyCard.Domain/Combat/CombatCardCatalog.cs:line 36
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in /workspace/server/src/FantasyCard.Domain/Rooms/BattleRoom.cs:line 393
+   at FantasyCard.Domain.Tests.Rooms.BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Int32 difficulty) in /workspace/server/tests/FantasyCard.Domain.Tests/Rooms/BattleRoomSeasonContextTests.cs:line 31
+   at InvokeStub_BattleRoomSeasonContextTests.FullRoomJsonRecoveryRetainsItsSeasonAndEffectiveLevels(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+Results File: /workspace/results/domain.trx
+
+Failed!  - Failed:     5, Passed:    69, Skipped:     0, Total:    74, Duration: 927 ms - FantasyCard.Domain.Tests.dll (net10.0)

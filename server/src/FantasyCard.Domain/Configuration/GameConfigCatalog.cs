@@ -1,7 +1,9 @@
 using System.Buffers.Binary;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Cards;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
 
@@ -110,13 +112,19 @@ public sealed record EconomyConfig(
     int DailyCardSlots,
     int DailyShopRefreshLimit);
 
+public sealed record SeasonBorrowedDeckConfig(string TemplateId, HeroClass HeroClass, IReadOnlyList<string> CardIds);
+
 public sealed class GameConfigCatalog
 {
     private const string ResourceName = "FantasyCard.Config.fantasycard.config.bytes";
     private static readonly Lazy<GameConfigCatalog> Active = new(LoadEmbedded);
+    private static readonly string[] ActivityDirectFields=["direct_gold","direct_diamonds","direct_equipment","direct_red_materials"];
+    private readonly byte[] _publishedBytes;
 
     private GameConfigCatalog(
         string version,
+        string contentHash,
+        byte[] publishedBytes,
         IReadOnlyList<CardConfigDefinition> cards,
         IReadOnlyList<CardLevelConfig> cardLevels,
         IReadOnlyList<EquipmentQualityConfig> equipmentQualities,
@@ -128,6 +136,8 @@ public sealed class GameConfigCatalog
         EconomyConfig economy)
     {
         Version = version;
+        ContentHash = contentHash;
+        _publishedBytes = publishedBytes;
         Cards = cards;
         CardLevels = cardLevels;
         EquipmentQualities = equipmentQualities;
@@ -142,6 +152,8 @@ public sealed class GameConfigCatalog
     public static GameConfigCatalog Current => Active.Value;
     public NumericalRules Numerics { get; private init; } = NumericalRules.Legacy;
     public string Version { get; }
+    public string ContentHash { get; }
+    public byte[] ExportPublishedBytes() => _publishedBytes.ToArray();
     public IReadOnlyList<CardConfigDefinition> Cards { get; }
     public IReadOnlyList<CardLevelConfig> CardLevels { get; }
     public IReadOnlyList<EquipmentQualityConfig> EquipmentQualities { get; }
@@ -151,9 +163,42 @@ public sealed class GameConfigCatalog
     public IReadOnlyList<ShopCardPriceConfig> ShopCardPrices { get; }
     public IReadOnlyList<ItemConfigDefinition> Items { get; }
     public EconomyConfig Economy { get; }
+    public IReadOnlyList<SeasonDifficultyConfig> SeasonDifficulties { get; private init; } = [];
+    public IReadOnlyList<SeasonBorrowedDeckConfig> SeasonBorrowedDecks { get; private init; } = [];
+    public IReadOnlyList<SeasonLootConfig> SeasonLootRules { get; private init; } = [];
+    public SeasonEquipmentConfig? SeasonEquipment { get; private init; }
+    public SeasonCraftingConfig? SeasonCrafting { get; private init; }
+    public SeasonLootPreferenceConfig? SeasonLootPreference { get; private init; }
+    public SeasonBotRewardConfig? SeasonBotRewards { get; private init; }
+    public SeasonRedConfig? SeasonRed { get; private init; }
+    public SeasonMarketConfig? SeasonMarket { get; private init; }
+    public SeasonShopConfig? SeasonShop { get; private init; }
+    public SeasonActivityConfig? SeasonActivity { get; private init; }
+    public SeasonJourneyConfig? SeasonJourney { get; private init; }
+    public SeasonJourneyRewardsConfig? SeasonJourneyRewards { get; private init; }
+    public SeasonThemeConfig? SeasonThemes { get; private init; }
+    public SeasonMonsterTuningConfig? SeasonMonsterTuning { get; private init; }
+    public SeasonEquipmentConfig? ResolveSeasonEquipment(string statsVersion)
+    {
+        // Pre-C05 archives have no explicit equipment-version policy and keep their legacy values.
+        if(SeasonEquipment is null)return null;
+        return SeasonEquipment.StatsVersion==statsVersion ? SeasonEquipment
+            : throw new DomainValidationException("The selected equipment stats version is not published in this configuration.");
+    }
+    private static readonly string[] SeasonLootWeightFields = ["white_weight","green_weight","blue_weight","purple_weight","orange_weight"];
+    public SeasonLootConfig SeasonLoot(int difficulty,string layerId) =>
+        SeasonLootRules.SingleOrDefault(rule=>rule.Difficulty==difficulty && rule.LayerId==layerId)
+        ?? throw new InvalidDataException("The frozen seasonal loot rule is not published.");
+    public SeasonBorrowedDeckConfig BorrowedDeck(HeroClass heroClass) =>
+        SeasonBorrowedDecks.SingleOrDefault(value => value.HeroClass == heroClass)
+        ?? throw new InvalidDataException("The selected seasonal borrowed deck is not published.");
+    public SeasonDifficultyConfig SeasonDifficulty(int difficulty) =>
+        SeasonDifficulties.SingleOrDefault(value => value.Id == $"D{difficulty}")
+        ?? throw new InvalidDataException($"Season difficulty D{difficulty} is not published in configuration '{Version}'.");
 
-    public EquipmentQualityConfig EquipmentQuality(string quality) =>
-        EquipmentQualities.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
+    public EquipmentQualityConfig EquipmentQuality(string quality,string? statsVersion = null) =>
+        (statsVersion is null ? null : ResolveSeasonEquipment(statsVersion))?.Quality(quality)
+        ?? EquipmentQualities.SingleOrDefault(item => string.Equals(item.Quality, quality, StringComparison.Ordinal))
         ?? throw new DomainValidationException($"Unknown equipment quality '{quality}'.");
 
     public LootLayerConfig LootLayer(ChaosMapLayer layer, bool isBoss = false)
@@ -186,7 +231,13 @@ public sealed class GameConfigCatalog
             ?? throw new InvalidOperationException($"Embedded game config '{ResourceName}' is missing.");
         using var memory = new MemoryStream();
         stream.CopyTo(memory);
-        var bundle = ConfigBundleReader.Read(memory.ToArray());
+        return Load(memory.ToArray());
+    }
+
+    /// <summary>Loads a complete published bundle after checking its embedded content hash.</summary>
+    public static GameConfigCatalog Load(ReadOnlySpan<byte> bytes)
+    {
+        var bundle = ConfigBundleReader.Read(bytes);
         var cardsTable = bundle.Table("Cards");
         var levelsTable = bundle.Table("CardLevels");
         var equipmentTable = bundle.Table("EquipmentQuality");
@@ -274,9 +325,268 @@ public sealed class GameConfigCatalog
         ValidateBackpacks(backpacks);
         ValidateEconomy(economy, shopCardPrices, cards);
         ValidateItems(items);
+        var journey=ReadSeasonJourney(bundle);
+        var shop=ReadSeasonShop(bundle,cards,levels,economy,backpacks,shopCardPrices);
         return new GameConfigCatalog(
-            bundle.Version, cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
-            { Numerics = ReadNumerics(bundle) };
+            bundle.Version, bundle.ContentHash, bytes.ToArray(), cards, levels, equipment, lootLayers, refreshes, backpacks, shopCardPrices, items, economy)
+            { Numerics = ReadNumerics(bundle), SeasonDifficulties = ReadSeasonDifficulties(bundle), SeasonBorrowedDecks = ReadBorrowedDecks(bundle,cards), SeasonLootRules = ReadSeasonLoot(bundle),SeasonEquipment=ReadSeasonEquipment(bundle,equipment),SeasonCrafting=ReadSeasonCrafting(bundle),SeasonLootPreference=ReadSeasonLootPreference(bundle),SeasonBotRewards=ReadSeasonBotRewards(bundle),SeasonRed=ReadSeasonRed(bundle),SeasonMarket=ReadSeasonMarket(bundle),SeasonShop=shop,SeasonActivity=ReadSeasonActivity(bundle),SeasonJourney=journey,SeasonJourneyRewards=ReadSeasonJourneyRewards(bundle,journey,shop,cards),SeasonThemes=ReadSeasonThemes(bundle),SeasonMonsterTuning=ReadSeasonMonsterTuning(bundle) };
+    }
+
+    private static SeasonMonsterTuningConfig? ReadSeasonMonsterTuning(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonMonsterTuning");if(table is null)return null;
+        if(bundle.Tables.All(t=>t.Name!="SeasonDifficulty"))throw new InvalidDataException("Monster tuning requires the original seasonal rule group.");
+        return new(table.Rows.Select(r=>new SeasonMonsterTuningRow(table.Text(r,"id"),table.Text(r,"rule_id"),table.Text(r,"baseline_id"),table.Text(r,"group_id"),
+            table.RequiredInt(r,"member_order"),table.Text(r,"monster_id"),table.RequiredInt(r,"base_hp"),table.RequiredInt(r,"base_shield"),table.RequiredInt(r,"shield_intent_value"))).ToArray());
+    }
+
+    private static SeasonThemeConfig? ReadSeasonThemes(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonThemeRules");if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The theme group requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        var themes=bundle.Table("SeasonThemes");var groups=bundle.Table("SeasonThemeGroups");
+        static CardElement Element(ConfigTable table,object?[] values,string field)=>Enum.Parse<CardElement>(table.Text(values,field));
+        var policy=new SeasonThemeConfig(rules.Text(row,"rule_id"),rules.Text(row,"selected_theme"),rules.Int(row,"preferred_weight"),rules.Int(row,"other_weight"),
+            rules.Text(row,"group_weight_mode"),rules.Int(row,"global_damage_bp"),rules.Text(row,"layout"),rules.Bool(row,"spawn_singles"),
+            themes.Rows.Select(r=>new SeasonThemeDefinition(themes.Text(r,"theme_id"),Element(themes,r,"element"),themes.Text(r,"name_key"),themes.Text(r,"strategy_id"),
+                Element(themes,r,"phase1_primary"),Element(themes,r,"phase1_secondary"),Element(themes,r,"phase2_primary"),Element(themes,r,"phase2_secondary"),
+                themes.Int(r,"regeneration_budget_bp"),themes.Int(r,"regeneration_step_bp"),themes.Int(r,"phase1_shield"),themes.Int(r,"phase2_shield"),themes.Text(r,"setup_kind"),themes.Int(r,"setup_value"))).ToArray(),
+            groups.Rows.Select(r=>new SeasonThemeGroup(groups.Text(r,"group_id"),groups.Text(r,"tier"),groups.Text(r,"member_elements"),groups.Bool(r,"spawn_allowed"),groups.Int(r,"base_weight"))).ToArray());
+        policy.Validate(ReadSeasonLootPreference(bundle)?.DefaultElement??throw new InvalidDataException("Theme needs the original loot preference policy."));
+        return policy;
+    }
+
+    private static SeasonJourneyRewardsConfig? ReadSeasonJourneyRewards(ConfigBundle bundle,SeasonJourneyConfig? journey,
+        SeasonShopConfig? shop,IReadOnlyList<CardConfigDefinition> cards)
+    {
+        var rewards=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRewards");
+        var cosmetics=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonCosmetics");
+        if(rewards is null&&cosmetics is null)return null;
+        if(rewards is null||cosmetics is null)throw new InvalidDataException("Journey rewards and cosmetics must publish together.");
+        var policy=new SeasonJourneyRewardsConfig(rewards.Rows.Select(r=>new SeasonJourneyRewardConfig(rewards.Text(r,"reward_id"),
+            rewards.Int(r,"level"),rewards.Text(r,"kind"),rewards.Int(r,"amount"),rewards.Text(r,"ownership"),
+            rewards.Bool(r,"requires_class_choice"),rewards.OptionalText(r,"cosmetic_id"))).ToArray(),
+            cosmetics.Rows.Select(r=>new SeasonCosmeticConfig(cosmetics.Text(r,"cosmetic_id"),cosmetics.Text(r,"kind"),
+                cosmetics.Text(r,"name_key"),cosmetics.Text(r,"description_key"))).ToArray());
+        policy.Validate(journey,shop,cards);return policy;
+    }
+
+    private static SeasonJourneyConfig? ReadSeasonJourney(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonJourneyRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The season journey requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        if(rules.Text(row,"contract_assignment")!="oldest-open-incomplete"||rules.Text(row,"catch_up_sources")!="cleared_cells"||rules.Text(row,"time_zone")!="Asia/Shanghai")
+            throw new InvalidDataException("Journey assignment or source scope differs from the supported policy.");
+        var levels=bundle.Table("SeasonProgression");var ordered=levels.Rows.OrderBy(r=>levels.Int(r,"level")).ToArray();
+        if(!ordered.Select(r=>levels.Int(r,"level")).SequenceEqual(Enumerable.Range(0,30)))
+            throw new InvalidDataException("Journey levels must be exactly zero through twenty-nine.");
+        var contracts=bundle.Table("SeasonWeeklyContracts");
+        var policy=new SeasonJourneyConfig(rules.Text(row,"rule_id"),rules.Int(row,"outer_xp"),rules.Int(row,"middle_xp"),
+            rules.Int(row,"elite_xp"),rules.Int(row,"boss_xp"),rules.Int(row,"extraction_xp"),rules.Int(row,"catch_up_multiplier"),
+            rules.Int(row,"reference_days"),rules.Int(row,"reference_xp_42"),rules.Int(row,"main_reward_levels"),
+            ordered.Select(r=>levels.Int(r,"xp_to_next_42")).ToArray(),
+            contracts.Rows.Select(r=>new SeasonWeeklyContractConfig(contracts.Text(r,"contract_id"),contracts.Text(r,"completion_kind"),
+                contracts.Int(r,"target"),contracts.Int(r,"xp_reward"))).ToArray());
+        policy.Validate();return policy;
+    }
+
+    private static SeasonActivityConfig? ReadSeasonActivity(ConfigBundle bundle)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonActivityRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The activity group requires one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        if(ActivityDirectFields.Any(k=>rules.Int(row,k)!=0))
+            throw new InvalidDataException("Direct activity injections are disabled in this ruleset.");
+        var calendar=bundle.Table("SeasonActivityCalendar");var exchanges=bundle.Table("SeasonActivityExchange");
+        var policy=new SeasonActivityConfig(rules.Text(row,"rule_id"),rules.Text(row,"completion_kind"),rules.Int(row,"tokens_per_completion"),
+            rules.Int(row,"token_cap"),rules.Text(row,"time_zone"),rules.Int(row,"start_hour"),rules.Bool(row,"late_exchange"),
+            calendar.Rows.Select(r=>new SeasonActivityCalendarConfig(calendar.Text(r,"event_id"),calendar.Int(r,"first_day_42"),calendar.Int(r,"days"))).ToArray(),
+            exchanges.Rows.Select(r=>new SeasonActivityExchangeConfig(exchanges.Text(r,"rule_id"),exchanges.Int(r,"cost_tokens"),
+                exchanges.Text(r,"reward_kind"),exchanges.Int(r,"reward_count"),exchanges.Int(r,"per_event_limit"))).ToArray());
+        policy.Validate();return policy;
+    }
+
+    private static SeasonShopConfig? ReadSeasonShop(ConfigBundle bundle,IReadOnlyList<CardConfigDefinition> cards,
+        IReadOnlyList<CardLevelConfig> levels,EconomyConfig economy,IReadOnlyList<BackpackConfig> bags,IReadOnlyList<ShopCardPriceConfig> prices)
+    {
+        var rules=bundle.Tables.SingleOrDefault(t=>t.Name=="SeasonShopRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("The season shop requires exactly one policy.");
+        var row=rules.Rows[0];if(!rules.Bool(row,"enabled"))return null;
+        var products=bundle.Table("SeasonShopProducts");
+        var policy=new SeasonShopConfig(rules.Text(row,"rule_id"),rules.Text(row,"time_zone"),rules.Int(row,"reset_hour"),
+            rules.Int(row,"pack_cards"),rules.Int(row,"white_weight"),rules.Int(row,"green_weight"),rules.Int(row,"blue_weight"),
+            rules.Int(row,"purple_weight"),rules.Int(row,"class_soul_daily_limit"),rules.Int(row,"paid_bag_cap"),
+            products.Rows.Select(p=>new SeasonShopOffer(products.Text(p,"product_id"),products.Text(p,"kind"),products.Int(p,"amount"),
+                products.Int(p,"price_gold"),products.Int(p,"daily_limit"),products.Text(p,"quota_group"),products.OptionalText(p,"hero_class"))).ToArray());
+        policy.Validate(cards,levels,economy,bags,prices);return policy;
+    }
+
+    private static SeasonMarketConfig? ReadSeasonMarket(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonMarketRules");
+        if(table is null || !table.Rows.Any(row=>table.OptionalBool(row,"enabled")))return null;
+        if(table.Rows.Count!=2 || table.Rows.Any(row=>!table.OptionalBool(row,"enabled")))
+            throw new InvalidDataException("Both market currencies must share one enabled policy.");
+        var first=table.Rows[0];
+        if(table.Rows.Any(row=>table.Double(row,"tax_rate")!=table.Double(first,"tax_rate") ||
+            table.Int(row,"min_fee")!=table.Int(first,"min_fee") || table.Int(row,"listing_hours")!=table.Int(first,"listing_hours") ||
+            table.Int(row,"shared_slots")!=table.Int(first,"shared_slots")))throw new InvalidDataException("Currency market terms must agree.");
+        var policy=new SeasonMarketConfig(checked((int)((decimal)table.Double(first,"tax_rate")*10000)),table.Int(first,"min_fee"),
+            table.Int(first,"listing_hours"),table.Int(first,"shared_slots"),table.Rows.Select(row=>new SeasonMarketCurrencyConfig(
+                table.Text(row,"currency") switch {"gold"=>"Gold","diamond"=>"Diamond",_=>throw new InvalidDataException("Unknown market currency.")},
+                table.Int(row,"orange_price_cap"),table.Int(row,"red_price_cap"))).ToArray());
+        policy.Validate();return policy;
+    }
+
+    private static SeasonRedConfig? ReadSeasonRed(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonRedRules");
+        if(table is null || table.Rows.Count!=1 || !table.OptionalBool(table.Rows[0],"enabled"))return null;
+        var row=table.Rows[0];var policy=new SeasonRedConfig(table.Text(row,"rule_id"),table.Int(row,"weekly_quota"),table.Int(row,"min_difficulty"),
+            checked((int)((decimal)table.Double(row,"boss_chance")*10000)),table.Bool(row,"chest_enabled"),
+            checked((int)((decimal)table.Double(row,"chest_chance")*10000)),table.Text(row,"timezone"),table.Int(row,"week_start_hour"));
+        policy.Validate();return policy;
+    }
+
+    private static SeasonBotRewardConfig? ReadSeasonBotRewards(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonBotRewards");
+        if(table is null)return null;
+        if(table.Rows.Count!=1)throw new InvalidDataException("Season bot rewards require one frozen policy.");
+        var row=table.Rows[0];var policy=new SeasonBotRewardConfig(table.Text(row,"rule_id"),table.Int(row,"gold"),table.Int(row,"fragments"),
+            table.Int(row,"equipment_chance_bp"),table.Text(row,"equipment_quality"),table.Int(row,"equipment_level"),
+            table.Int(row,"maximum_per_human"),table.Bool(row,"mortal_pve"));
+        policy.Validate();return policy;
+    }
+
+    private static SeasonLootPreferenceConfig? ReadSeasonLootPreference(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonLootPreference");
+        if(table is null)return null;
+        if(table.Rows.Count!=1 || table.Text(table.Rows[0],"rule_id")!="season-v1")
+            throw new InvalidDataException("Season loot preference requires one season-v1 policy.");
+        var row=table.Rows[0];var policy=new SeasonLootPreferenceConfig(table.Text(row,"default_element"),
+            table.Int(row,"preferred_weight"),table.Int(row,"other_weight"));
+        policy.Validate();return policy;
+    }
+
+    private static SeasonCraftingConfig? ReadSeasonCrafting(ConfigBundle bundle)
+    {
+        var crafting = bundle.Tables.SingleOrDefault(table => table.Name == "SeasonCrafting");
+        var marks = bundle.Tables.SingleOrDefault(table => table.Name == "SeasonMarkRules");
+        if (crafting is null && marks is null) return null;
+        if (crafting is null || marks is null) throw new InvalidDataException("Season crafting and blueprint rules must be published together.");
+        var offers = crafting.Rows.Select(row => new SeasonCraftingOffer(crafting.Text(row,"quality_id"),
+            crafting.Int(row,"minimum_difficulty"), ReadBlueprintKind(crafting.Text(row,"mark_kind")),
+            crafting.Int(row,"mark_cost"), crafting.Int(row,"reforge_fragment_cost"), crafting.Int(row,"wish_attempts"))).ToArray();
+        var sources = marks.Rows.Select(row => new SeasonMarkRule(marks.Text(row,"difficulty_id") switch
+            { "D0" => 0, "D1" => 1, "D2" => 2, "D3" => 3, "D4" => 4, "D5" => 5, _ => -1 },
+            ReadBlueprintKind(marks.Text(row,"mark_kind")), marks.Int(row,"elite_marks"), marks.Int(row,"boss_marks"), marks.Int(row,"match_cap"))).ToArray();
+        var policy = new SeasonCraftingConfig(offers, sources); policy.Validate(); return policy;
+    }
+
+    private static BlueprintKind ReadBlueprintKind(string value) => value switch
+    {
+        "None" => BlueprintKind.None, "Blueprint" => BlueprintKind.Blueprint,
+        "OrangeBlueprint" => BlueprintKind.OrangeBlueprint,
+        _ => throw new InvalidDataException("Unknown seasonal blueprint currency.")
+    };
+
+    private static SeasonEquipmentConfig? ReadSeasonEquipment(ConfigBundle bundle,EquipmentQualityConfig[] legacy)
+    {
+        var rules=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonEquipmentRules");
+        if(rules is null)return null;
+        if(rules.Rows.Count!=1)throw new InvalidDataException("SeasonEquipmentRules must contain one active stats version.");
+        var row=rules.Rows[0];var version=rules.Text(row,"stats_version");var table=bundle.Table("SeasonEquipment");
+        var qualities=table.Rows.Select(values=>
+        {
+            if(table.Text(values,"stats_version")!=version)throw new InvalidDataException("Season equipment and rule versions differ.");
+            var id=table.Text(values,"quality_id");var original=legacy.SingleOrDefault(value=>value.Quality.Equals(id,StringComparison.OrdinalIgnoreCase))
+                ??throw new InvalidDataException("Unknown seasonal equipment quality.");
+            return original with {Damage=table.Double(values,"damage_base"),Resistance=table.Double(values,"resist_base"),
+                DamagePerLevel=table.Double(values,"damage_per_level"),ResistancePerLevel=table.Double(values,"resist_per_level"),
+                DrawInterval=-table.Double(values,"speed_base"),DrawIntervalPerLevel=-table.Double(values,"speed_per_level"),
+                EnhanceCost1=table.Int(values,"cost_1"),EnhanceCost2=table.Int(values,"cost_2"),EnhanceCost3=table.Int(values,"cost_3"),
+                EnhanceCost4=table.Int(values,"cost_4"),EnhanceCost5=table.Int(values,"cost_5"),
+                EnhanceTotalCost=Enumerable.Range(1,5).Sum(level=>table.Int(values,$"cost_{level}"))};
+        }).ToArray();
+        ValidateEquipment(qualities);
+        var chance=rules.Double(row,"chain_draw_chance");
+        if(!double.IsFinite(chance) || chance is <0 or >1)throw new InvalidDataException("Invalid chain-draw probability.");
+        var fixedChance=(decimal)chance*10000;
+        if(fixedChance!=decimal.Truncate(fixedChance))throw new InvalidDataException("Invalid chain-draw probability.");
+        var config=new SeasonEquipmentConfig(version,qualities,rules.Double(row,"resistance_cap"),rules.Double(row,"draw_floor_seconds"),
+            rules.Double(row,"draw_ceiling_seconds"),rules.Double(row,"inferno_bonus"),rules.Double(row,"rapid_draw_reduction"),
+            rules.Double(row,"rapid_draw_floor_seconds"),checked((int)fixedChance),rules.Int(row,"opening_draw_count"),rules.Double(row,"golden_cicada_bonus"));
+        config.Validate();return config;
+    }
+
+    private static SeasonLootConfig[] ReadSeasonLoot(ConfigBundle bundle)
+    {
+        var table=bundle.Tables.SingleOrDefault(value=>value.Name=="SeasonLoot");
+        if(table is null)return [];
+        var rows=table.Rows.Select(row=>new SeasonLootConfig(table.Text(row,"loot_rule_id"),
+            table.Text(row,"difficulty_id") is {Length:2} id && id[0]=='D' && id[1] is >= '0' and <= '5' ? id[1]-'0' : -1,
+            table.Text(row,"layer_id"),
+            SeasonLootWeightFields.Select(field=>
+            {
+                var value=table.Double(row,field);
+                if(!double.IsFinite(value) || value<0 || value>1)
+                    throw new InvalidDataException("Seasonal loot probabilities must have at most four decimal places.");
+                var scaled=(decimal)value*SeasonLootConfig.ProbabilityBasis;
+                if(scaled!=decimal.Truncate(scaled))throw new InvalidDataException("Seasonal loot probabilities must have at most four decimal places.");
+                return checked((int)scaled);
+            }).ToArray(),table.Int(row,"quality_cap"),table.Int(row,"promotion_cap"))).ToArray();
+        foreach(var row in rows)row.Validate();
+        if(rows.Length!=24 || rows.Select(row=>(row.Difficulty,row.LayerId)).Distinct().Count()!=24)
+            throw new InvalidDataException("All twenty-four seasonal loot rules must be published together.");
+        return rows;
+    }
+
+    private static SeasonBorrowedDeckConfig[] ReadBorrowedDecks(ConfigBundle bundle, CardConfigDefinition[] cards)
+    {
+        var table = bundle.Tables.SingleOrDefault(value => value.Name == "SeasonBorrowedDecks");
+        if (table is null) return [];
+        var available = cards.Where(card => card.IsCodex).ToDictionary(card => card.CardId,
+            card => new OwnedCard(card.CardId,card.HeroClass,(CardRarity)card.Rarity,1,false),StringComparer.Ordinal);
+        var templates = new List<SeasonBorrowedDeckConfig>();
+        foreach (var group in table.Rows.GroupBy(row => table.Text(row,"template_id"),StringComparer.Ordinal))
+        {
+            var ordered = group.OrderBy(row => table.Int(row,"slot_index")).ToArray();
+            if (ordered.Length != 20 || !ordered.Select(row => table.Int(row,"slot_index")).SequenceEqual(Enumerable.Range(0,20)) ||
+                ordered.Select(row => table.Text(row,"hero_class")).Distinct(StringComparer.Ordinal).Count() != 1 ||
+                !Enum.TryParse<HeroClass>(table.Text(ordered[0],"hero_class"),out var hero) || !Enum.IsDefined(hero))
+                throw new InvalidDataException("Borrowed templates require one class and twenty ordered slots.");
+            var ids = ordered.Select(row => table.Text(row,"card_id")).ToArray();
+            DeckRules.Validate(hero,ids,available);
+            templates.Add(new(group.Key,hero,ids));
+        }
+        if (templates.Count != 3 || templates.Select(value => value.HeroClass).Distinct().Count() != 3)
+            throw new InvalidDataException("Borrowed templates require exactly one legal deck per class.");
+        return templates.ToArray();
+    }
+
+    private static SeasonDifficultyConfig[] ReadSeasonDifficulties(ConfigBundle bundle)
+    {
+        var table = bundle.Tables.SingleOrDefault(value => value.Name == "SeasonDifficulty");
+        if (table is null) return [];
+        var rows = table.Rows.Select(row => new SeasonDifficultyConfig(table.Text(row,"difficulty_id"),table.Text(row,"name_key"),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"hp_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"shield_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"damage_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"interval_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"gold_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"soul_scale")),
+            SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"fragment_scale")),table.Int(row,"quality_cap"),table.Int(row,"entry_quality_cap"),
+            table.Double(row,"purple_affix_chance"),table.Bool(row,"red_boss_enabled"),
+            table.HasColumn("mage_return_rate_bp")?table.RequiredInt(row,"mage_return_rate_bp"):null)).ToArray();
+        if (rows.Length != 6 || !rows.Select(value => value.Id).ToHashSet(StringComparer.Ordinal).SetEquals(Enumerable.Range(0,6).Select(value => $"D{value}")) ||
+            rows.Any(value => value.QualityCap is < 0 or > 4 || value.EntryQualityCap is < 0 or > 5 || !double.IsFinite(value.PurpleAffixChance) || value.PurpleAffixChance is < 0 or > 1 ||
+                value.MageReturnRateBasisPoints is { } rate&&rate is <1 or >1000))
+            throw new InvalidDataException("SeasonDifficulty must contain valid D0 through D5 rows.");
+        return rows;
     }
 
     private static NumericalRules ReadNumerics(ConfigBundle bundle)
@@ -418,7 +728,7 @@ public sealed class GameConfigCatalog
         : Enum.Parse<CardElement>(value, ignoreCase: false);
 }
 
-internal sealed record ConfigBundle(string Version, IReadOnlyList<ConfigTable> Tables)
+internal sealed record ConfigBundle(string Version, string ContentHash, IReadOnlyList<ConfigTable> Tables)
 {
     public ConfigTable Table(string name) => Tables.Single(table => table.Name == name);
 }
@@ -429,12 +739,16 @@ internal sealed class ConfigTable(string name, IReadOnlyList<string> columns, IR
         .ToDictionary(item => item.column, item => item.index, StringComparer.Ordinal);
     public string Name { get; } = name;
     public IReadOnlyList<object?[]> Rows { get; } = rows;
+    public bool HasColumn(string name) => _indexes.ContainsKey(name);
     public string Text(object?[] row, string name) => OptionalText(row, name) ?? throw new InvalidDataException($"{Name}.{name} is required.");
     public string? OptionalText(object?[] row, string name) => _indexes.TryGetValue(name, out var index) ? row[index] as string : null;
     public int OptionalInt(object?[] row, string name) => _indexes.TryGetValue(name, out var index)
         ? checked((int)(long)(row[index] ?? 0L)) : 0;
     public int Int(object?[] row, string name) => checked((int)(long)(row[_indexes[name]] ?? 0L));
+    public int RequiredInt(object?[] row,string name) => _indexes.TryGetValue(name,out var index)&&row[index] is long value&&value is >=int.MinValue and <=int.MaxValue
+        ?checked((int)value):throw new InvalidDataException($"{Name}.{name} requires an explicit integer, including zero.");
     public double Double(object?[] row, string name) => row[_indexes[name]] is double value ? value : 0;
+    public bool OptionalBool(object?[] row,string name) => _indexes.TryGetValue(name,out var index) && row[index] is true;
     public bool Bool(object?[] row, string name) => row[_indexes[name]] is true;
 }
 
@@ -442,6 +756,7 @@ internal static class ConfigBundleReader
 {
     public static ConfigBundle Read(ReadOnlySpan<byte> data)
     {
+        var contentHash = ValidateContentHash(data);
         var reader = new ProtoReader(data);
         var version = string.Empty;
         var tables = new List<ConfigTable>();
@@ -452,7 +767,35 @@ internal static class ConfigBundleReader
             else reader.Skip(wire);
         }
         if (string.IsNullOrWhiteSpace(version)) throw new InvalidDataException("Config bundle version is missing.");
-        return new ConfigBundle(version, tables);
+        return new ConfigBundle(version, contentHash, tables);
+    }
+
+    private static string ValidateContentHash(ReadOnlySpan<byte> data)
+    {
+        var reader = new ProtoReader(data);
+        using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        byte[]? expected = null;
+        while (true)
+        {
+            var start = reader.Position;
+            if (!reader.TryTag(out var field, out var wire)) break;
+            if (field == 2)
+            {
+                if (wire != 2 || expected is not null)
+                    throw new InvalidDataException("Config bundle must contain one SHA-256 content hash.");
+                expected = reader.Bytes().ToArray();
+                if (expected.Length != 32)
+                    throw new InvalidDataException("Config bundle content hash must have 32 bytes.");
+            }
+            else
+            {
+                reader.Skip(wire);
+                hash.AppendData(data.Slice(start, reader.Position - start));
+            }
+        }
+        if (expected is null || !CryptographicOperations.FixedTimeEquals(expected, hash.GetHashAndReset()))
+            throw new InvalidDataException("Config bundle content hash is missing or does not match its data.");
+        return Convert.ToHexString(expected).ToLowerInvariant();
     }
 
     private static ConfigTable ReadTable(ReadOnlySpan<byte> data)
@@ -520,6 +863,7 @@ internal static class ConfigBundleReader
     {
         private readonly ReadOnlySpan<byte> _data = data;
         private int _offset;
+        public int Position => _offset;
         public bool TryTag(out int field, out int wire)
         {
             if (_offset >= _data.Length) { field = wire = 0; return false; }
@@ -538,8 +882,9 @@ internal static class ConfigBundleReader
         }
         public ReadOnlySpan<byte> Bytes()
         {
-            var length = checked((int)Varint());
-            if (_offset + length > _data.Length) throw new InvalidDataException("Invalid protobuf length.");
+            var encodedLength = Varint();
+            if (encodedLength > (ulong)(_data.Length - _offset)) throw new InvalidDataException("Invalid protobuf length.");
+            var length = (int)encodedLength;
             var result = _data.Slice(_offset, length); _offset += length; return result;
         }
         public string String() => Encoding.UTF8.GetString(Bytes());

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="7f8ae58a-d214-4cb3-9a5f-93277e99038b" name="@803968e39001 2026-11-03 04:56:33" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-03T04:56:33.2708105+00:00" queuing="2026-11-03T04:56:33.2708106+00:00" start="2026-11-03T04:56:28.4163397+00:00" finish="2026-11-03T04:56:35.5739505+00:00" />
+  <TestSettings name="default" id="9fb7770c-a56e-4905-9435-1d0d897b235c">
+    <Deployment runDeploymentRoot="_803968e39001_2026-11-03_04_56_33" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="6b80400f-ac99-403d-93f2-91d343b9db66" testId="dbfa712d-2cc9-4134-5ee0-a5c551d3b380" testName="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" computerName="803968e39001" duration="00:00:01.9208974" startTime="2026-11-03T04:56:32.2827282+00:00" endTime="2026-11-03T04:56:34.2055223+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6b80400f-ac99-403d-93f2-91d343b9db66" />
+    <UnitTestResult executionId="89b8ae8b-5962-4754-b575-89d6fbf0cb8c" testId="2e4569b5-52a7-7b4d-e39e-3e3b45853299" testName="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" computerName="803968e39001" duration="00:00:01.2541637" startTime="2026-11-03T04:56:34.2122930+00:00" endTime="2026-11-03T04:56:35.4769563+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="89b8ae8b-5962-4754-b575-89d6fbf0cb8c" />
+    <UnitTestResult executionId="c7bd3679-abd4-46ae-9da1-dfdd7572fda9" testId="9991b4fd-a83e-001e-6ee8-cdfd10ee04a2" testName="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9)" computerName="803968e39001" duration="00:00:00.1307129" startTime="2026-11-03T04:56:32.1374202+00:00" endTime="2026-11-03T04:56:32.2682579+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7bd3679-abd4-46ae-9da1-dfdd7572fda9" />
+    <UnitTestResult executionId="74baafe3-6379-4179-92aa-43833fc62583" testId="5ef4fdd2-79dc-8566-975b-7199fdedef21" testName="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11)" computerName="803968e39001" duration="00:00:00.4662419" startTime="2026-11-03T04:56:31.6509574+00:00" endTime="2026-11-03T04:56:32.1294864+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="74baafe3-6379-4179-92aa-43833fc62583" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="2e4569b5-52a7-7b4d-e39e-3e3b45853299">
+      <Execution id="89b8ae8b-5962-4754-b575-89d6fbf0cb8c" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests" name="AckPersistsActionAndRouterAndRoomRecreationCannotRepeatItOrResetCooldown" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests.OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="dbfa712d-2cc9-4134-5ee0-a5c551d3b380">
+      <Execution id="6b80400f-ac99-403d-93f2-91d343b9db66" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresCombatActionTests" name="OwnedTerminalFallbackReplaysThePersistedActionWithoutRegisteringOrMutatingARoom" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: True, gold: 91, fragments: 11)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="5ef4fdd2-79dc-8566-975b-7199fdedef21">
+      <Execution id="74baafe3-6379-4179-92aa-43833fc62583" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests" name="ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests.ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard(alternate: False, gold: 71, fragments: 9)" storage="/workspace/server/tests/fantasycard.server.tests/bin/debug/net10.0/fantasycard.server.tests.dll" id="9991b4fd-a83e-001e-6ee8-cdfd10ee04a2">
+      <Execution id="c7bd3679-abd4-46ae-9da1-dfdd7572fda9" />
+      <TestMethod codeBase="/workspace/server/tests/FantasyCard.Server.Tests/bin/Debug/net10.0/FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Config.ConfigRoomVersionTests" name="ControlledFullHealthKillAwardsTheSelectedLootAndRealMonsterCard" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="dbfa712d-2cc9-4134-5ee0-a5c551d3b380" executionId="6b80400f-ac99-403d-93f2-91d343b9db66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2e4569b5-52a7-7b4d-e39e-3e3b45853299" executionId="89b8ae8b-5962-4754-b575-89d6fbf0cb8c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9991b4fd-a83e-001e-6ee8-cdfd10ee04a2" executionId="c7bd3679-abd4-46ae-9da1-dfdd7572fda9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5ef4fdd2-79dc-8566-975b-7199fdedef21" executionId="74baafe3-6379-4179-92aa-43833fc62583" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="4" executed="4" passed="4" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)
+[xUnit.net 00:00:00.78]   Discovering: FantasyCard.Server.Tests
+[xUnit.net 00:00:02.33]   Discovered:  FantasyCard.Server.Tests
+[xUnit.net 00:00:02.59]   Starting:    FantasyCard.Server.Tests
+[xUnit.net 00:00:06.55]   Finished:    FantasyCard.Server.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

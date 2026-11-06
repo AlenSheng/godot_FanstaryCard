@@ -1,0 +1,64 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer [STARTING]
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer [FAIL]
+      System.InvalidOperationException : Saved loot preference differs from the original preparation.
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(173,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(157,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(159,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs(24,0): at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs(165,0): at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs(174,0): at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RecoveryUsesTheDurableReceiptOrRefundsOnlyTheRecordedSeasonPayer [FINISHED] Time: 2.4483653s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ConcurrentReplayHasOneDebitAndOneRefundAndConflictingIdentityCannotSpend [FINISHED] Time: 1.8933261s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.InsufficientSeasonGoldNeverFallsBackToTheRichLegacyWallet [FINISHED] Time: 1.849229s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.FaultAfterWalletDebitRollsBackTheReservationAndLedgerAndSameRequestCanRetry [FINISHED] Time: 1.8339928s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.NewLegacyRoomKeepsItsLegacyWalletAndOriginalConfigInBothLedgerEntries [FINISHED] Time: 1.9007988s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment [FAIL]
+      Assert.Equal() Failure: Strings differ
+                 ↓ (pos 0)
+      Expected: "Applied"
+      Actual:   "Reserved"
+                 ↑ (pos 0)
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs(45,0): at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs(53,0): at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRewardRefreshFundingTests.cs(53,0): at FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.ActualRouterUsesOriginalQuoteAndSeasonWalletAndRestartReplaysWithoutAnotherPayment [FINISHED] Time: 2.1585402s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "room") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "room") [FINISHED] Time: 1.9380223s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "owner") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "owner") [FINISHED] Time: 2.1693224s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "bot") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "bot") [FINISHED] Time: 2.0350268s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "settled") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "settled") [FINISHED] Time: 2.1742748s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "not-running") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.MissingAdmissionCannotChargeEitherWallet(changed: "not-running") [FINISHED] Time: 2.2787707s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: False) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: False) [FINISHED] Time: 1.9093764s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: True) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.V048ReservationsKeepTheirActualLegacyPayerEvenWhenTheirMatchWasSeasonal(seasonalMatch: True) [FINISHED] Time: 2.107403s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: False) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: False) [FINISHED] Time: 2.002651s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: True) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.RunningOldRoomCanPayAndRefundOnlyItsOriginalArchivedWalletAcrossRollover(reserveAfterRollover: True) [FINISHED] Time: 1.893804s
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresRewardRefreshFundingTests.GeneralWalletApiCannotUseRoomReservePurposeWithoutAMatchProof [FINISHED] Time: 1.8139621s
+    FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresMigrationTests.Concurrent_migration_restart_and_checksum_rejection [FINISHED] Time: 15.6479052s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 17, Errors: 0, Failed: 2, Skipped: 0, Not Run: 0, Time: 48.241s

@@ -16,6 +16,12 @@ const Gateway = preload("res://network/gateway.gd")
 const PlatformService = preload("res://platform/platform_service.gd")
 const CardDetails = preload("res://ui/card_details.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
+const PreparationModel = preload("res://ui/preparation_model.gd")
+const JourneyRewardModel = preload("res://ui/season_journey_reward_model.gd")
+const ConfigBundle = preload("res://data/config_bundle.gd")
+var _room_catalogs: Dictionary = {}
+var _catalog_request_epoch := 0
+var preparation_configuration_error := ""
 const ElementRules = preload("res://state/element_rules.gd")
 const BattleTargets = preload("res://state/battle_targets.gd")
 const CATALOG = preload("res://data/catalog.json")
@@ -41,7 +47,12 @@ var _cache_versions: Dictionary = {}
 var _lobby_request_epoch := 0
 var _shop_rotation_check_at := 0
 var room: Dictionary = {}
+var _combat_ready_at := 0
 var preparation: Dictionary = {}
+var preparation_difficulty := 0
+var use_borrowed_deck := false
+var preparation_loot_preference := ""
+var _loot_preference_scope := ""
 var ticket: Dictionary = {}
 var ready_prompt: Dictionary = {}
 var mail: Dictionary = {"items": [], "unreadCount": 0}
@@ -92,6 +103,9 @@ func _process(_delta: float) -> void:
 	_check_shop_rotation()
 	var now := Time.get_ticks_msec()
 	var pending_changed := false
+	if _combat_ready_at > 0 and now >= _combat_ready_at:
+		_combat_ready_at = 0
+		pending_changed = true
 	if not _rejected_state_request.is_empty():
 		if not _rejected_state_current(): _rejected_state_request = {}
 		elif now >= int(_rejected_state_request.deadline):
@@ -268,6 +282,10 @@ func reconnect() -> void:
 	changed.emit()
 
 func _clear_authenticated_state() -> void:
+	_room_catalogs.clear()
+	_catalog_request_epoch += 1
+	_lobby_request_epoch += 1
+	preparation_configuration_error = ""
 	_login_deadline = 0
 	_login_generation = -1
 	lobby = {}
@@ -277,6 +295,10 @@ func _clear_authenticated_state() -> void:
 	_shop_rotation_check_at = 0
 	room = {}
 	preparation = {}
+	preparation_difficulty = 0
+	use_borrowed_deck = false
+	preparation_loot_preference = ""
+	_loot_preference_scope = ""
 	ticket = {}
 	ready_prompt = {}
 	mail = {"items": [], "unreadCount": 0}
@@ -447,6 +469,7 @@ func _refresh_server_info() -> bool:
 # Source labels use stable keys; translated display text can be ambiguous.
 func validate_config(version: String, source: String) -> bool:
 	if not version.is_empty() and version == str(CATALOG.data.version): return true
+	if source == "room" and _room_catalogs.has(version) and _room_catalogs[version].get("_origin", "") == gateway.base_url: return true
 	var source_argument: Variant = source
 	var source_key := source
 	if source_key in ["server", "hall", "room", "preparation"]:
@@ -455,6 +478,164 @@ func validate_config(version: String, source: String) -> bool:
 	configuration_error = P.message("config_mismatch_details", [source_argument, CATALOG.data.version, version_argument])
 	gateway.end_session(configuration_error)
 	return false
+
+func room_catalog_index() -> Dictionary:
+	var version := str(room.get("config_version", ""))
+	if room.is_empty() and settlement.get("season") is Dictionary: version = str(settlement.season.get("configVersion", ""))
+	return _catalog_index_for_version(version)
+
+func read_historical_catalog(version: String, expected_hash: String) -> Dictionary:
+	# An archive is bound to its own published hash, including when its version
+	# happens to equal the local package. Never interpret a missing old package
+	# through the current lobby/room configuration.
+	if version.is_empty() or version.length() > 80 or expected_hash.length() != 64: return {}
+	var generation: int = gateway.session_generation
+	var epoch := _catalog_request_epoch
+	var address: String = gateway.base_url
+	var response: Dictionary = await gateway.request("/api/v1/config/" + version.uri_encode(), HTTPClient.METHOD_GET, null, [404])
+	if generation != gateway.session_generation or epoch != _catalog_request_epoch or address != gateway.base_url or response.get("stale_session", false): return {}
+	var envelope: Dictionary = response.data if response.get("data") is Dictionary else {}
+	if not response.get("ok", false) or envelope.get("configVersion") != version or envelope.get("contentHash") != expected_hash or not envelope.get("bundle") is PackedByteArray: return {}
+	var reader := ConfigBundle.new()
+	var decoded: Dictionary = reader.decode(envelope.bundle, version, expected_hash)
+	if decoded.is_empty(): return {}
+	var index: Dictionary = CatalogIndex.from_data(decoded)
+	if index.get("version") != version or index.get("content_hash") != expected_hash: return {}
+	return index
+
+func _catalog_index_for_version(version: String, required: bool = false) -> Dictionary:
+	if version == str(CATALOG.data.version) or (version.is_empty() and not required): return {}
+	var index: Dictionary = _room_catalogs.get(version, {})
+	if not index.is_empty() and index.get("_origin", "") == gateway.base_url: return index
+	# A missing archive is explicit; index readers must not silently select the built-in catalog.
+	return {"version": version, "cards": {}, "levels": {}, "qualities": {}, "tables": {}}
+
+func preparation_catalog_index() -> Dictionary:
+	if not preparation.is_empty():
+		var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+		return _catalog_index_for_version(str(snapshot.get("configVersion", "")), true)
+	if season_preparation_active():
+		return _catalog_index_for_version(str(lobby.season.get("configVersion", "")), true)
+	return {}
+
+func preparation_catalog_ready() -> bool:
+	var index := preparation_catalog_index()
+	if CatalogIndex.cards(index).is_empty() or PreparationModel.backpack("Free", index).is_empty(): return false
+	var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+	if snapshot.get("season") is Dictionary:
+		if snapshot.season.get("configVersion") != snapshot.get("configVersion") or snapshot.season.get("difficultyId") != snapshot.get("difficulty"): return false
+		return not PreparationModel.difficulty(int(str(snapshot.difficulty).trim_prefix("D")), index).is_empty()
+	if snapshot.is_empty() and season_preparation_active():
+		return not PreparationModel.difficulty(clampi(preparation_difficulty, 0, season_preparation_cap()), index).is_empty()
+	return true
+
+func preparation_deck_preview() -> Dictionary:
+	var snapshot: Dictionary = preparation.snapshot if preparation.get("snapshot") is Dictionary else {}
+	if not preparation_catalog_ready(): return {}
+	if not snapshot.is_empty():
+		if not snapshot.get("cardIds") is Array or snapshot.cardIds.size() != 20: return {}
+		if snapshot.get("season") is Dictionary and not snapshot.get("cardLevels") is Array: return {}
+		if snapshot.get("cardLevels") is Array and snapshot.cardLevels.size() != 20: return {}
+		for id in snapshot.cardIds:
+			if CatalogIndex.card(str(id), preparation_catalog_index()).is_empty(): return {}
+		var from_loan: bool = snapshot.get("borrowedTemplateId") is String and not snapshot.borrowedTemplateId.is_empty()
+		return {"card_ids": snapshot.get("cardIds", []), "levels": snapshot.cardLevels if snapshot.get("cardLevels") is Array else [], "actual_levels": snapshot.actualCardLevels if snapshot.get("actualCardLevels") is Array else [], "borrowed": from_loan}
+	if not preparation.is_empty(): return {}
+	var index := preparation_catalog_index()
+	var ids: Array = []
+	var levels: Array[int] = []
+	var actual: Array[int] = []
+	var cap: int = clampi(preparation_difficulty, 0, season_preparation_cap()) if season_preparation_active() else 5
+	var borrowed: bool = season_preparation_active() and use_borrowed_deck
+	if borrowed:
+		var loan := PreparationModel.borrowed_deck(hero_class, index)
+		if loan.is_empty(): return {}
+		ids = loan.card_ids
+		for id in ids: levels.append(cap)
+	else:
+		ids = deck().get("cardIds", [])
+		for id in ids:
+			var found := false
+			for owned in lobby.get("cards", []):
+				if owned.get("cardId") != id: continue
+				actual.append(int(owned.get("level", 0)))
+				levels.append(mini(actual[-1], cap))
+				found = true
+				break
+			if not found: return {}
+	if ids.size() != 20: return {}
+	for id in ids:
+		if CatalogIndex.card(str(id), index).is_empty(): return {}
+	return {"card_ids": ids.duplicate(), "levels": levels, "actual_levels": actual, "borrowed": borrowed}
+
+func preparation_preview_snapshot(tier: String) -> Dictionary:
+	if preparation.get("snapshot") is Dictionary: return preparation.snapshot.duplicate(true)
+	if not preparation.is_empty(): return {}
+	var result := {"heroClass": hero_class, "maximumHp": P.CLASSES[hero_class][2], "equipmentIds": loadout().get("equipmentIds", []).duplicate(), "equipmentSnapshots": []}
+	var items: Array = []
+	for item in lobby.get("inventory", {}).get("equipments", []):
+		if item.get("instanceId") in result.equipmentIds: items.append(item)
+	var cap: int = clampi(preparation_difficulty, 0, season_preparation_cap()) if season_preparation_active() else 5
+	result.equipmentSnapshots = items.duplicate(true)
+	for weapon in lobby.get("classWeapons", []):
+		if weapon.get("heroClass") == hero_class:
+			result["actualClassWeaponLevel"] = int(weapon.level)
+			result["classWeaponLevel"] = cap if season_preparation_active() and use_borrowed_deck else mini(int(weapon.level), cap)
+	if season_preparation_active() and use_borrowed_deck: result["classWeaponLevel"] = cap
+	var bag: Dictionary = PreparationModel.backpack(tier, preparation_catalog_index())
+	if not bag.is_empty():
+		result["backpackTier"] = tier
+		result["backpackCapacity"] = bag.capacity
+		result["safeSlotIndexes"] = bag.safe_indexes
+	return result
+
+func _ensure_room_catalog(version: String) -> bool:
+	if version == str(CATALOG.data.version): return true
+	if version.is_empty() or version.length() > 80: return false
+	var generation: int = gateway.session_generation
+	var catalog_epoch: int = _catalog_request_epoch
+	var address: String = gateway.base_url
+	if _room_catalogs.has(version) and _room_catalogs[version].get("_origin", "") == address: return true
+	var response: Dictionary = await gateway.request("/api/v1/config/" + version.uri_encode(), HTTPClient.METHOD_GET, null, [404])
+	if generation != gateway.session_generation or catalog_epoch != _catalog_request_epoch or address != gateway.base_url: return false
+	if not response.ok or not response.data is Dictionary: return false
+	var envelope: Dictionary = response.data
+	if str(envelope.get("configVersion", "")) != version or not envelope.get("bundle") is PackedByteArray: return false
+	var reader := ConfigBundle.new()
+	var decoded: Dictionary = reader.decode(envelope.bundle, version, str(envelope.get("contentHash", "")))
+	if decoded.is_empty(): return false
+	var index: Dictionary = CatalogIndex.from_data(decoded)
+	if index.is_empty(): return false
+	var retained: Dictionary = _room_catalogs.get(version, {})
+	if not retained.is_empty() and retained.get("_origin", "") == address:
+		return str(retained.get("content_hash", "")) == str(index.get("content_hash", ""))
+	index["_origin"] = address
+	_room_catalogs[version] = index
+	return true
+
+func _bootstrap_catalog_versions(snapshot: Dictionary) -> Array[String]:
+	var versions: Array[String] = []
+	var unfinished: Variant = snapshot.get("unfinishedMatch")
+	if unfinished is Dictionary:
+		var version := str(unfinished.get("configVersion", ""))
+		if not version.is_empty(): versions.append(version)
+	var receipt: Variant = snapshot.get("unfinishedSettlement")
+	if receipt is Dictionary and receipt.get("season") is Dictionary:
+		var version := str(receipt.season.get("configVersion", ""))
+		if not version.is_empty() and version not in versions: versions.append(version)
+	return versions
+
+func _preparation_catalog_versions(snapshot: Dictionary) -> Array[String]:
+	var versions: Array[String] = []
+	var active: Variant = snapshot.get("activePreparation")
+	if active is Dictionary:
+		var saved: Dictionary = active.snapshot if active.get("snapshot") is Dictionary else {}
+		versions.append(str(saved.get("configVersion", "")))
+	var season: Variant = snapshot.get("season")
+	if season is Dictionary and season.get("state") == "Active":
+		var version: String = str(season.get("configVersion", ""))
+		if version not in versions: versions.append(version)
+	return versions
 
 func refresh_lobby() -> void:
 	var generation: int = gateway.session_generation
@@ -471,6 +652,11 @@ func refresh_lobby() -> void:
 			return
 	if generation != gateway.session_generation: return
 	var next_lobby: Dictionary = result.data.duplicate(true)
+	# Decorations are account data. An unavailable original response never
+	# supplies another account's cached ownership or a made-up selection.
+	var cosmetic_result: Dictionary = await gateway.request("/api/v1/cosmetics", HTTPClient.METHOD_GET, null, [404])
+	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	next_lobby["cosmetics"] = cosmetic_result.data if cosmetic_result.get("ok", false) and cosmetic_result.get("data") is Dictionary and JourneyRewardModel.valid_inventory(cosmetic_result.data) else {}
 	if _settlement_ack_pending_id != "":
 		next_lobby["unfinishedSettlement"] = null
 		next_lobby["unfinishedMatch"] = null
@@ -491,13 +677,26 @@ func refresh_lobby() -> void:
 		var active: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_GET, null, [404])
 		if not _lobby_request_current(generation, request_epoch, origin_scope): return
 		if active.ok:
-			if not _preparation_config_valid(active.data): return
+			if not active.data is Dictionary: return
 			next_lobby["activePreparation"] = active.data
 		elif active.status == 404: next_lobby["activePreparation"] = null
 	if not _lobby_request_current(generation, request_epoch, origin_scope): return
+	for version in _bootstrap_catalog_versions(next_lobby):
+		var loaded: bool = await _ensure_room_catalog(version)
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		if not loaded:
+			configuration_error = P.message("config_archive_unavailable", [])
+			gateway.end_session(configuration_error)
+			return
+	var preparation_ready := true
+	for version in _preparation_catalog_versions(next_lobby):
+		var loaded: bool = await _ensure_room_catalog(version)
+		if not _lobby_request_current(generation, request_epoch, origin_scope): return
+		preparation_ready = preparation_ready and loaded
+	preparation_configuration_error = "" if preparation_ready else P.message("config_archive_unavailable", [])
 	lobby = next_lobby
 	mail = lobby.get("mail", {"items": [], "unreadCount": 0})
-	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail"]:
+	for module in ["shop", "market", "inventory", "cards", "decks", "wallet", "mail", "cosmetics"]:
 		_cache_versions[module] = int(_cache_versions.get(module, 0)) + 1
 	if lobby.player.get("selectedClass") != null: hero_class = lobby.player.selectedClass
 	if lobby.get("unfinishedSettlement") != null:
@@ -515,7 +714,7 @@ func refresh_lobby() -> void:
 	changed.emit()
 
 func _lobby_scope() -> String:
-	return JSON.stringify([room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
+	return JSON.stringify([gateway.base_url, room.get("match_id", ""), gateway.room_id, preparation.get("preparationId", ""),
 		ticket.get("ticketId", ""), settlement.get("settlementId", ""), _settlement_ack_pending_id,
 		_room_context_epoch, _settlement_recovery_match_id, _cache_versions])
 
@@ -555,18 +754,20 @@ func refresh_cache(module: String) -> void:
 	if _cache_syncing.has(module):
 		_cache_sync_again[module] = true
 		return
-	var paths := {"shop": "/api/v1/shop/", "market": "/api/v1/market/", "inventory": "/api/v1/inventory/", "cards": "/api/v1/cards/", "decks": "/api/v1/decks/", "mail": "/api/v1/mail/", "wallet": "/api/v1/economy/wallet"}
+	var paths := {"shop": "/api/v1/shop/", "market": "/api/v1/market/", "inventory": "/api/v1/inventory/", "cards": "/api/v1/cards/", "decks": "/api/v1/decks/", "mail": "/api/v1/mail/", "wallet": "/api/v1/economy/wallet", "cosmetics": "/api/v1/cosmetics"}
 	if not paths.has(module): return
 	var generation: int = gateway.session_generation
+	var origin: String = str(gateway.base_url)
+	var account: String = str(lobby.get("player", {}).get("userId", ""))
 	_cache_syncing[module] = generation
 	while generation == gateway.session_generation:
 		_cache_sync_again.erase(module)
 		var version: int = int(_cache_versions.get(module, 0))
 		var result: Dictionary = await gateway.request(paths[module], HTTPClient.METHOD_GET, null, [404])
-		if generation != gateway.session_generation: break
+		if generation != gateway.session_generation or origin != str(gateway.base_url) or account != str(lobby.get("player", {}).get("userId", "")): break
 		if int(_cache_versions.get(module, 0)) != version:
 			_cache_sync_again[module] = true
-		elif result.ok:
+		elif result.ok and (module != "cosmetics" or result.get("data") is Dictionary and JourneyRewardModel.valid_inventory(result.data)):
 			update_cache(module, result.data)
 		elif module == "mail" and int(result.get("status", 0)) == 404:
 			update_cache("mail", {"items": [], "unreadCount": 0})
@@ -750,8 +951,34 @@ func loadout() -> Dictionary:
 		if value.heroClass == hero_class: return value
 	return {}
 
+func season_preparation_active() -> bool:
+	return lobby.get("season") is Dictionary and str(lobby.season.get("state", "")) == "Active"
+
+func season_preparation_cap() -> int:
+	if not season_preparation_active(): return 0
+	return clampi(mini(int(lobby.season.get("highestOpenDifficulty", 0)), int(lobby.season.get("highestUnlockedDifficulty", 0))), 0, 5)
+
+func season_loot_preference() -> String:
+	if preparation.get("snapshot") is Dictionary and preparation.snapshot.get("lootPreferenceElement") is String:
+		return preparation.snapshot.lootPreferenceElement
+	if not season_preparation_active(): return ""
+	var rows: Array=PreparationModel.tables(preparation_catalog_index()).get("SeasonLootPreference",[])
+	if rows.size()!=1: return ""
+	var scope: String=gateway.base_url+"|"+str(lobby.season.get("seasonId",""))+"|"+str(lobby.season.get("configVersion",""))
+	if scope!=_loot_preference_scope:
+		_loot_preference_scope=scope
+		preparation_loot_preference=str(rows[0].default_element)
+	return preparation_loot_preference
+
+func select_loot_preference(element: String) -> void:
+	if busy or not preparation.is_empty() or not ticket.is_empty() or season_loot_preference().is_empty(): return
+	if element not in ["Wood","Fire","Earth","Metal","Water"]: return
+	preparation_loot_preference=element
+	changed.emit()
+
 func prepare(tier: String, potion_count: int) -> void:
-	if busy or deck().is_empty() or not configuration_error.is_empty(): return
+	var borrowed: bool = season_preparation_active() and use_borrowed_deck
+	if busy or (deck().is_empty() and not borrowed) or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
@@ -760,16 +987,41 @@ func prepare(tier: String, potion_count: int) -> void:
 		busy = false
 		changed.emit()
 		return
-	var safe: Array = []
-	if tier == "Advanced": safe = [27]
-	if tier == "Top": safe = [33, 34, 35]
-	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, {
-		"heroClass": hero_class, "deckVersion": deck().version, "equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
-		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"})
+	var source_key := _preparation_source_key()
+	var version: String = str(lobby.season.get("configVersion", "")) if season_preparation_active() else str(CATALOG.data.version)
+	var loaded: bool = await _ensure_room_catalog(version)
 	if generation != gateway.session_generation: return
-	if result.ok and _preparation_config_valid(result.data):
+	if source_key != _preparation_source_key():
+		busy = false
+		notice.emit(P.localized("state_changed"))
+		changed.emit()
+		return
+	var bag: Dictionary = PreparationModel.backpack(tier, preparation_catalog_index())
+	var loan: Dictionary = PreparationModel.borrowed_deck(hero_class, preparation_catalog_index()) if borrowed else {}
+	if not loaded or bag.is_empty() or (borrowed and loan.is_empty()):
+		preparation_configuration_error = P.message("config_archive_unavailable", [])
+		busy = false
+		notice.emit(P.localized("config_archive_unavailable"))
+		changed.emit()
+		return
+	preparation_configuration_error = ""
+	var safe: Array = bag.safe_indexes
+	var payload := {"heroClass": hero_class, "deckVersion": 0 if borrowed else deck().version,
+		"equipmentIds": loadout().get("equipmentIds", [null, null, null, null, null]),
+		"backpackTier": tier, "safeSlotIndexes": safe, "potionCount": potion_count, "difficulty": "Standard"}
+	if season_preparation_active():
+		preparation_difficulty = clampi(preparation_difficulty, 0, season_preparation_cap())
+		payload["difficulty"] = "D%d" % preparation_difficulty
+		payload["seasonId"] = str(lobby.season.seasonId)
+		if borrowed: payload["useBorrowedDeck"] = true
+		var preference := season_loot_preference()
+		if not preference.is_empty(): payload["lootPreferenceElement"] = preference
+	var result: Dictionary = await gateway.request("/api/v1/preparations", HTTPClient.METHOD_POST, payload)
+	if generation != gateway.session_generation: return
+	if result.ok and result.data is Dictionary:
 		preparation = result.data
 		lobby["activePreparation"] = result.data
+		_preparation_config_valid(result.data)
 		refresh_cache("inventory")
 	busy = false
 	changed.emit()
@@ -778,10 +1030,18 @@ func enqueue() -> void:
 	if busy or preparation.is_empty() or not gateway.online or not configuration_error.is_empty(): return
 	busy = true
 	var generation: int = gateway.session_generation
+	var original_id: String = str(preparation.get("preparationId", ""))
 	var current_info: bool = not server_info.is_empty() and _server_info_address == gateway.base_url
-	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()) or not _preparation_config_valid(preparation):
+	if not ((current_info and validate_config(str(server_info.get("configVersion", "")), "server")) or await _refresh_server_info()):
 		if generation != gateway.session_generation: return
 		busy = false
+		changed.emit()
+		return
+	var loaded: bool = await _ensure_room_catalog(str(preparation.get("snapshot", {}).get("configVersion", "")))
+	if generation != gateway.session_generation: return
+	if original_id != str(preparation.get("preparationId", "")) or not loaded or not _preparation_config_valid(preparation):
+		busy = false
+		if not loaded: preparation_configuration_error = P.message("config_archive_unavailable", [])
 		changed.emit()
 		return
 	var result: Dictionary = await gateway.request("/api/v1/matches/enqueue", HTTPClient.METHOD_POST, {"preparationId": preparation.preparationId})
@@ -793,7 +1053,15 @@ func enqueue() -> void:
 
 func _preparation_config_valid(value: Dictionary) -> bool:
 	var snapshot: Dictionary = value.snapshot if value.get("snapshot") is Dictionary else {}
-	return validate_config(str(snapshot.get("configVersion", "")), "preparation")
+	var version: String = str(snapshot.get("configVersion", ""))
+	var index: Dictionary = _catalog_index_for_version(version, true)
+	var valid: bool = not version.is_empty() and not CatalogIndex.cards(index).is_empty() and not PreparationModel.backpack(str(snapshot.get("backpackTier", "Free")), index).is_empty()
+	preparation_configuration_error = "" if valid else P.message("config_archive_unavailable", [])
+	return valid
+
+func _preparation_source_key() -> String:
+	var season: Dictionary = lobby.get("season", {}) if lobby.get("season") is Dictionary else {}
+	return JSON.stringify([gateway.base_url, season.get("state"), season.get("seasonId"), season.get("configVersion"), season.get("statsVersion"), hero_class, use_borrowed_deck, preparation_difficulty, deck().get("version"), loadout().get("equipmentIds")])
 
 func _verify_ready_ticket() -> void:
 	if not gateway is Gateway or not room.is_empty() or ticket.is_empty() or ready_prompt.is_empty(): return
@@ -830,6 +1098,7 @@ func allowed(action: String) -> bool:
 	if _room_actions_closed() or _rejected_state_current(): return false
 	var aliases := {"reward.choice.refresh": "choice.refresh", "reward.choice.claim": "choice.pick"}
 	if action == "battle.play_cards" and _target_selection_pending(): return false
+	if action == "battle.play_cards" and Time.get_ticks_msec() < _combat_ready_at: return false
 	if action not in LATEST_WINS_ACTIONS and _has_pending_action(action): return false
 	return configuration_error.is_empty() and gateway.online and not gateway.recovering and (action in room.get("allowed_actions", []) or aliases.get(action, "") in room.get("allowed_actions", []))
 
@@ -1090,9 +1359,9 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	for id in ids:
 		var instance: Dictionary = hand_by_id.get(id, {})
 		if instance.is_empty(): return {}
-		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")))
+		var definition: Dictionary = CatalogIndex.card(str(instance.get("card_id", "")), room_catalog_index())
 		if definition.is_empty(): return {}
-		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0))), str(instance.get("element_override", ""))))
+		cards.append(CardDetails.with_element(CardDetails.at_level(definition, int(instance.get("level", 0)), room_catalog_index()), str(instance.get("element_override", ""))))
 	var target_monster := _monster_by_id(battle)
 	var status := _status_bonuses(room.get("player", {}).get("battle_status", {}))
 	var elemental: Array = cards.filter(func(card): return int(card.get("elemental_damage", 0)) > 0 and str(card.get("element", "None")) != "None" and int(card.get("secondary_elemental_damage", 0)) == 0)
@@ -1176,11 +1445,25 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var player: Dictionary = room.get("player", {})
 	if str(player.get("hero_class", "")) == "Mage" and core_count > 0:
 		var passive: Dictionary = player.get("battle_status", {})
+		var numerical: Dictionary = player.get("numerical_state", {})
+		var policy := str(numerical.get("fenxian_policy", "CurrentRhythm"))
+		var bounded := policy in ["SeasonBoundedRhythm", "SeasonRateBudgetedRhythm"]
 		var combo := int(passive.get("combo", 0)) + 1 if str(passive.get("core_element", "")) == core else 1
 		var rhythm := mini(5, core_count + combo - 1)
-		draw_charge += minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
-		var draw_basis := core_count if str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm")) == "CoreCardsSpent" else rhythm
-		immediate_draw += 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+		if bounded and core_count < 2: rhythm = 1
+		var passive_charge := minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
+		var draw_basis := core_count if policy == "CoreCardsSpent" else rhythm
+		var passive_draw := 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
+		if bounded: passive_draw = 0 if core_count < 2 else mini(passive_draw, cards.size() - 1)
+		if policy == "SeasonRateBudgetedRhythm":
+			var credit := clampf(float(numerical.get("fenxian_return_credit", "0")), 0.0, 2.0)
+			if passive_draw > 0:
+				passive_draw = mini(passive_draw, int(floor(credit + 1e-10)))
+				passive_charge = 0.0
+			else:
+				passive_charge = minf(passive_charge, credit)
+		draw_charge += passive_charge
+		immediate_draw += passive_draw
 	var stun := float(cards.map(func(card): return float(card.get("stun_seconds", 0))).max())
 	var block := float(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max())
 	return {"authoritative": false, "control_estimated": true, "core_element": core, "core_count": core_count, "damage": total, "damage_segments": visible_segments,
@@ -1406,6 +1689,11 @@ func _sound_event(kind: String, payload: Dictionary) -> void:
 func _send_queued_command(queued: Dictionary) -> bool:
 	var request_id: String = gateway.new_id()
 	var dispatched: Dictionary = queued.duplicate(true)
+	if dispatched.action == "battle.play_cards" and room.has("season") and not dispatched.payload.has("combat_action_id"):
+		var action_state: Dictionary = room.get("player", {}).get("combat_action", {})
+		var next_sequence := int(action_state.get("next_sequence", 0))
+		if next_sequence <= 0: return false
+		dispatched.payload["combat_action_id"] = str(next_sequence) + ":" + gateway.new_id()
 	var origin_context: Dictionary = gateway.capture_context()
 	var sent_room_id: String = str(room.get("room_id", ""))
 	var sent_revision: int = int(room.get("room_revision", 0))
@@ -1491,6 +1779,8 @@ func _snapshot_confirms_command(pending: Dictionary, snapshot: Dictionary) -> bo
 		# A shared room revision can advance while our old reward is still visible.
 		# The success event has no revision; wait until its unique option is gone.
 		var option_id := str(pending.get("payload", {}).get("option_id", ""))
+		var red: Variant=snapshot.get("player",{}).get("pending_red_item")
+		if red is Dictionary and option_id=="red:"+str(red.get("item_id","")): return false
 		if not option_id.is_empty() and snapshot.get("reward_choice", {}).get("options", []).any(func(option): return str(option.get("option_id", "")) == option_id): return false
 	return true
 
@@ -1530,6 +1820,9 @@ func _adopt_room_context(snapshot: Dictionary) -> void:
 	var match_id := str(snapshot.get("match_id", ""))
 	var room_id := str(snapshot.get("room_id", ""))
 	if match_id.is_empty() or room_id.is_empty(): return
+	var action_state: Dictionary = snapshot.get("player", {}).get("combat_action", {})
+	var remaining := clampi(int(action_state.get("remaining_ms", 0)), 0, 500)
+	_combat_ready_at = Time.get_ticks_msec() + remaining if remaining > 0 else 0
 	_command_recovery_context = {}
 	if match_id != _room_context_match_id or room_id != _room_context_room_id:
 		_rejected_state_request = {}
@@ -1567,6 +1860,13 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 	if kind == "room.command_cancelled":
 		var origin: Dictionary = payload.get("_origin_context", {})
 		if not _rejection_context_current(origin) or str(payload.get("room_id", "")) != str(origin.get("room_id", "")) or str(payload.get("match_id", "")) != str(origin.get("match_id", "")): return
+		if str(payload.get("reason", "")) == "CombatActionAlreadyApplied" and str(payload.get("command_type", "")) == "battle.play_cards":
+			var completed_id := str(payload.get("_request_id", ""))
+			_pending_commands.erase(completed_id)
+			_sound_commands.erase(completed_id)
+			if _pending_play.get("request_id", "") == completed_id: _pending_play = {}
+			changed.emit()
+			return
 		if str(payload.get("command_type", "")).is_empty() or str(payload.get("command_type", "")) != str(payload.get("_command_action", "")) or str(payload.get("reason", "")) != "RoomEndedBeforeApply": return
 		# The correlated operation did not execute. Never mark it confirmed or
 		# replay it against another room; the following snapshot is only authority.
@@ -1659,9 +1959,10 @@ func _on_event(kind: String, payload: Dictionary) -> void:
 			preparation = {}
 			lobby["activePreparation"] = null
 			# Preparation locking removes equipped items from the inventory cache.
-			# The server releases them on timeout; reload their saved item details.
+			# The server releases cancelled preparations; reload their saved item details.
 			refresh_cache("inventory")
-			notice.emit(P.localized("ready_timeout"))
+			var ready_reason: String = str(payload.get("reason", "ready_timeout"))
+			notice.emit(P.localized("ready_timeout" if ready_reason == "ready_timeout" else "state_changed"))
 		"settlement.ready", "match.settled":
 			if not str(payload.get("settlement_id", "")).is_empty() and not str(payload.get("match_id", "")).is_empty() and str(payload.match_id) == _settlement_match_id():
 				_close_room_actions()
@@ -1713,6 +2014,7 @@ func _apply_market_event(payload: Dictionary) -> void:
 	var wire: Dictionary = payload.get("listing", {})
 	if wire.is_empty():
 		refresh_cache("market")
+		if payload.get("action")=="market.returned": refresh_cache("inventory")
 		return
 	var item_wire: Dictionary = wire.get("equipment", {})
 	var item := {
@@ -1732,15 +2034,29 @@ func _apply_market_event(payload: Dictionary) -> void:
 		"expiresAt": Time.get_datetime_string_from_unix_time(int(int(wire.get("expires_at_unix_ms", 0)) / 1000)) + "Z",
 		"equipment": item
 	}
+	for pair in [["unique_affix","uniqueAffix"],["unique_element","uniqueElement"],["stats_version","statsVersion"],["origin_season_id","originSeasonId"],["season_id","seasonId"],["asset_scope","assetScope"],["source_kind","sourceKind"],["recipe_extracted","recipeExtracted"]]:
+		var value: Variant=item_wire.get(pair[0])
+		if value!=null and (not value is String or not str(value).is_empty()): item[pair[1]]=value
+	for pair in [["currency","currency"],["price","price"],["season_id","seasonId"],["config_version","configVersion"],["fee","fee"],["seller_net","sellerNet"]]:
+		if wire.get(pair[0])!=null and str(wire.get(pair[0],""))!="": entry[pair[1]]=wire[pair[0]]
+	if wire.get("season_ends_at_unix_ms")!=null:
+		entry["seasonEndsAt"]=Time.get_datetime_string_from_unix_time(int(int(wire.season_ends_at_unix_ms)/1000))+"Z"
+	var season_summary: Dictionary=lobby.get("season",{}) if lobby.get("season") is Dictionary else {}
+	var current_season: Variant=season_summary.get("seasonId") if season_summary.get("state")=="Active" else null
+	var legacy_visible: bool=season_summary.is_empty() or season_summary.get("state")=="Upcoming"
+	var visible_domain: bool=(entry.get("seasonId")==current_season) if current_season!=null else (legacy_visible and entry.get("seasonId")==null)
+	var gold_listing: bool=entry.get("currency","Gold")=="Gold"
 	var updated: Array = lobby.get("market", []).duplicate(true)
 	for existing in updated:
 		if str(existing.get("listingId", "")) == listing_id and int(existing.get("version", 0)) > int(entry.version): return
 	updated = updated.filter(func(existing): return str(existing.get("listingId", "")) != listing_id)
-	if entry.status == "Active" and int(wire.get("expires_at_unix_ms", 0)) > Time.get_unix_time_from_system() * 1000:
+	if visible_domain and gold_listing and entry.status == "Active" and int(wire.get("expires_at_unix_ms", 0)) > Time.get_unix_time_from_system() * 1000:
 		updated.push_front(entry)
 	update_cache("market", updated)
 	if entry.sellerId != str(lobby.get("player", {}).get("userId", "")): return
-	if payload.has("seller_gold_after"):
+	if payload.get("seller_wallet_changed",false) or entry.get("seasonId")!=null:
+		refresh_cache("wallet")
+	elif payload.get("seller_gold_after")!=null and legacy_visible:
 		var wallet: Dictionary = lobby.get("wallet", {}).duplicate(true)
 		wallet["gold"] = int(payload.seller_gold_after)
 		update_cache("wallet", wallet)
@@ -1749,7 +2065,8 @@ func _apply_market_event(payload: Dictionary) -> void:
 	if account_inventory.is_empty(): return
 	var items: Array = account_inventory.get("equipments", []).duplicate(true)
 	items = items.filter(func(value): return str(value.get("instanceId", "")) != entry.equipmentId)
-	if str(payload.get("action", "")) in ["market.cancelled", "market.expired"]: items.append(item)
+	if str(payload.get("action", "")) in ["market.cancelled", "market.expired"] and visible_domain and item.get("location")=="Inventory":
+		items.append(item)
 	account_inventory["equipments"] = items
 	var count := 0
 	for value in items:
@@ -1787,6 +2104,8 @@ func _intent_valid(action: String, payload: Dictionary) -> bool:
 	if action == "battle.select_target":
 		return payload.get("battle_id") == room.get("pve", {}).get("battle_id", "") and target_alive(payload.get("target_id", ""))
 	if action == "reward.choice.claim":
+		var red: Variant=room.get("player",{}).get("pending_red_item")
+		if red is Dictionary and payload.get("option_id")=="red:"+str(red.get("item_id","")): return true
 		return room.get("reward_choice", {}).get("options", []).any(func(option): return option.option_id == payload.get("option_id"))
 	return true
 

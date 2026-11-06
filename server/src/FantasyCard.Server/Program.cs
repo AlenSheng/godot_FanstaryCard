@@ -161,6 +161,7 @@ app.MapAccountDeletionEndpoints();
 app.MapPlayerEndpoints();
 app.MapProgressionEndpoints();
 app.MapBootstrapEndpoints();
+app.MapConfigurationEndpoints();
 app.MapPreparationEndpoints();
 app.MapEconomyEndpoints();
 app.MapMatchmakingEndpoints();

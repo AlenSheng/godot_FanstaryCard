@@ -23,6 +23,7 @@ public sealed partial class RealtimeCommandRouter
     private readonly IRoomReadyService? _roomReadyService;
     private readonly RoomSnapshotRepository? _roomSnapshotRepository;
     private readonly ILogger<RealtimeCommandRouter>? _logger;
+    private readonly PublishedConfigCatalogs _configurations;
     private readonly RealtimeRequestStore _requestStore = new();
 
     public RealtimeCommandRouter(
@@ -33,7 +34,8 @@ public sealed partial class RealtimeCommandRouter
         ServerMetrics? metrics = null,
         IRoomReadyService? roomReadyService = null,
         RoomSnapshotRepository? roomSnapshotRepository = null,
-        ILogger<RealtimeCommandRouter>? logger = null)
+        ILogger<RealtimeCommandRouter>? logger = null,
+        PublishedConfigCatalogs? configurations = null)
     {
         _eventStore = eventStore;
         _timeProvider = timeProvider;
@@ -43,6 +45,7 @@ public sealed partial class RealtimeCommandRouter
         _roomReadyService = roomReadyService;
         _roomSnapshotRepository = roomSnapshotRepository;
         _logger = logger;
+        _configurations = configurations ?? new(GameConfigCatalog.Current);
     }
 
     public IReadOnlyList<ServerEvent> Route(
@@ -392,11 +395,8 @@ public sealed partial class RealtimeCommandRouter
                 }
                 else if (receipt is null)
                 {
-                    var choice = playerSnapshot.RewardChoice ?? throw new DomainValidationException("The player has no pending reward choice.");
-                    var cost = GameConfigCatalog.Current.RewardRefreshGold(choice.RefreshCount + 1);
-                    var temporaryGold = playerSnapshot.Inventory?.Items
-                        .Where(item => item.Kind == ExplorationItemKind.Gold).Sum(item => item.Quantity) ?? 0;
-                    accountRequired = Math.Max(0, cost - temporaryGold);
+                    var funding = await actor.ExecuteAsync(new GetRewardRefreshFundingQuoteCommand(player.UserId), cancellationToken);
+                    accountRequired = funding.AccountGoldRequired;
                     if (accountRequired > 0)
                     {
                         if (_economyRepository is null)
@@ -751,39 +751,13 @@ public sealed partial class RealtimeCommandRouter
                         payload.TargetId,
                         payload.CardInstanceIds,
                         expectedRevision,
-                        _timeProvider.GetUtcNow()),
+                        _timeProvider.GetUtcNow(), payload.CombatActionId),
                     player.UserId,
                     expectedRevision,
                     cancellationToken)).Result;
-            var response = _eventStore.Create(
-                player.UserId,
-                preview ? "combat.previewed" : "battle.combo_resolved",
-                traceId,
-                new BattleComboResolvedEventPayload(
-                    resolution.BattleId,
-                    resolution.AttackerId,
-                    resolution.TargetId,
-                    resolution.Damage,
-                    resolution.ShieldDamage,
-                    resolution.HpDamage,
-                    resolution.Heal,
-                    resolution.ShieldGain,
-                    resolution.TargetDefeated,
-                    resolution.BattleEnded,
-                    resolution.DamageSegments?.Select(segment => new CombatDamageSegmentPayload(segment.Kind, segment.Amount)).ToArray(),
-                    resolution.CoreElement?.ToString(), resolution.CoreCount,
-                    resolution.StunSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.DrawBlockSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.HealthCost, resolution.DrawCharge.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.ImmediateDraw, payload.CardInstanceIds, resolution.AttackerId.ToString("D"),
-                    resolution.DrawSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.DrawSpeedModifier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.DrawBlockSpeedSeconds.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.ResonanceMultiplier.ToString("R", System.Globalization.CultureInfo.InvariantCulture),
-                    resolution.ConflictPairCount,
-                    resolution.ConflictCancellation.ToString("R", System.Globalization.CultureInfo.InvariantCulture)),
-                command.RequestId,
-                resolution.RoomRevision);
+            if (!preview && applied?.Snapshot is { Season: not null } checkpoint && _roomSnapshotRepository is not null)
+                await _roomSnapshotRepository.SaveIfDueAsync(checkpoint, cancellationToken);
+            var response = CombatResponse(player.UserId, command, traceId, resolution, payload.CardInstanceIds, preview);
             if (preview) return [response];
             return AppendRoomSnapshot(
                 player.UserId,
@@ -928,7 +902,9 @@ public sealed partial class RealtimeCommandRouter
         CancellationToken cancellationToken)
     {
         var command = new ExecuteWithClientStateCommand<TResult>(mutation, playerId);
-        return await actor.ExecuteAsync(command, expectedRevision, cancellationToken);
+        return mutation is PlayRoomCardsCommand
+            ? await actor.ExecuteAsync(command, cancellationToken)
+            : await actor.ExecuteAsync(command, expectedRevision, cancellationToken);
     }
 
     private IReadOnlyList<ServerEvent> AppendRoomSnapshot(

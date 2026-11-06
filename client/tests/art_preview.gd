@@ -190,8 +190,9 @@ func _check_shop() -> void:
 			if not node.tooltip_text.contains((P.localized("equipment_quality_line") % P.word(quality)).strip_edges()):
 				layout_errors.append("Guaranteed card tooltip omits quality: " + product.productId)
 			var purchase := node.get_node_or_null("Purchase") as Button
-			if product.get("alreadyOwned", false) and (purchase == null or not purchase.disabled or purchase.text != P.localized_text("已激活")):
-				layout_errors.append("Activated shop card remains purchasable: " + product.productId)
+			if product.get("alreadyOwned",false) and not $UI.shop.get("policy",{}).get("grantsPermanentCopies",false):
+				if purchase==null or not purchase.disabled or purchase.text!=P.localized_text("已激活"):
+					layout_errors.append("Legacy activated shop card remains purchasable: "+product.productId)
 		if product.kind == "ClassSoul" and image.texture != Art.texture("UI/Item/exploration_prep_item_icon_%s_soul.png" % str(payload.heroClass).to_lower()):
 			layout_errors.append("Class soul icon does not match payload: " + product.productId)
 		if image.mouse_filter != Control.MOUSE_FILTER_IGNORE:

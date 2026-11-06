@@ -1,0 +1,18 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Config.RewardRefreshConfigurationTransportTests.OriginalArchiveAndDistinctPricesProduceRealTypedInteropInputsWithoutRewritingArchive [STARTING]
+    FantasyCard.Server.Tests.Config.RewardRefreshConfigurationTransportTests.OriginalArchiveAndDistinctPricesProduceRealTypedInteropInputsWithoutRewritingArchive [FAIL]
+      Assert.Equal() Failure: Strings differ
+                                   ↓ (pos 18)
+      Expected: "season-v1-config-14"
+      Actual:   "season-v1-config-15"
+                                   ↑ (pos 18)
+      Stack Trace:
+        server\tests\FantasyCard.Server.Tests\Config\RewardRefreshConfigurationTransportTests.cs(26,0): at FantasyCard.Server.Tests.Config.RewardRefreshConfigurationTransportTests.OriginalArchiveAndDistinctPricesProduceRealTypedInteropInputsWithoutRewritingArchive()
+           at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+           at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+    FantasyCard.Server.Tests.Config.RewardRefreshConfigurationTransportTests.OriginalArchiveAndDistinctPricesProduceRealTypedInteropInputsWithoutRewritingArchive [FINISHED] Time: 0.5647734s
+  Finished:    FantasyCard.Server.Tests (ID = '89d610785e33193d8883f9c1fa27bff1e8dd351f6ad5b4d9c640a94410fded7f')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 1, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 0.712s

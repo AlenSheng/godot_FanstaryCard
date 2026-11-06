@@ -1,0 +1,1391 @@
+{
+  "meta": {
+    "title": "遗境行者赛季数值候选基线",
+    "version": "season-balance-proposal-20261102-v2",
+    "date": "2026-11-02",
+    "status": "含每服周红配额、双币市场、商店与活动的文档及算术测算，未接生产配置，未验证真实对局",
+    "combatBaseline": "combat-current-b7a6154 / GDD v0.70",
+    "sourcesRead": 25
+  },
+  "assumptions": {
+    "seasonDays": 42,
+    "dailyMinutes": 60,
+    "minutesPerAttempt": 18,
+    "extractionRate": 0.7,
+    "selectedDifficultyIndex": 2,
+    "gearChoiceRate": 0.75,
+    "targetElementWeight": 0.4,
+    "targetEffectWeight": 0.3333333333333333,
+    "targetSlotWeight": 0.2,
+    "baseDrawInterval": 4,
+    "drawFloor": 1.8,
+    "resistCap": 0.6,
+    "defenseReduction": 0,
+    "referenceTargetResist": 0,
+    "referenceCardValues": [
+      8,
+      3,
+      12
+    ],
+    "gearRebuildLevel": 3,
+    "stageScaleRule": "min(1,seasonDays/42);只缩短30天季，不延长60天装备成本；每级ceil",
+    "returnKitGrant": 0
+  },
+  "difficulties": [
+    {
+      "id": "D0",
+      "name": "标准",
+      "hpScale": 1,
+      "shieldScale": 1,
+      "damageScale": 1,
+      "intervalScale": 1,
+      "goldScale": 1,
+      "soulScale": 1,
+      "fragmentScale": 1,
+      "qualityCap": 2,
+      "purpleAffixChance": 0,
+      "cardEffectiveLevelCap": 0,
+      "weaponEffectiveLevelCap": 0,
+      "entryQualityCap": 2,
+      "redDropEligible": false
+    },
+    {
+      "id": "D1",
+      "name": "进阶",
+      "hpScale": 1.6,
+      "shieldScale": 1.6,
+      "damageScale": 1.25,
+      "intervalScale": 1,
+      "goldScale": 1.2,
+      "soulScale": 1.15,
+      "fragmentScale": 1.4,
+      "qualityCap": 3,
+      "purpleAffixChance": 0.5,
+      "cardEffectiveLevelCap": 1,
+      "weaponEffectiveLevelCap": 1,
+      "entryQualityCap": 3,
+      "redDropEligible": false
+    },
+    {
+      "id": "D2",
+      "name": "精英",
+      "hpScale": 2.6,
+      "shieldScale": 2.6,
+      "damageScale": 1.5,
+      "intervalScale": 0.98,
+      "goldScale": 1.4,
+      "soulScale": 1.3,
+      "fragmentScale": 1.9,
+      "qualityCap": 4,
+      "purpleAffixChance": 0.6,
+      "cardEffectiveLevelCap": 2,
+      "weaponEffectiveLevelCap": 2,
+      "entryQualityCap": 5,
+      "redDropEligible": true
+    },
+    {
+      "id": "D3",
+      "name": "英雄",
+      "hpScale": 4,
+      "shieldScale": 4,
+      "damageScale": 1.85,
+      "intervalScale": 0.96,
+      "goldScale": 1.65,
+      "soulScale": 1.45,
+      "fragmentScale": 2.5,
+      "qualityCap": 4,
+      "purpleAffixChance": 0.7,
+      "cardEffectiveLevelCap": 3,
+      "weaponEffectiveLevelCap": 3,
+      "entryQualityCap": 5,
+      "redDropEligible": true
+    },
+    {
+      "id": "D4",
+      "name": "灾厄",
+      "hpScale": 5.8,
+      "shieldScale": 5.8,
+      "damageScale": 2.2,
+      "intervalScale": 0.94,
+      "goldScale": 1.9,
+      "soulScale": 1.6,
+      "fragmentScale": 3.2,
+      "qualityCap": 4,
+      "purpleAffixChance": 0.8,
+      "cardEffectiveLevelCap": 4,
+      "weaponEffectiveLevelCap": 4,
+      "entryQualityCap": 5,
+      "redDropEligible": true
+    },
+    {
+      "id": "D5",
+      "name": "巅峰",
+      "hpScale": 8,
+      "shieldScale": 8,
+      "damageScale": 2.6,
+      "intervalScale": 0.92,
+      "goldScale": 2.2,
+      "soulScale": 1.75,
+      "fragmentScale": 4,
+      "qualityCap": 4,
+      "purpleAffixChance": 1,
+      "cardEffectiveLevelCap": 5,
+      "weaponEffectiveLevelCap": 5,
+      "entryQualityCap": 5,
+      "redDropEligible": true
+    }
+  ],
+  "equipment": [
+    {
+      "id": "white",
+      "name": "白",
+      "index": 0,
+      "damageBase": 0.04,
+      "resistBase": 0.02,
+      "damagePerLevel": 0.01,
+      "resistPerLevel": 0.0025,
+      "speedBase": 0,
+      "speedPerLevel": 0.0025,
+      "costs": [
+        1,
+        1,
+        2,
+        8,
+        16
+      ],
+      "oldCosts": [
+        8,
+        16,
+        32,
+        64,
+        128
+      ]
+    },
+    {
+      "id": "green",
+      "name": "绿",
+      "index": 1,
+      "damageBase": 0.07,
+      "resistBase": 0.04,
+      "damagePerLevel": 0.015,
+      "resistPerLevel": 0.004,
+      "speedBase": 0.03,
+      "speedPerLevel": 0.003,
+      "costs": [
+        1,
+        2,
+        3,
+        12,
+        24
+      ],
+      "oldCosts": [
+        12,
+        24,
+        48,
+        96,
+        192
+      ]
+    },
+    {
+      "id": "blue",
+      "name": "蓝",
+      "index": 2,
+      "damageBase": 0.11,
+      "resistBase": 0.06,
+      "damagePerLevel": 0.02,
+      "resistPerLevel": 0.005,
+      "speedBase": 0.05,
+      "speedPerLevel": 0.0035,
+      "costs": [
+        2,
+        3,
+        3,
+        20,
+        40
+      ],
+      "oldCosts": [
+        20,
+        40,
+        80,
+        160,
+        320
+      ]
+    },
+    {
+      "id": "purple",
+      "name": "紫",
+      "index": 3,
+      "damageBase": 0.15,
+      "resistBase": 0.09,
+      "damagePerLevel": 0.025,
+      "resistPerLevel": 0.006,
+      "speedBase": 0.07,
+      "speedPerLevel": 0.004,
+      "costs": [
+        2,
+        3,
+        5,
+        40,
+        80
+      ],
+      "oldCosts": [
+        32,
+        64,
+        128,
+        256,
+        512
+      ]
+    },
+    {
+      "id": "orange",
+      "name": "橙",
+      "index": 4,
+      "damageBase": 0.22,
+      "resistBase": 0.13,
+      "damagePerLevel": 0.03,
+      "resistPerLevel": 0.008,
+      "speedBase": 0.1,
+      "speedPerLevel": 0.005,
+      "costs": [
+        4,
+        6,
+        10,
+        80,
+        160
+      ],
+      "oldCosts": [
+        64,
+        128,
+        256,
+        512,
+        1024
+      ]
+    }
+  ],
+  "loot": [
+    {
+      "id": "0_0",
+      "difficultyId": "D0",
+      "layerId": "outer",
+      "weights": [
+        0.7,
+        0.3,
+        0,
+        0,
+        0
+      ],
+      "qualityCap": 2,
+      "promotionCap": 2,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "0_1",
+      "difficultyId": "D0",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0.6,
+        0.4,
+        0,
+        0
+      ],
+      "qualityCap": 2,
+      "promotionCap": 2,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "0_2",
+      "difficultyId": "D0",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0.2,
+        0.8,
+        0,
+        0
+      ],
+      "qualityCap": 2,
+      "promotionCap": 2,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "0_3",
+      "difficultyId": "D0",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "qualityCap": 2,
+      "promotionCap": 2,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "1_0",
+      "difficultyId": "D1",
+      "layerId": "outer",
+      "weights": [
+        0.2,
+        0.6,
+        0.2,
+        0,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "1_1",
+      "difficultyId": "D1",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0.25,
+        0.65,
+        0.1,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "1_2",
+      "difficultyId": "D1",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0,
+        0.65,
+        0.35,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "1_3",
+      "difficultyId": "D1",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        0.2,
+        0.8,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "2_0",
+      "difficultyId": "D2",
+      "layerId": "outer",
+      "weights": [
+        0,
+        0.3,
+        0.65,
+        0.05,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "2_1",
+      "difficultyId": "D2",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0,
+        0.55,
+        0.43,
+        0.02
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "2_2",
+      "difficultyId": "D2",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0,
+        0.25,
+        0.65,
+        0.1
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "2_3",
+      "difficultyId": "D2",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        0,
+        0.7,
+        0.3
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "3_0",
+      "difficultyId": "D3",
+      "layerId": "outer",
+      "weights": [
+        0,
+        0.1,
+        0.6,
+        0.3,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "3_1",
+      "difficultyId": "D3",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0,
+        0.3,
+        0.65,
+        0.05
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "3_2",
+      "difficultyId": "D3",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0,
+        0.1,
+        0.7,
+        0.2
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "3_3",
+      "difficultyId": "D3",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        0,
+        0.5,
+        0.5
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "4_0",
+      "difficultyId": "D4",
+      "layerId": "outer",
+      "weights": [
+        0,
+        0,
+        0.45,
+        0.55,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "4_1",
+      "difficultyId": "D4",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0,
+        0.15,
+        0.75,
+        0.1
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "4_2",
+      "difficultyId": "D4",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0,
+        0,
+        0.65,
+        0.35
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "4_3",
+      "difficultyId": "D4",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        0,
+        0.35,
+        0.65
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "5_0",
+      "difficultyId": "D5",
+      "layerId": "outer",
+      "weights": [
+        0,
+        0,
+        0.25,
+        0.75,
+        0
+      ],
+      "qualityCap": 3,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "5_1",
+      "difficultyId": "D5",
+      "layerId": "middle",
+      "weights": [
+        0,
+        0,
+        0.05,
+        0.8,
+        0.15
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "5_2",
+      "difficultyId": "D5",
+      "layerId": "elite",
+      "weights": [
+        0,
+        0,
+        0,
+        0.5,
+        0.5
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    },
+    {
+      "id": "5_3",
+      "difficultyId": "D5",
+      "layerId": "boss",
+      "weights": [
+        0,
+        0,
+        0,
+        0.2,
+        0.8
+      ],
+      "qualityCap": 4,
+      "promotionCap": 3,
+      "note": "基础候选概率；健康偏置/匣灵+1均最多升到紫；自然橙不降级；最终再截难度与来源帽；升档不叠加"
+    }
+  ],
+  "layers": [
+    {
+      "id": "outer",
+      "name": "外层",
+      "gold": 10,
+      "soulMin": 1,
+      "soulMax": 3,
+      "classSoul": 1,
+      "fragmentMin": 1,
+      "fragmentMax": 2
+    },
+    {
+      "id": "middle",
+      "name": "中层角格",
+      "gold": 18,
+      "soulMin": 3,
+      "soulMax": 6,
+      "classSoul": 2,
+      "fragmentMin": 2,
+      "fragmentMax": 4
+    },
+    {
+      "id": "elite",
+      "name": "精英格",
+      "gold": 32,
+      "soulMin": 6,
+      "soulMax": 10,
+      "classSoul": 4,
+      "fragmentMin": 4,
+      "fragmentMax": 7
+    },
+    {
+      "id": "boss",
+      "name": "Boss格",
+      "gold": 60,
+      "soulMin": 10,
+      "soulMax": 16,
+      "classSoul": 8,
+      "fragmentMin": 6,
+      "fragmentMax": 10
+    }
+  ],
+  "monsterGroups": [
+    {
+      "id": "O1",
+      "name": "孤焰",
+      "layerId": "outer",
+      "weight": 18,
+      "members": [
+        {
+          "name": "火蝠",
+          "hp": 78,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "火3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O2",
+      "name": "孤棘",
+      "layerId": "outer",
+      "weight": 16,
+      "members": [
+        {
+          "name": "棘螨",
+          "hp": 84,
+          "shield": 0,
+          "interval": 4,
+          "intents": "木3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O3",
+      "name": "孤浊",
+      "layerId": "outer",
+      "weight": 16,
+      "members": [
+        {
+          "name": "浊螅",
+          "hp": 86,
+          "shield": 0,
+          "interval": 4.2,
+          "intents": "水3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O4",
+      "name": "孤砂",
+      "layerId": "outer",
+      "weight": 14,
+      "members": [
+        {
+          "name": "砂蜥",
+          "hp": 92,
+          "shield": 8,
+          "interval": 4.6,
+          "intents": "土3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O5",
+      "name": "孤锈",
+      "layerId": "outer",
+      "weight": 14,
+      "members": [
+        {
+          "name": "锈刃鼠",
+          "hp": 80,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "金3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O6",
+      "name": "双蝠",
+      "layerId": "outer",
+      "weight": 8,
+      "members": [
+        {
+          "name": "火蝠",
+          "hp": 42,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "火蝠",
+          "hp": 42,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O7",
+      "name": "金木",
+      "layerId": "outer",
+      "weight": 7,
+      "members": [
+        {
+          "name": "锈刃鼠",
+          "hp": 44,
+          "shield": 0,
+          "interval": 3.8,
+          "intents": "金2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "棘螨",
+          "hp": 46,
+          "shield": 0,
+          "interval": 4,
+          "intents": "木2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "O8",
+      "name": "水土",
+      "layerId": "outer",
+      "weight": 7,
+      "members": [
+        {
+          "name": "浊螅",
+          "hp": 46,
+          "shield": 0,
+          "interval": 4.2,
+          "intents": "水2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "砂蜥",
+          "hp": 50,
+          "shield": 6,
+          "interval": 4.6,
+          "intents": "土2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "name": "双焰",
+      "layerId": "middle",
+      "weight": 24,
+      "members": [
+        {
+          "name": "火蝠",
+          "hp": 56,
+          "shield": 0,
+          "interval": 3.8,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "火蝠",
+          "hp": 56,
+          "shield": 0,
+          "interval": 3.8,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "潮岩",
+      "layerId": "middle",
+      "weight": 22,
+      "members": [
+        {
+          "name": "浊螅",
+          "hp": 60,
+          "shield": 0,
+          "interval": 4.2,
+          "intents": "水2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "砂蜥",
+          "hp": 66,
+          "shield": 8,
+          "interval": 4.6,
+          "intents": "土2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "name": "刃藤",
+      "layerId": "middle",
+      "weight": 22,
+      "members": [
+        {
+          "name": "锈刃鼠",
+          "hp": 58,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "金2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "棘螨",
+          "hp": 62,
+          "shield": 0,
+          "interval": 4,
+          "intents": "木2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "name": "双潮",
+      "layerId": "middle",
+      "weight": 16,
+      "members": [
+        {
+          "name": "浊螅",
+          "hp": 64,
+          "shield": 0,
+          "interval": 4,
+          "intents": "水2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "浊螅",
+          "hp": 64,
+          "shield": 0,
+          "interval": 4,
+          "intents": "水2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "M5",
+      "name": "焰岩",
+      "layerId": "middle",
+      "weight": 16,
+      "members": [
+        {
+          "name": "火蝠",
+          "hp": 54,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        },
+        {
+          "name": "砂蜥",
+          "hp": 64,
+          "shield": 8,
+          "interval": 4.6,
+          "intents": "土2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "E1",
+      "name": "金卫",
+      "layerId": "elite",
+      "weight": 24,
+      "members": [
+        {
+          "name": "金卫",
+          "hp": 200,
+          "shield": 12,
+          "interval": 4.4,
+          "intents": "金4 金4 盾12 金6",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        }
+      ]
+    },
+    {
+      "id": "E2",
+      "name": "火劫使",
+      "layerId": "elite",
+      "weight": 18,
+      "members": [
+        {
+          "name": "火劫使",
+          "hp": 188,
+          "shield": 0,
+          "interval": 4.2,
+          "intents": "火4 蓄力 火6 火4",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        }
+      ]
+    },
+    {
+      "id": "E3",
+      "name": "沼母",
+      "layerId": "elite",
+      "weight": 18,
+      "members": [
+        {
+          "name": "沼母",
+          "hp": 210,
+          "shield": 8,
+          "interval": 4.6,
+          "intents": "水4 水4 盾10 水6",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        }
+      ]
+    },
+    {
+      "id": "E4",
+      "name": "石甲卫",
+      "layerId": "elite",
+      "weight": 18,
+      "members": [
+        {
+          "name": "石甲卫",
+          "hp": 184,
+          "shield": 24,
+          "interval": 4.8,
+          "intents": "土4 盾14 土4 直7",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        }
+      ]
+    },
+    {
+      "id": "E5",
+      "name": "棘林卫",
+      "layerId": "elite",
+      "weight": 14,
+      "members": [
+        {
+          "name": "棘林卫",
+          "hp": 196,
+          "shield": 0,
+          "interval": 4.2,
+          "intents": "木4 强化 木4 木5",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        }
+      ]
+    },
+    {
+      "id": "E6",
+      "name": "卫蝠",
+      "layerId": "elite",
+      "weight": 8,
+      "members": [
+        {
+          "name": "金卫",
+          "hp": 160,
+          "shield": 10,
+          "interval": 4.4,
+          "intents": "金4 金4 盾12 金6",
+          "firstDamage": 4,
+          "elementBoost": 0.15
+        },
+        {
+          "name": "火蝠",
+          "hp": 40,
+          "shield": 0,
+          "interval": 3.6,
+          "intents": "火2",
+          "firstDamage": 2,
+          "elementBoost": 0.1
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "name": "湮核一期",
+      "layerId": "boss",
+      "weight": 100,
+      "members": [
+        {
+          "name": "湮核一期",
+          "hp": 280,
+          "shield": 20,
+          "interval": 4.4,
+          "intents": "火4 木4 盾10 火5 蓄力 直6",
+          "firstDamage": 4,
+          "elementBoost": 0.2
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "name": "湮核二期",
+      "layerId": "boss",
+      "weight": 0,
+      "members": [
+        {
+          "name": "湮核二期",
+          "hp": 280,
+          "shield": 0,
+          "interval": 3.8,
+          "intents": "金5 土5 盾8 金5 土5 直8",
+          "firstDamage": 5,
+          "elementBoost": 0.2
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "name": "匣灵",
+      "layerId": "outer",
+      "weight": 0,
+      "members": [
+        {
+          "name": "匣灵",
+          "hp": 84,
+          "shield": 0,
+          "interval": 4,
+          "intents": "80%元素3 / 20%直3",
+          "firstDamage": 3,
+          "elementBoost": 0.1
+        }
+      ]
+    }
+  ],
+  "builds": [
+    {
+      "id": "P0",
+      "name": "裸装算术锚",
+      "cardLevel": 0,
+      "gear": [],
+      "effect": "无",
+      "difficulty": "D0"
+    },
+    {
+      "id": "P1",
+      "name": "绿蓝起步",
+      "cardLevel": 1,
+      "gear": [
+        {
+          "quality": "green",
+          "level": 0,
+          "count": 3
+        },
+        {
+          "quality": "blue",
+          "level": 0,
+          "count": 2
+        }
+      ],
+      "effect": "无",
+      "difficulty": "D1"
+    },
+    {
+      "id": "P2",
+      "name": "蓝装成型",
+      "cardLevel": 2,
+      "gear": [
+        {
+          "quality": "blue",
+          "level": 1,
+          "count": 5
+        }
+      ],
+      "effect": "无",
+      "difficulty": "D2"
+    },
+    {
+      "id": "P3",
+      "name": "紫装单套",
+      "cardLevel": 3,
+      "gear": [
+        {
+          "quality": "purple",
+          "level": 2,
+          "count": 5
+        }
+      ],
+      "effect": "3紫破击，其余无效果",
+      "difficulty": "D3"
+    },
+    {
+      "id": "P4",
+      "name": "橙紫常规",
+      "cardLevel": 4,
+      "gear": [
+        {
+          "quality": "purple",
+          "level": 3,
+          "count": 4
+        },
+        {
+          "quality": "orange",
+          "level": 3,
+          "count": 1
+        }
+      ],
+      "effect": "1橙+2紫破击，另2紫不触发其他套",
+      "difficulty": "D4"
+    },
+    {
+      "id": "P5",
+      "name": "橙紫极限",
+      "cardLevel": 5,
+      "gear": [
+        {
+          "quality": "purple",
+          "level": 5,
+          "count": 4
+        },
+        {
+          "quality": "orange",
+          "level": 5,
+          "count": 1
+        }
+      ],
+      "effect": "1橙+3紫破击，另1紫不触发其他套",
+      "difficulty": "D5"
+    }
+  ],
+  "route": {
+    "id": "R1",
+    "name": "条件深图路线",
+    "counts": [
+      5,
+      1,
+      1,
+      1
+    ],
+    "coordinates": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        0,
+        3
+      ],
+      [
+        0,
+        4
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        2,
+        3
+      ]
+    ],
+    "bossCoordinate": [
+      2,
+      3
+    ],
+    "note": "仅在该Boss与出生布局下成立；Boss格清理后可撤离。不是全随机地图均值；18分钟为待测假设；失败当次无安全格带出，未计药剂/付费包/刷新/市场/额外三选一碎片。"
+  },
+  "progression": {
+    "levels": 30,
+    "firstLevelXp": 200,
+    "stepXp": 15,
+    "clearXp": [
+      6,
+      10,
+      25,
+      80
+    ],
+    "extractXp": 70,
+    "failedAttemptXp": 24,
+    "failedXpMeaning": "仅失败前实际清理4外层格的假设；死亡本身不发经验",
+    "weeklyContractCount": 3,
+    "weeklyContractXp": 300,
+    "contractCompletionFraction": 1,
+    "purpleTokenCost": 4,
+    "orangeTokenCost": 14,
+    "craftWishPity": 3,
+    "eliteTokens": 1,
+    "bossTokens": 2,
+    "tokenCapPerRun": 4,
+    "tokenScope": "D1蓝图章，D2+橙图章；高级可向低级1:1抵扣，不可反向；成功撤离结算；刷新/市场/遗物不计"
+  },
+  "rebuild": {
+    "learnedRecipeScope": "当前赛季紫橙品质+部位+元素+效果；只有原始自然掉落或正常印记打造、尚未提取的真实装备可登记；原始item_id只可提取一次，交易保留记录；重铸产物、借用、机器人和活动材料不可登记；红装不可登记或重铸",
+    "reforgePurpleCost": 1,
+    "reforgeOrangeCost": 2,
+    "fullSetReforgeCost": 6,
+    "consumeSameQualityBody": true,
+    "resultLevel": 0,
+    "refundEnhancement": false,
+    "note": "重铸消耗或原地替换真实同品质本体，不复制装备；旧属性与强化不保留，确认前报价；首次成型与重复重建分别测量。模板重铸产物不产生新的可学习样本。重铸继承本体绑定与来源季限制，借用、Bot投影、活动纯材料不得作为可穿戴重铸输入，不得洗掉交易限制。"
+  },
+  "combatProposal": {
+    "ruleset": "season-combat-v1-candidate",
+    "hpRounding": "max(1,floor(baseHP*hpScale))",
+    "shieldRounding": "floor(baseShield*shieldScale)，包括意图循环盾",
+    "damageOrder": [
+      "基础意图按现行蓄力或强化",
+      "floor(完整意图*难度倍率)",
+      "元素自身增幅与对应抗性后floor，直伤直通",
+      "盾职业载壁减伤后floor",
+      "PVE未取消且命中的正伤害意图最低1",
+      "先盾后血"
+    ],
+    "minimumDamage": 1,
+    "minimumDamageScope": "仅本季PVE怪物一次完成的正伤害意图，取消/免疫/纯效果不抬1，PVP保持原样",
+    "bossPhaseRatio": 0.5,
+    "castIntervalMs": 500,
+    "mageFix": "R<2清连携且无焚弦即时抽牌；R>=2按旧E推进，焚弦即时抽数<=min(旧档,N实际耗牌-1)；原卡牌抽牌保留",
+    "openGate": "水系和纯抽牌每500ms持续资源正收益仍须真实领域仿真验收，不宣称已解决"
+  },
+  "seasonalFairness": {
+    "cardAndWeapon": "永久等级不改；赛季房间有效等级=min(实际等级,D0-D5档位上限0..5)，PVE/PVP一致；新手可借对应职业固定20张模板及专武，投影到该档上限，不可出售拆解或写回永久存档",
+    "entryQuality": "D0最多蓝、D1最多紫、D2+允许橙或红；橙红合计最多1件；普通三选一仍最多橙，红走独立周配额",
+    "matchmaking": "同一难度内优先按真实有效属性与装备套装状态匹配，不能只用旧V；不增加独立新手队列",
+    "diamondWallet": "钻石永久余额可用于本季橙红市场，存在跨季财富优势；金币和物品仍按季隔离，不自动开放钻兑金"
+  },
+  "redRules": {
+    "enabled": true,
+    "weeklyQuota": 1,
+    "scope": "logical_server_id + natural_week_key；所有地图、难度、渠道和赛季共享",
+    "weekBoundary": "服务器时区周一04:00，示例Asia/Shanghai；不滚存，不随重启或换季重置",
+    "bossChance": 0.004,
+    "bossEligibleDifficultyMin": 2,
+    "chestChance": 0.0008,
+    "chestEnabled": false,
+    "redNormalLootWeight": 0,
+    "reforgeAllowed": false,
+    "recipeAllowed": false,
+    "upgradeMaterialSameQuality": true,
+    "materialBodiesForMax": 2,
+    "dropTo": "临时背包/掉落托管，尚未带出不等于最终持有",
+    "legacyAffixPolicy": "保留旧表作为对照；market_model_v2.red.candidate提供待仿真调整参数"
+  },
+  "validations": {
+    "probabilitySum": 1,
+    "regularLootContainsNoRed": true,
+    "weeklyRedEnabled": true,
+    "orangeWearCap": 1,
+    "slotCount": 5,
+    "cardMaxLevel": 5,
+    "equipmentMaxLevel": 5,
+    "bossPhaseRatio": 0.5,
+    "fullCombatSimulation": false
+  },
+  "notes": [
+    "数值是待校准设计输入，所有日期/胜率/局时不是线上实测。",
+    "固定三卡样本仅测增伤与抽牌吞吐代理，不等于DPS/TTK或合法完整20卡组胜率。P0假定已拥有8/3/12三卡，并非新号初始默认20张的战斗表现。",
+    "样本假设5件均带间隔词条、同一元素；鞋若是逃脱词条，间隔会更慢。",
+    "怪物初始盾及循环上盾都按盾倍率；Boss二期是同一个实体、不可重复计其HP。",
+    "赛季奖励升档最多升到紫，已自然掷出的橙不降级；所有来源最终服从难度品质帽。",
+    "新强化价按可掉落装备重建预算设计，+3常规、+4/+5高风险可选；不是沿用旧橙1984价格。全套+3为60碎，重铸已学模板额外6碎，仍需本体。",
+    "专武248成本属于永久养成，不能使用新白装28成本；卡牌魂价保持原表。",
+    "收益先逐格逐次floor再求期望；死亡损失记个人成本，拾取与市场是全服转移。",
+    "保留每服自然周最多1红，全渠道共享；D2+核心Boss额外0.4%，正常三选一仍无红；D5不要求红装。商店宝箱渠道与额外活动红默认不开，若开也必须占同一配额。",
+    "市场、商店、活动和全服流动性在market_model_v2.json单独复算；常规算术表仍区分60强化与66含重铸成本，不能把前者当完整重建成本。"
+  ],
+  "sourceReferences": [
+    {
+      "file": "GDD.md",
+      "section": "§0、§3.1–3.6、§6.9",
+      "use": "规则优先级、现行伤害与经济口径"
+    },
+    {
+      "file": "GDD_BASE_v0.69.md",
+      "section": "§2.3、§3.4、§4.6–4.8、§5.6–5.14、§6",
+      "use": "现有卡牌装备、成本、地图怪表、机器人和经济"
+    },
+    {
+      "file": "SERVER_IMPLEMENTATION_STATUS_AND_PLAN.md",
+      "section": "配置、V015、托管、遥测",
+      "use": "现有服务端边界"
+    },
+    {
+      "file": "SERVER_0_TO_1_GUIDE.md",
+      "section": "配置发布、结算持久化",
+      "use": "五行表头与Protobuf导出"
+    }
+  ]
+}

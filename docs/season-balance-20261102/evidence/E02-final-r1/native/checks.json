@@ -1,0 +1,81 @@
+{
+  "checks": 50,
+  "ok": true,
+  "suites": {
+    "test_confirmation_modal.gd": {
+      "message": "Shared layered confirmation panel, localized wrapping and two sprite-backed actions",
+      "ok": true
+    },
+    "test_season_market.gd": {
+      "checks": {
+        "HTTP codec preserves explicit currency source and integer64 version": true,
+        "absent nullable seller balance does not erase gold": true,
+        "archived item cannot become a new listing": true,
+        "bootstrap does not forward unrelated parameters": true,
+        "bound item cannot list": true,
+        "diamond broadcast does not pollute default gold cache": true,
+        "diamond is never a free gold listing": true,
+        "independent currency caps": true,
+        "listing uses zero legacy gold and exact version": true,
+        "market realtime conversion keeps unique stats and source flags": true,
+        "missing diamond price fails closed": true,
+        "next page preserves currency and all market filters": true,
+        "old listing request keeps new fields absent": true,
+        "old or held return is never credited into current inventory": true,
+        "one seller minimum and floor": true,
+        "purchase captures currency price source and listing version": true,
+        "real seasonal red can list in diamonds": true,
+        "temporary item cannot list": true
+      },
+      "ok": true,
+      "scope": "Actual market model, protocol, filter pagination and cache conversion; offline transport, not rendered or public-network evidence."
+    },
+    "test_season_market_controller.gd": {
+      "checks": {
+        "A B A ignores first identical-currency response": true,
+        "actual read paths capture each currency": true,
+        "current read supplies the post-purchase balance": true,
+        "latest read publishes its own source wallet": true,
+        "listing confirmation captures exact original item and source": true,
+        "offscreen response cannot replace visible source": true,
+        "old-session confirmation never submits": true,
+        "other currency response cannot replace latest state": true,
+        "purchase uses frozen canonical currency price and version": true,
+        "reply cannot optimistically credit a historical wallet": true,
+        "stale confirmation cannot send a write": true
+      },
+      "ok": true,
+      "scope": "Production controller using deferred offline transport; scope/ordering and actual callbacks, not live HTTP or render evidence."
+    },
+    "test_season_shop_controller.gd": {
+      "checks": {
+        "A B A cannot reuse the original identical offer confirmation": true,
+        "actual main sends all captured terms": true,
+        "confirmation rechecks latest quota instead of captured count": true,
+        "main does not credit receipt amounts while current read is pending": true,
+        "old account reply neither writes funds nor clears new account busy state": true,
+        "only current authority supplies balances and counters": true
+      },
+      "ok": true
+    },
+    "test_season_shop_model.gd": {
+      "checks": {
+        "both paid bag types share storage3": true,
+        "changed price confirmation rejected": true,
+        "confirmation pins all actual offer terms": true,
+        "cross-season confirmation rejected": true,
+        "current confirmation matches": true,
+        "current seasonal wallet overrides a richer permanent wallet": true,
+        "expired reset is closed": true,
+        "legacy owned single keeps its old rule": true,
+        "missing frozen catalog does not use legacy funds": true,
+        "no invented daily bag limit": true,
+        "owned single remains a purchasable copy": true,
+        "refreshed confirmation rejected": true,
+        "same daily slot cannot be bought twice": true,
+        "unknown stock cannot buy": true
+      },
+      "ok": true
+    }
+  }
+}

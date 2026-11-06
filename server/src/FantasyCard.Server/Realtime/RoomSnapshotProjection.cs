@@ -68,20 +68,28 @@ internal static class RoomSnapshotProjection
                 PositiveMilliseconds(player.Combat.DrawSpeedRemaining) ?? 0,
                 PositiveMilliseconds(player.Combat.DrawBlockSpeedRemaining) ?? 0,
                 Math.Clamp(4 * (1 + (player.Combat.Equipment?.DrawIntervalModifier ?? 0)),
-                    player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8, 6.0)
+                    player.Combat.Equipment?.MinimumDrawInterval??(player.Combat.Equipment?.HasRapidDraw == true ? 1.5 : 1.8),player.Combat.Equipment?.MaximumDrawInterval??6.0)
                     .ToString("R", CultureInfo.InvariantCulture),
                 snapshot.Numerics?.OptionalMonsterPool == true && player.MonsterPool is { } pool
                     ? new RoomMonsterPoolPayload(snapshot.Numerics.MonsterCapacity,
                         pool.Pending.Select(ToPoolCard).ToArray(), pool.Active.Select(ToPoolCard).ToArray()) : null,
                 new RoomNumericalStatePayload(player.Combat.FenxianPolicy.ToString(), player.Combat.GuardianPolicy.ToString(),
-                    player.Combat.GuardianShieldRemainderTenths)),
+                    player.Combat.GuardianShieldRemainderTenths,
+                    player.Combat.FenxianReturnCredit?.ToString("R", CultureInfo.InvariantCulture),
+                    player.Combat.FenxianReturnRateBasisPoints),
+                snapshot.Season is null ? null : new RoomCombatActionStatePayload(
+                    player.LastCombatActionSequence == long.MaxValue ? 0 : player.LastCombatActionSequence + 1,
+                    player.LastSuccessfulCombatAt is { } last ? Math.Clamp((long)Math.Ceiling((last + TimeSpan.FromMilliseconds(500) - snapshot.Elapsed).TotalMilliseconds), 0, 500) : 0),
+                player.BorrowedTemplateId,player.PendingRedEvaluation is not null,player.PendingRedItem is null?null:ToInventoryItem(player.PendingRedItem)),
             player.Pve is null ? null : ToPve(player.Pve),
             duel,
             reward,
             extractionRemaining,
             springRemaining,
             allowedActions,
-            mapPlayerCount);
+            mapPlayerCount,
+            snapshot.Season is { } season ? new RoomSeasonContextPayload(season.SeasonId, season.DifficultyId,
+                season.RulesetId, season.ConfigVersion, season.StatsVersion) : null);
     }
 
     private static List<string> BuildAllowedActions(
@@ -93,7 +101,8 @@ internal static class RoomSnapshotProjection
         long? springRemaining,
         DateTimeOffset now)
     {
-        if (extractionRemaining is not null || springRemaining is not null) return [];
+        if (extractionRemaining is not null || springRemaining is not null || player.PendingRedEvaluation is not null) return [];
+        if(player.Phase==RoomPlayerPhase.Choice && player.PendingRedItem is not null)return ["choice.read","choice.pick"];
         var actions = player.Phase switch
         {
             RoomPlayerPhase.Pve when player.Pve?.Phase == PveBattlePhase.Active => BuildPveActions(player),
@@ -247,7 +256,7 @@ internal static class RoomSnapshotProjection
                 monster.Hp,
                 monster.Shield,
                 intent.Kind.ToString(),
-                intent.Value,
+                MonsterCombatState.PublishedIntentValue(monster),
                 intent.Element.ToString(),
                 (long)monster.IntervalProgress.TotalMilliseconds,
                 (long)monster.WindupRemaining.TotalMilliseconds,
@@ -264,7 +273,7 @@ internal static class RoomSnapshotProjection
         item.SlotIndex);
 
     internal static RoomEquipmentPayload? ToEquipment(EquipmentRewardData? item) => item is null ? null :
-        new(item.Slot, item.Quality, item.Element, item.EffectAffix, item.SecondaryTrait, item.Level, item.IsBound);
+        new(item.Slot, item.Quality, item.Element, item.EffectAffix, item.SecondaryTrait, item.Level, item.IsBound,item.UniqueAffix,item.UniqueElement,item.StatsVersion??item.SeasonOrigin?.Season.StatsVersion);
 
     private static RewardChoiceEventPayload ToReward(RewardChoiceSnapshot reward) => new(
         (int)reward.Layer,

@@ -1,0 +1,84 @@
+{
+  "status": "partial_C01_source_and_compiler_passed_runtime_and_archived_configuration_pending",
+  "tests_passed": 37,
+  "tests_failed": 0,
+  "tests_skipped": 0,
+  "staged_version": "season-v1-config-stage-1",
+  "content_hash": "54e52047f708874b6079b568145203d3613d39bc5efc9905a861636590467fcd",
+  "bundle_file_sha256": "260fb32af3c05f86e1c79c04dd473fe10ab4420985f2baa3ae7755159328041c",
+  "server_client_bytes_equal": true,
+  "legacy_published_table_bodies_byte_identical": 13,
+  "published_tables": 20,
+  "published_rows": 1671,
+  "added_rows": 72,
+  "workbook_preservation": {
+    "original_sheets_preserved": 14,
+    "original_nonformula_cells_verified": 16744,
+    "original_formulas_preserved": 8,
+    "native_tables_preserved": 2,
+    "new_tables": {
+      "SeasonActivityExchange": 4,
+      "SeasonDifficulty": 6,
+      "SeasonEquipment": 5,
+      "SeasonLoot": 24,
+      "SeasonMarketRules": 2,
+      "SeasonProgression": 30,
+      "SeasonRedRules": 1
+    },
+    "before_sha256": "c5cffc9b463c3ee2e825e5f6d558a0571cbce7c9703d94f178cbd3fbfee269a6",
+    "after_sha256": "c84079bbbdd9afedd697aff7b37eabdc3d1f930a65005146b99a510cf14284e7",
+    "style_cells_verified": 17600,
+    "style_differences": 0,
+    "added_data_rows": 72,
+    "new_sheet_visual_review": true,
+    "production_activated": false
+  },
+  "row_counts": {
+    "Cards": 232,
+    "CardLevels": 1320,
+    "Monsters": 2,
+    "MonsterIntents": 2,
+    "EquipmentQuality": 6,
+    "Backpacks": 3,
+    "LootRules": 7,
+    "Economy": 7,
+    "MapTemplates": 1,
+    "BotTuning": 4,
+    "ShopCardPrices": 4,
+    "Items": 10,
+    "NumericalRules": 1,
+    "SeasonActivityExchange": 4,
+    "SeasonDifficulty": 6,
+    "SeasonEquipment": 5,
+    "SeasonLoot": 24,
+    "SeasonMarketRules": 2,
+    "SeasonProgression": 30,
+    "SeasonRedRules": 1
+  },
+  "source_runtime_bundle_replaced": false,
+  "production_deployed": false,
+  "capacity_retest_performed": false,
+  "B05_matches_consumed": 0,
+  "history": [
+    {
+      "run": "r26",
+      "classification": "CA1305_CA1859_test_compile_analyzers",
+      "executed_tests": 0
+    },
+    {
+      "run": "r27",
+      "tests_passed": 37,
+      "tests_failed": 0
+    }
+  ],
+  "public_archive_sha256": {
+    "r26": "0db09aa895d7689d9630597f74ba23bf7961119b8215d0a3c96574471bd6859c",
+    "r27": "c406152279f34adde236017ba1cb65d3fd12831246dd58386bce8aa332b225c8"
+  },
+  "pending": [
+    "Typed seasonal runtime consumption and remaining proposal configuration tables/fields",
+    "Verified archived configuration loading, all room/card-growth/equipment/reward consumers pinned to the same version",
+    "Client archived configuration compatibility and final unified config publication",
+    "Final difficulty, equipment, resource balance and UI acceptance"
+  ]
+}

@@ -1,0 +1,854 @@
+{
+  "kind": "derived diagnostic from original r5; no new encounters",
+  "original_encounters": 60,
+  "original_actions": 7610,
+  "old_configuration_tables_vs_current": {
+    "Cards": {
+      "unchanged": true,
+      "old_sha256": "15c06efa93c9ba3f0a8b38eadeb8d06c2fbce34266027022c28847522b042a5a",
+      "current_sha256": "15c06efa93c9ba3f0a8b38eadeb8d06c2fbce34266027022c28847522b042a5a"
+    },
+    "CardLevels": {
+      "unchanged": true,
+      "old_sha256": "a06b87cb3a7e9d6ac58ebd7317054e56ed342f62ac1670a29b25f928b339b45e",
+      "current_sha256": "a06b87cb3a7e9d6ac58ebd7317054e56ed342f62ac1670a29b25f928b339b45e"
+    },
+    "Monsters": {
+      "unchanged": true,
+      "old_sha256": "0fc3a507e93a7deebd12c665e45fe2b384a13c04eb57547b423693bc7b1e6598",
+      "current_sha256": "0fc3a507e93a7deebd12c665e45fe2b384a13c04eb57547b423693bc7b1e6598"
+    },
+    "MonsterIntents": {
+      "unchanged": true,
+      "old_sha256": "d8a543605715f0a6bfa1bac1493b00d49eec0ac900f5847c46e596c7aa8c0d9a",
+      "current_sha256": "d8a543605715f0a6bfa1bac1493b00d49eec0ac900f5847c46e596c7aa8c0d9a"
+    },
+    "EquipmentQuality": {
+      "unchanged": true,
+      "old_sha256": "86c33393048527e7d2096a83334efff151a53c5c55260a7e30dd8b93b1d35b9f",
+      "current_sha256": "86c33393048527e7d2096a83334efff151a53c5c55260a7e30dd8b93b1d35b9f"
+    },
+    "SeasonDifficulty": {
+      "unchanged": true,
+      "old_sha256": "20916e6bad89a6235e30de7d82e8945d1220d5bd055ab0da728a73fdf95f94be",
+      "current_sha256": "20916e6bad89a6235e30de7d82e8945d1220d5bd055ab0da728a73fdf95f94be"
+    },
+    "SeasonEquipment": {
+      "unchanged": true,
+      "old_sha256": "0d28f648801f9bc678a368f064d3465fc2bc64b9e3f66da0e49ae69be9688c7d",
+      "current_sha256": "0d28f648801f9bc678a368f064d3465fc2bc64b9e3f66da0e49ae69be9688c7d"
+    },
+    "SeasonEquipmentRules": {
+      "unchanged": true,
+      "old_sha256": "786565e56964a9013b6f9d14699d29f9f3c5bce325cb56790f2520e3721bc8ff",
+      "current_sha256": "786565e56964a9013b6f9d14699d29f9f3c5bce325cb56790f2520e3721bc8ff"
+    },
+    "SeasonThemeRules": {
+      "unchanged": true,
+      "old_sha256": "aaac4b6ee01d6496073e9accfd2ec4c67ef7709f6b67c5a742ec3f3031ec60ef",
+      "current_sha256": "aaac4b6ee01d6496073e9accfd2ec4c67ef7709f6b67c5a742ec3f3031ec60ef"
+    },
+    "SeasonThemes": {
+      "unchanged": true,
+      "old_sha256": "6dc13d82751ecd86e56198c286db41ebdcfdbefee15937e78bd0b4d9c07280d8",
+      "current_sha256": "6dc13d82751ecd86e56198c286db41ebdcfdbefee15937e78bd0b4d9c07280d8"
+    },
+    "SeasonThemeGroups": {
+      "unchanged": true,
+      "old_sha256": "f55123b9c8f4740239c76c101662315b050e604527611fb3bd4e367a8eb07857",
+      "current_sha256": "f55123b9c8f4740239c76c101662315b050e604527611fb3bd4e367a8eb07857"
+    }
+  },
+  "groups": [
+    {
+      "difficulty": 2,
+      "boss": false,
+      "hero": "Mage",
+      "seconds_by_theme": {
+        "Fire": 27.6,
+        "Wood": 32.4,
+        "Earth": 36.7,
+        "Metal": 25,
+        "Water": 38.1
+      },
+      "max_min_ratio": 1.524,
+      "zero_direct_damage_cast_fraction": 0.37575757575757573,
+      "armor_effect_counts": {
+        "Piercing": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 488,
+          "initial_shield": 0,
+          "actual_damage": 488,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 509,
+          "initial_shield": 0,
+          "actual_damage": 509,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 478,
+          "initial_shield": 62,
+          "actual_damage": 576,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 36
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 520,
+          "initial_shield": 31,
+          "actual_damage": 582,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 31
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 546,
+          "initial_shield": 20,
+          "actual_damage": 592,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 26
+        }
+      ]
+    },
+    {
+      "difficulty": 2,
+      "boss": false,
+      "hero": "Priest",
+      "seconds_by_theme": {
+        "Fire": 60.8,
+        "Wood": 60.8,
+        "Earth": 78.8,
+        "Metal": 69.4,
+        "Water": 74.2
+      },
+      "max_min_ratio": 1.2960526315789473,
+      "zero_direct_damage_cast_fraction": 0.4942528735632184,
+      "armor_effect_counts": {
+        "Vitality": 3,
+        "Piercing": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 488,
+          "initial_shield": 0,
+          "actual_damage": 488,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 509,
+          "initial_shield": 0,
+          "actual_damage": 509,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 478,
+          "initial_shield": 62,
+          "actual_damage": 648,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 108
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 520,
+          "initial_shield": 31,
+          "actual_damage": 613,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 62
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 546,
+          "initial_shield": 20,
+          "actual_damage": 644,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 78
+        }
+      ]
+    },
+    {
+      "difficulty": 2,
+      "boss": false,
+      "hero": "Guardian",
+      "seconds_by_theme": {
+        "Fire": 59.4,
+        "Wood": 56.7,
+        "Earth": 81.7,
+        "Metal": 76.3,
+        "Water": 81.1
+      },
+      "max_min_ratio": 1.4409171075837743,
+      "zero_direct_damage_cast_fraction": 0.3860294117647059,
+      "armor_effect_counts": {
+        "Bulwark": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 488,
+          "initial_shield": 0,
+          "actual_damage": 488,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 509,
+          "initial_shield": 0,
+          "actual_damage": 509,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 478,
+          "initial_shield": 62,
+          "actual_damage": 612,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 72
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 520,
+          "initial_shield": 31,
+          "actual_damage": 644,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 93
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 546,
+          "initial_shield": 20,
+          "actual_damage": 644,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 78
+        }
+      ]
+    },
+    {
+      "difficulty": 2,
+      "boss": true,
+      "hero": "Mage",
+      "seconds_by_theme": {
+        "Fire": 50.6,
+        "Wood": 50.9,
+        "Earth": 51.2,
+        "Metal": 49.5,
+        "Water": 52.6
+      },
+      "max_min_ratio": 1.0626262626262626,
+      "zero_direct_damage_cast_fraction": 0.36328125,
+      "armor_effect_counts": {
+        "Piercing": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 806,
+          "recorded_theme_shield": 26,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 780,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 811,
+          "recorded_theme_shield": 31,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 806,
+          "recorded_theme_shield": 26,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 826,
+          "recorded_theme_shield": 46,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    },
+    {
+      "difficulty": 2,
+      "boss": true,
+      "hero": "Priest",
+      "seconds_by_theme": {
+        "Fire": 114.9,
+        "Wood": 98.5,
+        "Earth": 115.5,
+        "Metal": 101.3,
+        "Water": 105.2
+      },
+      "max_min_ratio": 1.1725888324873097,
+      "zero_direct_damage_cast_fraction": 0.4875239923224568,
+      "armor_effect_counts": {
+        "Vitality": 3,
+        "Piercing": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 872,
+          "recorded_theme_shield": 92,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 808,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 28,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 894,
+          "recorded_theme_shield": 114,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 826,
+          "recorded_theme_shield": 46,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 846,
+          "recorded_theme_shield": 66,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    },
+    {
+      "difficulty": 2,
+      "boss": true,
+      "hero": "Guardian",
+      "seconds_by_theme": {
+        "Fire": 111.7,
+        "Wood": 104.5,
+        "Earth": 116.9,
+        "Metal": 109.8,
+        "Water": 113.5
+      },
+      "max_min_ratio": 1.1186602870813398,
+      "zero_direct_damage_cast_fraction": 0.4,
+      "armor_effect_counts": {
+        "Bulwark": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 852,
+          "recorded_theme_shield": 72,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 816,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 36,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 894,
+          "recorded_theme_shield": 114,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 852,
+          "recorded_theme_shield": 72,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 728,
+          "initial_shield": 52,
+          "actual_damage": 852,
+          "recorded_theme_shield": 72,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": false,
+      "hero": "Mage",
+      "seconds_by_theme": {
+        "Fire": 70.7,
+        "Wood": 73.2,
+        "Earth": 98.1,
+        "Metal": 84.5,
+        "Water": 85.5
+      },
+      "max_min_ratio": 1.3875530410183874,
+      "zero_direct_damage_cast_fraction": 0.3422818791946309,
+      "armor_effect_counts": {
+        "Piercing": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 1504,
+          "initial_shield": 0,
+          "actual_damage": 1504,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 1568,
+          "initial_shield": 0,
+          "actual_damage": 1568,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 1472,
+          "initial_shield": 192,
+          "actual_damage": 2000,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 336
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 1600,
+          "initial_shield": 96,
+          "actual_damage": 1984,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 288
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 1680,
+          "initial_shield": 64,
+          "actual_damage": 1904,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 160
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": false,
+      "hero": "Priest",
+      "seconds_by_theme": {
+        "Fire": 148.3,
+        "Wood": 146.7,
+        "Earth": 238.4,
+        "Metal": 218.4,
+        "Water": 228.5
+      },
+      "max_min_ratio": 1.625085207907294,
+      "zero_direct_damage_cast_fraction": 0.5015166835187057,
+      "armor_effect_counts": {
+        "Vitality": 3,
+        "Piercing": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 1504,
+          "initial_shield": 0,
+          "actual_damage": 1504,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 1568,
+          "initial_shield": 0,
+          "actual_damage": 1568,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 1472,
+          "initial_shield": 192,
+          "actual_damage": 2448,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 784
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 1600,
+          "initial_shield": 96,
+          "actual_damage": 2368,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 672
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 1680,
+          "initial_shield": 64,
+          "actual_damage": 2384,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 640
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": false,
+      "hero": "Guardian",
+      "seconds_by_theme": {
+        "Fire": 162.3,
+        "Wood": 158.6,
+        "Earth": 259.4,
+        "Metal": 281.8,
+        "Water": 238.9
+      },
+      "max_min_ratio": 1.7767969735182851,
+      "zero_direct_damage_cast_fraction": 0.3875598086124402,
+      "armor_effect_counts": {
+        "Bulwark": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 1504,
+          "initial_shield": 0,
+          "actual_damage": 1504,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 1568,
+          "initial_shield": 0,
+          "actual_damage": 1568,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 1472,
+          "initial_shield": 192,
+          "actual_damage": 2448,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 784
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 1600,
+          "initial_shield": 96,
+          "actual_damage": 2848,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 1152
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 1680,
+          "initial_shield": 64,
+          "actual_damage": 2304,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 560
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": true,
+      "hero": "Mage",
+      "seconds_by_theme": {
+        "Fire": 124.1,
+        "Wood": 126,
+        "Earth": 128.6,
+        "Metal": 123,
+        "Water": 128.3
+      },
+      "max_min_ratio": 1.0455284552845527,
+      "zero_direct_damage_cast_fraction": 0.34763313609467456,
+      "armor_effect_counts": {
+        "Piercing": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2688,
+          "recorded_theme_shield": 288,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2488,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 88,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2592,
+          "recorded_theme_shield": 192,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2560,
+          "recorded_theme_shield": 160,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2608,
+          "recorded_theme_shield": 208,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": true,
+      "hero": "Priest",
+      "seconds_by_theme": {
+        "Fire": 293,
+        "Wood": 250.1,
+        "Earth": 306.9,
+        "Metal": 279.5,
+        "Water": 284.7
+      },
+      "max_min_ratio": 1.227109156337465,
+      "zero_direct_damage_cast_fraction": 0.5070422535211268,
+      "armor_effect_counts": {
+        "Vitality": 3,
+        "Piercing": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2896,
+          "recorded_theme_shield": 496,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2512,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 112,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 3008,
+          "recorded_theme_shield": 608,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2832,
+          "recorded_theme_shield": 432,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2832,
+          "recorded_theme_shield": 432,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    },
+    {
+      "difficulty": 5,
+      "boss": true,
+      "hero": "Guardian",
+      "seconds_by_theme": {
+        "Fire": 342.2,
+        "Wood": 272.2,
+        "Earth": 371.1,
+        "Metal": 339.4,
+        "Water": 322.1
+      },
+      "max_min_ratio": 1.3633357825128583,
+      "zero_direct_damage_cast_fraction": 0.392,
+      "armor_effect_counts": {
+        "Bulwark": 3,
+        "Vitality": 2
+      },
+      "damage_and_resources": [
+        {
+          "theme": "Fire",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 3120,
+          "recorded_theme_shield": 720,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Wood",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2512,
+          "recorded_theme_shield": 0,
+          "recorded_regeneration": 112,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Earth",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 3360,
+          "recorded_theme_shield": 960,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Metal",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 3120,
+          "recorded_theme_shield": 720,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        },
+        {
+          "theme": "Water",
+          "initial_hp": 2240,
+          "initial_shield": 160,
+          "actual_damage": 2976,
+          "recorded_theme_shield": 576,
+          "recorded_regeneration": 0,
+          "absorbed_resource_not_explained_by_old_fields": 0
+        }
+      ]
+    }
+  ],
+  "findings": [
+    "Elite comparison changes enemy species along with theme; base HP and recurring shields confound theme attribution.",
+    "Old GeneratedShield counts only ThemeShieldGenerated. Ordinary elite shields appear in actual absorbed damage but are not separately recorded.",
+    "Class comparison also changes affix allocation; it is not an isolated test of class passives.",
+    "Old defense-heavy decks/controllers have many non-damage casts; inspect build/action policy before changing production numbers."
+  ],
+  "C16_complete": false,
+  "remaining_budget_before_pilot": 179,
+  "B05_current_budget": 300,
+  "B05_retests": false
+}

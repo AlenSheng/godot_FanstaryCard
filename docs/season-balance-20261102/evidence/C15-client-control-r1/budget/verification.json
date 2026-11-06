@@ -1,0 +1,21 @@
+{
+  "ok": true,
+  "checks": {
+    "reproduce budget byte-equivalent logical report": true,
+    "short season rounds each threshold separately": true,
+    "class rewards choose one class with eight total": true,
+    "bonus levels mint only the ten display entitlements": true,
+    "no direct equipment or currency source": true,
+    "reject double fragments": true,
+    "reject duplicate level": true,
+    "reject missing explicit class choice": true,
+    "reject bonus becomes a resource": true,
+    "reject unknown cosmetic": true,
+    "reject four cards per pack": true,
+    "reject weights exceed100": true,
+    "reject wrong xp threshold": true,
+    "reject wrong source ownership": true
+  },
+  "scope": "configuration arithmetic only; no battles, routes, cohorts or live claims",
+  "original_failure_note": "First checker draft expected a content_hash property that the public catalog intentionally does not contain. Removed that property assumption; the report pins the exact catalog SHA. No product/configuration values changed."
+}

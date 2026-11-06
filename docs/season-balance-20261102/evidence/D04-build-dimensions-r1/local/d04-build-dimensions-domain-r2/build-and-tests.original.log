@@ -1,0 +1,22 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 107 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 306 ms).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r2\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix [10 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+                    ↓ (pos 9)
+Expected: "MonoFire/Piercing"
+Actual:   "MonoFire/NoActiveEffectSet"
+                    ↑ (pos 9)
+  Stack Trace:
+     at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 45
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r2\results\domain.trx
+
+Failed!  - Failed:     1, Passed:    31, Skipped:     0, Total:    32, Duration: 786 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:01.57]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix [FAIL]

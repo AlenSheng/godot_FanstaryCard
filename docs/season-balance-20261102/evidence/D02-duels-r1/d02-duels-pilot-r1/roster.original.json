@@ -1,0 +1,60 @@
+{
+  "prior_used": 0,
+  "policy": {
+    "scope": "Actual published-season domain PVP, not network/capacity. Explicit authoritative StartDuel; natural collision/movement is separate route evidence.",
+    "required": [
+      "late actor0.8s gate",
+      "first actor succeeds immediately and500ms gate rejects duplicate timing",
+      "both actors actual cards and current return/control semantics",
+      "frozen original PVE unchanged",
+      "JSON roundtrip while disconnected",
+      "action replay idempotent before/after recovery",
+      "reconnect withinleavewindow restores original PVE via both leave requests",
+      "expiry at15seconds kills only disconnected participant, restores survivor, preserves deadgear in original pile"
+    ],
+    "PVP_matches_counted": 72,
+    "max_D02_cases": 300,
+    "B05_new_runs": 0,
+    "C16_new_runs": 0,
+    "D01_new_runs": 0,
+    "relaxation": false
+  },
+  "cases": [
+    {
+      "id": "D02-PVP-001",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Reconnect",
+      "disconnect_role": "First",
+      "seed": 920001
+    },
+    {
+      "id": "D02-PVP-004",
+      "first": "Mage",
+      "late": "Mage",
+      "difficulty": 0,
+      "outcome": "Expire",
+      "disconnect_role": "Late",
+      "seed": 920004
+    },
+    {
+      "id": "D02-PVP-043",
+      "first": "Mage",
+      "late": "Priest",
+      "difficulty": 5,
+      "outcome": "Expire",
+      "disconnect_role": "First",
+      "seed": 920043
+    },
+    {
+      "id": "D02-PVP-046",
+      "first": "Mage",
+      "late": "Guardian",
+      "difficulty": 5,
+      "outcome": "Reconnect",
+      "disconnect_role": "Late",
+      "seed": 920046
+    }
+  ]
+}

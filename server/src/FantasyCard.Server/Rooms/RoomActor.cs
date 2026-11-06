@@ -18,6 +18,7 @@ public sealed class RoomActor : IAsyncDisposable
     private readonly object _tickerGate = new();
     private readonly ServerMetrics? _metrics;
     private readonly Func<BattleRoomSnapshot, Task>? _snapshotObserver;
+    private readonly Func<BattleRoom,Task<bool>>? _authoritativeProcessor;
     private readonly Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? _combatObserver;
     private readonly object _observerGate = new();
     private readonly Queue<ObserverBatch> _observerBatches = new();
@@ -31,7 +32,8 @@ public sealed class RoomActor : IAsyncDisposable
         bool startTicker = true,
         Func<BattleRoomSnapshot, Task>? snapshotObserver = null,
         ServerMetrics? metrics = null,
-        Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? combatObserver = null)
+        Func<BattleRoomSnapshot, IReadOnlyList<CombatFeedbackResolution>, Task>? combatObserver = null,
+        Func<BattleRoom,Task<bool>>? authoritativeProcessor = null)
     {
         RoomId = room?.RoomId ?? throw new ArgumentNullException(nameof(room));
         ArgumentNullException.ThrowIfNull(timeProvider);
@@ -39,6 +41,7 @@ public sealed class RoomActor : IAsyncDisposable
         _metrics = metrics;
         _snapshotObserver = snapshotObserver;
         _combatObserver = combatObserver;
+        _authoritativeProcessor=authoritativeProcessor;
         _commands = Channel.CreateBounded<ICommandWorkItem>(new BoundedChannelOptions(CommandQueueCapacity)
         {
             SingleReader = true,
@@ -134,7 +137,7 @@ public sealed class RoomActor : IAsyncDisposable
                 Stopwatch.GetElapsedTime(command.EnqueuedAt));
             BattleRoomSnapshot? snapshot;
             using (RuntimeTiming.Measure(_metrics, RuntimePhase.ActorExecute, command.EnqueueContext, room: RoomId.ToString("D")))
-                snapshot = command.Execute(room);
+                snapshot = await command.ExecuteAsync(room,_authoritativeProcessor);
             var feedback = room.DrainCombatFeedback();
             if (command.NotifyObservers)
             {
@@ -253,7 +256,7 @@ public sealed class RoomActor : IAsyncDisposable
         string CommandName { get; }
         ActivityContext EnqueueContext { get; }
         bool NotifyObservers { get; }
-        BattleRoomSnapshot? Execute(BattleRoom room);
+        Task<BattleRoomSnapshot?> ExecuteAsync(BattleRoom room,Func<BattleRoom,Task<bool>>? processor);
     }
 
     private sealed class CommandWorkItem<TResult>(
@@ -270,7 +273,7 @@ public sealed class RoomActor : IAsyncDisposable
         public string CommandName => command.GetType().Name;
         public bool NotifyObservers => command.NotifyObservers;
 
-        public BattleRoomSnapshot? Execute(BattleRoom room)
+        public async Task<BattleRoomSnapshot?> ExecuteAsync(BattleRoom room,Func<BattleRoom,Task<bool>>? processor)
         {
             if (cancellationToken.IsCancellationRequested)
             {
@@ -279,7 +282,13 @@ public sealed class RoomActor : IAsyncDisposable
             }
             try
             {
+                if(processor is not null)await processor(room);
                 var result = command.Execute(room);
+                if(processor is not null && await processor(room))
+                {
+                    if(result is BattleRoomSnapshot)result=(TResult)(object)room.Capture();
+                    else if(command is IRoomCommandStateRefresh<TResult> refresh)result=refresh.RefreshAfterMutation(room,result);
+                }
                 _completion.TrySetResult(result);
                 return result switch
                 {

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using FantasyCard.Contracts.Realtime;
 using FantasyCard.Domain.Combat;
+using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Rooms;
 using FantasyCard.Server.Bootstrap;
 using FantasyCard.Server.Common;
@@ -23,9 +24,11 @@ public sealed partial class RoomReadyCoordinator(
     ConnectionRegistry connections,
     TimeProvider timeProvider,
     ILogger<RoomReadyCoordinator> logger,
-    ServerMetrics? metrics = null) : BackgroundService, IRoomReadyService
+    ServerMetrics? metrics = null,
+    PublishedConfigCatalogs? configurations = null) : BackgroundService, IRoomReadyService
 {
     private ReadyMatchLaunch? _pendingLaunch;
+    private readonly PublishedConfigCatalogs _configurations = configurations ?? new(GameConfigCatalog.Current);
 
     public Task<ReadyLobbyView?> GetAsync(Guid playerId, CancellationToken cancellationToken) =>
         repository.GetReadyLobbyAsync(playerId, cancellationToken);
@@ -88,6 +91,17 @@ public sealed partial class RoomReadyCoordinator(
         metrics?.ObserveMatchLaunchPhase("claim", Stopwatch.GetElapsedTime(startedAt));
         if (launch is null) return false;
         _pendingLaunch = launch;
+        if (launch.Aborted)
+        {
+            foreach (var playerId in launch.RemovedPlayerIds)
+            {
+                var removed = eventStore.Create(playerId, "room.ready_removed", "context-unavailable",
+                    new RoomReadyRemovedEventPayload(launch.Assignment.MatchId, launch.RemovalReason));
+                await connections.SendIfConnectedAsync(playerId, removed, cancellationToken);
+            }
+            _pendingLaunch = null;
+            return true;
+        }
         await LaunchAsync(launch, cancellationToken);
         return true;
     }
@@ -97,9 +111,12 @@ public sealed partial class RoomReadyCoordinator(
         var assignment = launch.Assignment;
         var startedAt = Stopwatch.GetTimestamp();
         var persisted = await snapshots.GetAsync(assignment.RoomId, cancellationToken);
+        if (persisted is not null)
+            RoomSnapshotRepository.RequireMatchContext(persisted, assignment.RoomId,
+                assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion, assignment.Season);
         var room = persisted is null
             ? CreateRoom(assignment)
-            : BattleRoom.Restore(persisted, CombatCardCatalog.CreatePrototype(), assignment.Seed);
+            : BattleRoom.Restore(persisted, CombatCardCatalog.Create(_configurations.Resolve(persisted.ConfigVersion)), assignment.Seed);
         metrics?.ObserveMatchLaunchPhase("build", Stopwatch.GetElapsedTime(startedAt));
         startedAt = Stopwatch.GetTimestamp();
         await snapshots.SaveIfDueAsync(room.Capture(), cancellationToken);
@@ -147,10 +164,14 @@ public sealed partial class RoomReadyCoordinator(
         }
     }
 
-    private static BattleRoom CreateRoom(MatchAssignment assignment)
+    private BattleRoom CreateRoom(MatchAssignment assignment)
     {
-        var room = new BattleRoom(assignment.RoomId, BootstrapRepository.CurrentConfigVersion,
-            CombatCardCatalog.CreatePrototype(), assignment.Seed, FantasyCard.Domain.Configuration.GameConfigCatalog.Current.Numerics);
+        var configVersion = assignment.ConfigVersion ?? BootstrapRepository.CurrentConfigVersion;
+        var configuration = _configurations.Resolve(configVersion);
+        var room = new BattleRoom(assignment.RoomId, configVersion,
+            CombatCardCatalog.Create(configuration), assignment.Seed, assignment.Season is null
+                ? configuration.Numerics : NumericalRules.ForSeason(configuration,assignment.Season.Difficulty),
+            assignment.Season);
         foreach (var player in assignment.Players)
         {
             var wornArmor = (player.EquipmentIds ?? []).Select(id =>
@@ -158,21 +179,22 @@ public sealed partial class RoomReadyCoordinator(
                 var item = player.Equipment?.SingleOrDefault(value => value.ItemId == id);
                 var details = item is null ? null : new EquipmentRewardData(
                     item.Slot, item.Quality, item.Element.ToString(), item.EffectAffix,
-                    item.SecondaryTrait ?? "DrawInterval", item.Level);
+                    item.SecondaryTrait, item.Level,UniqueAffix:item.UniqueAffix,UniqueElement:item.UniqueElement?.ToString(),StatsVersion:assignment.Season?.StatsVersion);
                 return new ExplorationItem(id.ToString("D"), ExplorationItemKind.Equipment,
                     Equipment: details, IsGenerated: false);
             }).ToArray();
-            var equipment = EquipmentCombatRules.Calculate(player.Equipment);
+            var equipment = EquipmentCombatRules.Calculate(player.Equipment, configuration,assignment.Season?.StatsVersion);
             var state = room.AddPlayer(new BattleRoomPlayerSetup(player.PlayerId, player.HeroClass,
                 player.CardIds, null, WeaponLevel: player.WeaponLevel,
                 InventoryCapacity: player.InventoryCapacity, SafeSlots: player.SafeSlots,
                 WornArmor: wornArmor, IsBot: player.IsBot, Equipment: equipment,
-                SafeSlotIndexes: player.SafeSlotIndexes, DisplayName: player.DisplayName, CardLevels: player.CardLevels));
+                SafeSlotIndexes: player.SafeSlotIndexes, DisplayName: player.DisplayName, CardLevels: player.CardLevels,
+                BorrowedTemplateId: player.BorrowedTemplateId, LootPreferenceElement: player.LootPreferenceElement));
             for (var potion = 0; potion < player.PotionCount; potion++)
-                if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion)))
+                if (!state.Inventory.TryAdd(new ExplorationItem($"health_potion:{potion + 1}", ExplorationItemKind.HealthPotion,IsCombatProjection:player.IsBot && room.BotRewardPolicy is not null)))
                     throw new InvalidOperationException("Preparation potion count exceeds the exploration inventory capacity.");
         }
-        room.InitializeMap(ChaosMapGenerator.Generate(assignment.Seed, assignment.Players.Count));
+        room.InitializeMap(ChaosMapGenerator.Generate(assignment.Seed, assignment.Players.Count,assignment.Season is not null?configuration.SeasonThemes:null),timeProvider.GetUtcNow());
         return room;
     }
 

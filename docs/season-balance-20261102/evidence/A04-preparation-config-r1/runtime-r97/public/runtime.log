@@ -1,0 +1,40 @@
+  Discovering: FantasyCard.Server.Tests
+  Discovered:  FantasyCard.Server.Tests
+  Starting:    FantasyCard.Server.Tests
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: False) [STARTING]
+Cannot load library libgssapi_krb5.so.2 
+Error: libgssapi_krb5.so.2: cannot open shared object file: No such file or directory
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: False) [FINISHED] Time: 3.2603965s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: True) [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: True) [FINISHED] Time: 2.3884481s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend [FAIL]
+      System.ArgumentOutOfRangeException : Use a configured exploration inventory tier. (Parameter 'capacity')
+      Stack Trace:
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\ExplorationInventory.cs(47,0): at FantasyCard.Domain.Rooms.ExplorationInventory..ctor(Int32 capacity, Int32 safeSlots, IReadOnlyList`1 safeSlotIndexes, GameConfigCatalog configuration)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs(53,0): at FantasyCard.Domain.Rooms.RoomPlayerState..ctor(Guid playerId, HeroClass heroClass, PlayerCombatState combat, PveBattleState pve, Int32 inventoryCapacity, Int32 safeSlots, IReadOnlyList`1 wornArmor, Boolean isBot, IReadOnlyList`1 safeSlotIndexes, String displayName, GameConfigCatalog configuration, String borrowedTemplateId, String lootPreferenceElement)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs(461,0): at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs(414,0): at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs(187,0): at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.CreateRoom(MatchAssignment assignment)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs(117,0): at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.LaunchAsync(ReadyMatchLaunch launch, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Matchmaking\RoomReadyCoordinator.cs(105,0): at FantasyCard.Server.Matchmaking.RoomReadyCoordinator.ProcessNextAsync(DateTimeOffset now, CancellationToken cancellationToken)
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs(163,0): at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs(167,0): at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend()
+        C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresPreparationConfigVersionTests.cs(167,0): at FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend()
+        --- End of stack trace from previous location ---
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend [FINISHED] Time: 1.8133966s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: "config") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: "config") [FINISHED] Time: 1.8622955s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: "stats") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: "stats") [FINISHED] Time: 1.8944811s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "missing") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "missing") [FINISHED] Time: 2.0319951s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "corrupt") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "corrupt") [FINISHED] Time: 1.8619149s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "hash") [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.UnavailableOrWrongOriginalSourceCannotCreateMembershipOrLockEquipment(failure: "hash") [FINISHED] Time: 2.1354125s
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.EntryQualityComesFromTheActualOriginalControlRatherThanTheLobby [STARTING]
+    FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.EntryQualityComesFromTheActualOriginalControlRatherThanTheLobby [FINISHED] Time: 1.7920417s
+  Finished:    FantasyCard.Server.Tests (ID = '6ee669e14c23cde1f2477b274c3439cfdbe74d65b2c3c78a4e3decb2498b8f0e')
+=== TEST EXECUTION SUMMARY ===
+   FantasyCard.Server.Tests  Total: 9, Errors: 0, Failed: 1, Skipped: 0, Not Run: 0, Time: 19.193s

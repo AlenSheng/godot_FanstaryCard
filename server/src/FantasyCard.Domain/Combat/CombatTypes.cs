@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 namespace FantasyCard.Domain.Combat;
 
 public enum CardElement : short
@@ -13,7 +14,9 @@ public enum CardElement : short
 public enum FenxianImmediateDrawPolicy : short
 {
     CurrentRhythm = 1,
-    CoreCardsSpent = 2
+    CoreCardsSpent = 2,
+    SeasonBoundedRhythm = 3,
+    SeasonRateBudgetedRhythm = 4
 }
 
 public enum GuardianShieldBonusPolicy : short
@@ -77,7 +80,10 @@ public sealed record PlayerCombatSnapshot(
     int FenxianChargeLevel = 0,
     int GuardianShieldRemainderTenths = 0,
     FenxianImmediateDrawPolicy FenxianPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
-    GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps);
+    GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps,
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? LastOpeningBattleId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] double? FenxianReturnCredit = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] int? FenxianReturnRateBasisPoints = null);
 
 public enum MonsterIntentKind : short
 {
@@ -85,7 +91,8 @@ public enum MonsterIntentKind : short
     Direct = 2,
     Shield = 3,
     Charge = 4,
-    Empower = 5
+    Empower = 5,
+    Regenerate = 6
 }
 
 public sealed record MonsterIntentState(
@@ -111,7 +118,11 @@ public sealed record MonsterCombatSnapshot(
     TimeSpan StunRemaining,
     IReadOnlyList<TimedCombatStatusSnapshot> StatusRemaining,
     int BossPhase = 1,
-    bool BossPhaseTransitionPending = false);
+    bool BossPhaseTransitionPending = false,
+    Configuration.SeasonMonsterProfile? DifficultyProfile = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Configuration.SeasonThemeDefinition? ThemeProfile = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] int ThemeRecoveredHp = 0,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingDefault)] long ThemeShieldGenerated = 0);
 
 public enum PveBattlePhase : short
 {
@@ -160,7 +171,19 @@ public sealed record RoomPlayerSnapshot(
     IReadOnlyList<Rooms.ExplorationItem>? RecycledEquipment = null,
     string? DisplayName = null,
     Rooms.MonsterCardPoolSnapshot? MonsterPool = null,
-    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null);
+    IReadOnlyList<Rooms.ExplorationItem>? BotLoot = null,
+    long LastCombatActionSequence = 0,
+    TimeSpan? LastSuccessfulCombatAt = null,
+    IReadOnlyList<Rooms.CombatActionReceipt>? CombatActions = null,
+    string? BorrowedTemplateId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? LootPreferenceElement = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.BotVictoryRewardReceipt? BotVictoryReward = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RedDropEvaluation? PendingRedEvaluation = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RedDropReceipt? RedReward = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.ExplorationItem? PendingRedItem = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? ExtractionCompletedAt = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Rooms.SeasonCellCompletionSnapshot>? JourneyCompletions = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] TimeSpan? TerminalRoomElapsed = null);
 
 public enum DuelEndReason : short
 {
@@ -199,7 +222,9 @@ public sealed record RoomRandomStreamsSnapshot(
     ulong Loot,
     ulong Escape,
     ulong Bot,
-    ulong Duel);
+    ulong Duel,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] ulong? BotReward = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] ulong? Red = null);
 
 public sealed record BattleRoomSnapshot(
     Guid RoomId,
@@ -214,7 +239,10 @@ public sealed record BattleRoomSnapshot(
     ulong? RandomState = null,
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
     RoomRandomStreamsSnapshot? RandomStreams = null,
-    Configuration.NumericalRules? Numerics = null);
+    Configuration.NumericalRules? Numerics = null,
+    Seasons.SeasonContext? Season = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? StartedAtUtc = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RoomObservationSnapshot? Observations = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 
@@ -274,7 +302,9 @@ public sealed record CombatResolution(
     double DrawBlockSpeedSeconds = 0,
     double ResonanceMultiplier = 1,
     int ConflictPairCount = 0,
-    double ConflictCancellation = 0);
+    double ConflictCancellation = 0,
+    string? CombatActionId = null,
+    bool ActionReplayed = false);
 
 public sealed record CombatFeedbackResolution(string SourceId, CombatResolution Resolution);
 

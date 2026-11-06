@@ -1,6 +1,7 @@
 extends RefCounted
 class ClassGateway extends Node:
 	var session_generation := 1
+	var base_url := "http://class-selection-fixture.example"
 	var token := "test-session"
 	var room_id := ""
 	var room_revision := 0

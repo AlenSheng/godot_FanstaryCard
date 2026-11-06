@@ -63,7 +63,7 @@ func configure(id: String, info: Dictionary, description: String, selected: bool
 	var passed_effect: String = lines[1] if lines.size() > 1 else description
 	# Build compact summaries from the catalog's effects and level growth so
 	# upgraded cards cannot reuse the base-level numbers from the text table.
-	var effect := CardDetails.face_description(id, int(options.get("level", 0)), info)
+	var effect: String = passed_effect if options.get("configured_description", false) else CardDetails.face_description(id, int(options.get("level", 0)), info)
 	if effect.is_empty(): effect = _face_description(id, passed_effect)
 	set_meta("battle_layout", bool(options.get("battle_layout", false)))
 	if options.get("battle_layout", false):

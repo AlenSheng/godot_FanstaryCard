@@ -1,0 +1,66 @@
+{
+  "status": "reward_refresh_original_quote_and_payer_verified_A03_A04_open",
+  "A03_complete": false,
+  "A04_complete": false,
+  "whole_goal_complete": false,
+  "completed_items": 20,
+  "local_final_passed": 7,
+  "local_final_failed": 0,
+  "PG_final_batch_passed": 16,
+  "PG_final_batch_failed": 0,
+  "PG_final_batch_skipped": 0,
+  "PG_distinct_passed": 17,
+  "historical_failures_retained": {
+    "local_core_r1": {
+      "passed": 2,
+      "failed": 5,
+      "reason": "Obsolete shared test fixture removed coupled preference tables."
+    },
+    "local_build_r2": {
+      "tests": 0,
+      "errors": 2,
+      "reason": "Nullable test row key cast rejected by compiler."
+    },
+    "runtime_r102": {
+      "passed": 15,
+      "failed": 2,
+      "reason": "New choice checkpoint fixtures lacked their original preparation link; strict policy validation retained."
+    }
+  },
+  "prepared_runtime_r101_not_started": true,
+  "production_sources_unchanged_between_core_and_PG": true,
+  "source_unchanged": true,
+  "migration": "V049 records actual wallet payer; pre-V049 reservations remain LegacyWallet with unknown historical config fields left NULL.",
+  "scopes": [
+    "Original actor catalog quotes refresh cost and temporary gold split",
+    "Admitted original seasonal wallet funds account remainder, never legacy fallback",
+    "Same transaction reserves payment, original context ledger and operation",
+    "After rollover original running match can pay and archived old wallet alone receives refund",
+    "Duplicate/concurrent requests and refunds happen once",
+    "Actual router, saved room restore and recovery worker reconcile recorded payer",
+    "V048 legacy and seasonal matches retain actual historical legacy payer; normal migration restart/checksum control passes"
+  ],
+  "UI_changed": false,
+  "UI_remaining": "exploration_view.gd still hardcodes displayed refresh costs [60,180,450]; original preparation/catalog preview and comprehensive E01/E02 remain open.",
+  "formal_prices_or_workbook_changed": false,
+  "historical_rows_rewritten": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "new_full_routes": 0,
+  "capacity100_retest": false,
+  "B05_total": 291,
+  "C16_total": 121,
+  "cloud_SDK_started": false,
+  "runtimes_removed": true,
+  "private_envs_removed": true,
+  "external_original_evidence_root": "G:\\PR13Evidence\\season-balance-20261102-r1",
+  "payloads_retained": {
+    "runtime-r101": "e3716b9a70411b714d388a44076580cf13bff66f8d08778e3cee3ee9c4101965",
+    "runtime-r102": "d40fa5d80d957277607abc488a1f40ff116643e8c03803b521bee15ce685be21",
+    "runtime-r103": "eb0243a7ce717bc437b737a01849cdb7f92de716bd063361b04e39bcd2230d54"
+  },
+  "public_archives_retained": {
+    "runtime-r102": "b461d3d2ba399f88ea830bf27044d2981b41005daeba1cb7e0948dca5167efaf",
+    "runtime-r103": "782a4b34fbb2297c76f95680b54c3929e83558b7843fc60264e5c632bee42c2f"
+  }
+}

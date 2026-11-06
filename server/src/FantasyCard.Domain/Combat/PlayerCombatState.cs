@@ -4,7 +4,10 @@ namespace FantasyCard.Domain.Combat;
 
 public sealed class PlayerCombatState
 {
+    private Action<CombatMeasurement>? _observe;
+    internal void SetObservation(Action<CombatMeasurement>? observer){_observe=observer;Deck.Observe=observer;}
     private readonly CombatRandom _random;
+    private Guid? _lastOpeningBattleId;
     private readonly Dictionary<string, TargetStunWindowSnapshot> _targetStunWindows =
         new(StringComparer.Ordinal);
 
@@ -16,7 +19,8 @@ public sealed class PlayerCombatState
         CombatEquipmentProfile? equipment = null,
         IReadOnlyList<int>? cardLevels = null,
         FenxianImmediateDrawPolicy fenxianImmediateDrawPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
-        GuardianShieldBonusPolicy guardianShieldBonusPolicy = GuardianShieldBonusPolicy.CurrentSteps)
+        GuardianShieldBonusPolicy guardianShieldBonusPolicy = GuardianShieldBonusPolicy.CurrentSteps,
+        int? fenxianReturnRateBasisPoints = null)
     {
         if (!Enum.IsDefined(fenxianImmediateDrawPolicy))
         {
@@ -26,6 +30,8 @@ public sealed class PlayerCombatState
         {
             throw new DomainValidationException("Unknown Guardian shield bonus policy.");
         }
+        if(fenxianReturnRateBasisPoints is { } rate&&(fenxianImmediateDrawPolicy!=FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm||rate is <1 or >1000))
+            throw new DomainValidationException("The return rate is invalid for this numerical policy.");
 
         HeroClass = heroClass;
         MaximumHp = heroClass switch
@@ -38,6 +44,8 @@ public sealed class PlayerCombatState
         Hp = MaximumHp;
         WeaponLevel = Math.Clamp(weaponLevel, 0, 5);
         FenxianDrawPolicy = fenxianImmediateDrawPolicy;
+        FenxianReturnCredit = fenxianImmediateDrawPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm?0:null;
+        FenxianReturnRateBasisPoints=fenxianReturnRateBasisPoints;
         GuardianShieldPolicy = guardianShieldBonusPolicy;
         Equipment = equipment ?? CombatEquipmentProfile.Empty;
         ArgumentNullException.ThrowIfNull(random);
@@ -61,15 +69,20 @@ public sealed class PlayerCombatState
     public int FenxianCombo { get; private set; }
     public CardElement? LastFenxianCore { get; private set; }
     public int FenxianChargeLevel { get; private set; }
+    public double? FenxianReturnCredit { get; private set; }
+    public int? FenxianReturnRateBasisPoints { get; private set; }
     public TimeSpan DrawSpeedRemaining { get; private set; }
     public double DrawSpeedModifier { get; private set; }
     public TimeSpan StunRemaining { get; private set; }
     public TimeSpan DrawBlockRemaining { get; private set; }
     public TimeSpan DrawBlockSpeedRemaining { get; private set; }
     public bool IsDead => Hp <= 0;
+    private double MinimumDrawInterval => Equipment.MinimumDrawInterval??(Equipment.HasRapidDraw?1.5:1.8);
+    private double MaximumDrawInterval => Equipment.MaximumDrawInterval??6;
+    public double NaturalDrawIntervalSeconds => Math.Clamp(4*(1+Equipment.DrawIntervalModifier),MinimumDrawInterval,MaximumDrawInterval);
     public double DrawIntervalSeconds => Math.Clamp(
         4 * (1 + Equipment.DrawIntervalModifier) * (1 + DrawSpeedModifier),
-        Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);
+        MinimumDrawInterval, MaximumDrawInterval) / (DrawBlockSpeedRemaining > TimeSpan.Zero ? 2 : 1);
 
     public CombatPassiveInfo GetPassiveInfo()
     {
@@ -107,6 +120,10 @@ public sealed class PlayerCombatState
     {
         var applied = Math.Min(Math.Max(0, amount), EffectiveMaximumHp - Hp);
         Hp += applied;
+        _observe?.Invoke(new(CombatMetric.HealRequested,Math.Max(0,amount)));
+        _observe?.Invoke(new(CombatMetric.HealApplied,Math.Max(0,applied)));
+        _observe?.Invoke(new(CombatMetric.HealOverflow,Math.Max(0,(long)Math.Max(0,amount)-Math.Max(0,applied))));
+        if(applied<0)_observe?.Invoke(new(CombatMetric.HealClampCorrection,-(long)applied));
         return applied;
     }
 
@@ -115,6 +132,10 @@ public sealed class PlayerCombatState
         var maximumShield = MaximumHp / 2;
         var applied = Math.Min(Math.Max(0, amount), maximumShield - Shield);
         Shield += applied;
+        _observe?.Invoke(new(CombatMetric.ShieldRequested,Math.Max(0,amount)));
+        _observe?.Invoke(new(CombatMetric.ShieldApplied,Math.Max(0,applied)));
+        _observe?.Invoke(new(CombatMetric.ShieldOverflow,Math.Max(0,(long)Math.Max(0,amount)-Math.Max(0,applied))));
+        if(applied<0)_observe?.Invoke(new(CombatMetric.ShieldClampCorrection,-(long)applied));
         return applied;
     }
 
@@ -150,6 +171,8 @@ public sealed class PlayerCombatState
 
     public void ApplyStun(TimeSpan duration)
     {
+        _observe?.Invoke(new(CombatMetric.StunRequestedTicks,Math.Max(0,duration.Ticks)));
+        _observe?.Invoke(new(CombatMetric.StunExtendedTicks,Math.Max(0,duration.Ticks-StunRemaining.Ticks)));
         if (duration > StunRemaining)
         {
             StunRemaining = duration;
@@ -158,6 +181,8 @@ public sealed class PlayerCombatState
 
     public void ApplyDrawBlock(TimeSpan duration)
     {
+        _observe?.Invoke(new(CombatMetric.BlockRequestedTicks,Math.Max(0,duration.Ticks)));
+        _observe?.Invoke(new(CombatMetric.BlockExtendedTicks,Math.Max(0,duration.Ticks-DrawBlockRemaining.Ticks)));
         if (duration > DrawBlockRemaining)
         {
             DrawBlockRemaining = duration;
@@ -188,7 +213,7 @@ public sealed class PlayerCombatState
         FenxianChargeLevel = Math.Clamp(chargeLevel, 0, 5);
     }
 
-    public (double Charge, int Draw) UpdateFenxian(CardElement? core, int coreCount)
+    public (double Charge, int Draw) UpdateFenxian(CardElement? core, int coreCount, int? cardsSpent = null)
     {
         if (HeroClass != HeroClass.Mage || core is null || coreCount <= 0)
         {
@@ -197,6 +222,17 @@ public sealed class PlayerCombatState
                 SetFenxian(null, 0, 0);
             }
             return (0, 0);
+        }
+
+        if (FenxianDrawPolicy is FenxianImmediateDrawPolicy.SeasonBoundedRhythm or FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)
+        {
+            if (cardsSpent is null or < 1 or > CombatDeck.HandLimit || coreCount > cardsSpent.Value)
+                throw new DomainValidationException("Season Fenxian requires the actual consumed card count.");
+            if (coreCount < 2)
+            {
+                SetFenxian(null, 0, 1);
+                return ApplyFenxianReturnBudget(Math.Min(.50, .12 + WeaponPercentBonus()),0);
+            }
         }
 
         FenxianCombo = LastFenxianCore == core ? FenxianCombo + 1 : 1;
@@ -225,10 +261,28 @@ public sealed class PlayerCombatState
                 3 or 4 => 1,
                 _ => 2
             },
+            FenxianImmediateDrawPolicy.SeasonBoundedRhythm or FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm => Math.Min(rhythm is < 3 ? 0 : rhythm < 5 ? 1 : 2, cardsSpent!.Value - 1),
             _ => throw new DomainValidationException("Unknown Fenxian immediate draw policy.")
         };
         charge = Math.Min(0.50, charge + WeaponPercentBonus());
-        return (charge, draw);
+        return ApplyFenxianReturnBudget(charge,draw);
+    }
+
+    /// <summary>Opt-in candidate only: passive returns spend a saved credit; printed card draws are never truncated.</summary>
+    private (double Charge,int Draw) ApplyFenxianReturnBudget(double charge,int draw)
+    {
+        if(FenxianDrawPolicy!=FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)return(charge,draw);
+        var available=FenxianReturnCredit!.Value;
+        if(draw>0)
+        {
+            // Retain fractional credit for a future instant return instead of silently consuming it as charge.
+            var granted=Math.Min(draw,(int)Math.Floor(available+1e-10));
+            FenxianReturnCredit=Math.Max(0,available-granted);
+            return(0,granted);
+        }
+        var budgeted=Math.Min(charge,available);
+        FenxianReturnCredit=Math.Max(0,available-budgeted);
+        return(budgeted,0);
     }
 
     public int ResolveHeal(double cardHeal)
@@ -299,6 +353,17 @@ public sealed class PlayerCombatState
 
     public double ElementalResistance(CardElement element) => Equipment.Resistance(element);
 
+    /// <summary>Only a real PVE damage hit may receive the seasonal post-mitigation floor.</summary>
+    public int ResolvePveIntentDamage(int mitigatedDamage, MonsterIntentState intent, bool positiveMinimum,
+        bool hit = true, bool immune = false, int? effectiveBaseValue = null)
+    {
+        ArgumentNullException.ThrowIfNull(intent);
+        if (mitigatedDamage < 0) throw new DomainValidationException("PVE mitigated damage cannot be negative.");
+        if (!hit || immune || IsDead || intent.Kind is not (MonsterIntentKind.Attack or MonsterIntentKind.Direct)) return 0;
+        var damage = ResolveIncomingDamage(mitigatedDamage);
+        return positiveMinimum && (effectiveBaseValue ?? intent.Value) > 0 ? Math.Max(1, damage) : damage;
+    }
+
     public TimeSpan ResolveControl(TimeSpan cardControl)
     {
         if (HeroClass != HeroClass.Priest || cardControl <= TimeSpan.Zero)
@@ -317,9 +382,11 @@ public sealed class PlayerCombatState
         _targetStunWindows[targetId] = new TargetStunWindowSnapshot(targetId, remaining, Math.Max(0, count));
     }
 
-    public void PrepareForDuel(Random random)
+    public void PrepareForDuel(Random random,Guid? battleId=null)
     {
+        if(Equipment.StatsVersion is not null && battleId is not null && _lastOpeningBattleId==battleId)return;
         Deck.ResetForDuel(random);
+        BeginBattle(battleId??Guid.NewGuid());
         FenxianCombo = 0;
         LastFenxianCore = null;
         FenxianChargeLevel = 0;
@@ -331,6 +398,23 @@ public sealed class PlayerCombatState
         _targetStunWindows.Clear();
     }
 
+    /// <summary>One opening grant per new battle; restoring an existing combat snapshot grants nothing.</summary>
+    public bool BeginBattle(Guid battleId)
+    {
+        if(battleId==Guid.Empty)throw new DomainValidationException("An opening draw requires a battle identity.");
+        if(_lastOpeningBattleId==battleId || Equipment.StatsVersion is null&&FenxianDrawPolicy!=FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)return false;
+        _lastOpeningBattleId=battleId;
+        if(FenxianDrawPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)FenxianReturnCredit=0;
+        Deck.DrawImmediate(Equipment.OpeningDrawCount,_random,CombatDrawSource.Opening);
+        return true;
+    }
+
+    private void OnNaturalDraw()
+    {
+        if(Equipment.ChainDrawBasisPoints>0 && Deck.Hand.Count<CombatDeck.HandLimit && _random.Next(10000)<Equipment.ChainDrawBasisPoints)
+            Deck.DrawImmediate(1,_random,CombatDrawSource.Chain);
+    }
+
     public void Advance(TimeSpan delta, bool drawEnabled)
     {
         if (delta <= TimeSpan.Zero)
@@ -338,8 +422,15 @@ public sealed class PlayerCombatState
             return;
         }
 
+        _observe?.Invoke(new(CombatMetric.AdvancedTicks,delta.Ticks));
+        _observe?.Invoke(new(CombatMetric.NaturalIntervalSample,Sample:NaturalDrawIntervalSeconds));
+        var stunTicks=Math.Min(delta.Ticks,Math.Max(0,StunRemaining.Ticks));var blockTicks=Math.Min(delta.Ticks,Math.Max(0,DrawBlockRemaining.Ticks));
+        _observe?.Invoke(new(CombatMetric.StunnedTicks,stunTicks));_observe?.Invoke(new(CombatMetric.DrawBlockedTicks,blockTicks));
+        _observe?.Invoke(new(CombatMetric.UnionBlockedTicks,Math.Max(stunTicks,blockTicks)));
+
         if (drawEnabled)
         {
+            _observe?.Invoke(new(CombatMetric.DrawEnabledTicks,delta.Ticks));
             var boundaries = new[] { TimeSpan.Zero, delta, StunRemaining, DrawBlockRemaining, DrawSpeedRemaining, DrawBlockSpeedRemaining }
                 .Where(value => value >= TimeSpan.Zero && value <= delta).Distinct().Order().ToArray();
             for (var index = 1; index < boundaries.Length; index++)
@@ -348,9 +439,14 @@ public sealed class PlayerCombatState
                 if (start < StunRemaining || start < DrawBlockRemaining) continue;
                 var speed = start < DrawSpeedRemaining ? DrawSpeedModifier : 0;
                 var interval = Math.Clamp(4 * (1 + Equipment.DrawIntervalModifier) * (1 + speed),
-                    Equipment.HasRapidDraw ? 1.5 : 1.8, 6.0);
+                    MinimumDrawInterval, MaximumDrawInterval);
+                if(HeroClass==HeroClass.Mage&&FenxianDrawPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)
+                    FenxianReturnCredit=Math.Min(2,FenxianReturnCredit!.Value+(boundaries[index]-start).TotalSeconds/NaturalDrawIntervalSeconds*(FenxianReturnRateBasisPoints??1000)/10000d);
                 var rate = start < DrawBlockSpeedRemaining ? 2 : 1;
-                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random);
+                _observe?.Invoke(new(CombatMetric.EligibleDrawTicks,(boundaries[index]-start).Ticks));
+                _observe?.Invoke(new(CombatMetric.EffectiveIntervalSample,Sample:interval/rate));
+                Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random,
+                    Equipment.ChainDrawBasisPoints>0?OnNaturalDraw:null,CombatDrawSource.Natural);
             }
         }
 
@@ -397,7 +493,7 @@ public sealed class PlayerCombatState
             FenxianChargeLevel,
             GuardianShieldRemainderTenths,
             FenxianDrawPolicy,
-            GuardianShieldPolicy);
+            GuardianShieldPolicy,_lastOpeningBattleId,FenxianReturnCredit,FenxianReturnRateBasisPoints);
 
     // Only authoritative save/room snapshots may call Restore. Client commands must not supply policies.
     // A restored preview/room inherits the saved policy, never the constructor's current default.
@@ -415,6 +511,11 @@ public sealed class PlayerCombatState
         var guardianPolicy = snapshot.GuardianPolicy == 0
             ? GuardianShieldBonusPolicy.CurrentSteps : snapshot.GuardianPolicy;
         if (!Enum.IsDefined(fenxianPolicy) || !Enum.IsDefined(guardianPolicy) ||
+            snapshot.FenxianReturnRateBasisPoints is { } savedRate&&(fenxianPolicy!=FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm||savedRate is <1 or >1000) ||
+            (fenxianPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm
+                ?snapshot.FenxianReturnCredit is not { } credit||!double.IsFinite(credit)||credit is <0 or >2
+                :snapshot.FenxianReturnCredit is not null) ||
+            snapshot.LastOpeningBattleId==Guid.Empty ||
             snapshot.GuardianShieldRemainderTenths is < 0 or > 9 ||
             snapshot.GuardianShieldRemainderTenths != 0 &&
                 (HeroClass != HeroClass.Guardian || guardianPolicy != GuardianShieldBonusPolicy.FractionalRemainder))
@@ -427,6 +528,9 @@ public sealed class PlayerCombatState
         Shield = snapshot.Shield;
         _random.Restore(snapshot.RandomState);
         Deck.Restore(snapshot.Deck);
+        _lastOpeningBattleId=snapshot.LastOpeningBattleId;
+        FenxianReturnCredit=snapshot.FenxianReturnCredit;
+        FenxianReturnRateBasisPoints=snapshot.FenxianReturnRateBasisPoints;
         FenxianCombo = snapshot.FenxianCombo;
         LastFenxianCore = snapshot.LastFenxianCore;
         FenxianChargeLevel = Math.Clamp(snapshot.FenxianChargeLevel, 0, 5);

@@ -1,0 +1,62 @@
+[
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnAdmittedLaunchingMatchRecoversAfterSeasonEndWithNoAdditionalAssetSpend",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.QueuedSeasonEndCancelsTheTicketAndReleasesEquipmentWithoutSpendingPotions",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.FirstSeasonStartInvalidatesBothLegacyQueueAndUnqueuedLegacyPreparation",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.ConcurrentMatchersNeverAssignATicketTwiceOrMixDifficulties",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AStartingMatchAtSeasonEndIsAbortedWithoutCreatingARoomOrConsumingAssets",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AReservationWaitingForAPlayerLockCannotSpendAssetsAfterSeasonEnd",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \\\"context\\\")",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.CorruptedPreparedContextOrProjectionCannotConsumeAssets(corruption: \\\"projection\\\")",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.AnOlderIncompleteGroupDoesNotBlockAnotherFullDifficultyGroup",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonMatchmakingTests.InterleavedDifficultiesNeverShareAMatchAndLaunchReplayPreservesThePinnedContext",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: False)",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.StillOpenArchivedSeasonPreparesQueuesAndLaunchesUsingItsOwnCatalog(borrowed: True)",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.AlreadyAdmittedArchivedLaunchDrainsAfterTheSeasonEndsWithoutASecondAssetSpend",
+    "message": "Npgsql.PostgresException : 22P02: invalid input syntax for type smallint: \\\"D0\\\"\n\nPOSITION: 460"
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \\\"config\\\")",
+    "message": "Npgsql.PostgresException : 23503: insert or update on table \\\"preparations\\\" violates foreign key constraint \\\"fk_preparation_published_context\\\"\n\nDETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information."
+  },
+  {
+    "name": "FantasyCard.Server.Tests.Persistence.PostgresPreparationConfigVersionTests.MatchmakingChecksOriginalSeasonDefinitionRatherThanAcceptingTheLobbyLabel(field: \\\"stats\\\")",
+    "message": "Npgsql.PostgresException : 23503: insert or update on table \\\"preparations\\\" violates foreign key constraint \\\"fk_preparation_published_context\\\"\n\nDETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information."
+  }
+]
