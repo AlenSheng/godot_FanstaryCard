@@ -27,7 +27,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         using var document=JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PLAN")??throw new InvalidOperationException("Frozen D03 plan required.")));
         var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new Scenario(x.GetProperty("id").GetString()!,x.GetProperty("hero").GetString()!,x.GetProperty("deck").GetString()!,x.GetProperty("armor").GetString()!,x.GetProperty("seed").GetInt32(),x.TryGetProperty("policy",out var p)?p.GetString()!:"published")).ToArray();
         Assert.InRange(prior,0,299);Assert.InRange(rows.Length,1,300-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
-        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");Assert.True(row.Policy is "published" or "rate-budget-v1" or "rate-budget-half-v1");}
+        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop" or "flow-paired" or "flow-offense");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");Assert.True(row.Policy is "published" or "rate-budget-v1" or "rate-budget-half-v1" or "rate-budget-half-card10-v1");}
         return rows;
     }
 
@@ -35,13 +35,20 @@ public sealed class SeasonClassEfficiencyPilotTests
     public void CandidateInputsAreLegalAndBothSpeedLayersAreValued()
     {
         var config=GameConfigCatalog.Current;var rows=Plan();
+        if(rows.Any(row=>row.Policy=="rate-budget-half-card10-v1"))_=SeasonMageCardCandidate.Current;
         foreach(var row in rows)
         {
             var hero=Enum.Parse<HeroClass>(row.Hero);var cards=Deck(hero,row.Deck);DeckRules.Validate(hero,cards,config.Cards.Where(x=>x.IsCodex).ToDictionary(x=>x.CardId,x=>new OwnedCard(x.CardId,x.HeroClass,(CardRarity)x.Rarity,1,false)));
             var armor=Armor(row.Armor);Assert.All(armor,x=>Assert.True(EquipmentRewardRules.IsValid(x.Equipment!)));Assert.All(armor,x=>Assert.Equal(3,x.Equipment!.Level));Assert.Equal(1,armor.Count(x=>x.Equipment!.Quality=="Orange"));
             SeasonLootRules.RequireEntry(new("d03-pilot",5,"season-v1",config.Version,"season-equipment-v1"),armor.Select(x=>x.Equipment!),config);
+            if(row.Deck=="flow-paired")
+            {
+                Assert.True(cards.Count(id=>config.Cards.Single(c=>c.CardId==id).Effect is {Element:CardElement.Fire,ElementalDamage:>0})>=2);
+                Assert.True(cards.Count(id=>config.Cards.Single(c=>c.CardId==id).Effect is {Element:CardElement.Water,ElementalDamage:>0})>=2);
+            }
         }
         var state=new PlayerCombatState(HeroClass.Mage,Deck(HeroClass.Mage,"reference"),new Random(1));
+        Assert.Equal(Deck(HeroClass.Mage,"flow-loop"),Deck(HeroClass.Mage,"flow-offense"));
         Assert.Equal(3,FutureDraws(state,0,0,0,12),8);Assert.Equal(4.5,FutureDraws(state,0,0,6,12),8);Assert.Equal(8,FutureDraws(state,-.5,12,4,12),8);
         File.WriteAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PREFLIGHT_OUTPUT")??throw new InvalidOperationException("New proof path required."),JsonSerializer.Serialize(new {cases=rows.Length,config.Version,config.ContentHash,new_encounters=0,forecast_horizon_seconds=12,not_an_acceptance_result=true}));
     }
@@ -56,8 +63,8 @@ public sealed class SeasonClassEfficiencyPilotTests
 
     private static void Run(Scenario row,StreamWriter trace,StreamWriter results)
     {
-        var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(row.Hero);var cards=Deck(hero,row.Deck);var gear=Armor(row.Armor);var context=new SeasonContext("d03-pilot",5,"season-v1",config.Version,"season-equipment-v1");
-        var policy=row.Policy=="rate-budget-half-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true,SeasonMageReturnRateBasisPoints=500}:row.Policy=="rate-budget-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true}:NumericalRules.SeasonV1;
+        var config=row.Policy=="rate-budget-half-card10-v1"?SeasonMageCardCandidate.Current:GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(row.Hero);var cards=Deck(hero,row.Deck);var gear=Armor(row.Armor);var context=new SeasonContext("d03-pilot",5,"season-v1",config.Version,"season-equipment-v1");
+        var policy=row.Policy is "rate-budget-half-v1" or "rate-budget-half-card10-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true,SeasonMageReturnRateBasisPoints=500}:row.Policy=="rate-budget-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true}:NumericalRules.SeasonV1;
         var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,row.Seed,numerics:policy,season:context);var id=Guid.NewGuid();var player=room.AddPlayer(new(id,hero,cards,null,WeaponLevel:5,WornArmor:gear,CardLevels:Enumerable.Repeat(5,20).ToArray()));
         var map=ChaosMapGenerator.Generate(row.Seed,1,config.SeasonThemes).Capture();var boss=map.Cells.Single(x=>x.IsBoss);room.InitializeMap(ChaosMapState.Restore(map with {SpawnPositions=[boss.Position]}));
         var target=Assert.Single(player.Pve!.Monsters);var initial=target.Capture();var previous=(target.Hp,target.Shield);long addedHp=0,addedShield=0,otherHpLoss=0,discardedShield=0,damage=0;var casts=0;var previews=0;var last=TimeSpan.FromMilliseconds(-500);
@@ -72,7 +79,7 @@ public sealed class SeasonClassEfficiencyPilotTests
             Assert.InRange(player.Combat.Hp,0,player.Combat.EffectiveMaximumHp);Assert.InRange(player.Combat.Shield,0,player.Combat.MaximumHp/2);Assert.InRange(player.Combat.Deck.Hand.Count,0,5);
             if(player.Combat.StunRemaining<=TimeSpan.Zero&&room.GetCombatActionStatus(id).RemainingMs==0&&player.Combat.Deck.Hand.Count>0)
             {
-                var chosen=Choose(room,player,target,catalog,cards,out var used,out var candidates,valueSustainIntents:row.Deck is "flow-counter" or "flow-loop");previews+=used;
+                var chosen=Choose(room,player,target,catalog,cards,out var used,out var candidates,valueSustainIntents:row.Deck is "flow-counter" or "flow-loop" or "flow-paired" or "flow-offense");previews+=used;
                 if(chosen.Length>0)
                 {
                     var hpBefore=player.Combat.Hp;var result=room.PlayCards(id,player.Pve!.BattleId,target.MonsterId,chosen.Select(x=>x.InstanceId).ToArray(),room.Revision,Epoch+room.Elapsed,room.NewCombatActionId(id));
@@ -148,8 +155,14 @@ public sealed class SeasonClassEfficiencyPilotTests
         var available=GameConfigCatalog.Current.Cards.Where(x=>x.Enabled&&x.IsCodex&&(x.HeroClass is null||x.HeroClass==hero)&&x.Rarity!=(short)CardRarity.Orange).ToArray();
         var water=available.Where(x=>x.Effect.Element==CardElement.Water&&x.Effect.ElementalDamage>0).OrderByDescending(x=>x.Rarity).ThenByDescending(x=>x.Effect.ElementalDamage+3*x.Effect.ImmediateDraw+2*x.Effect.DrawCharge).ThenBy(x=>x.CardId,StringComparer.Ordinal).Take(6).Select(x=>x.CardId);
         var fire=available.Where(x=>x.Effect.Element==CardElement.Fire&&x.Effect.ElementalDamage>0).OrderByDescending(x=>x.Rarity).ThenByDescending(x=>x.Effect.ElementalDamage+3*x.Effect.ImmediateDraw+2*x.Effect.DrawCharge).ThenBy(x=>x.CardId,StringComparer.Ordinal).Take(6).Select(x=>x.CardId);
-        if(variant is "flow-counter" or "flow-loop")
-            return FlowCore.Concat(variant=="flow-loop"?FlowLoop:Array.Empty<string>()).Concat(classCards).Concat(water).Concat(fire).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
+        if(variant is "flow-counter" or "flow-loop" or "flow-paired" or "flow-offense")
+        {
+            // Reserve both counter elements before the twenty-card cut, rather than exhausting every water candidate first.
+            var damage=variant=="flow-paired"?water.Zip(fire).SelectMany(pair=>new[]{pair.First,pair.Second}):water.Concat(fire);
+            // Solo offense can spend utility-only class slots on damage; the Mage's strongest known recipe remains identical.
+            var requestedClass=variant=="flow-offense"?hero==HeroClass.Mage?classCards:hero==HeroClass.Priest?classCards.Take(1):Array.Empty<string>():classCards;
+            return FlowCore.Concat(variant is "flow-loop" or "flow-paired" or "flow-offense"?FlowLoop:Array.Empty<string>()).Concat(requestedClass).Concat(damage).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
+        }
         return CounterCore.Concat(variant=="counter-tempo"?classCards:UniversalSupport).Concat(water).Concat(fire).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
     }
     private static ExplorationItem[] Armor(string variant)=>Slots.Select((slot,i)=>new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,Equipment:new(slot,i==0?"Orange":"Purple",variant=="counter-offense"?(i<3?"Water":"Fire"):(i<3?"Fire":"Metal"),variant is "offense" or "counter-offense"||i<2?"Piercing":"Vitality","DrawInterval",3,StatsVersion:"season-equipment-v1"),IsGenerated:false)).ToArray();
