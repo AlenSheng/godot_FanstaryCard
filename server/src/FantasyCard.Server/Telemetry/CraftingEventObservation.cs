@@ -3,8 +3,8 @@ using FantasyCard.Domain.Seasons;
 namespace FantasyCard.Server.Telemetry;
 
 /// <summary>Immutable lobby facts stored with the original business receipt, never current player state.</summary>
-public sealed record SeasonEventDimensions(string SeasonId,string? DifficultyId,string? HeroClass,string? BuildType,
-    string? GrowthStage,string PlayerKind,string CellType,string RulesetId,string ConfigVersion,string StatsVersion,string Result);
+public sealed record SeasonEventDimensions(string? SeasonId,string? DifficultyId,string? HeroClass,string? BuildType,
+    string? GrowthStage,string PlayerKind,string CellType,string? RulesetId,string? ConfigVersion,string? StatsVersion,string Result);
 public sealed record CraftingEventObservation(int SchemaVersion,SeasonEventDimensions Dimensions,IReadOnlyList<string> EventNames,
     Guid ItemId,string Quality,string Operation,string PhysicalFlow,string AvailabilityDifficultyId,
     int? WishFailuresBefore,int? WishFailuresAfter,bool? PityTriggered,bool? AlreadyLearned,
