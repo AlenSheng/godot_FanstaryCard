@@ -10,7 +10,9 @@ public sealed record RoomEventObservation(long Sequence,Guid PlayerId,HeroClass 
     IReadOnlyList<RoomLootObservation> Items,int OmittedItems,int Hp,int EffectiveMaximumHp,int? AppliedQuantity=null,
     string? OptionId=null,int? HealPercent=null,int? HpBefore=null,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? BuildProfileId=null,
-    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? BattleBuildProfileId=null);
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? BattleBuildProfileId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? RewardBias=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] int? BaseMaximumHp=null);
 public sealed record RoomBattleBuildBinding(Guid PlayerId,Guid BattleId,string ProfileId);
 public sealed record RoomObservationOwner(Guid PlayerId,HeroClass HeroClass,bool IsBot);
 public sealed record RoomObservationSnapshot(int SchemaVersion,long LastSequence,long DroppedEvents,IReadOnlyList<RoomEventObservation> Events,
@@ -35,7 +37,7 @@ internal sealed class RoomObservationJournal
     internal bool HasFinished(Guid player,Guid battle)=>_events.Any(e=>e.PlayerId==player&&e.BattleId==battle&&e.EventName=="battle_finished");
 
     internal void Append(RoomPlayerState player,string name,string source,string result,TimeSpan elapsed,DateTimeOffset? started,
-        Guid? battleId,string cell,CombatCardCatalog catalog,IEnumerable<ExplorationItem>? items=null,int? applied=null,string? optionId=null,int? healPercent=null,int? hpBefore=null)
+        Guid? battleId,string cell,CombatCardCatalog catalog,IEnumerable<ExplorationItem>? items=null,int? applied=null,string? optionId=null,int? healPercent=null,int? hpBefore=null,string? rewardBias=null)
     {
         if(_lastSequence<long.MaxValue)_lastSequence++;
         if(_events.Count>=MaximumEvents)return;
@@ -46,7 +48,7 @@ internal sealed class RoomObservationJournal
         DateTimeOffset? at=started is { } start&&elapsed>=TimeSpan.Zero&&elapsed.Ticks<=DateTimeOffset.MaxValue.UtcTicks-start.UtcTicks
             ?new DateTimeOffset(start.UtcTicks+elapsed.Ticks,TimeSpan.Zero):null;
         _events.Add(new(_lastSequence,player.PlayerId,player.HeroClass,player.IsBot,name,source,result,elapsed,at,battleId,player.Position,cell,kept,all.Length-kept.Length,
-            player.Combat.Hp,player.Combat.EffectiveMaximumHp,applied,optionId,healPercent,hpBefore,profileId,battleProfile));
+            player.Combat.Hp,player.Combat.EffectiveMaximumHp,applied,optionId,healPercent,hpBefore,profileId,battleProfile,rewardBias,player.Combat.MaximumHp));
     }
 
     private string? CaptureProfile(RoomPlayerState player,CombatCardCatalog catalog)
@@ -90,6 +92,7 @@ internal sealed class RoomObservationJournal
                 row.EventName is not("battle_finished" or "loot_generated" or "loot_chosen" or "loot_extracted" or "loot_lost")||
                 string.IsNullOrEmpty(row.Source)||row.Source.Length>80||string.IsNullOrEmpty(row.Result)||row.Result.Length>80||
                 string.IsNullOrEmpty(row.CellType)||row.CellType.Length>80||row.OptionId?.Length>160||
+                row.RewardBias is not(null or "None" or "Equipment" or "Fragments")||row.BaseMaximumHp is <=0||
                 row.BuildProfileId is { } profileId&&!profileIds.Contains(profileId)||
                 row.BattleBuildProfileId is { } battleProfile&&
                     (row.BattleId is null||!bindings.Any(b=>b.PlayerId==row.PlayerId&&b.BattleId==row.BattleId&&b.ProfileId==battleProfile))||
@@ -132,11 +135,11 @@ public sealed partial class BattleRoom
         if(!_combatPreview)_observations?.Combat.Record(player.PlayerId,battle,new(metric,amount),Elapsed);
     }
     private void ObserveRoomEvent(RoomPlayerState player,string name,string source,string result,IEnumerable<ExplorationItem>? items=null,
-        int? applied=null,Guid? battleId=null,TimeSpan? at=null,string? optionId=null,int? healPercent=null,int? hpBefore=null)
+        int? applied=null,Guid? battleId=null,TimeSpan? at=null,string? optionId=null,int? healPercent=null,int? hpBefore=null,string? rewardBias=null)
     {
         if(_observations is null)return;
         var kind=ObservationCellKind(player);
-        _observations.Append(player,name,source,result,at??Elapsed,StartedAtUtc,battleId??player.Pve?.BattleId??player.CurrentDuelId,kind,_catalog,items,applied,optionId,healPercent,hpBefore);
+        _observations.Append(player,name,source,result,at??Elapsed,StartedAtUtc,battleId??player.Pve?.BattleId??player.CurrentDuelId,kind,_catalog,items,applied,optionId,healPercent,hpBefore,rewardBias);
     }
 
     private string ObservationCellKind(RoomPlayerState player)
@@ -151,7 +154,7 @@ public sealed partial class BattleRoom
         // These are potential alternatives, never three minted/credited rewards.
         foreach(var option in choice.Options)
             ObserveRoomEvent(player,"loot_generated",source,"PotentialChoice",option.Item is null?[]:[option.Item],
-                optionId:option.OptionId,healPercent:option.HealPercent,hpBefore:player.Combat.Hp);
+                optionId:option.OptionId,healPercent:option.HealPercent,hpBefore:player.Combat.Hp,rewardBias:choice.Capture().SeasonLoot?.Bias.ToString());
     }
 
     private void ObservePveFinished(RoomPlayerState player,string result,TimeSpan? at=null)

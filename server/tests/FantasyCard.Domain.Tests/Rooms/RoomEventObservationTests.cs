@@ -2,6 +2,8 @@ using System.Text.Json;
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Rooms;
+using FantasyCard.Domain.Configuration;
+using FantasyCard.Domain.Seasons;
 
 namespace FantasyCard.Domain.Tests.Rooms;
 
@@ -22,6 +24,23 @@ public sealed class RoomEventObservationTests
     {
         var room=Room();var snapshot=room.Capture();var choice=RewardChoiceState.Create(ChaosMapLayer.Outer,new Random(4));
         return Restore(snapshot with{Players=snapshot.Players.Select(p=>p.PlayerId==First?p with{Phase=RoomPlayerPhase.Choice,Pve=null,RewardChoice=choice.Capture()}:p).ToArray()});
+    }
+
+    [Fact]
+    public void SeasonalRefreshRecordsActualBiasAndBaseHpWhileOldMissingMetadataRemainsUnknown()
+    {
+        var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var context=new SeasonContext("observation-season",0,"season-v1",config.Version,"season-equipment-v1");
+        var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,73,season:context);
+        room.AddPlayer(new(First,HeroClass.Mage,Enumerable.Repeat("C01",20).ToArray(),null));room.InitializeMap(ChaosMapGenerator.Generate(73,1),Epoch);
+        var saved=room.Capture();var choice=RewardChoiceState.Create(ChaosMapLayer.Outer,new Random(4),configuration:config,season:new(context,SeasonRewardBias.None));
+        room=BattleRoom.Restore(saved with{Players=saved.Players.Select(p=>p with{Phase=RoomPlayerPhase.Choice,Pve=null,RewardChoice=choice.Capture()}).ToArray()},catalog,73);
+        room.RefreshRewardChoice(First,room.Revision,60,"seasonal-observed-refresh");var before=room.Capture();
+        Assert.All(before.Observations!.Events,e=>{Assert.Equal("Equipment",e.RewardBias);Assert.Equal(70,e.BaseMaximumHp);});
+        var heal=room.GetRewardChoice(First).Options.Single(o=>o.Kind==RewardChoiceKind.ImmediateHeal);room.ClaimReward(First,heal.OptionId);
+        var selected=Assert.Single(room.Capture().Observations!.Events,e=>e.EventName=="loot_chosen");Assert.Equal("Equipment",selected.RewardBias);
+        var old=before with{Observations=before.Observations with{Events=before.Observations.Events.Select(e=>e with{RewardBias=null,BaseMaximumHp=null}).ToArray()}};
+        var restored=BattleRoom.Restore(old,catalog,73);Assert.All(restored.Capture().Observations!.Events,e=>{Assert.Null(e.RewardBias);Assert.Null(e.BaseMaximumHp);});
+        Assert.DoesNotContain("RewardBias",JsonSerializer.Serialize(old.Observations),StringComparison.Ordinal);
     }
 
     [Fact]
@@ -101,11 +120,11 @@ public sealed class RoomEventObservationTests
     }
 
     [Theory]
-    [InlineData("player")][InlineData("time")][InlineData("sequence")][InlineData("class")][InlineData("version")]
+    [InlineData("player")][InlineData("time")][InlineData("sequence")][InlineData("class")][InlineData("version")][InlineData("bias")][InlineData("baseHp")]
     public void InvalidNewJournalIsRejectedWithoutRepairingIt(string change)
     {
         var room=Room();room.AbandonBattle(First);var snapshot=room.Capture();var journal=snapshot.Observations!;var events=journal.Events.ToArray();
-        events[0]=change switch{"player"=>events[0] with{PlayerId=Guid.Empty},"time"=>events[0] with{OccurredAtUtc=Epoch.AddSeconds(1)},"sequence"=>events[0] with{Sequence=2},"class"=>events[0] with{HeroClass=HeroClass.Guardian},_=>events[0]};
+        events[0]=change switch{"player"=>events[0] with{PlayerId=Guid.Empty},"time"=>events[0] with{OccurredAtUtc=Epoch.AddSeconds(1)},"sequence"=>events[0] with{Sequence=2},"class"=>events[0] with{HeroClass=HeroClass.Guardian},"bias"=>events[0] with{RewardBias="Guessed"},"baseHp"=>events[0] with{BaseMaximumHp=0},_=>events[0]};
         journal=journal with{Events=events,SchemaVersion=change=="version"?2:1};
         Assert.Throws<DomainValidationException>(()=>Restore(snapshot with{Observations=journal}));
     }

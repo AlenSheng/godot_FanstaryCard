@@ -572,6 +572,7 @@ public sealed partial class BattleRoom
         if (player.Phase != RoomPlayerPhase.Choice || player.RewardChoice is null)
             throw new DomainValidationException("The player has no pending reward choice.");
         var option = player.RewardChoice.Get(optionId);
+        var observedBias=player.RewardChoice.Capture().SeasonLoot?.Bias.ToString();
         if (equip && option.Kind != RewardChoiceKind.Equipment)
             throw new DomainValidationException("Only an equipment reward can be equipped.");
         if (option.Kind == RewardChoiceKind.ImmediateHeal && replaceItemId is not null)
@@ -588,7 +589,7 @@ public sealed partial class BattleRoom
         Revision++;
         ResumeCombatObservation(player);
         ObserveRoomEvent(player,"loot_chosen","RewardChoice",option.Kind.ToString(),option.Item is null?[]:[option.Item],applied,
-            optionId:option.OptionId,healPercent:option.HealPercent,hpBefore:hpBefore);
+            optionId:option.OptionId,healPercent:option.HealPercent,hpBefore:hpBefore,rewardBias:observedBias);
         return applied;
     }
 

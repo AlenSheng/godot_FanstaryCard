@@ -23,7 +23,7 @@ public sealed class PostgresSeasonRedMintTests
     [Trait("Category","PostgresIntegration")]
     public async Task ConcurrentMintAndCrashBeforeDeliveryRecoverTheOriginalFullBagItemWithoutRefundingItsWeek()
     {
-        await using var db=await PostgresTestSchema.CreateAsync(migrate:true);var f=await Create(db);
+        await using var db=await PostgresTestSchema.CreateAsync(migrate:false);PostgresSeasonMarketTests.RecordTelemetrySchema(db,"diagnostic-red-custody");await db.MigrateAsync();var f=await Create(db);
         var pending=f.Room.GetPlayer(f.Owner.Player).PendingRedEvaluation!;
         var results=await Task.WhenAll(Enumerable.Range(0,4).Select(_=>Repository(db,f).ResolveBossAsync(f.Match,f.Owner.Player,f.Room.Season!,pending,Ct)));
         var original=results[0];Assert.Equal("Minted",original.Status);Assert.All(results,result=>Assert.Equal(original,result));
@@ -61,6 +61,14 @@ public sealed class PostgresSeasonRedMintTests
         Assert.Equal("RelicPile",await db.ScalarAsync<string>("SELECT location FROM equipments WHERE instance_id=$1",id));
         Assert.Equal("RedBoss",await db.ScalarAsync<string>("SELECT source_kind FROM equipments WHERE instance_id=$1",id));
         Assert.Equal(pending.AttemptId,await db.ScalarAsync<Guid>("SELECT mint_id FROM equipments WHERE instance_id=$1",id));
+        var observed=DateTimeOffset.UtcNow.AddSeconds(1);var fingerprint=await PostgresSeasonMarketTests.TelemetryFinancialFingerprint(db);
+        var diagnostics=await new FantasyCard.Server.Telemetry.SeasonTelemetryDiagnosticsRepository(db.DataSource,new CraftingClock(observed),new(db.DataSource)).ReadAsync(observed.AddDays(-7),observed,Ct);
+        var mintRow=Assert.Single(diagnostics.Rows,r=>r.Kind=="RedMintAttempts");Assert.Equal("Minted",mintRow.Dimensions["status"]);Assert.Equal(id.ToString("D"),mintRow.Dimensions["item"]);
+        var quotaRow=Assert.Single(diagnostics.Rows,r=>r.Kind=="RedQuotaAndAttempts");Assert.Equal("1",quotaRow.Measures["mintedAttempts"]);Assert.Equal("1",quotaRow.Measures["matchingMint"]);
+        Assert.Contains(diagnostics.Rows,r=>r.Kind=="RedInstanceTimeline"&&r.Dimensions["item"]==id.ToString("D")&&r.Dimensions["to"]=="RelicPile");
+        Assert.Equal("1",Assert.Single(diagnostics.Rows,r=>r.Kind=="DeathEquipmentRecovery").Measures["notRecoveredYetRightCensored"]);
+        Assert.Equal(fingerprint,await PostgresSeasonMarketTests.TelemetryFinancialFingerprint(db));
+        PostgresSeasonMarketTests.WriteTelemetryProof(new{kind="actual-diagnostic-red-mint-custody",diagnostics,readOnlyFingerprintUnchanged=true,existingRedFaultFlow=true,completedGameplayCampaigns=0});
         // Loss/destruction changes custody only; it never clears the quota or
         // creates an extraction-time mint. New repository instances see the same claim.
         await CraftingTestInputs.SqlAsync(db,"UPDATE equipments SET location='Recycled' WHERE instance_id=$1",id);

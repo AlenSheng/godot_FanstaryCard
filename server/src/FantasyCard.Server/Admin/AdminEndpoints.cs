@@ -18,6 +18,7 @@ public static partial class AdminEndpoints
         services.AddSingleton<LifecycleEventTelemetryRepository>();
         services.AddSingleton<RoomEventTelemetryRepository>();
         services.AddSingleton<PhysicalEquipmentTelemetryRepository>();
+        services.AddSingleton<SeasonTelemetryDiagnosticsRepository>();
         services.AddSingleton<EconomyTelemetryMetrics>();
         return services;
     }
@@ -47,6 +48,7 @@ public static partial class AdminEndpoints
         admin.MapGet("/telemetry/crafting-events", ReadCraftingEventsAsync);
         admin.MapGet("/telemetry/lifecycle-events", ReadLifecycleEventsAsync);
         admin.MapGet("/telemetry/room-events", ReadRoomEventsAsync);
+        admin.MapGet("/telemetry/diagnostics", ReadSeasonDiagnosticsAsync);
         admin.MapGet("/telemetry/physical-equipment", ReadPhysicalEquipmentAsync);
         return endpoints;
     }
