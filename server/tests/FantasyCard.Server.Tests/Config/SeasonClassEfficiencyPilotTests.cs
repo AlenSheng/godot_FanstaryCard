@@ -17,6 +17,8 @@ public sealed class SeasonClassEfficiencyPilotTests
     private static readonly string[] Slots=["Head","Hands","Chest","Legs","Feet"];
     private static readonly string[] CounterCore=["GP20","GP21","GP22","GP18","GO04"];
     private static readonly string[] UniversalSupport=["GP19","GP23"];
+    private static readonly string[] FlowCore=["GP20","GP21","GP22","GP24","GO04","GP18","ET-WATER-P","ET-WATER-B","GB29"];
+    private static readonly string[] FlowLoop=["GP25","GB34","GB35","ET-WATER-G"];
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
     private sealed record Scenario(string Id,string Hero,string Deck,string Armor,int Seed);
 
@@ -25,7 +27,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         using var document=JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PLAN")??throw new InvalidOperationException("Frozen D03 plan required.")));
         var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new Scenario(x.GetProperty("id").GetString()!,x.GetProperty("hero").GetString()!,x.GetProperty("deck").GetString()!,x.GetProperty("armor").GetString()!,x.GetProperty("seed").GetInt32())).ToArray();
         Assert.InRange(prior,0,299);Assert.InRange(rows.Length,1,300-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
-        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");}
+        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");}
         return rows;
     }
 
@@ -69,7 +71,7 @@ public sealed class SeasonClassEfficiencyPilotTests
             Assert.InRange(player.Combat.Hp,0,player.Combat.EffectiveMaximumHp);Assert.InRange(player.Combat.Shield,0,player.Combat.MaximumHp/2);Assert.InRange(player.Combat.Deck.Hand.Count,0,5);
             if(player.Combat.StunRemaining<=TimeSpan.Zero&&room.GetCombatActionStatus(id).RemainingMs==0&&player.Combat.Deck.Hand.Count>0)
             {
-                var chosen=Choose(room,player,target,catalog,cards,out var used,out var candidates);previews+=used;
+                var chosen=Choose(room,player,target,catalog,cards,out var used,out var candidates,valueSustainIntents:row.Deck is "flow-counter" or "flow-loop");previews+=used;
                 if(chosen.Length>0)
                 {
                     var hpBefore=player.Combat.Hp;var result=room.PlayCards(id,player.Pve!.BattleId,target.MonsterId,chosen.Select(x=>x.InstanceId).ToArray(),room.Revision,Epoch+room.Elapsed,room.NewCombatActionId(id));
@@ -83,7 +85,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         var resultRow=new {row,outcome=player.Phase==RoomPlayerPhase.Choice?"Win":player.Phase==RoomPlayerPhase.Dead?"Dead":"Timeout",seconds=room.Elapsed.TotalSeconds,casts,previews,damage,initialHp=initial.Hp,initialShield=initial.Shield,addedHp,addedShield,otherHpLoss,discardedShield,remainingHp=target.Hp,remainingShield=target.Shield,endingHp=player.Combat.Hp};trace.WriteLine(JsonSerializer.Serialize(new {kind="end",result=resultRow}));results.WriteLine(JsonSerializer.Serialize(resultRow));
     }
 
-    internal static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount)
+    internal static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount,bool valueSustainIntents=false)
     {
         var before=JsonSerializer.Serialize(room.Capture());var hand=player.Combat.Deck.Hand;
         var scratch=new PlayerCombatState(player.HeroClass,baseDeck,new Random(1),player.Combat.WeaponLevel,player.Combat.Equipment,Enumerable.Repeat(5,20).ToArray());
@@ -97,7 +99,11 @@ public sealed class SeasonClassEfficiencyPilotTests
             var future=FutureDraws(scratch,scratch.DrawSpeedModifier,scratch.DrawSpeedRemaining.TotalSeconds,scratch.DrawBlockSpeedRemaining.TotalSeconds,12)-currentFuture;
             var returns=Math.Min(5-hand.Count+spent,draws+Math.Floor(player.Combat.Deck.DrawCharge+charge));
             var value=Math.Min(hit,target.Hp+target.Shield)+Math.Min(heal,Math.Max(0,player.Combat.EffectiveMaximumHp-player.Combat.Hp))*(atRisk?2:.2)+Math.Min(shield,Math.Max(0,player.Combat.MaximumHp/2-player.Combat.Shield))*(atRisk?1:.1)+returns*6+future*12-spent*1.25-cost*(atRisk?3:.5);
-            if(target.WindupRemaining>TimeSpan.Zero&&target.StunRemaining<=TimeSpan.Zero&&stun>0)value+=MonsterCombatState.PublishedIntentValue(target.Capture())*(atRisk?1.2:.2);
+            if(target.WindupRemaining>TimeSpan.Zero&&target.StunRemaining<=TimeSpan.Zero&&stun>0)
+            {
+                var sustain=valueSustainIntents&&target.Intents[target.IntentIndex].Kind is MonsterIntentKind.Shield or MonsterIntentKind.Regenerate;
+                value+=MonsterCombatState.PublishedIntentValue(target.Capture())*(sustain?1:atRisk?1.2:.2);
+            }
             if(cost>=player.Combat.Hp)value-=10000;return value;
         }
         var candidates=new List<(CombatCardInstance[] Cards,double Score)>();
@@ -141,6 +147,8 @@ public sealed class SeasonClassEfficiencyPilotTests
         var available=GameConfigCatalog.Current.Cards.Where(x=>x.Enabled&&x.IsCodex&&(x.HeroClass is null||x.HeroClass==hero)&&x.Rarity!=(short)CardRarity.Orange).ToArray();
         var water=available.Where(x=>x.Effect.Element==CardElement.Water&&x.Effect.ElementalDamage>0).OrderByDescending(x=>x.Rarity).ThenByDescending(x=>x.Effect.ElementalDamage+3*x.Effect.ImmediateDraw+2*x.Effect.DrawCharge).ThenBy(x=>x.CardId,StringComparer.Ordinal).Take(6).Select(x=>x.CardId);
         var fire=available.Where(x=>x.Effect.Element==CardElement.Fire&&x.Effect.ElementalDamage>0).OrderByDescending(x=>x.Rarity).ThenByDescending(x=>x.Effect.ElementalDamage+3*x.Effect.ImmediateDraw+2*x.Effect.DrawCharge).ThenBy(x=>x.CardId,StringComparer.Ordinal).Take(6).Select(x=>x.CardId);
+        if(variant is "flow-counter" or "flow-loop")
+            return FlowCore.Concat(variant=="flow-loop"?FlowLoop:Array.Empty<string>()).Concat(classCards).Concat(water).Concat(fire).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
         return CounterCore.Concat(variant=="counter-tempo"?classCards:UniversalSupport).Concat(water).Concat(fire).Concat(Core).Concat(Tail).Distinct(StringComparer.Ordinal).Take(20).ToArray();
     }
     private static ExplorationItem[] Armor(string variant)=>Slots.Select((slot,i)=>new ExplorationItem(Guid.NewGuid().ToString("D"),ExplorationItemKind.Equipment,Equipment:new(slot,i==0?"Orange":"Purple",variant=="counter-offense"?(i<3?"Water":"Fire"):(i<3?"Fire":"Metal"),variant is "offense" or "counter-offense"||i<2?"Piercing":"Vitality","DrawInterval",3,StatsVersion:"season-equipment-v1"),IsGenerated:false)).ToArray();
