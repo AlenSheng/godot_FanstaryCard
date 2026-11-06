@@ -1,0 +1,817 @@
+{
+  "meta": {
+    "version": "season-economy-v2-20261102",
+    "baseModelSha256": "f33fac928ba1a6a7fb3cfef8e969b9230deab0b9384a9733b27c213216f155b7",
+    "proposalOnly": true,
+    "productionTested": false,
+    "sources": [
+      "GDD_BASE_v0.69 §2.5、4.7、5.6、6.1–6.8",
+      "GDD v0.70 §6.9",
+      "SERVER_IMPLEMENTATION_STATUS_AND_PLAN V015、商店与市场事务",
+      "本轮用户保留每服每周1红、扩展双币市场与投放校验"
+    ]
+  },
+  "assumptions": {
+    "seasonDays": 42,
+    "activePlayers": 1000,
+    "dailyMinutes": 60,
+    "minutesPerAttempt": 18,
+    "attemptsPerDay": 3,
+    "difficultyIndex": 2,
+    "extractionRate": 0.7,
+    "gearChoiceRate": 0.75,
+    "fragmentChoiceRate": 0.15,
+    "healChoiceRate": 0.1,
+    "doubleFragmentBiasRate": 0.5,
+    "deadGearRecoveredRate": 0.5,
+    "rebuildFragmentCost": 66,
+    "marketEligibleFraction": 0.25,
+    "recipeSampleUnusedFraction": 0.5,
+    "targetElementWeight": 0.4,
+    "targetEffectWeight": 0.3333333333333333,
+    "targetSlotWeight": 0.2,
+    "fragmentPacksPerDay": 1,
+    "cardPacksPerDay": 0.5,
+    "warriorPacksPerDay": 0.25,
+    "classPacksPerDay": 0.05,
+    "potionsPerAttempt": 0.25,
+    "refreshFirstRate": 0.1,
+    "refreshSecondRate": 0.02,
+    "refreshThirdRate": 0.005,
+    "advancedBagUseRate": 0,
+    "topBagUseRate": 0,
+    "goldTradesPer1000Attempts": 250,
+    "goldTradePrice": 200,
+    "diamondTradesPer1000Attempts": 5,
+    "diamondTradePrice": 500,
+    "diamondSystemGrantPer1000Attempts": 0,
+    "diamondTopupsPer1000Attempts": 0,
+    "diamondCosmeticsSinkPer1000Attempts": 0,
+    "examplePurpleBodyPriceGold": 100,
+    "exampleOrangeBodyPriceGold": 400,
+    "upgradePurpleFrom3To5Per1000Attempts": 100,
+    "upgradeOrangeFrom3To5Per1000Attempts": 25,
+    "notes": [
+      "全部是压力试算输入，不是线上DAU、价格、选择率、回收率、购买率或成交量。",
+      "每人3局是严格完整局；60/18的跨日均摊口径不用于本扩展。",
+      "D2 R1是特定布局完整路线；个人示例失败不带出、也不从别人遗物获利。",
+      "全服账只计已带出的新来源；另输入死亡已穿戴装备的最终回收率，失败者未带出新掉落被别人拾取的增量默认0，必须实测另记。",
+      "碎片压力账按每次失败都花66重建，未抵扣买到可直接使用的已强化二手装；实际账按真实强化/重铸事件扣费。",
+      "日均0.5卡包等表示玩家群平均购买频率，不是半个商品或单账号必然支出。",
+      "marketEligibleFraction表示符合交易资格且实际挂牌的综合比例，不只是有资格；不能把未上架库存计成新挂单。",
+      "碎片选择率与装备、回血互斥；健康高价值与成功率相关，当前独立条件仅供灵敏度检查。"
+    ]
+  },
+  "shops": [
+    {
+      "id": "fragment",
+      "name": "装备碎片包",
+      "priceGold": 120,
+      "dailyLimit": 3,
+      "units": 20,
+      "resource": "绑定碎片",
+      "defaultPacksPerDay": 1
+    },
+    {
+      "id": "warrior",
+      "name": "勇士之魂包",
+      "priceGold": 180,
+      "dailyLimit": 3,
+      "units": 20,
+      "resource": "绑定勇士魂",
+      "defaultPacksPerDay": 0.25
+    },
+    {
+      "id": "class",
+      "name": "自选职业魂包",
+      "priceGold": 400,
+      "dailyLimit": 1,
+      "units": 12,
+      "resource": "绑定职业魂",
+      "defaultPacksPerDay": 0.05
+    },
+    {
+      "id": "card",
+      "name": "随机卡礼包",
+      "priceGold": 250,
+      "dailyLimit": 5,
+      "units": 3,
+      "resource": "白绿蓝紫卡副本",
+      "defaultPacksPerDay": 0.5
+    },
+    {
+      "id": "potion",
+      "name": "生命药剂",
+      "priceGold": 100,
+      "dailyLimit": 4,
+      "units": 1,
+      "resource": "药剂",
+      "defaultPacksPerDay": 0.75
+    },
+    {
+      "id": "advancedBag",
+      "name": "高级探索包",
+      "priceGold": 800,
+      "dailyLimit": null,
+      "units": 1,
+      "resource": "可复用直到死亡",
+      "defaultPacksPerDay": 0
+    },
+    {
+      "id": "topBag",
+      "name": "顶级探索包",
+      "priceGold": 2200,
+      "dailyLimit": null,
+      "units": 1,
+      "resource": "可复用直到死亡",
+      "defaultPacksPerDay": 0
+    }
+  ],
+  "events": {
+    "count": 2,
+    "durationDays": 3,
+    "tokensPerEvent": 12,
+    "participationRate": 0.6,
+    "completionFraction": 0.8,
+    "redemptionRate": 0.9,
+    "tokenName": "活动徽记",
+    "tokenScope": "账号+season_id+event_id；不可交易，不从钻石购买，不可跨期滚存",
+    "defaultBranch": "fragment",
+    "branches": [
+      {
+        "id": "fragment",
+        "tokenCost": 3,
+        "rewardCount": 10,
+        "reward": "绑定装备碎片"
+      },
+      {
+        "id": "warrior",
+        "tokenCost": 3,
+        "rewardCount": 6,
+        "reward": "绑定勇士魂"
+      },
+      {
+        "id": "class",
+        "tokenCost": 3,
+        "rewardCount": 2,
+        "reward": "绑定自选职业魂"
+      },
+      {
+        "id": "potion",
+        "tokenCost": 6,
+        "rewardCount": 1,
+        "reward": "药剂",
+        "limitPerEvent": 1
+      }
+    ],
+    "directGoldPerCompletedEvent": 0,
+    "directDiamondsPerCompletedEvent": 0,
+    "directPurpleBodiesPerCompletedEvent": 0,
+    "directOrangeBodiesPerCompletedEvent": 0,
+    "directRedBodiesPerCompletedEvent": 0,
+    "scopeNote": "完成比例指参与者中拿满12章的账号比例，余者本例按0兑换；不是平均进度80%。实际部分完成者须按每人可整次兑换的章数统计。同一12徽记预算择项兑换，不能把所有分支上限累加；活动红及红材料默认0，任何以后启用的红发放也必须占服务器同一周配额。"
+  },
+  "market": {
+    "taxRateGold": 0.1,
+    "taxRateDiamond": 0.1,
+    "minFee": 1,
+    "listingSlotsShared": 8,
+    "listingDurationHours": 48,
+    "listingFee": 0,
+    "goldPriceCap": 99999,
+    "orangeDiamondCap": 2000,
+    "redDiamondCap": 8000,
+    "allowed": {
+      "white": [
+        "gold"
+      ],
+      "green": [
+        "gold"
+      ],
+      "blue": [
+        "gold"
+      ],
+      "purple": [
+        "gold"
+      ],
+      "orange": [
+        "gold",
+        "diamond"
+      ],
+      "red": [
+        "gold",
+        "diamond"
+      ]
+    },
+    "excluded": [
+      "魂",
+      "装备碎片",
+      "印记",
+      "活动徽记",
+      "卡牌",
+      "专武",
+      "背包",
+      "药剂",
+      "借用装备",
+      "绑定装备"
+    ],
+    "materialMeaning": "可交易真实同品质装备可作为+4/+5材料；不新增可交易碎片或可双花的材料副本",
+    "bindingValueNote": "绑定碎片与合法绑定材料可通过强化商品间接增加可交易成品价值；属于有消耗的加工，不等于资源可直接转账。",
+    "diamondWallet": "永久钱包，允许买本季真实橙红；财富优势保留。季金币/装备/市场订单仍按季隔离。",
+    "npcFxEnabled": false,
+    "legacyFxGoldPerDiamond": 20,
+    "legacyFxDailyDiamondCap": 5000,
+    "singleListingRule": "同一item_id只能一个币种一个挂单，切换先原子撤销并解锁，再重挂；金币与钻石成交不能串账。",
+    "materialSearch": "品质、强化等级、是否可作为材料、绑定、配方可提取状态、总价和单价；默认先+0材料，不做系统保价。",
+    "recipePolicy": "原始自然掉落或正常印记打造且未提取的紫橙样本，只可登记一次；交易继承，重铸产物永不可再次提供配方；红、活动材料、借用和Bot不可登记。",
+    "reforgeProvenance": "输出继承输入本体的绑定与赛季限制；借用、Bot投影、活动纯材料不可作为可穿戴重铸输入；不因新item_id洗掉来源或禁交易标记。",
+    "marketDomain": "同一逻辑server_id与season_id内共享全部房间和频道市场，不自动跨服务器合池。"
+  },
+  "red": {
+    "weeklyQuota": 1,
+    "bossChance": 0.004,
+    "chestChance": 0.0008,
+    "chestEnabled": false,
+    "minimumDifficulty": 2,
+    "weekStarts": "Monday 04:00 server timezone",
+    "exampleTimezone": "Asia/Shanghai",
+    "alignedSeasonWeeks": 6,
+    "finalRetainedFraction": 0.7,
+    "bossKillsPerWeekCases": [
+      50,
+      100,
+      250,
+      500,
+      750,
+      1000,
+      2000
+    ],
+    "legacyCosts": [
+      96,
+      192,
+      384,
+      768,
+      1536
+    ],
+    "candidateCosts": [
+      6,
+      9,
+      15,
+      120,
+      240
+    ],
+    "extraBodiesFor4": 1,
+    "extraBodiesFor5": 1,
+    "recipeAllowed": false,
+    "reforgeAllowed": false,
+    "candidate": {
+      "damageBase": 0.32,
+      "damagePerLevel": 0.04,
+      "resistBase": 0.18,
+      "resistPerLevel": 0.01,
+      "speedBase": 0.12,
+      "speedPerLevel": 0.006,
+      "fenYuanBonus": 0.15,
+      "jiChouBonus": 0.04,
+      "drawFloor": 1.8,
+      "lianZhuChance": 0.1,
+      "shiYiExtraOpeningCard": 1,
+      "jinChanEscapeBonus": 0.15
+    },
+    "legacyUnique": {
+      "fenYuanBonus": 0.35,
+      "jiChouBonus": 0.25,
+      "jiChouFloor": 1.5,
+      "lianZhuChance": 0.2
+    },
+    "definition": "每逻辑服、自然周最多生成1个新红item；未必每周必出。交易、死亡遗物、材料消耗、跨季、重启均不重置或退回周额度。",
+    "candidateNotice": "周1红是用户保留约束；红属性/独有词缀与390碎费用是本轮候选，尚未经真实PVP验证，不能当已生效规则。"
+  },
+  "results": {
+    "sources": {
+      "successGold": 223,
+      "successBaseFragments": 40.0,
+      "successDoubleChoiceFragments": 86.5,
+      "additionalChoiceFragmentsPerAttempt": 6.641249999999999,
+      "newGearPerAttempt": {
+        "white": 0.0,
+        "green": 0.7875,
+        "blue": 2.1262499999999998,
+        "purple": 1.06575,
+        "orange": 0.22049999999999997
+      }
+    },
+    "event": {
+      "coverage": 0.432,
+      "maxFragmentsPerEvent": 40,
+      "maxFragmentsPerParticipatingSeason": 80,
+      "meanFragmentsPerActiveSeason": 34.56,
+      "meanFragmentsPerActiveDay": 0.822857142857143,
+      "meanFragmentsOnOneEventBurstDay": 17.28
+    },
+    "dailyFragments": {
+      "baseGross": 83.99999999999999,
+      "extraChoiceGross": 19.92375,
+      "shopGross": 20,
+      "eventGross": 0.822857142857143,
+      "rebuildSpend": 59.400000000000006,
+      "netBaseOnly": 24.59999999999998,
+      "netWithChoice": 44.52374999999998,
+      "netWithChoiceAndShop": 64.52374999999998,
+      "netAll": 65.34660714285712
+    },
+    "personalGoldScenarios": [
+      {
+        "fragmentPacks": 0,
+        "goldIncome": 468.2999999999999,
+        "shopCost": 0,
+        "remainingBeforeOtherSpending": 468.2999999999999,
+        "fragmentNetWithChoice": 44.52374999999998,
+        "remainingAfterOnePotion": 368.2999999999999
+      },
+      {
+        "fragmentPacks": 1,
+        "goldIncome": 468.2999999999999,
+        "shopCost": 120,
+        "remainingBeforeOtherSpending": 348.2999999999999,
+        "fragmentNetWithChoice": 64.52374999999998,
+        "remainingAfterOnePotion": 248.2999999999999
+      },
+      {
+        "fragmentPacks": 2,
+        "goldIncome": 468.2999999999999,
+        "shopCost": 240,
+        "remainingBeforeOtherSpending": 228.2999999999999,
+        "fragmentNetWithChoice": 84.52374999999998,
+        "remainingAfterOnePotion": 128.2999999999999
+      },
+      {
+        "fragmentPacks": 3,
+        "goldIncome": 468.2999999999999,
+        "shopCost": 360,
+        "remainingBeforeOtherSpending": 108.2999999999999,
+        "fragmentNetWithChoice": 104.52374999999998,
+        "remainingAfterOnePotion": 8.299999999999898
+      }
+    ],
+    "globalStock": [
+      {
+        "deadRecovery": 0,
+        "marksEarned": 2100.0,
+        "orange": {
+          "naturalNew": 220.49999999999997,
+          "personalLost": 300.00000000000006,
+          "transferredFromDeaths": 0.0,
+          "finallyDestroyed": 300.00000000000006,
+          "netBeforeCraftUpgrade": -79.50000000000009,
+          "noRecoveryPersonalDeficit": 79.50000000000009
+        },
+        "purple": {
+          "naturalNew": 1065.75,
+          "personalLost": 1200.0000000000002,
+          "transferredFromDeaths": 0.0,
+          "finallyDestroyed": 1200.0000000000002,
+          "netBeforeCraftUpgrade": -134.25000000000023,
+          "noRecoveryPersonalDeficit": 134.25000000000023
+        }
+      },
+      {
+        "deadRecovery": 0.25,
+        "marksEarned": 2100.0,
+        "orange": {
+          "naturalNew": 220.49999999999997,
+          "personalLost": 300.00000000000006,
+          "transferredFromDeaths": 75.00000000000001,
+          "finallyDestroyed": 225.00000000000006,
+          "netBeforeCraftUpgrade": -4.500000000000085,
+          "noRecoveryPersonalDeficit": 79.50000000000009
+        },
+        "purple": {
+          "naturalNew": 1065.75,
+          "personalLost": 1200.0000000000002,
+          "transferredFromDeaths": 300.00000000000006,
+          "finallyDestroyed": 900.0000000000002,
+          "netBeforeCraftUpgrade": 165.74999999999977,
+          "noRecoveryPersonalDeficit": 134.25000000000023
+        }
+      },
+      {
+        "deadRecovery": 0.5,
+        "marksEarned": 2100.0,
+        "orange": {
+          "naturalNew": 220.49999999999997,
+          "personalLost": 300.00000000000006,
+          "transferredFromDeaths": 150.00000000000003,
+          "finallyDestroyed": 150.00000000000003,
+          "netBeforeCraftUpgrade": 70.49999999999994,
+          "noRecoveryPersonalDeficit": 79.50000000000009
+        },
+        "purple": {
+          "naturalNew": 1065.75,
+          "personalLost": 1200.0000000000002,
+          "transferredFromDeaths": 600.0000000000001,
+          "finallyDestroyed": 600.0000000000001,
+          "netBeforeCraftUpgrade": 465.7499999999999,
+          "noRecoveryPersonalDeficit": 134.25000000000023
+        }
+      },
+      {
+        "deadRecovery": 0.75,
+        "marksEarned": 2100.0,
+        "orange": {
+          "naturalNew": 220.49999999999997,
+          "personalLost": 300.00000000000006,
+          "transferredFromDeaths": 225.00000000000006,
+          "finallyDestroyed": 75.00000000000001,
+          "netBeforeCraftUpgrade": 145.49999999999994,
+          "noRecoveryPersonalDeficit": 79.50000000000009
+        },
+        "purple": {
+          "naturalNew": 1065.75,
+          "personalLost": 1200.0000000000002,
+          "transferredFromDeaths": 900.0000000000002,
+          "finallyDestroyed": 300.00000000000006,
+          "netBeforeCraftUpgrade": 765.75,
+          "noRecoveryPersonalDeficit": 134.25000000000023
+        }
+      },
+      {
+        "deadRecovery": 1,
+        "marksEarned": 2100.0,
+        "orange": {
+          "naturalNew": 220.49999999999997,
+          "personalLost": 300.00000000000006,
+          "transferredFromDeaths": 300.00000000000006,
+          "finallyDestroyed": 0.0,
+          "netBeforeCraftUpgrade": 220.49999999999997,
+          "noRecoveryPersonalDeficit": 79.50000000000009
+        },
+        "purple": {
+          "naturalNew": 1065.75,
+          "personalLost": 1200.0000000000002,
+          "transferredFromDeaths": 1200.0000000000002,
+          "finallyDestroyed": 0.0,
+          "netBeforeCraftUpgrade": 1065.75,
+          "noRecoveryPersonalDeficit": 134.25000000000023
+        }
+      }
+    ],
+    "marketDepth": [
+      {
+        "activePlayers": 100,
+        "targetOrangeListingsPerDay": 0.44099999999999995,
+        "probAnyTargetListing48h": 0.5860458251287258,
+        "unusedRecipeListingsPerDay": 0.22049999999999997,
+        "probAnyUnusedSample48h": 0.3566072934270438,
+        "meaning": "Poisson新挂单到达概率，非买家成交率；未计价格、竞争和库存已有挂单"
+      },
+      {
+        "activePlayers": 300,
+        "targetOrangeListingsPerDay": 1.323,
+        "probAnyTargetListing48h": 0.9290656161232571,
+        "unusedRecipeListingsPerDay": 0.6615,
+        "probAnyUnusedSample48h": 0.7336649030323961,
+        "meaning": "Poisson新挂单到达概率，非买家成交率；未计价格、竞争和库存已有挂单"
+      },
+      {
+        "activePlayers": 1000,
+        "targetOrangeListingsPerDay": 4.409999999999999,
+        "probAnyTargetListing48h": 0.999852251639768,
+        "unusedRecipeListingsPerDay": 2.2049999999999996,
+        "probAnyUnusedSample48h": 0.987844821670085,
+        "meaning": "Poisson新挂单到达概率，非买家成交率；未计价格、竞争和库存已有挂单"
+      },
+      {
+        "activePlayers": 3000,
+        "targetOrangeListingsPerDay": 13.229999999999999,
+        "probAnyTargetListing48h": 0.9999999999967747,
+        "unusedRecipeListingsPerDay": 6.614999999999999,
+        "probAnyUnusedSample48h": 0.9999982040923334,
+        "meaning": "Poisson新挂单到达概率，非买家成交率；未计价格、竞争和库存已有挂单"
+      },
+      {
+        "activePlayers": 10000,
+        "targetOrangeListingsPerDay": 44.1,
+        "probAnyTargetListing48h": 1.0,
+        "unusedRecipeListingsPerDay": 22.05,
+        "probAnyUnusedSample48h": 1.0,
+        "meaning": "Poisson新挂单到达概率，非买家成交率；未计价格、竞争和库存已有挂单"
+      }
+    ],
+    "redWeekly": [
+      {
+        "bossKills": 50,
+        "weeklyAnyGenerated": 0.1815975493239001,
+        "weeklyNone": 0.8184024506760998,
+        "sixWeeksExpectedGenerated": 1.0895852959434005,
+        "sixWeeksExpectedRetained": 0.7627097071603804,
+        "probRetainedAtLeast3": 0.030484789609050624,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 0.030489008984196642
+      },
+      {
+        "bossKills": 100,
+        "weeklyAnyGenerated": 0.3302174287273539,
+        "weeklyNone": 0.6697825712726462,
+        "sixWeeksExpectedGenerated": 1.9813045723641234,
+        "sixWeeksExpectedRetained": 1.386913200654886,
+        "probRetainedAtLeast3": 0.14077621412359692,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 0.1409287556853518
+      },
+      {
+        "bossKills": 250,
+        "weeklyAnyGenerated": 0.6328575464337576,
+        "weeklyNone": 0.3671424535662424,
+        "sixWeeksExpectedGenerated": 3.7971452786025455,
+        "sixWeeksExpectedRetained": 2.6580016950217815,
+        "probRetainedAtLeast3": 0.5442848817323891,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 0.5518431798761702
+      },
+      {
+        "bossKills": 500,
+        "weeklyAnyGenerated": 0.8652064187893596,
+        "weeklyNone": 0.13479358121064045,
+        "sixWeeksExpectedGenerated": 5.191238512736158,
+        "sixWeeksExpectedRetained": 3.63386695891531,
+        "probRetainedAtLeast3": 0.8285109110605614,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 0.8778631246051654
+      },
+      {
+        "bossKills": 750,
+        "weeklyAnyGenerated": 0.9505115538693449,
+        "weeklyNone": 0.04948844613065506,
+        "sixWeeksExpectedGenerated": 5.70306932321607,
+        "sixWeeksExpectedRetained": 3.9921485262512486,
+        "probRetainedAtLeast3": 0.8985653267757886,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 0.985327943500862
+      },
+      {
+        "bossKills": 1000,
+        "weeklyAnyGenerated": 0.9818306904644105,
+        "weeklyNone": 0.018169309535589484,
+        "sixWeeksExpectedGenerated": 5.890984142786463,
+        "sixWeeksExpectedRetained": 4.123688899950524,
+        "probRetainedAtLeast3": 0.9189719449371796,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 1.024363996861959
+      },
+      {
+        "bossKills": 2000,
+        "weeklyAnyGenerated": 0.9996698761909999,
+        "weeklyNone": 0.00033012380900010463,
+        "sixWeeksExpectedGenerated": 5.998019257146,
+        "sixWeeksExpectedRetained": 4.198613480002199,
+        "probRetainedAtLeast3": 0.9293464119901306,
+        "expectedMaxPlus5IfPerfectlyConcentrated": 1.0467625718133389
+      }
+    ],
+    "taxExamples": [
+      {
+        "currency": "gold",
+        "price": 9,
+        "fee": 1,
+        "sellerNet": 8
+      },
+      {
+        "currency": "gold",
+        "price": 1000,
+        "fee": 100,
+        "sellerNet": 900
+      },
+      {
+        "currency": "diamond",
+        "price": 2000,
+        "fee": 200,
+        "sellerNet": 1800
+      },
+      {
+        "currency": "diamond",
+        "price": 8000,
+        "fee": 800,
+        "sellerNet": 7200
+      }
+    ],
+    "processingExamples": [
+      {
+        "quality": "purple",
+        "assumedBodyPriceGold": 100,
+        "boundFragmentsConsumed": 11,
+        "shopReplacementCostGold": 66,
+        "totalReplacementCostGold": 166,
+        "minimumSaleToRecoverCostGold": 184,
+        "note": "6金/碎是有限商店替代成本，不是回购价；不保证市场愿意支付加工费"
+      },
+      {
+        "quality": "orange",
+        "assumedBodyPriceGold": 400,
+        "boundFragmentsConsumed": 22,
+        "shopReplacementCostGold": 132,
+        "totalReplacementCostGold": 532,
+        "minimumSaleToRecoverCostGold": 591,
+        "note": "6金/碎是有限商店替代成本，不是回购价；不保证市场愿意支付加工费"
+      }
+    ],
+    "redQuota": {
+      "alignedDays": [
+        {
+          "days": 30,
+          "fullWeeks": 4,
+          "maxTouchedWeekKeys": 6,
+          "note": "按实际起止时间枚举；首尾自然周与相邻赛季共享，不是独立赠送额"
+        },
+        {
+          "days": 42,
+          "fullWeeks": 6,
+          "maxTouchedWeekKeys": 7,
+          "note": "按实际起止时间枚举；首尾自然周与相邻赛季共享，不是独立赠送额"
+        },
+        {
+          "days": 60,
+          "fullWeeks": 8,
+          "maxTouchedWeekKeys": 10,
+          "note": "按实际起止时间枚举；首尾自然周与相邻赛季共享，不是独立赠送额"
+        }
+      ],
+      "aligned42MaximumItems": 6,
+      "aligned42MaximumPlus5Items": 2,
+      "sixDropsThreePlus3OwnersAndOnePlus5": {
+        "plus3": 3,
+        "plus5": 1,
+        "remainingPhysicalItems": 4
+      }
+    },
+    "globalCurrencies": {
+      "attempts": 1000,
+      "equivalentActivePlayerDays": 333.3333333333333,
+      "goldCreated": 156100.0,
+      "eventGoldCreated": 0.0,
+      "eventDiamondCreated": 0.0,
+      "goldShopSink": 103333.33333333333,
+      "goldPotionSink": 25000.0,
+      "goldRefreshSink": 11850.0,
+      "goldBagReplacementSink": 0.0,
+      "goldTaxSink": 5000,
+      "goldNet": 10916.666666666672,
+      "diamondTurnover": 2500,
+      "diamondTaxSink": 250,
+      "diamondNet": -250.0,
+      "diamondNote": "默认新增钻石0；成交依赖既有钻石余额。没有充值/赠钻数据，不能判断钻石供应是否充足。",
+      "goldNetPerActiveDay": 32.750000000000014
+    },
+    "globalFragments": {
+      "base": 28000.0,
+      "choice": 6641.249999999999,
+      "shop": 6666.666666666666,
+      "event": 274.2857142857143,
+      "rebuild": 19800.000000000004,
+      "optionalUpgradeSpend": 18000,
+      "netBeforeOptionalUpgrade": 21782.202380952378,
+      "netAfterOptionalUpgrade": 3782.202380952378
+    },
+    "globalMaterials": {
+      "purpleForOptionalUpgrades": 200,
+      "orangeForOptionalUpgrades": 50,
+      "eventPurpleBodies": 0.0,
+      "eventOrangeBodies": 0.0,
+      "purpleNetAfterOptionalUpgrades": 265.7499999999999,
+      "orangeNetAfterOptionalUpgrades": 20.499999999999943,
+      "note": "本体已持有，+3升+5只额外吞2件；默认新增打造0，实际若打造必须把唯一新物品也记入来源。"
+    },
+    "warehousePressure": {
+      "newGearPerActiveDay": 12.599999999999998,
+      "netNewBeforeUpgradeAndDiscardPerActiveDay": 10.349999999999998,
+      "warehouseSlots": 50,
+      "listingSlots": 8,
+      "note": "这是总装备数量压力，不是预测满仓日；含低品质、换装替换、材料消耗与选碎片行为必须另记。拍卖挂单不是装备销毁。"
+    },
+    "choiceProfiles": [
+      {
+        "name": "偏装备",
+        "gearChoice": 0.85,
+        "fragmentChoice": 0.05,
+        "healChoice": 0.1,
+        "fragmentNetPerDay": 52.064107142857125,
+        "orangeNewPer1000": 249.89999999999998,
+        "purpleNewPer1000": 1207.8499999999997,
+        "orangeNetBeforeCraftUpgradePer1000": 99.89999999999995,
+        "purpleNetBeforeCraftUpgradePer1000": 607.8499999999996
+      },
+      {
+        "name": "基准",
+        "gearChoice": 0.75,
+        "fragmentChoice": 0.15,
+        "healChoice": 0.1,
+        "fragmentNetPerDay": 65.34660714285712,
+        "orangeNewPer1000": 220.5,
+        "purpleNewPer1000": 1065.7499999999998,
+        "orangeNetBeforeCraftUpgradePer1000": 70.49999999999997,
+        "purpleNetBeforeCraftUpgradePer1000": 465.74999999999966
+      },
+      {
+        "name": "偏碎片",
+        "gearChoice": 0.45,
+        "fragmentChoice": 0.45,
+        "healChoice": 0.1,
+        "fragmentNetPerDay": 105.19410714285712,
+        "orangeNewPer1000": 132.29999999999998,
+        "purpleNewPer1000": 639.4499999999999,
+        "orangeNetBeforeCraftUpgradePer1000": -17.700000000000045,
+        "purpleNetBeforeCraftUpgradePer1000": 39.44999999999982
+      }
+    ],
+    "eventShopSubstitution": {
+      "goldSinkReductionPerActiveSeasonIfAllDisplacesShop": 207.36,
+      "goldSinkReductionPerActiveDayIfAllDisplacesShop": 4.937142857142858,
+      "goldSinkReductionPer1000EligibleAccountsSeason": 207360.0,
+      "note": "这只是减少回收的上界，不是金币新增；不能在固定商店购买基准上同时全额扣减商店支出。"
+    },
+    "currencyBridge": {
+      "legacyFxGoldDailyMaximum": 100000,
+      "baselineGoldDaily": 468.2999999999999,
+      "baselineDaysEquivalent": 213.53833013025843,
+      "turnaroundRequiredGoldRatio": 1.2345679012345678,
+      "note": "相同经济等值的跨币转卖两次税约剩81%，实际逐单整数税；没有固定汇率保证。"
+    },
+    "chestStress": {
+      "enabled": false,
+      "weeklyBossKills": 500,
+      "weeklyChests": 1000,
+      "probAnyRed": 0.9394527283551662,
+      "probChestWinsIfChestFirst": 0.5508148748550673,
+      "probChestWinsIfBossFirst": 0.07424630956580527,
+      "orangeExpectationWhenQuotaUsed": 20.0,
+      "purpleExpectation": 120.0,
+      "goldCostAt800": 800000,
+      "diamondCostAt60": 60000,
+      "note": "未来若开启的压力分支；不能与当前默认无宝箱重复计入。开奖先后改变谁拿走唯一红，周配额不保证公平分配。"
+    }
+  },
+  "checks": [
+    {
+      "name": "三选一互斥概率和",
+      "passed": true
+    },
+    {
+      "name": "额外碎片倍率先乘后取整",
+      "passed": true
+    },
+    {
+      "name": "活动有限预算与34.56碎",
+      "passed": true
+    },
+    {
+      "name": "周配额始终最多1",
+      "passed": true
+    },
+    {
+      "name": "六周至多两个红+5",
+      "passed": true
+    },
+    {
+      "name": "红渠道与普通五色分离",
+      "passed": true
+    },
+    {
+      "name": "D2+入场可红、常规掉落不红",
+      "passed": true
+    },
+    {
+      "name": "全服装备回收是转移",
+      "passed": true
+    },
+    {
+      "name": "六金碎片不是卖回金",
+      "passed": true
+    },
+    {
+      "name": "默认不开放钻兑金和箱",
+      "passed": true
+    },
+    {
+      "name": "合法正价格税不超标价",
+      "passed": true
+    },
+    {
+      "name": "材料吞件只计额外两件",
+      "passed": true
+    },
+    {
+      "name": "活动分支药剂不越额",
+      "passed": true
+    },
+    {
+      "name": "默认活动不直接造可交易装备",
+      "passed": true
+    },
+    {
+      "name": "股本与流量明示钻库存依赖",
+      "passed": true
+    },
+    {
+      "name": "日均常规片账全渠道",
+      "passed": true
+    },
+    {
+      "name": "一次提取与重铸禁传配方",
+      "passed": true
+    }
+  ]
+}
