@@ -4,6 +4,7 @@ const Palette = preload("res://ui/palette.gd")
 const INVENTORY_MANAGEMENT_SCENARIOS := ["e01_gear", "e01_manage", "e01_manage_bottom", "e01_manage_selected", "e01_manage_confirm", "e01_manage_closed"]
 const ARCHIVE_SCENARIOS := ["archive_entry", "archive_equipment", "archive_recipes", "archive_wishes", "archive_loadouts", "archive_legacy", "archive_missing", "archive_empty", "archive_error"]
 const SUSTAIN_SCENARIOS := ["sustain_hud_zero", "sustain_hud_full", "sustain_details", "sustain_details_bottom", "sustain_old_details", "sustain_new_card", "sustain_old_card"]
+const E02_BRIDGE_SCENARIOS := ["e02_market_header", "e02_confirm_plain", "e02_gear_entry"]
 const REWARD_VALUE_SCENARIOS := ["rewardvalue_empty", "rewardvalue_gain", "rewardvalue_loss", "rewardvalue_fullbag", "rewardvalue_highquality", "rewardvalue_overcap", "rewardvalue_fullhp", "rewardvalue_missing", "rewardvalue_replace"]
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
@@ -89,7 +90,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS + REWARD_VALUE_SCENARIOS + SUSTAIN_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS + REWARD_VALUE_SCENARIOS + SUSTAIN_SCENARIOS + E02_BRIDGE_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -250,6 +251,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in E02_BRIDGE_SCENARIOS: return await _prepare_e02_bridge_scene(scenario)
 	if scenario in SUSTAIN_SCENARIOS: return await _prepare_sustain_scene(scenario)
 	if scenario in REWARD_VALUE_SCENARIOS: return await _prepare_reward_value_scene(scenario)
 	if scenario in ARCHIVE_SCENARIOS: return await _prepare_archive_scene(scenario)
@@ -1631,3 +1633,63 @@ func _check_sustain_scene(frame_name: String) -> void:
 	var label: Label = $UI.find_child("PlayerPassiveDescription_Mage", true, false)
 	var expected := Palette.localized("battle_mage_return_budget") % [float(numerical.fenxian_return_credit), 5.0]
 	review_checks[prefix + "current credit and5percent visible"] = label != null and label.text.contains(Palette.system_display_text(expected.replace(" · ", "\n")))
+
+# These fixtures cover later shared changes, not the earlier full screen matrix.
+func _prepare_e02_bridge_scene(scenario: String) -> bool:
+	var key: String = Palette.language() + "_" + str(get_window().size.x) + "_" + scenario
+	if scenario == "e02_market_header":
+		var owned: Array = []
+		var longest_title := "relic-seeker"
+		var title_length := 0
+		for row in Game.CATALOG.data.tables.SeasonCosmetics:
+			owned.append({"cosmeticId": row.cosmetic_id, "kind": row.kind, "nameKey": row.name_key, "descriptionKey": row.description_key,
+				"sourceSeasonId": "e02-visual-fixture", "configVersion": Game.CATALOG.data.version, "acquiredAt": "2026-11-05T00:00:00Z"})
+			if row.kind == "Title" and Palette.localized(str(row.name_key)).length() > title_length:
+				longest_title = str(row.cosmetic_id)
+				title_length = Palette.localized(str(row.name_key)).length()
+		Game.lobby.cosmetics = {"owned": owned, "selection": {"avatarFrameId": "relicbound-pathfinder", "cardBackId": "waymark-seal", "titleId": longest_title, "version": 30}}
+		Game.lobby.player.displayName = "Unity#1193"
+		await _prepare_market_scene("c12_gold")
+		var art = preload("res://ui/season_cosmetic_art.gd")
+		var identity: Label = $UI._reference.get_node("AccountIdentity")
+		var frame: Control = $UI._reference.get_node("HeaderEquippedAvatarFrame")
+		review_checks[key + ": declared cosmetic inventory valid"] = not art.inventory().is_empty()
+		review_checks[key + ": market retains selected title"] = identity.text.contains(art.title()) and identity.text.contains("Unity#1193")
+		review_checks[key + ": frame and identity do not overlap"] = not frame.get_global_rect().intersects(identity.get_global_rect())
+		review_checks[key + ": original market listings retained"] = $UI.market_controller.state.listings.size() == 3
+	elif scenario == "e02_confirm_plain":
+		await _prepare_sustain_scene("sustain_details")
+		var scrolling: Control = $UI.get_node("BattleDetailsModal")
+		review_checks[key + ": new details use scroll option"] = scrolling.get_node_or_null("DialogPanel/DescriptionScroll") != null
+		(scrolling.get_node("DialogPanel/ConfirmButton") as Button).pressed.emit()
+		await get_tree().process_frame
+		review_checks[key + ": actual close removes details"] = $UI.get_node_or_null("BattleDetailsModal") == null
+		await _reset_fixture()
+		await _prepare_market_scene("c12_gold")
+		var hits := [0]
+		$UI._confirm(Palette.localized("confirm_action"), func(): hits[0] += 1)
+		var trial: Control = $UI.get_node("ConfirmationModal")
+		(trial.get_node("DialogPanel/ConfirmButton") as Button).pressed.emit()
+		(trial.get_node("DialogPanel/ConfirmButton") as Button).pressed.emit()
+		await get_tree().process_frame
+		review_checks[key + ": plain callback exactly once"] = hits[0] == 1
+		await _prepare_market_scene("c12_confirm")
+		var plain: Control = $UI.get_node("ConfirmationModal")
+		review_checks[key + ": fresh market dialog has no scroll"] = plain.get_node_or_null("DialogPanel/DescriptionScroll") == null
+		review_checks[key + ": market retains both actions"] = plain.get_node("DialogPanel/CancelButton").visible and plain.get_node("DialogPanel/ConfirmButton").visible
+		review_checks[key + ": ordinary panel height retained"] = is_equal_approx(plain.get_node("DialogPanel").size.y, 460.0)
+	else:
+		$UI.screen = "gear"
+		for index in 15:
+			$UI.inventory.equipments.append(_gear("e02-scrolling-" + str(index), ["Head", "Chest", "Hands", "Legs", "Feet"][index % 5]))
+		await _render_base()
+		var button: Button = $UI._reference.get_node("InventoryManageButton")
+		var scroll: ScrollContainer = $UI._reference.get_node("EquipmentInventoryScroll")
+		review_checks[key + ": translated management entry"] = button.text == Palette.localized("inventory_manage")
+		review_checks[key + ": entry clear of inventory scroll"] = not button.get_global_rect().intersects(scroll.get_global_rect())
+		scroll.scroll_vertical = 100000
+		await get_tree().process_frame
+		review_checks[key + ": bottom still reachable"] = is_equal_approx(scroll.get_v_scroll_bar().value, maxf(0.0, scroll.get_v_scroll_bar().max_value - scroll.get_v_scroll_bar().page))
+		scroll.scroll_vertical = 0
+		await get_tree().process_frame
+	return false
