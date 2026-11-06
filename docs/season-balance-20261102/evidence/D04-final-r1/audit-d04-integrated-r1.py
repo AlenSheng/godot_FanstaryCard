@@ -1,0 +1,54 @@
+from pathlib import Path
+import json,hashlib,datetime,subprocess
+repo=Path.cwd();base=Path(__file__).parent;docs=repo/'docs/season-balance-20261102';root=docs/'evidence'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+stages={'D04-currency-r1':'currency_projection_subchain_verified','D04-playtime-r1':'playtime_subchain_verified','D04-crafting-events-r1':'crafting_event_subchain_verified','D04-lifecycle-events-r1':'lifecycle_event_subchain_verified','D04-room-events-r1':'room_event_subchain_verified','D04-build-dimensions-r1':'build_dimension_subchain_verified','D04-combat-measure-r1':'combat_measurement_subchain_verified','D04-physical-flow-r1':'physical_equipment_subchain_verified','D04-diagnostics-r1':'diagnostics_subchain_verified'}
+reports={};files_checked=0
+for stage,flag in stages.items():
+ p=root/stage;r=json.loads((p/'result.json').read_bytes());assert r[flag];manifest=json.loads((p/'source-manifest.json').read_bytes())
+ for name,row in manifest.items():assert sha(p/name)==row['sha256'],str(p/name);files_checked+=1
+ reports[stage]={'result_sha256':sha(p/'result.json'),'manifest_sha256':sha(p/'source-manifest.json'),'manifest_files_verified':len(manifest),'passing_scope':flag,'historic_stage_D04_complete':r['D04_complete']}
+pins={
+ 'currency':root/'D04-currency-r1/builds/d04-currency-build-r4/source-pin.json',
+ 'playtime':root/'D04-playtime-r1/builds/d04-playtime-server-r5/source-pin.json',
+ 'build':root/'D04-build-dimensions-r1/local/d04-build-dimensions-build-r4/source-pin.json',
+ 'combat':root/'D04-combat-measure-r1/local/d04-combat-measure-server-r2/source-pin.json',
+ 'physical':root/'D04-physical-flow-r1/local/d04-physical-flow-server-r2/source-pin.json',
+ 'diagnostics':root/'D04-diagnostics-r1/local/d04-diagnostics-server-r2/source-pin.json'}
+map={'CombatMeasurementProjection':'combat','CraftingEventObservation':'build','CraftingEventTelemetryRepository':'build','EconomyFlow':'currency','EconomyTelemetryMetrics':'currency','EconomyTelemetryRepository':'currency','LifecycleEventTelemetryRepository':'physical','PhysicalEquipmentFlow':'physical','PhysicalEquipmentTelemetryRepository':'physical','PlaytimeStatistics':'playtime','PlaytimeTelemetryRepository':'playtime','RoomEventTelemetryRepository':'combat','SeasonDiagnosticProjection':'diagnostics','SeasonEventDimensionRules':'build','SeasonTelemetryDiagnosticsRepository':'diagnostics'}
+source_coverage=[]
+def cover(path,stage,basis):
+ pin=json.loads(pins[stage].read_bytes());key=path.relative_to(repo).as_posix();assert pin[key]==sha(path),key
+ source_coverage.append({'path':key,'sha256':sha(path),'verified_source_pin':pins[stage].relative_to(repo).as_posix(),'pin_sha256':sha(pins[stage]),'behavior_scope':basis})
+for p in sorted((repo/'server/src/FantasyCard.Server/Telemetry').glob('*.cs')):cover(p,map[p.stem],'Original bounded report/projection cases plus subsequent explicitly affected-source checks; not a new full suite.')
+for name,stage in [('RoomBuildProfile.cs','build'),('RoomCombatObservations.cs','combat'),('RoomObservationJournal.cs','diagnostics'),('BattleRoom.cs','diagnostics')]:
+ cover(repo/'server/src/FantasyCard.Domain/Rooms'/name,stage,'Original build/combat behavior unchanged; new optional bias/base HP metadata and old JSON compatibility checked in36Domain cases.')
+for relative in ['Admin/AdminEndpoints.cs','Admin/AdminTelemetryEndpoints.cs']:cover(repo/'server/src/FantasyCard.Server'/relative,'diagnostics','Latest full Program401/403/200 private-no-store, actual loopback HTTP with forwarded HTTPS header, not external TLS handshake.')
+for relative in ['Progression/EconomyRepository.cs','Progression/MarketTransactions.cs','Progression/ProgressionRepository.cs','Seasons/SeasonArchiveRepository.cs','Settlement/SettlementRepository.cs','Matchmaking/PreparationRepository.cs','Matchmaking/MatchmakingRepository.cs','Mail/MailRepository.cs','Admin/AdminRepository.cs']:
+ cover(repo/'server/src/FantasyCard.Server'/relative,'physical','V055 actual original transactions/ownership/hold/archive checks; no subsequent production byte changes.')
+for glob,stage in [('V053*','currency'),('V054*','build'),('V055*','physical')]:
+ p,=(repo/'server/src/FantasyCard.Server/Persistence/Migrations').glob(glob);cover(p,stage,'Immutable additive migration, original isolated runtime checks; no historical data backfill.')
+expected={'battle_finished','loot_generated','loot_chosen','loot_extracted','loot_lost','item_destroyed','craft_completed','recipe_learned','pity_triggered','difficulty_cleared','season_asset_archived'}
+named=set()
+for stage,key in [('D04-room-events-r1','named_event_hooks'),('D04-crafting-events-r1','named_event_types'),('D04-lifecycle-events-r1','named_event_sources')]:named.update(json.loads((root/stage/'result.json').read_bytes())[key])
+assert named==expected
+changed=subprocess.check_output(['git','diff','--name-only','2075f947','5933fc32','--','server/src']).decode().splitlines()
+assert set(changed)=={'server/src/FantasyCard.Domain/Rooms/BattleRoom.cs','server/src/FantasyCard.Domain/Rooms/RoomObservationJournal.cs','server/src/FantasyCard.Server/Admin/AdminEndpoints.cs','server/src/FantasyCard.Server/Admin/AdminTelemetryEndpoints.cs','server/src/FantasyCard.Server/Telemetry/SeasonDiagnosticProjection.cs','server/src/FantasyCard.Server/Telemetry/SeasonTelemetryDiagnosticsRepository.cs'}
+config={'workbook':repo/'config/FantasyCard_Config.xlsx','binary':repo/'server/config/current/config_bundle.pb'}
+assert sha(config['workbook'])=='cad81ea021cf00184e9e5edc9b40fae337ed92c5febaa7f9262bcf4dd3c4d032'
+context=json.loads((base/'current-journey-client-continuation-20261105.json').read_bytes());assert context['all_own_test_handles_terminal'] and context['pending_test_handles']==[]
+assert all(sha(Path(r['source']))==r['sha256'] for r in context['D03_latest_banks'])
+requirements=[
+ {'id':'named-events','design_lines':'486-490','sources':['D04-room-events-r1','D04-crafting-events-r1','D04-lifecycle-events-r1','D04-physical-flow-r1'],'verdict':'accepted_current_implementation','meaning':'11 original identities; potential choice, pending custody and committed assets separate; archive is domain movement.'},
+ {'id':'uniform-dimensions','design_lines':'488','sources':['D04-build-dimensions-r1','D04-physical-flow-r1'],'verdict':'accepted_current_implementation','meaning':'Season/difficulty/class/build/growth/player kind/cell/version/result. Immutable original profiles; lobby not-played fields and old missing remain unknown.'},
+ {'id':'currency-and-physical-accounting','design_lines':'490,735-737,755','sources':['D04-currency-r1','D04-physical-flow-r1'],'verdict':'accepted_current_implementation','meaning':'Exact per-currency sources/sinks/transfers; one physical identity mint, canonical destruction, custody/archive separate. Known subset conservation not global economic health.'},
+ {'id':'actual-time-percentiles','design_lines':'490','sources':['D04-playtime-r1'],'verdict':'accepted_current_implementation','meaning':'Authoritative player room intervals clipped/unioned; negative/zero rates and P10/P50/P90 exact nearest rank. Not human active time or unknown-duration zero imputation.'},
+ {'id':'combat-details','design_lines':'490','sources':['D04-combat-measure-r1'],'verdict':'accepted_current_implementation','meaning':'Natural/effective interval and draws, empty/full, instant/opening/chain, casts/replay and zero attack intents, control union/actual suppression, heal/shield requested/applied/overflow. Cumulative rows never window deltas.'},
+ {'id':'choice-health-and-cohorts','design_lines':'688,755','sources':['D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Original option/bias/base HP; legal80/70 kept. Original account facts/entry levels/outcomes/clear cells; age/prior-season not measured skill.'},
+ {'id':'extraction-recovery-tradability','design_lines':'555,755','sources':['D04-physical-flow-r1','D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Exact committed holds; earliest equipment extraction and observed recovery, right censoring explicit. Current unbound realm property counts not universal listing eligibility or historical share.'},
+ {'id':'market-depth-conversion-prices','design_lines':'611-613,661,755','sources':['D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Current separate currency depths; mature48h numerator/denominator and censored/shortened/relisted counts; immutable traded template/price/fee/units.'},
+ {'id':'zero-shop-activity','design_lines':'714,755','sources':['D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Wallet denominator and known missing; original total spend and post balance; actual claimed branches and peak issuance, known-account budget. No causal crowding or sum of exclusive choices.'},
+ {'id':'red-instance-lifetime','design_lines':'585,755','sources':['D04-physical-flow-r1','D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Original quota scope/week, mint attempt and item custody/owner trail. Legacy unknown and1000-row truncation explicit; no quota refund inferred.'},
+ {'id':'operational-boundaries','design_lines':'490','sources':['D04-currency-r1','D04-diagnostics-r1'],'verdict':'accepted_current_implementation','meaning':'Read-only/RepeatableRead/deadline/window/source caps/private admin/no-store. IDs not metrics labels; existing low resource protections and no production deployment.'}]
+proof={'at_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'head':subprocess.check_output(['git','rev-parse','HEAD']).decode().strip(),'D04_complete':True,'acceptance_scope':'Current implementation and explicitly bounded local/isolated runtime diagnostic fixtures. Not historical completeness, human cohorts, economic balance or production load acceptance.','whole_goal_complete':False,'next_progress':'31/35','verified_stage_results':reports,'original_manifest_files_verified':files_checked,'named_events':sorted(named),'source_coverage':source_coverage,'latest_changed_production_paths':changed,'requirements':requirements,'old_stage_verdicts_unchanged':True,'first_red_schema_identity_gap_retained':True,'all_historical_failures_retained':True,'new_gameplay_campaign_cases':0,'new_native_capacity_cases':0,'new_rendered_UI_frames':0,'B05_total':330,'D03_total':284,'D03_remaining':16,'class_efficiency_target':1.15,'capital_banks_unchanged':True,'production_modified':False,'remaining_items':['D03','E02','F01','F03']}
+path=base/'d04-integrated-current-audit-r1.derived.json';assert not path.exists();path.write_text(json.dumps(proof,indent=2)+'\n');print(json.dumps({'D04_complete':True,'requirements':len(requirements),'manifest_files':files_checked,'source_paths':len(source_coverage),'next_progress':'31/35'}))
