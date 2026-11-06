@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6b73ffff-bf06-413f-b09c-14f3e66c6890" name="shengjiahao@YK-SHENGJIAHAO 2026-11-07 05:03:30" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-07T05:03:30.1038073+08:00" queuing="2026-11-07T05:03:30.1038076+08:00" start="2026-11-07T05:02:49.8375745+08:00" finish="2026-11-07T05:03:31.3557545+08:00" />
+  <TestSettings name="default" id="ab8a85dd-1dd0-4032-b005-fe6a7a28abb4">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-07_05_03_30" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="996fa9d3-946d-4595-bf25-c62c1976144d" testId="f594effe-40a8-4a39-0497-8622e85acac8" testName="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.NineDeclaredActorsBindActualPreparationsAtDay1Day7Day14WithoutStartingMaps" computerName="YK-SHENGJIAHAO" duration="00:00:38.1691120" startTime="2026-11-07T05:02:51.8888957+08:00" endTime="2026-11-07T05:03:30.0710628+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="996fa9d3-946d-4595-bf25-c62c1976144d" />
+    <UnitTestResult executionId="0e0cf4e8-3208-48d2-b3c7-59aee9e803c8" testId="fbe745b3-6aa3-b163-d257-183b4d03392a" testName="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" computerName="YK-SHENGJIAHAO" duration="00:00:01.1542961" startTime="2026-11-07T05:03:30.0847754+08:00" endTime="2026-11-07T05:03:31.2645099+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e0cf4e8-3208-48d2-b3c7-59aee9e803c8">
+      <Output>
+        <ErrorInfo>
+          <Message>Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_season_domain"&#xD;
+&#xD;
+DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.</Message>
+          <StackTrace>   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)&#xD;
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56&#xD;
+   at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs:line 56&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs:line 126&#xD;
+   at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs:line 175&#xD;
+--- End of stack trace from previous location ---</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r2\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="fbe745b3-6aa3-b163-d257-183b4d03392a">
+      <Execution id="0e0cf4e8-3208-48d2-b3c7-59aee9e803c8" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r2\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests" name="PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.NineDeclaredActorsBindActualPreparationsAtDay1Day7Day14WithoutStartingMaps" storage="g:\pr13evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r2\bin\fantasycard.server.tests\release\fantasycard.server.tests.dll" id="f594effe-40a8-4a39-0497-8622e85acac8">
+      <Execution id="996fa9d3-946d-4595-bf25-c62c1976144d" />
+      <TestMethod codeBase="G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\f01-prepared-build-r2\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests" name="NineDeclaredActorsBindActualPreparationsAtDay1Day7Day14WithoutStartingMaps" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="f594effe-40a8-4a39-0497-8622e85acac8" executionId="996fa9d3-946d-4595-bf25-c62c1976144d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fbe745b3-6aa3-b163-d257-183b4d03392a" executionId="0e0cf4e8-3208-48d2-b3c7-59aee9e803c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="1" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.33]   Discovering: FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.12]   Discovered:  FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:01.53]   Starting:    FantasyCard.Server.Tests&#xD;
+[xUnit.net 00:00:40.88]       Npgsql.PostgresException : 23514: new row for relation "equipments" violates check constraint "ck_equipment_season_domain"&#xD;
+[xUnit.net 00:00:40.88]       &#xD;
+[xUnit.net 00:00:40.88]       DETAIL: Detail redacted as it may contain sensitive data. Specify 'Include Error Detail' in the connection string to include this information.&#xD;
+[xUnit.net 00:00:40.88]       Stack Trace:&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)&#xD;
+[xUnit.net 00:00:40.89]            at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource&lt;TResult&gt;.GetResult(Int16 token)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlDataSourceCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]            at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)&#xD;
+[xUnit.net 00:00:40.89]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)&#xD;
+[xUnit.net 00:00:40.89]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\CraftingTestInputs.cs(56,0): at FantasyCard.Server.Tests.Persistence.CraftingTestInputs.SqlAsync(PostgresTestSchema db, String sql, Object[] values)&#xD;
+[xUnit.net 00:00:40.89]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs(126,0): at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs()&#xD;
+[xUnit.net 00:00:40.89]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresFirstFortnightPreparationTests.cs(175,0): at FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs()&#xD;
+[xUnit.net 00:00:40.89]         --- End of stack trace from previous location ---&#xD;
+[xUnit.net 00:00:40.90]   Finished:    FantasyCard.Server.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-07T05:03:31.2693229+08:00">
+        <Text>[xUnit.net 00:00:40.88]     FantasyCard.Server.Tests.Persistence.PostgresFirstFortnightPreparationTests.PreparedControllerRetainsLegalArmorAndActualBagPotionHoldsAndRejectsMismatchedInputs [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>
