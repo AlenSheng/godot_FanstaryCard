@@ -620,7 +620,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
             if (destination != "Equipped" || previousOwner != hold.PlayerId)
                 await RemoveEquipmentFromLoadoutsAsync(connection, transaction, previousOwner, equipmentId, cancellationToken);
             await WriteEquipmentMovementAsync(connection, transaction, hold.PlayerId, equipmentId,
-                source, destination, EquipmentSettlementReason(destination), realm, hold.HoldId, cancellationToken);
+                source, destination, EquipmentSettlementReason(destination), realm, hold.HoldId, cancellationToken,previousOwner);
             return;
         }
         if (asset.AssetKind == "Gold")
@@ -786,13 +786,13 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         string reason,
         CommitRealm realm,
         Guid holdId,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,Guid? fromOwner=null)
     {
         await using var movement = new NpgsqlCommand(
             """
             INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,created_at,
-                season_id,difficulty_id,ruleset_id,config_version,stats_version,request_id)
-            SELECT $1,$2,$3,$4,$5,$6,CURRENT_TIMESTAMP,$7,$8,$9,$10,$11,$12 FROM equipments WHERE instance_id=$3 AND owner_id=$2
+                season_id,difficulty_id,ruleset_id,config_version,stats_version,request_id,from_owner_id,to_owner_id)
+            SELECT $1,$2,$3,$4,$5,$6,CURRENT_TIMESTAMP,$7,$8,$9,$10,$11,$12,$13,$2 FROM equipments WHERE instance_id=$3 AND owner_id=$2
             """,
             connection,
             transaction);
@@ -804,6 +804,7 @@ public sealed partial class SettlementRepository(NpgsqlDataSource dataSource, Ti
         movement.Parameters.AddWithValue(reason);
         AddContextParameters(movement, realm.Context);
         movement.Parameters.AddWithValue(holdId.ToString("D"));
+        movement.Parameters.AddWithValue(NpgsqlDbType.Uuid,(object?)fromOwner??DBNull.Value);
         await movement.ExecuteNonQueryAsync(cancellationToken);
     }
 

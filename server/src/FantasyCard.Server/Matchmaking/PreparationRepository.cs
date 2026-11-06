@@ -426,9 +426,9 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
         {
             await using var movement = new NpgsqlCommand(
                 """
-                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version)
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
                 SELECT $1,$2,$3,'PreparationLocked','Equipped','preparation.release',$4,CURRENT_TIMESTAMP,p.season_id,
-                    CASE WHEN p.season_id IS NULL THEN 'Standard' ELSE 'D'||p.difficulty_id::text END,p.ruleset_id,p.config_version,p.stats_version
+                    CASE WHEN p.season_id IS NULL THEN 'Standard' ELSE 'D'||p.difficulty_id::text END,p.ruleset_id,p.config_version,p.stats_version,$2,$2
                 FROM equipments e CROSS JOIN preparations p WHERE e.instance_id=$3 AND e.owner_id=$2 AND p.preparation_id=$5
                 """,
                 connection, transaction);
@@ -805,9 +805,9 @@ public sealed class PreparationRepository(NpgsqlDataSource dataSource, TimeProvi
                 throw new InvalidOperationException($"Preparation '{preparationId}' could not lock its equipment.");
             await using var movement = new NpgsqlCommand(
                 """
-                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version)
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,season_id,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
                 SELECT $1,$2,$3,'Equipped','PreparationLocked','preparation.lock',$4,CURRENT_TIMESTAMP,p.season_id,
-                    CASE WHEN p.season_id IS NULL THEN 'Standard' ELSE 'D'||p.difficulty_id::text END,p.ruleset_id,p.config_version,p.stats_version
+                    CASE WHEN p.season_id IS NULL THEN 'Standard' ELSE 'D'||p.difficulty_id::text END,p.ruleset_id,p.config_version,p.stats_version,$2,$2
                 FROM equipments e CROSS JOIN preparations p WHERE e.instance_id=$3 AND e.owner_id=$2 AND p.preparation_id=$5
                 """,
                 connection, transaction);

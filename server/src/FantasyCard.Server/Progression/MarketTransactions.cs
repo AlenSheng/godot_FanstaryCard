@@ -88,19 +88,19 @@ public sealed partial class EconomyRepository
     }
 
     private static async Task WriteMarketMovementAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,Guid playerId,Guid equipmentId,
-        string from,string to,string reason,string? requestId,string? seasonId,DateTimeOffset now,CancellationToken ct)
+        string from,string to,string reason,string? requestId,string? seasonId,DateTimeOffset now,CancellationToken ct,Guid? fromOwner=null)
     {
         await using var insert=new NpgsqlCommand("""
             INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
-                season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version)
+                season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
             SELECT $1,$2,$3,$4,$5,$6,$7,$8,$9,'MarketTransfer',
-                CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version
+                CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version,$10,$2
             FROM (VALUES(1)) seed(n) LEFT JOIN season_definitions d ON d.season_id=$9
             """,connection,transaction);
         insert.Parameters.AddWithValue(Guid.CreateVersion7());insert.Parameters.AddWithValue(playerId);insert.Parameters.AddWithValue(equipmentId);
         insert.Parameters.AddWithValue(from);insert.Parameters.AddWithValue(to);insert.Parameters.AddWithValue(reason);
         insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)requestId??DBNull.Value);insert.Parameters.AddWithValue(now);
-        insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)seasonId??DBNull.Value);await insert.ExecuteNonQueryAsync(ct);
+        insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)seasonId??DBNull.Value);insert.Parameters.AddWithValue(fromOwner??playerId);await insert.ExecuteNonQueryAsync(ct);
     }
 
     private static async Task<StoredMarketListing> InsertMarketListingAsync(NpgsqlConnection connection,NpgsqlTransaction transaction,
@@ -308,7 +308,7 @@ public sealed partial class EconomyRepository
             insert.Parameters.AddWithValue(NpgsqlDbType.Varchar,(object?)item.SeasonId??DBNull.Value);insert.Parameters.AddWithValue(NpgsqlDbType.Jsonb,JsonSerializer.Serialize(response));
             await insert.ExecuteNonQueryAsync(cancellationToken);
         }
-        await WriteMarketMovementAsync(connection,transaction,buyerId,item.InstanceId,"MarketListed","Inventory","market.purchased",requestId,item.SeasonId,realm.Now,cancellationToken);
+        await WriteMarketMovementAsync(connection,transaction,buyerId,item.InstanceId,"MarketListed","Inventory","market.purchased",requestId,item.SeasonId,realm.Now,cancellationToken,sellerId);
         await MarketReceiptAsync(connection,transaction,buyerId,"market.purchase",requestId,hash,response,item.SeasonId,realm.Now,cancellationToken);
         await transaction.CommitAsync(cancellationToken);return response;
     }

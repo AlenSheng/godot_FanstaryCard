@@ -201,9 +201,9 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                 await using var movement = new NpgsqlCommand(
                     """
                     INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
-                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version)
+                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
                     SELECT $1,$2,$3,'Inventory','EnhanceMaterialConsumed','admin_revoke',$4,$5,e.season_id,'AdminRevoke',
-                        CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version
+                        CASE WHEN d.ruleset_id='season-v1' THEN 'D0' END,d.ruleset_id,d.config_version,d.stats_version,$2,$2
                     FROM equipments e LEFT JOIN season_definitions d ON d.season_id=e.season_id
                     WHERE e.instance_id=$3 AND e.owner_id=$2
                     """,
@@ -301,8 +301,8 @@ public sealed class AdminRepository(NpgsqlDataSource dataSource, TimeProvider ti
                 if (inserted != 0)
                 {
                     await using var movement = new NpgsqlCommand("""
-                        INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,source_kind)
-                        VALUES($1,$2,$3,'Admin','Inventory','admin.grant_all_equipment',$4,$5,'AdminGrant')
+                        INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,source_kind,from_owner_id,to_owner_id)
+                        VALUES($1,$2,$3,'Admin','Inventory','admin.grant_all_equipment',$4,$5,'AdminGrant',NULL,$2)
                         """, connection, transaction);
                     movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
                     movement.Parameters.AddWithValue(instanceId);movement.Parameters.AddWithValue(requestId);movement.Parameters.AddWithValue(now);

@@ -366,8 +366,8 @@ public sealed class MailRepository(NpgsqlDataSource dataSource, TimeProvider tim
             equipment.Parameters.AddWithValue(now);
             await equipment.ExecuteNonQueryAsync(cancellationToken);
             await using var movement = new NpgsqlCommand("""
-                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at)
-                VALUES($1,$2,$3,'Mail','Inventory','mail.claim',$4,$5)
+                INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,from_owner_id,to_owner_id)
+                VALUES($1,$2,$3,'Mail','Inventory','mail.claim',$4,$5,NULL,$2)
                 """, connection, transaction);
             movement.Parameters.AddWithValue(Guid.CreateVersion7());movement.Parameters.AddWithValue(playerId);
             movement.Parameters.AddWithValue(equipmentId);movement.Parameters.AddWithValue(mailId.ToString("D"));

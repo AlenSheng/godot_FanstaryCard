@@ -106,9 +106,9 @@ public sealed partial class SeasonRepository
                         SELECT $1,$2,instance_id,$4,$5,$6,$7 FROM archived RETURNING item_id),
                 moved AS (
                     INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,created_at,
-                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version)
+                        season_id,source_kind,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
                     SELECT $8,$1,e.instance_id,$5,$6,'season.archive',$7,$2,'SeasonArchive','D'||e.generated_difficulty::text,
-                        d.ruleset_id,d.config_version,d.stats_version FROM archived e CROSS JOIN season_definitions d
+                        d.ruleset_id,d.config_version,d.stats_version,$1,$1 FROM archived e CROSS JOIN season_definitions d
                         WHERE d.season_id=$2)
                 UPDATE player_loadouts SET head_id=CASE WHEN head_id=$3 THEN NULL ELSE head_id END,
                     hands_id=CASE WHEN hands_id=$3 THEN NULL ELSE hands_id END,chest_id=CASE WHEN chest_id=$3 THEN NULL ELSE chest_id END,

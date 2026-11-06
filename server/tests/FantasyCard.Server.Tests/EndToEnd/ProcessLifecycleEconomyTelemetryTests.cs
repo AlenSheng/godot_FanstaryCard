@@ -24,12 +24,14 @@ public sealed partial class ProcessLifecycleRecoveryTests
         using(var missing=await client.GetAsync("/api/admin/telemetry/crafting-events",ct))Assert.Equal(HttpStatusCode.Unauthorized,missing.StatusCode);
         using(var missing=await client.GetAsync("/api/admin/telemetry/lifecycle-events",ct))Assert.Equal(HttpStatusCode.Unauthorized,missing.StatusCode);
         using(var missing=await client.GetAsync("/api/admin/telemetry/room-events",ct))Assert.Equal(HttpStatusCode.Unauthorized,missing.StatusCode);
+        using(var missing=await client.GetAsync("/api/admin/telemetry/physical-equipment",ct))Assert.Equal(HttpStatusCode.Unauthorized,missing.StatusCode);
         client.DefaultRequestHeaders.Add("X-Admin-Key",key);client.DefaultRequestHeaders.Remove("X-Forwarded-Proto");
         using(var insecure=await client.GetAsync("/api/admin/telemetry/economy",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
         using(var insecure=await client.GetAsync("/api/admin/telemetry/playtime?currency=MageSoul",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
         using(var insecure=await client.GetAsync("/api/admin/telemetry/crafting-events",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
         using(var insecure=await client.GetAsync("/api/admin/telemetry/lifecycle-events",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
         using(var insecure=await client.GetAsync("/api/admin/telemetry/room-events",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
+        using(var insecure=await client.GetAsync("/api/admin/telemetry/physical-equipment",ct))Assert.Equal(HttpStatusCode.Forbidden,insecure.StatusCode);
         client.DefaultRequestHeaders.Add("X-Forwarded-Proto","https");
         using(var response=await client.GetAsync("/api/admin/telemetry/economy",ct))
         {
@@ -72,6 +74,13 @@ public sealed partial class ProcessLifecycleRecoveryTests
             PostgresSeasonMarketTests.WriteTelemetryProof(new{kind="actual-room-events-admin-HTTP",host.ProcessId,missingKeyStatus=401,insecureStatus=403,privateNoStore=true,report=body.RootElement.Clone()});
         }
         using(var minimum=await client.GetAsync("/api/admin/telemetry/room-events?to=0001-01-01T00%3A00%3A00Z",ct))Assert.Equal(HttpStatusCode.BadRequest,minimum.StatusCode);
+        using(var response=await client.GetAsync("/api/admin/telemetry/physical-equipment",ct))
+        {
+            Assert.Equal(HttpStatusCode.OK,response.StatusCode);Assert.True(response.Headers.CacheControl!.Private);Assert.True(response.Headers.CacheControl.NoStore);
+            using var body=JsonDocument.Parse(await response.Content.ReadAsByteArrayAsync(ct));Assert.Empty(body.RootElement.GetProperty("events").EnumerateArray());
+            PostgresSeasonMarketTests.WriteTelemetryProof(new{kind="actual-physical-equipment-admin-HTTP",host.ProcessId,missingKeyStatus=401,insecureStatus=403,privateNoStore=true,report=body.RootElement.Clone()});
+        }
+        using(var minimum=await client.GetAsync("/api/admin/telemetry/physical-equipment?to=0001-01-01T00%3A00%3A00Z",ct))Assert.Equal(HttpStatusCode.BadRequest,minimum.StatusCode);
         Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM reward_refresh_operations"));
     }
 }

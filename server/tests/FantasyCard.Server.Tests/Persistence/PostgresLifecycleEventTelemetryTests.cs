@@ -62,7 +62,8 @@ public sealed class PostgresLifecycleEventTelemetryTests
         var replay=await p.Seasons.AdvanceArchivePageAsync(p.Player,p.Season.SeasonId,1,Ct);Assert.Equal(0,replay.ArchivedItems);Assert.Equal(first.JobId,second.JobId);
         var repository=new LifecycleEventTelemetryRepository(db.DataSource);var fingerprint=await FingerprintAsync(db);
         var report=await repository.ReadAsync(p.Clock.Now.AddSeconds(-1),p.Clock.Now.AddSeconds(1),Ct);
-        Assert.True(report.SourcesComplete);Assert.Equal(2,report.Events.Count);Assert.All(report.Events,e=>{Assert.Equal("season_asset_archived",e.EventName);Assert.Equal("Archive",e.PhysicalFlow);Assert.Equal(p.Season.SeasonId,e.Dimensions.SeasonId);Assert.Equal(p.Season.ConfigVersion,e.Dimensions.ConfigVersion);Assert.Null(e.Dimensions.DifficultyId);});
+        var equipmentEvents=report.Events.Where(e=>e.AssetKind=="Equipment").ToArray();
+        Assert.True(report.SourcesComplete);Assert.Equal(2,equipmentEvents.Length);Assert.All(equipmentEvents,e=>{Assert.Equal("season_asset_archived",e.EventName);Assert.Equal("Archive",e.PhysicalFlow);Assert.Equal(p.Season.SeasonId,e.Dimensions.SeasonId);Assert.Equal(p.Season.ConfigVersion,e.Dimensions.ConfigVersion);Assert.Null(e.Dimensions.DifficultyId);});
         Assert.Equal("Recycled",Assert.Single(report.Events,e=>e.ItemId==discarded).ToLocation);
         Assert.Equal("SeasonArchive",Assert.Single(report.Events,e=>e.ItemId==survivor).ToLocation);
         Assert.Equal(2,report.PhysicalFlows.Sum(g=>g.Items));Assert.DoesNotContain(report.PhysicalFlows,g=>g.PhysicalFlow=="Destroy");

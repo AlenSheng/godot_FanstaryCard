@@ -474,9 +474,9 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
         await using var command = new NpgsqlCommand(
             """
             INSERT INTO inventory_movements(movement_id,player_id,item_id,from_location,to_location,reason,request_id,created_at,
-                season_id,difficulty_id,ruleset_id,config_version,stats_version)
+                season_id,difficulty_id,ruleset_id,config_version,stats_version,from_owner_id,to_owner_id)
             SELECT $1,$2,$3,$4,$5,$6,$7,$8,$9,CASE WHEN d.season_id IS NULL THEN NULL ELSE 'D0' END,
-                d.ruleset_id,d.config_version,d.stats_version
+                d.ruleset_id,d.config_version,d.stats_version,CASE WHEN $4='NotMinted' THEN NULL ELSE $2::uuid END,$2
             FROM (VALUES(1)) seed(n) LEFT JOIN season_definitions d ON d.season_id=$9
             """,
             connection, transaction);
