@@ -589,11 +589,13 @@
       "id": "F02",
       "status": "in_progress",
       "requirement": "实际PostgreSQL事务、并发/重复/重启/跨季边界与新旧版本恢复自检",
-      "note": "D03 maintenance PG r2 found6IDs/16NaturalDrop rows reused across independent original banks. OriginalIDs unchanged; each bank now isolated for disposal checks. F02 must separately audit same-server cross-room seed/item-ID uniqueness; no live bug or global invariant acceptance claimed from snapshot imports. 2026-11-06实际链路已复现旧/新规则同种子跨房间GUID冲突2项失败。现将新装备GUID绑定RoomId并保留原随机消耗/数值/待领取旧ID，8项本机、服务端0警告构建及隔离PG2新事实全过（同schema两账号并发/Repository重放、旧重复原子拒绝）。独立Python复算Linux两GUID一致。schema/容器/env/输入均清理，旧D03-r3缓存收尾也已核实。该身份子链路通过，不宣称完整进程重启或F02整体通过，余项仍待综合故障审计。",
+      "note": "D03 maintenance PG r2 found6IDs/16NaturalDrop rows reused across independent original banks. OriginalIDs unchanged; each bank now isolated for disposal checks. F02 must separately audit same-server cross-room seed/item-ID uniqueness; no live bug or global invariant acceptance claimed from snapshot imports. 2026-11-06实际链路已复现旧/新规则同种子跨房间GUID冲突2项失败。现将新装备GUID绑定RoomId并保留原随机消耗/数值/待领取旧ID，8项本机、服务端0警告构建及隔离PG2新事实全过（同schema两账号并发/Repository重放、旧重复原子拒绝）。独立Python复算Linux两GUID一致。schema/容器/env/输入均清理，旧D03-r3缓存收尾也已核实。该身份子链路通过，不宣称完整进程重启或F02整体通过，余项仍待综合故障审计。 2026-11-06当前17/原16实际进程恢复4项通过：8个完整Program进程强杀/重启，3归档模式隔离及4账号真实PB准备/READY/开局/活动额度重连，0机器人/施法/结算。首轮3项因缺准备来源在保存前失败，补真实PreparationRepository后复验；合法归档元数据单独核对，不弱化余额/来源。7schema/2容器/env/tmpfs均清理，原失败/SDK可选库诊断/worker new_matches=0口径更正保留。仅此子链路通过，新季托管/提交/通知/ACK临界实际进程综合审计继续，不收口F02或整体29/35。",
       "evidence": [
         "F02-LOOT-IDENTITY-PROGRESS.md",
         "evidence/F02-loot-id-r1/result.json",
-        "evidence/F02-loot-id-r1/f02-loot-id-independent-audit-r1.derived.json"
+        "evidence/F02-loot-id-r1/f02-loot-id-independent-audit-r1.derived.json",
+        "F02-SEASON17-PROCESS-RECOVERY.md",
+        "evidence/F02-season-credit-r2/result.json"
       ]
     },
     {
