@@ -45,6 +45,9 @@ public sealed partial class BattleRoom
         var kept=equipment is null || winner.Inventory.TryAdd(equipment);
         if(!kept)TrackRecycled(winner,equipment!);
         winner.BotVictoryReward=new(loser.PlayerId,policy.Gold,policy.Fragments,equipment,gold,fragments,kept);
+        ObserveRoomEvent(winner,"loot_generated","BotVictory",gold?"CarriedPendingSettlement":"OverflowRecycled",[new("gold",ExplorationItemKind.Gold,policy.Gold)]);
+        ObserveRoomEvent(winner,"loot_generated","BotVictory",fragments?"CarriedPendingSettlement":"OverflowRecycled",[new("equipment_fragments",ExplorationItemKind.EquipmentFragments,policy.Fragments)]);
+        if(equipment is not null)ObserveRoomEvent(winner,"loot_generated","BotVictory",kept?"CarriedPendingSettlement":"OverflowRecycled",[equipment]);
     }
 
     private void ValidateBotRewardState(RoomRandomStreamsSnapshot? streams)

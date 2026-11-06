@@ -228,6 +228,7 @@ public static class RoomCheckpointPolicy
         snapshot.ConfigVersion,
         snapshot.Season,
         snapshot.StartedAtUtc,
+        observationSequence=snapshot.Observations?.LastSequence,
         mapInitialized = snapshot.Map is not null,
         players = snapshot.Players.OrderBy(player => player.PlayerId).Select(player => new
         {

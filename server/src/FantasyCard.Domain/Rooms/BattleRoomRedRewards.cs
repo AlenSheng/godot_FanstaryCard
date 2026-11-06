@@ -61,6 +61,11 @@ public sealed partial class BattleRoom
             else if(!player.Inventory.TryAdd(item))player.PendingRedItem=item;
         }
         player.RedReward=result;player.PendingRedEvaluation=null;RedStateNeedsPersistence=true;Revision++;
+        if(result.Equipment is { } delivered)
+        {
+            ObserveRoomEvent(player,"loot_generated","IndependentRed","AlreadyMintedDelivery",[delivered]);
+            if(player.Phase==RoomPlayerPhase.Dead)ObserveRoomEvent(player,"loot_lost","IndependentRed","RelicCustodyPendingSettlement",[delivered]);
+        }
     }
 
     public long ClaimPendingRed(Guid playerId,string? replaceItemId=null)
@@ -74,7 +79,9 @@ public sealed partial class BattleRoom
         if(!staged.TryAdd(item with {SlotIndex=replaced?.SlotIndex??-1,IsSafe=false}))
             throw new DomainValidationException("Choose an inventory item to replace before taking the pending red.");
         player.Inventory.Apply(staged);if(replaced is not null)TrackRecycled(player,replaced);
-        player.PendingRedItem=null;RedStateNeedsPersistence=true;return ++Revision;
+        player.PendingRedItem=null;RedStateNeedsPersistence=true;
+        ObserveRoomEvent(player,"loot_chosen","IndependentRed","CarriedPendingSettlement",[item],1);
+        return ++Revision;
     }
 
     private static void RequireRedChoiceResolved(RoomPlayerState player)

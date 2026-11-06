@@ -63,7 +63,7 @@ public sealed class RoomPlaytimeObservationTests
     [Fact]
     public void LegacyMissingClocksStayMissingInsteadOfBeingReconstructedFromElapsed()
     {
-        var source=Room().Capture();var legacy=source with{StartedAtUtc=null,Elapsed=TimeSpan.FromHours(2),Players=source.Players.Select(p=>p with{Phase=RoomPlayerPhase.Dead,Pve=null,Combat=p.Combat with{Hp=0},TerminalRoomElapsed=null}).ToArray()};
+        var source=Room().Capture();var legacy=source with{StartedAtUtc=null,Observations=null,Elapsed=TimeSpan.FromHours(2),Players=source.Players.Select(p=>p with{Phase=RoomPlayerPhase.Dead,Pve=null,Combat=p.Combat with{Hp=0},TerminalRoomElapsed=null}).ToArray()};
         var restored=BattleRoom.Restore(legacy,Catalog(),73).Capture();Assert.Null(restored.StartedAtUtc);Assert.All(restored.Players,p=>Assert.Null(p.TerminalRoomElapsed));
         var raw=JsonSerializer.Serialize(restored);Assert.DoesNotContain("TerminalRoomElapsed",raw,StringComparison.Ordinal);Assert.DoesNotContain("StartedAtUtc",raw,StringComparison.Ordinal);
     }

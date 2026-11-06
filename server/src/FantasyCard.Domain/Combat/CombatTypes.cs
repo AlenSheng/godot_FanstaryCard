@@ -241,7 +241,8 @@ public sealed record BattleRoomSnapshot(
     RoomRandomStreamsSnapshot? RandomStreams = null,
     Configuration.NumericalRules? Numerics = null,
     Seasons.SeasonContext? Season = null,
-    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? StartedAtUtc = null);
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? StartedAtUtc = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RoomObservationSnapshot? Observations = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 
