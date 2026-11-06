@@ -199,9 +199,4 @@ static func find_item(items: Array, id: String) -> Dictionary:
 	return {}
 
 static func can_add(player: Dictionary, item: Dictionary) -> bool:
-	var items: Array = player.get("inventory", [])
-	if items.size() < int(player.get("inventory_capacity", 0)): return true
-	if item.get("kind", "") not in ["Equipment", "HealthPotion"]:
-		for current in items:
-			if current.get("kind") == item.get("kind") and current.get("item_id") == item.get("item_id"): return true
-	return false
+	return preload("res://state/temporary_inventory_rules.gd").can_add(player, item)

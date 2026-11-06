@@ -1991,34 +1991,80 @@ func _rewards(reward: Dictionary) -> void:
 		var index := int(option.kind)
 		_label(panel, {1: P.localized("word_equipment"), 2: P.localized("word_equipment_fragments"), 3: P.localized("exploration_heal_reward")}.get(index, P.localized("loot")), 38)
 		_label(panel, P.localized("ui_combat_hp_percent") % option.heal_percent if index == 3 else P.localized("ui_quantity") % option.quantity, 28, P.TEAL)
+		var value = preload("res://ui/reward_value_model.gd").evaluate(option, Game.room.get("player", {}), Game.room_catalog_index())
+		for hint in preload("res://ui/reward_value_model.gd").display_lines(value): _label(panel, hint, 24, P.GOLD, false)
 		_button(panel, P.localized("select"), func(): _claim(option), not Game.allowed("reward.choice.claim"))
-	var count := int(reward.get("refresh_count", 0))
+	var count := clampi(int(reward.get("refresh_count", 0)), 0, 3)
 	if count < 3:
-		_button(content, P.localized("ui_refresh_remaining") % [[60, 180, 450][count], 3 - count], func(): Game.command("reward.choice.refresh"), not Game.allowed("reward.choice.refresh"))
+		var price := CatalogIndex.reward_refresh_gold(count + 1, Game.room_catalog_index())
+		_button(content, P.localized("ui_refresh_remaining") % [price, 3 - count] if price > 0 else P.localized("quote_unavailable_short"), func(): Game.command("reward.choice.refresh"), price <= 0 or not Game.allowed("reward.choice.refresh"))
 
 func _claim(option: Dictionary, equip: bool = false) -> void:
 	var player: Dictionary = Game.room.get("player", {})
 	var items: Array = player.get("inventory", [])
+	var origin := [Game.gateway.session_generation, Game._room_context_epoch, Game.room.get("match_id", ""), Game.room.get("room_id", "")]
+	var still_current := func() -> bool:
+		return origin == [Game.gateway.session_generation, Game._room_context_epoch, Game.room.get("match_id", ""), Game.room.get("room_id", "")] and Game.allowed("reward.choice.claim") and Game.room.get("reward_choice", {}).get("options", []).any(func(value): return value.get("option_id") == option.get("option_id"))
 	var reward_item := {"kind": "Equipment" if int(option.kind) == 1 else "EquipmentFragments", "item_id": option.get("item_id", "")}
 	var payload := {"option_id": option.option_id, "equip": equip}
 	if not equip and int(option.kind) != 3 and not InventoryView.can_add(player, reward_item):
 		var dialog := AcceptDialog.new()
+		dialog.name = "RewardReplacementDialog"
 		dialog.title = P.localized("bag_full_replace")
+		var dialog_theme := P.theme().duplicate()
+		dialog_theme.default_font_size = 24
+		dialog_theme.set_stylebox("panel", "AcceptDialog", P.box(Color("10272e"), P.GOLD))
+		var frame := P.box(Color("10272e"), P.GOLD)
+		frame.set_expand_margin(SIDE_TOP, 36)
+		frame.content_margin_top = 36
+		dialog_theme.set_stylebox("embedded_border", "Window", frame)
+		dialog_theme.set_stylebox("embedded_unfocused_border", "Window", frame.duplicate())
+		dialog_theme.set_font("title_font", "Window", P.font("title"))
+		dialog_theme.set_font_size("title_font_size", "Window", 24)
+		dialog_theme.set_color("title_color", "Window", P.GOLD)
+		dialog.theme = dialog_theme
+		dialog.get_ok_button().text = P.localized("cancel")
 		var scroll := ScrollContainer.new()
-		scroll.custom_minimum_size = Vector2(720, 460)
+		var available := get_viewport_rect().size
+		var popup_size := Vector2i(mini(840, int(available.x) - 64), mini(560, int(available.y) - 64))
+		scroll.custom_minimum_size = Vector2(popup_size.x - 64, popup_size.y - 128)
+		scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 		dialog.add_child(scroll)
 		var column := VBoxContainer.new()
 		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		scroll.add_child(column)
 		for item in items:
-			_button(column, "%s ×%s%s" % [EquipmentDetails.title(item), item.quantity, P.localized("safe_slot_suffix") if item.get("is_safe", false) else ""], func():
+			var button := _button(column, "", func():
 				dialog.queue_free()
-				_confirm(P.localized("recycle_for_loot") % EquipmentDetails.title(item), func(): payload.replace_item_id = item.item_id; Game.command("reward.choice.claim", payload)))
+				if not still_current.call(): return
+				_confirm(P.localized("recycle_for_loot") % EquipmentDetails.title(item), func():
+					if not still_current.call(): return
+					payload.replace_item_id = item.item_id
+					Game.command("reward.choice.claim", payload)))
+			button.name = "RewardReplacement_" + str(item.get("item_id", ""))
+			var caption := Label.new()
+			caption.text = "%s ×%s%s" % [EquipmentDetails.title(item), item.quantity, P.localized("safe_slot_suffix") if item.get("is_safe", false) else ""]
+			caption.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			caption.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			caption.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			caption.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			caption.add_theme_font_override("font", P.font_for_text(caption.text, 24))
+			caption.add_theme_font_size_override("font_size", 24)
+			button.add_child(caption)
+			P.apply_text_direction(caption)
+			var fit := func():
+				caption.position = Vector2(20, 8)
+				caption.size = Vector2(maxf(1, button.size.x - 40), maxf(1, button.size.y - 16))
+				button.custom_minimum_size.y = maxf(72, caption.get_line_count() * caption.get_theme_font("font").get_height(24) + 16)
+			button.resized.connect(fit)
+			fit.call_deferred()
 		add_child(dialog)
 		dialog.confirmed.connect(dialog.queue_free)
-		dialog.popup_centered(Vector2i(750, 550))
+		dialog.canceled.connect(dialog.queue_free)
+		dialog.popup_centered(popup_size)
 	elif equip:
-		_confirm(P.localized("direct_equip_recycle"), func(): Game.command("reward.choice.claim", payload))
+		_confirm(P.localized("direct_equip_recycle"), func():
+			if still_current.call(): Game.command("reward.choice.claim", payload))
 	else: Game.command("reward.choice.claim", payload)
 
 func _settlement() -> void:

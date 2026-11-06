@@ -3,6 +3,7 @@ extends "res://tests/gameplay_ui_preview.gd"
 const Palette = preload("res://ui/palette.gd")
 const INVENTORY_MANAGEMENT_SCENARIOS := ["e01_gear", "e01_manage", "e01_manage_bottom", "e01_manage_selected", "e01_manage_confirm", "e01_manage_closed"]
 const ARCHIVE_SCENARIOS := ["archive_entry", "archive_equipment", "archive_recipes", "archive_wishes", "archive_loadouts", "archive_legacy", "archive_missing", "archive_empty", "archive_error"]
+const REWARD_VALUE_SCENARIOS := ["rewardvalue_empty", "rewardvalue_gain", "rewardvalue_loss", "rewardvalue_fullbag", "rewardvalue_highquality", "rewardvalue_overcap", "rewardvalue_fullhp", "rewardvalue_missing", "rewardvalue_replace"]
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
@@ -87,7 +88,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS + REWARD_VALUE_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -248,6 +249,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in REWARD_VALUE_SCENARIOS: return await _prepare_reward_value_scene(scenario)
 	if scenario in ARCHIVE_SCENARIOS: return await _prepare_archive_scene(scenario)
 	if scenario in INVENTORY_MANAGEMENT_SCENARIOS: return await _prepare_inventory_management_scene(scenario)
 	if scenario in JOURNEY_CLAIM_SCENARIOS: return await _prepare_claim_scene(scenario, locale)
@@ -886,6 +888,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	_check_login_language(frame_name, on_login)
 	if "_e01_" in frame_name: _check_inventory_management_scene(frame_name)
 	if "_archive_" in frame_name: _check_archive_scene(frame_name)
+	if "_rewardvalue_" in frame_name: _check_reward_value_scene(frame_name)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
@@ -1509,3 +1512,56 @@ func _check_archive_scene(frame_name: String) -> void:
 	if frame_name.ends_with("_archive_loadouts"):
 		for key in ["class_priest", "class_mage", "class_guardian"]:
 			review_checks[prefix + "full localized class " + key] = labels.has(Palette.localized(key))
+
+func _prepare_reward_value_scene(scenario: String) -> bool:
+	var inputs = preload("res://tests/test_reward_value.gd")
+	Game.room = _room_fixture()
+	Game.room.player.phase = "Choice"
+	Game.room.config_version = Game.CATALOG.data.version
+	Game.room.allowed_actions = ["choice.pick", "choice.refresh"]
+	Game.room.player.combat = {"maximum_hp": 70, "effective_maximum_hp": 98, "hp": 80, "shield": 0}
+	Game.room.player.inventory_capacity = 20
+	Game.room.player.inventory = []
+	Game.room.player.equipped_items = []
+	var gear: Dictionary = inputs.gear("Head").equipment
+	if scenario == "rewardvalue_gain": Game.room.player.equipped_items = [inputs.gear("Chest"), inputs.gear("Hands")]
+	if scenario == "rewardvalue_loss":
+		Game.room.player.equipped_items = [inputs.gear("Head"), inputs.gear("Chest"), inputs.gear("Hands")]
+		gear = inputs.gear("Head", "Purple", "Vitality").equipment
+	if scenario == "rewardvalue_highquality":
+		Game.room.player.equipped_items = [inputs.gear("Chest", "Orange")]
+		gear = inputs.gear("Head", "Orange").equipment
+	if scenario in ["rewardvalue_fullbag", "rewardvalue_replace"]:
+		Game.room.player.inventory_capacity = 1
+		Game.room.player.inventory = [{"item_id": "original-potion", "kind": "HealthPotion", "quantity": 1, "is_safe": true}]
+	if scenario == "rewardvalue_fullhp": Game.room.player.combat.hp = 98
+	if scenario == "rewardvalue_missing": Game.room.config_version = "unavailable-original"
+	Game.room.reward_choice = {"refresh_count": 0, "layer": 1, "options": [{"option_id": "value-equipment", "kind": 1, "quantity": 1, "equipment": gear}, {"option_id": "value-fragments", "kind": 2, "item_id": "equipment_fragments", "quantity": 18}, {"option_id": "value-heal", "kind": 3, "quantity": 1, "heal_percent": 30}]}
+	if scenario == "rewardvalue_replace":
+		await _render_base()
+		$UI._claim(Game.room.reward_choice.options[0])
+		await get_tree().process_frame
+		return false
+	return true
+
+func _check_reward_value_scene(frame_name: String) -> void:
+	var prefix := frame_name + ": "
+	if frame_name.ends_with("_rewardvalue_replace"):
+		var dialog := $UI.get_node("RewardReplacementDialog") as AcceptDialog
+		review_checks[prefix + "replacement cancel islocalized"] = dialog.get_ok_button().text == Palette.localized("cancel")
+		review_checks[prefix + "original replacement candidates retained"] = dialog.find_children("RewardReplacement_*", "Button", true, false).size() == 1
+		return
+	var model = preload("res://ui/reward_value_model.gd")
+	var state: Dictionary = model.evaluate(Game.room.reward_choice.options[0], Game.room.player, Game.room_catalog_index())
+	review_checks[prefix + "three reward information scrolls"] = $UI._reference.find_children("RewardValueScroll_*", "ScrollContainer", true, false).size() == 3
+	review_checks[prefix + "public hint text exists"] = $UI._reference.find_children("RewardValueHint*", "Label", true, false).size() >= 5
+	if frame_name.ends_with("_gain") or frame_name.ends_with("_loss"):
+		review_checks[prefix + "set transition isshown"] = not state.set_changes.is_empty()
+	if frame_name.ends_with("_fullbag"): review_checks[prefix + "bagreplacement warning"] = state.bag_full
+	if frame_name.ends_with("_highquality"): review_checks[prefix + "highquality projection refused"] = state.high_quality_blocked and state.set_changes.is_empty()
+	if frame_name.ends_with("_overcap"):
+		var heal: Dictionary = model.evaluate(Game.room.reward_choice.options[2], Game.room.player)
+		review_checks[prefix + "lawful80over70 heal18 overflow3"] = heal.heal_gain == 18 and heal.heal_overflow == 3
+	if frame_name.ends_with("_fullhp"):
+		review_checks[prefix + "effective max heal0"] = model.evaluate(Game.room.reward_choice.options[2], Game.room.player).heal_gain == 0
+	if frame_name.ends_with("_missing"): review_checks[prefix + "no currentattribute fallback"] = not state.catalog_ready and state.set_changes.is_empty()

@@ -15,6 +15,7 @@ const TemporaryBagItem = preload("res://ui/temporary_bag_item.gd")
 const ItemVisual = preload("res://ui/item_visual.gd")
 const ThemeModel=preload("res://ui/season_theme_model.gd")
 const CatalogIndex = preload("res://data/catalog_index.gd")
+const RewardValue = preload("res://ui/reward_value_model.gd")
 const MOVE_ACTION_ICON: Texture2D = preload("res://assets/generated/ui/exploration_move_compass.png")
 const PANEL := "UI/CardCodex/card_codex_dialog_panel_normal.png"
 const SLOT := Art.COMMON_CELL_KEY
@@ -627,13 +628,29 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 			visual.position = rect.position + Vector2(129, 103)
 			visual.size = Vector2(165, 165)
 		var description: String = P.localized("exploration_reward_quantity") % option.get("quantity", 0)
-		if kind == 1: description = Details.description(item)
+		if kind == 1: description = Details.description(item, Game.room_catalog_index())
 		elif kind == 3:
 			var combat: Dictionary = Game.room.get("player", {}).get("combat", {})
 			var maximum: int = int(combat.get("maximum_hp", 0))
 			var amount: int = mini(maxi(0, int(combat.get("effective_maximum_hp", maximum)) - int(combat.get("hp", 0))), int(maximum * int(option.get("heal_percent", 0)) / 100.0))
 			description = P.localized("exploration_reward_heal") % [option.get("heal_percent", 0), amount]
-		ui.text(description, Rect2(rect.position + Vector2(44, 281), Vector2(336, 148)), 23, P.TEAL)
+		var information := DragScroll.new()
+		information.name = "RewardValueScroll_" + str(index)
+		information.position = rect.position + Vector2(44, 281)
+		information.size = Vector2(336, 148)
+		information.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		information.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+		ui.add_child(information)
+		var lines := VBoxContainer.new()
+		lines.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		lines.add_theme_constant_override("separation", 12)
+		information.add_child(lines)
+		var value := RewardValue.evaluate(option, Game.room.get("player", {}), Game.room_catalog_index())
+		var hints := _reward_value_lines(value)
+		for hint in hints:
+			var label: Label = host._label(lines, hint, 24, P.GOLD, false)
+			label.name = "RewardValueHint"
+		host._label(lines, description, 23, P.TEAL, false).name = "RewardChoiceDescription"
 		ui.button(P.localized("added_to_bag") if kind != 3 else P.localized("exploration_heal_now"), Rect2(rect.position + Vector2(44, 439), Vector2(336, 50)), func(): host._claim(option), not Game.allowed("reward.choice.claim"))
 		if kind == 1:
 			ui.button(P.localized("exploration_compare_equip_direct"), Rect2(rect.position + Vector2(44, 499), Vector2(336, 49)), func(): host._show_equipment_details(item, func(): host._claim(option, true), P.localized("exploration_equip_recycle")), not Game.allowed("reward.choice.claim"))
@@ -645,6 +662,9 @@ static func _rewards(ui: Control, host: Control, reward: Dictionary) -> void:
 	refresh_button.name = "RewardRefresh"
 	if price <= 0 and count < 3: refresh_button.tooltip_text = P.localized("config_archive_unavailable")
 	ui.text(P.localized("exploration_current_layer") % [P.localized("exploration_outer"), P.localized("exploration_middle"), P.localized("exploration_inner")][clampi(int(reward.get("layer", 0)), 0, 2)], Rect2(1275, 845, 334, 64), 29, P.MUTED)
+
+static func _reward_value_lines(value: Dictionary) -> Array[String]:
+	return RewardValue.display_lines(value)
 
 static func build_recovery(ui: Control) -> void:
 	ui.picture(Art.texture(PANEL), Rect2(480, 150, 960, 766))
