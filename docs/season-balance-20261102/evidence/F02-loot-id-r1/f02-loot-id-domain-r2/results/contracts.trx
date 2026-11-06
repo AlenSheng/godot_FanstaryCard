@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="971c6fee-45f5-4800-a958-64eb9a147db9" name="shengjiahao@YK-SHENGJIAHAO 2026-11-06 09:54:26" runUser="DOBEST\shengjiahao" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T09:54:26.1653681+08:00" queuing="2026-11-06T09:54:26.1653683+08:00" start="2026-11-06T09:54:22.8886167+08:00" finish="2026-11-06T09:54:26.1724146+08:00" />
+  <TestSettings name="default" id="8b734895-b5c7-47aa-acc6-b1cb273ecba2">
+    <Deployment runDeploymentRoot="shengjiahao_YK-SHENGJIAHAO_2026-11-06_09_54_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fd511924-5e00-44ae-838c-e593a07481df" testId="c466626a-cb0f-5b80-1675-1ed655c2eec6" testName="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: False)" computerName="YK-SHENGJIAHAO" duration="00:00:00.0036749" startTime="2026-11-06T09:54:26.0637486+08:00" endTime="2026-11-06T09:54:26.0679107+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fd511924-5e00-44ae-838c-e593a07481df">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.NotEqual() Failure: Strings are equal&#xD;
+Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"</Message>
+          <StackTrace>   at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs:line 35&#xD;
+   at InvokeStub_CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Object, Span`1)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5c87e0ee-5a9f-4c63-8859-7a0e7588d8cb" testId="bc70e0d0-a647-0cfd-3edc-08e0cdc4e1ae" testName="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: True)" computerName="YK-SHENGJIAHAO" duration="00:00:00.6202004" startTime="2026-11-06T09:54:25.4043730+08:00" endTime="2026-11-06T09:54:26.0569226+08:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5c87e0ee-5a9f-4c63-8859-7a0e7588d8cb">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.NotEqual() Failure: Strings are equal&#xD;
+Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"</Message>
+          <StackTrace>   at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs:line 35&#xD;
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: True)" storage="g:\pr13evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\fantasycard.domain.tests\debug\fantasycard.domain.tests.dll" id="bc70e0d0-a647-0cfd-3edc-08e0cdc4e1ae">
+      <Execution id="5c87e0ee-5a9f-4c63-8859-7a0e7588d8cb" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests" name="SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual" />
+    </UnitTest>
+    <UnitTest name="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: False)" storage="g:\pr13evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\fantasycard.domain.tests\debug\fantasycard.domain.tests.dll" id="c466626a-cb0f-5b80-1675-1ed655c2eec6">
+      <Execution id="fd511924-5e00-44ae-838c-e593a07481df" />
+      <TestMethod codeBase="G:\PR13Evidence\season-balance-20261102-r1\f02-loot-id-domain-r2\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests" name="SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="c466626a-cb0f-5b80-1675-1ed655c2eec6" executionId="fd511924-5e00-44ae-838c-e593a07481df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bc70e0d0-a647-0cfd-3edc-08e0cdc4e1ae" executionId="5c87e0ee-5a9f-4c63-8859-7a0e7588d8cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="2" executed="2" passed="0" failed="2" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.0+00ab0a9ec4 (64-bit .NET 10.0.11)&#xD;
+[xUnit.net 00:00:00.79]   Discovering: FantasyCard.Domain.Tests&#xD;
+[xUnit.net 00:00:01.34]   Discovered:  FantasyCard.Domain.Tests&#xD;
+[xUnit.net 00:00:01.73]   Starting:    FantasyCard.Domain.Tests&#xD;
+[xUnit.net 00:00:02.36]       Assert.NotEqual() Failure: Strings are equal&#xD;
+[xUnit.net 00:00:02.36]       Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+[xUnit.net 00:00:02.36]       Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+[xUnit.net 00:00:02.36]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.36]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs(35,0): at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal)&#xD;
+[xUnit.net 00:00:02.36]            at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)&#xD;
+[xUnit.net 00:00:02.36]            at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)&#xD;
+[xUnit.net 00:00:02.37]       Assert.NotEqual() Failure: Strings are equal&#xD;
+[xUnit.net 00:00:02.37]       Expected: Not "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+[xUnit.net 00:00:02.37]       Actual:       "ee895890-e7e1-1f4f-a238-91c5833a681f"&#xD;
+[xUnit.net 00:00:02.37]       Stack Trace:&#xD;
+[xUnit.net 00:00:02.37]         C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\CrossRoomRewardIdentityTests.cs(35,0): at FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Boolean seasonal)&#xD;
+[xUnit.net 00:00:02.37]            at InvokeStub_CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(Object, Span`1)&#xD;
+[xUnit.net 00:00:02.37]            at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)&#xD;
+[xUnit.net 00:00:02.38]   Finished:    FantasyCard.Domain.Tests&#xD;
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-06T09:54:26.0622983+08:00">
+        <Text>[xUnit.net 00:00:02.36]     FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: True) [FAIL]</Text>
+      </RunInfo>
+      <RunInfo computerName="YK-SHENGJIAHAO" outcome="Error" timestamp="2026-11-06T09:54:26.0723399+08:00">
+        <Text>[xUnit.net 00:00:02.37]     FantasyCard.Domain.Tests.Rooms.CrossRoomRewardIdentityTests.SameSeedRoomsMintDifferentEquipmentWhileRewardDataStayEqual(seasonal: False) [FAIL]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

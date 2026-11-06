@@ -2,6 +2,7 @@ using FantasyCard.Domain.Configuration;
 using FantasyCard.Domain.Players;
 using FantasyCard.Domain.Seasons;
 using System.Text.Json.Serialization;
+using System.Security.Cryptography;
 
 namespace FantasyCard.Domain.Rooms;
 
@@ -47,8 +48,9 @@ public sealed class RewardChoiceState
 {
     private readonly List<RewardChoiceOption> _options;
     private readonly GameConfigCatalog _configuration;
+    private readonly Guid? _roomId;
     private SeasonRewardContext? _season;
-    private RewardChoiceState(ChaosMapLayer layer, IReadOnlyList<RewardChoiceOption> options, int refreshCount, bool isBoss, bool isTreasure, GameConfigCatalog configuration, SeasonRewardContext? season)
+    private RewardChoiceState(ChaosMapLayer layer, IReadOnlyList<RewardChoiceOption> options, int refreshCount, bool isBoss, bool isTreasure, GameConfigCatalog configuration, SeasonRewardContext? season, Guid? roomId)
     {
         if (refreshCount is < 0 or > 3)
             throw new DomainValidationException("Reward refresh count must be between zero and three.");
@@ -58,6 +60,7 @@ public sealed class RewardChoiceState
             throw new DomainValidationException("Treasure encounters must use outer-layer rewards.");
         Layer = layer; IsBoss = isBoss; IsTreasure = isTreasure; _options = options.ToList(); RefreshCount = refreshCount;
         _configuration = configuration;
+        _roomId = roomId;
         _season = season is not null && configuration.SeasonLootPreference is { } preference ? season with {LootPreferenceElement=preference.Resolve(season.LootPreferenceElement)} : season;
         if(season is not null)
         {
@@ -78,16 +81,17 @@ public sealed class RewardChoiceState
     public bool IsTreasure { get; }
     public IReadOnlyList<RewardChoiceOption> Options => _options;
     public int RefreshCount { get; private set; }
-    public static RewardChoiceState Create(ChaosMapLayer layer, Random random, bool isBoss = false, int refreshCount = 0, bool isTreasure = false, GameConfigCatalog? configuration = null, SeasonRewardContext? season = null)
+    public static RewardChoiceState Create(ChaosMapLayer layer, Random random, bool isBoss = false, int refreshCount = 0, bool isTreasure = false, GameConfigCatalog? configuration = null, SeasonRewardContext? season = null, Guid? roomId = null)
     {
         var catalog = configuration ?? GameConfigCatalog.Current;
-        return new(layer, CreateOptions(layer, random, isBoss, isTreasure, catalog,season), refreshCount, isBoss, isTreasure, catalog,season);
+        return new(layer, CreateOptions(layer, random, isBoss, isTreasure, catalog,season,roomId), refreshCount, isBoss, isTreasure, catalog,season,roomId);
     }
-    public static RewardChoiceState Restore(RewardChoiceSnapshot snapshot, GameConfigCatalog? configuration = null,SeasonContext? expectedSeason = null)
+    public static RewardChoiceState Restore(RewardChoiceSnapshot snapshot, GameConfigCatalog? configuration = null,SeasonContext? expectedSeason = null, Guid? roomId = null)
     {
         if(snapshot.SeasonLoot?.Season != expectedSeason)
             throw new DomainValidationException("Saved reward policy and room season differ.");
-        return new(snapshot.Layer,snapshot.Options,snapshot.RefreshCount,snapshot.IsBoss,snapshot.IsTreasure,configuration??GameConfigCatalog.Current,snapshot.SeasonLoot);
+        // Existing choice/item IDs are authoritative. Bind only future refreshes to the already-persisted parent room identity.
+        return new(snapshot.Layer,snapshot.Options,snapshot.RefreshCount,snapshot.IsBoss,snapshot.IsTreasure,configuration??GameConfigCatalog.Current,snapshot.SeasonLoot,roomId);
     }
     public RewardChoiceSnapshot Capture() => new(Layer, _options.ToArray(), RefreshCount, IsBoss, IsTreasure,_season);
     public RewardChoiceOption Get(string optionId) => _options.SingleOrDefault(o => o.OptionId == optionId)
@@ -96,10 +100,10 @@ public sealed class RewardChoiceState
     {
         if (RefreshCount >= 3) throw new DomainValidationException("The reward refresh limit has been reached.");
         var season=_season is null ? null : _season with {Bias=bias??_season.Bias};
-        var options=CreateOptions(Layer,random,IsBoss,IsTreasure,_configuration,season);
+        var options=CreateOptions(Layer,random,IsBoss,IsTreasure,_configuration,season,_roomId);
         _options.Clear();_options.AddRange(options);_season=season;RefreshCount++;
     }
-    private static IReadOnlyList<RewardChoiceOption> CreateOptions(ChaosMapLayer layer, Random random, bool isBoss, bool isTreasure, GameConfigCatalog configuration,SeasonRewardContext? season)
+    private static IReadOnlyList<RewardChoiceOption> CreateOptions(ChaosMapLayer layer, Random random, bool isBoss, bool isTreasure, GameConfigCatalog configuration,SeasonRewardContext? season,Guid? roomId)
     {
         var loot = configuration.LootLayer(layer, isBoss);
         var quantity = random.Next(loot.FragmentMin, checked(loot.FragmentMax + 1));
@@ -112,7 +116,7 @@ public sealed class RewardChoiceState
         var suffix = CreateDeterministicId(random).ToString("N");
         var equipment = CreateEquipment(loot, random, isTreasure, configuration,season);
         return [
-            new($"equipment:{suffix}", RewardChoiceKind.Equipment, new ExplorationItem(CreateDeterministicId(random).ToString("D"), ExplorationItemKind.Equipment, Equipment: equipment, IsGenerated: true)),
+            new($"equipment:{suffix}", RewardChoiceKind.Equipment, new ExplorationItem(CreateDeterministicId(random,roomId).ToString("D"), ExplorationItemKind.Equipment, Equipment: equipment, IsGenerated: true)),
             new($"fragments:{suffix}", RewardChoiceKind.EquipmentFragments, new ExplorationItem("equipment_fragments", ExplorationItemKind.EquipmentFragments, quantity)),
             new($"heal:{suffix}", RewardChoiceKind.ImmediateHeal, HealPercent: heal)];
     }
@@ -150,10 +154,18 @@ public sealed class RewardChoiceState
         return new(slot, quality, element, effectAffix, secondaryTrait,SeasonOrigin:origin,StatsVersion:season?.Season.StatsVersion);
     }
 
-    private static Guid CreateDeterministicId(Random random)
+    private static Guid CreateDeterministicId(Random random,Guid? roomId = null)
     {
         Span<byte> bytes = stackalloc byte[16];
         random.NextBytes(bytes);
-        return new Guid(bytes);
+        if(roomId is null)return new Guid(bytes);
+        // Consume the exact original 16 random bytes, then separate physical identities across rooms.
+        // The parent RoomId survives restore, so no extra counter, snapshot field or random stream is needed.
+        Span<byte> input = stackalloc byte[32];
+        roomId.Value.TryWriteBytes(input[..16]);
+        bytes.CopyTo(input[16..]);
+        Span<byte> digest = stackalloc byte[32];
+        SHA256.HashData(input,digest);
+        return new Guid(digest[..16]);
     }
 }

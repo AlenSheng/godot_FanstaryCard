@@ -688,7 +688,7 @@ public sealed partial class BattleRoom
                 playerSnapshot.RewardChoice is { } savedChoice && savedChoice.SeasonLoot?.LootPreferenceElement!=player.LootPreferenceElement)
                 throw new DomainValidationException("Saved reward choice differs from the player's frozen loot preference.");
             player.RewardChoice = playerSnapshot.RewardChoice is null ? null : RewardChoiceState.Restore(playerSnapshot.RewardChoice, catalog.Configuration,
-                catalog.UsesPublishedConfiguration?room.Season:playerSnapshot.RewardChoice.SeasonLoot?.Season);
+                catalog.UsesPublishedConfiguration?room.Season:playerSnapshot.RewardChoice.SeasonLoot?.Season,room.RoomId);
             if(room.Season is not null && catalog.UsesPublishedConfiguration && player.RewardChoice is { } reward)
             {
                 if(room.Map is null || player.Position is not { } rewardPosition)
@@ -707,7 +707,7 @@ public sealed partial class BattleRoom
                     receipt.Choice.SeasonLoot?.LootPreferenceElement!=player.LootPreferenceElement)
                     throw new DomainValidationException("Saved reward receipt differs from the player's frozen loot preference.");
                 _ = RewardChoiceState.Restore(receipt.Choice,catalog.Configuration,
-                    catalog.UsesPublishedConfiguration?room.Season:receipt.Choice.SeasonLoot?.Season);
+                    catalog.UsesPublishedConfiguration?room.Season:receipt.Choice.SeasonLoot?.Season,room.RoomId);
                 player.RewardRefreshReceipts.Add(receipt);
             }
             foreach (var clearedCell in playerSnapshot.ClearedCells ?? []) player.ClearedCells.Add(clearedCell);
@@ -1253,7 +1253,7 @@ public sealed partial class BattleRoom
         player.RewardChoice = RewardChoiceState.Create(layer, RewardRandom, cell.IsBoss || cell.MonsterGroupId=="BOSS", player.RewardRefreshCount,
             isTreasure: cell.MonsterGroupId == "BOX", configuration: _catalog.Configuration,
             season:Season is not null && _catalog.UsesPublishedConfiguration ? new(Season,
-                SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items),player.LootPreferenceElement) : null);
+                SeasonLootRules.Bias(player.Combat.Hp,player.Combat.MaximumHp,layer,player.WornArmor,player.Inventory.Items),player.LootPreferenceElement) : null,roomId:RoomId);
         if (Season is not null && _catalog.UsesPublishedConfiguration && _catalog.Configuration.SeasonCrafting is not null)
             player.ClearedCells.Add(position);
         QueueBossRed(player,cell,alreadyCleared,now);
