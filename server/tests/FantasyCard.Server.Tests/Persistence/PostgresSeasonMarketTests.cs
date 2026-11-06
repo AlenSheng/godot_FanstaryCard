@@ -11,7 +11,7 @@ using Npgsql;
 
 namespace FantasyCard.Server.Tests.Persistence;
 
-public sealed class PostgresSeasonMarketTests
+public sealed partial class PostgresSeasonMarketTests
 {
     public static bool HasTestDatabase=>PostgresMigrationTests.HasTestDatabase;
     private static CancellationToken Ct=>TestContext.Current.CancellationToken;

@@ -1,16 +1,19 @@
 using System.Security.Cryptography;
 using System.Text;
 using FantasyCard.Server.Common;
+using FantasyCard.Server.Telemetry;
 
 namespace FantasyCard.Server.Admin;
 
-public static class AdminEndpoints
+public static partial class AdminEndpoints
 {
     public static IServiceCollection AddAdminModule(this IServiceCollection services)
     {
         services.AddSingleton<AdminRepository>();
         services.AddSingleton<ClientSettingsRepository>();
         services.AddSingleton<ClientSettingsHub>();
+        services.AddSingleton<EconomyTelemetryRepository>();
+        services.AddSingleton<EconomyTelemetryMetrics>();
         return services;
     }
 
@@ -34,6 +37,7 @@ public static class AdminEndpoints
         admin.MapPost("/players/max-existing-equipment", MaxExistingEquipmentAsync);
         admin.MapGet("/client-settings", GetClientSettingsAsync);
         admin.MapPut("/client-settings", UpdateClientSettingsAsync);
+        admin.MapGet("/telemetry/economy", ReadEconomyTelemetryAsync);
         return endpoints;
     }
 

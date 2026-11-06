@@ -232,7 +232,7 @@ public sealed partial class EconomyRepository(NpgsqlDataSource dataSource, TimeP
         CancellationToken cancellationToken)
     {
         await using var command = dataSource.CreateCommand(
-            "UPDATE reward_refresh_operations SET state='Applied',response_json=$1,room_revision=$2,updated_at=$3 WHERE player_id=$4 AND request_id=$5 AND state IN ('Reserved','Applied')");
+            "UPDATE reward_refresh_operations SET applied_at=CASE WHEN state='Reserved' THEN $3 ELSE applied_at END,state='Applied',response_json=$1,room_revision=$2,updated_at=$3 WHERE player_id=$4 AND request_id=$5 AND state IN ('Reserved','Applied')");
         command.Parameters.Add(new NpgsqlParameter
         {
             NpgsqlDbType = NpgsqlDbType.Jsonb,
