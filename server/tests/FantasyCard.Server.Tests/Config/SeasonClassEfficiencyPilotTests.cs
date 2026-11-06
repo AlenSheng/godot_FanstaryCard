@@ -20,14 +20,14 @@ public sealed class SeasonClassEfficiencyPilotTests
     private static readonly string[] FlowCore=["GP20","GP21","GP22","GP24","GO04","GP18","ET-WATER-P","ET-WATER-B","GB29"];
     private static readonly string[] FlowLoop=["GP25","GB34","GB35","ET-WATER-G"];
     private static readonly DateTimeOffset Epoch=new(2026,11,20,0,0,0,TimeSpan.Zero);
-    private sealed record Scenario(string Id,string Hero,string Deck,string Armor,int Seed);
+    private sealed record Scenario(string Id,string Hero,string Deck,string Armor,int Seed,string Policy="published");
 
     private static Scenario[] Plan()
     {
         using var document=JsonDocument.Parse(File.ReadAllText(Environment.GetEnvironmentVariable("FANTASYCARD_D03_PLAN")??throw new InvalidOperationException("Frozen D03 plan required.")));
-        var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new Scenario(x.GetProperty("id").GetString()!,x.GetProperty("hero").GetString()!,x.GetProperty("deck").GetString()!,x.GetProperty("armor").GetString()!,x.GetProperty("seed").GetInt32())).ToArray();
+        var prior=document.RootElement.GetProperty("prior_used").GetInt32();var rows=document.RootElement.GetProperty("cases").EnumerateArray().Select(x=>new Scenario(x.GetProperty("id").GetString()!,x.GetProperty("hero").GetString()!,x.GetProperty("deck").GetString()!,x.GetProperty("armor").GetString()!,x.GetProperty("seed").GetInt32(),x.TryGetProperty("policy",out var p)?p.GetString()!:"published")).ToArray();
         Assert.InRange(prior,0,299);Assert.InRange(rows.Length,1,300-prior);Assert.Equal(rows.Length,rows.Select(x=>x.Id).Distinct(StringComparer.Ordinal).Count());
-        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");}
+        foreach(var row in rows){Assert.True(Enum.TryParse<HeroClass>(row.Hero,out var h)&&Enum.IsDefined(h));Assert.True(row.Deck is "reference" or "tempo" or "counter-tempo" or "universal-tempo" or "flow-counter" or "flow-loop");Assert.True(row.Armor is "balanced" or "offense" or "counter-offense");Assert.True(row.Policy is "published" or "rate-budget-v1" or "rate-budget-half-v1");}
         return rows;
     }
 
@@ -57,7 +57,8 @@ public sealed class SeasonClassEfficiencyPilotTests
     private static void Run(Scenario row,StreamWriter trace,StreamWriter results)
     {
         var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);var hero=Enum.Parse<HeroClass>(row.Hero);var cards=Deck(hero,row.Deck);var gear=Armor(row.Armor);var context=new SeasonContext("d03-pilot",5,"season-v1",config.Version,"season-equipment-v1");
-        var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,row.Seed,season:context);var id=Guid.NewGuid();var player=room.AddPlayer(new(id,hero,cards,null,WeaponLevel:5,WornArmor:gear,CardLevels:Enumerable.Repeat(5,20).ToArray()));
+        var policy=row.Policy=="rate-budget-half-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true,SeasonMageReturnRateBasisPoints=500}:row.Policy=="rate-budget-v1"?NumericalRules.SeasonV1 with {SeasonMageSustainBudget=true}:NumericalRules.SeasonV1;
+        var room=new BattleRoom(Guid.NewGuid(),config.Version,catalog,row.Seed,numerics:policy,season:context);var id=Guid.NewGuid();var player=room.AddPlayer(new(id,hero,cards,null,WeaponLevel:5,WornArmor:gear,CardLevels:Enumerable.Repeat(5,20).ToArray()));
         var map=ChaosMapGenerator.Generate(row.Seed,1,config.SeasonThemes).Capture();var boss=map.Cells.Single(x=>x.IsBoss);room.InitializeMap(ChaosMapState.Restore(map with {SpawnPositions=[boss.Position]}));
         var target=Assert.Single(player.Pve!.Monsters);var initial=target.Capture();var previous=(target.Hp,target.Shield);long addedHp=0,addedShield=0,otherHpLoss=0,discardedShield=0,damage=0;var casts=0;var previews=0;var last=TimeSpan.FromMilliseconds(-500);
         trace.WriteLine(JsonSerializer.Serialize(new {kind="start",row,config.Version,config.ContentHash,context,cards,gear,initial,player=room.CapturePlayer(id),scope="Independent original Boss development encounter, not legal route/settlement/population evidence."}));trace.Flush();

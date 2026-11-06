@@ -15,7 +15,8 @@ public enum FenxianImmediateDrawPolicy : short
 {
     CurrentRhythm = 1,
     CoreCardsSpent = 2,
-    SeasonBoundedRhythm = 3
+    SeasonBoundedRhythm = 3,
+    SeasonRateBudgetedRhythm = 4
 }
 
 public enum GuardianShieldBonusPolicy : short
@@ -80,7 +81,9 @@ public sealed record PlayerCombatSnapshot(
     int GuardianShieldRemainderTenths = 0,
     FenxianImmediateDrawPolicy FenxianPolicy = FenxianImmediateDrawPolicy.CurrentRhythm,
     GuardianShieldBonusPolicy GuardianPolicy = GuardianShieldBonusPolicy.CurrentSteps,
-    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? LastOpeningBattleId = null);
+    [property: System.Text.Json.Serialization.JsonIgnore(Condition=System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)] Guid? LastOpeningBattleId = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] double? FenxianReturnCredit = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] int? FenxianReturnRateBasisPoints = null);
 
 public enum MonsterIntentKind : short
 {
