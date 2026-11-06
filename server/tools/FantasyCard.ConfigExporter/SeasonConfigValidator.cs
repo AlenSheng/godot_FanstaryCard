@@ -113,6 +113,13 @@ public static partial class SeasonConfigValidator
 
     private static void ValidateDifficulties(ConfigTable table)
     {
+        var returnRate=table.Columns.Select((column,index)=>(column,index)).SingleOrDefault(x=>x.column.Name=="mage_return_rate_bp");
+        if(returnRate.column is not null)
+        {
+            Check(returnRate.column.Type==ConfigValueType.WholeNumber&&returnRate.column.Scope==PublishScope.Both,table,"Mage return rate must be an integer published to both consumers");
+            foreach(var row in table.Rows)
+                Check(row[returnRate.index].Value is long rate&&rate is >=1 and <=1000,table,"Mage return rate must be explicitly one through one thousand basis points");
+        }
         Check(table.Rows.Count == DifficultyIds.Length && table.Rows.Select(r => S(table,r,"difficulty_id")).ToHashSet(StringComparer.Ordinal).SetEquals(DifficultyIds), table, "must contain exactly D0 through D5");
         foreach (var row in table.Rows)
         {

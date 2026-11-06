@@ -2,7 +2,7 @@ namespace FantasyCard.Domain.Configuration;
 
 public sealed record SeasonDifficultyConfig(string Id, string NameKey, int HpBasisPoints, int ShieldBasisPoints,
     int DamageBasisPoints, int IntervalBasisPoints, int GoldBasisPoints, int SoulBasisPoints, int FragmentBasisPoints,
-    int QualityCap, int EntryQualityCap, double PurpleAffixChance, bool RedBossEnabled)
+    int QualityCap, int EntryQualityCap, double PurpleAffixChance, bool RedBossEnabled, int? MageReturnRateBasisPoints = null)
 {
     public const int Basis = 10000;
     public static int ToBasisPoints(double value)

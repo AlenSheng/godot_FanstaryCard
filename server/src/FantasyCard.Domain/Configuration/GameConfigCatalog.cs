@@ -580,9 +580,11 @@ public sealed class GameConfigCatalog
             SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"damage_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"interval_scale")),
             SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"gold_scale")),SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"soul_scale")),
             SeasonDifficultyConfig.ToBasisPoints(table.Double(row,"fragment_scale")),table.Int(row,"quality_cap"),table.Int(row,"entry_quality_cap"),
-            table.Double(row,"purple_affix_chance"),table.Bool(row,"red_boss_enabled"))).ToArray();
+            table.Double(row,"purple_affix_chance"),table.Bool(row,"red_boss_enabled"),
+            table.HasColumn("mage_return_rate_bp")?table.RequiredInt(row,"mage_return_rate_bp"):null)).ToArray();
         if (rows.Length != 6 || !rows.Select(value => value.Id).ToHashSet(StringComparer.Ordinal).SetEquals(Enumerable.Range(0,6).Select(value => $"D{value}")) ||
-            rows.Any(value => value.QualityCap is < 0 or > 4 || value.EntryQualityCap is < 0 or > 5 || !double.IsFinite(value.PurpleAffixChance) || value.PurpleAffixChance is < 0 or > 1))
+            rows.Any(value => value.QualityCap is < 0 or > 4 || value.EntryQualityCap is < 0 or > 5 || !double.IsFinite(value.PurpleAffixChance) || value.PurpleAffixChance is < 0 or > 1 ||
+                value.MageReturnRateBasisPoints is { } rate&&rate is <1 or >1000))
             throw new InvalidDataException("SeasonDifficulty must contain valid D0 through D5 rows.");
         return rows;
     }
@@ -737,6 +739,7 @@ internal sealed class ConfigTable(string name, IReadOnlyList<string> columns, IR
         .ToDictionary(item => item.column, item => item.index, StringComparer.Ordinal);
     public string Name { get; } = name;
     public IReadOnlyList<object?[]> Rows { get; } = rows;
+    public bool HasColumn(string name) => _indexes.ContainsKey(name);
     public string Text(object?[] row, string name) => OptionalText(row, name) ?? throw new InvalidDataException($"{Name}.{name} is required.");
     public string? OptionalText(object?[] row, string name) => _indexes.TryGetValue(name, out var index) ? row[index] as string : null;
     public int OptionalInt(object?[] row, string name) => _indexes.TryGetValue(name, out var index)

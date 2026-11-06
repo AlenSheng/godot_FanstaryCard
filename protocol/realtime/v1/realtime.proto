@@ -291,4 +291,10 @@ message MapPlayerCountEvent { int32 player_count = 1; }
 // Numerical integration v1. Additive; no existing tag reuse.
 message MonsterCardChooseCommand { string candidate_id = 1; bool accept = 2; string replace_instance_id = 3; }
 message RoomMonsterPool { int32 capacity = 1; repeated RoomCard pending = 2; repeated RoomCard active = 3; }
-message RoomNumericalState { string fenxian_policy = 1; string guardian_policy = 2; int32 guardian_remainder_tenths = 3; }
+message RoomNumericalState {
+  string fenxian_policy = 1;
+  string guardian_policy = 2;
+  int32 guardian_remainder_tenths = 3;
+  optional string fenxian_return_credit = 4;
+  optional int32 fenxian_return_rate_basis_points = 5;
+}

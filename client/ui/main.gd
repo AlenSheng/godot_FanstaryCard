@@ -1142,6 +1142,10 @@ func card_description(id: String, kind: String = "face", level: int = 0) -> Stri
 	if kind == "face":
 		var summary := CardDetails.face_description(id, level, cards.get(id, {}), display_catalog_index())
 		if not summary.is_empty(): return summary
+	# This versioned card differs between original16 and current17. Read the
+	# selected room/preparation catalog rather than an unversioned legacy sentence.
+	if id == "MAG-10" and kind == "full":
+		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level, display_catalog_index()))
 	var locale := P.language()
 	if locale not in ["zh-CN", "en"]:
 		return CardDetails.effect_text(CardDetails.at_level(cards.get(id, {}), level, display_catalog_index()))
@@ -1478,7 +1482,7 @@ func _show_equipment_details(item: Dictionary, action: Callable = Callable(), ac
 	add_child(dialog)
 	dialog.open(item, current, worn, action, action_title, Game.busy, display_catalog_index())
 
-func _show_battle_details(status: Dictionary) -> void:
+func _show_battle_details(status: Dictionary, numerical: Dictionary = {}) -> void:
 	var existing := get_node_or_null("BattleDetailsModal")
 	if existing != null:
 		if existing.has_method("dismiss"): existing.call("dismiss")
@@ -1487,9 +1491,10 @@ func _show_battle_details(status: Dictionary) -> void:
 	dialog.name = "BattleDetailsModal"
 	add_child(dialog)
 	dialog.configure(
-		BattleDetails.description(status) if not status.is_empty() else P.localized("battle_stats_waiting"),
+		BattleDetails.description(status, numerical) if not status.is_empty() else P.localized("battle_stats_waiting"),
 		Callable(),
-		{"title": "battle_stats_set", "confirm_text": "confirm", "info_only": true, "tall": true})
+		{"title": "battle_stats_set", "confirm_text": "confirm", "info_only": true, "tall": true,
+		"scroll_description": str(numerical.get("fenxian_policy", "")) == "SeasonRateBudgetedRhythm"})
 
 func _enhance(item: Dictionary) -> void:
 	if Game.busy: return

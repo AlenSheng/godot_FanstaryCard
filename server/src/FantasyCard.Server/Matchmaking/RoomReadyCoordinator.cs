@@ -170,7 +170,7 @@ public sealed partial class RoomReadyCoordinator(
         var configuration = _configurations.Resolve(configVersion);
         var room = new BattleRoom(assignment.RoomId, configVersion,
             CombatCardCatalog.Create(configuration), assignment.Seed, assignment.Season is null
-                ? configuration.Numerics : NumericalRules.SeasonV1,
+                ? configuration.Numerics : NumericalRules.ForSeason(configuration,assignment.Season.Difficulty),
             assignment.Season);
         foreach (var player in assignment.Players)
         {

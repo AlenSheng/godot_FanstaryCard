@@ -20,6 +20,10 @@ public sealed record NumericalRules(
 {
     public static NumericalRules Legacy { get; } = new();
     public static NumericalRules SeasonV1 { get; } = new(SeasonMageRhythm: true, PvePositiveMinimum: true, SeasonCombatActions: true);
+    /// <summary>Original bundles without the optional column retain V1. A new room freezes its published per-difficulty policy.</summary>
+    public static NumericalRules ForSeason(GameConfigCatalog configuration,int difficulty) =>
+        configuration.SeasonDifficulty(difficulty).MageReturnRateBasisPoints is { } rate
+            ? SeasonV1 with {SeasonMageSustainBudget=true,SeasonMageReturnRateBasisPoints=rate}:SeasonV1;
     public FenxianImmediateDrawPolicy FenxianPolicy => SeasonMageSustainBudget ? FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm : SeasonMageRhythm ? FenxianImmediateDrawPolicy.SeasonBoundedRhythm : CardsSpentDraw
         ? FenxianImmediateDrawPolicy.CoreCardsSpent : FenxianImmediateDrawPolicy.CurrentRhythm;
     public GuardianShieldBonusPolicy GuardianPolicy => FractionalGuardian

@@ -14,10 +14,12 @@ internal static class SeasonMageCardCandidate
     {
         var directory = new DirectoryInfo(AppContext.BaseDirectory);
         string? workbook = null;
+        string? originalBundle = null;
         while (directory is not null)
         {
-            var path = Path.Combine(directory.FullName, "config/FantasyCard_Config.xlsx");
-            if (File.Exists(path)) { workbook = path; break; }
+            var root = Path.Combine(directory.FullName, "server/config/archive/season-v1-config-16");
+            var path = Path.Combine(root,"FantasyCard_Config.xlsx");
+            if (File.Exists(path)) { workbook = path; originalBundle=Path.Combine(root,"fantasycard.config.bytes"); break; }
             directory = directory.Parent;
         }
         var tables = XlsxConfigReader.Read(workbook ?? throw new FileNotFoundException("Pinned formal workbook required."));
@@ -29,7 +31,7 @@ internal static class SeasonMageCardCandidate
         row[column.i] = new(column.c.Type, 0L); rows[rowIndex] = row;
         var changed = tables.Select(t => t == table ? t with { Rows = rows } : t).ToArray();
         var bytes = ConfigCompiler.Compile("season-v1-config-16-mage10-probe-r1", changed, out var hash);
-        var result = GameConfigCatalog.Load(bytes); var original = GameConfigCatalog.Current;
+        var result = GameConfigCatalog.Load(bytes); var original = GameConfigCatalog.Load(File.ReadAllBytes(originalBundle!));
         Assert.Equal(original.Cards.Count, result.Cards.Count);
         foreach (var card in original.Cards)
         {

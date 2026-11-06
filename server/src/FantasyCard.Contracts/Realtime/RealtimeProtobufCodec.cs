@@ -544,7 +544,10 @@ public static class RealtimeProtobufCodec
             foreach (var card in pool.Active) m.Bytes(3, EncodePoolCard(card));
         }));
         if (value.NumericalState is { } numerics) w.Bytes(21, Message(n =>
-        { n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths); }));
+        {
+            n.String(1, numerics.FenxianPolicy); n.String(2, numerics.GuardianPolicy); n.Int64(3, numerics.GuardianRemainderTenths);
+            n.String(4, numerics.FenxianReturnCredit); n.OptionalInt64(5, numerics.FenxianReturnRateBasisPoints);
+        }));
     });
 
     private static byte[] EncodePoolCard(RoomCardPayload card) => Message(c =>
@@ -567,7 +570,8 @@ public static class RealtimeProtobufCodec
     {
         if (bytes.Length == 0) return null;
         var n = Fields.Read(bytes);
-        return new(n.String(1), n.String(2), checked((int)n.Int64(3)));
+        return new(n.String(1), n.String(2), checked((int)n.Int64(3)), NullIfEmpty(n.String(4)),
+            n.OptionalInt64(5) is { } rate ? checked((int)rate) : null);
     }
 
     private static byte[] EncodeBattleStatus(RoomBattleStatusPayload value) => Message(w =>

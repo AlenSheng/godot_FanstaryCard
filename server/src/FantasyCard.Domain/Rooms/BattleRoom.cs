@@ -305,7 +305,8 @@ public sealed partial class BattleRoom
             throw new DomainValidationException("Room and season configuration versions differ.");
         if(season is not null && catalog.UsesPublishedConfiguration)_=catalog.Configuration.ResolveSeasonEquipment(season.StatsVersion);
         Season = season;
-        Numerics = numerics ?? (season is null ? NumericalRules.Legacy : NumericalRules.SeasonV1);
+        Numerics = numerics ?? (season is null ? NumericalRules.Legacy : catalog.UsesPublishedConfiguration
+            ?NumericalRules.ForSeason(catalog.Configuration,season.Difficulty):NumericalRules.SeasonV1);
         Numerics.Validate();
         if (season is not null && (!Numerics.SeasonMageRhythm || !Numerics.PvePositiveMinimum || !Numerics.SeasonCombatActions))
             throw new DomainValidationException("A season-v1 room requires its published combat policies.");

@@ -1405,14 +1405,24 @@ func _calculate_combat_preview(ids: Array) -> Dictionary:
 	var player: Dictionary = room.get("player", {})
 	if str(player.get("hero_class", "")) == "Mage" and core_count > 0:
 		var passive: Dictionary = player.get("battle_status", {})
-		var policy := str(player.get("numerical_state", {}).get("fenxian_policy", "CurrentRhythm"))
+		var numerical: Dictionary = player.get("numerical_state", {})
+		var policy := str(numerical.get("fenxian_policy", "CurrentRhythm"))
+		var bounded := policy in ["SeasonBoundedRhythm", "SeasonRateBudgetedRhythm"]
 		var combo := int(passive.get("combo", 0)) + 1 if str(passive.get("core_element", "")) == core else 1
 		var rhythm := mini(5, core_count + combo - 1)
-		if policy == "SeasonBoundedRhythm" and core_count < 2: rhythm = 1
-		draw_charge += minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
+		if bounded and core_count < 2: rhythm = 1
+		var passive_charge := minf(.50, float([0.0, .12, .24, .36, .48, .50][rhythm]) + recovery.weapon_bonus)
 		var draw_basis := core_count if policy == "CoreCardsSpent" else rhythm
 		var passive_draw := 0 if draw_basis <= 2 else (1 if draw_basis <= 4 else 2)
-		if policy == "SeasonBoundedRhythm": passive_draw = 0 if core_count < 2 else mini(passive_draw, cards.size() - 1)
+		if bounded: passive_draw = 0 if core_count < 2 else mini(passive_draw, cards.size() - 1)
+		if policy == "SeasonRateBudgetedRhythm":
+			var credit := clampf(float(numerical.get("fenxian_return_credit", "0")), 0.0, 2.0)
+			if passive_draw > 0:
+				passive_draw = mini(passive_draw, int(floor(credit + 1e-10)))
+				passive_charge = 0.0
+			else:
+				passive_charge = minf(passive_charge, credit)
+		draw_charge += passive_charge
 		immediate_draw += passive_draw
 	var stun := float(cards.map(func(card): return float(card.get("stun_seconds", 0))).max())
 	var block := float(cards.map(func(card): return float(card.get("draw_block_seconds", 0))).max())

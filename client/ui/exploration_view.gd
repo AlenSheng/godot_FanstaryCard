@@ -149,12 +149,13 @@ static func _passive(ui: Control, hero_class: String, rect: Rect2, bottom_limit:
 	if not names.has(hero_class): return Rect2()
 	var descriptions := {"Mage": P.localized("passive_mage"), "Priest": P.localized("passive_priest"), "Guardian": P.localized("passive_guardian")}
 	var status: Dictionary = Game.room.get("player", {}).get("battle_status", {})
-	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status)
+	var numerical: Dictionary = Game.room.get("player", {}).get("numerical_state", {})
+	if not status.is_empty(): descriptions[hero_class] = BattleDetails.passive_text(status, numerical)
 	var description_text: String = P.system_display_text(descriptions[hero_class].replace(" · ", "\n"))
 	var frame: Control = ui.panel(rect)
 	frame.name = "PlayerPassive_" + hero_class
 	frame.mouse_filter = Control.MOUSE_FILTER_PASS
-	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status) if not status.is_empty() else description_text]
+	frame.tooltip_text = P.localized("exploration_passive_tooltip") % [names[hero_class], BattleDetails.description(status, numerical) if not status.is_empty() else description_text]
 	var style: StyleBox = frame.get_theme_stylebox("panel")
 	var padding := Vector4(style.get_content_margin(SIDE_LEFT), style.get_content_margin(SIDE_TOP), style.get_content_margin(SIDE_RIGHT), style.get_content_margin(SIDE_BOTTOM))
 	var content_width := maxf(1.0, rect.size.x - padding.x - padding.z)
@@ -209,7 +210,7 @@ static func _battle(ui: Control, host: Control, state: Dictionary) -> void:
 	var pvp: bool = state.has("duel")
 	ui.set_meta("battle_passive_bottom", 0.0)
 	_title(ui, P.localized("encounter") if pvp else P.localized("chaos_battle"), true)
-	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}))).name = "BattleStats"
+	ui.button(P.localized("battle_stats_set"), Rect2(1452, 49, 375, 61), func(): host._show_battle_details(player.get("battle_status", {}), player.get("numerical_state", {}))).name = "BattleStats"
 	if pvp:
 		_duel(ui, host, state)
 	else:

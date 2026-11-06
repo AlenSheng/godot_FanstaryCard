@@ -3,6 +3,7 @@ extends "res://tests/gameplay_ui_preview.gd"
 const Palette = preload("res://ui/palette.gd")
 const INVENTORY_MANAGEMENT_SCENARIOS := ["e01_gear", "e01_manage", "e01_manage_bottom", "e01_manage_selected", "e01_manage_confirm", "e01_manage_closed"]
 const ARCHIVE_SCENARIOS := ["archive_entry", "archive_equipment", "archive_recipes", "archive_wishes", "archive_loadouts", "archive_legacy", "archive_missing", "archive_empty", "archive_error"]
+const SUSTAIN_SCENARIOS := ["sustain_hud_zero", "sustain_hud_full", "sustain_details", "sustain_details_bottom", "sustain_old_details", "sustain_new_card", "sustain_old_card"]
 const REWARD_VALUE_SCENARIOS := ["rewardvalue_empty", "rewardvalue_gain", "rewardvalue_loss", "rewardvalue_fullbag", "rewardvalue_highquality", "rewardvalue_overcap", "rewardvalue_fullhp", "rewardvalue_missing", "rewardvalue_replace"]
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
@@ -88,7 +89,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS + REWARD_VALUE_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS + REWARD_VALUE_SCENARIOS + SUSTAIN_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -249,6 +250,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in SUSTAIN_SCENARIOS: return await _prepare_sustain_scene(scenario)
 	if scenario in REWARD_VALUE_SCENARIOS: return await _prepare_reward_value_scene(scenario)
 	if scenario in ARCHIVE_SCENARIOS: return await _prepare_archive_scene(scenario)
 	if scenario in INVENTORY_MANAGEMENT_SCENARIOS: return await _prepare_inventory_management_scene(scenario)
@@ -888,6 +890,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 	_check_login_language(frame_name, on_login)
 	if "_e01_" in frame_name: _check_inventory_management_scene(frame_name)
 	if "_archive_" in frame_name: _check_archive_scene(frame_name)
+	if "_sustain_" in frame_name: _check_sustain_scene(frame_name)
 	if "_rewardvalue_" in frame_name: _check_reward_value_scene(frame_name)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
@@ -1565,3 +1568,66 @@ func _check_reward_value_scene(frame_name: String) -> void:
 	if frame_name.ends_with("_fullhp"):
 		review_checks[prefix + "effective max heal0"] = model.evaluate(Game.room.reward_choice.options[2], Game.room.player).heal_gain == 0
 	if frame_name.ends_with("_missing"): review_checks[prefix + "no currentattribute fallback"] = not state.catalog_ready and state.set_changes.is_empty()
+
+
+func _prepare_sustain_scene(scenario: String) -> bool:
+	Game.room = _room_fixture()
+	Game.room.config_version = Game.CATALOG.data.version
+	Game.room.player.phase = "Pve"
+	Game.room.player.hand = [{"instance_id": "return-a", "card_id": "C01", "level": 0}, {"instance_id": "return-b", "card_id": "C02", "level": 0}, {"instance_id": "return-c", "card_id": "MAG-10", "level": 0}]
+	Game.room.player.numerical_state = {"fenxian_policy": "SeasonRateBudgetedRhythm", "guardian_policy": "FractionalRemainder", "fenxian_return_credit": "2" if scenario == "sustain_hud_full" else ("0" if scenario == "sustain_hud_zero" else "0.75"), "fenxian_return_rate_basis_points": 500}
+	Game.room.pve = {"battle_id": "sustain-preview", "current_target_id": "sustain-target", "monsters": [{"monster_id": "sustain-target", "monster_type_id": "FIREBAT", "name": "FireBat", "hp": 25, "maximum_hp": 30, "shield": 0, "intent_kind": "Attack", "intent_element": "Fire", "intent_value": 5}]}
+	Game.room.allowed_actions = ["battle.play_cards", "battle.abandon"]
+	if scenario in ["sustain_old_details", "sustain_old_card"]:
+		var reader := preload("res://data/config_bundle.gd").new()
+		var data := reader.decode(FileAccess.get_file_as_bytes(OS.get_environment("FANTASYCARD_ARCHIVE_CONFIG16_BYTES")), "season-v1-config-16", OS.get_environment("FANTASYCARD_ARCHIVE_CONFIG16_HASH"))
+		assert(not data.is_empty())
+		var index := preload("res://data/catalog_index.gd").from_data(data)
+		index["_origin"] = Game.gateway.base_url
+		Game._room_catalogs["season-v1-config-16"] = index
+		Game.room.config_version = "season-v1-config-16"
+		Game.room.player.numerical_state = {"fenxian_policy": "SeasonBoundedRhythm", "guardian_policy": "FractionalRemainder"}
+	await _render_base()
+	if scenario in ["sustain_new_card", "sustain_old_card"]:
+		$UI.cards = preload("res://data/catalog_index.gd").cards(Game.room_catalog_index())
+		$UI._codex_card = "MAG-10"
+		preload("res://ui/codex_view.gd")._details($UI._reference, $UI)
+	elif "details" in scenario:
+		$UI._show_battle_details(Game.room.player.battle_status, Game.room.player.numerical_state)
+		await get_tree().process_frame
+		await get_tree().process_frame
+		if scenario.ends_with("_bottom"):
+			$UI.get_node("BattleDetailsModal/DialogPanel/DescriptionScroll").scroll_vertical = 100000
+			await get_tree().process_frame
+	return false
+
+func _check_sustain_scene(frame_name: String) -> void:
+	var prefix := frame_name + ": "
+	var old := "_sustain_old_" in frame_name
+	var numerical: Dictionary = Game.room.player.numerical_state
+	if frame_name.ends_with("_card"):
+		var effect: Label = $UI._reference.get_node("CardDetails").find_child("CardFullEffect", true, false)
+		var text: String = $UI.card_description("MAG-10", "full")
+		var expected: String = preload("res://ui/card_details.gd").effect_text(preload("res://ui/card_details.gd").at_level($UI.cards["MAG-10"], 0, Game.room_catalog_index()))
+		review_checks[prefix + "full description uses original selected catalog"] = text == expected and (effect.text.begins_with(expected) or effect.text.begins_with(Palette.localized("codex_base_effect") + expected))
+		review_checks[prefix + "printed draw exact"] = int($UI.cards["MAG-10"].immediate_draw) == (1 if old else 0)
+		return
+	if "_details" in frame_name:
+		var modal: Control = $UI.get_node("BattleDetailsModal")
+		var label: Label = modal.description_label
+		var scroll: ScrollContainer = modal.get_node_or_null("DialogPanel/DescriptionScroll")
+		review_checks[prefix + "current policy gets readable scroll"] = scroll != null if not old else scroll == null
+		if scroll != null:
+			review_checks[prefix + "no hidden description lines"] = label.max_lines_visible == -1 and not label.clip_text
+			review_checks[prefix + "readable fixed32 description"] = label.get_theme_font_size("font_size") == 32
+			review_checks[prefix + "scroll clear of close button"] = scroll.get_global_rect().end.y + 10 <= modal.confirm_button.get_global_rect().position.y
+			review_checks[prefix + "full rules translated"] = label.text.contains(Palette.localized("battle_mage_return_rules"))
+			if frame_name.ends_with("_bottom"):
+				var bar := scroll.get_v_scroll_bar()
+				review_checks[prefix + "bottom reachable"] = is_equal_approx(bar.value, maxf(0, bar.max_value - bar.page))
+		else:
+			review_checks[prefix + "old policy no new budget text"] = not label.text.contains(Palette.localized("battle_mage_return_rules"))
+		return
+	var label: Label = $UI.find_child("PlayerPassiveDescription_Mage", true, false)
+	var expected := Palette.localized("battle_mage_return_budget") % [float(numerical.fenxian_return_credit), 5.0]
+	review_checks[prefix + "current credit and5percent visible"] = label != null and label.text.contains(Palette.system_display_text(expected.replace(" · ", "\n")))

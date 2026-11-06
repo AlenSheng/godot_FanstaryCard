@@ -136,7 +136,8 @@ public sealed record BattleSelectTargetCommandPayload(Guid BattleId, string Targ
 public sealed record BattleAbandonCommandPayload;
 public sealed record MonsterCardChooseCommandPayload(Guid CandidateId, bool Accept, Guid? ReplaceInstanceId = null);
 public sealed record RoomMonsterPoolPayload(int Capacity, IReadOnlyList<RoomCardPayload> Pending, IReadOnlyList<RoomCardPayload> Active);
-public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths);
+public sealed record RoomNumericalStatePayload(string FenxianPolicy, string GuardianPolicy, int GuardianRemainderTenths,
+    string? FenxianReturnCredit = null, int? FenxianReturnRateBasisPoints = null);
 public sealed record BattleTargetSelectedEventPayload(Guid BattleId, string TargetId);
 public sealed record BattleComboResolvedEventPayload(
     Guid BattleId,
