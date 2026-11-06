@@ -6,7 +6,8 @@ namespace FantasyCard.Server.Telemetry;
 
 public sealed record CraftingEventTelemetryReport(DateTimeOffset FromUtc,DateTimeOffset ToUtc,IReadOnlyList<DurableCraftingEvent> Events,
     int MissingHistoricalActions,int InvalidObservations,int ObservedNoEventActions,bool SourceTruncated,bool CraftingSourceComplete,
-    string Scope="Three crafting event types only; lobby dimensions remain unknown. Reforge mutates an existing item; learning retains its sample.");
+    string Scope="Three crafting event types only; lobby dimensions remain unknown. Reforge mutates an existing item; learning retains its sample.",
+    IReadOnlyDictionary<string,int>? UnknownDimensionCounts=null);
 
 public sealed class CraftingEventTelemetryRepository(NpgsqlDataSource dataSource)
 {
@@ -44,7 +45,8 @@ public sealed class CraftingEventTelemetryRepository(NpgsqlDataSource dataSource
             }
         }
         await transaction.CommitAsync(ct);
-        return new(from,to,events,missing,invalid,empty,truncated,!truncated&&missing==0&&invalid==0);
+        return new(from,to,events,missing,invalid,empty,truncated,!truncated&&missing==0&&invalid==0,
+            UnknownDimensionCounts:SeasonEventDimensionRules.UnknownCounts(events.Select(e=>e.Observation.Dimensions)));
     }
 
     private static bool Valid(CraftingEventObservation? row,string season,string kind)

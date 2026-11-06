@@ -365,6 +365,7 @@ public sealed partial class BattleRoom
             player.Position = map.SpawnPositions[index];
             player.Pve = CreateOriginalPve(map.GetCell(player.Position.Value));
             player.Combat.BeginBattle(player.Pve.BattleId);
+            _observations?.BeginBattle(player,_catalog,player.Pve.BattleId);
             player.Phase = RoomPlayerPhase.Pve;
             StartBotPveSimulation(player);
         }
@@ -391,7 +392,11 @@ public sealed partial class BattleRoom
         if (Numerics.OptionalMonsterPool) player.MonsterPool.DiscardPending();
         player.Position = target;
         player.Pve = targetPve;
-        if(targetPve is not null)player.Combat.BeginBattle(targetPve.BattleId);
+        if(targetPve is not null)
+        {
+            player.Combat.BeginBattle(targetPve.BattleId);
+            _observations?.BeginBattle(player,_catalog,targetPve.BattleId);
+        }
         player.Phase = targetPve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
         StartBotPveSimulation(player);
         _extractions.Remove(playerId);
@@ -1767,10 +1772,10 @@ public sealed partial class BattleRoom
         if(player.PendingRedItem is { } pendingRed){pile.Add(pendingRed);player.PendingRedItem=null;RedStateNeedsPersistence=true;}
         foreach (var armor in player.IsBot && Numerics.BudgetedBotLoot && BotRewardPolicy is null ? player.BotLoot : player.WornArmor)
             if(!armor.IsCombatProjection)pile.Add(armor);
+        ObserveRoomEvent(player,"loot_lost",botTermination?"BotTermination":"DeathRelic","RelicCustodyPendingSettlement",pile.Items,at:player.TerminalRoomElapsed);
         player.WornArmor = [];
         if(BotRewardPolicy is not null)player.Combat.UpdateEquipment(CalculateArmor([]));
         if(BotRewardPolicy is null || pile.Items.Count>0)_relicPiles.Add(pile.PileId, pile);
-        ObserveRoomEvent(player,"loot_lost",botTermination?"BotTermination":"DeathRelic","RelicCustodyPendingSettlement",pile.Items,at:player.TerminalRoomElapsed);
     }
 
     private void PrepareDuelParticipant(RoomPlayerState player, Guid duelId)
@@ -1781,6 +1786,7 @@ public sealed partial class BattleRoom
         player.Combat.PrepareForDuel(new Random(DuelRandom.Next()),duelId);
         player.Phase = RoomPlayerPhase.Pvp;
         player.CurrentDuelId = duelId;
+        _observations?.BeginBattle(player,_catalog,duelId);
     }
 
     private void RestoreParticipant(RoomPlayerState player, FrozenParticipantState frozen)

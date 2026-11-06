@@ -10,12 +10,14 @@ using Npgsql;
 
 namespace FantasyCard.Server.Telemetry;
 
-public sealed record DurableRoomEvent(string EventId,Guid RoomId,Guid MatchId,string ConfigVersion,SeasonContext? Season,RoomEventObservation Event);
+public sealed record DurableRoomEvent(string EventId,Guid RoomId,Guid MatchId,string ConfigVersion,SeasonContext? Season,RoomEventObservation Event,
+    SeasonEventDimensions Dimensions,string BuildProfileBasis,string? BuildProfileId);
 public sealed record RoomEventTelemetryReport(DateTimeOffset FromUtc,DateTimeOffset ToUtc,IReadOnlyList<DurableRoomEvent> Events,
     int SourceRooms,int LegacyUnobservedRooms,int InvalidRooms,int UnknownTimestampEvents,string DroppedEvents,long OmittedItems,
     bool SourceTruncated,bool FullyObserved,
     string ClockBasis="Original room UTC start plus authoritative logical elapsed, including recovery time.",
-    string Scope="Room observations only: potential choices, carried items, exit and relic custody pending asset settlement. These are not additional account credits, irreversible destruction or proof of settlement commit.");
+    string Scope="Room observations only: potential choices, carried items, exit and relic custody pending asset settlement. These are not additional account credits, irreversible destruction or proof of settlement commit.",
+    IReadOnlyList<RoomBuildProfile>? BuildProfiles=null,IReadOnlyDictionary<string,int>? UnknownDimensionCounts=null);
 
 public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
 {
@@ -29,6 +31,7 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
         await using(var config=new NpgsqlCommand("SET TRANSACTION READ ONLY",connection,transaction))await config.ExecuteNonQueryAsync(ct);
         await using(var timeout=new NpgsqlCommand("SET LOCAL statement_timeout=5000",connection,transaction))await timeout.ExecuteNonQueryAsync(ct);
         var events=new List<DurableRoomEvent>();var rooms=0;var missing=0;var invalid=0;var unknownTime=0;var dropped=BigInteger.Zero;long omitted=0;var truncated=false;
+        var usedProfiles=new Dictionary<string,RoomBuildProfile>(StringComparer.Ordinal);
         await using(var query=new NpgsqlCommand("""
             SELECT s.room_id,m.match_id,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version,
                 s.snapshot_json->>'startedAtUtc',s.snapshot_json->>'elapsed',coalesce(s.snapshot_json->'observations','null'::jsonb)='null'::jsonb,
@@ -61,6 +64,7 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
                 }
                 catch(Exception error)when(error is JsonException or DomainValidationException){invalid++;continue;}
                 dropped+=observations.DroppedEvents;
+                var profiles=(observations.Profiles??[]).ToDictionary(p=>p.ProfileId,StringComparer.Ordinal);
                 SeasonContext? season=reader.IsDBNull(3)?null:new(reader.GetString(3),reader.GetString(4)[1]-'0',reader.GetString(5),reader.GetString(2),reader.GetString(6));
                 foreach(var row in observations.Events)
                 {
@@ -68,12 +72,16 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
                     if(at<from||at>=to)continue;
                     omitted+=row.OmittedItems;
                     if(events.Count==1000){truncated=true;continue;}
-                    var room=reader.GetGuid(0);events.Add(new($"{room:N}:{row.Sequence.ToString(CultureInfo.InvariantCulture)}",room,reader.GetGuid(1),reader.GetString(2),season,row));
+                    var projected=SeasonEventDimensionRules.Room(reader.GetString(2),season,reader.GetString(4),row,profiles);
+                    if(projected.Profile is { } profile)usedProfiles.TryAdd(profile.ProfileId,profile);
+                    var room=reader.GetGuid(0);events.Add(new($"{room:N}:{row.Sequence.ToString(CultureInfo.InvariantCulture)}",room,reader.GetGuid(1),reader.GetString(2),season,row,
+                        projected.Dimensions,projected.Basis,projected.Profile?.ProfileId));
                 }
             }
         }
         await transaction.CommitAsync(ct);
         return new(from,to,events.OrderBy(e=>e.Event.OccurredAtUtc).ThenBy(e=>e.RoomId).ThenBy(e=>e.Event.Sequence).ToArray(),rooms,missing,invalid,unknownTime,
-            dropped.ToString(CultureInfo.InvariantCulture),omitted,truncated,!truncated&&missing==0&&invalid==0&&unknownTime==0&&dropped.IsZero&&omitted==0);
+            dropped.ToString(CultureInfo.InvariantCulture),omitted,truncated,!truncated&&missing==0&&invalid==0&&unknownTime==0&&dropped.IsZero&&omitted==0,
+            BuildProfiles:usedProfiles.Values.OrderBy(p=>p.ProfileId,StringComparer.Ordinal).ToArray(),UnknownDimensionCounts:SeasonEventDimensionRules.UnknownCounts(events.Select(e=>e.Dimensions)));
     }
 }

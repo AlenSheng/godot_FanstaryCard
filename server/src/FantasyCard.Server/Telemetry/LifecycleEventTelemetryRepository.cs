@@ -10,7 +10,8 @@ public sealed record LifecycleSourceCoverage(string Source,int Rows,int Unclassi
 public sealed record LifecycleFlowCount(string PhysicalFlow,string? SeasonId,string? Quality,string? ConfigVersion,int Items);
 public sealed record LifecycleEventTelemetryReport(DateTimeOffset FromUtc,DateTimeOffset ToUtc,IReadOnlyList<DurableLifecycleEvent> Events,
     IReadOnlyList<LifecycleSourceCoverage> Sources,IReadOnlyList<LifecycleFlowCount> PhysicalFlows,int EventsWithUnknownCombatDimensions,
-    bool SourcesComplete,string Scope="Difficulty completion, equipment destruction and equipment archive receipts only. Wallet/recipe archive and other physical flows are outside this report. Lobby/archive dimensions are not played difficulty. Archive is a domain move, not a second destruction or new mint.");
+    bool SourcesComplete,string Scope="Difficulty completion, equipment destruction and equipment archive receipts only. Wallet/recipe archive and other physical flows are outside this report. Lobby/archive dimensions are not played difficulty. Archive is a domain move, not a second destruction or new mint.",
+    IReadOnlyDictionary<string,int>? UnknownDimensionCounts=null);
 
 /// <summary>Projects original receipts without writing a second ledger or guessing historical state.</summary>
 public sealed class LifecycleEventTelemetryRepository(NpgsqlDataSource dataSource)
@@ -29,7 +30,7 @@ public sealed class LifecycleEventTelemetryRepository(NpgsqlDataSource dataSourc
 
         await using(var query=Query("""
             SELECT c.settlement_id,c.player_id,c.match_id,c.completed_at,c.season_id,c.difficulty_id,c.ruleset_id,c.config_version,c.stats_version,
-                s.details_json->>'heroClass',p.is_bot,c.elite_cleared,c.boss_cleared
+                s.details_json->>'heroClass',p.is_bot,c.elite_cleared,c.boss_cleared,(s.details_json->'telemetryProfile')::text
             FROM season_difficulty_completions c
             LEFT JOIN match_settlements s ON s.settlement_id=c.settlement_id
             LEFT JOIN match_players p ON p.match_id=c.match_id AND p.player_id=c.player_id
@@ -42,6 +43,8 @@ public sealed class LifecycleEventTelemetryRepository(NpgsqlDataSource dataSourc
             {
                 if(count==MaximumRowsPerSource){truncated=true;break;}count++;
                 var dimensions=Dimensions(reader,4,5,6,7,8,"RunSummary","Extracted",Text(reader,9),reader.IsDBNull(10)?"Unknown":reader.GetBoolean(10)?"Bot":"Human");
+                var profile=SeasonEventDimensionRules.StoredProfile(Text(reader,13));
+                dimensions=dimensions with{BuildType=profile?.BuildType,GrowthStage=profile?.GrowthStage};
                 if(MissingRealm(dimensions))missing++;
                 events.Add(new($"{reader.GetGuid(0):N}:difficulty_cleared","season_difficulty_completions",reader.GetFieldValue<DateTimeOffset>(3),reader.GetGuid(1),reader.GetGuid(2),null,
                     "difficulty_cleared",dimensions,null,"Completion",null,null,reader.GetBoolean(11),reader.GetBoolean(12)));
@@ -110,7 +113,8 @@ public sealed class LifecycleEventTelemetryRepository(NpgsqlDataSource dataSourc
             .OrderBy(g=>g.Key.PhysicalFlow,StringComparer.Ordinal).ThenBy(g=>g.Key.SeasonId,StringComparer.Ordinal).ThenBy(g=>g.Key.Quality,StringComparer.Ordinal).ThenBy(g=>g.Key.ConfigVersion,StringComparer.Ordinal)
             .Select(g=>new LifecycleFlowCount(g.Key.PhysicalFlow,g.Key.SeasonId,g.Key.Quality,g.Key.ConfigVersion,g.Count())).ToArray();
         return new(from,to,ordered,coverage,flows,ordered.Count(e=>e.Dimensions.HeroClass is null||e.Dimensions.BuildType is null||e.Dimensions.GrowthStage is null||e.Dimensions.PlayerKind=="Unknown"),
-            coverage.All(c=>!c.Truncated&&c.UnclassifiedRows==0&&c.MissingRealmRows==0&&c.MissingQualityRows==0));
+            coverage.All(c=>!c.Truncated&&c.UnclassifiedRows==0&&c.MissingRealmRows==0&&c.MissingQualityRows==0),
+            UnknownDimensionCounts:SeasonEventDimensionRules.UnknownCounts(ordered.Select(e=>e.Dimensions)));
 
         NpgsqlCommand Query(string sql)
         {

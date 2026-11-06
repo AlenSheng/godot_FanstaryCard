@@ -43,6 +43,11 @@ public sealed class SettlementCoordinator(
                         ? ExtractedAssets(snapshot,player)
                         : DeadAssets(snapshot, player);
                     var items = SettlementItems(player, result);
+                    var observation=snapshot.Observations?.Events.LastOrDefault(e=>e.PlayerId==player.PlayerId&&
+                        (e.EventName=="loot_extracted"||e.EventName=="battle_finished"&&e.Result is "Dead" or "Disconnected" or "Abandoned"));
+                    var profileId=observation?.EventName=="battle_finished"?observation.BattleBuildProfileId:observation?.BuildProfileId;
+                    var telemetryProfile=profileId is null?null:snapshot.Observations?.Profiles?.SingleOrDefault(p=>p.ProfileId==profileId);
+                    var telemetryProfileBasis=telemetryProfile is null?"MissingOriginal":observation?.EventName=="battle_finished"?"BattleStart":"TerminalEvent";
                     var cleared = (snapshot.Map?.Cells ?? []).Where(cell => (player.ClearedCells ?? []).Contains(cell.Position)).ToArray();
                     using var details = JsonDocument.Parse(JsonSerializer.Serialize(new
                     {
@@ -57,6 +62,8 @@ public sealed class SettlementCoordinator(
                         player.JourneyCompletions,
                         snapshot.StartedAtUtc,
                         player.TerminalRoomElapsed,
+                        telemetryProfile,
+                        telemetryProfileBasis,
                         heroClass = player.HeroClass.ToString(),
                         assetCount = assets.Length,
                         difficultyProgress = new

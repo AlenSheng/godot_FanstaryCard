@@ -1,5 +1,6 @@
 using FantasyCard.Domain.Combat;
 using FantasyCard.Domain.Players;
+using System.Text.Json.Serialization;
 
 namespace FantasyCard.Domain.Rooms;
 
@@ -7,9 +8,14 @@ public sealed record RoomLootObservation(string ItemId,string Kind,int Quantity,
 public sealed record RoomEventObservation(long Sequence,Guid PlayerId,HeroClass HeroClass,bool IsBot,string EventName,string Source,
     string Result,TimeSpan RoomElapsed,DateTimeOffset? OccurredAtUtc,Guid? BattleId,MapPosition? Position,string CellType,
     IReadOnlyList<RoomLootObservation> Items,int OmittedItems,int Hp,int EffectiveMaximumHp,int? AppliedQuantity=null,
-    string? OptionId=null,int? HealPercent=null,int? HpBefore=null);
+    string? OptionId=null,int? HealPercent=null,int? HpBefore=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? BuildProfileId=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] string? BattleBuildProfileId=null);
+public sealed record RoomBattleBuildBinding(Guid PlayerId,Guid BattleId,string ProfileId);
 public sealed record RoomObservationOwner(Guid PlayerId,HeroClass HeroClass,bool IsBot);
-public sealed record RoomObservationSnapshot(int SchemaVersion,long LastSequence,long DroppedEvents,IReadOnlyList<RoomEventObservation> Events)
+public sealed record RoomObservationSnapshot(int SchemaVersion,long LastSequence,long DroppedEvents,IReadOnlyList<RoomEventObservation> Events,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoomBuildProfile>? Profiles=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoomBattleBuildBinding>? BattleBuilds=null)
 {
     public void RequireValid(IReadOnlyList<RoomObservationOwner> owners,TimeSpan elapsed,DateTimeOffset? started)
         =>RoomObservationJournal.Restore(this,owners,elapsed,started);
@@ -21,23 +27,42 @@ internal sealed class RoomObservationJournal
     internal const int MaximumEvents=4096;
     internal const int MaximumItemsPerEvent=128;
     private readonly List<RoomEventObservation> _events=[];
+    private readonly Dictionary<string,RoomBuildProfile> _profiles=new(StringComparer.Ordinal);
+    private readonly Dictionary<(Guid Player,Guid Battle),string> _battleBuilds=[];
     private long _lastSequence;
     internal bool HasFinished(Guid player,Guid battle)=>_events.Any(e=>e.PlayerId==player&&e.BattleId==battle&&e.EventName=="battle_finished");
 
     internal void Append(RoomPlayerState player,string name,string source,string result,TimeSpan elapsed,DateTimeOffset? started,
-        Guid? battleId,string cell,IEnumerable<ExplorationItem>? items=null,int? applied=null,string? optionId=null,int? healPercent=null,int? hpBefore=null)
+        Guid? battleId,string cell,CombatCardCatalog catalog,IEnumerable<ExplorationItem>? items=null,int? applied=null,string? optionId=null,int? healPercent=null,int? hpBefore=null)
     {
         if(_lastSequence<long.MaxValue)_lastSequence++;
         if(_events.Count>=MaximumEvents)return;
+        var profileId=CaptureProfile(player,catalog);
+        var battleProfile=battleId is { } battle?_battleBuilds.GetValueOrDefault((player.PlayerId,battle)):null;
         var all=(items??[]).ToArray();var kept=all.Take(MaximumItemsPerEvent).Select(item=>new RoomLootObservation(item.ItemId,item.Kind.ToString(),item.Quantity,
             item.Equipment?.Quality,item.IsGenerated,item.IsSafe,item.IsCombatProjection)).ToArray();
         DateTimeOffset? at=started is { } start&&elapsed>=TimeSpan.Zero&&elapsed.Ticks<=DateTimeOffset.MaxValue.UtcTicks-start.UtcTicks
             ?new DateTimeOffset(start.UtcTicks+elapsed.Ticks,TimeSpan.Zero):null;
         _events.Add(new(_lastSequence,player.PlayerId,player.HeroClass,player.IsBot,name,source,result,elapsed,at,battleId,player.Position,cell,kept,all.Length-kept.Length,
-            player.Combat.Hp,player.Combat.EffectiveMaximumHp,applied,optionId,healPercent,hpBefore));
+            player.Combat.Hp,player.Combat.EffectiveMaximumHp,applied,optionId,healPercent,hpBefore,profileId,battleProfile));
     }
 
-    internal RoomObservationSnapshot Capture()=>new(1,_lastSequence,_lastSequence-_events.Count,_events.ToArray());
+    private string? CaptureProfile(RoomPlayerState player,CombatCardCatalog catalog)
+    {
+        var profile=RoomBuildProfiles.Capture(player,catalog);
+        if(profile is null||!_profiles.ContainsKey(profile.ProfileId)&&_profiles.Count>=512)return null;
+        _profiles.TryAdd(profile.ProfileId,profile);return profile.ProfileId;
+    }
+
+    internal void BeginBattle(RoomPlayerState player,CombatCardCatalog catalog,Guid battleId)
+    {
+        var key=(player.PlayerId,battleId);
+        if(_battleBuilds.ContainsKey(key)||_battleBuilds.Count>=1024)return;
+        if(CaptureProfile(player,catalog) is { } id)_battleBuilds.Add(key,id);
+    }
+
+    internal RoomObservationSnapshot Capture()=>new(1,_lastSequence,_lastSequence-_events.Count,_events.ToArray(),_profiles.Values.ToArray(),
+        _battleBuilds.Select(pair=>new RoomBattleBuildBinding(pair.Key.Player,pair.Key.Battle,pair.Value)).ToArray());
 
     internal static RoomObservationJournal Restore(RoomObservationSnapshot snapshot,IReadOnlyList<RoomObservationOwner> players,TimeSpan elapsed,DateTimeOffset? started)
     {
@@ -46,6 +71,15 @@ internal sealed class RoomObservationJournal
             snapshot.DroppedEvents>0&&snapshot.Events.Count!=MaximumEvents||started is null||
             players.Select(p=>p.PlayerId).Distinct().Count()!=players.Count)
             throw new DomainValidationException("Saved room observations have an invalid version, size or sequence.");
+        var profiles=snapshot.Profiles??[];
+        if(profiles.Count>512||profiles.Select(p=>p.ProfileId).Distinct(StringComparer.Ordinal).Count()!=profiles.Count)
+            throw new DomainValidationException("Saved build observation index is oversized or duplicated.");
+        foreach(var profile in profiles)profile.RequireValid();
+        var profileIds=profiles.Select(p=>p.ProfileId).ToHashSet(StringComparer.Ordinal);
+        var bindings=snapshot.BattleBuilds??[];
+        if(bindings.Count>1024||bindings.Select(b=>(b.PlayerId,b.BattleId)).Distinct().Count()!=bindings.Count||
+            bindings.Any(b=>b.BattleId==Guid.Empty||!players.Any(p=>p.PlayerId==b.PlayerId)||!profileIds.Contains(b.ProfileId)))
+            throw new DomainValidationException("Saved battle build bindings disagree with their bounded original index.");
         long prior=0;
         foreach(var row in snapshot.Events)
         {
@@ -54,12 +88,18 @@ internal sealed class RoomObservationJournal
                 row.EventName is not("battle_finished" or "loot_generated" or "loot_chosen" or "loot_extracted" or "loot_lost")||
                 string.IsNullOrEmpty(row.Source)||row.Source.Length>80||string.IsNullOrEmpty(row.Result)||row.Result.Length>80||
                 string.IsNullOrEmpty(row.CellType)||row.CellType.Length>80||row.OptionId?.Length>160||
+                row.BuildProfileId is { } profileId&&!profileIds.Contains(profileId)||
+                row.BattleBuildProfileId is { } battleProfile&&
+                    (row.BattleId is null||!bindings.Any(b=>b.PlayerId==row.PlayerId&&b.BattleId==row.BattleId&&b.ProfileId==battleProfile))||
                 row.RoomElapsed<TimeSpan.Zero||row.RoomElapsed>elapsed||row.Items is null||row.Items.Count>MaximumItemsPerEvent||row.OmittedItems<0||
                 row.Items.Any(item=>string.IsNullOrEmpty(item.ItemId)||item.ItemId.Length>160||item.Quantity<0||!Enum.TryParse<ExplorationItemKind>(item.Kind,out _))||
                 row.OccurredAtUtc is { } at&&(at.Offset!=TimeSpan.Zero||row.RoomElapsed.Ticks>DateTimeOffset.MaxValue.UtcTicks-started.Value.UtcTicks||at.UtcTicks!=started.Value.UtcTicks+row.RoomElapsed.Ticks))
                 throw new DomainValidationException("Saved room observation disagrees with its original room.");
         }
-        var journal=new RoomObservationJournal{_lastSequence=snapshot.LastSequence};journal._events.AddRange(snapshot.Events);return journal;
+        var journal=new RoomObservationJournal{_lastSequence=snapshot.LastSequence};journal._events.AddRange(snapshot.Events);
+        foreach(var profile in profiles)journal._profiles.Add(profile.ProfileId,profile);
+        foreach(var binding in bindings)journal._battleBuilds.Add((binding.PlayerId,binding.BattleId),binding.ProfileId);
+        return journal;
     }
 }
 
@@ -72,7 +112,7 @@ public sealed partial class BattleRoom
         if(_observations is null)return;
         var cell=player.Position is { } position&&Map is not null?Map.GetCell(position):null;
         var kind=cell is null?"Unknown":cell.IsBoss||cell.MonsterGroupId=="BOSS"?"Boss":cell.MonsterGroupId=="BOX"?"Treasure":cell.MonsterGroupId.StartsWith('E')?"Elite":"Normal";
-        _observations.Append(player,name,source,result,at??Elapsed,StartedAtUtc,battleId??player.Pve?.BattleId??player.CurrentDuelId,kind,items,applied,optionId,healPercent,hpBefore);
+        _observations.Append(player,name,source,result,at??Elapsed,StartedAtUtc,battleId??player.Pve?.BattleId??player.CurrentDuelId,kind,_catalog,items,applied,optionId,healPercent,hpBefore);
     }
 
     private void ObserveRewardOptions(RoomPlayerState player,string source)

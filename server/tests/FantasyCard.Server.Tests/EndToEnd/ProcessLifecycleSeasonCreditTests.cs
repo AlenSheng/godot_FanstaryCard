@@ -85,6 +85,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         }
         var durable=(await snapshots.GetAsync(roomId,ct))!;Assert.All(durable.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));Assert.NotNull(durable.StartedAtUtc);
         Assert.NotNull(durable.Observations);Assert.Equal(1,durable.Observations.SchemaVersion);
+        Assert.NotEmpty(durable.Observations.Profiles!);Assert.Equal(4,durable.Observations.BattleBuilds!.Count);
         Assert.Equal(0,durable.Observations.LastSequence);
         // Declared recovery fixture after the old process has exited: change
         // only revision+observation, never gameplay/asset state or action clocks.
@@ -93,7 +94,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         var marker=new RoomEventObservation(1,markerPlayer.PlayerId,markerPlayer.HeroClass,false,"loot_generated","DeclaredRestartBoundary","PotentialChoice",
             durable.Elapsed,durable.StartedAtUtc.Value+durable.Elapsed,markerPlayer.Pve?.BattleId,markerPlayer.Position,"DeclaredFixture",[],0,
             markerPlayer.Combat.Hp,markerPlayer.Combat.EffectiveMaximumHp);
-        var seeded=durable with{Revision=durable.Revision+1,Observations=new(1,1,0,[marker])};
+        var seeded=durable with{Revision=durable.Revision+1,Observations=durable.Observations with{LastSequence=1,DroppedEvents=0,Events=[marker]}};
         Assert.Equal(JsonSerializer.Serialize(durable with{Revision=0,Observations=null}),JsonSerializer.Serialize(seeded with{Revision=0,Observations=null}));
         await snapshots.SaveIfDueAsync(seeded,ct);durable=(await snapshots.GetAsync(roomId,ct))!;Assert.Equal(1,durable.Observations!.LastSequence);
         await using var second=FullHost.Start(db.ConnectionString,port,"season17-actual-entry-after");Assert.NotEqual(firstPid,second.ProcessId);
@@ -110,8 +111,10 @@ public sealed partial class ProcessLifecycleRecoveryTests
         var after=(await snapshots.GetAsync(roomId,ct))!;Assert.All(after.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));Assert.Equal(durable.StartedAtUtc,after.StartedAtUtc);
         Assert.NotNull(after.Observations);Assert.True(after.Observations.LastSequence>=durable.Observations.LastSequence);
         Assert.Equal(JsonSerializer.Serialize(durable.Observations.Events),JsonSerializer.Serialize(after.Observations.Events.Take(durable.Observations.Events.Count)));
+        Assert.Equal(JsonSerializer.Serialize(durable.Observations.Profiles),JsonSerializer.Serialize(after.Observations.Profiles));
+        Assert.Equal(JsonSerializer.Serialize(durable.Observations.BattleBuilds),JsonSerializer.Serialize(after.Observations.BattleBuilds));
         Assert.Equal(1L,await db.ScalarAsync<long>("SELECT count(*) FROM matches"));Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM match_settlements"));
-        Record("SEASON17-real-entry-restart",new{firstPid,secondPid=second.ProcessId,matchId,roomId,durable.StartedAtUtc,startedAtPreserved=true,observationPrefixPreserved=true,observationSequenceBefore=durable.Observations.LastSequence,observationSequenceAfter=after.Observations.LastSequence,declaredObservationMarkerAfterOldProcessExit=true,gameplayFieldsUnchangedByMarker=true,players=4,bots=0,successfulPlayerCasts=0,completedEncounters=0,
+        Record("SEASON17-real-entry-restart",new{firstPid,secondPid=second.ProcessId,matchId,roomId,durable.StartedAtUtc,startedAtPreserved=true,observationPrefixPreserved=true,profileIndexPreserved=true,battleBindingIndexPreserved=true,profileCount=after.Observations.Profiles!.Count,battleBindingCount=after.Observations.BattleBuilds!.Count,observationSequenceBefore=durable.Observations.LastSequence,observationSequenceAfter=after.Observations.LastSequence,declaredObservationMarkerAfterOldProcessExit=true,gameplayFieldsUnchangedByMarker=true,players=4,bots=0,successfulPlayerCasts=0,completedEncounters=0,
             scope="Four protocol-controlled account entry routes; not native capacity, combat efficiency, B05 expansion or settlement acceptance"});
     }
 

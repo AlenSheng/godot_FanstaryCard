@@ -1,0 +1,120 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 108 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\FantasyCard.Domain.Tests.csproj (in 1.28 sec).
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r1\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Domain.Tests -> G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r1\build\bin\FantasyCard.Domain.Tests\debug\FantasyCard.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 3) [4 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Int32 level) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 23
+   at InvokeStub_RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 4) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Int32 level) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 23
+   at InvokeStub_RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 1) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Int32 level) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 23
+   at InvokeStub_RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 5) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Int32 level) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 23
+   at InvokeStub_RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 2) [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Int32 level) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 23
+   at InvokeStub_RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.BattleStartAndEventProfilesRemainDistinctAndStableAcrossRestore [199 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, Int32 seed) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 642
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.BattleStartAndEventProfilesRemainDistinctAndStableAcrossRestore() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 58
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix [1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 44
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+  Failed FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.FingerprintIgnoresHandOrderAndPhysicalCardIdsButRetainsEffectiveComposition [< 1 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : Card level is not present in the active config.
+  Stack Trace:
+     at FantasyCard.Domain.Cards.CardEconomyRules.Level(String cardId, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 30
+   at FantasyCard.Domain.Cards.CardEconomyRules.ApplyLevel(String cardId, CombatCardEffect effect, Int32 level, GameConfigCatalog configuration) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Cards\CardEconomyRules.cs:line 48
+   at FantasyCard.Domain.Combat.CombatCardCatalog.Get(String cardId, Int32 level, Nullable`1 elementOverride) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Combat\CombatCardCatalog.cs:line 41
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayerCore(BattleRoomPlayerSetup setup, Boolean restoring) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 451
+   at FantasyCard.Domain.Rooms.BattleRoom.AddPlayer(BattleRoomPlayerSetup setup) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\Rooms\BattleRoom.cs:line 427
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.Room(Int32 level, IReadOnlyList`1 armor) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 15
+   at FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.FingerprintIgnoresHandOrderAndPhysicalCardIdsButRetainsEffectiveComposition() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Domain.Tests\Rooms\RoomBuildProfileTests.cs:line 33
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\d04-build-dimensions-domain-r1\results\domain.trx
+
+Failed!  - Failed:     8, Passed:    24, Skipped:     0, Total:    32, Duration: 799 ms - FantasyCard.Domain.Tests.dll (net10.0)
+[xUnit.net 00:00:02.66]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 3) [FAIL]
+[xUnit.net 00:00:02.66]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 4) [FAIL]
+[xUnit.net 00:00:02.67]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 1) [FAIL]
+[xUnit.net 00:00:02.67]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 5) [FAIL]
+[xUnit.net 00:00:02.67]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.GrowthNamesTheEffectiveBaseCardMaximumWithoutPretendingToBeDiagnosticP0P5OrAccountAge(level: 2) [FAIL]
+[xUnit.net 00:00:02.86]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.BattleStartAndEventProfilesRemainDistinctAndStableAcrossRestore [FAIL]
+[xUnit.net 00:00:02.87]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.ActiveEffectClassificationUsesAppliedProfileRatherThanEveryPrintedAffix [FAIL]
+[xUnit.net 00:00:02.87]     FantasyCard.Domain.Tests.Rooms.RoomBuildProfileTests.FingerprintIgnoresHandOrderAndPhysicalCardIdsButRetainsEffectiveComposition [FAIL]
