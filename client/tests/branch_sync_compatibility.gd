@@ -58,6 +58,10 @@ func _run() -> void:
 		var localization: Dictionary = await preload("res://tests/test_google_localization.gd").new().run_test()
 		for key in localization.checks:
 			checks["Google copy " + str(key)] = localization.checks[key]
+	Sound.stop_all()
+	Sound.stop_music()
+	# Allow the audio thread to release the final UI cancellation playback.
+	await get_tree().create_timer(0.25).timeout
 	var result := {"ok": not checks.values().has(false), "checks": checks, "scope": "Headless native branch compatibility, no login or capacity workload"}
 	var destination := OS.get_environment("FANTASYCARD_BRANCH_SYNC_RESULT")
 	FileAccess.open(destination, FileAccess.WRITE).store_string(JSON.stringify(result))
