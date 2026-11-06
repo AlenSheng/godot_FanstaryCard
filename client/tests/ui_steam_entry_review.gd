@@ -11,7 +11,10 @@ func _run() -> void:
 	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output))
 	_frame_log = FileAccess.open(output.path_join("frames.original.jsonl"), FileAccess.WRITE)
 	_initial_lobby = Game.lobby.duplicate(true)
-	for locale in ["zh-CN", "en"]:
+	var chinese_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/zh-CN.json"))
+	for locale in Palette.languages():
+		var target_pack: Dictionary = JSON.parse_string(FileAccess.get_file_as_string("res://data/locales/%s.json" % locale))
+		_text_auditor = TextAudit.new(locale, chinese_pack, target_pack)
 		Palette.set_language(locale)
 		$UI.theme = Palette.theme()
 		Game.changed.emit()
@@ -28,12 +31,15 @@ func _run() -> void:
 				var buttons: Array = $UI.content.find_children("*", "Button", true, false)
 				review_checks[name_tag + ": only one entry action"] = buttons.size() == 1 and buttons[0].name == "EnterGameButton"
 				review_checks[name_tag + ": no account input"] = $UI.content.find_children("*", "LineEdit", true, false).is_empty()
-				review_checks[name_tag + ": entry caption"] = buttons[0].text == ("Enter" if locale == "en" else "进入")
+				review_checks[name_tag + ": entry caption"] = buttons[0].text == Palette.localized("steam_enter")
 				review_checks[name_tag + ": public title locale"] = $UI._game_title.text == Palette.localized("game_title")
 				review_checks[name_tag + ": readiness state"] = buttons[0].disabled == not ready
+				if not ready:
+					var notices: Array = $UI.content.find_children("*", "Label", true, false)
+					review_checks[name_tag + ": localized unavailability"] = notices.any(func(label): return label.text == Palette.localized("steam_entry_unavailable"))
 				await _review_capture(name_tag, false)
 	_frame_log.close()
-	var report := {"ok": screenshot_count == 12 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Steam ready/unavailable UI fixtures; no Steam SDK or real authentication"}
+	var report := {"ok": screenshot_count == 66 and layout_errors.is_empty() and not review_checks.values().has(false), "frames": review_frames, "checks": review_checks, "layout_errors": layout_errors, "screenshots": screenshot_count, "actual_game_matches": 0, "scope": "Steam ready/unavailable UI fixtures; no Steam SDK or real authentication"}
 	FileAccess.open(output.path_join("report.json"), FileAccess.WRITE).store_string(JSON.stringify(report, "  "))
 	Sound.stop_all()
 	Sound.stop_music()

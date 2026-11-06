@@ -766,11 +766,11 @@ func _login() -> void:
 	top_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	panel.add_child(top_space)
 	var steam_reason := _steam_unavailable_reason()
-	var enter := _button(panel, I18n.t("进入"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
+	var enter := _button(panel, P.localized("steam_enter"), _enter_steam, Game.busy or not steam_reason.is_empty(), "UI/CardCodex/card_codex_action_button_orange.png")
 	enter.name = "EnterGameButton"
 	enter.custom_minimum_size.y = 100
 	if not steam_reason.is_empty():
-		_label(panel, I18n.t("Steam 登录暂未就绪，请稍后重试。"), 20, P.MUTED)
+		_label(panel, P.localized("steam_entry_unavailable"), 20, P.MUTED)
 	var bottom_space := Control.new()
 	bottom_space.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	panel.add_child(bottom_space)
