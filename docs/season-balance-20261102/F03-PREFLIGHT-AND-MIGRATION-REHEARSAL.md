@@ -46,3 +46,10 @@
 - 完成生产迁移／服务重启后，分别核对实际镜像SHA、原配置完整哈希、ready／live、公域TLS、管理边界及受影响功能。当前健康仅为旧版基线。
 
 见[本次结果](evidence/F03-preflight-r1/result.json)、[独立迁移核对](evidence/F03-preflight-r1/f03-migration-rehearsal-independent-audit-r1.derived.json)、Google草案与逐源SHA。所有历史失败保留，不补100人、不追加B05、不改变D03剩16场及F01待选预算，完整目标继续。
+
+
+## 当前补充：完整Release构建的数值工具编译修复
+
+保护包导出前的完整解决方案构建在CapEffectiveExperiment.cs:68发现CS0411：Calculate加入可选configuration／statsVersion参数后，原Select方法组无法绑定。仅改为items => EquipmentCombatRules.Calculate(items)，仍用原单参数调用的默认空配置／版本，没有启用新属性、调整数值或运行旧容量实验。
+
+修正后Numerics的Release构建通过，0警告／0错误。初次完整构建失败与日志SHA保留；这次窄编译不替代完整解决方案重建或保护后运行验证。源码固定提交后再从新目录导出候选，未产出／发布半成品。见[evidence/F03-protected-compile-r1/result.json](evidence/F03-protected-compile-r1/result.json)。server_create技能引用仍缺，按既有game-server-dev适配、GDD与服务端规范处理此单行编译兼容点，不依赖新的框架接口。

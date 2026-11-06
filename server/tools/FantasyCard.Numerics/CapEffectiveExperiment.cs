@@ -65,7 +65,7 @@ internal static class CapEffectiveExperiment
         var equipment = UpgradeArms.Select(upgraded => Slots.Select((slot, index) =>
             new CombatEquipmentItem(new Guid(440001, 0, 0, 0, 0, 0, 0, 0, 0, 0, (byte)(index + 1)), slot,
                 upgraded && index == 0 ? "Orange" : "Purple", level, element, "Bulwark", "DrawInterval")).ToArray()).ToArray();
-        var profiles = equipment.Select(EquipmentCombatRules.Calculate).ToArray();
+        var profiles = equipment.Select(items => EquipmentCombatRules.Calculate(items)).ToArray();
         var rawResistance = equipment.Select(items => items.Sum(item => config.EquipmentQuality(item.Quality).Resistance + item.Level * config.EquipmentQuality(item.Quality).ResistancePerLevel)).ToArray();
         void WriteManifest(bool complete) => File.WriteAllText(Path.Combine(output, "manifest.json"), JsonSerializer.Serialize(new
         {
