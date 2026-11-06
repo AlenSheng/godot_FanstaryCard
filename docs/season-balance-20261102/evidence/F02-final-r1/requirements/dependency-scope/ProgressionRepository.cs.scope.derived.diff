@@ -1,0 +1,23 @@
+diff --git a/server/src/FantasyCard.Server/Progression/ProgressionRepository.cs b/server/src/FantasyCard.Server/Progression/ProgressionRepository.cs
+index 533ae9b7..3c1509e1 100644
+--- a/server/src/FantasyCard.Server/Progression/ProgressionRepository.cs
++++ b/server/src/FantasyCard.Server/Progression/ProgressionRepository.cs
+@@ -60,17 +60,7 @@ public sealed partial class ProgressionRepository(NpgsqlDataSource dataSource, T
+             if (context is not null) command.Parameters.AddWithValue(context.SeasonId);
+             await using var reader = await command.ExecuteReaderAsync(cancellationToken);
+             while (await reader.ReadAsync(cancellationToken))
+-                items.Add(ReadEquipment(reader) with
+-                {
+-                    OriginSeasonId = reader.IsDBNull(10) ? null : reader.GetString(10),
+-                    SeasonId = reader.IsDBNull(11) ? null : reader.GetString(11),
+-                    AssetScope = reader.IsDBNull(12) ? null : reader.GetString(12),
+-                    StatsVersion = reader.IsDBNull(13) ? null : reader.GetString(13),
+-                    SourceKind = reader.IsDBNull(14) ? null : reader.GetString(14),
+-                    RecipeExtracted = reader.IsDBNull(12) ? null : reader.GetBoolean(15),
+-                    UniqueAffix=reader.IsDBNull(16)?null:reader.GetString(16),
+-                    UniqueElement=reader.IsDBNull(17)?null:reader.GetString(17)
+-                });
++                items.Add(ReadCompleteEquipment(reader));
+         }
+ 
+         InventoryConsumablesResponse consumables;

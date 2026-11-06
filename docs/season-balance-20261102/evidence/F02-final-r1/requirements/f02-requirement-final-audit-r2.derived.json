@@ -1,0 +1,402 @@
+{
+  "at": "2026-11-06T08:25:26.897548+00:00",
+  "F02_complete": true,
+  "scope": "Current repository season17 implementation self-check; not production deployment or D03/D04/E02/F01/F03 completion",
+  "original_asset_acceptance_commit": "c8fc409a8d2dc365b94274a5a6f17356586cf121",
+  "current_production_tree_commit": "bbadab6bc4275c28ebcbc3be7578c9651816b01a",
+  "original_asset_families": 9,
+  "original_unique_direct_sources": 22,
+  "identical_direct_sources": 20,
+  "subsequent_changed_direct_sources": [
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs",
+      "prior_source_sha256": "4f3fa313954284c075dc03895db0ee2de654b8d6f2ec5ea06abb4657328a5143",
+      "current_sha256": "f3163a31ad7cadbdd8d456ecc3c8459768d1da78c8f4174c739d911d4d7693ef",
+      "matching_prior_commit": "8d38d02dd14a746f20041751f8998fb742760384",
+      "diff": "G:\\PR13Evidence\\season-balance-20261102-r1\\f02-composite-dependency-audit-r2\\ProgressionRepository.cs.scope.derived.diff",
+      "diff_sha256": "31206cb5529a26e585a0bdcc492337909850cf47e48f4f28a9b3d8d97ffa8f39"
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "prior_source_sha256": "c18325757d2901ad3adf0f33711fb42aa6506023369f76cc469f99614275359a",
+      "current_sha256": "6f5bd97e73a9ebb12b4249c0d05df47cb603d575bb42fdfcd6fd2807ef917fc6",
+      "matching_prior_commit": "9921a6869781a923163d75f8868d6538d02dbeac",
+      "diff": "G:\\PR13Evidence\\season-balance-20261102-r1\\f02-composite-dependency-audit-r2\\RoomReadyCoordinator.cs.scope.derived.diff",
+      "diff_sha256": "37c589b50cdec6de2d0ef76d8d89af01d08519ef562729c8d3473c7217a3be4b"
+    }
+  ],
+  "all_subsequent_production_changed_paths_mapped": [
+    {
+      "path": "client/data/generated/fantasycard.config.bytes",
+      "current_sha256": "7620228c6290fe23d8cadee6d79eeeab4bb6aae7f7dd2723f3764f8a29f5cf40",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "client/data/generated/fantasycard.config.sha256",
+      "current_sha256": "321ead76c0e08fa5c1520ec4b82f0403d98f4fc23879eda32f0678cb4c813e49",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "client/data/generated/fantasycard.config.version.txt",
+      "current_sha256": "5b3248f618cb69b2d085482292d2bb554542ad8b050576da26e3cef17a3d5a98",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "protocol/http/v1/endpoints.json",
+      "current_sha256": "d863de600e982b225d43094d98bf753ef1b0e2439a528b308732a86391142567",
+      "scope": "HTTP-new-discard-and-readonly-archive",
+      "evidence": [
+        "E01-inventory-discard-http-r1/result.json",
+        "E01-season-archive-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "protocol/http/v1/game.proto",
+      "current_sha256": "eba39a5285a111114937025fb219733e5a6cbe217f6f742dcb2229341abb96b5",
+      "scope": "HTTP-new-discard-and-readonly-archive",
+      "evidence": [
+        "E01-inventory-discard-http-r1/result.json",
+        "E01-season-archive-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "protocol/realtime/v1/realtime.proto",
+      "current_sha256": "4e2981a110a802cdeac294418e1126fb23bec39bc225fc1f88a4c5833675d362",
+      "scope": "optional-return-credit-wire",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.bytes",
+      "current_sha256": "7620228c6290fe23d8cadee6d79eeeab4bb6aae7f7dd2723f3764f8a29f5cf40",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.sha256",
+      "current_sha256": "321ead76c0e08fa5c1520ec4b82f0403d98f4fc23879eda32f0678cb4c813e49",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/config/generated/fantasycard.config.version.txt",
+      "current_sha256": "5b3248f618cb69b2d085482292d2bb554542ad8b050576da26e3cef17a3d5a98",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Progression/ProgressionContracts.cs",
+      "current_sha256": "341b0a980a74db99fd7378bdae3c8f8a93de972a9803b5507dd420b13ae4dcb6",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeContracts.cs",
+      "current_sha256": "96cfbbe901bb202f828a648137e6c31c4ee9abb114eb01f85a9c2f330fac334b",
+      "scope": "optional-return-credit-wire",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Realtime/RealtimeProtobufCodec.cs",
+      "current_sha256": "b50dbf610352efd4cbaa435cd847f6c667f2c259576335fff9b6ec84ba2c6ed8",
+      "scope": "optional-return-credit-wire",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Contracts/Seasons/SeasonArchiveContracts.cs",
+      "current_sha256": "b4f8b2af64cb94182073de1634cdc0aceeee82f99cdafa56b29880a839d1f5a1",
+      "scope": "E01-original-archive-readonly",
+      "evidence": [
+        "E01-season-archive-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/CombatTypes.cs",
+      "current_sha256": "1201ebe4d89b451642e64cde3bb793563371a760b2dbddf6e4a996b16199da32",
+      "scope": "saved-return-credit-and-policy",
+      "evidence": [
+        "B05-approved-supplement-r1/result.json",
+        "D02-card-candidate-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PlayerCombatState.cs",
+      "current_sha256": "1af0eeda4be62be66b421f504e2b851b39633afe93e5a78dc314c925bd95088e",
+      "scope": "saved-return-credit-and-policy",
+      "evidence": [
+        "B05-approved-supplement-r1/result.json",
+        "D02-card-candidate-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Combat/PveBattleFactory.cs",
+      "current_sha256": "4756905b528e1307745f53772ce5525de52fd522a1848ba870c6c79070c9c16e",
+      "scope": "versioned-monster-profile-restore-only",
+      "evidence": [
+        "D03-entry-calibration-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/GameConfigCatalog.cs",
+      "current_sha256": "7844050b0807f845ada2dd4ec10da9109bfdcc79ad64cb10cbdb79140303ea55",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/NumericalRules.cs",
+      "current_sha256": "c2380499fd11f2eb9ca21e7a9e73eeaf90698e5e2ff0eea273c4504b80b8de57",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/SeasonDifficultyConfig.cs",
+      "current_sha256": "87e6d6362b64f5ddbf9b77bc51eb40786928e4914b6dd85316a6986af10bdd89",
+      "scope": "versioned-config-16-17-boundary",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Configuration/SeasonMonsterTuningConfig.cs",
+      "current_sha256": "03ca349180ea4a89922f05b68d5cef80b9e52742b5f40c75c126e0203aea2313",
+      "scope": "versioned-monster-profile-restore-only",
+      "evidence": [
+        "D03-entry-calibration-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoom.cs",
+      "current_sha256": "d82fc5591a88ce6d95611c77ddf578d3947b2b534cafeeb2df30480ad28e472f",
+      "scope": "freeze-version-policy-and-room-identity",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-loot-id-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/BattleRoomMonsterTuning.cs",
+      "current_sha256": "d588a4d7016f6bcfe6c5e1876e993e6f871090f3744f3882644afb9ca4f3ab4f",
+      "scope": "versioned-monster-profile-restore-only",
+      "evidence": [
+        "D03-entry-calibration-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Domain/Rooms/RewardChoice.cs",
+      "current_sha256": "39c4862faf5a0f83fe622740a775e12a15f6b4d750fde29180a734ef948ac27e",
+      "scope": "room-bound-loot-identity",
+      "evidence": [
+        "F02-loot-id-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Matchmaking/RoomReadyCoordinator.cs",
+      "current_sha256": "6f5bd97e73a9ebb12b4249c0d05df47cb603d575bb42fdfcd6fd2807ef917fc6",
+      "scope": "freeze-version-policy-and-room-identity",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-loot-id-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Persistence/Migrations/V052__inventory_discard_batches.sql",
+      "current_sha256": "99501dc14af2d1571c5756d9c71ac82d37c6380018394a7ddc1eeab840a682a0",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ArmorEnhancementRepository.cs",
+      "current_sha256": "cfea6a5b2c0ede0c729afc0acf0d3fdfe63d5fd8ccbd605bb9a8c9fba78e4c43",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/InventoryDiscardRepository.cs",
+      "current_sha256": "08ab4996f781d894cf8f5477ab661ad058b2da8bbd81458e27dc183bc871b5be",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionEndpoints.cs",
+      "current_sha256": "2456474b7f26ebe2303d825c5c334f6618f0e8f424bb6f5e9f858448a61b1aa1",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/ProgressionRepository.cs",
+      "current_sha256": "f3163a31ad7cadbdd8d456ecc3c8459768d1da78c8f4174c739d911d4d7693ef",
+      "scope": "E01-discard-migration-and-read-equipment",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "E01-inventory-discard-http-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadEndpoints.cs",
+      "current_sha256": "1494b4dc68bef629908aae14d9d3f3f0c8c62b5383880f6eff0c1e30c885636c",
+      "scope": "E01-original-archive-readonly",
+      "evidence": [
+        "E01-season-archive-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadRepository.cs",
+      "current_sha256": "0e447112bb75f675fb23411cf8deeacda98d4b24372d8c6720498834c78fe547",
+      "scope": "E01-original-archive-readonly",
+      "evidence": [
+        "E01-season-archive-r1/result.json"
+      ]
+    },
+    {
+      "path": "server/src/FantasyCard.Server/Realtime/RoomSnapshotProjection.cs",
+      "current_sha256": "a5a3ab016b9fc7bc2a52f70198f34ac0564e3b23d23992aaca869aca7e59ff1b",
+      "scope": "optional-return-credit-wire",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "id": "F02-R1",
+      "requirement": "Actual PostgreSQL transactional and concurrency/replay verification across original asset families",
+      "evidence": [
+        "A03-A04-final-r1/result.json",
+        "F02-loot-id-r1/result.json",
+        "E01-inventory-discard-repository-r1/result.json"
+      ],
+      "verification": "Original121unique cases rederived from r115/r116TRX;268manifest files verified;20of22direct original sources byte-identical,2mapped later changes. New identity2 and inventory15 retain their scope.",
+      "verified": true
+    },
+    {
+      "id": "F02-R2",
+      "requirement": "Abrupt process failure inside asset application leaves no partial permanent or seasonal credit",
+      "evidence": [
+        "F02-final-r1/asset-fault/f02-season-asset-fault-final-independent-r3.derived.json"
+      ],
+      "verification": "Explicit mixed5asset transaction blocked inside first ledger insert,earlyACK409,actualappkill,gate release and actualPGrollback;newhost grants original16lateclaim once;newseasonwallet unchanged.",
+      "verified": true
+    },
+    {
+      "id": "F02-R3",
+      "requirement": "Notification commit/rollback and ACK response-loss recovery do not duplicate assets or lose durable receipts",
+      "evidence": [
+        "F02-final-r1/asset-fault/f02-season-asset-fault-final-independent-r3.derived.json"
+      ],
+      "verification": "Both actual outbox marker outcomes observed;unique-owned DBconnection interruption afterappkill forcesrollback and real same-receipt redelivery. CommittedACK response dropped,restartedPID,same idempotencykey returnssamebytes.",
+      "verified": true
+    },
+    {
+      "id": "F02-R4",
+      "requirement": "Season boundary, permanent souls and old/current/legacy balance domains remain distinct",
+      "evidence": [
+        "A03-A04-final-r1/result.json",
+        "E01-season-archive-r1/result.json",
+        "F02-final-r1/asset-fault/f02-season-asset-fault-final-independent-r3.derived.json"
+      ],
+      "verification": "Original9family archive/latesettlement context cases scope-reused;new lateoriginal16processcase credits23gold7fragments tooriginalseason,3warrior4Mage soul permanent,neitherlegacy norcurrent wallet credited.",
+      "verified": true
+    },
+    {
+      "id": "F02-R5",
+      "requirement": "Exact old/new bundles, saved policy and actual preparation/client routes survive restart; bad original affects only its room",
+      "evidence": [
+        "C01-config17-r1/result.json",
+        "F02-season-credit-r2/result.json"
+      ],
+      "verification": "Native10/Godot68 plus4actualprocess cases: original16 and17idlecredit;missing/corrupt old archive;fouractualPBpreparedREADYhuman-controlled account routes and activecredit acrossappkill. Not native capacity or balance proof.",
+      "verified": true
+    },
+    {
+      "id": "F02-R6",
+      "requirement": "Current schema/version, evidence integrity and owned test resource cleanup verified",
+      "evidence": [
+        "E01-inventory-discard-repository-r1/result.json",
+        "F02-season-credit-r2/result.json",
+        "F02-final-r1/asset-fault/f02-season-asset-fault-final-independent-r3.derived.json"
+      ],
+      "verification": "V052 migrations accepted by inventory15andfreshrealProgramstarts;all declared schemas/container/env/tmpfs cleaned;rawfailures preserved;RAM500MiB/disk3GiB+5% maintained. Production pendingF03.",
+      "verified": true
+    }
+  ],
+  "original_PG_unique_passed_rederived": 121,
+  "new_process_case_union": 8,
+  "successful_server_process_identities": 20,
+  "raw_server_process_identities_including_asset_gate_failures": 22,
+  "fresh_one_all_green_process_batch": false,
+  "history": "121PG is r115/r116 union with5retainedfailures. Credit4onecurrentbatch. Asset4is1r1+2r2+1r3retryunion with2retainedgatedeadlocks. No historical status overwritten.",
+  "unverified_other_goal_items": [
+    "D03",
+    "D04",
+    "E02",
+    "F01",
+    "F03"
+  ],
+  "future_source_or_configuration_changes_require_affected_scope_revalidation": true,
+  "no_new_B05_D03_D02_battles": true,
+  "capacity100_retested": false,
+  "production_deployed": false,
+  "production_restarted": false,
+  "whole_goal_complete": false
+}

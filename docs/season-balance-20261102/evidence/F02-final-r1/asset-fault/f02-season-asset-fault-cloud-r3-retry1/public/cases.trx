@@ -1,0 +1,40 @@
+<TestRun id="fbb8a7c3-b0d7-4f97-953b-59d2b897ed82" name="unknown@803968e39001 2026-11-06T08:18:48.6880809+00:00" runUser="unknown" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-06T08:18:48.6880809+00:00" queuing="2026-11-06T08:18:48.6880809+00:00" start="2026-11-06T08:18:48.6880809+00:00" finish="2026-11-06T08:18:57.1015715+00:00" />
+  <TestSettings name="default" id="6c4d5628-128d-4c3b-a1a4-ab366a4594ad" />
+  <Results>
+    <UnitTestResult testName="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \&quot;notification-mark-rollback\&quot;)" outcome="Passed" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="cee3ada6-a8c0-46ee-8188-1b056c456340" executionId="cee3ada6-a8c0-46ee-8188-1b056c456340" computerName="803968e39001" duration="00:00:08.2708426" startTime="2026-11-06T08:18:48.7811488+00:00" endTime="2026-11-06T08:18:57.0781164+00:00">
+      <Output>
+        <TextMessages>
+          <Message>{"caseId":"SEASON-ASSET-schema","recordedAt":"2026-11-06T08:18:49.0181451+00:00","evidence":{"schema":"fc_runtime_test_a4c29e2f8f2445bdb616595ed5e35d02","mode":"notification-mark-rollback"}}
+{"caseId":"process-start","recordedAt":"2026-11-06T08:18:51.0285148+00:00","evidence":{"label":"season-asset-notification-mark-rollback-first","Id":20,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":38889,"SearchPath":"fc_runtime_test_a4c29e2f8f2445bdb616595ed5e35d02","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"SEASON-ASSET-notification-before-mark","recordedAt":"2026-11-06T08:18:53.1123054+00:00","evidence":{"mode":"notification-mark-rollback","ProcessId":20,"gate":318901440,"ready":{"SettlementId":"01a1aff0-69d8-7d3a-a79e-673d5302fc3f","MatchId":"e6cd78a8-4471-4696-bfca-8b37b520ae8d","Result":"Extracted"},"published":false}}
+{"caseId":"SEASON-ASSET-owned-notification-backends-stopped","recordedAt":"2026-11-06T08:18:53.1779611+00:00","evidence":{"mode":"notification-mark-rollback","gate":318901440,"gateBackends":[29047],"ownedBackends":[29047],"signaledBackends":[29047],"ApplicationName":"fc-f02-notify-7fe984386cef47289d3f2c180414fe50","appAlreadyKilled":true,"onlyUniqueOwnedGateAndApplicationNameMatched":true}}
+{"caseId":"SEASON-ASSET-notification-drained","recordedAt":"2026-11-06T08:18:53.1863772+00:00","evidence":{"mode":"notification-mark-rollback","SettlementId":"01a1aff0-69d8-7d3a-a79e-673d5302fc3f","publishedAfterDeadClientDrain":false,"priorActualFrameObserved":true}}
+{"caseId":"process-start","recordedAt":"2026-11-06T08:18:53.1919668+00:00","evidence":{"label":"season-asset-notification-mark-rollback-second","Id":37,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":38889,"SearchPath":"fc_runtime_test_a4c29e2f8f2445bdb616595ed5e35d02","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"SEASON-ASSET-ready-recovered","recordedAt":"2026-11-06T08:18:54.8479593+00:00","evidence":{"mode":"notification-mark-rollback","delivered":{"SettlementId":"01a1aff0-69d8-7d3a-a79e-673d5302fc3f","MatchId":"e6cd78a8-4471-4696-bfca-8b37b520ae8d","Result":"Extracted"}}}
+{"caseId":"process-start","recordedAt":"2026-11-06T08:18:54.9506978+00:00","evidence":{"label":"season-asset-notification-mark-rollback-third","Id":55,"executable":"dotnet","dll":"/workspace/bin/FantasyCard.Server.dll","port":38889,"SearchPath":"fc_runtime_test_a4c29e2f8f2445bdb616595ed5e35d02","environment":"explicit local fixture only; PB default; ticket WS; bot fill 30s"}}
+{"caseId":"SEASON-ASSET-final","recordedAt":"2026-11-06T08:18:56.4022427+00:00","evidence":{"mode":"notification-mark-rollback","pids":[20,37,55],"Match":"e6cd78a8-4471-4696-bfca-8b37b520ae8d","RoomId":"8190c409-fc71-4064-b0a6-935fd55e9b21","SettlementId":"01a1aff0-69d8-7d3a-a79e-673d5302fc3f","generated":"a690ebda-743a-0195-8590-0690a925e5e4","sourceSeason":"fault-current17","sourceConfig":"season-v1-config-17","gold":23,"fragments":7,"warriorSoul":3,"mageSoul":4,"ledgerRows":4,"physicalItems":1,"duplicateAckSameReceipt":true,"successfulPlayerCasts":0,"completedEncounters":0,"scope":"Fault-specific durable Pending checkpoint and actual Program/PG/HTTP/WS, no normal gameplay or capacity rerun"}}
+{"caseId":"process-stop","recordedAt":"2026-11-06T08:18:56.4074345+00:00","evidence":{"label":"season-asset-notification-mark-rollback-first","ProcessId":20,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/season-asset-notification-mark-rollback-first-20.log"}}
+{"caseId":"process-stop","recordedAt":"2026-11-06T08:18:56.4093706+00:00","evidence":{"label":"season-asset-notification-mark-rollback-second","ProcessId":37,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/season-asset-notification-mark-rollback-second-37.log"}}
+{"caseId":"process-stop","recordedAt":"2026-11-06T08:18:56.4239629+00:00","evidence":{"label":"season-asset-notification-mark-rollback-third","ProcessId":55,"ExitCode":137,"termination":"Process.Kill(entireProcessTree:true)","logPath":"/results/process-logs/season-asset-notification-mark-rollback-third-55.log"}}</Message>
+        </TextMessages>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \&quot;notification-mark-rollback\&quot;)" id="cee3ada6-a8c0-46ee-8188-1b056c456340" storage="/workspace/bin/FantasyCard.Server.Tests.dll">
+      <Execution id="cee3ada6-a8c0-46ee-8188-1b056c456340" />
+      <TestMethod codeBase="/workspace/bin/FantasyCard.Server.Tests.dll" className="FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests" name="Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts" adapterTypeName="executor://fbb8a7c3-b0d7-4f97-953b-59d2b897ed82/3.1.0" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" testId="cee3ada6-a8c0-46ee-8188-1b056c456340" executionId="cee3ada6-a8c0-46ee-8188-1b056c456340" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Complete">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>
