@@ -15,7 +15,8 @@ public sealed record RoomBattleBuildBinding(Guid PlayerId,Guid BattleId,string P
 public sealed record RoomObservationOwner(Guid PlayerId,HeroClass HeroClass,bool IsBot);
 public sealed record RoomObservationSnapshot(int SchemaVersion,long LastSequence,long DroppedEvents,IReadOnlyList<RoomEventObservation> Events,
     [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoomBuildProfile>? Profiles=null,
-    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoomBattleBuildBinding>? BattleBuilds=null)
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<RoomBattleBuildBinding>? BattleBuilds=null,
+    [property:JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] RoomCombatObservationSnapshot? Combat=null)
 {
     public void RequireValid(IReadOnlyList<RoomObservationOwner> owners,TimeSpan elapsed,DateTimeOffset? started)
         =>RoomObservationJournal.Restore(this,owners,elapsed,started);
@@ -24,6 +25,7 @@ public sealed record RoomObservationSnapshot(int SchemaVersion,long LastSequence
 /// <summary>Bounded cumulative observations survive coalesced checkpoints; never consume gameplay RNG.</summary>
 internal sealed class RoomObservationJournal
 {
+    internal RoomCombatObservations Combat { get; private set; }=new();
     internal const int MaximumEvents=4096;
     internal const int MaximumItemsPerEvent=128;
     private readonly List<RoomEventObservation> _events=[];
@@ -62,7 +64,7 @@ internal sealed class RoomObservationJournal
     }
 
     internal RoomObservationSnapshot Capture()=>new(1,_lastSequence,_lastSequence-_events.Count,_events.ToArray(),_profiles.Values.ToArray(),
-        _battleBuilds.Select(pair=>new RoomBattleBuildBinding(pair.Key.Player,pair.Key.Battle,pair.Value)).ToArray());
+        _battleBuilds.Select(pair=>new RoomBattleBuildBinding(pair.Key.Player,pair.Key.Battle,pair.Value)).ToArray(),Combat.Capture());
 
     internal static RoomObservationJournal Restore(RoomObservationSnapshot snapshot,IReadOnlyList<RoomObservationOwner> players,TimeSpan elapsed,DateTimeOffset? started)
     {
@@ -97,6 +99,7 @@ internal sealed class RoomObservationJournal
                 throw new DomainValidationException("Saved room observation disagrees with its original room.");
         }
         var journal=new RoomObservationJournal{_lastSequence=snapshot.LastSequence};journal._events.AddRange(snapshot.Events);
+        journal.Combat=RoomCombatObservations.Restore(snapshot.Combat,players,elapsed);
         foreach(var profile in profiles)journal._profiles.Add(profile.ProfileId,profile);
         foreach(var binding in bindings)journal._battleBuilds.Add((binding.PlayerId,binding.BattleId),binding.ProfileId);
         return journal;
@@ -106,13 +109,40 @@ internal sealed class RoomObservationJournal
 public sealed partial class BattleRoom
 {
     private RoomObservationJournal? _observations;
+    private void SelectCombatObservation(RoomPlayerState player,Guid? battle,string mode,bool partial=false)
+    {
+        if(_observations is null)return;
+        var created=_observations.Combat.Select(player.PlayerId,battle,mode,battle is null?"OutOfCombat":ObservationCellKind(player),Elapsed,partial,player.Combat.Deck.Hand.Count);
+        if(created)_observations.Combat.Record(player.PlayerId,new(CombatMetric.NaturalIntervalSample,Sample:player.Combat.NaturalDrawIntervalSeconds),Elapsed);
+        player.Combat.SetObservation(value=>
+        {
+            if(!_combatPreview)_observations.Combat.Record(player.PlayerId,value,Elapsed);
+        });
+    }
+
+    private void ResumeCombatObservation(RoomPlayerState player,bool partial=false)
+    {
+        if(player.Phase is RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted){player.Combat.SetObservation(null);_observations?.Combat.End(player.PlayerId);return;}
+        var pvp=player.Phase==RoomPlayerPhase.Pvp;
+        SelectCombatObservation(player,pvp?player.CurrentDuelId:player.Phase==RoomPlayerPhase.Pve?player.Pve?.BattleId:null,pvp?"Pvp":player.Phase==RoomPlayerPhase.Pve?"Pve":"OutOfCombat",partial);
+    }
+
+    private void MeasureCombat(RoomPlayerState player,Guid? battle,CombatMetric metric,long amount)
+    {
+        if(!_combatPreview)_observations?.Combat.Record(player.PlayerId,battle,new(metric,amount),Elapsed);
+    }
     private void ObserveRoomEvent(RoomPlayerState player,string name,string source,string result,IEnumerable<ExplorationItem>? items=null,
         int? applied=null,Guid? battleId=null,TimeSpan? at=null,string? optionId=null,int? healPercent=null,int? hpBefore=null)
     {
         if(_observations is null)return;
-        var cell=player.Position is { } position&&Map is not null?Map.GetCell(position):null;
-        var kind=cell is null?"Unknown":cell.IsBoss||cell.MonsterGroupId=="BOSS"?"Boss":cell.MonsterGroupId=="BOX"?"Treasure":cell.MonsterGroupId.StartsWith('E')?"Elite":"Normal";
+        var kind=ObservationCellKind(player);
         _observations.Append(player,name,source,result,at??Elapsed,StartedAtUtc,battleId??player.Pve?.BattleId??player.CurrentDuelId,kind,_catalog,items,applied,optionId,healPercent,hpBefore);
+    }
+
+    private string ObservationCellKind(RoomPlayerState player)
+    {
+        var cell=player.Position is { } position&&Map is not null?Map.GetCell(position):null;
+        return cell is null?"Unknown":cell.IsBoss||cell.MonsterGroupId=="BOSS"?"Boss":cell.MonsterGroupId=="BOX"?"Treasure":cell.MonsterGroupId.StartsWith('E')?"Elite":"Normal";
     }
 
     private void ObserveRewardOptions(RoomPlayerState player,string source)

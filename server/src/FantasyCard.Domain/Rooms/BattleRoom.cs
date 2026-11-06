@@ -364,6 +364,7 @@ public sealed partial class BattleRoom
         {
             player.Position = map.SpawnPositions[index];
             player.Pve = CreateOriginalPve(map.GetCell(player.Position.Value));
+            SelectCombatObservation(player,player.Pve.BattleId,"Pve");
             player.Combat.BeginBattle(player.Pve.BattleId);
             _observations?.BeginBattle(player,_catalog,player.Pve.BattleId);
             player.Phase = RoomPlayerPhase.Pve;
@@ -394,10 +395,12 @@ public sealed partial class BattleRoom
         player.Pve = targetPve;
         if(targetPve is not null)
         {
+            SelectCombatObservation(player,targetPve.BattleId,"Pve");
             player.Combat.BeginBattle(targetPve.BattleId);
             _observations?.BeginBattle(player,_catalog,targetPve.BattleId);
         }
         player.Phase = targetPve is null ? RoomPlayerPhase.ActionBar : RoomPlayerPhase.Pve;
+        if(targetPve is null)ResumeCombatObservation(player);
         StartBotPveSimulation(player);
         _extractions.Remove(playerId);
         player.Combat.ClearShield();
@@ -507,6 +510,7 @@ public sealed partial class BattleRoom
         player.Pve.RefreshPhase();
         player.Phase = RoomPlayerPhase.ActionBar;
         Revision++;
+        ResumeCombatObservation(player);
         return true;
     }
 
@@ -582,6 +586,7 @@ public sealed partial class BattleRoom
         if (player.Position is { } clearedPosition) player.ClearedCells.Add(clearedPosition);
         player.Phase = RoomPlayerPhase.ActionBar;
         Revision++;
+        ResumeCombatObservation(player);
         ObserveRoomEvent(player,"loot_chosen","RewardChoice",option.Kind.ToString(),option.Item is null?[]:[option.Item],applied,
             optionId:option.OptionId,healPercent:option.HealPercent,hpBefore:hpBefore);
         return applied;
@@ -815,6 +820,7 @@ public sealed partial class BattleRoom
             foreach(var item in items.Where(item=>item.IsGenerated==true && !item.IsCombatProjection && item.Equipment is not null))
                 SeasonLootRules.RequireOrigin(item.Equipment!,room.Season,catalog.Configuration);
         }
+        foreach(var player in room._players.Values)room.ResumeCombatObservation(player,true);
         return room;
     }
 
@@ -1239,6 +1245,17 @@ public sealed partial class BattleRoom
             draft.ResonanceMultiplier, draft.ConflictPairCount, draft.ConflictCancellation,
             recordAction ? combatActionId : null);
         if (recordAction) attacker.CombatActions.Commit(combatActionId!, actionHash!, Elapsed, resolution);
+        MeasureCombat(attacker,battleId,CombatMetric.Casts,1);MeasureCombat(attacker,battleId,CombatMetric.CardsPlayed,selected.Count);
+        if(resolvedDamage==0)MeasureCombat(attacker,battleId,CombatMetric.ZeroDamageCasts,1);
+        MeasureCombat(attacker,battleId,CombatMetric.OutgoingResolvedDamage,resolvedDamage);
+        MeasureCombat(attacker,battleId,CombatMetric.OutgoingAppliedDamage,(long)shieldDamage+hpDamage);
+        MeasureCombat(attacker,battleId,CombatMetric.RequestedTargetStunTicks,draft.Stun.Ticks);
+        MeasureCombat(attacker,battleId,CombatMetric.GrantedTargetStunTicks,stun.Ticks);
+        if(pvpTarget is not null)
+        {
+            MeasureCombat(attacker,battleId,CombatMetric.RequestedTargetDrawBlockTicks,draft.DrawBlock.Ticks);
+            MeasureCombat(attacker,battleId,CombatMetric.GrantedTargetDrawBlockTicks,draft.DrawBlock.Ticks);
+        }
         _combatFeedback.Add(new CombatFeedbackResolution(playerId.ToString("D"), resolution));
         return resolution;
     }
@@ -1275,7 +1292,7 @@ public sealed partial class BattleRoom
         ObservePveFinished(player,"Victory");
         if(player.IsBot && BotRewardPolicy is not null)
         {
-            player.Pve!.RefreshPhase();player.ClearedCells.Add(position);player.Phase=RoomPlayerPhase.ActionBar;Revision++;return;
+            player.Pve!.RefreshPhase();player.ClearedCells.Add(position);player.Phase=RoomPlayerPhase.ActionBar;Revision++;ResumeCombatObservation(player);return;
         }
         var alreadyCleared=player.ClearedCells.Contains(position);
         AddPveVictoryDrops(player, Map.GetCell(position));
@@ -1297,6 +1314,7 @@ public sealed partial class BattleRoom
         QueueBossRed(player,cell,alreadyCleared,now);
         player.Phase = RoomPlayerPhase.Choice;
         Revision++;
+        ResumeCombatObservation(player);
         ObserveRewardOptions(player,"InitialChoice");
     }
 
@@ -1459,6 +1477,9 @@ public sealed partial class BattleRoom
 
             foreach (var monster in player.Pve.Monsters.Where(monster => !monster.IsDead))
             {
+                MeasureCombat(player,player.Pve.BattleId,CombatMetric.EnemyObservedTicks,delta.Ticks);
+                MeasureCombat(player,player.Pve.BattleId,CombatMetric.EnemyStunTimerTicks,Math.Min(delta.Ticks,Math.Max(0,monster.StunRemaining.Ticks)));
+                if(monster.StunRemaining>TimeSpan.Zero)MeasureCombat(player,player.Pve.BattleId,CombatMetric.EnemyStunSuppressedTicks,delta.Ticks);
                 var intent = monster.Advance(delta);
                 if (intent is null)
                 {
@@ -1472,6 +1493,10 @@ public sealed partial class BattleRoom
                     var resolvedDamage = player.Combat.ResolvePveIntentDamage(damage, intent, Numerics.PvePositiveMinimum,
                         effectiveBaseValue: effectiveBaseValue);
                     var (shieldDamage, hpDamage) = player.Combat.TakeDamage(resolvedDamage);
+                    MeasureCombat(player,player.Pve.BattleId,CombatMetric.DamageIntents,1);
+                    if(effectiveBaseValue>0)MeasureCombat(player,player.Pve.BattleId,CombatMetric.PositiveBaseDamageIntents,1);
+                    if(resolvedDamage==0)MeasureCombat(player,player.Pve.BattleId,CombatMetric.ZeroResolvedDamageIntents,1);
+                    if((long)shieldDamage+hpDamage==0)MeasureCombat(player,player.Pve.BattleId,CombatMetric.ZeroAppliedDamageIntents,1);
                     var kind = intent.Kind == MonsterIntentKind.Direct || intent.Element == CardElement.None
                         ? "Direct" : intent.Element.ToString();
                     _combatFeedback.Add(new CombatFeedbackResolution(monster.MonsterId, new CombatResolution(
@@ -1783,6 +1808,7 @@ public sealed partial class BattleRoom
         _extractions.Remove(player.PlayerId);
         _springDrinks.Remove(player.PlayerId);
         player.Pve?.Freeze();
+        SelectCombatObservation(player,duelId,"Pvp");
         player.Combat.PrepareForDuel(new Random(DuelRandom.Next()),duelId);
         player.Phase = RoomPlayerPhase.Pvp;
         player.CurrentDuelId = duelId;
@@ -1797,12 +1823,14 @@ public sealed partial class BattleRoom
         player.Pve = frozen.Pve is null ? null : PveBattleState.Rehydrate(frozen.Pve);
         player.Phase = frozen.Phase;
         player.CurrentDuelId = null;
+        ResumeCombatObservation(player);
     }
 
     /// <summary>Observe the first terminal transition without changing combat, clocks or random streams.</summary>
     private void SetTerminalPhase(RoomPlayerState player,RoomPlayerPhase phase,TimeSpan? atElapsed=null)
     {
         player.Phase=phase;
+        ResumeCombatObservation(player);
         var observed=atElapsed??Elapsed;
         if(observed>=TimeSpan.Zero&&observed<=Elapsed)player.TerminalRoomElapsed??=observed;
         if(phase==RoomPlayerPhase.Extracted&&!player.IsBot)

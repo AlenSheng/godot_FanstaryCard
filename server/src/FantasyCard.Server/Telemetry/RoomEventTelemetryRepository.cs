@@ -17,7 +17,9 @@ public sealed record RoomEventTelemetryReport(DateTimeOffset FromUtc,DateTimeOff
     bool SourceTruncated,bool FullyObserved,
     string ClockBasis="Original room UTC start plus authoritative logical elapsed, including recovery time.",
     string Scope="Room observations only: potential choices, carried items, exit and relic custody pending asset settlement. These are not additional account credits, irreversible destruction or proof of settlement commit.",
-    IReadOnlyList<RoomBuildProfile>? BuildProfiles=null,IReadOnlyDictionary<string,int>? UnknownDimensionCounts=null);
+    IReadOnlyList<RoomBuildProfile>? BuildProfiles=null,IReadOnlyDictionary<string,int>? UnknownDimensionCounts=null,
+    IReadOnlyList<CombatMeasurementReport>? CombatMeasurements=null,int RoomsWithoutCombatObservations=0,string? OmittedCombatMeasurements=null,bool CombatRowsTruncated=false,
+    string CombatScope="Cumulative since each row's declared observation start, not time-window deltas. Partial/saturated rows are explicit. Advance ticks are actual combat-state advances, not human active time.");
 
 public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
 {
@@ -32,6 +34,7 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
         await using(var timeout=new NpgsqlCommand("SET LOCAL statement_timeout=5000",connection,transaction))await timeout.ExecuteNonQueryAsync(ct);
         var events=new List<DurableRoomEvent>();var rooms=0;var missing=0;var invalid=0;var unknownTime=0;var dropped=BigInteger.Zero;long omitted=0;var truncated=false;
         var usedProfiles=new Dictionary<string,RoomBuildProfile>(StringComparer.Ordinal);
+        var combatRows=new List<CombatMeasurementReport>();var missingCombat=0;var omittedCombat=BigInteger.Zero;var combatTruncated=false;
         await using(var query=new NpgsqlCommand("""
             SELECT s.room_id,m.match_id,m.config_version,m.season_id,m.difficulty,m.ruleset_id,m.stats_version,
                 s.snapshot_json->>'startedAtUtc',s.snapshot_json->>'elapsed',coalesce(s.snapshot_json->'observations','null'::jsonb)='null'::jsonb,
@@ -66,6 +69,21 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
                 dropped+=observations.DroppedEvents;
                 var profiles=(observations.Profiles??[]).ToDictionary(p=>p.ProfileId,StringComparer.Ordinal);
                 SeasonContext? season=reader.IsDBNull(3)?null:new(reader.GetString(3),reader.GetString(4)[1]-'0',reader.GetString(5),reader.GetString(2),reader.GetString(6));
+                if(observations.Combat is not { } combat)missingCombat++;
+                else
+                {
+                    if(combat.HistoryMissing)missingCombat++;
+                    omittedCombat+=combat.OmittedMeasurements;
+                    foreach(var measurement in combat.Rows)
+                    {
+                        if((BigInteger)start.UtcTicks+measurement.ObservedThroughRoomElapsed.Ticks<from.UtcTicks||
+                            (BigInteger)start.UtcTicks+measurement.ObservedFromRoomElapsed.Ticks>=to.UtcTicks)continue;
+                        if(combatRows.Count==1000){combatTruncated=true;break;}
+                        var binding=(observations.BattleBuilds??[]).SingleOrDefault(b=>b.PlayerId==measurement.PlayerId&&b.BattleId==measurement.BattleId);
+                        var profile=binding is null?null:profiles.GetValueOrDefault(binding.ProfileId);
+                        combatRows.Add(CombatMeasurementProjection.Project(reader.GetGuid(0),reader.GetString(2),season,reader.GetString(4),owners.Single(o=>o.PlayerId==measurement.PlayerId),measurement,profile));
+                    }
+                }
                 foreach(var row in observations.Events)
                 {
                     if(row.OccurredAtUtc is not { } at){unknownTime++;continue;}
@@ -82,6 +100,7 @@ public sealed class RoomEventTelemetryRepository(NpgsqlDataSource dataSource)
         await transaction.CommitAsync(ct);
         return new(from,to,events.OrderBy(e=>e.Event.OccurredAtUtc).ThenBy(e=>e.RoomId).ThenBy(e=>e.Event.Sequence).ToArray(),rooms,missing,invalid,unknownTime,
             dropped.ToString(CultureInfo.InvariantCulture),omitted,truncated,!truncated&&missing==0&&invalid==0&&unknownTime==0&&dropped.IsZero&&omitted==0,
-            BuildProfiles:usedProfiles.Values.OrderBy(p=>p.ProfileId,StringComparer.Ordinal).ToArray(),UnknownDimensionCounts:SeasonEventDimensionRules.UnknownCounts(events.Select(e=>e.Dimensions)));
+            BuildProfiles:usedProfiles.Values.OrderBy(p=>p.ProfileId,StringComparer.Ordinal).ToArray(),UnknownDimensionCounts:SeasonEventDimensionRules.UnknownCounts(events.Select(e=>e.Dimensions)),
+            CombatMeasurements:combatRows,RoomsWithoutCombatObservations:missingCombat,OmittedCombatMeasurements:omittedCombat.ToString(CultureInfo.InvariantCulture),CombatRowsTruncated:combatTruncated);
     }
 }

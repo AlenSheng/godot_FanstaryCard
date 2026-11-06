@@ -4,6 +4,8 @@ namespace FantasyCard.Domain.Combat;
 
 public sealed class PlayerCombatState
 {
+    private Action<CombatMeasurement>? _observe;
+    internal void SetObservation(Action<CombatMeasurement>? observer){_observe=observer;Deck.Observe=observer;}
     private readonly CombatRandom _random;
     private Guid? _lastOpeningBattleId;
     private readonly Dictionary<string, TargetStunWindowSnapshot> _targetStunWindows =
@@ -118,6 +120,10 @@ public sealed class PlayerCombatState
     {
         var applied = Math.Min(Math.Max(0, amount), EffectiveMaximumHp - Hp);
         Hp += applied;
+        _observe?.Invoke(new(CombatMetric.HealRequested,Math.Max(0,amount)));
+        _observe?.Invoke(new(CombatMetric.HealApplied,Math.Max(0,applied)));
+        _observe?.Invoke(new(CombatMetric.HealOverflow,Math.Max(0,(long)Math.Max(0,amount)-Math.Max(0,applied))));
+        if(applied<0)_observe?.Invoke(new(CombatMetric.HealClampCorrection,-(long)applied));
         return applied;
     }
 
@@ -126,6 +132,10 @@ public sealed class PlayerCombatState
         var maximumShield = MaximumHp / 2;
         var applied = Math.Min(Math.Max(0, amount), maximumShield - Shield);
         Shield += applied;
+        _observe?.Invoke(new(CombatMetric.ShieldRequested,Math.Max(0,amount)));
+        _observe?.Invoke(new(CombatMetric.ShieldApplied,Math.Max(0,applied)));
+        _observe?.Invoke(new(CombatMetric.ShieldOverflow,Math.Max(0,(long)Math.Max(0,amount)-Math.Max(0,applied))));
+        if(applied<0)_observe?.Invoke(new(CombatMetric.ShieldClampCorrection,-(long)applied));
         return applied;
     }
 
@@ -161,6 +171,8 @@ public sealed class PlayerCombatState
 
     public void ApplyStun(TimeSpan duration)
     {
+        _observe?.Invoke(new(CombatMetric.StunRequestedTicks,Math.Max(0,duration.Ticks)));
+        _observe?.Invoke(new(CombatMetric.StunExtendedTicks,Math.Max(0,duration.Ticks-StunRemaining.Ticks)));
         if (duration > StunRemaining)
         {
             StunRemaining = duration;
@@ -169,6 +181,8 @@ public sealed class PlayerCombatState
 
     public void ApplyDrawBlock(TimeSpan duration)
     {
+        _observe?.Invoke(new(CombatMetric.BlockRequestedTicks,Math.Max(0,duration.Ticks)));
+        _observe?.Invoke(new(CombatMetric.BlockExtendedTicks,Math.Max(0,duration.Ticks-DrawBlockRemaining.Ticks)));
         if (duration > DrawBlockRemaining)
         {
             DrawBlockRemaining = duration;
@@ -391,14 +405,14 @@ public sealed class PlayerCombatState
         if(_lastOpeningBattleId==battleId || Equipment.StatsVersion is null&&FenxianDrawPolicy!=FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)return false;
         _lastOpeningBattleId=battleId;
         if(FenxianDrawPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)FenxianReturnCredit=0;
-        Deck.DrawImmediate(Equipment.OpeningDrawCount,_random);
+        Deck.DrawImmediate(Equipment.OpeningDrawCount,_random,CombatDrawSource.Opening);
         return true;
     }
 
     private void OnNaturalDraw()
     {
         if(Equipment.ChainDrawBasisPoints>0 && Deck.Hand.Count<CombatDeck.HandLimit && _random.Next(10000)<Equipment.ChainDrawBasisPoints)
-            Deck.DrawImmediate(1,_random);
+            Deck.DrawImmediate(1,_random,CombatDrawSource.Chain);
     }
 
     public void Advance(TimeSpan delta, bool drawEnabled)
@@ -408,8 +422,15 @@ public sealed class PlayerCombatState
             return;
         }
 
+        _observe?.Invoke(new(CombatMetric.AdvancedTicks,delta.Ticks));
+        _observe?.Invoke(new(CombatMetric.NaturalIntervalSample,Sample:NaturalDrawIntervalSeconds));
+        var stunTicks=Math.Min(delta.Ticks,Math.Max(0,StunRemaining.Ticks));var blockTicks=Math.Min(delta.Ticks,Math.Max(0,DrawBlockRemaining.Ticks));
+        _observe?.Invoke(new(CombatMetric.StunnedTicks,stunTicks));_observe?.Invoke(new(CombatMetric.DrawBlockedTicks,blockTicks));
+        _observe?.Invoke(new(CombatMetric.UnionBlockedTicks,Math.Max(stunTicks,blockTicks)));
+
         if (drawEnabled)
         {
+            _observe?.Invoke(new(CombatMetric.DrawEnabledTicks,delta.Ticks));
             var boundaries = new[] { TimeSpan.Zero, delta, StunRemaining, DrawBlockRemaining, DrawSpeedRemaining, DrawBlockSpeedRemaining }
                 .Where(value => value >= TimeSpan.Zero && value <= delta).Distinct().Order().ToArray();
             for (var index = 1; index < boundaries.Length; index++)
@@ -422,8 +443,10 @@ public sealed class PlayerCombatState
                 if(HeroClass==HeroClass.Mage&&FenxianDrawPolicy==FenxianImmediateDrawPolicy.SeasonRateBudgetedRhythm)
                     FenxianReturnCredit=Math.Min(2,FenxianReturnCredit!.Value+(boundaries[index]-start).TotalSeconds/NaturalDrawIntervalSeconds*(FenxianReturnRateBasisPoints??1000)/10000d);
                 var rate = start < DrawBlockSpeedRemaining ? 2 : 1;
+                _observe?.Invoke(new(CombatMetric.EligibleDrawTicks,(boundaries[index]-start).Ticks));
+                _observe?.Invoke(new(CombatMetric.EffectiveIntervalSample,Sample:interval/rate));
                 Deck.AddCharge((boundaries[index] - start).TotalSeconds / interval * rate, _random,
-                    Equipment.ChainDrawBasisPoints>0?OnNaturalDraw:null);
+                    Equipment.ChainDrawBasisPoints>0?OnNaturalDraw:null,CombatDrawSource.Natural);
             }
         }
 

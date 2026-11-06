@@ -4,6 +4,7 @@ namespace FantasyCard.Domain.Combat;
 
 public sealed class CombatDeck
 {
+    internal Action<CombatMeasurement>? Observe { get; set; }
     public const int HandLimit = 5;
     private List<CombatCardInstance> _hand = [];
     private List<CombatCardInstance> _library = [];
@@ -134,7 +135,9 @@ public sealed class CombatDeck
     public void AddCharge(double amount, Random random)
         => AddCharge(amount,random,null);
 
-    public void AddCharge(double amount,Random random,Action? afterNaturalDraw)
+    public void AddCharge(double amount,Random random,Action? afterNaturalDraw)=>AddCharge(amount,random,afterNaturalDraw,CombatDrawSource.PassiveCharge);
+
+    public void AddCharge(double amount,Random random,Action? afterNaturalDraw,CombatDrawSource source)
     {
         if (amount <= 0)
         {
@@ -146,6 +149,10 @@ public sealed class CombatDeck
         {
             if (_hand.Count >= HandLimit)
             {
+                var discarded=!double.IsFinite(DrawCharge)||DrawCharge>=long.MaxValue?long.MaxValue:(long)Math.Floor(DrawCharge);
+                Observe?.Invoke(new(source==CombatDrawSource.Natural?CombatMetric.NaturalFullResets:CombatMetric.PassiveChargeFullResets,1));
+                Observe?.Invoke(new(source==CombatDrawSource.Natural?CombatMetric.NaturalDiscardedWholeCharge:CombatMetric.PassiveChargeDiscardedWholeCharge,discarded));
+                if(double.IsFinite(DrawCharge))Observe?.Invoke(new(CombatMetric.DiscardedFractionSample,Sample:DrawCharge-Math.Floor(DrawCharge)));
                 DrawCharge = 0;
                 return;
             }
@@ -153,25 +160,47 @@ public sealed class CombatDeck
             DrawCharge -= 1;
             var before=_hand.Count;
             DrawOne(random);
+            Observe?.Invoke(new(source==CombatDrawSource.Natural?CombatMetric.NaturalAttempts:CombatMetric.PassiveChargeAttempts,1));
+            Observe?.Invoke(new(_hand.Count>before?(source==CombatDrawSource.Natural?CombatMetric.NaturalEffective:CombatMetric.PassiveChargeEffective):
+                source==CombatDrawSource.Natural?CombatMetric.NaturalEmpty:CombatMetric.PassiveChargeEmpty,1));
             if(_hand.Count>before)afterNaturalDraw?.Invoke();
         }
     }
 
-    public void DrawImmediate(int count, Random random)
+    public void DrawImmediate(int count,Random random)=>DrawImmediate(count,random,CombatDrawSource.Instant);
+
+    public void DrawImmediate(int count, Random random,CombatDrawSource source)
     {
+        var effective=0;var empty=0;var attempted=0;
         for (var index = 0; index < count && _hand.Count < HandLimit; index++)
         {
+            var before=_hand.Count;attempted++;
             DrawOne(random);
+            if(_hand.Count>before)effective++;else empty++;
         }
+        ObserveInstant(source,Math.Max(0,count),effective,empty,Math.Max(0,count-attempted));
     }
 
     private void DrawOpeningHand()
     {
+        var before=_hand.Count;
         for (var index = 0; index < 3 && _library.Count > 0; index++)
         {
             _hand.Add(_library[0]);
             _library.RemoveAt(0);
         }
+        ObserveInstant(CombatDrawSource.Opening,3,_hand.Count-before,3-(_hand.Count-before),0);
+    }
+
+    private void ObserveInstant(CombatDrawSource source,int requested,int effective,int empty,int full)
+    {
+        var metrics=source switch
+        {
+            CombatDrawSource.Opening=>(CombatMetric.OpeningRequested,CombatMetric.OpeningEffective,CombatMetric.OpeningEmpty,CombatMetric.OpeningFullBlocked),
+            CombatDrawSource.Chain=>(CombatMetric.ChainRequested,CombatMetric.ChainEffective,CombatMetric.ChainEmpty,CombatMetric.ChainFullBlocked),
+            _=>(CombatMetric.InstantRequested,CombatMetric.InstantEffective,CombatMetric.InstantEmpty,CombatMetric.InstantFullBlocked)
+        };
+        Observe?.Invoke(new(metrics.Item1,requested));Observe?.Invoke(new(metrics.Item2,effective));Observe?.Invoke(new(metrics.Item3,empty));Observe?.Invoke(new(metrics.Item4,full));
     }
 
     private void DrawOne(Random random)
