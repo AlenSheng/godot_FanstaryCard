@@ -93,7 +93,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         var resultRow=new {row,outcome=player.Phase==RoomPlayerPhase.Choice?"Win":player.Phase==RoomPlayerPhase.Dead?"Dead":"Timeout",seconds=room.Elapsed.TotalSeconds,casts,previews,damage,initialHp=initial.Hp,initialShield=initial.Shield,addedHp,addedShield,otherHpLoss,discardedShield,remainingHp=target.Hp,remainingShield=target.Shield,endingHp=player.Combat.Hp};trace.WriteLine(JsonSerializer.Serialize(new {kind="end",result=resultRow}));results.WriteLine(JsonSerializer.Serialize(resultRow));
     }
 
-    internal static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount,bool valueSustainIntents=false)
+    internal static CombatCardInstance[] Choose(BattleRoom room,RoomPlayerState player,MonsterCombatState target,CombatCardCatalog catalog,string[] baseDeck,out int previews,out int candidateCount,bool valueSustainIntents=false,DateTimeOffset? observedAtUtc=null)
     {
         var before=JsonSerializer.Serialize(room.Capture());var hand=player.Combat.Deck.Hand;
         var scratch=new PlayerCombatState(player.HeroClass,baseDeck,new Random(1),player.Combat.WeaponLevel,player.Combat.Equipment,Enumerable.Repeat(5,20).ToArray());
@@ -132,7 +132,7 @@ public sealed class SeasonClassEfficiencyPilotTests
         candidateCount=candidates.Count;var best=Array.Empty<CombatCardInstance>();var bestValue=double.NegativeInfinity;previews=0;
         foreach(var candidate in candidates.OrderByDescending(x=>x.Score).Take(3))
         {
-            var preview=room.PreviewCards(player.PlayerId,player.Pve!.BattleId,target.MonsterId,candidate.Cards.Select(x=>x.InstanceId).ToArray(),room.Revision,Epoch+room.Elapsed);previews++;
+            var preview=room.PreviewCards(player.PlayerId,player.Pve!.BattleId,target.MonsterId,candidate.Cards.Select(x=>x.InstanceId).ToArray(),room.Revision,observedAtUtc??Epoch+room.Elapsed);previews++;
             var score=Value(preview.HpDamage+preview.ShieldDamage,preview.Heal,preview.ShieldGain,preview.ImmediateDraw,preview.DrawCharge,preview.StunSeconds,preview.HealthCost,candidate.Cards.Length,preview.DrawSpeedModifier,preview.DrawSpeedSeconds,preview.DrawBlockSpeedSeconds);
             if(score>bestValue){bestValue=score;best=candidate.Cards;}
         }

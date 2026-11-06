@@ -192,7 +192,7 @@ public sealed class PostgresFirstFortnightPreparationTests
         return profile.UserId;
     }
 
-    private static async Task DeclareHistoricalOwnershipAsync(PostgresTestSchema db, Guid player, SeasonFirstFortnightInputsTests.Actor actor)
+    internal static async Task DeclareHistoricalOwnershipAsync(PostgresTestSchema db, Guid player, SeasonFirstFortnightInputsTests.Actor actor)
     {
         await CraftingTestInputs.SqlAsync(db, "UPDATE player_cards SET unlocked=true,copy_count=GREATEST(copy_count,1),level=5,version=version+1 WHERE player_id=$1 AND card_id=ANY($2)", player, actor.Cards);
         await CraftingTestInputs.SqlAsync(db, "UPDATE class_weapons SET level=5,version=version+1 WHERE player_id=$1 AND hero_class=$2", player, (short)actor.Hero);
