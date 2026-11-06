@@ -39,6 +39,10 @@ func open(host: Control) -> void:
 	column.add_child(header)
 	var title: Label = _host._label(header, P.localized("inventory_manage"), 34, P.GOLD, false)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_host._button(header, P.localized("archive_title"), func():
+		var source := _host
+		queue_free()
+		source._navigate("archive"), Game.busy, "UI/CardCodex/card_codex_action_button_blue.png").name = "SeasonArchiveEntry"
 	_host._button(header, P.localized("close"), queue_free)
 	_host._label(column, P.localized("inventory_manage_hint"), 24, P.MUTED, false)
 	var filters := HBoxContainer.new()

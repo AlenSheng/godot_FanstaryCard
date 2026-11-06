@@ -17,6 +17,7 @@ const SeasonShopModel=preload("res://ui/season_shop_model.gd")
 const SeasonActivityController=preload("res://ui/season_activity_controller.gd")
 const SeasonJourneyController=preload("res://ui/season_journey_controller.gd")
 const SeasonJourneyRewardController=preload("res://ui/season_journey_reward_controller.gd")
+const SeasonArchiveController=preload("res://ui/season_archive_controller.gd")
 const PreparationModel = preload("res://ui/preparation_model.gd")
 const EquipmentCompareDialog = preload("res://ui/equipment_compare_dialog.gd")
 const InventoryView = preload("res://ui/inventory_view.gd")
@@ -59,6 +60,7 @@ var market_controller=SeasonMarketController.new()
 var activity_controller=SeasonActivityController.new()
 var journey_controller=SeasonJourneyController.new()
 var journey_reward_controller=SeasonJourneyRewardController.new()
+var archive_controller=SeasonArchiveController.new()
 var deck_draft: Array = []
 var gear_draft: Array = []
 var bag_tier := "Free"
@@ -520,6 +522,7 @@ func _reset_account_ui() -> void:
 	activity_controller.reset()
 	journey_controller.reset()
 	journey_reward_controller.reset()
+	archive_controller.reset()
 	_view_cell = ""
 	_codex_card = ""
 	_codex_scroll = 0
@@ -875,6 +878,7 @@ func _navigate(value: String) -> void:
 	activity_controller.leave()
 	journey_controller.leave()
 	journey_reward_controller.leave()
+	archive_controller.leave()
 	var generation: int = Game.gateway.session_generation
 	if value != screen: Sound.play_cue("ui_open")
 	if value == "gear" and screen != "gear": _equipment_scroll = 0
@@ -899,6 +903,7 @@ func _navigate(value: String) -> void:
 	if value == "activities": activity_controller.attach(self);activity_controller.reload()
 	if value == "journey": journey_controller.attach(self);journey_controller.reload()
 	if value in ["journey_rewards", "cosmetics"]: journey_reward_controller.attach(self);journey_reward_controller.reload()
+	if value == "archive": archive_controller.attach(self);archive_controller.reload()
 	if value == "shop": _reload_shop_view(_shop_epoch)
 
 func _reload_shop_view(epoch: int) -> void:

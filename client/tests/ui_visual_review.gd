@@ -2,6 +2,7 @@ extends "res://tests/gameplay_ui_preview.gd"
 
 const Palette = preload("res://ui/palette.gd")
 const INVENTORY_MANAGEMENT_SCENARIOS := ["e01_gear", "e01_manage", "e01_manage_bottom", "e01_manage_selected", "e01_manage_confirm", "e01_manage_closed"]
+const ARCHIVE_SCENARIOS := ["archive_entry", "archive_equipment", "archive_recipes", "archive_wishes", "archive_loadouts", "archive_legacy", "archive_missing", "archive_empty", "archive_error"]
 const TextAudit = preload("res://tests/localization_text_audit.gd")
 const SCENARIOS := ["login", "login_language", "login_notice", "login_notice_bottom", "hall", "hall_priest", "hall_guardian", "prep", "prep_locked", "gear", "gear_compare", "gear_compare_bottom", "gear_numbers", "enhance_numbers", "guardian_remainder", "enhance", "enhance_gear", "enhance_blocked", "shop", "shop_tail", "market", "cards", "cards_owned_details", "cards_unowned_details", "cards_unowned_known_details", "deck", "deck_full", "mail_empty", "mail_long", "mail_attachments", "mail_long_bottom", "settings", "settings_battle", "settings_bottom", "settings_battle_bottom", "confirm", "battle_status", "monster_pool", "monster_pool_full", "monster_pool_empty", "monster_pool_loot", "exploration", "map", "midlayer", "inventory", "inventory_details", "relic", "pve", "pvp", "pve_full_hand", "pvp_full_hand", "pve_priest", "pve_guardian", "pvp_priest", "pvp_guardian", "choice", "ready", "settlement_success", "settlement_death", "recovery", "notice", "mail_template_seed_gold", "mail_template_seed_souls", "mail_template_seed_white_fire", "mail_template_seed_green_water", "mail_template_seed_blue_earth", "mail_template_seed_purple_wood", "mail_template_seed_orange_metal", "mail_template_seed2_mixed_set", "mail_template_seed2_fragments", "mail_template_item_reclamation", "mail_template_item_reclamation_bottom", "login_notice_authored", "pvp_name_fallback", "relic_name_fallback"]
 const SEASON_SCENARIOS := ["prep_season", "prep_season_borrowed", "prep_season_locked"]
@@ -86,7 +87,7 @@ func _run() -> void:
 			get_window().size = Vector2i(width, roundi(width * 9.0 / 16.0))
 			get_window().position = _review_window_position()
 			await get_tree().process_frame
-			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS:
+			for scenario in SCENARIOS + SEASON_SCENARIOS + EQUIPMENT_SCENARIOS + RED_SCENARIOS + MARKET_SCENARIOS + SHOP_SCENARIOS + ACTIVITY_SCENARIOS + JOURNEY_SCENARIOS + JOURNEY_CLAIM_SCENARIOS + THEME_SCENARIOS + HISTORICAL_SCENARIOS + REFRESH_SCENARIOS + PREPARATION_SOURCE_SCENARIOS + INVENTORY_MANAGEMENT_SCENARIOS + ARCHIVE_SCENARIOS:
 				if not _selected(scenario): continue
 				expected += 1
 				await _reset_fixture()
@@ -221,6 +222,7 @@ func _reset_fixture() -> void:
 	$UI.activity_controller.reset()
 	$UI.journey_controller.reset()
 	$UI.journey_reward_controller.reset()
+	$UI.archive_controller.reset()
 	$UI._quality = ""; $UI._search = ""; $UI._codex_card = ""; $UI._codex_ready = true
 	$UI._enhance_item = ""; $UI._enhancement_quote_key = ""; $UI._enhancement_quote = {}
 	$UI._owned_index_ready = false; $UI._owned_by_id.clear()
@@ -246,6 +248,7 @@ func _render_base() -> void:
 	await get_tree().process_frame
 
 func _prepare_scene(scenario: String, locale: String) -> bool:
+	if scenario in ARCHIVE_SCENARIOS: return await _prepare_archive_scene(scenario)
 	if scenario in INVENTORY_MANAGEMENT_SCENARIOS: return await _prepare_inventory_management_scene(scenario)
 	if scenario in JOURNEY_CLAIM_SCENARIOS: return await _prepare_claim_scene(scenario, locale)
 	if scenario in PREPARATION_SOURCE_SCENARIOS: return await _prepare_original_preparation_scene(scenario)
@@ -882,6 +885,7 @@ func _review_capture(frame_name: String, rebuild: bool = true) -> void:
 		await _capture(frame_name, rebuild)
 	_check_login_language(frame_name, on_login)
 	if "_e01_" in frame_name: _check_inventory_management_scene(frame_name)
+	if "_archive_" in frame_name: _check_archive_scene(frame_name)
 	if frame_name.contains("_c13_"): _check_shop_season_scene(frame_name)
 	if frame_name.contains("_c14_"): _check_activity_scene(frame_name)
 	if frame_name.contains("_c15_"): _check_journey_scene(frame_name)
@@ -1435,3 +1439,73 @@ func _check_inventory_management_scene(frame_name: String) -> void:
 	if frame_name.ends_with("_confirm"):
 		var confirm := $UI.get_node_or_null("ConfirmationModal")
 		review_checks[prefix + "second confirmation shown"] = confirm != null and confirm.description_label.text == Palette.localized("inventory_manage_confirm") % 2
+
+func _prepare_archive_scene(scenario: String) -> bool:
+	if scenario == "archive_entry":
+		await _prepare_inventory_management_scene("e01_manage")
+		return false
+	var controller = $UI.archive_controller
+	controller.attach($UI)
+	$UI.screen = "archive"
+	controller.failed = scenario == "archive_error"
+	if scenario == "archive_empty": return true
+	var bytes := FileAccess.get_file_as_bytes(OS.get_environment("FANTASYCARD_ARCHIVE_CONFIG15_BYTES"))
+	var content_hash := OS.get_environment("FANTASYCARD_ARCHIVE_CONFIG15_HASH")
+	var bundle = preload("res://data/config_bundle.gd").new()
+	var data: Dictionary = bundle.decode(bytes, "season-v1-config-15", content_hash)
+	assert(not data.is_empty())
+	var index: Dictionary = preload("res://data/catalog_index.gd").from_data(data)
+	var source := {"seasonId": "archive-original", "rulesetId": "season-v1", "configVersion": "season-v1-config-15", "configSha256": content_hash, "statsVersion": "season-equipment-v1", "startsAt": "2026-09-01T00:00:00+08:00", "endsAt": "2026-10-13T00:00:00+08:00", "archivedAt": "2026-10-13T01:00:00+08:00", "status": "WaitingAssets", "phase": "WaitingAssets", "wallet": {"seasonId": "archive-original", "gold": 9007199254740993, "equipmentFragments": 123456, "challengeMarks": 77, "blueprintMarks": 4, "orangeBlueprintMarks": 14, "version": 9, "canFundWeapon": true}, "equipmentCount": 21, "recipeCount": 21, "wishCount": 21, "loadoutCount": 3}
+	if scenario == "archive_legacy": source = preload("res://tests/test_season_archive.gd").legacy()
+	controller.seasons = [source]
+	controller.selected = source.duplicate(true)
+	controller.section = {"archive_recipes": "recipes", "archive_wishes": "wishes", "archive_loadouts": "loadouts"}.get(scenario, "equipment")
+	controller.catalog_ready = scenario not in ["archive_missing", "archive_legacy"]
+	controller.catalog_index = index if controller.catalog_ready else {}
+	controller.page_next = 20 if controller.section != "loadouts" else null
+	controller.state = {"season": source, "section": controller.section, "readOnly": true, "equipments": [], "recipes": [], "wishes": [], "loadouts": [], "referencedEquipments": [], "nextOffset": controller.page_next}
+	var records := []
+	for number in 20:
+		var item: Dictionary = _gear("20000000-0000-0000-0000-%012d" % (number + 1), ["Head", "Chest", "Hands", "Legs", "Feet"][number % 5], "Orange" if number == 0 else "Purple")
+		item["level"] = 3; item["version"] = 9; item["isBound"] = number % 2 == 0
+		item["seasonId"] = source.seasonId; item["originSeasonId"] = source.seasonId; item["assetScope"] = "ArchivedSeason"
+		item["sourceKind"] = "NaturalDrop"; item["statsVersion"] = source.statsVersion
+		item["location"] = ["SeasonArchive", "MarketReturnPending", "Recycled", "EnhanceMaterialConsumed", "InMatchBackpack"][number % 5]
+		if item.location == "InMatchBackpack": item.assetScope = "ActiveSeason"
+		records.append(item)
+	match controller.section:
+		"equipment": controller.state.equipments = records
+		"recipes":
+			for item in records:
+				controller.state.recipes.append({"recipeId": item.instanceId, "seasonId": source.seasonId, "quality": item.quality, "slot": item.slot, "element": item.element, "effectAffix": item.effectAffix, "secondaryTrait": item.secondaryTrait, "statsVersion": source.statsVersion, "sourceItemId": item.instanceId})
+		"wishes":
+			for item in records: controller.state.wishes.append({"quality": item.quality, "slot": item.slot, "element": item.element, "wishedEffect": "Vitality", "failures": 2})
+		"loadouts":
+			for hero in ["Priest", "Mage", "Guardian"]: controller.state.loadouts.append({"heroClass": hero, "seasonId": source.seasonId, "equipmentIds": records.slice(0, 5).map(func(item): return item.instanceId), "version": 9})
+			controller.state.referencedEquipments = records.slice(0, 5)
+	if scenario == "archive_error": controller.state = {}
+	return true
+
+func _check_archive_scene(frame_name: String) -> void:
+	var prefix := frame_name + ": "
+	if frame_name.ends_with("_archive_entry"):
+		var entry := $UI.find_child("SeasonArchiveEntry", true, false) as Button
+		review_checks[prefix + "archive entry is accessible"] = entry != null and not entry.disabled and entry.is_visible_in_tree()
+		return
+	var controller = $UI.archive_controller
+	var panel := $UI._reference.get_node("ArchiveDetailPanel") as Control
+	review_checks[prefix + "detail panel stays in canvas"] = Rect2(0, 0, 1920, 1080).grow(1).encloses(panel.get_global_rect())
+	if frame_name.ends_with("_archive_empty"): return
+	review_checks[prefix + "original source title retained"] = $UI._reference.find_child("ArchiveOriginalSource", true, false) != null
+	if frame_name.ends_with("_archive_legacy"):
+		review_checks[prefix + "legacy unknowns never become current"] = controller.selected.configVersion == null and not controller.catalog_ready
+	else:
+		review_checks[prefix + "original15 never uses current16"] = controller.selected.configVersion == "season-v1-config-15" and controller.selected.wallet.challengeMarks == 77 and controller.selected.wallet.blueprintMarks == 4
+	if frame_name.ends_with("_archive_missing"):
+		review_checks[prefix + "missing original excludes derived current attributes"] = not controller.catalog_ready and controller.catalog_index.is_empty()
+	var labels: Array = $UI._reference.find_children("*", "Label", true, false).map(func(value): return value.text)
+	if frame_name.ends_with("_archive_recipes"):
+		review_checks[prefix + "no raw secondary trait identifier"] = not labels.any(func(value): return "DrawInterval" in value or "ForcedEscape" in value)
+	if frame_name.ends_with("_archive_loadouts"):
+		for key in ["class_priest", "class_mage", "class_guardian"]:
+			review_checks[prefix + "full localized class " + key] = labels.has(Palette.localized(key))

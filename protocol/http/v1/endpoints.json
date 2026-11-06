@@ -205,6 +205,22 @@
     },
     {
       "method": "GET",
+      "path": "/api/v1/season-archives",
+      "request": "Empty",
+      "response": "SeasonArchivesResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadEndpoints.cs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/season-archives/{seasonId}/{section}",
+      "request": "Empty",
+      "response": "SeasonArchiveSectionResponse",
+      "unwrap_items": false,
+      "source": "server/src/FantasyCard.Server/Progression/SeasonArchiveReadEndpoints.cs"
+    },
+    {
+      "method": "GET",
       "path": "/api/v1/season-crafting",
       "request": "Empty",
       "response": "SeasonCraftingResponse",

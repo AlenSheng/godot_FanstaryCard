@@ -22,6 +22,7 @@ public static class ProgressionEndpoints
     public static IEndpointRouteBuilder MapProgressionEndpoints(this IEndpointRouteBuilder endpoints)
     {
         endpoints.MapSeasonCraftingEndpoints();
+        endpoints.MapSeasonArchiveReadEndpoints();
         var cards = endpoints.MapGroup("/api/v1/cards").AddEndpointFilter<ProtobufHttpFilter>().WithTags("Progression");
         cards.MapGet("/", GetCardsAsync).Produces<IReadOnlyList<CardResponse>>().ProducesProblem(401);
         cards.MapPost("/{cardId}/craft", CraftCardAsync)

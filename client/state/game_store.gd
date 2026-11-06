@@ -444,6 +444,25 @@ func room_catalog_index() -> Dictionary:
 	if room.is_empty() and settlement.get("season") is Dictionary: version = str(settlement.season.get("configVersion", ""))
 	return _catalog_index_for_version(version)
 
+func read_historical_catalog(version: String, expected_hash: String) -> Dictionary:
+	# An archive is bound to its own published hash, including when its version
+	# happens to equal the local package. Never interpret a missing old package
+	# through the current lobby/room configuration.
+	if version.is_empty() or version.length() > 80 or expected_hash.length() != 64: return {}
+	var generation: int = gateway.session_generation
+	var epoch := _catalog_request_epoch
+	var address: String = gateway.base_url
+	var response: Dictionary = await gateway.request("/api/v1/config/" + version.uri_encode(), HTTPClient.METHOD_GET, null, [404])
+	if generation != gateway.session_generation or epoch != _catalog_request_epoch or address != gateway.base_url or response.get("stale_session", false): return {}
+	var envelope: Dictionary = response.data if response.get("data") is Dictionary else {}
+	if not response.get("ok", false) or envelope.get("configVersion") != version or envelope.get("contentHash") != expected_hash or not envelope.get("bundle") is PackedByteArray: return {}
+	var reader := ConfigBundle.new()
+	var decoded: Dictionary = reader.decode(envelope.bundle, version, expected_hash)
+	if decoded.is_empty(): return {}
+	var index: Dictionary = CatalogIndex.from_data(decoded)
+	if index.get("version") != version or index.get("content_hash") != expected_hash: return {}
+	return index
+
 func _catalog_index_for_version(version: String, required: bool = false) -> Dictionary:
 	if version == str(CATALOG.data.version) or (version.is_empty() and not required): return {}
 	var index: Dictionary = _room_catalogs.get(version, {})

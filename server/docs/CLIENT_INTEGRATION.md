@@ -438,6 +438,18 @@ Idempotency-Key: settlement-ack-018f90dc
 
 同键同集合（忽略输入顺序）回放原成功响应，同键改内容返回409；业务拒绝返回400。跨季同键重放只确认旧结果，不重新写入旧物或新季。新请求始终按当前季与精确版本重新检查。
 
+### `GET /api/v1/season-archives`
+
+Bearer鉴权、Protobuf类型`SeasonArchivesResponse`。只读列出本账号已结束的原季及明确归档的历史标记，包含原规则/配置版本及完整哈希/属性版本、日期、归档状态、原钱包和四类集合数量。历史标记未知日期/版本保持null，不填当前版本。`limit`默认20、范围1至50；`offset`范围0至1000000，`nextOffset`为空表示尾页。
+
+### `GET /api/v1/season-archives/{seasonId}/{section}`
+
+`section`为`equipment`、`recipes`、`wishes`、`loadouts`，分页规则同上，返回具名`SeasonArchiveSectionResponse`，`readOnly`始终为true。未加入的原季、其他账号或尚未结束的当前季返回404；非法分类/分页返回400。读取不创建或推进归档任务，不变更资产。
+
+装备按原季和真实当前归属查询，包含收藏、退回托管、已回收/消耗及仍在途位置，不能只按`SeasonArchive`位置筛选。配装保留原职业五槽引用和原版本；`referencedEquipments`仅补充仍属于本人和原季的相同ID详情，不泄露他人持有行。配方和心愿返回原记录，保底计数不按当前规则重算。
+
+客户端按原季读取`/api/v1/config/{configVersion}`，核对原`configSha256`后才可计算历史属性。原包缺失、损坏、版本/哈希不符时仅显示存档字段；不得回退当前大厅配置。归档页不提供装备、强化、打造、交易、丢弃或兑换入口，所有页/账号/地址切换均须丢弃旧回包。
+
 ### `GET /api/v1/loadouts/{heroClass}`
 
 返回指定职业的五防具配装，`equipmentIds` 固定按 `Head, Chest, Hands, Legs, Feet` 排列，空槽为 `null`，专属武器不在数组内。未知职业返回 400，玩家或配装不存在返回 404。

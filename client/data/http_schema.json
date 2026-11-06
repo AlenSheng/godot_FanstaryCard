@@ -1,5 +1,5 @@
 {
-  "sha256": "5da6f565964b52790e5c395b15e5c1950d8ea3f79a9fbf856db274b3189f93e3",
+  "sha256": "53b0fb4aa0bed47492544b9429bd1560f9f2de64a8195d5e4d1eee7d76fbfb8b",
   "messages": {
     "Empty": {},
     "PublishedConfigurationResponse": {
@@ -2672,6 +2672,200 @@
         "type": "string",
         "repeated": false,
         "optional": true
+      }
+    },
+    "SeasonArchiveSummaryResponse": {
+      "1": {
+        "name": "season_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "ruleset_id",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "config_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "4": {
+        "name": "config_sha256",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "5": {
+        "name": "stats_version",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "6": {
+        "name": "starts_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "7": {
+        "name": "ends_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "8": {
+        "name": "archived_at",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "status",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "10": {
+        "name": "phase",
+        "type": "string",
+        "repeated": false,
+        "optional": true
+      },
+      "11": {
+        "name": "wallet",
+        "type": "SeasonWalletResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "12": {
+        "name": "equipment_count",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "13": {
+        "name": "recipe_count",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "14": {
+        "name": "wish_count",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      },
+      "15": {
+        "name": "loadout_count",
+        "type": "int64",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonArchivesResponse": {
+      "1": {
+        "name": "items",
+        "type": "SeasonArchiveSummaryResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "2": {
+        "name": "next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      }
+    },
+    "ArchivedCraftingWishResponse": {
+      "1": {
+        "name": "quality",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "slot",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "element",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "wished_effect",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "5": {
+        "name": "failures",
+        "type": "int32",
+        "repeated": false,
+        "optional": false
+      }
+    },
+    "SeasonArchiveSectionResponse": {
+      "1": {
+        "name": "season",
+        "type": "SeasonArchiveSummaryResponse",
+        "repeated": false,
+        "optional": false
+      },
+      "2": {
+        "name": "section",
+        "type": "string",
+        "repeated": false,
+        "optional": false
+      },
+      "3": {
+        "name": "read_only",
+        "type": "bool",
+        "repeated": false,
+        "optional": false
+      },
+      "4": {
+        "name": "equipments",
+        "type": "EquipmentResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "5": {
+        "name": "recipes",
+        "type": "SeasonRecipeResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "6": {
+        "name": "wishes",
+        "type": "ArchivedCraftingWishResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "7": {
+        "name": "loadouts",
+        "type": "LoadoutResponse",
+        "repeated": true,
+        "optional": false
+      },
+      "8": {
+        "name": "next_offset",
+        "type": "int32",
+        "repeated": false,
+        "optional": true
+      },
+      "9": {
+        "name": "referenced_equipments",
+        "type": "EquipmentResponse",
+        "repeated": true,
+        "optional": false
       }
     },
     "EnhanceEquipmentRequest": {

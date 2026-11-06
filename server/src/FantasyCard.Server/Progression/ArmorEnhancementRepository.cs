@@ -30,7 +30,10 @@ public sealed partial class ProgressionRepository
         command.Parameters.AddWithValue(itemId); command.Parameters.AddWithValue(playerId);
         await using var reader = await command.ExecuteReaderAsync(ct);
         if (!await reader.ReadAsync(ct)) return null;
-        return ReadEquipment(reader) with
+        return ReadCompleteEquipment(reader);
+    }
+
+    private static EquipmentResponse ReadCompleteEquipment(NpgsqlDataReader reader) => ReadEquipment(reader) with
         {
             OriginSeasonId = reader.IsDBNull(10) ? null : reader.GetString(10),
             SeasonId = reader.IsDBNull(11) ? null : reader.GetString(11),
@@ -41,7 +44,6 @@ public sealed partial class ProgressionRepository
             UniqueAffix = reader.IsDBNull(16) ? null : reader.GetString(16),
             UniqueElement = reader.IsDBNull(17) ? null : reader.GetString(17)
         };
-    }
 
     private async Task<ArmorEnhancementPolicy> ResolveArmorEnhancementPolicyAsync(NpgsqlConnection connection,
         NpgsqlTransaction? transaction, EquipmentResponse equipment, CancellationToken ct)

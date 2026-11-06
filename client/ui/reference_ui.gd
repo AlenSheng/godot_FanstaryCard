@@ -53,6 +53,7 @@ func build(source: Control) -> void:
 			"journey": preload("res://ui/season_journey_view.gd").build(self,host)
 			"journey_rewards": preload("res://ui/season_journey_reward_view.gd").build_rewards(self,host)
 			"cosmetics": preload("res://ui/season_journey_reward_view.gd").build_cosmetics(self,host)
+			"archive": preload("res://ui/season_archive_view.gd").build(self,host)
 	text(Game.connection, Rect2(1260, 1038, 620, 30), 18, P.MUTED).horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 func text(value: String, rect: Rect2, font_size: int = 24, color: Color = P.PAPER, parent: Node = null, fit_to_rect: bool = true, localize: bool = true) -> Label:
@@ -133,6 +134,7 @@ func _header() -> void:
 	names["journey"]=P.localized("journey_title")
 	names["journey_rewards"]=P.localized("journey_rewards_title")
 	names["cosmetics"]=P.localized("journey_cosmetics_title")
+	names["archive"]=P.localized("archive_title")
 	if host.screen == "hall":
 		text(P.localized("game_title"), Rect2(55, 27, 390, 62), 46, P.GOLD).name = "HallTitle"
 	else:

@@ -1,0 +1,27 @@
+{
+  "checks": {
+    "account epoch invalidates pending list": true,
+    "actual original bytes and expected hash verified": true,
+    "address change invalidates pending list": true,
+    "all archive requests are GET with no body": true,
+    "archive catalog reads never alter room catalog caches": true,
+    "catalog account epoch rejects stale original result": true,
+    "damaged original refuses current fallback": true,
+    "different declared original hash refused": true,
+    "even current-version archive requires original hash proof": true,
+    "leaving page invalidates pending list": true,
+    "legacy renders without requesting a current catalog": true,
+    "list selection requests only original source": true,
+    "mixed original season refused": true,
+    "nonprogressing cursor refused": true,
+    "opaque marks and exact int64 gold preserved": true,
+    "own source and read-only page valid": true,
+    "unknown historical metadata stays null": true,
+    "unknown section refused": true,
+    "unrequested referenced item refused": true,
+    "writable archive refused": true,
+    "wrong section never replaces selected data": true
+  },
+  "ok": true,
+  "scope": "Read-only archive model and fakegateway races, not liveHTTP or renderedUI."
+}

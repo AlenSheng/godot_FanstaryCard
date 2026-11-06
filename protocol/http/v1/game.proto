@@ -558,6 +558,46 @@ message DiscardEquipmentResponse {
   optional string season_id = 2;
 }
 
+message SeasonArchiveSummaryResponse {
+  string season_id = 1;
+  string ruleset_id = 2;
+  optional string config_version = 3;
+  optional string config_sha256 = 4;
+  optional string stats_version = 5;
+  optional string starts_at = 6;
+  optional string ends_at = 7;
+  optional string archived_at = 8;
+  string status = 9;
+  optional string phase = 10;
+  SeasonWalletResponse wallet = 11;
+  int64 equipment_count = 12;
+  int64 recipe_count = 13;
+  int64 wish_count = 14;
+  int64 loadout_count = 15;
+}
+message SeasonArchivesResponse {
+  repeated SeasonArchiveSummaryResponse items = 1;
+  optional int32 next_offset = 2;
+}
+message ArchivedCraftingWishResponse {
+  string quality = 1;
+  string slot = 2;
+  string element = 3;
+  string wished_effect = 4;
+  int32 failures = 5;
+}
+message SeasonArchiveSectionResponse {
+  SeasonArchiveSummaryResponse season = 1;
+  string section = 2;
+  bool read_only = 3;
+  repeated EquipmentResponse equipments = 4;
+  repeated SeasonRecipeResponse recipes = 5;
+  repeated ArchivedCraftingWishResponse wishes = 6;
+  repeated LoadoutResponse loadouts = 7;
+  optional int32 next_offset = 8;
+  repeated EquipmentResponse referenced_equipments = 9;
+}
+
 message EnhanceEquipmentRequest {
   int64 expected_version = 1;
   optional string material_equipment_id = 2;
