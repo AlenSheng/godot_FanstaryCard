@@ -81,6 +81,7 @@ public sealed class RoomPlayerState
     public RedDropReceipt? RedReward { get; internal set; }
     public ExplorationItem? PendingRedItem { get; internal set; }
     public DateTimeOffset? ExtractionCompletedAt { get; internal set; }
+    public TimeSpan? TerminalRoomElapsed { get; internal set; }
     public RewardChoiceState? RewardChoice { get; internal set; }
     public int RewardRefreshCount { get; internal set; }
     internal List<RewardRefreshReceiptSnapshot> RewardRefreshReceipts { get; } = [];
@@ -116,7 +117,7 @@ public sealed class RoomPlayerState
             RecycledEquipment.ToArray(),
             DisplayName, MonsterPool.Capture(), BotLoot, CombatActions.LastSequence, CombatActions.LastSuccessfulAt,
             CombatActions.LastSequence == 0 ? null : CombatActions.Capture(), BorrowedTemplateId, LootPreferenceElement, BotVictoryReward,PendingRedEvaluation,RedReward,PendingRedItem,ExtractionCompletedAt,
-            JourneyCompletions.Count==0?null:JourneyCompletions.OrderBy(c=>c.CompletedAt).ThenBy(c=>c.Position.Row).ThenBy(c=>c.Position.Column).ToArray());
+            JourneyCompletions.Count==0?null:JourneyCompletions.OrderBy(c=>c.CompletedAt).ThenBy(c=>c.Position.Row).ThenBy(c=>c.Position.Column).ToArray(),TerminalRoomElapsed);
 }
 
 public sealed class DuelState
@@ -347,11 +348,16 @@ public sealed partial class BattleRoom
     private Random BotRandom => _useLegacyRandom ? _legacyRandom : _botRandom;
     private Random DuelRandom => _useLegacyRandom ? _legacyRandom : _duelRandom;
 
-    public void InitializeMap(ChaosMapState map)
+    public DateTimeOffset? StartedAtUtc { get; private set; }
+
+    public void InitializeMap(ChaosMapState map) => InitializeMap(map,null);
+
+    public void InitializeMap(ChaosMapState map,DateTimeOffset? startedAtUtc)
     {
         ArgumentNullException.ThrowIfNull(map);
         if (Map is not null) throw new DomainValidationException("The room map is already initialized.");
         if (_players.Count > map.SpawnPositions.Count) throw new DomainValidationException("The map has too few spawn positions.");
+        StartedAtUtc=startedAtUtc?.ToUniversalTime();
         Map = map;
         foreach (var (player, index) in _players.Values.OrderBy(player => player.PlayerId).Select((player, index) => (player, index)))
         {
@@ -602,7 +608,7 @@ public sealed partial class BattleRoom
                 _lootRandom.State,
                 _escapeRandom.State,
                 _botRandom.State,
-                _duelRandom.State,BotRewardPolicy is null ? null : _botRewardRandom.State,RedPolicy is null?null:_redRandom.State), Numerics, Season);
+                _duelRandom.State,BotRewardPolicy is null ? null : _botRewardRandom.State,RedPolicy is null?null:_redRandom.State), Numerics, Season,StartedAtUtc);
 
     public static BattleRoom Restore(BattleRoomSnapshot snapshot, CombatCardCatalog catalog, int seed)
     {
@@ -610,7 +616,8 @@ public sealed partial class BattleRoom
         var room = new BattleRoom(snapshot.RoomId, snapshot.ConfigVersion, catalog, seed, snapshot.Numerics ?? NumericalRules.Legacy, snapshot.Season)
         {
             Revision = snapshot.Revision,
-            Elapsed = snapshot.Elapsed
+            Elapsed = snapshot.Elapsed,
+            StartedAtUtc=snapshot.StartedAtUtc?.ToUniversalTime()
         };
         var legacyConsumedSprings = snapshot.Map?.ConsumedSprings ?? [];
         if (snapshot.Map is { } mapSnapshot) room.Map = ChaosMapState.Restore(mapSnapshot);
@@ -678,6 +685,12 @@ public sealed partial class BattleRoom
             }
             player.Position = playerSnapshot.Position;
             player.Phase = playerSnapshot.Phase;
+            if(playerSnapshot.TerminalRoomElapsed is {} terminalElapsed)
+            {
+                if(player.Phase is not(RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted)||terminalElapsed<TimeSpan.Zero||terminalElapsed>snapshot.Elapsed)
+                    throw new DomainValidationException("Saved terminal elapsed time disagrees with the player phase or room clock.");
+                player.TerminalRoomElapsed=terminalElapsed;
+            }
             if(playerSnapshot.ExtractionCompletedAt is {} completedAt)
             {
                 if(player.Phase!=RoomPlayerPhase.Extracted)
@@ -1036,7 +1049,7 @@ public sealed partial class BattleRoom
         loser.Combat.MarkDead();
         loser.Pve = null;
         loser.CurrentDuelId = null;
-        loser.Phase = RoomPlayerPhase.Dead;
+        SetTerminalPhase(loser,RoomPlayerPhase.Dead);
         _duels.Remove(duelId);
         _botDuelRemaining.Remove(duelId);
         if (!loser.IsBot || Numerics.BudgetedBotLoot || BotRewardPolicy is not null) CreateDeathRelicPile(loser);
@@ -1059,7 +1072,7 @@ public sealed partial class BattleRoom
         player.Combat.MarkDead();
         player.Pve.MarkDead();
         player.Pve = null;
-        player.Phase = RoomPlayerPhase.Dead;
+        SetTerminalPhase(player,RoomPlayerPhase.Dead);
         CreateDeathRelicPile(player);
         Revision++;
     }
@@ -1296,7 +1309,7 @@ public sealed partial class BattleRoom
         var tickNow = now ?? DateTimeOffset.UtcNow;
         var firstTickFeedback = _combatFeedback.Count;
         Elapsed += delta;
-        var disconnectedPlayers = new List<Guid>();
+        var disconnectedPlayers = new List<(Guid PlayerId,TimeSpan Deadline)>();
         foreach (var playerId in _disconnects.Keys.ToArray())
         {
             var remaining = _disconnects[playerId] - delta;
@@ -1304,12 +1317,14 @@ public sealed partial class BattleRoom
             else
             {
                 _disconnects.Remove(playerId);
-                disconnectedPlayers.Add(playerId);
+                disconnectedPlayers.Add((playerId,Elapsed+remaining));
             }
         }
-        foreach (var playerId in disconnectedPlayers)
+        foreach (var expired in disconnectedPlayers)
         {
+            var playerId=expired.PlayerId;
             var player = GetPlayer(playerId);
+            var wasActive=player.Phase is not(RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted);
             if (player.Phase is RoomPlayerPhase.Pvp && player.CurrentDuelId is { } duelId && _duels.ContainsKey(duelId))
                 EndDuelWithDeath(duelId, playerId);
             else if (player.Phase is not (RoomPlayerPhase.Dead or RoomPlayerPhase.Extracted))
@@ -1317,10 +1332,11 @@ public sealed partial class BattleRoom
                 player.Combat.MarkDead();
                 player.Pve?.MarkDead();
                 player.Pve = null;
-                player.Phase = RoomPlayerPhase.Dead;
+                SetTerminalPhase(player,RoomPlayerPhase.Dead,expired.Deadline);
                 CreateDeathRelicPile(player);
                 Revision++;
             }
+            if(wasActive)player.TerminalRoomElapsed=expired.Deadline;
         }
         for (var index = _ceasefires.Count - 1; index >= 0; index--)
         {
@@ -1353,7 +1369,7 @@ public sealed partial class BattleRoom
             {
                 if (Numerics.OptionalMonsterPool) player.MonsterPool.EndRun(player.Combat.Deck);
                 if(player.IsBot && BotRewardPolicy is not null)CreateDeathRelicPile(player);
-                player.Phase = RoomPlayerPhase.Extracted;
+                SetTerminalPhase(player,RoomPlayerPhase.Extracted,Elapsed+remaining);
                 player.ExtractionCompletedAt=(tickNow+remaining).ToUniversalTime();
                 player.Pve = null;
             }
@@ -1436,7 +1452,7 @@ public sealed partial class BattleRoom
                         shieldDamage + hpDamage > 0 ? [new(kind, shieldDamage + hpDamage)] : [])));
                     if (player.Combat.IsDead)
                     {
-                        player.Phase = RoomPlayerPhase.Dead;
+                        SetTerminalPhase(player,RoomPlayerPhase.Dead);
                         player.Pve.MarkDead();
                         CreateDeathRelicPile(player);
                         break;
@@ -1482,7 +1498,7 @@ public sealed partial class BattleRoom
             bot.Pve = null;
             bot.RewardChoice = null;
             if(BotRewardPolicy is not null)CreateDeathRelicPile(bot);
-            bot.Phase = RoomPlayerPhase.Extracted;
+            SetTerminalPhase(bot,RoomPlayerPhase.Extracted);
             changed = true;
         }
         return changed;
@@ -1547,7 +1563,7 @@ public sealed partial class BattleRoom
             {
                 player.Combat.MarkDead();
                 player.Pve.MarkDead();
-                player.Phase = RoomPlayerPhase.Dead;
+                SetTerminalPhase(player,RoomPlayerPhase.Dead);
                 CreateDeathRelicPile(player);
                 return true;
             }
@@ -1741,5 +1757,13 @@ public sealed partial class BattleRoom
         player.Pve = frozen.Pve is null ? null : PveBattleState.Rehydrate(frozen.Pve);
         player.Phase = frozen.Phase;
         player.CurrentDuelId = null;
+    }
+
+    /// <summary>Observe the first terminal transition without changing combat, clocks or random streams.</summary>
+    private void SetTerminalPhase(RoomPlayerState player,RoomPlayerPhase phase,TimeSpan? atElapsed=null)
+    {
+        player.Phase=phase;
+        var observed=atElapsed??Elapsed;
+        if(observed>=TimeSpan.Zero&&observed<=Elapsed)player.TerminalRoomElapsed??=observed;
     }
 }

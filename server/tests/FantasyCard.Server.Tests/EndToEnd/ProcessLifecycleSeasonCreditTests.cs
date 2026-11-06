@@ -83,7 +83,7 @@ public sealed partial class ProcessLifecycleRecoveryTests
         {
             await first.DisposeAsync();foreach(var socket in sockets)socket.Dispose();
         }
-        var durable=(await snapshots.GetAsync(roomId,ct))!;Assert.All(durable.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));
+        var durable=(await snapshots.GetAsync(roomId,ct))!;Assert.All(durable.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));Assert.NotNull(durable.StartedAtUtc);
         await using var second=FullHost.Start(db.ConnectionString,port,"season17-actual-entry-after");Assert.NotEqual(firstPid,second.ProcessId);
         await second.WaitForHealthAsync(client,"/health/ready",HttpStatusCode.OK,ct);
         foreach(var player in players)
@@ -95,9 +95,9 @@ public sealed partial class ProcessLifecycleRecoveryTests
             Assert.True(actual.Player.Combat.Hp>0);Assert.InRange(credit,before.Combat.FenxianReturnCredit!.Value,2);
             Record("SEASON17-active-recovered-wire",new{actual,previousCredit=before.Combat.FenxianReturnCredit,firstPid,secondPid=second.ProcessId});
         }
-        var after=(await snapshots.GetAsync(roomId,ct))!;Assert.All(after.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));
+        var after=(await snapshots.GetAsync(roomId,ct))!;Assert.All(after.Players,p=>Assert.Equal(0,p.LastCombatActionSequence));Assert.Equal(durable.StartedAtUtc,after.StartedAtUtc);
         Assert.Equal(1L,await db.ScalarAsync<long>("SELECT count(*) FROM matches"));Assert.Equal(0L,await db.ScalarAsync<long>("SELECT count(*) FROM match_settlements"));
-        Record("SEASON17-real-entry-restart",new{firstPid,secondPid=second.ProcessId,matchId,roomId,players=4,bots=0,successfulPlayerCasts=0,completedEncounters=0,
+        Record("SEASON17-real-entry-restart",new{firstPid,secondPid=second.ProcessId,matchId,roomId,durable.StartedAtUtc,startedAtPreserved=true,players=4,bots=0,successfulPlayerCasts=0,completedEncounters=0,
             scope="Four protocol-controlled account entry routes; not native capacity, combat efficiency, B05 expansion or settlement acceptance"});
     }
 

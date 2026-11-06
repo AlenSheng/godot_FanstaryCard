@@ -227,6 +227,7 @@ public static class RoomCheckpointPolicy
     {
         snapshot.ConfigVersion,
         snapshot.Season,
+        snapshot.StartedAtUtc,
         mapInitialized = snapshot.Map is not null,
         players = snapshot.Players.OrderBy(player => player.PlayerId).Select(player => new
         {
@@ -236,6 +237,7 @@ public static class RoomCheckpointPolicy
             player.BotVictoryReward,
             player.PendingRedEvaluation,player.RedReward,player.PendingRedItem,
             player.JourneyCompletions,
+            player.TerminalRoomElapsed,
             player.Phase,
             player.LastCombatActionSequence,
             player.CurrentDuelId,

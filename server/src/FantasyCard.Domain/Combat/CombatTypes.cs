@@ -182,7 +182,8 @@ public sealed record RoomPlayerSnapshot(
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.RedDropReceipt? RedReward = null,
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] Rooms.ExplorationItem? PendingRedItem = null,
     [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? ExtractionCompletedAt = null,
-    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Rooms.SeasonCellCompletionSnapshot>? JourneyCompletions = null);
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<Rooms.SeasonCellCompletionSnapshot>? JourneyCompletions = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] TimeSpan? TerminalRoomElapsed = null);
 
 public enum DuelEndReason : short
 {
@@ -239,7 +240,8 @@ public sealed record BattleRoomSnapshot(
     IReadOnlyList<BotDuelTimerSnapshot>? BotDuelTimers = null,
     RoomRandomStreamsSnapshot? RandomStreams = null,
     Configuration.NumericalRules? Numerics = null,
-    Seasons.SeasonContext? Season = null);
+    Seasons.SeasonContext? Season = null,
+    [property: JsonIgnore(Condition=JsonIgnoreCondition.WhenWritingNull)] DateTimeOffset? StartedAtUtc = null);
 
 public sealed record CombatDamageSegment(string Kind, int Amount);
 

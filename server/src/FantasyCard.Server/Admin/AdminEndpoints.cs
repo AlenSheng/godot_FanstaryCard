@@ -13,6 +13,7 @@ public static partial class AdminEndpoints
         services.AddSingleton<ClientSettingsRepository>();
         services.AddSingleton<ClientSettingsHub>();
         services.AddSingleton<EconomyTelemetryRepository>();
+        services.AddSingleton<PlaytimeTelemetryRepository>();
         services.AddSingleton<EconomyTelemetryMetrics>();
         return services;
     }
@@ -38,6 +39,7 @@ public static partial class AdminEndpoints
         admin.MapGet("/client-settings", GetClientSettingsAsync);
         admin.MapPut("/client-settings", UpdateClientSettingsAsync);
         admin.MapGet("/telemetry/economy", ReadEconomyTelemetryAsync);
+        admin.MapGet("/telemetry/playtime", ReadPlaytimeTelemetryAsync);
         return endpoints;
     }
 

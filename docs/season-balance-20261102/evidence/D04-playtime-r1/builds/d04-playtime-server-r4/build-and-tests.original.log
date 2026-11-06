@@ -1,0 +1,26 @@
+  Determining projects to restore...
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tools\FantasyCard.ConfigExporter\FantasyCard.ConfigExporter.csproj (in 140 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Domain\FantasyCard.Domain.csproj (in 140 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Contracts\FantasyCard.Contracts.csproj (in 325 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\FantasyCard.Server.csproj (in 331 ms).
+  Restored C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\FantasyCard.Server.Tests.csproj (in 415 ms).
+  FantasyCard.Contracts -> G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.Contracts\debug\FantasyCard.Contracts.dll
+  FantasyCard.Domain -> G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.Domain\debug\FantasyCard.Domain.dll
+  FantasyCard.Server -> G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.Server\debug\FantasyCard.Server.dll
+  FantasyCard.ConfigExporter -> G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.ConfigExporter\debug\FantasyCard.ConfigExporter.dll
+  FantasyCard.Server.Tests -> G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll
+Test run for G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\build\bin\FantasyCard.Server.Tests\debug\FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Common.PlaytimeStatisticsTests.ZeroAndInvalidClocksAreCountedWithoutInventingRatesOrCurrentProfiles [5 ms]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 1
+Actual:   0
+  Stack Trace:
+     at FantasyCard.Server.Tests.Common.PlaytimeStatisticsTests.ZeroAndInvalidClocksAreCountedWithoutInventingRatesOrCurrentProfiles() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Common\PlaytimeStatisticsTests.cs:line 66
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+Results File: G:\PR13Evidence\season-balance-20261102-r1\d04-playtime-server-r4\results\server.trx
+
+Failed!  - Failed:     1, Passed:     7, Skipped:     0, Total:     8, Duration: 124 ms - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:03.68]     FantasyCard.Server.Tests.Common.PlaytimeStatisticsTests.ZeroAndInvalidClocksAreCountedWithoutInventingRatesOrCurrentProfiles [FAIL]
