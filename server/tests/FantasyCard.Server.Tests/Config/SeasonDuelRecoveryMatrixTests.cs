@@ -9,7 +9,7 @@ using FantasyCard.Domain.Seasons;
 namespace FantasyCard.Server.Tests.Config;
 
 /// <summary>Published-season PVP priority, action replay and disconnect recovery; no capacity simulation.</summary>
-public sealed class SeasonDuelRecoveryMatrixTests
+public sealed partial class SeasonDuelRecoveryMatrixTests
 {
     public static bool Enabled=>Environment.GetEnvironmentVariable("FANTASYCARD_RUN_D02_DUELS")=="1";
     private static readonly string[] Slots=["Head","Hands","Chest","Legs","Feet"];
