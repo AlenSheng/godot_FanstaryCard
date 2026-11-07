@@ -1,0 +1,70 @@
+{
+  "ok": true,
+  "status": "AcceptedWithinExplicitNamedAndBoundedScope",
+  "progress": "35/35",
+  "runtime_source": "1fe8e4b219714688c0bed061a3162628c5dd1cbe",
+  "release_source": "878822c48a65fc5d8f8df8889dc1c9780a37923a",
+  "image": "sha256:b6267a7a50f4a2c1971ac0aeabccb2bdcabaf8d048b9b1512d8ad89e421d23f2",
+  "production_restart": {
+    "id": "23afcc6f27d8006c2d79c7e57829c0b18f2b089c699657750e8f6e39b7b5148f",
+    "image": "sha256:b6267a7a50f4a2c1971ac0aeabccb2bdcabaf8d048b9b1512d8ad89e421d23f2",
+    "started": "2026-11-07T14:50:28.973497294Z",
+    "running": true
+  },
+  "source_checkout": {
+    "ok": true,
+    "before": "15198cb510ba114b8cd7acfe7d056f998728da8e",
+    "after": "878822c48a65fc5d8f8df8889dc1c9780a37923a",
+    "fast_forward": true,
+    "sparse_deployment_files": 499,
+    "excluded": [
+      "tracked build caches",
+      "tests",
+      "historical evidence"
+    ],
+    "no_cloud_build": true
+  },
+  "private_backups_retained": true,
+  "quiescent_backup": {
+    "path": "/opt/fantasycard-app/backups/season-balance-20261107-f03-cutover-r3-before-1fe8e4b219714688c0bed061a3162628c5dd1cbe.dump",
+    "bytes": 4679640,
+    "sha256": "0b3df66fb9d6da37d85ef0c9edb6500044d10a55820c9930a5de3d34251acfab",
+    "quiescent": true
+  },
+  "migration_count": 52,
+  "migration_maximum": 55,
+  "existing_matches": 577,
+  "unacknowledged_settlements": 653,
+  "committed_holds": 478,
+  "pending_holds": 0,
+  "no_new_season_activated": true,
+  "ordinary_cases_passed": 1867,
+  "excluded_methods_not_run": 79,
+  "public_surface_records": 21128,
+  "historical_snapshots_compared_per_side": 50,
+  "cloud_package_HTTP_passed": 14,
+  "private_existing_data_clone_HTTP_passed": 37,
+  "D03_budget": "317/317 closed",
+  "B05_budget": "330/330 closed",
+  "F01_budget": "300/300 closed",
+  "D03_class_target": 1.15,
+  "D03_declared_mature_D2_lower_time_exception": true,
+  "all_original_pacing_targets_passed": false,
+  "no_new_gameplay_or_capacity_tests": true,
+  "no_human_experience_claim": true,
+  "platform_real_provider_SDKs_not_tested": true,
+  "historical_068_source_ambiguity_retained": true,
+  "old_failures_retained": true,
+  "owned_test_PG_stopped_retained": true,
+  "cloud_min_ram": 2550915072,
+  "cloud_min_disk": 3448299520,
+  "cloud_min_disk_fraction": 0.05448408547219627,
+  "retained_failures": [
+    "cutover-r1 lock open blocked by Linux protected_regular before maintenance",
+    "cutover-r2 root Git fetch failed before maintenance; r3 uses original ubuntu deployment account",
+    "Python3.10 external certificate verification expired-chain error; Windows Schannel curl verified TLS without bypass, cloud curl also passed",
+    "cleanup-r1 used production role against isolated test PG; r2 used documented season_stage role"
+  ],
+  "requires_further_automatic_testing": false,
+  "at_utc": "2026-11-07T14:54:59.510295+00:00"
+}
