@@ -75,6 +75,21 @@ payloads. Code signing is a separate publisher configuration.
 
 ## Server
 
+### Approved named scope for the 2026-11-07 acceptance
+
+For the fixed `1fe8e4b219714688c0bed061a3162628c5dd1cbe` package only, the user
+explicitly accepted the named verification scope: 1,139 executed methods,
+1,867 passing cases, 21,128 matching surface records, 50 matching snapshot
+restores and 14 isolated cloud HTTP checks. The other 79 methods remain
+unexecuted limitations, with historical failures and gaps retained. This is
+an explicit per-round exception to the all-existing-tests requirement below;
+it does not change the default validator or count exclusions as passes.
+The immutable [scope certificate and decision](season-balance-20261102/F03-APPROVED-PROTECTION-SCOPE.md)
+record the exact package hashes and evidence. This protection subgate is
+accepted; D03 and the remaining deployment/restart gates still apply. The
+original candidate, marker and original export report remain unchanged.
+
+
 Current Production startup requires `Identity:EnableLocalAuth=false`; an enabled
 flag is rejected before the listener starts (`Program.cs`). The historical
 September endpoint result below is not the current invalid-configuration oracle.
