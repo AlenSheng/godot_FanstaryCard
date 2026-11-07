@@ -49,6 +49,32 @@ public sealed class SeasonFirstFortnightInputsTests
         return actors.ToArray();
     }
 
+    /// <summary>Separate first-week scenario: reorganize existing initial copies without granting cards or seasonal capital.</summary>
+    internal static Actor[] DeclareSupportedNovices() => Enum.GetValues<HeroClass>()
+        .Select(hero => new Actor($"F01-support-novice-{hero}", hero, "novice",
+            SeasonStarterSupportTests.Deck("support-guard"), Enumerable.Repeat(0, 20).ToArray(), 0, false)).ToArray();
+
+    [Fact(Skip = "F01 first-week support input preflight only; no actual starts.", SkipUnless = nameof(Enabled))]
+    public void SupportedNovicesReorganizeOnlyAlreadyOwnedInitialCards()
+    {
+        var config = GameConfigCatalog.Current;
+        var available = config.Cards.Where(card => card.IsCodex && card.InitiallyUnlocked)
+            .ToDictionary(card => card.CardId, card => new OwnedCard(card.CardId, card.HeroClass, (CardRarity)card.Rarity, 1, false));
+        Assert.Equal(51, available.Count);
+        var actors = DeclareSupportedNovices();
+        Assert.Equal(3, actors.Length);
+        foreach (var actor in actors)
+        {
+            DeckRules.Validate(actor.Hero, actor.Cards, available);
+            Assert.All(actor.Cards, id => Assert.Contains(id, available.Keys));
+            Assert.All(actor.PermanentCardLevels, level => Assert.Equal(0, level));
+            Assert.Equal(0, actor.PermanentWeaponLevel);
+            Assert.False(actor.HistoricalOwnershipAssumed);
+        }
+        Write("support-week-inputs.original.json", new { config.Version, config.ContentHash, actors,
+            initially_unlocked_count = available.Count, card_grants = 0, seasonal_capital_grants = 0, actual_gameplay_attempts = 0 });
+    }
+
     /// <summary>Use the actual seasonal level projection, without starting a map or advancing time.</summary>
     internal static BattleRoom CreateUnstartedRoom(Actor actor, SeasonContext context, Guid playerId, int seed)
     {

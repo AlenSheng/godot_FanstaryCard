@@ -26,6 +26,8 @@ public sealed class PostgresFirstFortnightCalendarTests
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
     public static bool Enabled => PostgresMigrationTests.HasTestDatabase
         && Environment.GetEnvironmentVariable("FANTASYCARD_RUN_F01_CALENDAR") == "1";
+    public static bool SupportWeekEnabled => PostgresMigrationTests.HasTestDatabase
+        && Environment.GetEnvironmentVariable("FANTASYCARD_RUN_F01_SUPPORT_WEEK") == "1";
 
     public sealed class ActorState
     {
@@ -52,7 +54,13 @@ public sealed class PostgresFirstFortnightCalendarTests
 
     [Fact(Skip = "Explicit budgeted persistent F01 calendar, not an automatic ordinary test.", SkipUnless = nameof(Enabled))]
     [Trait("Category", "PostgresIntegration")]
-    public async Task ActualNineActorsContinueThroughTheOriginalFourteenDayCalendar()
+    public Task ActualNineActorsContinueThroughTheOriginalFourteenDayCalendar() => RunCalendarAsync(supportWeek: false);
+
+    [Fact(Skip = "Explicit F01 first-week owned-deck alternative within the original300 budget.", SkipUnless = nameof(SupportWeekEnabled))]
+    [Trait("Category", "PostgresIntegration")]
+    public Task ThreeFreshNovicesReorganizeOwnedCardsDuringFirstWeek() => RunCalendarAsync(supportWeek: true);
+
+    private static async Task RunCalendarAsync(bool supportWeek)
     {
         var budgetPath = Required("FANTASYCARD_F01_BUDGET");
         using var budgetDocument = JsonDocument.Parse(File.ReadAllText(budgetPath));
@@ -61,11 +69,25 @@ public sealed class PostgresFirstFortnightCalendarTests
             budget.GetProperty("maximum").GetInt32(), budget.GetProperty("decisionReference").GetString());
         permit.RequireRealLaunch();
         using var plan = JsonDocument.Parse(File.ReadAllText(budget.GetProperty("initial_plan").GetProperty("source").GetString()!));
-        var schedule = plan.RootElement.GetProperty("attempts").EnumerateArray().Select(value => new Scheduled(
+        var originalSchedule = plan.RootElement.GetProperty("attempts").EnumerateArray().Select(value => new Scheduled(
             value.GetProperty("id").GetString()!, value.GetProperty("actor").GetString()!, value.GetProperty("day").GetInt32(), value.GetProperty("shanghai_start_hour").GetInt32()))
             .OrderBy(value => value.Day).ThenBy(value => value.Hour).ThenBy(value => value.Actor, StringComparer.Ordinal).ToArray();
-        Assert.Equal(252, schedule.Length);
-        var allowed = schedule.Select(value => value.Id).Concat(budget.GetProperty("smoke_case_ids").EnumerateArray().Select(value => value.GetString()!)).ToHashSet(StringComparer.Ordinal);
+        Assert.Equal(252, originalSchedule.Length);
+        var schedule = originalSchedule;
+        if (supportWeek)
+        {
+            Assert.Equal(300, permit.Maximum);
+            using var supplement = JsonDocument.Parse(File.ReadAllText(budget.GetProperty("support_week_plan").GetProperty("source").GetString()!));
+            schedule = supplement.RootElement.GetProperty("attempts").EnumerateArray().Select(value => new Scheduled(
+                value.GetProperty("id").GetString()!, value.GetProperty("actor").GetString()!, value.GetProperty("day").GetInt32(), value.GetProperty("shanghai_start_hour").GetInt32()))
+                .OrderBy(value => value.Day).ThenBy(value => value.Hour).ThenBy(value => value.Actor, StringComparer.Ordinal).ToArray();
+            Assert.Equal(42, schedule.Length);
+            Assert.Equal(42, schedule.Select(value => value.Id).Distinct(StringComparer.Ordinal).Count());
+            Assert.All(schedule, value => { Assert.InRange(value.Day, 1, 7); Assert.True(value.Hour is 9 or 18); });
+            Assert.Empty(schedule.Select(value => value.Id).Intersect(originalSchedule.Select(value => value.Id), StringComparer.Ordinal));
+        }
+        var allowed = originalSchedule.Select(value => value.Id).Concat(schedule.Select(value => value.Id))
+            .Concat(budget.GetProperty("smoke_case_ids").EnumerateArray().Select(value => value.GetString()!)).ToHashSet(StringComparer.Ordinal);
         var journal = new SeasonFirstFortnightAttemptJournal(budget.GetProperty("journal").GetString()!, permit.Maximum, allowed);
         var output = Required("FANTASYCARD_F01_CALENDAR_OUTPUT");
         Directory.CreateDirectory(output);
@@ -73,23 +95,32 @@ public sealed class PostgresFirstFortnightCalendarTests
         var limit = int.Parse(Required("FANTASYCARD_F01_CALENDAR_MAX_NEW"), System.Globalization.CultureInfo.InvariantCulture);
         Assert.InRange(limit, 1, 252);
         var config = GameConfigCatalog.Current;
-        var season = SeasonDefinition.FromCalendarDays("f01-calendar-current17", new(2026, 11, 1), config.Version,
+        var season = SeasonDefinition.FromCalendarDays(supportWeek ? "f01-support-current17" : "f01-calendar-current17", new(2026, 11, 1), config.Version,
             "season-equipment-v1", highestOpenDifficulty: 5);
-        var definitions = SeasonFirstFortnightInputsTests.DeclareActors().ToDictionary(value => value.Id, StringComparer.Ordinal);
+        var definitions = (supportWeek ? SeasonFirstFortnightInputsTests.DeclareSupportedNovices() : SeasonFirstFortnightInputsTests.DeclareActors())
+            .ToDictionary(value => value.Id, StringComparer.Ordinal);
+        var task = supportWeek ? "season-balance-20261102-f01-support-week" : "season-balance-20261102-f01-calendar";
+        if (supportWeek)
+            foreach (var actor in definitions.Keys)
+            {
+                var actorCases = schedule.Where(value => value.Actor == actor).ToArray();
+                Assert.Equal(14, actorCases.Length);
+                Assert.Equal(14, actorCases.Select(value => (value.Day, value.Hour)).Distinct().Count());
+            }
         var connectionString = Required("FANTASYCARD_TEST_POSTGRES");
         await using var admin = NpgsqlDataSource.Create(connectionString);
         Progress progress;
         if (File.Exists(control))
         {
             progress = JsonSerializer.Deserialize<Progress>(File.ReadAllText(control), Json)!;
-            Assert.Equal("season-balance-20261102-f01-calendar", progress.Task);
+            Assert.Equal(task, progress.Task);
             Assert.Equal(config.Version, progress.ConfigVersion);
             Assert.Equal(config.ContentHash, progress.ContentHash);
             Assert.Null(progress.CurrentCase); // An interrupted case needs its original handle reconciled, not a new start.
         }
         else
         {
-            progress = new() { Schema = "f01_calendar_" + Guid.NewGuid().ToString("N"), ConfigVersion = config.Version, ContentHash = config.ContentHash };
+            progress = new() { Task = task, Schema = "f01_calendar_" + Guid.NewGuid().ToString("N"), ConfigVersion = config.Version, ContentHash = config.ContentHash };
             Save(control, progress);
             await using var create = admin.CreateCommand("CREATE SCHEMA " + progress.Schema);
             await create.ExecuteNonQueryAsync(TestContext.Current.CancellationToken);
@@ -108,6 +139,17 @@ public sealed class PostgresFirstFortnightCalendarTests
                 var profile = await new IdentityRepository(source, new PlayerProvisioningService()).SignInLocalAsync("f01-calendar-device",
                     "f01-" + Guid.NewGuid().ToString("N")[..12], RandomNumberGenerator.GetBytes(32), clock.GetUtcNow(), clock.GetUtcNow().AddHours(1), ct);
                 if (actor.HistoricalOwnershipAssumed) await DeclareHistory(source, profile.UserId, actor, ct);
+                if (supportWeek)
+                {
+                    var progression = new ProgressionRepository(source, clock, new PublishedConfigCatalogs(config));
+                    var cards = await progression.GetCardsAsync(profile.UserId, ct);
+                    Assert.Equal(51, cards.Count(card => card.Unlocked && card.CopyCount >= 1));
+                    Assert.All(actor.Cards, id => Assert.Contains(cards, card => card.CardId == id && card.Unlocked && card.CopyCount >= 1 && card.Level == 0));
+                    var deck = (await progression.GetDecksAsync(profile.UserId, ct)).Single(value => value.HeroClass == (FantasyCard.Contracts.Players.HeroClassDto)(int)actor.Hero);
+                    var saved = await progression.SaveDeckAsync(profile.UserId, actor.Hero, actor.Cards, "f01-support-initial-owned-reorganization", deck.Version, clock.GetUtcNow(), ct);
+                    Assert.Equal(SaveDeckStatus.Updated, saved.Status);
+                    Write(output, "initial-" + actor.Id + ".original.json", new { actor, profile.UserId, owned_before = cards, saved });
+                }
                 await new SeasonRepository(source, clock).EnsurePlayerAsync(profile.UserId, season.ContextFor(0), ct);
                 progress.Actors.Add(new() { Id = actor.Id, Player = profile.UserId });
                 Save(control, progress);
@@ -115,7 +157,7 @@ public sealed class PostgresFirstFortnightCalendarTests
             progress.Status = "Ready";
             Save(control, progress);
         }
-        Assert.Equal(9, progress.Actors.Count);
+        Assert.Equal(definitions.Count, progress.Actors.Count);
         var newStarts = 0;
         while (progress.NextIndex < schedule.Length && newStarts < limit)
         {
