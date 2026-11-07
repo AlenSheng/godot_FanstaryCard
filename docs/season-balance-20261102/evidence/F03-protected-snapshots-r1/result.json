@@ -1,0 +1,32 @@
+{
+  "scope": "Actual frozen-room JSON/restore/capture equivalence, no clock or new game",
+  "samples": 50,
+  "exact_without_normalization": 39,
+  "terminal_bot_timer_fields_normalized": 16,
+  "active_bot_timers_preserved": 48,
+  "semantic_pass_original_and_protected": 50,
+  "exact_result_hashes_equal": true,
+  "package_DLL_SHA_verified": true,
+  "new_gameplay_starts": 0,
+  "clock_advance_calls": 0,
+  "product_source_unchanged": true,
+  "all_budgets_unchanged": {
+    "D03": 308,
+    "F01": 300,
+    "B05": 330
+  },
+  "strict_r2_failed_snapshots_retained": 11,
+  "initial_namespace_compile_failure_retained": true,
+  "normalization_basis": "BattleRoom.Restore only reattaches BotPveRemaining for IsBot + Pve + active Pve. Only already terminal bot countdowns may clear; all other JSON remains deep-equal.",
+  "candidate_marker_retained": true,
+  "full_suite_validation_not_claimed": true,
+  "F03_accepted": false,
+  "whole_progress": "33/35",
+  "production_changed": false,
+  "limitations": [
+    "50 existing snapshots, not fresh games or all feature branches.",
+    "Samples cover difficulty0-5; Mage source full-room samples currently cover0-3, not4/5.",
+    "Only8 selected in-flight checkpoints, the rest initial/terminal states.",
+    "Inactive terminal bot timer normalization is explicit; old strict failures remain."
+  ]
+}
