@@ -1,0 +1,42 @@
+{
+  "scope": "Candidate image packaging/nonroot offline utility validation only",
+  "result": {
+    "ok": true,
+    "exact18_files_and_SHA": true,
+    "UID1654_can_read_all_files": true,
+    "read_only_rootfs": true,
+    "no_network": true,
+    "no_SDK_present": true,
+    "no_SDK_started": true,
+    "no_game_program_started": true,
+    "no_DB_access": true,
+    "new_gameplay_starts": 0,
+    "production_containers_unchanged": true,
+    "production_deployment": false,
+    "candidate_marker_retained": true,
+    "not_a_full_release_verification": true,
+    "candidate_image": "sha256:fd3a010b01ce5beb570888e371dac6c3b5a91d6939dba8d8fd6e9658700db197",
+    "payload_sha256": "6f59a9d0d1fd57b678ac4d0b9b59468f49a3419c4141ecd27d0efbdd33e662e5",
+    "archive_sha256": "24cbac47ad67ff28f687d587edff980847ed50ee739c97f416bcde4e43ca09ea",
+    "upload_tmpfs_unmounted": true
+  },
+  "container_cleanup_count": 5,
+  "all_owned_containers_and_image_removed": true,
+  "upload_tmpfs_unmounted": true,
+  "min_available_ram": 2533879808,
+  "min_free_disk": 3422154752,
+  "min_disk_fraction": 0.05407099091179023,
+  "no_game_server_started": true,
+  "no_DB_access": true,
+  "no_prod_restart_or_deployment": true,
+  "F03_complete": false,
+  "whole_progress": "33/35",
+  "D03_used": 308,
+  "F01_used": 300,
+  "B05_used": 330,
+  "limitations": [
+    "Uses existing cached runtime as a temporary base; future final source/base must be reverified.",
+    "Utility checks are not application startup, HTTP/WSS, migration or full protection validation.",
+    "Candidate marker retained. Production cutover and fresh private backup remain gated."
+  ]
+}
