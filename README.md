@@ -1,5 +1,7 @@
 # godot_FanstaryCard
 
+2026-11-07赛季数值实施本轮35项已按批准范围完成，并已部署重启云端；当前结论、具名限制和接续见[最终验收与发布](docs/season-balance-20261102/FINAL-ACCEPTANCE-AND-DEPLOYMENT.md)及[实施进度](docs/season-balance-20261102/PROGRESS.json)。D03/B05/F01已封账，不再自动补测100人；历史失败原件保持。
+
 当前测试分支从远端 `release` 拉取。开始前先读 [GDD](GDD.md)、[当前接续文档](docs/plans/PR13_CONTINUATION_CONTEXT_20261025.md)和[正式文件整合报告](docs/reports/release-formal-audit-20261028-r1/README.md)。
 
 本轮已按用户约定收口：120 项 Accepted、12 项容量相关约定收口，当前待验收 0 项；历史来源及真实外部 fork 缺口单列保留，不重开 100 人补测。UI 中英两语言、三档分辨率验证见 [最终 UI 报告](docs/reports/ui-visual-review-20261027-r1/README.md)。
