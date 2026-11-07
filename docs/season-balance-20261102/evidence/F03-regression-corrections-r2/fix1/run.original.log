@@ -1,0 +1,37 @@
+Test run for C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\tools\engine-local\protected\f03-corrections-r1\bin\FantasyCard.Server.Tests\release\FantasyCard.Server.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce [1 s]
+  Error Message:
+   System.InvalidOperationException : Saved loot preference differs from the original preparation.
+  Stack Trace:
+     at FantasyCard.Server.Rooms.RoomSnapshotRepository.RequirePreparedSources(BattleRoomSnapshot snapshot, String json) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 173
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 157
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.ValidateOwnerAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 159
+   at FantasyCard.Server.Rooms.RoomSnapshotRepository.SaveIfDueAsync(BattleRoomSnapshot snapshot, CancellationToken cancellationToken) in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\src\FantasyCard.Server\Rooms\RoomSnapshotRepository.cs:line 24
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonBlueprintTests.cs:line 102
+   at FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresSeasonBlueprintTests.cs:line 109
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [7 s]
+  Error Message:
+   POST /api/v1/season-crafting/recipes/learn BadRequest
+  Stack Trace:
+     at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\ProtobufHttp\MigrationIndependentTests.cs:line 117
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\ProtobufHttp\MigrationIndependentTests.cs:line 149
+   at FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\ProtobufHttp\MigrationIndependentTests.cs:line 149
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [2 s]
+  Error Message:
+   Assert.Equal() Failure: Values differ
+Expected: 2
+Actual:   0
+  Stack Trace:
+     at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRuntimeIntegrationTests.cs:line 179
+   at FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once() in C:\Users\SHENGJIAHAO\.codex\worktrees\sync-release-targets\godot_FanstaryCard\server\tests\FantasyCard.Server.Tests\Persistence\PostgresRuntimeIntegrationTests.cs:line 179
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f03-corrections-r1\shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_49_31_net10.0.trx
+
+Failed!  - Failed:     3, Passed:    29, Skipped:     0, Total:    32, Duration: 1 m 8 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:25.46]     FantasyCard.Server.Tests.Persistence.PostgresSeasonBlueprintTests.ActualScaledEliteVictoryResourcesReachTheOriginalSeasonWalletOnce [FAIL]
+[xUnit.net 00:00:39.84]     FantasyCard.Server.Tests.EndToEnd.RealNetworkEndToEndTests.Migration_default_binary_routes_ticket_security_and_real_sample_benchmark [FAIL]
+[xUnit.net 00:00:45.91]     FantasyCard.Server.Tests.Persistence.PostgresRuntimeIntegrationTests.Concurrent_market_purchase_transfers_equipment_and_gold_exactly_once [FAIL]

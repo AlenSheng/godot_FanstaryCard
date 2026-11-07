@@ -1,0 +1,71 @@
+VSTest version 18.7.0 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.InvalidCompletionProofRollsBackTheSettlementOutboxAndUnlockTogether [918 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.InvalidCompletionProofRollsBackTheSettlementOutboxAndUnlockTogether()
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.InvalidCompletionProofRollsBackTheSettlementOutboxAndUnlockTogether()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.ConcurrentAndLateOriginalSeasonCompletionsAreOnceOnlyAndCannotUnlockTheNextSeason [991 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.ConcurrentAndLateOriginalSeasonCompletionsAreOnceOnlyAndCannotUnlockTheNextSeason()
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.ConcurrentAndLateOriginalSeasonCompletionsAreOnceOnlyAndCannotUnlockTheNextSeason()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.WholeUnlockChainRequiresTheRightSameMatchConditionAndDoesNotCountDeathOrReplay [926 ms]
+  Error Message:
+   FantasyCard.Domain.Players.DomainValidationException : The season configuration hash differs from its compiled bundle.
+  Stack Trace:
+     at FantasyCard.Server.Seasons.SeasonRepository.PublishAsync(SeasonDefinition definition, String configSha256, CancellationToken cancellationToken, GameConfigCatalog configuration)
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.WholeUnlockChainRequiresTheRightSameMatchConditionAndDoesNotCountDeathOrReplay()
+   at FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.WholeUnlockChainRequiresTheRightSameMatchConditionAndDoesNotCountDeathOrReplay()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [890 ms]
+  Error Message:
+   System.ArgumentOutOfRangeException : The path 'G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\temp\fc-launch-1676dae9740d48bc9b26afe5608863a7\.s.PGSQL.13876' is of an invalid length for use with domain sockets on this platform.  The length must be between 1 and 108 characters, inclusive. (Parameter 'path')
+Actual value was G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\temp\fc-launch-1676dae9740d48bc9b26afe5608863a7\.s.PGSQL.13876.
+  Stack Trace:
+     at System.Net.Sockets.UnixDomainSocketEndPoint..ctor(String path, String boundFileName)
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.CommitResponseDropProxy..ctor(String upstreamDirectory, Int32 port, String statement)
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it()
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once [1 s]
+  Error Message:
+   System.ArgumentOutOfRangeException : The path 'G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\temp\fc-launch-a9a05e793a974684ba021e112065850b\.s.PGSQL.13876' is of an invalid length for use with domain sockets on this platform.  The length must be between 1 and 108 characters, inclusive. (Parameter 'path')
+Actual value was G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\temp\fc-launch-a9a05e793a974684ba021e112065850b\.s.PGSQL.13876.
+  Stack Trace:
+     at System.Net.Sockets.UnixDomainSocketEndPoint..ctor(String path, String boundFileName)
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.CommitResponseDropProxy..ctor(String upstreamDirectory, Int32 port, String statement)
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once()
+   at FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once()
+--- End of stack trace from previous location ---
+  Failed FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards [860 ms]
+  Error Message:
+   System.IO.FileNotFoundException : Could not find file 'G:\PR13Evidence\private\season-balance-20261102-f03-google-r1\protected-ordinary-r4\workspace\server\config\archive\season-v1-config-13\fantasycard.config.sha256'.
+  Stack Trace:
+     at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Int32 bufferSize)
+   at System.IO.File.ReadAllText(String path, Encoding encoding)
+   at FantasyCard.Server.Rooms.PublishedConfigCatalogs.Resolve(String version)
+   at FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards()
+   at FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards()
+--- End of stack trace from previous location ---
+Results File: G:\PR13Evidence\season-balance-20261102-r1\f03-protected-ordinary-r4\FantasyCard.Server.Tests-b06\shengjiahao_YK-SHENGJIAHAO_2026-11-07_12_18_43_net10.0.trx
+
+Failed!  - Failed:     6, Passed:    85, Skipped:     0, Total:    91, Duration: 2 m 45 s - FantasyCard.Server.Tests.dll (net10.0)
+[xUnit.net 00:00:58.06]     FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.InvalidCompletionProofRollsBackTheSettlementOutboxAndUnlockTogether [FAIL]
+[xUnit.net 00:00:59.05]     FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.ConcurrentAndLateOriginalSeasonCompletionsAreOnceOnlyAndCannotUnlockTheNextSeason [FAIL]
+[xUnit.net 00:00:59.98]     FantasyCard.Server.Tests.Persistence.PostgresDifficultyUnlockTests.WholeUnlockChainRequiresTheRightSameMatchConditionAndDoesNotCountDeathOrReplay [FAIL]
+[xUnit.net 00:01:46.42]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.MarkRunning_commit_response_loss_retries_same_room_and_restart_restores_it [FAIL]
+[xUnit.net 00:01:47.55]     FantasyCard.Server.Tests.Persistence.PostgresLifecycleRecoveryTests.Settlement_commit_response_loss_recovers_same_receipt_and_credits_assets_once [FAIL]
+[xUnit.net 00:02:19.46]     FantasyCard.Server.Tests.Persistence.PostgresJourneyRewardEntitlementTests.OriginalThirteenCheckpointStillCreditsExperienceWithoutManufacturingNewRewards [FAIL]

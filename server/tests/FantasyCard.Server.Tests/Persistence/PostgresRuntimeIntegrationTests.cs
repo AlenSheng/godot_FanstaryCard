@@ -176,8 +176,16 @@ public sealed class PostgresRuntimeIntegrationTests
             "SELECT count(*) FROM market_transactions WHERE listing_id=$1", listing.ListingId));
         Assert.Equal(2L, await database.ScalarAsync<long>(
             "SELECT count(*) FROM inventory_movements WHERE item_id=$1", equipmentId));
-        Assert.Equal(2L, await database.ScalarAsync<long>(
-            "SELECT count(*) FROM economy_ledger WHERE request_id=$1", winner.RequestId));
+        Assert.Equal(winner.RequestId, await database.ScalarAsync<string>(
+            "SELECT request_id FROM market_transactions WHERE listing_id=$1", listing.ListingId));
+        Assert.Equal(1L, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND request_id=$2 AND currency='Gold' AND reason='market.purchase' AND delta=-1000 AND balance_after=1000",
+            winner.BuyerId, "buy:" + listing.ListingId.ToString("D")));
+        Assert.Equal(1L, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND request_id=$2 AND currency='Gold' AND reason='market.sale' AND delta=900 AND balance_after=900",
+            seller.UserId, "sale:" + listing.ListingId.ToString("D")));
+        Assert.Equal(0L, await database.ScalarAsync<long>(
+            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND source_kind='MarketTransfer'", loser.BuyerId));
 
         async Task<(Guid BuyerId, string RequestId, MarketPurchaseResponse? Response)> AttemptPurchaseAsync(
             Guid buyerId,
@@ -188,7 +196,7 @@ public sealed class PostgresRuntimeIntegrationTests
                 return (buyerId, requestId, await repository.PurchaseMarketAsync(
                     buyerId, requestId, listing.ListingId, listing.Version, cancellationToken));
             }
-            catch (InvalidOperationException)
+            catch (DomainValidationException exception) when (exception.Message == "Listing is no longer available in the current market.")
             {
                 return (buyerId, requestId, null);
             }

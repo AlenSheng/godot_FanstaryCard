@@ -19,16 +19,16 @@ public sealed class SeasonThemeTransportTests
         room.InitializeMap(ChaosMapGenerator.Generate(73,1,config.SeasonThemes));var snapshot=room.Capture();var cell=snapshot.Map!.Cells.Single(c=>c.IsBoss);
         snapshot=snapshot with {Players=[snapshot.Players[0] with {Position=cell.Position,Phase=RoomPlayerPhase.Pve,
             Pve=PveBattleFactory.Create(cell,config.SeasonDifficulty(0),config.SeasonThemes!.Selected).Capture()}]};
-        room=BattleRoom.Restore(snapshot,catalog,73);var boss=Assert.Single(room.GetPlayer(id).Pve!.Monsters);boss.TakeDamage(boss.Shield+boss.MaximumHp/3);
+        room=BattleRoom.Restore(snapshot,catalog,73);var boss=Assert.Single(room.GetPlayer(id).Pve!.Monsters);Assert.Equal(140,boss.MaximumHp);boss.TakeDamage(boss.Shield+boss.MaximumHp/3);
         for(var tick=0;tick<1000&&!(boss.IntentIndex==2&&boss.WindupRemaining>TimeSpan.Zero);tick++)
         {
             var intent=boss.Advance(TimeSpan.FromMilliseconds(100));if(intent is not null)boss.ResolveIntentDamage(intent);
         }
         var payload=RoomSnapshotProjection.Build(new GetRoomClientStateCommand(id).Execute(room),id,Guid.NewGuid(),DateTimeOffset.UnixEpoch);
-        var published=Assert.Single(payload.Pve!.Monsters);Assert.Equal("Regenerate",published.IntentKind);Assert.Equal(5,published.IntentValue);
+        var published=Assert.Single(payload.Pve!.Monsters);Assert.Equal("Regenerate",published.IntentKind);Assert.Equal(2,published.IntentValue);
         var bytes=RealtimeProtobufCodec.EncodeServer(new("room.snapshot","theme-wire",payload,Guid.NewGuid().ToString("D"),1,DateTimeOffset.UnixEpoch));
         var decoded=Assert.IsType<RoomSnapshotEventPayload>(RealtimeProtobufCodec.DecodeServer(bytes).Payload);
-        Assert.Equal("Regenerate",Assert.Single(decoded.Pve!.Monsters).IntentKind);Assert.Equal(5,decoded.Pve.Monsters[0].IntentValue);
+        Assert.Equal("Regenerate",Assert.Single(decoded.Pve!.Monsters).IntentKind);Assert.Equal(2,decoded.Pve.Monsters[0].IntentValue);
         var directory=Environment.GetEnvironmentVariable("FANTASYCARD_THEME_INTEROP_DIR");
         if(!string.IsNullOrEmpty(directory))
         {

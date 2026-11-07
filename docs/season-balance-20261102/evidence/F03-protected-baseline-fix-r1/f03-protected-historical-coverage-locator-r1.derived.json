@@ -1,0 +1,1755 @@
+{
+  "scope": "Historical TRX locator only, not proof of current protected execution or acceptance",
+  "excluded_method_definitions": 59,
+  "methods_with_history": 41,
+  "methods_with_any_pass": 39,
+  "methods_with_any_failure": 9,
+  "unmatched": [
+    {
+      "type": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests",
+      "method": "PriestDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+      "gate": "Enabled"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_LOAD02_timeout_STOP_preserves_original_business_truth",
+      "gate": "HasRealClientDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_cold_start_commits_durable_pending_holds_once",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+      "gate": "HasOwnedRollbackFixture"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_default_single_IP_auth_limit_is_separate_from_capacity",
+      "gate": "HasPrivateDatabase"
+    },
+    {
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_prelogged_account_still_observes_default_economy_write_limit",
+      "gate": "HasPrivateDatabase"
+    }
+  ],
+  "rows": [
+    {
+      "assembly": "FantasyCard.Domain.Tests.dll",
+      "type": "FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests",
+      "method": "FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget",
+      "SkipUnless": "FinalNineEnabled",
+      "Skip": "Explicit final B05 budget: at most nine new routes, previous 291 retained.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-final-r1/b05-final-published-r1/results/final-nine.trx",
+          "sha256": "a20f06710f6a86537b995f59c62e699cc07870773499c5ecf93f6aa6bba7dd6a",
+          "outcome": "Failed",
+          "name": "FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget",
+          "start": "2026-11-05T15:03:30.0206863+00:00",
+          "end": "2026-11-05T15:03:30.9781065+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-final-r1/b05-final-published-r2/results/final-nine.trx",
+          "sha256": "045d8b0f961589acd70ab419d0e183ae0acc22e42db8846302bf1639d7506b9b",
+          "outcome": "Passed",
+          "name": "FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.FinalNinePublishedR1RoutesKeepEveryDrawWithinItsPrintedAndPassiveBudget",
+          "start": "2026-11-05T15:09:13.7627612+00:00",
+          "end": "2026-11-05T15:09:15.6019133+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Domain.Tests.dll",
+      "type": "FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests",
+      "method": "LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill",
+      "SkipUnless": "MatrixEnabled",
+      "Skip": "Explicit bounded acceptance matrix; consult the retained B05 budget before enabling.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/B05/r25/resource-loops.trx",
+          "sha256": "5f4b5b73c80e5607864febf135c8d3372033cf037914e84b47739566d93884f7",
+          "outcome": "Failed",
+          "name": "FantasyCard.Domain.Tests.Combat.SeasonResourceLoopTests.LegalTimedExpeditionsAccountForEveryCardAndEveryRealMonsterKill",
+          "start": "2026-11-02T16:14:52.2450506+00:00",
+          "end": "2026-11-02T16:15:32.7143669+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests",
+      "method": "OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit nine-bank plan and isolated PostgreSQL.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/PG-r1/public/cases.trx",
+          "sha256": "2692f90f97de6fa7d70183f757bb8d00f0aa3a33892b9852cf469ae1cd4f9ea6",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund",
+          "start": "2026-11-06T01:24:39.7474911+00:00",
+          "end": "2026-11-06T01:24:42.5939792+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/PG-r2/public/cases.trx",
+          "sha256": "2b6c40b4f09214f14c9130a221a37db42d6cf8efa93ddaac015919d791f01ea3",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund",
+          "start": "2026-11-06T01:31:52.8950741+00:00",
+          "end": "2026-11-06T01:32:02.0248499+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/PG-r3/public/cases.trx",
+          "sha256": "6e89afaf627dba6fce1e3cb048abd4ce7c0b8dd5defa1ad3a0ce41bc780292c7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresCohortMaintenanceTests.OriginalBankIdsDiscardThroughRealTransactionsAndRestartReplayWithoutRefund",
+          "start": "2026-11-06T01:36:24.3655422+00:00",
+          "end": "2026-11-06T01:36:56.5824124+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests",
+      "method": "MageDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit D02 rebuild budget and isolated PostgreSQL.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-rebuild-pg-mage-r1/cases.trx",
+          "sha256": "815a172fcd42e7c11029ac435a6772ba0f7053438248fd57bc2fb3ec8db2552b",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests.MageDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+          "start": "2026-11-05T19:45:51.2913836+00:00",
+          "end": "2026-11-05T19:52:37.2941529+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests",
+      "method": "PriestDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit D02 rebuild budget and isolated PostgreSQL.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests",
+      "method": "GuardianDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit D02 rebuild budget and isolated PostgreSQL.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-rebuild-pg-guardian-r1/cases.trx",
+          "sha256": "64a0fd477f37bc4424378f3fb953183166df9129c55d653b3130a62c1ce9fc6d",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Persistence.PostgresSeasonDeathRebuildTests.GuardianDeathAndRealBodyBackedRebuildEntersAnotherPreparedMatch",
+          "start": "2026-11-05T19:53:59.9502080+00:00",
+          "end": "2026-11-05T19:59:17.6535385+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests",
+      "method": "CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+      "SkipUnless": "Enabled",
+      "Skip": "Frozen D03 development candidates, no timed encounters.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-card10-holdout-preflight-r1/cases.trx",
+          "sha256": "39f60e0d78b9765cbad9a6f88dee41fd4812a49f7bd399d0cd4112c22d4c19e2",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T05:05:31.7615171+00:00",
+          "end": "2026-11-06T05:05:32.2449419+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-card10-preflight-r1/results/contracts.trx",
+          "sha256": "f2e0b9dd4234e7b3589fb2a78d091e49452e0863b419e774c3d8791450079e1c",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T13:02:15.8938070+08:00",
+          "end": "2026-11-06T13:02:16.2341215+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-holdout-preflight-r1/results/contracts.trx",
+          "sha256": "0cb63b794d8b3973f32df40a2a8de5fd5bfdef72517a0df8bbdc1ca494734b86",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T12:38:32.0906347+08:00",
+          "end": "2026-11-06T12:38:32.3016710+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-offense-preflight-r1/results/contracts.trx",
+          "sha256": "251cc38cb4d80d91f4f9f376c888659be8d586d94ab0bd59734dce5a34b95206",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T12:50:31.9455414+08:00",
+          "end": "2026-11-06T12:50:32.1673694+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-paired-preflight-r1/results/contracts.trx",
+          "sha256": "682012daf4b2c016b299091415d71ef64ceb3342b686740b806ae24afa8e1d40",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T12:47:00.3250856+08:00",
+          "end": "2026-11-06T12:47:00.5338151+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-counter-preflight-r2/results/contracts.trx",
+          "sha256": "49385192a2496a94ff4088bbf8dfd2fe8719b9b20d2a436dc0066ef125aad216",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T04:32:11.5513944+08:00",
+          "end": "2026-11-06T04:32:11.7604244+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-efficiency-preflight-r1/results/contracts.trx",
+          "sha256": "1bbf8ff64d3330c8c6790622b9c5cf185d47e60622e91cb1c2d0ea6f175e60a2",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T04:21:16.9573777+08:00",
+          "end": "2026-11-06T04:21:17.1629078+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-efficiency-preflight-r2/results/contracts.trx",
+          "sha256": "72520c0f4a6969dbcb73cc38d2a6274b3f1877dd437a951805fe44162bb55a60",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T04:22:53.7405467+08:00",
+          "end": "2026-11-06T04:22:53.9476385+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-efficiency-preflight-r3/results/contracts.trx",
+          "sha256": "a38359a1578c5c698da54d14c131f753d27982808dc89259a39c697c35fb1f20",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T04:24:24.7551781+08:00",
+          "end": "2026-11-06T04:24:24.9607550+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-flow-r1/d03-flow-preflight-r1/results/contracts.trx",
+          "sha256": "b2bf78e3e1ced78b4897766c2f7f009bd4efb2682f2e6a4551f5adabeec45edd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T11:42:23.8518531+08:00",
+          "end": "2026-11-06T11:42:24.0618788+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-formal17-mature-r1/d03-formal17-mature-r1/preflight.trx",
+          "sha256": "305a45e54a334884e1c1155d1a269576fbf1291e0d02bb577ddde7cce9b17336",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-07T00:09:21.4825233+00:00",
+          "end": "2026-11-07T00:09:21.6973027+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-matched-preflight-r1/d03-matched-armor-preflight-r2/CandidateInputsAreLegalAndBothSpeedLayersAreValued.trx",
+          "sha256": "cb294fc67e48eaf0ac675659c528787e3a69cec831a07cfd01a2240d989614f9",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-07T00:29:40.8558024+00:00",
+          "end": "2026-11-07T00:29:41.0748307+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-sustain-candidate-r1/d03-sustain-half-preflight-r1/results/contracts.trx",
+          "sha256": "21f10f0e88adfb33b05be04b0bfa0265ca52025b9fd7ad0600783c2cbb830667",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T12:23:43.8882811+08:00",
+          "end": "2026-11-06T12:23:44.0969996+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-sustain-candidate-r1/d03-sustain-preflight-r1/results/contracts.trx",
+          "sha256": "c150df0d580a4a1ffa1ebb402141448c327ce57075bc6a6fedbf31485cd81ee5",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-06T12:16:36.0375851+08:00",
+          "end": "2026-11-06T12:16:36.2470950+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F01-support-week-r1/preflight-r2/d03-inputs.trx",
+          "sha256": "234ca498c448378b09bae3bc29b20f00044e3e1cdd5222359ade34f0e2bfcc9d",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.CandidateInputsAreLegalAndBothSpeedLayersAreValued",
+          "start": "2026-11-07T00:41:54.8345069+00:00",
+          "end": "2026-11-07T00:41:55.0498118+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests",
+      "method": "DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+      "SkipUnless": "Enabled",
+      "Skip": "D03 exploratory development roster only, not population or final acceptance.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-approved-matched-r1/d03-matched-armor-approved-r1/run.trx",
+          "sha256": "41dfef62bbd8f84ff68c7ad928b94f89d704939a40cbfdb63b552f0d95ca8c04",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-07T01:12:35.4953161+00:00",
+          "end": "2026-11-07T01:12:39.8124037+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-card10-holdout-r1/results/cases.trx",
+          "sha256": "b2e9c76db1be4691850c435ed69fda3a3e909a575a1c50535612f01cc3947946",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T05:05:43.2573499+00:00",
+          "end": "2026-11-06T05:05:47.8357852+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-card10-r1/results/cases.trx",
+          "sha256": "a2fcb27579012f82dfb668afb57dd42d571af5353a3de884b1e3188e1703840e",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T05:03:08.2524519+00:00",
+          "end": "2026-11-06T05:03:10.5295577+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-holdout-r1/results/cases.trx",
+          "sha256": "1b0d45a6e57819e28b810d15c1a0a70396440569f089dc4a2f13f6ebdb5d7ec8",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T04:40:08.1893546+00:00",
+          "end": "2026-11-06T04:40:14.1618200+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-offense-r1/results/cases.trx",
+          "sha256": "f9518f074fbc8387010afab166ab7f37471a05ffc120244df325a05bc0231e66",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T04:50:54.6798539+00:00",
+          "end": "2026-11-06T04:50:57.8925947+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-card10-holdout-r1/d03-sustain-paired-r1/results/cases.trx",
+          "sha256": "a7a4a21b15f8e865bd366903272ecd87d8617b9b18ffc0abdf29d216d7ae8e40",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T04:47:10.2702442+00:00",
+          "end": "2026-11-06T04:47:13.9073771+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-counter-pilot-r1/results/cases.trx",
+          "sha256": "0a39d6b15970375d11937f3f7ee2fc91968257fb2dd93ec2093cfec4b72906b8",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-05T20:32:35.8594538+00:00",
+          "end": "2026-11-05T20:32:40.3420850+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-efficiency-r1/d03-efficiency-pilot-r1/results/cases.trx",
+          "sha256": "ee1b0bec804aff2ea688d6a6fbd4d26ebf7ec7e533294f2c2e2b5ab41cd86c9e",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-05T20:24:37.3737211+00:00",
+          "end": "2026-11-05T20:24:45.3078098+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-flow-r1/d03-flow-pilot-r1/results/cases.trx",
+          "sha256": "f0c72c04268d5555ab29ef58ec99086f12598fc03f601f3802b9fce600d002a5",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T03:42:52.1603427+00:00",
+          "end": "2026-11-06T03:42:56.8172080+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-formal17-mature-r1/d03-formal17-mature-r1/run.trx",
+          "sha256": "5ed0956de25e3a00e55d754039b62f2624f8a95918707c8822f6da415439c751",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-07T00:09:34.5820133+00:00",
+          "end": "2026-11-07T00:09:37.7849489+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-sustain-candidate-r1/d03-sustain-half-pilot-r1/results/cases.trx",
+          "sha256": "4e79bdbabcc174a7c2c673670ac0268d7bbf2b3ee44d779cbb51fabf1f0f3420",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T04:25:00.8460925+00:00",
+          "end": "2026-11-06T04:25:03.7716785+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-sustain-candidate-r1/d03-sustain-pilot-r1/results/cases.trx",
+          "sha256": "29ca0642eb4a21d512094a971a2a9bb5e49aafdad81ba7bbb99083647f0d8910",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonClassEfficiencyPilotTests.DeclaredCandidatesRecordActualBossOutcomesWithoutChangingAnyGameRules",
+          "start": "2026-11-06T04:17:07.5599853+00:00",
+          "end": "2026-11-06T04:17:10.7261137+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCohortMaintenanceTests",
+      "method": "OriginalBanksAreHashPinnedAndMaintenanceNeverGrantsIncomeOrLosesHistory",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit original nine-bank maintenance audit; no match clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/native-r2/results/contracts.trx",
+          "sha256": "5bcd9e6cbd551c90eacd1ebc29e035cfa6d695bc3ca960d6779992095fb26ccd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortMaintenanceTests.OriginalBanksAreHashPinnedAndMaintenanceNeverGrantsIncomeOrLosesHistory",
+          "start": "2026-11-06T09:18:23.4850612+08:00",
+          "end": "2026-11-06T09:18:34.7436919+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/native-r3/results/contracts.trx",
+          "sha256": "601ad70567cb2ae9dce192b46c0bff39356f91f87e6be7d1aba57556f332e6c0",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortMaintenanceTests.OriginalBanksAreHashPinnedAndMaintenanceNeverGrantsIncomeOrLosesHistory",
+          "start": "2026-11-06T09:20:15.0784614+08:00",
+          "end": "2026-11-06T09:20:26.5508150+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/native-r4/results/contracts.trx",
+          "sha256": "5b55b866014484ccc73e36d93afea0305701556c3e759a67a16f0be1c72bdb5f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortMaintenanceTests.OriginalBanksAreHashPinnedAndMaintenanceNeverGrantsIncomeOrLosesHistory",
+          "start": "2026-11-06T09:27:15.7179699+08:00",
+          "end": "2026-11-06T09:27:26.9432843+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/native-r5/results/contracts.trx",
+          "sha256": "17a5790eb3bd257855fdd8374c54874529214e0309dca050f79638bbdce3d427",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortMaintenanceTests.OriginalBanksAreHashPinnedAndMaintenanceNeverGrantsIncomeOrLosesHistory",
+          "start": "2026-11-06T09:35:21.6072336+08:00",
+          "end": "2026-11-06T09:35:33.3653713+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCohortRouteTests",
+      "method": "CohortInputsAndOriginalR1GeometryAreLegal",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit frozen D03 natural-route inputs; no encounter clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-cohort-r1/d03-cohort-preflight-r1/results/contracts.trx",
+          "sha256": "fe2f932015b08d561bc36b8531e973802b1c065e57af3e8b9404b1a772540d34",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortRouteTests.CohortInputsAndOriginalR1GeometryAreLegal",
+          "start": "2026-11-06T04:46:47.8491993+08:00",
+          "end": "2026-11-06T04:46:48.0529140+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCohortRouteTests",
+      "method": "CohortR1AttemptsRecordUnforcedOutcomesAndThreeLedgerInputs",
+      "SkipUnless": "Enabled",
+      "Skip": "Budgeted current routes; no completed B05 or other matrix replay.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-cohort-r1/d03-cohort-r1/results/cases.trx",
+          "sha256": "0a313697623e96826bf7609c91b4902e455ce4d2db11b656c712f7932cac9bd7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortRouteTests.CohortR1AttemptsRecordUnforcedOutcomesAndThreeLedgerInputs",
+          "start": "2026-11-05T20:47:20.9917146+00:00",
+          "end": "2026-11-05T20:47:27.1062197+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests",
+      "method": "ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit D03 bank-continuation preflight, no match clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry16-trajectory-r1/d03-trajectory-entry16-preflight-r1/results/contracts.trx",
+          "sha256": "894dd0c41accf92bd51b709ea17897fa0ab1a7d3b44ed043342201f60c6587dd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T05:54:44.9213293+08:00",
+          "end": "2026-11-06T05:54:45.2532319+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-formal17-continuation-r1/d03-formal17-continuation-preflight-r1/preflight.trx",
+          "sha256": "953b62a1dffbb7a84c423251b58d9ac68716b5438f2271ece660d3962eab0066",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T20:06:27.4726537+00:00",
+          "end": "2026-11-06T20:06:29.6454410+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/d03-maintenance-route-preflight-r1/cases.trx",
+          "sha256": "46fd21211d4042d039ed468b732f545cafbab8c520f69f4aaa034001ab5d2cd3",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T01:39:32.1565269+00:00",
+          "end": "2026-11-06T01:39:34.8891627+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-trajectory-r1/d03-trajectory-preflight-r2/results/contracts.trx",
+          "sha256": "06426107a7ecaea8add23caa6f2ecdce625de7e9b39e1b8d4885a5e68d77e605",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T05:04:43.4844712+08:00",
+          "end": "2026-11-06T05:04:44.0940707+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-trajectory-r1/d03-trajectory-preflight-r3/results/contracts.trx",
+          "sha256": "09296f4e4a4a50706ce03e910ca663b91279e490c0b545e5dbc0b6d44c3e814d",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T05:06:53.7641901+08:00",
+          "end": "2026-11-06T05:06:54.4106160+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-trajectory-r1/d03-trajectory-salvage-preflight-r1/results/contracts.trx",
+          "sha256": "42347e16ef34aca44fb306bd7203a37f60ab98ae7a5817ad5897d6535a301a4e",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.ObservedBanksPreserveLossesAndDoNotRecreateStartingGear",
+          "start": "2026-11-06T05:13:13.8405024+08:00",
+          "end": "2026-11-06T05:13:14.1726204+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests",
+      "method": "DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit budgeted D03 bank continuation, not independent kit resets.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry16-trajectory-r1/d03-trajectory-entry16-longrun-r1/results/cases.trx",
+          "sha256": "b4a31a3c4551b4f04334c4042c71d57ab07b6b134776bc3d0cb03772c8854b81",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-05T21:56:45.3018792+00:00",
+          "end": "2026-11-05T21:57:02.1075747+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry16-trajectory-r1/d03-trajectory-entry16-r1/results/cases.trx",
+          "sha256": "5252fdbc2e538b92ee1340bb733c66b4b7f344164e064a8d8c1664fa469336a0",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-05T21:54:55.8889161+00:00",
+          "end": "2026-11-05T21:55:13.0160312+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-formal17-continuation-r1/d03-formal17-continuation-r1/results/cases.trx",
+          "sha256": "605d33270382c73bb3d1e7bc448ba9b10f4aa250683f1bebb5e3b2e5ef6422b9",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-06T20:07:28.3230601+00:00",
+          "end": "2026-11-06T20:07:37.4096122+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-maintenance-r1/d03-maintenance-routes-r1/results/cases.trx",
+          "sha256": "7481405ba8febeb7512bdbab20be886e48e0927b76018c8b1e00470770ee28a8",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-06T01:39:49.6247720+00:00",
+          "end": "2026-11-06T01:40:00.5824441+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-trajectory-r1/d03-trajectory-r1/results/cases.trx",
+          "sha256": "bb73e33766a3c11b950866c3a5c2a879ccf606fc8d1ee3d6df320226178c37dd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-05T21:07:32.8168098+00:00",
+          "end": "2026-11-05T21:07:36.8626305+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-trajectory-r1/d03-trajectory-salvage-r1/results/cases.trx",
+          "sha256": "7d443867f50efa6a45a038e91671af872ef1f6ec03a58aea495c159e310f551b",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCohortTrajectoryTests.DeclaredTrajectoriesCarryOnlyRealItemsAndPayActualLobbyCosts",
+          "start": "2026-11-05T21:14:00.8674052+00:00",
+          "end": "2026-11-05T21:14:07.6193282+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests",
+      "method": "FrozenInputsUseLegalEntryCapsAndActualPublishedProfiles",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit frozen D01 plan legality only; no timed encounters.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-boxelements-preflight-r1/contracts.trx",
+          "sha256": "034fe06a165d74c6753f2aa7c2e644ed137806fb6fe77a8283fa97c2f185e2e7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.FrozenInputsUseLegalEntryCapsAndActualPublishedProfiles",
+          "start": "2026-11-05T18:45:12.6091658+00:00",
+          "end": "2026-11-05T18:45:12.8265404+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-preflight-r2/results/contracts.trx",
+          "sha256": "7b72b0fc12f92f5567f1aca36fb3c1e43bdbd475d9e9e4fa49b818750f311ff0",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.FrozenInputsUseLegalEntryCapsAndActualPublishedProfiles",
+          "start": "2026-11-06T02:41:22.1392266+08:00",
+          "end": "2026-11-06T02:41:22.3998832+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests",
+      "method": "DeclaredBoundaryEncountersPreserveCombatResourcesAndMonsterCards",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit budgeted D01 clock matrix; never rerun an already attempted roster.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-boxelements-r1/results/cases.trx",
+          "sha256": "9b4e00a8ef7f38632aff6885b2ac50958a48d1b3db26790bf3fef5bc5f1b16b1",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.DeclaredBoundaryEncountersPreserveCombatResourcesAndMonsterCards",
+          "start": "2026-11-05T18:45:25.7229380+00:00",
+          "end": "2026-11-05T18:45:29.0471246+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-effects-r1/results/cases.trx",
+          "sha256": "dc0e5016a6e9ed3953b1ecca7c0eb570c617f2459eb6a6033080b8306e2fc868",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.DeclaredBoundaryEncountersPreserveCombatResourcesAndMonsterCards",
+          "start": "2026-11-05T18:44:10.1213150+00:00",
+          "end": "2026-11-05T18:44:19.2461473+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-groups-r1/results/cases.trx",
+          "sha256": "cf7771086cb7b235c94ca580242a458a91a0c04d4ce2c18bbad7596b7b7b01bd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.DeclaredBoundaryEncountersPreserveCombatResourcesAndMonsterCards",
+          "start": "2026-11-05T18:43:03.9355200+00:00",
+          "end": "2026-11-05T18:43:13.8023429+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D01-boundaries-r1/d01-growth-r1/results/cases.trx",
+          "sha256": "2bab260d4f360b884b31c7c201b29703e2b55ded5cd161436239477564c98b8f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonCombatBoundaryMatrixTests.DeclaredBoundaryEncountersPreserveCombatResourcesAndMonsterCards",
+          "start": "2026-11-05T18:42:19.3800809+00:00",
+          "end": "2026-11-05T18:42:28.4287921+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonD0EntryCandidateTests",
+      "method": "CandidateChangesOnlyD0HpAndShieldInItsOwnVersion",
+      "SkipUnless": "Enabled",
+      "Skip": "Versioned unpublished D0 curve input proof, no clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-d0-preflight-r1/results/contracts.trx",
+          "sha256": "5aaab5dec4dd3afa1c8ab4c3e46d195e3ece10cb0b549af5e917eb3709a03b1a",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonD0EntryCandidateTests.CandidateChangesOnlyD0HpAndShieldInItsOwnVersion",
+          "start": "2026-11-06T05:30:34.0297528+08:00",
+          "end": "2026-11-06T05:30:34.4735161+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonD0EntryCandidateTests",
+      "method": "CandidateD0RunsUseCompiledRealDifficultyAndOriginalGeneratedMaps",
+      "SkipUnless": "Enabled",
+      "Skip": "Budgeted D03 unpublished curve development branches only.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-d0-candidates-r1/results/cases.trx",
+          "sha256": "9724d3b3df208a8c1f2aaf00955266f7d7b62eca29468707ecfd428650456b4d",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonD0EntryCandidateTests.CandidateD0RunsUseCompiledRealDifficultyAndOriginalGeneratedMaps",
+          "start": "2026-11-05T21:31:20.0691697+00:00",
+          "end": "2026-11-05T21:31:24.9001708+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-d0-holdout-r1/results/cases.trx",
+          "sha256": "9d17727f03b1cc5c15000f6b26c8b99951c87dd7df6246e96771aa5917d6cdb2",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonD0EntryCandidateTests.CandidateD0RunsUseCompiledRealDifficultyAndOriginalGeneratedMaps",
+          "start": "2026-11-05T21:32:48.3167065+00:00",
+          "end": "2026-11-05T21:32:50.9695307+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests",
+      "method": "CardCandidatePvpInputsKeepLegalDecksAndOriginalPublishedDefaults",
+      "SkipUnless": "CandidateEnabled",
+      "Skip": "Explicit candidate PVP input preflight, no timed duels.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-card-candidate-r1/d02-card-candidate-preflight-r1/results/contracts.trx",
+          "sha256": "542fcf7a74667a99adbd2dc2f3bdde670d36af5a0bcc61929c8e6dbd3987a538",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.CardCandidatePvpInputsKeepLegalDecksAndOriginalPublishedDefaults",
+          "start": "2026-11-06T13:50:24.6927415+08:00",
+          "end": "2026-11-06T13:50:25.2070037+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests",
+      "method": "CardCandidatePvpKeepsChangedCardGatesAndFrozenBudgetAcrossRecovery",
+      "SkipUnless": "CandidateEnabled",
+      "Skip": "Budgeted affected card/passive PVP boundaries; no old matrix replay.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-card-candidate-r1/d02-card-candidate-r1/cases.trx",
+          "sha256": "e5705903086e36ba9ac54b823a8e6e5f6cc6f5a3f56a0601fa10ed74b1506345",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.CardCandidatePvpKeepsChangedCardGatesAndFrozenBudgetAcrossRecovery",
+          "start": "2026-11-06T05:51:18.5521529+00:00",
+          "end": "2026-11-06T05:51:19.7215540+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests",
+      "method": "PublishedDuelInputsAreLegalBeforeAdmission",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires a frozen D02 plan, no timed duel execution.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-duels-r1/d02-duel-preflight-r2/results/contracts.trx",
+          "sha256": "43bc1186d8ae74bdfcfa08edc343413df6d7bec5708a541e60859b615c8ea03a",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelInputsAreLegalBeforeAdmission",
+          "start": "2026-11-06T02:58:28.4384217+08:00",
+          "end": "2026-11-06T02:58:28.6396176+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-duels-r1/d02-duel-preflight-r3/results/contracts.trx",
+          "sha256": "e267e797ecc8546e4e0ffb90283b95c0cfb42c4bbfb196e8ebfb52b5158be446",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelInputsAreLegalBeforeAdmission",
+          "start": "2026-11-06T03:01:39.1722673+08:00",
+          "end": "2026-11-06T03:01:39.3734763+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests",
+      "method": "PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery",
+      "SkipUnless": "Enabled",
+      "Skip": "Budgeted published D02 PVP scenarios; never rerun an attempted roster.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-duels-r1/d02-duels-expiry-followup-r1/results/cases.trx",
+          "sha256": "6e25810d947d04a815b4972458e056150616554bb010ac4df72b543e77ce926c",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery",
+          "start": "2026-11-05T19:03:00.3186092+00:00",
+          "end": "2026-11-05T19:03:01.0358963+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-duels-r1/d02-duels-pilot-r1/results/cases.trx",
+          "sha256": "6499667cd085b47b8b32f029390bb74692d6c3a906d54a46591acac9a2f203c0",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery",
+          "start": "2026-11-05T18:59:11.0963399+00:00",
+          "end": "2026-11-05T18:59:11.8488798+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-duels-r1/d02-duels-unstarted-r1/results/cases.trx",
+          "sha256": "0e92718852b980008974d3744fb6dd648f16555b145783f900f128a47a4c1d9a",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonDuelRecoveryMatrixTests.PublishedDuelsKeepPriorityControlLedgersAndFrozenPveThroughRecovery",
+          "start": "2026-11-05T19:03:13.8586251+00:00",
+          "end": "2026-11-05T19:03:15.8346944+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests",
+      "method": "ApprovedInputsKeepThePublishedBaselineAndFitTheThirtyCaseAllowance",
+      "SkipUnless": "Enabled",
+      "Skip": "Approved supplement input preflight; no encounters.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-active-preflight-r1/results/contracts.trx",
+          "sha256": "0616e76bff78fc2c05b87a179e84ebde3987ddeafcae65dfd4866e2c3490f4ab",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedInputsKeepThePublishedBaselineAndFitTheThirtyCaseAllowance",
+          "start": "2026-11-06T13:34:38.3121436+08:00",
+          "end": "2026-11-06T13:34:38.8305062+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-compat-preflight-r1/cases.trx",
+          "sha256": "b6e8b8a717c3111db8fbed03d5209c6568002f834178a447ec1c8ed1c157c6a3",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedInputsKeepThePublishedBaselineAndFitTheThirtyCaseAllowance",
+          "start": "2026-11-06T05:30:52.7941664+00:00",
+          "end": "2026-11-06T05:30:53.2827125+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-preflight-r1/results/contracts.trx",
+          "sha256": "93864e4296ac8ba0a8c1bec7d7384eab2728694081f09c7c672ad5a37e6fa816",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedInputsKeepThePublishedBaselineAndFitTheThirtyCaseAllowance",
+          "start": "2026-11-06T13:24:25.0867584+08:00",
+          "end": "2026-11-06T13:24:25.5672436+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests",
+      "method": "ApprovedLiveFixturesReconcileCardsCreditReplayAndCheckpointRecovery",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit affected-mechanism supplemental campaign, at most thirty new fixtures.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-active-r1/cases.trx",
+          "sha256": "6d2c3bcdc8d95a9f6a7e581dbf0ecf71f99b7288fe998f92c8d02e09b0217476",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedLiveFixturesReconcileCardsCreditReplayAndCheckpointRecovery",
+          "start": "2026-11-06T05:35:24.8724187+00:00",
+          "end": "2026-11-06T05:35:26.1519552+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-compat-r1/cases.trx",
+          "sha256": "c66804fe66873568fba18ac52d480095d8b1c48a1d4f0b48d221af27fda7eca7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedLiveFixturesReconcileCardsCreditReplayAndCheckpointRecovery",
+          "start": "2026-11-06T05:31:04.3707427+00:00",
+          "end": "2026-11-06T05:31:07.1194585+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/B05-approved-supplement-r1/b05-approved-supplement-r1/cases.trx",
+          "sha256": "1f1ba2aa32458da59b471645fd6b8ca35bb5df76310b1f302b591704ddb1ca42",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonMageApprovedSupplementTests.ApprovedLiveFixturesReconcileCardsCreditReplayAndCheckpointRecovery",
+          "start": "2026-11-06T05:25:19.6136918+00:00",
+          "end": "2026-11-06T05:25:25.6968879+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonPublishedPvpGateTests",
+      "method": "PublishedLateJoinAndCooldownRespectTheLastBlockedAndFirstAllowedTicks",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit three-match D02 boundary budget only.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-pvp-gates-r1/cases.trx",
+          "sha256": "4447073b2526f8421f56b6cf49411d0f9f78b39d050836463818555e2477d040",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonPublishedPvpGateTests.PublishedLateJoinAndCooldownRespectTheLastBlockedAndFirstAllowedTicks",
+          "start": "2026-11-05T20:02:04.8863876+00:00",
+          "end": "2026-11-05T20:02:05.4102087+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests",
+      "method": "OriginalMapsAndDeclaredLoadoutsHaveLegalBossRoutes",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit frozen D02 natural-route inputs; no encounter clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-gate-build-r1/results/contracts.trx",
+          "sha256": "450db85bf3acbc172d114bfca7637c92dba3a9e608347bb9a16674addc836427",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.OriginalMapsAndDeclaredLoadoutsHaveLegalBossRoutes",
+          "start": "2026-11-06T04:01:22.1042495+08:00",
+          "end": "2026-11-06T04:01:22.3601873+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-rebuild-build-r1/results/contracts.trx",
+          "sha256": "07feedf6aa0a00e92c2b98741d233f3ef76bb5176821418a26f81d71b691298e",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.OriginalMapsAndDeclaredLoadoutsHaveLegalBossRoutes",
+          "start": "2026-11-06T03:28:55.1152920+08:00",
+          "end": "2026-11-06T03:28:55.3700880+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-final-r1/d02-rebuild-build-r2/results/contracts.trx",
+          "sha256": "ab1fc5a5d8f1786221eceba760436b26a22681ff5c298a947c40301d5fda42a7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.OriginalMapsAndDeclaredLoadoutsHaveLegalBossRoutes",
+          "start": "2026-11-06T03:31:03.9723970+08:00",
+          "end": "2026-11-06T03:31:04.2202997+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-routes-r1/d02-route-preflight-r1/results/contracts.trx",
+          "sha256": "cf83a3ef1971c7c462c14fbc913c573321e0a09c4dbf09bc917bde5e285a6ae8",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.OriginalMapsAndDeclaredLoadoutsHaveLegalBossRoutes",
+          "start": "2026-11-06T03:16:25.9077028+08:00",
+          "end": "2026-11-06T03:16:26.1565242+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests",
+      "method": "DeclaredNaturalRoutesKeepRecoveryAndReachTheirRealTerminalOutcome",
+      "SkipUnless": "Enabled",
+      "Skip": "Budgeted current routes; no completed B05 or other matrix replay.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-routes-r1/d02-routes-pilot-r1/results/cases.trx",
+          "sha256": "c873c7b791c50db9694084909604f3f01f00dac016b646cefe53128e532438c0",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.DeclaredNaturalRoutesKeepRecoveryAndReachTheirRealTerminalOutcome",
+          "start": "2026-11-05T19:16:37.3621809+00:00",
+          "end": "2026-11-05T19:16:40.4747250+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D02-routes-r1/d02-routes-unstarted-r1/results/cases.trx",
+          "sha256": "d0d7d0835dfb9efc914e0464a02c0339d3e5a19e51ea78977b3fddd47fd40c90",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonRouteRecoveryTests.DeclaredNaturalRoutesKeepRecoveryAndReachTheirRealTerminalOutcome",
+          "start": "2026-11-05T19:17:30.7276784+00:00",
+          "end": "2026-11-05T19:17:38.9037346+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests",
+      "method": "SupportCandidatesUseOnlyAlreadyUnlockedOwnedInitialCards",
+      "SkipUnless": "Enabled",
+      "Skip": "Explicit D03 owned-starter support preflight, no battle clock.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-support-preflight-r1/results/contracts.trx",
+          "sha256": "b92204ec6a019a547ec86f638717d72a85c4937c4ce6d9c5e8cc369781e11e2f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests.SupportCandidatesUseOnlyAlreadyUnlockedOwnedInitialCards",
+          "start": "2026-11-06T05:26:02.7101216+08:00",
+          "end": "2026-11-06T05:26:02.8985179+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests",
+      "method": "DeclaredSupportBranchesRecordRealUnmodifiedD0Outcomes",
+      "SkipUnless": "Enabled",
+      "Skip": "Budgeted D03 counterfactual support branches, not longitudinal bank grants.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-d0-holdout-control-r1/results/cases.trx",
+          "sha256": "6ddf2fe8c73fdef50c6b9a508c2629cb036f9ac698017aae5ef3d3732a7591b7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests.DeclaredSupportBranchesRecordRealUnmodifiedD0Outcomes",
+          "start": "2026-11-05T21:33:03.4802466+00:00",
+          "end": "2026-11-05T21:33:06.6651077+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-formal16-routes-r1/results/cases.trx",
+          "sha256": "9cc9f884e99c52bc6479410e8d65ecfc32bebefb94cd98b48d7e4d64da490129",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests.DeclaredSupportBranchesRecordRealUnmodifiedD0Outcomes",
+          "start": "2026-11-05T21:44:57.6268699+00:00",
+          "end": "2026-11-05T21:44:59.6960904+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D03-entry-calibration-r1/d03-support-r1/results/cases.trx",
+          "sha256": "633fcb0de11bc18e147239443c41404b3f4b4b01a89c7a7061d0c5cd3b124be9",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonStarterSupportTests.DeclaredSupportBranchesRecordRealUnmodifiedD0Outcomes",
+          "start": "2026-11-05T21:26:46.3132732+00:00",
+          "end": "2026-11-05T21:26:50.8945540+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "SameFormalThemeSixDifficultiesThreeClassesRecordAllActualResources",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires the explicit eighteen-encounter C16 admission; never rerun a used budget.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-calibration-r1/c16-calibration-pilot-r2/results/pilot.trx",
+          "sha256": "cc735c1e95b55f3e9769cef8087caaaab325f501b2086a42e7d18a4f1bffd910",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.SameFormalThemeSixDifficultiesThreeClassesRecordAllActualResources",
+          "start": "2026-11-05T15:48:03.5372278+00:00",
+          "end": "2026-11-05T15:48:08.6158689+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "AdditionalBuildsAndElitesRecordOneBoundedFormalThemeRoster",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires the explicit thirty-encounter C16 expansion admission.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-expansion-r1/c16-expansion-fire-r1/results/cases.trx",
+          "sha256": "19d1a241ca342c26a51fe591e3429a82b0162a8d1c0c70c2ace5674617b2e425",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.AdditionalBuildsAndElitesRecordOneBoundedFormalThemeRoster",
+          "start": "2026-11-05T16:11:52.5009740+00:00",
+          "end": "2026-11-05T16:11:58.9028151+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "WoodBoundarySeparatesRegenerationFromShieldWorkAcrossThreeBuilds",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires the explicit eighteen-encounter Wood comparison admission.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-expansion-r1/c16-expansion-wood-r1/results/cases.trx",
+          "sha256": "0132fe9e8b822f4a7531c226d7f25729bcca48ae34033dee907cf7edfbd27d58",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.WoodBoundarySeparatesRegenerationFromShieldWorkAcrossThreeBuilds",
+          "start": "2026-11-05T16:18:35.4315234+00:00",
+          "end": "2026-11-05T16:18:41.5965880+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "CounterArmorProbeUsesTheSameDecksAndUnmodifiedFireWoodEnemies",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires the explicit twelve-encounter counter-armor probe admission.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-expansion-r1/c16-counter-probe-r1/results/cases.trx",
+          "sha256": "fb8055a7fe0edd5a6526e93f75e425e0fdc41fc42088387aa4dd322880da885f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.CounterArmorProbeUsesTheSameDecksAndUnmodifiedFireWoodEnemies",
+          "start": "2026-11-05T16:28:20.1172464+00:00",
+          "end": "2026-11-05T16:28:24.2117307+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "RemainingThemesDirectBoundaryUsesTheOriginalNeutralBenchmark",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires the explicit eighteen-encounter remaining-theme admission.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-expansion-r1/c16-remaining-r1/results/cases.trx",
+          "sha256": "41118c811a0878ed45d318c32d7e165f595313f79dbfd65c694ed87e6934f072",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.RemainingThemesDirectBoundaryUsesTheOriginalNeutralBenchmark",
+          "start": "2026-11-05T16:40:47.0503658+00:00",
+          "end": "2026-11-05T16:40:54.7055306+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "UnchangedObservationDependenciesMatchArchived14BeforeAnyTimingReuse",
+      "SkipUnless": "ReuseEnabled",
+      "Skip": "Requires explicit archived-workbook equivalence inspection; no timed encounters.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-final-r1/c16-candidate15-preflight-r2/results/contracts.trx",
+          "sha256": "6444b15e878fee20fcb9eaace83425c7d2d86be41ffd92aaa245b54fca9c89f3",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.UnchangedObservationDependenciesMatchArchived14BeforeAnyTimingReuse",
+          "start": "2026-11-06T02:18:15.0816458+08:00",
+          "end": "2026-11-06T02:18:16.3833799+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests",
+      "method": "ValidatedCandidateRosterRecordsOnlyItsDeclaredEncounters",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires a frozen validated roster within the remaining C16 budget.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-final-r1/c16-candidate15-bosses-r1/results/cases.trx",
+          "sha256": "23636d41f534abd3224e5ec79891480f7652053bbb76d5374ab13391df0c4956",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.ValidatedCandidateRosterRecordsOnlyItsDeclaredEncounters",
+          "start": "2026-11-05T18:22:05.4981311+00:00",
+          "end": "2026-11-05T18:22:12.5556243+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-final-r1/c16-candidate15-builds-r1/results/cases.trx",
+          "sha256": "3c80670076a79a1d3e9e23cf646795e585d2e939a4bcc76a8738ec19007bf35a",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.ValidatedCandidateRosterRecordsOnlyItsDeclaredEncounters",
+          "start": "2026-11-05T18:23:32.2494198+00:00",
+          "end": "2026-11-05T18:23:43.7532605+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-final-r1/c16-candidate15-elites-r1/results/cases.trx",
+          "sha256": "adfae0e2e663fcf81188a76eb4f2660c39185d24f52c2fe188024f81c093e80d",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeCalibrationTests.ValidatedCandidateRosterRecordsOnlyItsDeclaredEncounters",
+          "start": "2026-11-05T18:20:38.7690322+00:00",
+          "end": "2026-11-05T18:20:45.6726635+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests",
+      "method": "ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome",
+      "SkipUnless": "Enabled",
+      "Skip": "Requires explicit bounded theme comparison admission.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-themes/comparison/local-theme-pilot-r2/results/bot-domain.trx",
+          "sha256": "9f05c48b3182121276c6cb22557489ace600848db44cb957b54f7b7d4462b3f2",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome",
+          "start": "2026-11-05T04:49:06.0055282+08:00",
+          "end": "2026-11-05T04:49:06.8570643+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-themes/comparison/local-theme-pilot-r3/results/bot-domain.trx",
+          "sha256": "beee4019226f366c1a325d787402b5a9132fad7a5cfdaefbe82bf5092ff3bea2",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome",
+          "start": "2026-11-05T04:51:04.5272725+08:00",
+          "end": "2026-11-05T04:51:07.2712980+08:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C16-themes/comparison/local-theme-pilot-r5/results/bot-domain.trx",
+          "sha256": "e4bcfa0c35839dfdf0c1a8456414a4c945c8fdadaf13c0ad6526718b66ac016c",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.Config.SeasonThemeComparisonTests.ActualMatchedMixedClassEncountersRetainUnmodifiedMonstersAndEmitEveryOutcome",
+          "start": "2026-11-05T05:02:16.0031063+08:00",
+          "end": "2026-11-05T05:02:18.7560758+08:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_healthy_teammate_old_room_and_new_room_survive_real_callbacks_and_OS_restart",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and production Godot.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and production Godot.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/C07-C08-backend/r64/season-crafting-server.trx",
+          "sha256": "4e8446948115a709ca205253c994aa240bafcda82f503460fcae05f77a0dedd8",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+          "start": "2026-11-03T01:20:15.4852980+00:00",
+          "end": "2026-11-03T01:20:15.4868406+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C07-C08-backend/r64/season-crafting-server.trx",
+          "sha256": "4e8446948115a709ca205253c994aa240bafcda82f503460fcae05f77a0dedd8",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+          "start": "2026-11-03T01:20:15.4871580+00:00",
+          "end": "2026-11-03T01:20:15.4873869+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C09-loot-preference/r71/loot-preference-server.trx",
+          "sha256": "37bb83b8a8955d8075043c8bbd8315892815471c7085cbe2e4353a3e05a1bb3e",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+          "start": "2026-11-03T04:39:18.7636193+00:00",
+          "end": "2026-11-03T04:39:18.7665909+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C09-loot-preference/r71/loot-preference-server.trx",
+          "sha256": "37bb83b8a8955d8075043c8bbd8315892815471c7085cbe2e4353a3e05a1bb3e",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+          "start": "2026-11-03T04:39:18.7670069+00:00",
+          "end": "2026-11-03T04:39:18.7672663+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C10-bots/r73/bot-server.trx",
+          "sha256": "64c2de631466c74f390400c703459bda1925c1c246328f64e8f3dd2af3c0dcf5",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"precommit\")",
+          "start": "2026-11-04T08:46:46.8062206+00:00",
+          "end": "2026-11-04T08:46:46.8065579+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/C10-bots/r73/bot-server.trx",
+          "sha256": "64c2de631466c74f390400c703459bda1925c1c246328f64e8f3dd2af3c0dcf5",
+          "outcome": "NotExecuted",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.A05_actual_settlement_transaction_fault_recovers_without_duplicate_assets(mode: \"committed-response-loss\")",
+          "start": "2026-11-04T08:46:46.8042343+00:00",
+          "end": "2026-11-04T08:46:46.8057315+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_actual_runtime_pending_holds_survive_OS_restart_without_early_completion",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and production Godot.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Frozen_f812_actual_poll_return_during_ACK_must_not_restore_completed_receipt",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and production Godot.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "A05_guard_preserves_ordinary_context_and_authoritative_ACK_recovery",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and production Godot.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_Godot_ACK_response_loss_preserves_one_receipt_and_retryable_truth",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires an owned local PostgreSQL database and A3GAME_GODOT_EXECUTABLE.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_load_runner_counts_three_games_once_and_STOP_during_ACK_never_completes",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires an owned local PostgreSQL database and A3GAME_GODOT_EXECUTABLE.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/d04-build-dimensions-cloud-r1-file/public/cases.trx",
+          "sha256": "f665ff94d094071b458f919f6ac39223e13c9b15830845ed1c92547ad04606b2",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T13:34:43.3604689+00:00",
+          "end": "2026-11-06T13:34:46.8136706+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-combat-measure-r1/d04-combat-measure-cloud-r1-file/public/cases.trx",
+          "sha256": "f3d8dee97d8511695143409fc047968a90d0710ff726c22c87a62c30baf832ac",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T14:51:16.5235112+00:00",
+          "end": "2026-11-06T14:51:20.1141185+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-crafting-events-r1/cloud/public/cases.trx",
+          "sha256": "164f484d7b3c89d5b35f189af276a3ccd1ab57c4e1397c04392eefc3570fc801",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T11:46:54.0103535+00:00",
+          "end": "2026-11-06T11:46:57.1581259+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-currency-r1/d04-currency-cloud-r1/public/cases.trx",
+          "sha256": "ac026075c4d094faaf906c6cf8430f4aa55578f44bb95cac9a9fd61315c9ca79",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T09:31:29.3111903+00:00",
+          "end": "2026-11-06T09:31:32.4597055+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/cloud/d04-diagnostics-cloud-r1-file/public/cases.trx",
+          "sha256": "28ad6e63b6fbe29292fdde6c0e88da3556d3e54ef45ef7392c3ba110a9232614",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T16:03:35.3690122+00:00",
+          "end": "2026-11-06T16:03:38.6635596+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-diagnostics-r1/cloud/d04-diagnostics-cloud-r2-file/public/cases.trx",
+          "sha256": "ec692736e5c1b785ac2f31ea77b6f6cfd0a7cedabc5e7dc3a3222f3a5936ee2b",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T16:13:45.7100880+00:00",
+          "end": "2026-11-06T16:13:49.1598084+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-lifecycle-events-r1/cloud/public/cases.trx",
+          "sha256": "6be74cb42ac7e1a7f1d57a19aa05376edfdd58a4333ec22bd0bf13ccbc1649f1",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T12:01:58.1567064+00:00",
+          "end": "2026-11-06T12:02:01.7042256+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-physical-flow-r1/cloud/public/cases.trx",
+          "sha256": "f8509c8722e14bfe79f013f9ae6bf4987b2394e2f751d061e0033b3dd92de821",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T15:35:35.8980055+00:00",
+          "end": "2026-11-06T15:35:39.3789323+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-playtime-r1/cloud/public/cases.trx",
+          "sha256": "909cbc0edcf9cac5378236409ba1acd0f4c50ed0709b41f5b30fcb35d1ed7728",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T11:27:38.2927409+00:00",
+          "end": "2026-11-06T11:27:41.8702714+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-room-events-r1/d04-room-events-cloud-r1-file/public/cases.trx",
+          "sha256": "42faf39a005447edd1483ad62d1d5b16e04afc695d1d8c6f1e5521f89f407c4f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T12:30:11.4240227+00:00",
+          "end": "2026-11-06T12:30:15.0172600+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F03-protected-scope-r1/cloud/f03-protected-probe-cloud-r2-file/public/server.trx",
+          "sha256": "f9c34b41eee5be714a9697ab5e74152f15e0a19a0ae08f63c69dc4bf46453739",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_admin_economy_report_keeps_existing_HTTPS_key_and_no_store_boundary",
+          "start": "2026-11-06T19:12:34.5568149+00:00",
+          "end": "2026-11-06T19:12:38.3943975+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Real_LOAD02_timeout_STOP_preserves_original_business_truth",
+      "SkipUnless": "HasRealClientDatabase",
+      "Skip": "Requires owned local PostgreSQL and A3GAME_GODOT_EXECUTABLE.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "PersistedTerminalClocksDriveNetHourlyPercentilesIncludingDeathsZeroAndUnlocatedFinancialRows",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-playtime-r1/cloud/public/cases.trx",
+          "sha256": "909cbc0edcf9cac5378236409ba1acd0f4c50ed0709b41f5b30fcb35d1ed7728",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.PersistedTerminalClocksDriveNetHourlyPercentilesIncludingDeathsZeroAndUnlocatedFinancialRows",
+          "start": "2026-11-06T11:27:41.8823754+00:00",
+          "end": "2026-11-06T11:27:44.8873496+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_Running_room_resumes_after_abrupt_OS_process_restart",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Set FANTASYCARD_TEST_POSTGRES to an owned local isolated database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_extraction_then_two_restarts_preserve_assets_and_duplicate_ACK",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Set FANTASYCARD_TEST_POSTGRES to an owned local isolated database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_cold_start_commits_durable_pending_holds_once",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Set FANTASYCARD_TEST_POSTGRES to an owned local isolated database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_quarantines_contradictory_terminal_checkpoint_but_recovers_next_room",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Set FANTASYCARD_TEST_POSTGRES to an owned local isolated database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_three_entry_cycles_duplicate_READY_and_ACK_release_owned_locks",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Set FANTASYCARD_TEST_POSTGRES to an owned local isolated database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_MarkRunning_committed_response_loss_recovers_one_room_and_actual_client_routes",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "SupportOnly_actual_Register_conflict_retries_same_launch_without_partial_room_or_second_reservation",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r1/public/cases.trx",
+          "sha256": "50e21335bcaa368d6e4f91b758a180430c9701963b4172cec8c03f7030f927a7",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"hold-before-commit\\\")",
+          "start": "2026-11-06T07:38:25.9262077+00:00",
+          "end": "2026-11-06T07:40:07.8029312+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r1/public/cases.trx",
+          "sha256": "50e21335bcaa368d6e4f91b758a180430c9701963b4172cec8c03f7030f927a7",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"notification-before-mark\\\")",
+          "start": "2026-11-06T07:40:07.8086398+00:00",
+          "end": "2026-11-06T07:41:49.4035366+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r1/public/cases.trx",
+          "sha256": "50e21335bcaa368d6e4f91b758a180430c9701963b4172cec8c03f7030f927a7",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"ack-committed-response-lost\\\")",
+          "start": "2026-11-06T07:41:49.4037310+00:00",
+          "end": "2026-11-06T07:41:56.6653714+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r2/public/cases.trx",
+          "sha256": "53c74ae1f599e54cdff51aa1c8d5f080d6c09c57691d655074082ca686e1fb23",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"hold-before-commit\\\")",
+          "start": "2026-11-06T07:53:09.3420406+00:00",
+          "end": "2026-11-06T07:53:17.1094190+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r2/public/cases.trx",
+          "sha256": "53c74ae1f599e54cdff51aa1c8d5f080d6c09c57691d655074082ca686e1fb23",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"notification-before-mark\\\")",
+          "start": "2026-11-06T07:53:17.1139918+00:00",
+          "end": "2026-11-06T07:53:24.3556995+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-final-r1/asset-fault/f02-season-asset-fault-cloud-r3-retry1/public/cases.trx",
+          "sha256": "b06e2e993256f582b3bb1f56c45212d159290fc46f1acbd3c5ad21b812090c93",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_season_asset_fault_boundaries_preserve_domains_and_once_only_receipts(mode: \\\"notification-mark-rollback\\\")",
+          "start": "2026-11-06T08:18:48.7811488+00:00",
+          "end": "2026-11-06T08:18:57.0781164+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/d04-build-dimensions-cloud-r1-file/public/cases.trx",
+          "sha256": "f665ff94d094071b458f919f6ac39223e13c9b15830845ed1c92547ad04606b2",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T13:34:46.8279014+00:00",
+          "end": "2026-11-06T13:34:56.0679335+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-build-dimensions-r1/d04-build-dimensions-cloud-r2-file/public/cases.trx",
+          "sha256": "693ed49a2592977d4036d21a2fdbf911f91d2d14ec5f00eaae485767333f50a9",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T13:56:52.9884682+00:00",
+          "end": "2026-11-06T13:57:02.6124994+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-combat-measure-r1/d04-combat-measure-cloud-r1-file/public/cases.trx",
+          "sha256": "f3d8dee97d8511695143409fc047968a90d0710ff726c22c87a62c30baf832ac",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T14:51:20.1253922+00:00",
+          "end": "2026-11-06T14:51:29.3864272+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-playtime-r1/cloud/public/cases.trx",
+          "sha256": "909cbc0edcf9cac5378236409ba1acd0f4c50ed0709b41f5b30fcb35d1ed7728",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T11:27:44.8893204+00:00",
+          "end": "2026-11-06T11:27:53.9550697+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-room-events-r1/d04-room-events-cloud-r1-file/public/cases.trx",
+          "sha256": "42faf39a005447edd1483ad62d1d5b16e04afc695d1d8c6f1e5521f89f407c4f",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T12:30:15.0366026+00:00",
+          "end": "2026-11-06T12:30:24.1939023+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/D04-room-events-r1/d04-room-events-cloud-r2-file/public/cases.trx",
+          "sha256": "d18c6247f20bb50fdeae8c6818e2a2925e6e22447fbd2552d89f31193b880b5e",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T12:40:43.5433459+00:00",
+          "end": "2026-11-06T12:40:53.4865477+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r2/public/cases.trx",
+          "sha256": "c3d80f32414ea307c2a009dc76d6d1b5df9d6cce9021e19058063f6ff72745cd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_actual17_preparation_READY_and_active_credit_resume_after_abrupt_restart_without_player_casts",
+          "start": "2026-11-06T07:09:15.7671270+00:00",
+          "end": "2026-11-06T07:09:25.4926949+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r1/public/cases.trx",
+          "sha256": "0e43f3dc72c00bc896caa4c8d84e5dbc99583015a265d23a981fa5fe6362139a",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"valid\\\")",
+          "start": "2026-11-06T06:56:34.7360607+00:00",
+          "end": "2026-11-06T06:56:37.2002993+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r1/public/cases.trx",
+          "sha256": "0e43f3dc72c00bc896caa4c8d84e5dbc99583015a265d23a981fa5fe6362139a",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"missing\\\")",
+          "start": "2026-11-06T06:56:37.2060486+00:00",
+          "end": "2026-11-06T06:56:39.1694614+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r1/public/cases.trx",
+          "sha256": "0e43f3dc72c00bc896caa4c8d84e5dbc99583015a265d23a981fa5fe6362139a",
+          "outcome": "Failed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"corrupt\\\")",
+          "start": "2026-11-06T06:56:39.1701293+00:00",
+          "end": "2026-11-06T06:56:41.2939787+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r2/public/cases.trx",
+          "sha256": "c3d80f32414ea307c2a009dc76d6d1b5df9d6cce9021e19058063f6ff72745cd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"valid\\\")",
+          "start": "2026-11-06T07:08:54.8583151+00:00",
+          "end": "2026-11-06T07:09:02.3655587+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r2/public/cases.trx",
+          "sha256": "c3d80f32414ea307c2a009dc76d6d1b5df9d6cce9021e19058063f6ff72745cd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"missing\\\")",
+          "start": "2026-11-06T07:09:02.3709633+00:00",
+          "end": "2026-11-06T07:09:09.3064955+00:00"
+        },
+        {
+          "path": "docs/season-balance-20261102/evidence/F02-season-credit-r2/r2/public/cases.trx",
+          "sha256": "c3d80f32414ea307c2a009dc76d6d1b5df9d6cce9021e19058063f6ff72745cd",
+          "outcome": "Passed",
+          "name": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests.Full_host_original16_and_current17_credit_survive_abrupt_restart_and_bad_archive_isolation(archiveState: \\\"corrupt\\\")",
+          "start": "2026-11-06T07:09:09.3066409+00:00",
+          "end": "2026-11-06T07:09:15.7557734+00:00"
+        }
+      ],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_code_rollback_and_native_backup_restore_preserve_once_only_assets",
+      "SkipUnless": "HasOwnedRollbackFixture",
+      "Skip": "Requires an owned isolated PG fixture and an immutable previous local server binary.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_default_single_IP_auth_limit_is_separate_from_capacity",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    },
+    {
+      "assembly": "FantasyCard.Server.Tests.dll",
+      "type": "FantasyCard.Server.Tests.EndToEnd.ProcessLifecycleRecoveryTests",
+      "method": "Actual_prelogged_account_still_observes_default_economy_write_limit",
+      "SkipUnless": "HasPrivateDatabase",
+      "Skip": "Requires an owned local PostgreSQL database.",
+      "history": [],
+      "current_protected_execution_proven": false
+    }
+  ],
+  "parse_errors": [],
+  "no_new_test_process": true
+}

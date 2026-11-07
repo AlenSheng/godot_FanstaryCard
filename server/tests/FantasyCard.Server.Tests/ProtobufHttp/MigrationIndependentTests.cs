@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.WebSockets;
@@ -6,6 +7,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using FantasyCard.Contracts.Http;
 using FantasyCard.Contracts.Realtime;
+using FantasyCard.Server.Common;
 using FantasyCard.Server.Tests.Persistence;
 using Google.Protobuf;
 using Wire = FantasyCard.Contracts.Http.V1;
@@ -31,6 +33,9 @@ public sealed partial class RealNetworkEndToEndTests
         start.Environment["Identity__EnableLocalAuth"] = "true";
         start.Environment["ProtobufHttp__AllowLegacyJson"] = "false";
         start.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "false";
+        // This private process checks every route's auth/codec boundary; limiter defaults have their own tests.
+        start.Environment["RequestLimits__EconomyWritePermitLimit"] = Math.Max(new RequestLimitOptions().EconomyWritePermitLimit,
+            HttpProtocolRegistry.Endpoints.Count(endpoint => endpoint.Method != "GET") + 5).ToString(CultureInfo.InvariantCulture);
         await using var server = NetworkServerProcess.Start(start);
         using var client = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{port}"), Timeout = TimeSpan.FromSeconds(15) };
         await server.WaitUntilReadyAsync(client, ct);
@@ -109,6 +114,9 @@ public sealed partial class RealNetworkEndToEndTests
                     "CreateMarketListingRequest" => new Wire.CreateMarketListingRequest { EquipmentId = "00000000-0000-0000-0000-000000000001", PriceGold = 1 },
                     "EnqueueMatchRequest" => new Wire.EnqueueMatchRequest { PreparationId = "00000000-0000-0000-0000-000000000001" },
                     "PurchaseShopRequest" => new Wire.PurchaseShopRequest { ProductId = "warrior_soul", Quantity = 1 },
+                    "CraftEquipmentRequest" => new Wire.CraftEquipmentRequest { SeasonId = "boundary-season", Quality = "Purple", Slot = "Hands", Element = "Water", WishedEffect = "Piercing", ExpectedWalletVersion = 1 },
+                    "LearnSeasonRecipeRequest" => new Wire.LearnSeasonRecipeRequest { SeasonId = "boundary-season", EquipmentId = "00000000-0000-0000-0000-000000000001", ExpectedVersion = 1 },
+                    "ReforgeEquipmentRequest" => new Wire.ReforgeEquipmentRequest { SeasonId = "boundary-season", RecipeId = "00000000-0000-0000-0000-000000000001", BodyEquipmentId = "00000000-0000-0000-0000-000000000001", ExpectedBodyVersion = 1, ExpectedWalletVersion = 1 },
                     _ => route.RequestDescriptor.Parser.ParseFrom(Array.Empty<byte>())
                 };
                 request.Content = PbContent(body);

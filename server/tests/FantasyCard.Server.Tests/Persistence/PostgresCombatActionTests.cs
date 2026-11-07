@@ -109,7 +109,7 @@ public sealed class PostgresCombatActionTests
     {
         var season = SeasonDefinition.FromCalendarDays("actions", new DateOnly(2026, 11, 2), GameConfigCatalog.Current.Version, "season-equipment-v1");
         var clock = new Clock(season.StartsAtUtc);
-        var seasons = new SeasonRepository(db.DataSource, clock); await seasons.PublishAsync(season, new string('a', 64), Ct);
+        var seasons = new SeasonRepository(db.DataSource, clock); await seasons.PublishAsync(season, GameConfigCatalog.Current.ContentHash, Ct);
         var key = Guid.NewGuid().ToString("N");
         var player = await new IdentityRepository(db.DataSource, new PlayerProvisioningService()).SignInLocalAsync(key,
             "Action " + key[..10], RandomNumberGenerator.GetBytes(32), clock.GetUtcNow(), clock.GetUtcNow().AddHours(1), Ct);
