@@ -1,0 +1,226 @@
+diff --git a/server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs b/server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs
+index 697d9d55..6c32ce6e 100644
+--- a/server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs
++++ b/server/src/FantasyCard.Server/Progression/SeasonCraftingEndpoints.cs
+@@ -29,10 +29,14 @@ public static class SeasonCraftingEndpoints
+         catch(DomainValidationException error){return Problem(context,400,"Cannot read crafting",error.Message);}
+     }
+ 
+-    private static async Task<IResult> ReforgeQuoteAsync(string seasonId,Guid recipeId,Guid bodyEquipmentId,HttpContext context,
+-        IdentityService identity,ProgressionRepository repository,CancellationToken ct)
++    private static async Task<IResult> ReforgeQuoteAsync(HttpContext context,IdentityService identity,
++        ProgressionRepository repository,CancellationToken ct)
+     {
+         var player=await context.AuthenticatePlayerAsync(identity,ct);if(player is null)return context.UnauthorizedProblem();
++        var query=context.Request.Query;var seasonId=query["seasonId"].ToString();
++        if(string.IsNullOrWhiteSpace(seasonId)||!Guid.TryParse(query["recipeId"].ToString(),out var recipeId)||
++            !Guid.TryParse(query["bodyEquipmentId"].ToString(),out var bodyEquipmentId))
++            return Problem(context,400,"Cannot quote rebuild","A season and valid recipe and body equipment ids are required.");
+         try{return Results.Ok(await repository.GetReforgeQuoteAsync(player.UserId,seasonId,recipeId,bodyEquipmentId,ct));}
+         catch(DomainValidationException error){return Problem(context,400,"Cannot quote rebuild",error.Message);}
+     }
+diff --git a/server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs b/server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs
+index 915485c0..ef7835df 100644
+--- a/server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/Common/RuntimeTimingTests.cs
+@@ -33,7 +33,7 @@ public sealed class RuntimeTimingTests(ITestOutputHelper output)
+         using var metrics = new ServerMetrics();
+         using var capture = new Capture(metrics);
+         using var root = new Activity("actual-pool-replay-request").Start();
+-        var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString) { MaxPoolSize = 1, MinPoolSize = 0 };
++        var settings = new NpgsqlConnectionStringBuilder(database.ConnectionString) { Pooling = true, MaxPoolSize = 1, MinPoolSize = 0 };
+         await using var limited = NpgsqlDataSource.Create(settings.ConnectionString);
+         await using var held = await limited.OpenConnectionAsync(ct);
+         var repository = new MatchmakingRepository(limited, TimeProvider.System, metrics);
+diff --git a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs
+index 2a4524fb..b4c238ac 100644
+--- a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresRuntimeIntegrationTests.cs
+@@ -176,8 +176,16 @@ public sealed class PostgresRuntimeIntegrationTests
+             "SELECT count(*) FROM market_transactions WHERE listing_id=$1", listing.ListingId));
+         Assert.Equal(2L, await database.ScalarAsync<long>(
+             "SELECT count(*) FROM inventory_movements WHERE item_id=$1", equipmentId));
+-        Assert.Equal(2L, await database.ScalarAsync<long>(
+-            "SELECT count(*) FROM economy_ledger WHERE request_id=$1", winner.RequestId));
++        Assert.Equal(winner.RequestId, await database.ScalarAsync<string>(
++            "SELECT request_id FROM market_transactions WHERE listing_id=$1", listing.ListingId));
++        Assert.Equal(1L, await database.ScalarAsync<long>(
++            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND request_id=$2 AND currency='Gold' AND reason='market.purchase' AND delta=-1000 AND balance_after=1000",
++            winner.BuyerId, "buy:" + listing.ListingId.ToString("D")));
++        Assert.Equal(1L, await database.ScalarAsync<long>(
++            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND request_id=$2 AND currency='Gold' AND reason='market.sale' AND delta=900 AND balance_after=900",
++            seller.UserId, "sale:" + listing.ListingId.ToString("D")));
++        Assert.Equal(0L, await database.ScalarAsync<long>(
++            "SELECT count(*) FROM economy_ledger WHERE player_id=$1 AND source_kind='MarketTransfer'", loser.BuyerId));
+ 
+         async Task<(Guid BuyerId, string RequestId, MarketPurchaseResponse? Response)> AttemptPurchaseAsync(
+             Guid buyerId,
+@@ -188,7 +196,7 @@ public sealed class PostgresRuntimeIntegrationTests
+                 return (buyerId, requestId, await repository.PurchaseMarketAsync(
+                     buyerId, requestId, listing.ListingId, listing.Version, cancellationToken));
+             }
+-            catch (InvalidOperationException)
++            catch (DomainValidationException exception) when (exception.Message == "Listing is no longer available in the current market.")
+             {
+                 return (buyerId, requestId, null);
+             }
+diff --git a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonBlueprintTests.cs b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonBlueprintTests.cs
+index fdb5d5c4..fb45565d 100644
+--- a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonBlueprintTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonBlueprintTests.cs
+@@ -1,10 +1,14 @@
+ using System.Text.Json;
++using FantasyCard.Contracts.Matchmaking;
++using FantasyCard.Contracts.Players;
+ using FantasyCard.Domain.Combat;
+ using FantasyCard.Domain.Configuration;
+ using FantasyCard.Domain.Players;
+ using FantasyCard.Domain.Rooms;
+ using FantasyCard.Domain.Seasons;
+ using FantasyCard.Server.Common;
++using FantasyCard.Server.Matchmaking;
++using FantasyCard.Server.Rooms;
+ using FantasyCard.Server.Settlement;
+ 
+ namespace FantasyCard.Server.Tests.Persistence;
+@@ -75,11 +79,17 @@ public sealed class PostgresSeasonBlueprintTests
+         var p=await CraftingTestInputs.CreateAsync(db);
+         var fixture=await TerminalAsync(db,p,2,RoomPlayerPhase.Extracted);
+         var config=GameConfigCatalog.Current;var catalog=CombatCardCatalog.Create(config);
++        var deckVersion=await db.ScalarAsync<long>("SELECT version FROM player_decks WHERE player_id=$1 AND hero_class=2",p.Player);
++        var prepared=await new PreparationRepository(db.DataSource,p.Clock).CreateAsync(p.Player,"elite-reward-preparation",
++            new(HeroClassDto.Mage,deckVersion,[null,null,null,null,null],BackpackTierDto.Free,[],0,"D2",p.Season.SeasonId),Ct);
++        Assert.Equal(CreatePreparationStatus.Created,prepared.Status);var source=prepared.Preparation!.Snapshot;
++        await CraftingTestInputs.SqlAsync(db,"UPDATE preparations SET status='Matched' WHERE preparation_id=$1",prepared.Preparation.PreparationId);
++        await CraftingTestInputs.SqlAsync(db,"UPDATE match_players SET preparation_id=$1 WHERE match_id=$2 AND player_id=$3",prepared.Preparation.PreparationId,fixture.Match,p.Player);
+         var map=ChaosMapGenerator.Generate(73,1).Capture();var start=map.SpawnPositions[0];
+         map=map with {Cells=map.Cells.Select(cell=>cell.Position==start?cell with {Layer=ChaosMapLayer.Core,MonsterGroupId="E1",IsBoss=false}:cell).ToArray()};
+         var room=new BattleRoom(fixture.Snapshot.RoomId,config.Version,catalog,73,season:p.Season.ContextFor(2));
+-        var cards=Enumerable.Range(1,13).Select(i=>$"C{i:D2}").Concat(Enumerable.Range(1,7).Select(i=>$"MAG-{i:D2}")).ToArray();
+-        var player=room.AddPlayer(new(p.Player,HeroClass.Mage,cards,null));room.InitializeMap(ChaosMapState.Restore(map));
++        var player=room.AddPlayer(new(p.Player,HeroClass.Mage,source.CardIds,null,CardLevels:source.CardLevels,
++            LootPreferenceElement:source.LootPreferenceElement));room.InitializeMap(ChaosMapState.Restore(map));
+         var random=new CombatRandom(0);random.Restore(room.Capture().RandomStreams!.Loot);
+         _=random.Next(6,11);var fragments=random.Next(4,8)*19000/10000;
+         foreach(var monster in player.Pve!.Monsters.ToArray())
+@@ -98,6 +108,7 @@ public sealed class PostgresSeasonBlueprintTests
+         // asset/settlement interoperability, not a completed gameplay route.
+         var snapshot=room.Capture();snapshot=snapshot with {Players=snapshot.Players.Select(value=>value with {Phase=RoomPlayerPhase.Extracted,Pve=null,RewardChoice=null}).ToArray()};
+         using var metrics=new ServerMetrics();var repository=new SettlementRepository(db.DataSource,p.Clock,metrics);
++        await new RoomSnapshotRepository(db.DataSource,p.Clock,metrics).SaveIfDueAsync(snapshot,Ct);
+         var coordinator=new SettlementCoordinator(repository,p.Clock);
+         await coordinator.ObserveAsync(fixture.Match,snapshot);await coordinator.ObserveAsync(fixture.Match,snapshot);
+         var id=await db.ScalarAsync<Guid>("SELECT settlement_id FROM match_settlements WHERE match_id=$1",fixture.Match);
+diff --git a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEquipmentTests.cs b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEquipmentTests.cs
+index 1efc767f..8aa2f58b 100644
+--- a/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEquipmentTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/Persistence/PostgresSeasonEquipmentTests.cs
+@@ -29,7 +29,7 @@ public sealed class PostgresSeasonEquipmentTests
+         await using var db=await PostgresTestSchema.CreateAsync(migrate:true);
+         var config=GameConfigCatalog.Current;var definition=SeasonDefinition.FromCalendarDays("equipment",new DateOnly(2026,11,2),config.Version,"season-equipment-v1",highestOpenDifficulty:5);
+         var clock=new Clock(definition.StartsAtUtc);var seasons=new SeasonRepository(db.DataSource,clock);
+-        await seasons.PublishAsync(definition,new string('a',64),Ct);
++        await seasons.PublishAsync(definition,config.ContentHash,Ct);
+         var key=Guid.NewGuid().ToString("N");var player=(await new IdentityRepository(db.DataSource,new PlayerProvisioningService()).SignInLocalAsync(
+             key,"Gear "+key[..8],RandomNumberGenerator.GetBytes(32),clock.Now,clock.Now.AddHours(1),Ct)).UserId;
+         await seasons.EnsurePlayerAsync(player,definition.ContextFor(0),Ct);
+diff --git a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs
+index 3204f2d4..3650859d 100644
+--- a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/MigrationIndependentTests.cs
+@@ -1,4 +1,5 @@
+ using System.Diagnostics;
++using System.Globalization;
+ using System.Net;
+ using System.Net.Http.Headers;
+ using System.Net.WebSockets;
+@@ -6,6 +7,7 @@ using System.Text.Json;
+ using System.Text.RegularExpressions;
+ using FantasyCard.Contracts.Http;
+ using FantasyCard.Contracts.Realtime;
++using FantasyCard.Server.Common;
+ using FantasyCard.Server.Tests.Persistence;
+ using Google.Protobuf;
+ using Wire = FantasyCard.Contracts.Http.V1;
+@@ -31,6 +33,9 @@ public sealed partial class RealNetworkEndToEndTests
+         start.Environment["Identity__EnableLocalAuth"] = "true";
+         start.Environment["ProtobufHttp__AllowLegacyJson"] = "false";
+         start.Environment["Realtime__AllowLegacyAccessTokenQuery"] = "false";
++        // This private process checks every route's auth/codec boundary; limiter defaults have their own tests.
++        start.Environment["RequestLimits__EconomyWritePermitLimit"] = Math.Max(new RequestLimitOptions().EconomyWritePermitLimit,
++            HttpProtocolRegistry.Endpoints.Count(endpoint => endpoint.Method != "GET") + 5).ToString(CultureInfo.InvariantCulture);
+         await using var server = NetworkServerProcess.Start(start);
+         using var client = new HttpClient { BaseAddress = new Uri($"http://127.0.0.1:{port}"), Timeout = TimeSpan.FromSeconds(15) };
+         await server.WaitUntilReadyAsync(client, ct);
+@@ -109,6 +114,9 @@ public sealed partial class RealNetworkEndToEndTests
+                     "CreateMarketListingRequest" => new Wire.CreateMarketListingRequest { EquipmentId = "00000000-0000-0000-0000-000000000001", PriceGold = 1 },
+                     "EnqueueMatchRequest" => new Wire.EnqueueMatchRequest { PreparationId = "00000000-0000-0000-0000-000000000001" },
+                     "PurchaseShopRequest" => new Wire.PurchaseShopRequest { ProductId = "warrior_soul", Quantity = 1 },
++                    "CraftEquipmentRequest" => new Wire.CraftEquipmentRequest { SeasonId = "boundary-season", Quality = "Purple", Slot = "Hands", Element = "Water", WishedEffect = "Piercing", ExpectedWalletVersion = 1 },
++                    "LearnSeasonRecipeRequest" => new Wire.LearnSeasonRecipeRequest { SeasonId = "boundary-season", EquipmentId = "00000000-0000-0000-0000-000000000001", ExpectedVersion = 1 },
++                    "ReforgeEquipmentRequest" => new Wire.ReforgeEquipmentRequest { SeasonId = "boundary-season", RecipeId = "00000000-0000-0000-0000-000000000001", BodyEquipmentId = "00000000-0000-0000-0000-000000000001", ExpectedBodyVersion = 1, ExpectedWalletVersion = 1 },
+                     _ => route.RequestDescriptor.Parser.ParseFrom(Array.Empty<byte>())
+                 };
+                 request.Content = PbContent(body);
+diff --git a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonCraftingApiTests.cs b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonCraftingApiTests.cs
+index 1349de9d..0c27b466 100644
+--- a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonCraftingApiTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonCraftingApiTests.cs
+@@ -86,4 +86,32 @@ public sealed partial class RealNetworkEndToEndTests
+         rebuild.ExpectedBodyVersion++;await Call("POST","/api/v1/season-crafting/reforge",rebuild,"rebuild-action",HttpStatusCode.Conflict);
+         Assert.Equal(2L,await database.ScalarAsync<long>("SELECT count(*) FROM equipments WHERE season_id=$1",definition.SeasonId));
+     }
++    [Fact(Skip="Set isolated PostgreSQL database.",SkipUnless=nameof(HasTestDatabase))]
++    [Trait("Category","PostgresIntegration")]
++    public async Task Reforge_quote_authenticates_before_missing_or_malformed_query_validation()
++    {
++        await using var database=await PostgresTestSchema.CreateAsync(migrate:false);
++        using var timeout=CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
++        timeout.CancelAfter(TimeSpan.FromSeconds(60));var ct=timeout.Token;var port=ReserveLoopbackPort();
++        await using var server=StartServer(database.ConnectionString,port,legacy:false);
++        using var client=new HttpClient{BaseAddress=new Uri($"http://127.0.0.1:{port}"),Timeout=TimeSpan.FromSeconds(12)};
++        await server.WaitUntilReadyAsync(client,ct);
++        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpProtocolRegistry.MediaType));
++        string[] queries=["","?seasonId=season&recipeId=invalid&bodyEquipmentId=invalid"];
++        foreach(var query in queries)await AssertQueryAsync(query,HttpStatusCode.Unauthorized);
++        using var loginResponse=await client.PostAsync("/api/v1/auth/local",PbContent(new Wire.LocalSignInRequest
++            {DeviceId=Guid.NewGuid().ToString(),DisplayName="Quote boundary"}),ct);
++        loginResponse.EnsureSuccessStatusCode();
++        var login=Wire.LocalSignInResponse.Parser.ParseFrom(await loginResponse.Content.ReadAsByteArrayAsync(ct));
++        client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",login.AccessToken);
++        foreach(var query in queries)await AssertQueryAsync(query,HttpStatusCode.BadRequest);
++
++        async Task AssertQueryAsync(string query,HttpStatusCode expected)
++        {
++            using var response=await client.GetAsync("/api/v1/season-crafting/reforge-quote"+query,ct);
++            Assert.Equal(expected,response.StatusCode);
++            Assert.Equal(HttpProtocolRegistry.MediaType,response.Content.Headers.ContentType?.MediaType);
++            Assert.Equal((int)expected,Wire.HttpError.Parser.ParseFrom(await response.Content.ReadAsByteArrayAsync(ct)).Status);
++        }
++    }
+ }
+diff --git a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonWalletApiTests.cs b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonWalletApiTests.cs
+index 1500bb46..fdbd6e65 100644
+--- a/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonWalletApiTests.cs
++++ b/server/tests/FantasyCard.Server.Tests/ProtobufHttp/SeasonWalletApiTests.cs
+@@ -2,6 +2,7 @@ using System.Diagnostics;
+ using System.Net;
+ using System.Net.Http.Headers;
+ using FantasyCard.Contracts.Http;
++using FantasyCard.Domain.Configuration;
+ using FantasyCard.Domain.Seasons;
+ using FantasyCard.Server.Seasons;
+ using FantasyCard.Server.Tests.Persistence;
+@@ -57,9 +58,10 @@ public sealed partial class RealNetworkEndToEndTests
+         var playerId = Guid.Parse(owner.Player.UserId);
+         var localDay = DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow,
+             TimeZoneInfo.FindSystemTimeZoneById(SeasonDefinition.TimeZoneId)).DateTime);
+-        var definition = SeasonDefinition.FromCalendarDays("api-season", localDay, "api-config", "season-equipment-v1");
++        var config = GameConfigCatalog.Current;
++        var definition = SeasonDefinition.FromCalendarDays("api-season", localDay, config.Version, "season-equipment-v1");
+         var seasons = new SeasonRepository(database.DataSource, TimeProvider.System);
+-        await seasons.PublishAsync(definition, new string('a', 64), ct);
++        await seasons.PublishAsync(definition, config.ContentHash, ct);
+         await seasons.EnsurePlayerAsync(playerId, definition.ContextFor(0), ct);
+         await seasons.ApplyAsync(playerId, definition.ContextFor(0), 0, 100, 0, "test.reward", "fund", SeasonWalletPurpose.General, ct);
+         await using (var seed = database.DataSource.CreateCommand("UPDATE player_materials SET equipment_fragments=1000 WHERE player_id=$1"))

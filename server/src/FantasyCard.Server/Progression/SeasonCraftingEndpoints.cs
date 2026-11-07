@@ -29,10 +29,14 @@ public static class SeasonCraftingEndpoints
         catch(DomainValidationException error){return Problem(context,400,"Cannot read crafting",error.Message);}
     }
 
-    private static async Task<IResult> ReforgeQuoteAsync(string seasonId,Guid recipeId,Guid bodyEquipmentId,HttpContext context,
-        IdentityService identity,ProgressionRepository repository,CancellationToken ct)
+    private static async Task<IResult> ReforgeQuoteAsync(HttpContext context,IdentityService identity,
+        ProgressionRepository repository,CancellationToken ct)
     {
         var player=await context.AuthenticatePlayerAsync(identity,ct);if(player is null)return context.UnauthorizedProblem();
+        var query=context.Request.Query;var seasonId=query["seasonId"].ToString();
+        if(string.IsNullOrWhiteSpace(seasonId)||!Guid.TryParse(query["recipeId"].ToString(),out var recipeId)||
+            !Guid.TryParse(query["bodyEquipmentId"].ToString(),out var bodyEquipmentId))
+            return Problem(context,400,"Cannot quote rebuild","A season and valid recipe and body equipment ids are required.");
         try{return Results.Ok(await repository.GetReforgeQuoteAsync(player.UserId,seasonId,recipeId,bodyEquipmentId,ct));}
         catch(DomainValidationException error){return Problem(context,400,"Cannot quote rebuild",error.Message);}
     }
